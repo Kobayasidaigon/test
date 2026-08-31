@@ -168,12 +168,6 @@
   .pill.on { background: var(--brand); border-color: var(--brand); color: #fff; }
   .pill.green { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok); }
 
-  .tag {
-    display: inline-block; font-size: .76rem; font-weight: 700;
-    background: var(--chip-bg); color: var(--muted);
-    border-radius: 6px; padding: 1px 8px; letter-spacing: .04em;
-  }
-
   ul { margin: 8px 0 0; padding-left: 20px; }
   li { margin: 0 0 8px; }
   li:last-child { margin-bottom: 0; }
@@ -184,16 +178,9 @@
     color: var(--warn-ink);
     border-radius: 12px; padding: 12px 16px;
     font-size: .9rem; font-weight: 500;
+    margin-top: 12px;
   }
   .note strong { color: inherit; }
-
-  /* ---- 管理者セクション ---- */
-  .admin h2 { border-left-color: var(--ink); }
-  .admin-tag {
-    display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .1em;
-    background: var(--ink); color: var(--bg);
-    border-radius: 5px; padding: 2px 9px; vertical-align: 3px; margin-left: 8px;
-  }
 
   /* ---- Q&A ---- */
   details {
@@ -224,9 +211,9 @@
 </style>
 
 <div class="wrap">
-  <span class="eyebrow">FIT EASY 萩野通・笠寺・枇杷島</span>
+  <span class="eyebrow">スタッフ用</span>
   <h1>ジム清掃チェックシートの使い方</h1>
-  <p class="lede">スマホでその場でチェックするだけで、清掃の記録が3店舗ぶん自動でまとまります。読むのは3分、覚えることは「タップするだけ」。</p>
+  <p class="lede">やることをやったら、スマホでタップしてチェック。それだけです。読むのは2分でOK。</p>
 
   <a class="url-card" href="https://gym-cleaning-checklist.fly.dev/" target="_blank" rel="noopener">
     <div class="lbl">アプリのURL（ホーム画面に追加しておくと便利）</div>
@@ -238,33 +225,31 @@
     <h2>はじめて開くとき（1回だけ）</h2>
     <p class="h2sub">2回目からは何も聞かれずに開きます</p>
     <div class="card">
-      <p>最初に開くと「<strong>合言葉を入力してください</strong>」と出ます。<strong>自分の店舗の合言葉</strong>（スタッフ共有・店長に確認）を入力すれば準備完了。同じ端末なら<strong>約1年間は再入力不要</strong>です。</p>
-      <p style="font-size:.88rem; color:var(--muted);">合言葉で入った端末は店舗が固定表示になります（他店舗のシートを間違えて触る心配なし）。</p>
+      <p>最初に開くと「<strong>合言葉を入力してください</strong>」と出ます。<strong>自分の店舗の合言葉</strong>（わからなければ店長に確認）を入力すれば準備完了。同じ端末なら<strong>約1年間は再入力不要</strong>です。</p>
     </div>
   </section>
 
   <section>
-    <h2>毎日の流れ</h2>
-    <p class="h2sub">出勤したらこの3ステップだけ</p>
+    <h2>毎日の使い方</h2>
+    <p class="h2sub">出勤したらこの3ステップ</p>
     <div class="steps">
       <div class="step">
         <div class="n">1</div>
         <div>
           <h3>「担当者」で自分の名前を選ぶ</h3>
-          <p>画面上部の「担当者（このシートの記入者）」から自分を選択。シフト表が取り込まれている日は、今シフト中の人が<strong>自動で選ばれている</strong>ことがあります。名前が合っているかだけ確認。</p>
+          <p>画面上部の「担当者」から自分を選択。自動で選ばれていることもあるので、<strong>自分の名前になっているか確認</strong>してください。</p>
         </div>
       </div>
       <div class="step">
         <div class="n">2</div>
         <div>
-          <h3>自分の時間帯のリストを開く</h3>
-          <p>タブの下にある<strong>緑色の「やることリスト」</strong>（朝番・中番・遅番など）から自分の時間帯をタップ。1画面に今日やることが全部並びます。</p>
+          <h3>自分の時間帯（朝番・昼番・遅番）を押す</h3>
+          <p>緑色のタブから<strong>自分のシフトの時間帯</strong>をタップすると、その時間帯にやることが一覧で出ます。</p>
           <div class="demo">
             <p class="demo-cap">画面イメージ</p>
             <div class="pills">
-              <span class="pill on">チェックシート</span>
-              <span class="pill">結果の比較</span>
               <span class="pill green">朝番</span>
+              <span class="pill green">昼番</span>
               <span class="pill green">遅番</span>
             </div>
           </div>
@@ -273,12 +258,12 @@
       <div class="step">
         <div class="n">3</div>
         <div>
-          <h3>終わった項目をタップ → それだけ</h3>
-          <p>タップした瞬間に<strong>自動で保存・記録</strong>されます。保存ボタンはありません。「トイレ清掃」のようなまとまり項目は、タップで中身が開いて1つずつチェックでき、<strong>全部終わると自動で✓</strong>が付きます。</p>
+          <h3>やることをやったら、タップしてチェック</h3>
+          <p>終わった項目をタップすると✓が付き、<strong>その瞬間に自動で記録</strong>されます。保存ボタンはありません。まとまり項目（トイレ清掃など）はタップで中身が開き、1つずつチェックできます。</p>
           <div class="demo">
             <p class="demo-cap">タップするとこうなる</p>
-            <div class="demo-row"><span class="demo-check"></span> 床全体の洗浄・水切り</div>
-            <div class="demo-row done"><span class="demo-check"></span> 排水溝のゴミ・髪の毛除去</div>
+            <div class="demo-row"><span class="demo-check"></span> 床の掃き掃除・モップ掛け</div>
+            <div class="demo-row done"><span class="demo-check"></span> ゴミ箱の回収・袋交換</div>
           </div>
         </div>
       </div>
@@ -286,53 +271,43 @@
   </section>
 
   <section>
+    <h2>やり方がわからないとき</h2>
+    <p class="h2sub">最初はみんなわかりません。見ながらやればOK</p>
+    <div class="card">
+      <p>やることの詳細がわからないときは、<strong>画面上のほうにある清掃の項目（シャワールーム・トイレなどのタブ）</strong>を開いてみてください。項目ごとに<strong>清掃方法（手順・使う洗剤・注意点）</strong>と<strong>OK例／NG例の見本写真</strong>が入っています。</p>
+      <p style="font-size:.88rem; color:var(--muted);">やることリストの中の「エリアページを開く（見本・詳細）」からも同じ画面に飛べます。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>在庫入力を忘れずに</h2>
+    <p class="h2sub">シフトごとに毎回やります</p>
+    <div class="card">
+      <p>やることリストの中に<strong>「在庫入力」</strong>の項目があります。これは<strong>朝番・昼番・遅番、それぞれのシフトで毎回入力</strong>してください。</p>
+      <ul>
+        <li>前のシフトの人が入力していても、<strong>自分のシフトのぶんは自分で入力</strong>します。</li>
+        <li>入力が終わったら、他の項目と同じようにタップしてチェックを付けます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
     <h2>📷 が付いた項目が出たら</h2>
-    <p class="h2sub">日替わりの「抜き打ち写真」です</p>
+    <p class="h2sub">日替わりの「写真必須」項目です</p>
     <div class="card">
-      <p>日によって、一部の項目に <span class="demo-badge">📷 写真必須</span> が付きます。チェックしようとすると<strong>その場でカメラが起動</strong>するので、清掃後の状態を撮影してください。<strong>撮影するとチェックが付きます</strong>。</p>
-      <ul>
-        <li>撮り直しはその場でOK。<span class="why">アルバムから古い写真は選べない仕組みです。</span></li>
-        <li>どの項目に付くかは毎日変わります。<span class="why">狙い撃ちはできないので、ふだん通り丁寧にやるのがいちばん楽です。</span></li>
-      </ul>
+      <p>日によって、一部の項目に <span class="demo-badge">📷 写真必須</span> が付きます。チェックしようとすると<strong>その場でカメラが起動</strong>するので、清掃後の状態を撮影してください。<strong>撮影するとチェックが付きます</strong>。どの項目に付くかは毎日変わります。</p>
     </div>
   </section>
 
   <section>
-    <h2>やり方がわからない項目は「見本」を見る</h2>
-    <p class="h2sub">全項目に手順書きとお手本が入っています</p>
-    <div class="card">
-      <p>上のタブからエリア（シャワールーム・トイレなど）を開いて項目を見ると、<strong>清掃方法（手順・使う洗剤・注意点）</strong>と、<strong>OK例／NG例の写真・動画</strong>を確認できます。やることリストからも「エリアページを開く（見本・詳細）」で飛べます。</p>
-      <p style="font-size:.88rem; color:var(--muted);">新人さんはまずここを見ながらやればOK。口頭で教わるより早いです。</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>知っておくと便利</h2>
-    <p class="h2sub">よく使う小ワザ</p>
+    <h2>ちょっとした注意</h2>
+    <p class="h2sub">覚えておくと安心</p>
     <div class="card">
       <ul>
-        <li><strong>チェックの取り消し</strong>：もう一度タップ。他の人が付けたチェックを取り消すときは確認が出ます。</li>
-        <li><strong>他の人の分も見える</strong>：同じ日の記録はスタッフ全員ぶん合算で表示。誰が何時にやったかも残ります。</li>
-        <li><strong>昨日の記入もれの修正</strong>：上部の「日付」を変えると過去分を記入・修正できます。今日以外を表示中は<strong>赤い警告</strong>が出るので、終わったらタップで今日に戻す。未来の日付は選べません。</li>
-        <li><strong>「定期」タブ</strong>：フィルター清掃やワックスがけなど、毎日ではない清掃はこちら。前回やった日から「そろそろ」が分かります。</li>
-        <li><strong>「結果の比較」</strong>：上部の切り替えから、シート別・担当者別の実施状況を見られます。</li>
-        <li><strong>電波が無くても大丈夫</strong>：チェックは端末に保存され、つながった時に自動でサーバーへ送られます。</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="admin">
-    <h2>店長・管理者むけ<span class="admin-tag">ADMIN</span></h2>
-    <p class="h2sub">項目の中身は画面から自由に変えられます（自分の店舗にだけ反映）</p>
-    <div class="card">
-      <ul>
-        <li><strong>項目の編集・削除</strong>：各項目の ✏️ で名前・説明・清掃方法を編集、🗑️ で削除。<span class="why">変更はその店舗のシートにだけ反映され、他店舗には影響しません。</span></li>
-        <li><strong>項目・タイトル・エリアの追加</strong>：リスト下部の「項目を追加」から。エリア（タブ）ごと増やすこともできます。</li>
-        <li><strong>見本写真の登録</strong>：項目の「見本」からOK例／NG例の写真・動画を追加。</li>
-        <li><strong>作業者名簿</strong>：担当者欄の「作業者を登録・編集」から。1人ずつでも、1行1人の貼り付けやCSVでまとめてでも登録できます。</li>
-        <li><strong>店舗まとめ（3店舗ダッシュボード）</strong>：画面上部のタイトルを<strong>5回タップ</strong> → 管理者の合言葉を入力すると「店舗まとめ」が表示され、日付ごとに3店舗の実施状況を一覧できます。</li>
-        <li><strong>月次点検</strong>：○△×の採点式（100点満点・配点は自動）。点検項目は「カテゴリ｜項目名｜○の基準｜△の基準｜×の基準」の形式で編集できます。</li>
-        <li><strong>データのバックアップ／復元</strong>：店舗まとめ内の「バックアップを書き出す」でファイル保存、「復元する」で読み戻し。<span class="why">端末の入れ替え時にも使えます。</span></li>
+        <li><strong>間違えてチェックした</strong>：もう一度タップすれば取り消せます。</li>
+        <li><strong>他の人のチェックも見える</strong>：同じ日の記録はスタッフ全員ぶんまとめて表示されます。すでに✓が付いている項目は二重にやらなくてOK。</li>
+        <li><strong>日付はいじらない</strong>：基本は今日のまま使います。今日以外の日付を表示していると赤い警告が出るので、タップして今日に戻してください。</li>
+        <li><strong>電波が無くても大丈夫</strong>：チェックは端末に保存され、つながった時に自動で送られます。</li>
       </ul>
     </div>
   </section>
@@ -342,28 +317,24 @@
     <p class="h2sub">タップで開きます</p>
     <details>
       <summary>合言葉がわからない・急に聞かれた</summary>
-      <p>合言葉は店長に確認してください。端末のブラウザデータを消したり、別のブラウザで開いたりすると再入力を求められます（入れ直せば元どおりです）。</p>
+      <p>合言葉は<strong>店長に確認</strong>してください。ブラウザのデータを消したり、別のブラウザで開いたりすると再入力になります（入れ直せば元どおりです）。</p>
     </details>
     <details>
       <summary>チェックしたのに反映されていない気がする</summary>
       <p>電波の無い場所では端末内に保存され、つながった時に自動送信されます。まずは<strong>ページを再読み込み</strong>。それでも変なら店長へ。</p>
     </details>
     <details>
-      <summary>間違えて昨日の日付にチェックしてしまった</summary>
-      <p>日付をその日に切り替えれば取り消し・修正できます。書き込みの直前に日付の自動補正も入るので、日をまたいだ深夜でも誤記録は起きにくくなっています。</p>
+      <summary>📷が出たけど、写真を撮れない事情がある</summary>
+      <p>「やめる」を押せば撮影はキャンセルできます（その場合チェックは付きません）。事情は店長に報告してください。</p>
     </details>
     <details>
-      <summary>項目が多すぎる／うちの店に無い設備がある</summary>
-      <p>店長・管理者が項目を削除・編集できます（その店舗にだけ反映）。現場に合わないと感じたら店長に相談してください。</p>
-    </details>
-    <details>
-      <summary>写真を撮りたくない場所で📷が出た</summary>
-      <p>「やめる」を押せば撮影はキャンセルできます（その場合チェックは付きません）。事情がある時は店長に報告を。</p>
+      <summary>項目のことで気になることがある</summary>
+      <p>「うちの店にこの設備ない」「やり方が実際と違う」などは<strong>店長に相談</strong>してください。項目は店舗ごとに直せます。</p>
     </details>
   </section>
 
   <footer>
-    <p>ジム清掃チェックシート 使い方ガイド（2026年8月版）</p>
-    <p>内容はアプリの現行画面に合わせて作成。画面が変わったらこのガイドも更新してください。</p>
+    <p>ジム清掃チェックシート 使い方ガイド（スタッフ用・2026年8月版）</p>
+    <p>わからないことがあれば店長まで。</p>
   </footer>
 </div>
