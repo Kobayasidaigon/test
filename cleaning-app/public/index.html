@@ -217,6 +217,22 @@
   .rt-open { margin: 2px 0 8px 26px; }
   .rt-open-btn { border: none; background: transparent; color: var(--primary); font-size: .8rem; cursor: pointer; padding: 2px 0; text-decoration: underline; }
   .rt-link { margin-left: 4px; text-decoration: none; font-size: 1rem; flex-shrink: 0; }
+  /* やることリスト内の外部リンク: アイコンではなく行内の全幅ボタンで表示 */
+  .rt-row.has-link { flex-wrap: wrap; }
+  .rt-link-btn {
+    flex-basis: 100%;
+    margin: 8px 0 2px 34px;
+    padding: 9px 12px;
+    border: 1.5px solid var(--primary);
+    border-radius: 9px;
+    color: var(--primary-dark);
+    background: var(--card);
+    font-weight: 700;
+    font-size: .88rem;
+    text-align: center;
+    text-decoration: none;
+  }
+  .rt-link-btn:active { background: #e7f2fc; }
   .item-status {
     font-size: 0.72rem; font-weight: 700; color: #e65100;
     background: var(--undone-bg); padding: 2px 8px; border-radius: 10px;
@@ -2497,6 +2513,12 @@ document.getElementById('areaDelete').onclick = () => {
 
 // ===== 朝番・中番・遅番のコンパクト表示（1画面・ツリー展開でその場チェック）=====
 const routineExpanded = new Set(); // 展開中の連動項目id
+// 外部リンク項目のボタン文言（在庫管理システムへのリンクは名前で明示する）
+function itemLinkLabel(item) {
+  const t = String(item.title || '');
+  const u = String(item.url || '');
+  return (t.indexOf('在庫') >= 0 || u.indexOf('inventory') >= 0) ? '在庫管理システムを開く' : 'サイトを開く';
+}
 function renderRoutineView() {
   const checklist = document.getElementById('checklist');
   const rec = loadRecordMerged(currentArea); // 他の担当者の分も含めて表示
@@ -2507,12 +2529,12 @@ function renderRoutineView() {
     const ls = item.link ? linkedStatus(item) : null;
     const done = ls ? ls.complete : !!rec[item.id];
     const expanded = ls && routineExpanded.has(item.id);
-    html += '<div class="rt-row' + (done ? ' done' : '') + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : 'manual') + '">'
+    html += '<div class="rt-row' + (done ? ' done' : '') + (item.url ? ' has-link' : '') + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : 'manual') + '">'
       // 連動項目はチェック丸ではなくリスト印（実際のチェックは展開した子項目で行う）
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
-      + (item.url ? '<a class="rt-link" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">🔗</a>' : '')
+      + (item.url ? '<a class="rt-link-btn" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">' + escapeHtml(itemLinkLabel(item)) + ' ↗</a>' : '')
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
       + '</div>';
     if (expanded) {
@@ -2645,7 +2667,7 @@ function render() {
             <div class="item-desc">${escapeHtml(item.desc)}</div>
             <div class="item-status">${ls ? escapeHtml('未完了: ' + ls.label + '（タップでそのエリアへ）') : '未実施'}</div>${ls ? '' : `<span class="last-done">${escapeHtml(lastDoneLabel(staleLast))}</span>`}
             <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml(done.staff) + ' / ' + done.time) : ''}</div>
-            ${item.url ? `<a class="ext-link btn btn-secondary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; padding:8px 16px; text-decoration:none; font-size:.85rem;">🔗 サイトを開く</a>` : ''}
+            ${item.url ? `<a class="ext-link btn btn-secondary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; padding:8px 16px; text-decoration:none; font-size:.85rem;">${escapeHtml(itemLinkLabel(item))} ↗</a>` : ''}
             ${isRoutineArea(currentArea) ? '' : `<button class="media-btn">${ic('image')} 見本
               <span class="mini-badge ok ${cOk ? 'on' : ''}">OK${cOk ? ' ' + cOk : ''}</span>
               <span class="mini-badge ng ${cNg ? 'on' : ''}">NG${cNg ? ' ' + cNg : ''}</span>
