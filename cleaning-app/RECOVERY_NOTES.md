@@ -16,7 +16,16 @@
 
 ## アプリの構成（判明分）
 
-- クライアント: この index.html 1枚（データは主に localStorage、メディアはIndexedDBキャッシュ併用）
+- クライアント: この index.html 1枚。**データはサーバー（/api/state）が正**で、
+  localStorage は端末キャッシュ（オフライン時はローカル更新→pendingSyncで後送）
+- **定義は店舗別**: 清掃項目・エリア構成・朝番/中番/遅番の「やることリスト」は
+  店舗ごとに独立していて、`sdef_<店舗>_<キー>` という名前で /api/state に保存される
+  （例: `sdef_笠寺_customAreas`, `sdef_枇杷島_customItems_routine_*`,
+  `sdef_<店舗>_hiddenItems_<エリア>`）。店舗別が無ければ共通キーにフォールバック。
+  朝番・中番・遅番のリスト自体が画面から追加されたカスタムエリア（routine_*）＝サーバーデータで、
+  HTMLの初期定義には入っていない。
+- つまり「特定店舗の項目を消す」はコード修正ではなく**サーバー上のデータ変更**
+  （アプリのUIで消すのと同じ場所に書く）。HTMLの初期定義を消すと全店舗に効いてしまう。
 - サーバー: 薄いAPI層。認証必須（未認証は401）
   - `POST /api/login` / `POST /api/admin-login` / `POST /api/logout`
   - `GET /api/state`、`GET/PUT /api/state/:key` … 端末間同期用のキー値ストア
