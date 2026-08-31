@@ -1,0 +1,10 @@
+/login -> 200
+/api/login -> 401
+/api/auth/login -> 401
+/api/health -> 401
+/health -> 200
+/api/state -> 401
+/api/data -> 401
+/api/media -> 401
+/api/staff -> 401
+/api/records -> 401
