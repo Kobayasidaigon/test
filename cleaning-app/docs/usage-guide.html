@@ -1,0 +1,369 @@
+<title>ジム清掃チェックシートの使い方</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<style>
+  :root {
+    --bg: #f2f5f7;
+    --card: #ffffff;
+    --ink: #263238;
+    --muted: #607585;
+    --line: #dce4ea;
+    --brand: #1e88e5;
+    --brand-ink: #1565c0;
+    --brand-soft: #e7f2fc;
+    --ok: #2e7d32;
+    --ok-bg: #e8f5e9;
+    --ok-line: #bcdec0;
+    --warn-ink: #9a5b00;
+    --warn-bg: #fff3e0;
+    --warn-line: #f0ddba;
+    --chip-bg: #eef3f6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10181e;
+      --card: #19242c;
+      --ink: #e2eaf0;
+      --muted: #92a6b3;
+      --line: #2b3a45;
+      --brand: #55a5ec;
+      --brand-ink: #82bff2;
+      --brand-soft: #16283a;
+      --ok: #85cb8f;
+      --ok-bg: #182f1d;
+      --ok-line: #2c4c33;
+      --warn-ink: #e2ab60;
+      --warn-bg: #32250f;
+      --warn-line: #4d3c1c;
+      --chip-bg: #22303a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10181e;
+    --card: #19242c;
+    --ink: #e2eaf0;
+    --muted: #92a6b3;
+    --line: #2b3a45;
+    --brand: #55a5ec;
+    --brand-ink: #82bff2;
+    --brand-soft: #16283a;
+    --ok: #85cb8f;
+    --ok-bg: #182f1d;
+    --ok-line: #2c4c33;
+    --warn-ink: #e2ab60;
+    --warn-bg: #32250f;
+    --warn-line: #4d3c1c;
+    --chip-bg: #22303a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, system-ui, sans-serif;
+    line-height: 1.75;
+    font-size: 15.5px;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 28px 18px 72px; }
+
+  h1, h2, h3 { font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; text-wrap: balance; }
+
+  /* ---- ヘッダー ---- */
+  .eyebrow {
+    display: inline-block;
+    font-size: .78rem; font-weight: 700; letter-spacing: .14em;
+    color: var(--brand-ink);
+    border: 1px solid var(--brand);
+    border-radius: 999px;
+    padding: 3px 12px;
+    margin: 0 0 14px;
+  }
+  h1 { font-size: 1.85rem; font-weight: 900; line-height: 1.3; margin: 0 0 10px; }
+  .lede { color: var(--muted); margin: 0 0 22px; }
+  .url-card {
+    display: block;
+    background: var(--brand);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin: 0 0 8px;
+    box-shadow: 0 3px 10px rgba(21, 101, 192, .25);
+  }
+  .url-card .lbl { font-size: .78rem; opacity: .9; letter-spacing: .08em; }
+  .url-card .url { font-weight: 700; font-size: 1.02rem; word-break: break-all; }
+  .url-note { font-size: .82rem; color: var(--muted); margin: 0 0 34px; }
+
+  /* ---- セクション ---- */
+  section { margin: 0 0 40px; }
+  h2 {
+    font-size: 1.22rem; font-weight: 900;
+    margin: 0 0 4px;
+    padding-left: 12px;
+    border-left: 5px solid var(--brand);
+  }
+  .h2sub { color: var(--muted); font-size: .88rem; margin: 0 0 16px; padding-left: 17px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    margin: 0 0 12px;
+  }
+  .card p:first-child { margin-top: 0; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ---- 番号ステップ（毎日の流れ＝実際の手順） ---- */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step { display: flex; gap: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .step .n {
+    flex: none;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--brand); color: #fff;
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-weight: 900; font-size: 1.05rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .step h3 { margin: 0 0 4px; font-size: 1.02rem; font-weight: 700; }
+  .step p { margin: 0; font-size: .92rem; color: var(--muted); }
+  .step p strong, .card p strong, li strong { color: var(--ink); }
+
+  /* ---- アプリ画面の再現ミニUI ---- */
+  .demo { background: var(--bg); border: 1px dashed var(--line); border-radius: 10px; padding: 10px; margin-top: 10px; }
+  .demo-cap { font-size: .74rem; color: var(--muted); letter-spacing: .06em; margin: 0 0 6px; }
+  .demo-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 12px; font-size: .9rem;
+  }
+  .demo-row + .demo-row { margin-top: 6px; }
+  .demo-row.done { background: var(--ok-bg); border-color: var(--ok-line); }
+  .demo-check {
+    flex: none; width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--line); background: var(--card);
+  }
+  .done .demo-check { border-color: var(--ok); background: var(--ok); position: relative; }
+  .done .demo-check::after {
+    content: ""; position: absolute; left: 6px; top: 2.5px;
+    width: 5px; height: 10px;
+    border: solid #fff; border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+  }
+  .demo-badge {
+    display: inline-block; font-size: .8rem; font-weight: 700;
+    background: var(--warn-bg); color: var(--warn-ink);
+    border: 1px solid var(--warn-line); border-radius: 999px;
+    padding: 2px 10px;
+  }
+  .pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill {
+    font-size: .82rem; font-weight: 700;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 4px 12px; background: var(--card); color: var(--muted);
+  }
+  .pill.on { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .pill.green { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok); }
+
+  .tag {
+    display: inline-block; font-size: .76rem; font-weight: 700;
+    background: var(--chip-bg); color: var(--muted);
+    border-radius: 6px; padding: 1px 8px; letter-spacing: .04em;
+  }
+
+  ul { margin: 8px 0 0; padding-left: 20px; }
+  li { margin: 0 0 8px; }
+  li:last-child { margin-bottom: 0; }
+  li .why { font-size: .86rem; color: var(--muted); }
+
+  .note {
+    background: var(--warn-bg); border: 1px solid var(--warn-line);
+    color: var(--warn-ink);
+    border-radius: 12px; padding: 12px 16px;
+    font-size: .9rem; font-weight: 500;
+  }
+  .note strong { color: inherit; }
+
+  /* ---- 管理者セクション ---- */
+  .admin h2 { border-left-color: var(--ink); }
+  .admin-tag {
+    display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .1em;
+    background: var(--ink); color: var(--bg);
+    border-radius: 5px; padding: 2px 9px; vertical-align: 3px; margin-left: 8px;
+  }
+
+  /* ---- Q&A ---- */
+  details {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 0 16px; margin: 0 0 10px;
+  }
+  summary {
+    cursor: pointer; font-weight: 700; padding: 13px 0; list-style: none;
+    display: flex; align-items: center; gap: 10px; font-size: .95rem;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "Q"; flex: none;
+    font-family: "Zen Kaku Gothic New", sans-serif; font-weight: 900;
+    color: var(--brand-ink); font-size: 1rem;
+  }
+  summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 6px; }
+  details p { margin: 0 0 14px; font-size: .92rem; color: var(--muted); padding-left: 21px; }
+  details p strong { color: var(--ink); }
+
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line); padding-top: 16px; margin-top: 48px; }
+  footer p { margin: 0 0 4px; }
+  a { color: var(--brand-ink); }
+  @media (prefers-reduced-motion: no-preference) {
+    details[open] p { animation: fadein .2s ease; }
+    @keyframes fadein { from { opacity: 0; transform: translateY(-2px); } to { opacity: 1; } }
+  }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">FIT EASY 萩野通・笠寺・枇杷島</span>
+  <h1>ジム清掃チェックシートの使い方</h1>
+  <p class="lede">スマホでその場でチェックするだけで、清掃の記録が3店舗ぶん自動でまとまります。読むのは3分、覚えることは「タップするだけ」。</p>
+
+  <a class="url-card" href="https://gym-cleaning-checklist.fly.dev/" target="_blank" rel="noopener">
+    <div class="lbl">アプリのURL（ホーム画面に追加しておくと便利）</div>
+    <div class="url">gym-cleaning-checklist.fly.dev</div>
+  </a>
+  <p class="url-note">iPhone: Safariで開く → 共有ボタン → 「ホーム画面に追加」／ Android: Chromeのメニュー → 「ホーム画面に追加」</p>
+
+  <section>
+    <h2>はじめて開くとき（1回だけ）</h2>
+    <p class="h2sub">2回目からは何も聞かれずに開きます</p>
+    <div class="card">
+      <p>最初に開くと「<strong>合言葉を入力してください</strong>」と出ます。<strong>自分の店舗の合言葉</strong>（スタッフ共有・店長に確認）を入力すれば準備完了。同じ端末なら<strong>約1年間は再入力不要</strong>です。</p>
+      <p style="font-size:.88rem; color:var(--muted);">合言葉で入った端末は店舗が固定表示になります（他店舗のシートを間違えて触る心配なし）。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>毎日の流れ</h2>
+    <p class="h2sub">出勤したらこの3ステップだけ</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>「担当者」で自分の名前を選ぶ</h3>
+          <p>画面上部の「担当者（このシートの記入者）」から自分を選択。シフト表が取り込まれている日は、今シフト中の人が<strong>自動で選ばれている</strong>ことがあります。名前が合っているかだけ確認。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>自分の時間帯のリストを開く</h3>
+          <p>タブの下にある<strong>緑色の「やることリスト」</strong>（朝番・中番・遅番など）から自分の時間帯をタップ。1画面に今日やることが全部並びます。</p>
+          <div class="demo">
+            <p class="demo-cap">画面イメージ</p>
+            <div class="pills">
+              <span class="pill on">チェックシート</span>
+              <span class="pill">結果の比較</span>
+              <span class="pill green">朝番</span>
+              <span class="pill green">遅番</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>終わった項目をタップ → それだけ</h3>
+          <p>タップした瞬間に<strong>自動で保存・記録</strong>されます。保存ボタンはありません。「トイレ清掃」のようなまとまり項目は、タップで中身が開いて1つずつチェックでき、<strong>全部終わると自動で✓</strong>が付きます。</p>
+          <div class="demo">
+            <p class="demo-cap">タップするとこうなる</p>
+            <div class="demo-row"><span class="demo-check"></span> 床全体の洗浄・水切り</div>
+            <div class="demo-row done"><span class="demo-check"></span> 排水溝のゴミ・髪の毛除去</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>📷 が付いた項目が出たら</h2>
+    <p class="h2sub">日替わりの「抜き打ち写真」です</p>
+    <div class="card">
+      <p>日によって、一部の項目に <span class="demo-badge">📷 写真必須</span> が付きます。チェックしようとすると<strong>その場でカメラが起動</strong>するので、清掃後の状態を撮影してください。<strong>撮影するとチェックが付きます</strong>。</p>
+      <ul>
+        <li>撮り直しはその場でOK。<span class="why">アルバムから古い写真は選べない仕組みです。</span></li>
+        <li>どの項目に付くかは毎日変わります。<span class="why">狙い撃ちはできないので、ふだん通り丁寧にやるのがいちばん楽です。</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>やり方がわからない項目は「見本」を見る</h2>
+    <p class="h2sub">全項目に手順書きとお手本が入っています</p>
+    <div class="card">
+      <p>上のタブからエリア（シャワールーム・トイレなど）を開いて項目を見ると、<strong>清掃方法（手順・使う洗剤・注意点）</strong>と、<strong>OK例／NG例の写真・動画</strong>を確認できます。やることリストからも「エリアページを開く（見本・詳細）」で飛べます。</p>
+      <p style="font-size:.88rem; color:var(--muted);">新人さんはまずここを見ながらやればOK。口頭で教わるより早いです。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>知っておくと便利</h2>
+    <p class="h2sub">よく使う小ワザ</p>
+    <div class="card">
+      <ul>
+        <li><strong>チェックの取り消し</strong>：もう一度タップ。他の人が付けたチェックを取り消すときは確認が出ます。</li>
+        <li><strong>他の人の分も見える</strong>：同じ日の記録はスタッフ全員ぶん合算で表示。誰が何時にやったかも残ります。</li>
+        <li><strong>昨日の記入もれの修正</strong>：上部の「日付」を変えると過去分を記入・修正できます。今日以外を表示中は<strong>赤い警告</strong>が出るので、終わったらタップで今日に戻す。未来の日付は選べません。</li>
+        <li><strong>「定期」タブ</strong>：フィルター清掃やワックスがけなど、毎日ではない清掃はこちら。前回やった日から「そろそろ」が分かります。</li>
+        <li><strong>「結果の比較」</strong>：上部の切り替えから、シート別・担当者別の実施状況を見られます。</li>
+        <li><strong>電波が無くても大丈夫</strong>：チェックは端末に保存され、つながった時に自動でサーバーへ送られます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="admin">
+    <h2>店長・管理者むけ<span class="admin-tag">ADMIN</span></h2>
+    <p class="h2sub">項目の中身は画面から自由に変えられます（自分の店舗にだけ反映）</p>
+    <div class="card">
+      <ul>
+        <li><strong>項目の編集・削除</strong>：各項目の ✏️ で名前・説明・清掃方法を編集、🗑️ で削除。<span class="why">変更はその店舗のシートにだけ反映され、他店舗には影響しません。</span></li>
+        <li><strong>項目・タイトル・エリアの追加</strong>：リスト下部の「項目を追加」から。エリア（タブ）ごと増やすこともできます。</li>
+        <li><strong>見本写真の登録</strong>：項目の「見本」からOK例／NG例の写真・動画を追加。</li>
+        <li><strong>作業者名簿</strong>：担当者欄の「作業者を登録・編集」から。1人ずつでも、1行1人の貼り付けやCSVでまとめてでも登録できます。</li>
+        <li><strong>店舗まとめ（3店舗ダッシュボード）</strong>：画面上部のタイトルを<strong>5回タップ</strong> → 管理者の合言葉を入力すると「店舗まとめ」が表示され、日付ごとに3店舗の実施状況を一覧できます。</li>
+        <li><strong>月次点検</strong>：○△×の採点式（100点満点・配点は自動）。点検項目は「カテゴリ｜項目名｜○の基準｜△の基準｜×の基準」の形式で編集できます。</li>
+        <li><strong>データのバックアップ／復元</strong>：店舗まとめ内の「バックアップを書き出す」でファイル保存、「復元する」で読み戻し。<span class="why">端末の入れ替え時にも使えます。</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>困ったとき</h2>
+    <p class="h2sub">タップで開きます</p>
+    <details>
+      <summary>合言葉がわからない・急に聞かれた</summary>
+      <p>合言葉は店長に確認してください。端末のブラウザデータを消したり、別のブラウザで開いたりすると再入力を求められます（入れ直せば元どおりです）。</p>
+    </details>
+    <details>
+      <summary>チェックしたのに反映されていない気がする</summary>
+      <p>電波の無い場所では端末内に保存され、つながった時に自動送信されます。まずは<strong>ページを再読み込み</strong>。それでも変なら店長へ。</p>
+    </details>
+    <details>
+      <summary>間違えて昨日の日付にチェックしてしまった</summary>
+      <p>日付をその日に切り替えれば取り消し・修正できます。書き込みの直前に日付の自動補正も入るので、日をまたいだ深夜でも誤記録は起きにくくなっています。</p>
+    </details>
+    <details>
+      <summary>項目が多すぎる／うちの店に無い設備がある</summary>
+      <p>店長・管理者が項目を削除・編集できます（その店舗にだけ反映）。現場に合わないと感じたら店長に相談してください。</p>
+    </details>
+    <details>
+      <summary>写真を撮りたくない場所で📷が出た</summary>
+      <p>「やめる」を押せば撮影はキャンセルできます（その場合チェックは付きません）。事情がある時は店長に報告を。</p>
+    </details>
+  </section>
+
+  <footer>
+    <p>ジム清掃チェックシート 使い方ガイド（2026年8月版）</p>
+    <p>内容はアプリの現行画面に合わせて作成。画面が変わったらこのガイドも更新してください。</p>
+  </footer>
+</div>
