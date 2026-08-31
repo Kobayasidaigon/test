@@ -217,6 +217,18 @@
   .rt-open { margin: 2px 0 8px 26px; }
   .rt-open-btn { border: none; background: transparent; color: var(--primary); font-size: .8rem; cursor: pointer; padding: 2px 0; text-decoration: underline; }
   .rt-link { margin-left: 4px; text-decoration: none; font-size: 1rem; flex-shrink: 0; }
+  /* ヘッダー右上の「使用方法」ボタン（PDFガイドを開く） */
+  #usageGuideBtn {
+    position: absolute;
+    top: 13px; right: 14px;
+    color: #fff; text-decoration: none;
+    font-size: .78rem; font-weight: 700;
+    border: 1.5px solid rgba(255,255,255,.85);
+    border-radius: 999px;
+    padding: 4px 11px;
+    background: rgba(255,255,255,.12);
+    white-space: nowrap;
+  }
   /* やることリスト内の外部リンク: アイコンではなく行内の全幅ボタンで表示 */
   .rt-row.has-link { flex-wrap: wrap; }
   .rt-link-btn {
@@ -519,6 +531,7 @@
 <body>
 <header>
   <h1><span class="ic-slot" data-icon="spray-can" data-icon-cls="ic-lg"></span> ジム清掃チェックシート</h1>
+  <a id="usageGuideBtn" href="/usage-guide.pdf" target="_blank" rel="noopener">📖 使用方法</a>
   <div class="sub" id="headerSub">担当者を選び、エリアごとに完了項目をタップ</div>
   <div class="mode-switch">
     <button class="mode-btn active" id="modeChecklist"><span class="ic-slot" data-icon="clipboard-list"></span> チェックシート</button>

@@ -50,7 +50,15 @@ Fly.io の本番Dockerイメージからソース一式を取り出して `recov
 - `public/index.html`: やることリスト内の外部リンク項目を、裸の🔗アイコンから
   行内の全幅ボタン表示に変更（タイトルに「在庫」またはURLに inventory を含む場合は
   「在庫管理システムを開く」、それ以外は「サイトを開く」）。エリアページ側の
-  リンクボタンも同じ文言ロジックに統一。**本番へのデプロイはFly.ioアクセス取得後。**
+  リンクボタンも同じ文言ロジックに統一。
+- `public/index.html`: ヘッダー右上に「📖 使用方法」ボタンを追加（`/usage-guide.pdf` を
+  新規タブで開く）。
+- `public/usage-guide.pdf`: スタッフ向け使い方ガイドのPDF（docs/usage-guide.html から生成）。
+  ※本番サーバーが index.html 以外の静的ファイルを配信するかは未確認
+  （現状 /manifest.json 等は index.html を返す catch-all 挙動）。サーバーソース回収後、
+  静的配信が無ければ /usage-guide.pdf を返すルートを足すこと。
+
+**上記の本番へのデプロイはすべてFly.ioアクセス取得後。**
 
 ## 注意
 
