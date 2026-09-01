@@ -1,69 +1,112 @@
-# ジム清掃チェックシート（gym-cleaning-checklist.fly.dev）回収メモ
+# ジム清掃チェックシート（gym-cleaning-checklist）作業記録
 
-2026-08-31、本番サイトから回収。このアプリのソースコードはGitHubのどのリポジトリにも
-存在しなかったため、稼働中のサイトから取得した。
+2026-09-01 時点。ソースの回収から本番反映まで完了済み。
 
-## 回収できたもの
+## 経緯
 
-- `public/index.html` … アプリ本体（238KB・完全版）。CSS/JSすべてインラインの1枚構成で、
-  以下の機能が全部この中に入っている:
-  - エリア別チェックリスト（シャワールーム / トイレ / トレーニングフロア / マシン・器具 / エントランス・受付）
-  - 各項目の清掃方法・OK/NG見本写真（写真/動画）登録
-  - 定期項目（頻度つき）・月次点検（採点式）
-  - 店舗別の合言葉ログイン・管理者ゲート（タイトル5回タップ）・3店舗まとめダッシュボード
-  - 作業者名簿の管理・データのバックアップ/復元
-- `endpoint-probe.txt` … 本番サーバーのエンドポイント応答調査
+このアプリのソースコードはGitHubのどのリポジトリにも存在しなかったため、
+本番のDockerイメージから回収した。回収物は gym-reservation-system リポジトリの
+`recovered-cleaning-app` ブランチにある。
 
-## アプリの構成（判明分）
+## アプリの構成
 
-- クライアント: この index.html 1枚。**データはサーバー（/api/state）が正**で、
-  localStorage は端末キャッシュ（オフライン時はローカル更新→pendingSyncで後送）
-- **定義は店舗別**: 清掃項目・エリア構成・朝番/中番/遅番の「やることリスト」は
-  店舗ごとに独立していて、`sdef_<店舗>_<キー>` という名前で /api/state に保存される
-  （例: `sdef_笠寺_customAreas`, `sdef_枇杷島_customItems_routine_*`,
-  `sdef_<店舗>_hiddenItems_<エリア>`）。店舗別が無ければ共通キーにフォールバック。
-  朝番・中番・遅番のリスト自体が画面から追加されたカスタムエリア（routine_*）＝サーバーデータで、
-  HTMLの初期定義には入っていない。
-- つまり「特定店舗の項目を消す」はコード修正ではなく**サーバー上のデータ変更**
-  （アプリのUIで消すのと同じ場所に書く）。HTMLの初期定義を消すと全店舗に効いてしまう。
-- サーバー: 薄いAPI層。認証必須（未認証は401）
-  - `POST /api/login` / `POST /api/admin-login` / `POST /api/logout`
-  - `GET /api/state`、`GET/PUT /api/state/:key` … 端末間同期用のキー値ストア
-  - `GET /api/media`、`GET/PUT/DELETE /api/media/:id` … 見本写真/動画の保存
-  - `GET /api/version`
-  - `/login`・`/health` は200、その他のパスは index.html を返すcatch-all
+3ファイルだけの小さなアプリ。
 
-## まだ回収できていないもの
+| ファイル | 役割 |
+|---|---|
+| `server.js` | 198行のExpressサーバー。データ保存・認証・静的配信 |
+| `package.json` | 依存はexpressのみ |
+| `public/index.html` | アプリ本体（239KB・CSS/JS全部入り） |
 
-- サーバー側ソースコード（上記APIの実装）
-- サーバーに保存されている見本写真/動画などのデータ
+### データの置き場所
 
-回収手段は用意済み: `gym-reservation-system` リポジトリの
-`.github/workflows/recover-cleaning-app.yml`（`claude/recover-cleaning-app` ブランチ）が、
-Fly.io の本番Dockerイメージからソース一式を取り出して `recovered-cleaning-app`
-ブランチに保存する。ただし既存の `FLY_API_TOKEN` は gym-reservation-system 専用で
-このアプリに届かないため、`gym-cleaning-checklist` にアクセスできるトークンを
-リポジトリSecret `FLY_CLEANING_TOKEN` として登録してから再実行する必要がある。
+- **サーバーが正**：`/data/state.json`（Fly.ioの永続ボリューム `vol_r682ye1en6em1gp4`・1GB）
+  - `auto_backup_enabled: true` / 5世代保持で日次の自動バックアップあり
+  - デプロイしてもデータは消えない
+- localStorage は端末側のキャッシュ（オフライン時は後送）
+- 見本の写真・動画は `/data/media/`
 
-## 回収後にこのリポジトリ側で加えた変更（本番未反映）
+### 定義は店舗ごと
 
-- `public/index.html`: やることリスト内の外部リンク項目を、裸の🔗アイコンから
-  行内の全幅ボタン表示に変更（タイトルに「在庫」またはURLに inventory を含む場合は
-  「在庫管理システムを開く」、それ以外は「サイトを開く」）。エリアページ側の
-  リンクボタンも同じ文言ロジックに統一。
-- `public/index.html`: ヘッダー右上に「📖 使用方法」ボタンを追加（`/usage-guide.pdf` を
-  新規タブで開く）。
-- `public/usage-guide.pdf`: スタッフ向け使い方ガイドのPDF（docs/usage-guide.html から生成）。
-  ※本番サーバーが index.html 以外の静的ファイルを配信するかは未確認
-  （現状 /manifest.json 等は index.html を返す catch-all 挙動）。サーバーソース回収後、
-  静的配信が無ければ /usage-guide.pdf を返すルートを足すこと。
+清掃項目・エリア構成・時間帯リストは店舗ごとに独立していて、
+`sdef_<店舗>_<キー>` という名前で保存される。店舗別が無ければ共通キーにフォールバック。
 
-**上記の本番へのデプロイはすべてFly.ioアクセス取得後。**
+- 時間帯は **朝番(`routine_asa`) / 中番(`routine_hiru`) / 遅番(`routine_ban`)**
+- 時間帯リストの項目は画面から追加されたカスタム項目（`customItems_routine_*`）
+- 組み込み項目を消す場合は `hiddenItems_<エリア>` にIDを足す方式
 
-## 注意
+### 認証
 
-- 本番の見た目や文言の修正はこの index.html を編集すればよいが、本番サイトへの反映
-  （デプロイ）にはサーバー側一式の回収（または再実装）とFly.ioへのデプロイ手段が必要。
-- 既存端末のデータ（localStorage）はオリジン（URL）に紐づくため、本番反映は同じ
-  アプリ名 gym-cleaning-checklist へのデプロイで行うこと。URLが変わるとスタッフの
-  端末に保存された記録が見えなくなる。
+サーバーの環境変数（Fly secrets）に設定済み。
+
+| 変数 | 用途 |
+|---|---|
+| `BASIC_PASS` | マスター合言葉（店舗選択あり） |
+| `PASS_KASADERA` / `PASS_BIWAJIMA` / `PASS_HAGINO` | 店舗別の合言葉（その店舗に固定される） |
+| `ADMIN_PASS` | 「店舗まとめ」表示のゲート |
+
+`/api/*` はクッキー認証。ツールからは Basic認証（パスワード＝`BASIC_PASS`）でも通る。
+ページ自体は誰でも開ける（データだけ保護されている）。
+
+### 担当者名の自動セット
+
+`server.js` が予約システム（`gym-reservation-system` のJobcan取込データ）から
+毎日シフトを取得し、`staffRoster` と `shiftSchedule_<店舗>` を自動更新している。
+そのため担当者欄はシフト表に基づいて自動で入る。
+
+## 実施した変更（本番反映済み）
+
+### 1. 笠寺・枇杷島の遅番から3項目を削除
+
+| 項目 | ID |
+|---|---|
+| サウナ清掃・マット交換 | `routine_ban_v3_06` |
+| パウダールーム・更衣室の清掃 | `routine_ban_v3_07` |
+| 紙コップ補充（トイレにも） | `routine_ban_v3_12` |
+
+- 萩野通は対象外（未変更）
+- 朝番の「サウナ清掃」、中番の「プロテイン用紙コップ補充」は残してある
+- 変更前の値は GitHub Actions のアーティファクト `before-delete-routine-ban` に保存（復元用）
+
+### 2. 画面の変更
+
+- ヘッダー右上に「📖 使用方法」ボタンを追加（`/usage-guide.pdf` を開く）
+- やることリストの外部リンクを、🔗アイコンから行内の全幅ボタンに変更
+  （タイトルに「在庫」またはURLに inventory を含む場合は「在庫管理システムを開く」）
+- 使い方ガイドPDF（A4・8ページ）を `public/usage-guide.pdf` として同梱
+
+`server.js` は回収したものと完全一致（サーバーの挙動は変えていない）。
+
+## このリポジトリの中身
+
+| パス | 内容 |
+|---|---|
+| `public/index.html` | 本番と同じ画面ファイル（上記の変更入り） |
+| `public/usage-guide.pdf` | スタッフ向け使い方ガイド |
+| `server.js` `package.json` `package-lock.json` | 回収したサーバー側（未編集） |
+| `docs/usage-guide.html` | ガイドの元（Web版・PDFの生成元） |
+
+## 作業用ワークフロー（gym-reservation-system / claude/recover-cleaning-app ブランチ）
+
+| ファイル | 用途 |
+|---|---|
+| `recover-cleaning-app.yml` | 本番イメージからソースを回収する |
+| `cleaning-prod-ops.yml` | 本番データの調査・項目削除 |
+| `cleaning-deploy.yml` | 本番へデプロイする |
+| `check-secrets.yml` | 必要なSecretの登録状況を確認する |
+
+いずれも `FLY_CLEANING_TOKEN`（デプロイ用トークン）で動く。
+
+### トークンの権限について
+
+登録されているのは**デプロイ用トークン**。できること・できないことは以下のとおり。
+
+- できる：`status` / イメージ取得 / SSH / デプロイ
+- できない：ボリュームのスナップショット操作（日次の自動バックアップは別途有効）
+
+## 次に何かする場合の注意
+
+- 項目の削除・変更は `state.json` を直接書き換えず、**アプリのAPI（PUT /api/state/:key）経由**で行うこと。
+  サーバーはメモリ上に状態を持っていて、次の保存でファイルを上書きするため。
+- 店舗ごとに定義が独立しているので、1店舗だけ変えたい場合は `sdef_<店舗>_...` を対象にする。
+- 画面を変えたら `docs/usage-guide.html` とPDFも合わせて更新する。
