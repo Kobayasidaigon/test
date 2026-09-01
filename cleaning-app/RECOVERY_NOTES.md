@@ -73,7 +73,7 @@
 - ヘッダー右上に「📖 使用方法」ボタンを追加（`/usage-guide.pdf` を開く）
 - やることリストの外部リンクを、🔗アイコンから行内の全幅ボタンに変更
   （タイトルに「在庫」またはURLに inventory を含む場合は「在庫管理システムを開く」）
-- 使い方ガイドPDF（A4・8ページ）を `public/usage-guide.pdf` として同梱
+- 使い方ガイドPDF（A4・9ページ）を `public/usage-guide.pdf` として同梱
 
 `server.js` は回収したものと完全一致（サーバーの挙動は変えていない）。
 
@@ -85,6 +85,16 @@
 | `public/usage-guide.pdf` | スタッフ向け使い方ガイド |
 | `server.js` `package.json` `package-lock.json` | 回収したサーバー側（未編集） |
 | `docs/usage-guide.html` | ガイドの元（Web版・PDFの生成元） |
+
+### 使い方ガイドの中身
+
+朝番・中番・遅番の進め方、担当者がシフトから自動で入ること、在庫入力、
+清掃項目の見本の見かた、遅番のサーマナイフのショット数（男性・女性を別々に入力）まで。
+画面はすべて実際のスクリーンショット。
+
+PDFを作り直すときは、画像が印刷時に読み込まれず白紙になることがあるため、
+生成前に `loading="eager"` にして `img.decode()` の完了を待つこと。
+1枚でも `naturalWidth === 0` なら失敗させて気づけるようにしてある。
 
 ## 作業用ワークフロー（gym-reservation-system / claude/recover-cleaning-app ブランチ）
 
