@@ -245,6 +245,24 @@
     text-decoration: none;
   }
   .rt-link-btn:active { background: #e7f2fc; }
+  /* 数値入力欄（サーマナイフのショット数など。項目に nums を設定すると出る） */
+  .num-wrap { flex-basis: 100%; margin: 8px 0 2px 34px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .item .num-wrap { margin: 8px 0 2px; }
+  .num-field { flex: 1 1 120px; min-width: 110px; }
+  .num-field label {
+    display: block; font-size: .72rem; font-weight: 700;
+    color: var(--muted); margin-bottom: 3px;
+  }
+  .num-field input {
+    width: 100%; padding: 8px 10px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 1rem; font-weight: 700; color: var(--text);
+    background: var(--card); text-align: right;
+  }
+  .num-field input:focus { outline: none; border-color: var(--primary); }
+  .num-field input.filled { border-color: var(--done); background: var(--done-bg); }
+  .num-prev { font-size: .7rem; color: var(--muted); margin-top: 2px; min-height: 1em; }
+  .num-prev .diff { color: var(--primary-dark); font-weight: 700; }
   .item-status {
     font-size: 0.72rem; font-weight: 700; color: #e65100;
     background: var(--undone-bg); padding: 2px 8px; border-radius: 10px;
@@ -690,6 +708,9 @@
     <input type="text" id="editDesc" class="field" placeholder="作業の内容・ポイント">
     <label class="field-label" for="editMethod">清掃方法（手順・使う洗剤・注意点など）</label>
     <textarea id="editMethod" class="field" rows="5" placeholder="例：&#10;①ゴミ・髪の毛を除去&#10;②中性洗剤を散布しブラシで擦る&#10;③水で流しスクイジーで水切り"></textarea>
+    <label class="field-label" for="editNums">数値の記録欄（任意・カンマ区切り）</label>
+    <input type="text" id="editNums" class="field" placeholder="例：男性,女性">
+    <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">入力するとこの項目に数値の入力欄が出ます（例：サーマナイフのショット数）。全部の欄が埋まると実施済みになります。空にすると数値欄は消えます。</p>
     <button id="editResetDefault" class="restore-btn" style="display:none;"><span class="ic-slot" data-icon="rotate-ccw"></span> この項目を初期内容に戻す</button>
     <div class="dialog-btn-row">
       <button class="dialog-close" id="editCancel" style="margin-top:0;">キャンセル</button>
@@ -1224,7 +1245,8 @@ function isSyncedKey(key) {
     || key.indexOf('customItems_') === 0
     || key.indexOf('hiddenItems_') === 0
     || key.indexOf('itemEdits_') === 0
-    || key.indexOf('customSections_') === 0;
+    || key.indexOf('customSections_') === 0
+    || key.indexOf('nums_') === 0;
 }
 function appKeys() {
   const out = [];
@@ -1473,13 +1495,14 @@ function getGroups(areaKey) {
           id: i.id, custom: false, edited: !!ed,
           title: ed && ed.title != null ? ed.title : i.title,
           desc: ed && ed.desc != null ? ed.desc : i.desc,
-          method: ed && ed.method != null ? ed.method : (i.method || '')
+          method: ed && ed.method != null ? ed.method : (i.method || ''),
+          nums: ed && ed.nums != null ? ed.nums : i.nums
         });
       });
     });
     // カスタム項目
     custom.filter(ci => ci.section === sec).forEach(ci => {
-      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', url: ci.url || '' });
+      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', url: ci.url || '', nums: ci.nums });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -1519,6 +1542,110 @@ function loadRecordMerged(areaKey) {
 }
 function saveRecord(areaKey, rec) {
   syncSet(recordKey(areaKey), JSON.stringify(rec));
+}
+
+// ===== 数値の記録（サーマナイフのショット数など）=====
+// 項目の定義に nums: [{id,label}] を持たせると、その項目に数値入力欄が出る。
+// 値は 担当者ではなく 店舗＋日付 ごとに1つ（機械の数値は誰が読んでも同じもののため）。
+// 保存キー: nums_<店舗>_<日付> = { "<項目id>": { "<欄id>": "値" } }
+function numsKey(date) {
+  return 'nums_' + (currentStore || '') + '_' + (date || dateInput.value);
+}
+function loadNums(date) {
+  try { return JSON.parse(localStorage.getItem(numsKey(date))) || {}; }
+  catch (e) { return {}; }
+}
+function saveNums(all) {
+  syncSet(numsKey(), JSON.stringify(all));
+}
+// 項目の数値入力欄の定義を正規化する（文字列でも配列でも受け取れるようにする）
+function itemNumFields(item) {
+  const raw = item && item.nums;
+  if (!raw) return [];
+  const list = Array.isArray(raw) ? raw : String(raw).split(',');
+  return list.map((n, i) => {
+    if (n && typeof n === 'object') {
+      const label = String(n.label || '').trim();
+      return label ? { id: String(n.id || 'n' + i), label: label } : null;
+    }
+    const label = String(n).trim();
+    return label ? { id: 'n' + i, label: label } : null;
+  }).filter(Boolean);
+}
+// 直近（今日より前）に記録された値を探す。前回との差が分かるように表示するため。
+function lastNumEntry(itemId, fieldId, maxBack) {
+  if (!currentStore) return null;
+  const base = new Date((dateInput.value || todayStr()) + 'T00:00:00');
+  for (let i = 1; i <= (maxBack || 120); i++) {
+    const d = new Date(base.getTime() - i * 86400000).toISOString().slice(0, 10);
+    const v = ((loadNums(d)[itemId]) || {})[fieldId];
+    if (v !== undefined && v !== '') return { date: d, value: v };
+  }
+  return null;
+}
+// 数値欄の入力を保存する。全部の欄が埋まったらその項目を実施済みにする。
+function setNumValue(areaKey, item, fieldId, value) {
+  if (!currentStore) { alert('先に上部で「店舗」を選んでください。'); return false; }
+  if (!currentStaff) { alert('先に上部で「担当者」を選んでください。'); return false; }
+  rolloverDateIfNeeded(false);
+  const all = loadNums();
+  const cur = Object.assign({}, all[item.id] || {});
+  const v = String(value).trim();
+  if (v === '') delete cur[fieldId]; else cur[fieldId] = v;
+  if (Object.keys(cur).length) all[item.id] = cur; else delete all[item.id];
+  saveNums(all);
+
+  // 全欄そろったら実施済みに、欠けたら未実施に戻す（進捗表示と連動させる）
+  const fields = itemNumFields(item);
+  const filled = fields.every(f => cur[f.id] !== undefined && cur[f.id] !== '');
+  const rec = loadRecord(areaKey);
+  if (filled && !rec[item.id]) {
+    rec[item.id] = { staff: currentStaff, time: nowTimeStr() };
+    saveRecord(areaKey, rec);
+  } else if (!filled && rec[item.id]) {
+    delete rec[item.id];
+    saveRecord(areaKey, rec);
+  }
+  return true;
+}
+// 数値入力欄のHTMLを組み立てる
+function numFieldsHtml(item) {
+  const fields = itemNumFields(item);
+  if (!fields.length) return '';
+  const vals = loadNums()[item.id] || {};
+  let h = '<div class="num-wrap" data-item="' + escapeHtml(item.id) + '">';
+  fields.forEach(f => {
+    const v = vals[f.id] === undefined ? '' : vals[f.id];
+    const prev = lastNumEntry(item.id, f.id);
+    let note = '';
+    if (prev) {
+      const d = Number(v) - Number(prev.value);
+      const diff = (v !== '' && isFinite(d)) ? ' <span class="diff">(' + (d >= 0 ? '+' : '') + d + ')</span>' : '';
+      note = '前回 ' + prev.date.slice(5) + ': ' + escapeHtml(prev.value) + diff;
+    }
+    h += '<div class="num-field">'
+      + '<label>' + escapeHtml(f.label) + '</label>'
+      + '<input type="number" inputmode="numeric" step="1"'
+      + ' data-field="' + escapeHtml(f.id) + '"'
+      + ' value="' + escapeHtml(v) + '"'
+      + (v !== '' ? ' class="filled"' : '') + '>'
+      + '<div class="num-prev">' + note + '</div>'
+      + '</div>';
+  });
+  return h + '</div>';
+}
+// 数値入力欄の動作を設定する（描画のたびに呼ぶ）
+function wireNumFields(root, areaKey, itemsById) {
+  root.querySelectorAll('.num-wrap').forEach(wrap => {
+    const item = itemsById[wrap.dataset.item];
+    if (!item) return;
+    wrap.addEventListener('click', e => e.stopPropagation()); // 行のチェック切替を誤爆させない
+    wrap.querySelectorAll('input[data-field]').forEach(input => {
+      input.onchange = () => {
+        if (setNumValue(areaKey, item, input.dataset.field, input.value)) render();
+      };
+    });
+  });
 }
 
 function escapeHtml(s) {
@@ -1887,10 +2014,12 @@ const editResetDefault = document.getElementById('editResetDefault');
 let editCtx = { id: null, custom: false };
 
 function openEditDialog(item, focusMethod) {
-  editCtx = { id: item.id, custom: item.custom };
+  editCtx = { id: item.id, custom: item.custom, nums: item.nums };
   editTitle.value = item.title;
   editDesc.value = item.desc || '';
   editMethod.value = item.method || '';
+  // 数値の記録欄はラベルをカンマ区切りで見せる
+  document.getElementById('editNums').value = itemNumFields(item).map(f => f.label).join(',');
   // デフォルト項目で、編集済みのときだけ「初期内容に戻す」を表示
   editResetDefault.style.display = (!item.custom && item.edited) ? 'block' : 'none';
   if (!editDialog.open) editDialog.showModal();
@@ -1902,15 +2031,28 @@ document.getElementById('editSave').onclick = () => {
   if (!title) { alert('タイトルを入力してください'); return; }
   const desc = editDesc.value.trim();
   const method = editMethod.value.trim();
+  // 数値の記録欄。既存の欄はidを保ち（記録済みの値と結び付いているため）、新しい欄だけidを振る
+  const labels = document.getElementById('editNums').value.split(',').map(s => s.trim()).filter(Boolean);
+  const prevFields = itemNumFields({ nums: editCtx.nums });
+  const nums = labels.map((label, i) => {
+    const kept = prevFields.find(f => f.label === label);
+    return { id: kept ? kept.id : 'n' + i, label: label };
+  });
   if (editCtx.custom) {
     // 追加項目：customItems を直接更新
     const list = loadCustomItems(currentArea);
     const ci = list.find(x => x.id === editCtx.id);
-    if (ci) { ci.title = title; ci.desc = desc; ci.method = method; saveCustomItems(currentArea, list); }
+    if (ci) {
+      ci.title = title; ci.desc = desc; ci.method = method;
+      if (nums.length) ci.nums = nums; else delete ci.nums;
+      saveCustomItems(currentArea, list);
+    }
   } else {
     // デフォルト項目：上書き内容を保存
     const edits = loadEdits(currentArea);
-    edits[editCtx.id] = { title: title, desc: desc, method: method };
+    const e = { title: title, desc: desc, method: method };
+    if (nums.length) e.nums = nums;
+    edits[editCtx.id] = e;
     saveEdits(currentArea, edits);
   }
   editDialog.close();
@@ -2542,13 +2684,15 @@ function renderRoutineView() {
     const ls = item.link ? linkedStatus(item) : null;
     const done = ls ? ls.complete : !!rec[item.id];
     const expanded = ls && routineExpanded.has(item.id);
-    html += '<div class="rt-row' + (done ? ' done' : '') + (item.url ? ' has-link' : '') + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : 'manual') + '">'
+    const hasNums = itemNumFields(item).length > 0;
+    html += '<div class="rt-row' + (done ? ' done' : '') + (item.url ? ' has-link' : '') + (hasNums ? ' has-link has-nums' : '') + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : hasNums ? 'nums' : 'manual') + '">'
       // 連動項目はチェック丸ではなくリスト印（実際のチェックは展開した子項目で行う）
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
       + (item.url ? '<a class="rt-link-btn" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">' + escapeHtml(itemLinkLabel(item)) + ' ↗</a>' : '')
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
+      + numFieldsHtml(item)
       + '</div>';
     if (expanded) {
       const keys = String(item.link).split(',').map(s => s.trim()).filter(Boolean);
@@ -2577,11 +2721,19 @@ function renderRoutineView() {
       if (row.dataset.kind === 'link') {
         if (routineExpanded.has(id)) routineExpanded.delete(id); else routineExpanded.add(id);
         render();
+      } else if (row.dataset.kind === 'nums') {
+        // 数値項目は数値がそろった時点で完了になる。タップでの手動チェックはしない
+        const input = row.querySelector('input[data-field]:placeholder-shown, input[data-field]');
+        if (input) input.focus();
       } else {
         toggleItem(id);
       }
     };
   });
+  // 数値入力欄の動作を設定
+  const byId = {};
+  items.forEach(it => { byId[it.id] = it; });
+  wireNumFields(checklist, currentArea, byId);
   // 子行: その場でエリアの記録にチェック（📷抜き打ちもここで発動する）
   checklist.querySelectorAll('.rt-child').forEach(row => {
     row.onclick = () => toggleItemIn(row.dataset.area, row.dataset.id);
@@ -2681,6 +2833,7 @@ function render() {
             <div class="item-status">${ls ? escapeHtml('未完了: ' + ls.label + '（タップでそのエリアへ）') : '未実施'}</div>${ls ? '' : `<span class="last-done">${escapeHtml(lastDoneLabel(staleLast))}</span>`}
             <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml(done.staff) + ' / ' + done.time) : ''}</div>
             ${item.url ? `<a class="ext-link btn btn-secondary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; padding:8px 16px; text-decoration:none; font-size:.85rem;">${escapeHtml(itemLinkLabel(item))} ↗</a>` : ''}
+            ${numFieldsHtml(item)}
             ${isRoutineArea(currentArea) ? '' : `<button class="media-btn">${ic('image')} 見本
               <span class="mini-badge ok ${cOk ? 'on' : ''}">OK${cOk ? ' ' + cOk : ''}</span>
               <span class="mini-badge ng ${cNg ? 'on' : ''}">NG${cNg ? ' ' + cNg : ''}</span>
@@ -2705,6 +2858,12 @@ function render() {
       }
       div.querySelector('.check-btn').onclick = () => {
         if (ls) return; // 連動項目はカード全体のタップで移動（バブリングで処理）
+        // 数値項目は数値がそろった時点で完了になるので、手動チェックはしない
+        if (itemNumFields(item).length) {
+          const input = div.querySelector('input[data-field]');
+          if (input) input.focus();
+          return;
+        }
         toggleItem(item.id);
       };
       div.querySelector('.edit-btn').onclick = () => openEditDialog(item);
@@ -2717,6 +2876,9 @@ function render() {
         if (box.style.display === 'none') { box.style.display = 'block'; renderMethodPanel(item, box); }
         else { box.style.display = 'none'; }
       };
+      // 数値入力欄（設定されている項目のみ）
+      const numsById = {}; numsById[item.id] = item;
+      wireNumFields(div, currentArea, numsById);
       checklist.appendChild(div);
     });
 
