@@ -245,6 +245,11 @@
     text-decoration: none;
   }
   .rt-link-btn:active { background: #e7f2fc; }
+  /* 在庫管理システムは <button> で出す（押した時に署名付きリンクを作るため）。
+     見た目はリンクのボタンと同じに揃える。 */
+  button.rt-link-btn { font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none; }
+  button.ext-link { font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none;
+                    border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text); }
   /* 数値入力欄（サーマナイフのショット数など。項目に nums を設定すると出る） */
   .num-wrap { flex-basis: 100%; margin: 8px 0 2px 34px; display: flex; gap: 8px; flex-wrap: wrap; }
   .item .num-wrap { margin: 8px 0 2px; }
@@ -813,7 +818,7 @@
     <h3><span class="ic-slot" data-icon="users-round"></span> 合言葉を入力してください</h3>
     <p style="font-size:.85rem; color:var(--muted); margin:6px 0 12px;">自分の店舗の合言葉を入力してください（スタッフ共有）。この端末では1回入力すれば約1年間は不要です。</p>
     <input type="password" id="loginPass" class="field" placeholder="店舗の合言葉" autocomplete="current-password" style="width:100%;">
-    <div id="loginError" style="display:none; color:#c62828; font-size:.85rem; margin-top:8px;">合言葉が違います。店長に確認してください。</div>
+    <div id="loginError" style="display:none; color:#c62828; font-size:.85rem; margin-top:8px;">合言葉が違います。もう一度お確かめください。</div>
     <button class="btn btn-primary" id="loginSubmit" style="width:100%; margin-top:12px;">はじめる</button>
   </div>
 </dialog>
@@ -2669,11 +2674,59 @@ document.getElementById('areaDelete').onclick = () => {
 // ===== 朝番・中番・遅番のコンパクト表示（1画面・ツリー展開でその場チェック）=====
 const routineExpanded = new Set(); // 展開中の連動項目id
 // 外部リンク項目のボタン文言（在庫管理システムへのリンクは名前で明示する）
-function itemLinkLabel(item) {
+function isInventoryItem(item) {
   const t = String(item.title || '');
   const u = String(item.url || '');
-  return (t.indexOf('在庫') >= 0 || u.indexOf('inventory') >= 0) ? '在庫管理システムを開く' : 'サイトを開く';
+  return t.indexOf('在庫') >= 0 || u.indexOf('inventory') >= 0;
 }
+function itemLinkLabel(item) {
+  return isInventoryItem(item) ? '在庫管理システムを開く' : 'サイトを開く';
+}
+// 外部リンクのボタン。在庫管理システムだけは、押された時にサーバーで署名付きリンクを
+// 作って開く（リンクは1回きり・5分で失効するため、あらかじめ href に入れておけない）。
+function itemLinkHtml(item, cls, style) {
+  if (!item.url) return '';
+  const label = escapeHtml(itemLinkLabel(item)) + ' ↗';
+  const st = style ? ' style="' + style + '"' : '';
+  if (isInventoryItem(item)) {
+    return '<button type="button" class="' + cls + '" data-inv-link="1"' + st + '>' + label + '</button>';
+  }
+  return '<a class="' + cls + '" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener"' + st + '>' + label + '</a>';
+}
+
+// 在庫管理システムを開く: サーバーに署名付きリンクを作らせて、そのURLへ移動する。
+// URLは保存しない。使い回すと在庫システム側で弾かれる（1回きりのため）。
+async function openInventorySystem(btn) {
+  if (btn.dataset.busy) return;
+  btn.dataset.busy = '1';
+  const label = btn.textContent;
+  btn.textContent = '準備中…';
+  // 先に空のタブを開く。fetch を待ってから開くとポップアップブロックに引っかかるため。
+  const tab = window.open('', '_blank');
+  try {
+    const r = await fetch('/api/inventory-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ store: currentStore || '' })
+    });
+    let j = {};
+    try { j = await r.json(); } catch (e) {}
+    if (!r.ok || !j.url) throw new Error(j.error || ('リンクを発行できませんでした (' + r.status + ')'));
+    if (tab) tab.location = j.url; else location.href = j.url;
+  } catch (e) {
+    if (tab) tab.close();
+    alert('在庫管理システムを開けませんでした。\n' + (e && e.message ? e.message : '') );
+  } finally {
+    btn.textContent = label;
+    delete btn.dataset.busy;
+  }
+}
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-inv-link]');
+  if (!btn) return;
+  e.preventDefault();
+  openInventorySystem(btn);
+});
 function renderRoutineView() {
   const checklist = document.getElementById('checklist');
   const rec = loadRecordMerged(currentArea); // 他の担当者の分も含めて表示
@@ -2690,7 +2743,7 @@ function renderRoutineView() {
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
-      + (item.url ? '<a class="rt-link-btn" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">' + escapeHtml(itemLinkLabel(item)) + ' ↗</a>' : '')
+      + itemLinkHtml(item, 'rt-link-btn', '')
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
       + numFieldsHtml(item)
       + '</div>';
@@ -2716,7 +2769,7 @@ function renderRoutineView() {
   // 親行: 連動=ツリー開閉 / 手動=チェック切替（🔗リンクは除外）
   checklist.querySelectorAll('.rt-row').forEach(row => {
     row.onclick = (e) => {
-      if (e.target.closest('a')) return;
+      if (e.target.closest('a, [data-inv-link]')) return;
       const id = row.dataset.id;
       if (row.dataset.kind === 'link') {
         if (routineExpanded.has(id)) routineExpanded.delete(id); else routineExpanded.add(id);
@@ -2832,7 +2885,7 @@ function render() {
             <div class="item-desc">${escapeHtml(item.desc)}</div>
             <div class="item-status">${ls ? escapeHtml('未完了: ' + ls.label + '（タップでそのエリアへ）') : '未実施'}</div>${ls ? '' : `<span class="last-done">${escapeHtml(lastDoneLabel(staleLast))}</span>`}
             <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml(done.staff) + ' / ' + done.time) : ''}</div>
-            ${item.url ? `<a class="ext-link btn btn-secondary" href="${escapeHtml(item.url)}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; padding:8px 16px; text-decoration:none; font-size:.85rem;">${escapeHtml(itemLinkLabel(item))} ↗</a>` : ''}
+            ${itemLinkHtml(item, 'ext-link btn btn-secondary', 'display:inline-block; margin-top:8px; padding:8px 16px; text-decoration:none; font-size:.85rem;')}
             ${numFieldsHtml(item)}
             ${isRoutineArea(currentArea) ? '' : `<button class="media-btn">${ic('image')} 見本
               <span class="mini-badge ok ${cOk ? 'on' : ''}">OK${cOk ? ' ' + cOk : ''}</span>
@@ -4236,7 +4289,7 @@ function requireLogin() {
           }
           dlg.close(); resolve(); return;
         }
-        err.textContent = '合言葉が違います。店長に確認してください。';
+        err.textContent = '合言葉が違います。もう一度お確かめください。';
         err.style.display = 'block';
       } catch (e) {
         err.textContent = '通信エラーです。電波の良い場所でもう一度お試しください。';
