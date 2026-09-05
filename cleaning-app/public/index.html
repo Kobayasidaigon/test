@@ -1390,13 +1390,20 @@ function buildStaffSelect() {
   ph.value = ''; ph.textContent = currentStore ? '― 担当者を選択 ―' : '― まず店舗を選択 ―';
   staffSelect.appendChild(ph);
   const names = currentStore ? loadRoster()[currentStore].slice() : [];
-  // シフト中が2人以上なら連名の選択肢を先頭に（自動セットで選ばれる値）
-  const combined = currentStore ? onShiftCombined() : '';
-  if (combined && combined.indexOf('・') !== -1) {
-    const o = document.createElement('option');
-    o.value = combined; o.textContent = combined;
-    staffSelect.appendChild(o);
+  // 連名（2人以上）は名簿に無いので、選択肢として足しておく。
+  // 「今シフト中」と「開いている時間帯の出勤者」の両方が対象。
+  const cands = [];
+  if (currentStore) {
+    cands.push(shiftStaffForArea(currentArea));
+    cands.push(onShiftCombined());
+    if (currentStaff) cands.push(currentStaff); // 手動で選んだ連名が消えないように
   }
+  Array.from(new Set(cands)).forEach(c => {
+    if (!c || c.indexOf('・') === -1) return;
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    staffSelect.appendChild(o);
+  });
   names.forEach(name => {
     const o = document.createElement('option');
     o.value = name; o.textContent = name;
@@ -2413,7 +2420,11 @@ function renderTabs() {
     btn.className = 'tab' + (area.key === currentArea ? ' active' : '') + (remaining === 0 ? ' complete' : '');
     btn.innerHTML = ic(area.icon) + ' ' + area.name +
       '<span class="badge">' + (remaining === 0 ? ic('check') : remaining) + '</span>';
-    btn.onclick = () => { currentArea = area.key; render(); };
+    btn.onclick = () => {
+      currentArea = area.key;
+      applyShiftStaffForArea(); // 朝番・中番・遅番はその時間帯の出勤者に切り替える
+      render();
+    };
     el.appendChild(btn);
   };
   // 上段: 清掃エリア（組み込みエリアで項目を全部消した場合はタブごと隠す＝店舗にない設備の非表示用）
@@ -4287,6 +4298,54 @@ function applyStoreLock() {
   });
 })();
 
+// 時間帯ごとの出勤時間。シフト表でこの範囲に重なって出勤している人を担当者にする。
+// 朝番・中番・遅番で担当者が別々になるようにするため、時計の「今」ではなく
+// 開いている時間帯で決める。
+// const だと定義行より前に呼ばれたときエラーになるため、巻き上げされる関数にしている
+function routineHours(areaKey) {
+  return ({
+    routine_asa:  { from: '10:00', to: '14:00' },
+    routine_hiru: { from: '14:00', to: '19:00' },
+    routine_ban:  { from: '19:00', to: '23:00' },
+  })[areaKey] || null;
+}
+
+// その日のシフトのうち、指定した時間帯に少しでも重なっている人
+function shiftStaffInWindow(store, from, to) {
+  try {
+    const sched = JSON.parse(localStorage.getItem('shiftSchedule_' + store) || '{}');
+    const day = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
+    return (sched[day] || []).filter(x => x.s < to && x.e > from);
+  } catch (e) { return []; }
+}
+
+// 名簿の順に並べて連名にする（表示を安定させるため）
+function combineNames(names) {
+  if (!names.length) return '';
+  const roster = loadRoster()[currentStore] || [];
+  const uniq = Array.from(new Set(names)).filter(n => roster.includes(n));
+  uniq.sort((a, b) => roster.indexOf(a) - roster.indexOf(b));
+  return uniq.join('・');
+}
+
+// 朝番・中番・遅番それぞれの出勤者
+function shiftStaffForArea(areaKey) {
+  const w = routineHours(areaKey);
+  if (!w || !currentStore) return '';
+  return combineNames(shiftStaffInWindow(currentStore, w.from, w.to).map(x => x.n));
+}
+
+// 開いている時間帯の出勤者を担当者にする。変えたら true
+function applyShiftStaffForArea() {
+  const who = shiftStaffForArea(currentArea);
+  if (!who || who === currentStaff) return false;
+  currentStaff = who;
+  localStorage.setItem('currentStaff', currentStaff);
+  localStorage.setItem('currentStaffDay', todayStr());
+  buildStaffSelect();
+  return true;
+}
+
 // ===== シフト連動：今シフト中の人を担当者に自動セット（時間が来たら自動交代）=====
 // サーバーが同期した shiftSchedule_<店舗> = {"日付":[{n,s,e}]} を参照。
 // 選択中の担当者がシフト中ならそのまま（手動優先）、シフト外なら今シフト中の人に切り替える。
@@ -4311,6 +4370,11 @@ function onShiftCombined() {
 }
 function autoSelectShiftStaff() {
   if (!currentStore) return;
+  // 朝番・中番・遅番を開いているときは、その時間帯の出勤者にする（時計の「今」では決めない）
+  if (routineHours(currentArea)) {
+    if (applyShiftStaffForArea()) render();
+    return;
+  }
   const combined = onShiftCombined();
   if (!combined) return; // シフト中の人が居ない時間帯は何もしない
   if (currentStaff === combined) return;
