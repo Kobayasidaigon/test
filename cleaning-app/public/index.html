@@ -1517,6 +1517,51 @@ function baseArea(key) {
 function scopedArea(areaKey, fromArea) {
   return isRoutineArea(fromArea) ? areaKey + '@' + fromArea : areaKey;
 }
+const ROUTINE_KEYS = ['routine_asa', 'routine_hiru', 'routine_ban']; // 朝→中→遅の順
+
+// このエリアを link で参照しているやることリストの時間帯（朝→中→遅の順）
+let _linkCache = null; // 1回の描画内でのキャッシュ（renderTabs冒頭でクリア）
+function routinesLinking(areaKey) {
+  if (_linkCache && _linkCache[areaKey]) return _linkCache[areaKey];
+  const hit = ROUTINE_KEYS.filter(rk => areaItems(rk).some(it =>
+    String(it.link || '').split(',').map(x => x.trim()).indexOf(areaKey) >= 0));
+  if (_linkCache) _linkCache[areaKey] = hit;
+  return hit;
+}
+// エリアのタブ（シャワールーム等）から直接チェックしたときに、どの時間帯の記録にするか。
+// やることリストから参照されているエリアだけが対象で、
+// 「今より前に始まっている時間帯のうち一番新しいもの」に入れる。
+// まだどれも始まっていない早朝は、一番早い時間帯に入れる。
+//   例）笠寺のシャワーは朝番と遅番から参照 → 16:24 なら朝番ぶんに入る
+//       萩野通のシャワーは朝・中・遅から参照 → 16:24 なら中番ぶんに入る
+// どの時間帯からも参照されていないエリア（マシンメンテ等）は今までどおり分けない。
+function recArea(areaKey) {
+  if (typeof areaKey !== 'string' || areaKey.indexOf('@') >= 0) return areaKey; // すでに時間帯つき
+  if (isRoutineArea(areaKey)) return areaKey;
+  const rs = routinesLinking(areaKey);
+  if (!rs.length) return areaKey;
+  const now = nowTimeStr();
+  const started = rs.filter(k => { const w = routineHours(k); return w && now >= w.from; });
+  return areaKey + '@' + (started.length ? started[started.length - 1] : rs[0]);
+}
+// 記録キーを分解する: clean_<店舗>_<担当者>_<エリア>_<日付>
+// （店舗名・担当者名に _ は無い前提。store を省くとキーから読む）
+function parseRecordKey(storageKey, store) {
+  if (!storageKey || storageKey.indexOf('clean_') !== 0) return null;
+  if (!store) {
+    const us = storageKey.indexOf('_', 6);
+    if (us < 0) return null;
+    store = storageKey.slice(6, us);
+  }
+  const prefix = 'clean_' + store + '_';
+  if (storageKey.indexOf(prefix) !== 0) return null;
+  const date = storageKey.slice(-10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  const mid = storageKey.slice(prefix.length, storageKey.length - 11);
+  const us = mid.indexOf('_');
+  if (us < 0) return null;
+  return { staff: mid.slice(0, us), area: mid.slice(us + 1), date: date };
+}
 function getArea(key) {
   key = baseArea(key);
   return AREAS.find(a => a.key === key) || loadCustomAreas().find(a => a.key === key) || null;
@@ -1571,6 +1616,7 @@ function areaItems(areaKey) {
 }
 function recordKey(areaKey, staff) {
   const who = staff !== undefined ? staff : currentStaff;
+  areaKey = recArea(areaKey); // エリアのタブから触った分も、その時間帯の記録に入れる
   // 店舗を含めて記録を分ける（社員は全店舗の名簿に居るため、店舗を跨ぐと同日同エリアの記録が混ざる）
   return 'clean_' + (currentStore ? currentStore + '_' : '') + who + '_' + areaKey + '_' + dateInput.value;
 }
@@ -1582,13 +1628,14 @@ function loadRecord(areaKey, staff) {
 function loadRecordMerged(areaKey) {
   const merged = Object.assign({}, loadRecord(areaKey)); // 自分の記録を優先
   if (!currentStore) return merged;
-  const prefix = 'clean_' + currentStore + '_';
-  const suffix = '_' + areaKey + '_' + dateInput.value;
+  const ra = recArea(areaKey);
+  const base = baseArea(ra);
   for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (!k || k.indexOf(prefix) !== 0 || k.slice(-suffix.length) !== suffix) continue;
+    const p = parseRecordKey(localStorage.key(i), currentStore);
+    // その時間帯の記録。加えて、時間帯で分ける前に付いた同日の記録（旧形式）も拾う
+    if (!p || p.date !== dateInput.value || (p.area !== ra && p.area !== base)) continue;
     try {
-      const r = JSON.parse(localStorage.getItem(k)) || {};
+      const r = JSON.parse(localStorage.getItem(localStorage.key(i))) || {};
       Object.keys(r).forEach(id => { if (!merged[id]) merged[id] = r[id]; });
     } catch (e) {}
   }
@@ -2142,6 +2189,7 @@ function loadProofPool() {
 }
 function needsProof(areaKey, itemId) {
   if (!currentStore || isRoutineArea(areaKey)) return false; // やることリストは対象外
+  areaKey = baseArea(areaKey); // 抜き打ちの当たり外れは時間帯で変えない
   const pool = loadProofPool();
   if (pool) {
     const ids = pool[areaKey];
@@ -2221,6 +2269,7 @@ function compressImage(file, maxSide, quality) {
 // 撮影場所の日替わり指定: kv proofSpots = { "areaKey:itemId": ["場所1", "場所2", ...] }
 // 複数定義されている項目は日付+店舗のハッシュで毎日1ヶ所が選ばれる（きれいな一角だけ撮る抜け道の防止）
 function proofSpotFor(areaKey, itemId) {
+  areaKey = baseArea(areaKey); // 撮影場所も時間帯で変えない
   let spots = null;
   try { spots = (JSON.parse(localStorage.getItem('proofSpots')) || {})[areaKey + ':' + itemId]; } catch (e) {}
   if (!spots || !spots.length) return '';
@@ -2344,12 +2393,19 @@ function toggleItemIn(areaKey, id) {
     const time = merged[id].time || '';
     if (!who) { alert('この項目は実施済みです。'); return; }
     if (!confirm(who + ' さんが ' + time + ' に実施済みです。\n取り消しますか？')) return;
-    const key = 'clean_' + currentStore + '_' + who + '_' + areaKey + '_' + dateInput.value;
-    try {
-      const other = JSON.parse(localStorage.getItem(key)) || {};
-      delete other[id];
-      syncSet(key, JSON.stringify(other));
-    } catch (e) {}
+    // 時間帯つきの記録を先に見て、無ければ旧形式（時間帯なし）を見る
+    const cands = [recordKey(areaKey, who)];
+    const bare = 'clean_' + currentStore + '_' + who + '_' + baseArea(areaKey) + '_' + dateInput.value;
+    if (cands.indexOf(bare) < 0) cands.push(bare);
+    for (const key of cands) {
+      try {
+        const other = JSON.parse(localStorage.getItem(key)) || {};
+        if (!other[id]) continue;
+        delete other[id];
+        syncSet(key, JSON.stringify(other));
+        break;
+      } catch (e) {}
+    }
     render();
     return;
   }
@@ -2379,11 +2435,13 @@ function areaCompletionToday(areaKey) {
   const date = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
   const doneSet = new Set();
   if (currentStore) {
-    const prefix = 'clean_' + currentStore + '_';
-    const suffix = '_' + areaKey + '_' + date;
+    const ra = recArea(areaKey);
+    const base = baseArea(ra);
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (!k || k.indexOf(prefix) !== 0 || k.slice(-suffix.length) !== suffix) continue;
+      const p = parseRecordKey(k, currentStore);
+      // その時間帯の記録＋時間帯で分ける前の同日の記録（旧形式）
+      if (!p || p.date !== date || (p.area !== ra && p.area !== base)) continue;
       try {
         const r = JSON.parse(localStorage.getItem(k)) || {};
         Object.keys(r).forEach(id => doneSet.add(id));
@@ -2426,6 +2484,7 @@ const tabsRoutineEl = document.getElementById('tabsRoutine');
 }, { passive: false }));
 function renderTabs() {
   _areaCompCache = {};
+  _linkCache = {};
   tabsEl.innerHTML = '';
   tabsRoutineEl.innerHTML = '';
   const makeTab = (area, el) => {
@@ -2473,17 +2532,16 @@ function renderTabs() {
 function areaLastCleaned(areaKey) {
   const itemIds = areaItems(areaKey).map(i => i.id);
   if (itemIds.length === 0) return null;
-  const marker = '_' + areaKey + '_';
+  const base = baseArea(areaKey);
   const byDate = {};
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (!key || key.indexOf('clean_') !== 0) continue;
     // 店舗選択中は、その店舗の記録だけを「最終清掃日」の対象にする
     if (currentStore && key.indexOf('clean_' + currentStore + '_') !== 0) continue;
-    const idx = key.indexOf(marker);
-    if (idx === -1) continue;
-    const date = key.slice(idx + marker.length);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+    const p = parseRecordKey(key, currentStore);
+    if (!p || baseArea(p.area) !== base) continue; // 時間帯はまたいで数える
+    const date = p.date;
     try {
       const rec = JSON.parse(localStorage.getItem(key)) || {};
       const set = byDate[date] || (byDate[date] = new Set());
@@ -2869,7 +2927,7 @@ function renderRoutineView() {
             + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
             + (routineEditMode
                 ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
-                : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[sk + ':' + ci.id], true)) + '</span>'))
+                : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
             + '</div>';
         });
         // 編集中は、この連動先エリアにも項目を足せるようにする
@@ -3040,7 +3098,7 @@ function render() {
       const cOk = countMedia(item.id, 'ok');
       const cNg = countMedia(item.id, 'ng');
       // 期間が空いている項目に「◯日空き」バッジ（チェック済みなら出さない）
-      const staleLast = staleMap[currentArea + ':' + item.id];
+      const staleLast = staleMap[baseArea(currentArea) + ':' + item.id];
       const staleDays = staleLast ? daysSince(staleLast) : null;
       const staleTag = (!done && !ls && staleDays !== null && staleDays >= STALE_DAYS)
         ? ' <span class="stale-tag">' + staleDays + '日空き</span>' : '';
@@ -3498,12 +3556,11 @@ function storeDayProgress(store, date) {
   // その店舗の定義（エリア・項目）で計算する
   return withDefStore(store, () => allAreas().filter(a => !isNonDailyArea(a.key)).map(area => {
     const ids = areaItems(area.key).map(i => i.id);
-    const prefix = 'clean_' + store + '_';
-    const suffix = '_' + area.key + '_' + date;
     const doneSet = new Set();
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (!k || k.indexOf(prefix) !== 0 || k.slice(-suffix.length) !== suffix) continue;
+      const p = parseRecordKey(k, store);
+      if (!p || p.date !== date || baseArea(p.area) !== area.key) continue; // 時間帯は合算
       try {
         const rec = JSON.parse(localStorage.getItem(k)) || {};
         Object.keys(rec).forEach(id => doneSet.add(id));
@@ -3707,7 +3764,7 @@ function lastCheckedByItem(store) {
     const mid = k.slice(prefix.length, k.length - 11); // "<担当者>_<エリアキー>"（担当者名に _ は無い前提）
     const us = mid.indexOf('_');
     if (us < 0) continue;
-    const areaKey = mid.slice(us + 1);
+    const areaKey = baseArea(mid.slice(us + 1)); // 時間帯はまとめる
     try {
       const rec = JSON.parse(localStorage.getItem(k)) || {};
       Object.keys(rec).forEach(id => {
