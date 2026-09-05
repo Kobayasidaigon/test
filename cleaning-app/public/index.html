@@ -271,6 +271,11 @@
   .rt-row.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
   .rt-row.rt-editing { align-items: flex-start; padding-top: 8px; padding-bottom: 8px; }
   .rt-row.rt-editing .rt-check, .rt-row.rt-editing .rt-icon, .rt-row.rt-editing .rt-actions { margin-top: 1px; }
+  .rt-child.rt-editing { align-items: flex-start; }
+  .rt-child.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
+  .rt-child .rt-act { width: 27px; height: 27px; }
+  .rt-childadd { margin: 2px 0 8px 26px; }
+  .rt-add-btn.rt-add-child { font-size: .78rem; padding: 7px; margin-top: 0; }
   /* 数値入力欄（サーマナイフのショット数など。項目に nums を設定すると出る） */
   .num-wrap { flex-basis: 100%; margin: 8px 0 2px 34px; display: flex; gap: 8px; flex-wrap: wrap; }
   .item .num-wrap { margin: 8px 0 2px; }
@@ -1897,7 +1902,8 @@ function renderMethodPanel(item, box) {
   renderGalleryInto(box.querySelector('.method-media'), item.id, 'method', onChange, '');
 }
 
-function deleteItem(id, isCustom, title) {
+function deleteItem(id, isCustom, title, areaKey) {
+  const ak = areaKey || currentArea;
   const msg = isCustom
     ? '「' + title + '」を削除しますか？'
     : '初期項目「' + title + '」を削除（非表示に）しますか？\n※後から「復元」で元に戻せます。';
@@ -1905,17 +1911,17 @@ function deleteItem(id, isCustom, title) {
 
   if (isCustom) {
     // 追加項目は完全に削除
-    saveCustomItems(currentArea, loadCustomItems(currentArea).filter(ci => ci.id !== id));
+    saveCustomItems(ak, loadCustomItems(ak).filter(ci => ci.id !== id));
   } else {
     // 初期項目は非表示リストに追加
-    const hidden = loadHidden(currentArea);
-    if (!hidden.includes(id)) { hidden.push(id); saveHidden(currentArea, hidden); }
+    const hidden = loadHidden(ak);
+    if (!hidden.includes(id)) { hidden.push(id); saveHidden(ak, hidden); }
   }
 
   // 全担当者・全時間帯のチェック記録からもこの項目を削除
   for (let k = 0; k < localStorage.length; k++) {
     const key = localStorage.key(k);
-    if (key && key.startsWith('clean_') && key.indexOf('_' + currentArea + '_') !== -1) {
+    if (key && key.startsWith('clean_') && key.indexOf('_' + ak + '_') !== -1) {
       try {
         const rec = JSON.parse(localStorage.getItem(key));
         if (rec && rec[id]) { delete rec[id]; syncSet(key, JSON.stringify(rec)); }
@@ -1923,7 +1929,7 @@ function deleteItem(id, isCustom, title) {
     }
   }
   // この項目のメディア（OK/NG/手順、単数・複数すべて）を削除
-  const mpre = currentArea + ':' + id + ':';
+  const mpre = ak + ':' + id + ':';
   [...mediaKeys].forEach(mk => {
     if (mk.indexOf(mpre) === 0) { mediaKeys.delete(mk); delete mediaTypes[mk]; idbDel(mk).catch(() => {}); }
   });
@@ -1937,10 +1943,12 @@ const addNewSection = document.getElementById('addNewSection');
 const addTitle = document.getElementById('addTitle');
 const addDesc = document.getElementById('addDesc');
 
-function openAddDialog(presetSection) {
+let addTargetArea = null; // 追加先のエリア（未指定なら今開いているエリア）
+function openAddDialog(presetSection, areaKey) {
+  addTargetArea = areaKey || currentArea;
   // 既存タイトル（区分）を選択肢に
   addSectionSelect.innerHTML = '';
-  const sections = getGroups(currentArea).map(g => g.section);
+  const sections = getGroups(addTargetArea).map(g => g.section);
   sections.forEach(sec => {
     const o = document.createElement('option');
     o.value = sec; o.textContent = sec;
@@ -1971,12 +1979,13 @@ document.getElementById('addSave').onclick = () => {
     section = addNewSection.value.trim();
     if (!section) { alert('新しいタイトルの名前を入力してください'); return; }
     // 新しいタイトルを区分として登録（空でも残るように）
-    const secs = loadCustomSections(currentArea);
-    if (!secs.includes(section)) { secs.push(section); saveCustomSections(currentArea, secs); }
+    const secs = loadCustomSections(addTargetArea || currentArea);
+    if (!secs.includes(section)) { secs.push(section); saveCustomSections(addTargetArea || currentArea, secs); }
   }
-  const list = loadCustomItems(currentArea);
+  const ak = addTargetArea || currentArea;
+  const list = loadCustomItems(ak);
   list.push({ id: 'c' + Date.now() + Math.floor(Math.random() * 1000), section: section, title: title, desc: addDesc.value.trim() });
-  saveCustomItems(currentArea, list);
+  saveCustomItems(ak, list);
   addDialog.close();
   render();
 };
@@ -2041,8 +2050,8 @@ const editMethod = document.getElementById('editMethod');
 const editResetDefault = document.getElementById('editResetDefault');
 let editCtx = { id: null, custom: false };
 
-function openEditDialog(item, focusMethod) {
-  editCtx = { id: item.id, custom: item.custom, nums: item.nums };
+function openEditDialog(item, focusMethod, areaKey) {
+  editCtx = { id: item.id, custom: item.custom, nums: item.nums, area: areaKey || currentArea };
   editTitle.value = item.title;
   editDesc.value = item.desc || '';
   editMethod.value = item.method || '';
@@ -2066,31 +2075,33 @@ document.getElementById('editSave').onclick = () => {
     const kept = prevFields.find(f => f.label === label);
     return { id: kept ? kept.id : 'n' + i, label: label };
   });
+  const ak = editCtx.area || currentArea;
   if (editCtx.custom) {
     // 追加項目：customItems を直接更新
-    const list = loadCustomItems(currentArea);
+    const list = loadCustomItems(ak);
     const ci = list.find(x => x.id === editCtx.id);
     if (ci) {
       ci.title = title; ci.desc = desc; ci.method = method;
       if (nums.length) ci.nums = nums; else delete ci.nums;
-      saveCustomItems(currentArea, list);
+      saveCustomItems(ak, list);
     }
   } else {
     // デフォルト項目：上書き内容を保存
-    const edits = loadEdits(currentArea);
+    const edits = loadEdits(ak);
     const e = { title: title, desc: desc, method: method };
     if (nums.length) e.nums = nums;
     edits[editCtx.id] = e;
-    saveEdits(currentArea, edits);
+    saveEdits(ak, edits);
   }
   editDialog.close();
   render();
 };
 
 editResetDefault.onclick = () => {
-  const edits = loadEdits(currentArea);
+  const ak = editCtx.area || currentArea;
+  const edits = loadEdits(ak);
   delete edits[editCtx.id];
-  saveEdits(currentArea, edits);
+  saveEdits(ak, edits);
   editDialog.close();
   render();
 };
@@ -2703,29 +2714,34 @@ let routineEditMode = false;
 
 // 並び順を1つ動かす。やることリストは「上から順に」なので順番に意味がある。
 // 入れ替えるのは同じタイトル（区分）の中の隣どうし。
-function moveRoutineItem(id, dir) {
-  const list = loadCustomItems(currentArea);
+function moveRoutineItem(id, dir, areaKey) {
+  const ak = areaKey || currentArea;
+  const list = loadCustomItems(ak);
   const i = list.findIndex(x => x.id === id);
   if (i < 0) return;
   let j = i + dir;
   while (j >= 0 && j < list.length && list[j].section !== list[i].section) j += dir;
   if (j < 0 || j >= list.length) return;
   const t = list[i]; list[i] = list[j]; list[j] = t;
-  saveCustomItems(currentArea, list);
+  saveCustomItems(ak, list);
   render();
 }
 
-// 編集モードのときに各行へ出すボタン
-function routineActionsHtml(item, isFirst, isLast) {
-  if (!item.custom) return ''; // 組み込み項目は並べ替えできない（やることリストには無い想定）
+// 編集モードのときに各行へ出すボタン。areaKey を渡すと連動先の子項目にも使える。
+function routineActionsHtml(item, isFirst, isLast, areaKey) {
+  const ak = areaKey || currentArea;
   const b = (cls, icon, attr, label) =>
     '<button type="button" class="rt-act ' + cls + '" ' + attr +
     ' aria-label="' + label + '">' + ic(icon) + '</button>';
-  return '<span class="rt-actions">'
-    + b('up', 'chevron-up', 'data-rt-up="' + escapeHtml(item.id) + '"' + (isFirst ? ' disabled' : ''), '上へ')
-    + b('down', 'chevron-down', 'data-rt-down="' + escapeHtml(item.id) + '"' + (isLast ? ' disabled' : ''), '下へ')
-    + b('edit', 'pencil', 'data-rt-edit="' + escapeHtml(item.id) + '"', '編集')
-    + b('del', 'trash-2', 'data-rt-del="' + escapeHtml(item.id) + '"', '削除')
+  const a = ' data-rt-area="' + escapeHtml(ak) + '"';
+  // 並べ替えは追加項目だけ。組み込み項目は並び順を持たないため
+  const move = item.custom
+    ? b('up', 'chevron-up', 'data-rt-up="' + escapeHtml(item.id) + '"' + a + (isFirst ? ' disabled' : ''), '上へ')
+      + b('down', 'chevron-down', 'data-rt-down="' + escapeHtml(item.id) + '"' + a + (isLast ? ' disabled' : ''), '下へ')
+    : '';
+  return '<span class="rt-actions">' + move
+    + b('edit', 'pencil', 'data-rt-edit="' + escapeHtml(item.id) + '"' + a, '編集')
+    + b('del', 'trash-2', 'data-rt-del="' + escapeHtml(item.id) + '"' + a, '削除')
     + '</span>';
 }
 // 外部リンク項目のボタン文言（在庫管理システムへのリンクは名前で明示する）
@@ -2806,11 +2822,10 @@ function renderRoutineView() {
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
       // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
+      + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
       + (routineEditMode
           ? routineActionsHtml(item, idx === 0, idx === items.length - 1)
-          : itemLinkHtml(item, 'rt-link-btn', '')
-            + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
-            + numFieldsHtml(item))
+          : itemLinkHtml(item, 'rt-link-btn', '') + numFieldsHtml(item))
       + '</div>';
     if (expanded) {
       const keys = String(item.link).split(',').map(s => s.trim()).filter(Boolean);
@@ -2818,14 +2833,22 @@ function renderRoutineView() {
         const area = getArea(k);
         if (keys.length > 1 && area) html += '<div class="rt-subhead">' + escapeHtml(area.name) + '</div>';
         const crec = loadRecordMerged(k); // 他の担当者の分も含める
-        areaItems(k).forEach(ci => {
+        const citems = areaItems(k);
+        citems.forEach((ci, ci_i) => {
           const cdone = !!crec[ci.id];
-          html += '<div class="rt-child' + (cdone ? ' done' : '') + '" data-area="' + escapeHtml(k) + '" data-id="' + escapeHtml(ci.id) + '">'
+          html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '') + '" data-area="' + escapeHtml(k) + '" data-id="' + escapeHtml(ci.id) + '">'
             + '<span class="rt-check">' + ic('check') + '</span>'
             + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
-            + (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>')
+            + (routineEditMode
+                ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
+                : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
             + '</div>';
         });
+        // 編集中は、この連動先エリアにも項目を足せるようにする
+        if (routineEditMode) {
+          html += '<div class="rt-childadd"><button type="button" class="rt-add-btn rt-add-child" data-rt-addarea="' + escapeHtml(k) + '">'
+            + ic('plus') + ' ' + escapeHtml((area ? area.name : k)) + ' に項目を追加</button></div>';
+        }
       });
       html += '<div class="rt-open"><button class="rt-open-btn" data-area="' + escapeHtml(keys[0]) + '">エリアページを開く（見本・詳細）</button></div>';
     }
@@ -2848,34 +2871,48 @@ function renderRoutineView() {
     routineEditMode = !routineEditMode;
     render();
   };
+  // 連動先の子項目も対象にするため、エリアは data-rt-area から読む
+  const findIn = (ak, id) => (ak === currentArea ? items : areaItems(ak)).find(x => x.id === id);
   checklist.querySelectorAll('[data-rt-up]').forEach(b => {
-    b.onclick = (e) => { e.stopPropagation(); moveRoutineItem(b.dataset.rtUp, -1); };
+    b.onclick = (e) => { e.stopPropagation(); moveRoutineItem(b.dataset.rtUp, -1, b.dataset.rtArea); };
   });
   checklist.querySelectorAll('[data-rt-down]').forEach(b => {
-    b.onclick = (e) => { e.stopPropagation(); moveRoutineItem(b.dataset.rtDown, 1); };
+    b.onclick = (e) => { e.stopPropagation(); moveRoutineItem(b.dataset.rtDown, 1, b.dataset.rtArea); };
   });
   checklist.querySelectorAll('[data-rt-edit]').forEach(b => {
     b.onclick = (e) => {
       e.stopPropagation();
-      const it = items.find(x => x.id === b.dataset.rtEdit);
-      if (it) openEditDialog(it);
+      const ak = b.dataset.rtArea || currentArea;
+      const it = findIn(ak, b.dataset.rtEdit);
+      if (it) openEditDialog(it, false, ak);
     };
   });
   checklist.querySelectorAll('[data-rt-del]').forEach(b => {
     b.onclick = (e) => {
       e.stopPropagation();
-      const it = items.find(x => x.id === b.dataset.rtDel);
-      if (it) deleteItem(it.id, it.custom, it.title);
+      const ak = b.dataset.rtArea || currentArea;
+      const it = findIn(ak, b.dataset.rtDel);
+      if (it) deleteItem(it.id, it.custom, it.title, ak);
+    };
+  });
+  checklist.querySelectorAll('[data-rt-addarea]').forEach(b => {
+    b.onclick = (e) => {
+      e.stopPropagation();
+      const ak = b.dataset.rtAddarea;
+      const gs = getGroups(ak);
+      openAddDialog(gs.length ? gs[0].section : undefined, ak);
     };
   });
   checklist.querySelectorAll('.rt-row').forEach(row => {
     row.onclick = (e) => {
-      if (routineEditMode) return; // 編集中はタップでチェックを入れない
-      if (e.target.closest('a, [data-inv-link]')) return;
+      if (e.target.closest('a, [data-inv-link], .rt-act')) return;
       const id = row.dataset.id;
       if (row.dataset.kind === 'link') {
+        // 編集中も開閉はできる（中の細かい項目を編集するため）
         if (routineExpanded.has(id)) routineExpanded.delete(id); else routineExpanded.add(id);
         render();
+      } else if (routineEditMode) {
+        return; // 編集中はタップでチェックを入れない
       } else if (row.dataset.kind === 'nums') {
         // 数値項目は数値がそろった時点で完了になる。タップでの手動チェックはしない
         const input = row.querySelector('input[data-field]:placeholder-shown, input[data-field]');
@@ -2891,7 +2928,11 @@ function renderRoutineView() {
   wireNumFields(checklist, currentArea, byId);
   // 子行: その場でエリアの記録にチェック（📷抜き打ちもここで発動する）
   checklist.querySelectorAll('.rt-child').forEach(row => {
-    row.onclick = () => toggleItemIn(row.dataset.area, row.dataset.id);
+    row.onclick = (e) => {
+      if (routineEditMode) return; // 編集中はタップでチェックを入れない
+      if (e.target.closest('.rt-act')) return;
+      toggleItemIn(row.dataset.area, row.dataset.id);
+    };
   });
   checklist.querySelectorAll('.rt-open-btn').forEach(b => {
     b.onclick = (e) => { e.stopPropagation(); currentArea = b.dataset.area; render(); window.scrollTo(0, 0); };
