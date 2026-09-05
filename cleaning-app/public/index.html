@@ -250,6 +250,27 @@
   button.rt-link-btn { font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none; }
   button.ext-link { font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none;
                     border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text); }
+  /* 朝番・中番・遅番の「項目を編集」モード */
+  .rt-editbar { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; flex-wrap: wrap; }
+  .rt-edit-toggle { font-family: inherit; font-size: .8rem; font-weight: 700; cursor: pointer;
+    padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--primary);
+    background: var(--card); color: var(--primary-dark); }
+  .rt-edit-toggle.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .rt-edit-hint { font-size: .75rem; color: var(--muted); }
+  .rt-actions { display: flex; gap: 3px; margin-left: auto; }
+  .rt-act { font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none;
+    width: 30px; height: 30px; padding: 0; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--card); color: var(--muted);
+    display: inline-flex; align-items: center; justify-content: center; }
+  .rt-act:disabled { opacity: .3; cursor: default; }
+  .rt-act.edit { color: var(--primary-dark); }
+  .rt-act.del { color: #c62828; }
+  .rt-add-btn { font-family: inherit; font-size: .85rem; font-weight: 700; cursor: pointer;
+    width: 100%; margin-top: 6px; padding: 10px; border-radius: 9px;
+    border: 1.5px dashed var(--primary); background: var(--card); color: var(--primary-dark); }
+  .rt-row.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
+  .rt-row.rt-editing { align-items: flex-start; padding-top: 8px; padding-bottom: 8px; }
+  .rt-row.rt-editing .rt-check, .rt-row.rt-editing .rt-icon, .rt-row.rt-editing .rt-actions { margin-top: 1px; }
   /* 数値入力欄（サーマナイフのショット数など。項目に nums を設定すると出る） */
   .num-wrap { flex-basis: 100%; margin: 8px 0 2px 34px; display: flex; gap: 8px; flex-wrap: wrap; }
   .item .num-wrap { margin: 8px 0 2px; }
@@ -1217,7 +1238,9 @@ const ICONS = {
   'sparkles': '<path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/>',
   'zap': '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
   'vibrate': '<path d="m2 8 2 2-2 2 2 2-2 2"/><path d="m22 8-2 2 2 2-2 2 2 2"/><rect width="8" height="14" x="8" y="5" rx="1"/>',
-  'maximize': '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>'
+  'maximize': '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+  'chevron-up': '<path d="m18 15-6-6-6 6"/>',
+  'chevron-down': '<path d="m6 9 6 6 6-6"/>'
 };
 function ic(name, cls) {
   return '<svg class="ic ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[name] || '') + '</svg>';
@@ -2673,6 +2696,38 @@ document.getElementById('areaDelete').onclick = () => {
 
 // ===== 朝番・中番・遅番のコンパクト表示（1画面・ツリー展開でその場チェック）=====
 const routineExpanded = new Set(); // 展開中の連動項目id
+// 朝番・中番・遅番の項目を画面から編集するモード。
+// 追加・編集・削除の仕組みは他のエリアと同じものを使う（保存先も店舗別で同じ）。
+// 通常の使用中に誤ってチェックが入らないよう、切り替え式にしている。
+let routineEditMode = false;
+
+// 並び順を1つ動かす。やることリストは「上から順に」なので順番に意味がある。
+// 入れ替えるのは同じタイトル（区分）の中の隣どうし。
+function moveRoutineItem(id, dir) {
+  const list = loadCustomItems(currentArea);
+  const i = list.findIndex(x => x.id === id);
+  if (i < 0) return;
+  let j = i + dir;
+  while (j >= 0 && j < list.length && list[j].section !== list[i].section) j += dir;
+  if (j < 0 || j >= list.length) return;
+  const t = list[i]; list[i] = list[j]; list[j] = t;
+  saveCustomItems(currentArea, list);
+  render();
+}
+
+// 編集モードのときに各行へ出すボタン
+function routineActionsHtml(item, isFirst, isLast) {
+  if (!item.custom) return ''; // 組み込み項目は並べ替えできない（やることリストには無い想定）
+  const b = (cls, icon, attr, label) =>
+    '<button type="button" class="rt-act ' + cls + '" ' + attr +
+    ' aria-label="' + label + '">' + ic(icon) + '</button>';
+  return '<span class="rt-actions">'
+    + b('up', 'chevron-up', 'data-rt-up="' + escapeHtml(item.id) + '"' + (isFirst ? ' disabled' : ''), '上へ')
+    + b('down', 'chevron-down', 'data-rt-down="' + escapeHtml(item.id) + '"' + (isLast ? ' disabled' : ''), '下へ')
+    + b('edit', 'pencil', 'data-rt-edit="' + escapeHtml(item.id) + '"', '編集')
+    + b('del', 'trash-2', 'data-rt-del="' + escapeHtml(item.id) + '"', '削除')
+    + '</span>';
+}
 // 外部リンク項目のボタン文言（在庫管理システムへのリンクは名前で明示する）
 function isInventoryItem(item) {
   const t = String(item.title || '');
@@ -2733,19 +2788,29 @@ function renderRoutineView() {
   const items = areaItems(currentArea);
   const staleMap = currentStore ? lastCheckedByItem(currentStore) : {}; // 子項目の「前回いつ」表示用
   let html = '';
-  items.forEach(item => {
+  // 「項目を編集」の切り替え
+  html += '<div class="rt-editbar">'
+    + '<button type="button" id="rtEditToggle" class="rt-edit-toggle' + (routineEditMode ? ' on' : '') + '">'
+    + ic('pencil') + ' ' + (routineEditMode ? '編集を終わる' : '項目を編集') + '</button>'
+    + (routineEditMode ? '<span class="rt-edit-hint">上から実施する順に並びます</span>' : '')
+    + '</div>';
+  items.forEach((item, idx) => {
     const ls = item.link ? linkedStatus(item) : null;
     const done = ls ? ls.complete : !!rec[item.id];
     const expanded = ls && routineExpanded.has(item.id);
     const hasNums = itemNumFields(item).length > 0;
-    html += '<div class="rt-row' + (done ? ' done' : '') + (item.url ? ' has-link' : '') + (hasNums ? ' has-link has-nums' : '') + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : hasNums ? 'nums' : 'manual') + '">'
+    html += '<div class="rt-row' + (done ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
+      + (routineEditMode ? '' : (item.url ? ' has-link' : '') + (hasNums ? ' has-link has-nums' : '')) + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : hasNums ? 'nums' : 'manual') + '">'
       // 連動項目はチェック丸ではなくリスト印（実際のチェックは展開した子項目で行う）
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
-      + itemLinkHtml(item, 'rt-link-btn', '')
-      + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
-      + numFieldsHtml(item)
+      // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
+      + (routineEditMode
+          ? routineActionsHtml(item, idx === 0, idx === items.length - 1)
+          : itemLinkHtml(item, 'rt-link-btn', '')
+            + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
+            + numFieldsHtml(item))
       + '</div>';
     if (expanded) {
       const keys = String(item.link).split(',').map(s => s.trim()).filter(Boolean);
@@ -2767,8 +2832,45 @@ function renderRoutineView() {
   });
   checklist.innerHTML = html;
   // 親行: 連動=ツリー開閉 / 手動=チェック切替（🔗リンクは除外）
+  // 編集モードでは末尾に「項目を追加」を出す
+  if (routineEditMode) {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'rt-add-btn';
+    add.innerHTML = ic('plus') + ' 項目を追加';
+    add.onclick = () => {
+      const groups = getGroups(currentArea);
+      openAddDialog(groups.length ? groups[0].section : undefined);
+    };
+    checklist.appendChild(add);
+  }
+  document.getElementById('rtEditToggle').onclick = () => {
+    routineEditMode = !routineEditMode;
+    render();
+  };
+  checklist.querySelectorAll('[data-rt-up]').forEach(b => {
+    b.onclick = (e) => { e.stopPropagation(); moveRoutineItem(b.dataset.rtUp, -1); };
+  });
+  checklist.querySelectorAll('[data-rt-down]').forEach(b => {
+    b.onclick = (e) => { e.stopPropagation(); moveRoutineItem(b.dataset.rtDown, 1); };
+  });
+  checklist.querySelectorAll('[data-rt-edit]').forEach(b => {
+    b.onclick = (e) => {
+      e.stopPropagation();
+      const it = items.find(x => x.id === b.dataset.rtEdit);
+      if (it) openEditDialog(it);
+    };
+  });
+  checklist.querySelectorAll('[data-rt-del]').forEach(b => {
+    b.onclick = (e) => {
+      e.stopPropagation();
+      const it = items.find(x => x.id === b.dataset.rtDel);
+      if (it) deleteItem(it.id, it.custom, it.title);
+    };
+  });
   checklist.querySelectorAll('.rt-row').forEach(row => {
     row.onclick = (e) => {
+      if (routineEditMode) return; // 編集中はタップでチェックを入れない
       if (e.target.closest('a, [data-inv-link]')) return;
       const id = row.dataset.id;
       if (row.dataset.kind === 'link') {
