@@ -1505,12 +1505,26 @@ function saveCustomAreas(list) { defWrite('customAreas', JSON.stringify(list)); 
 // 組み込み＋追加エリアを合わせた一覧
 function allAreas() { return AREAS.concat(loadCustomAreas()); }
 // キーからエリア定義を取得（組み込み or 追加）
+// 同じエリアを朝番・中番・遅番から参照している場合（例: フロアは3つとも見ている）、
+// 片方を終わらせるともう片方も完了扱いになってしまう。これを防ぐため、
+// やることリストから触ったときは「エリア@時間帯」という鍵で記録を分ける。
+//   例: floor@routine_asa（朝番のフロア） / floor@routine_ban（遅番のフロア）
+// 項目の定義（一覧・見本・清掃方法）は @ の前のエリアを共有し、記録だけを分ける。
+function baseArea(key) {
+  const at = String(key || '').indexOf('@');
+  return at < 0 ? key : key.slice(0, at);
+}
+function scopedArea(areaKey, fromArea) {
+  return isRoutineArea(fromArea) ? areaKey + '@' + fromArea : areaKey;
+}
 function getArea(key) {
+  key = baseArea(key);
   return AREAS.find(a => a.key === key) || loadCustomAreas().find(a => a.key === key) || null;
 }
 
 // デフォルト項目とカスタム項目を統合したグループ一覧を返す
 function getGroups(areaKey) {
+  areaKey = baseArea(areaKey); // 定義は時間帯で分けない（共有する）
   const area = getArea(areaKey);
   const builtinGroups = (area && area.groups) ? area.groups : []; // 追加エリアは組み込み項目なし
   const hidden = loadHidden(areaKey);
@@ -1928,7 +1942,8 @@ function deleteItem(id, isCustom, title, areaKey) {
   // 全担当者・全時間帯のチェック記録からもこの項目を削除
   for (let k = 0; k < localStorage.length; k++) {
     const key = localStorage.key(k);
-    if (key && key.startsWith('clean_') && key.indexOf('_' + ak + '_') !== -1) {
+    if (key && key.startsWith('clean_')
+        && (key.indexOf('_' + ak + '_') !== -1 || key.indexOf('_' + ak + '@') !== -1)) {
       try {
         const rec = JSON.parse(localStorage.getItem(key));
         if (rec && rec[id]) { delete rec[id]; syncSet(key, JSON.stringify(rec)); }
@@ -2381,10 +2396,11 @@ function areaCompletionToday(areaKey) {
 }
 
 // 連動項目の状態。link未設定なら null（＝通常の手動チェック項目）
-function linkedStatus(item) {
+function linkedStatus(item, fromArea) {
   const keys = String(item.link || '').split(',').map(s => s.trim()).filter(Boolean);
   if (!keys.length) return null;
-  const parts = keys.map(k => ({ key: k, area: getArea(k), c: areaCompletionToday(k) }));
+  // fromArea（開いている時間帯）ごとに別々に数える
+  const parts = keys.map(k => ({ key: k, area: getArea(k), c: areaCompletionToday(scopedArea(k, fromArea)) }));
   const complete = parts.every(p => p.c.total > 0 && p.c.done === p.c.total);
   const label = parts.map(p => (p.area ? p.area.name : p.key) + ' ' + p.c.done + '/' + p.c.total).join('、');
   const firstIncomplete = parts.find(p => !(p.c.total > 0 && p.c.done === p.c.total));
@@ -2394,7 +2410,7 @@ function linkedStatus(item) {
 }
 // 項目の実効的な完了判定（連動項目はリンク先の完了、通常項目は自分の記録）
 function itemEffectiveDone(areaKey, item, rec) {
-  const ls = isRoutineArea(areaKey) && item.link ? linkedStatus(item) : null;
+  const ls = isRoutineArea(areaKey) && item.link ? linkedStatus(item, areaKey) : null;
   return ls ? ls.complete : !!rec[item.id];
 }
 
@@ -2822,7 +2838,7 @@ function renderRoutineView() {
     + (routineEditMode ? '<span class="rt-edit-hint">上から実施する順に並びます</span>' : '')
     + '</div>';
   items.forEach((item, idx) => {
-    const ls = item.link ? linkedStatus(item) : null;
+    const ls = item.link ? linkedStatus(item, currentArea) : null;
     const done = ls ? ls.complete : !!rec[item.id];
     const expanded = ls && routineExpanded.has(item.id);
     const hasNums = itemNumFields(item).length > 0;
@@ -2843,16 +2859,17 @@ function renderRoutineView() {
       keys.forEach(k => {
         const area = getArea(k);
         if (keys.length > 1 && area) html += '<div class="rt-subhead">' + escapeHtml(area.name) + '</div>';
-        const crec = loadRecordMerged(k); // 他の担当者の分も含める
+        const sk = scopedArea(k, currentArea); // この時間帯ぶんの記録
+        const crec = loadRecordMerged(sk); // 他の担当者の分も含める
         const citems = areaItems(k);
         citems.forEach((ci, ci_i) => {
           const cdone = !!crec[ci.id];
-          html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '') + '" data-area="' + escapeHtml(k) + '" data-id="' + escapeHtml(ci.id) + '">'
+          html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '') + '" data-area="' + escapeHtml(sk) + '" data-id="' + escapeHtml(ci.id) + '">'
             + '<span class="rt-check">' + ic('check') + '</span>'
             + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
             + (routineEditMode
                 ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
-                : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
+                : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[sk + ':' + ci.id], true)) + '</span>'))
             + '</div>';
         });
         // 編集中は、この連動先エリアにも項目を足せるようにする
@@ -3018,7 +3035,7 @@ function render() {
 
     group.items.forEach(item => {
       // やることリストの連動項目: リンク先エリアの完了状況で自動判定
-      const ls = isRoutineArea(currentArea) && item.link ? linkedStatus(item) : null;
+      const ls = isRoutineArea(currentArea) && item.link ? linkedStatus(item, currentArea) : null;
       const done = ls ? (ls.complete ? { staff: '清掃チェックと連動（自動）', time: '' } : null) : rec[item.id];
       const cOk = countMedia(item.id, 'ok');
       const cNg = countMedia(item.id, 'ng');
@@ -3230,7 +3247,7 @@ function snapshotForArea(staff, areaKey) {
   const rec = loadRecord(areaKey, staff);
   // 登録時点の全項目を記録（項目単位で後から比較できるように）。連動項目はリンク先の完了状況で判定
   const items = getGroups(areaKey).flatMap(g => g.items).map(it => {
-    const ls = isRoutineArea(areaKey) && it.link ? linkedStatus(it) : null;
+    const ls = isRoutineArea(areaKey) && it.link ? linkedStatus(it, areaKey) : null;
     const d = ls ? ls.complete : !!rec[it.id];
     return { title: it.title, done: d, time: !ls && rec[it.id] ? rec[it.id].time : null };
   });
