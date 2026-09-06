@@ -271,6 +271,8 @@
   .rt-row.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
   .rt-row.rt-editing { align-items: flex-start; padding-top: 8px; padding-bottom: 8px; }
   .rt-row.rt-editing .rt-check, .rt-row.rt-editing .rt-icon, .rt-row.rt-editing .rt-actions { margin-top: 1px; }
+  .rt-child.has-nums { flex-wrap: wrap; }
+  .rt-child .num-wrap { margin: 6px 0 2px 28px; }
   .rt-child.rt-editing { align-items: flex-start; }
   .rt-child.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
   .rt-child .rt-act { width: 27px; height: 27px; }
@@ -2922,12 +2924,16 @@ function renderRoutineView() {
         const citems = areaItems(k);
         citems.forEach((ci, ci_i) => {
           const cdone = !!crec[ci.id];
-          html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '') + '" data-area="' + escapeHtml(sk) + '" data-id="' + escapeHtml(ci.id) + '">'
+          // 数値を入れる子項目（ゴルフのクラブ本数など）は、この場で入力できるようにする
+          const cNums = !routineEditMode && itemNumFields(ci).length > 0;
+          html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
+            + (cNums ? ' has-nums' : '') + '" data-area="' + escapeHtml(sk) + '" data-id="' + escapeHtml(ci.id) + '">'
             + '<span class="rt-check">' + ic('check') + '</span>'
             + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
             + (routineEditMode
                 ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
                 : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
+            + (cNums ? numFieldsHtml(ci) : '')
             + '</div>';
         });
         // 編集中は、この連動先エリアにも項目を足せるようにする
@@ -3012,6 +3018,18 @@ function renderRoutineView() {
   const byId = {};
   items.forEach(it => { byId[it.id] = it; });
   wireNumFields(checklist, currentArea, byId);
+  // 子項目ぶんは、その連動先エリア（時間帯つき）の記録に書く
+  const childById = {};
+  checklist.querySelectorAll('.rt-child').forEach(row => {
+    const ak = row.dataset.area;
+    if (!ak) return;
+    if (!childById[ak]) {
+      const m = {};
+      areaItems(ak).forEach(it => { m[it.id] = it; });
+      childById[ak] = m;
+    }
+    wireNumFields(row, ak, childById[ak]);
+  });
   // 子行: その場でエリアの記録にチェック（📷抜き打ちもここで発動する）
   checklist.querySelectorAll('.rt-child').forEach(row => {
     row.onclick = (e) => {
