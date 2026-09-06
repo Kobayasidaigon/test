@@ -2491,7 +2491,9 @@ function renderTabs() {
   tabsRoutineEl.innerHTML = '';
   const makeTab = (area, el) => {
     const items = areaItems(area.key);
-    const rec = loadRecord(area.key);
+    // その日その店舗で「実際に済んでいる分」を数える（担当者を切り替えても数が動かないように）。
+    // 中の一覧・進捗バーも同じ合算を見ているので、タブの数字とズレなくなる。
+    const rec = loadRecordMerged(area.key);
     const remaining = items.filter(i => !itemEffectiveDone(area.key, i, rec)).length;
     const btn = document.createElement('button');
     btn.className = 'tab' + (area.key === currentArea ? ' active' : '') + (remaining === 0 ? ' complete' : '');
