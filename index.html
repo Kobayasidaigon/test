@@ -241,9 +241,65 @@ input{font:inherit;color:inherit}
   .tag-card.pop,.sheet-panel{animation:none}
   .btn:active{transform:none}
 }
+/* ---- せどり（狙い目） ---- */
+.kpi{display:flex;gap:8px;margin-top:14px}
+.kpi>div{flex:1;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:10px 11px}
+.kpi .k{font-size:10px;color:var(--sub);font-weight:700;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .v{font-family:var(--font-disp);font-weight:800;font-size:18px;font-variant-numeric:tabular-nums;line-height:1.35;margin-top:1px}
+.kpi .v.pos{color:var(--ok)}
+.sorts{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.sortchip{font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--sub)}
+.sortchip[aria-pressed="true"]{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.filters{display:flex;gap:8px;margin-top:10px}
+.filters .f{flex:1;min-width:0}
+.filters label{display:block;font-size:10px;color:var(--sub);font-weight:700;margin-bottom:4px;letter-spacing:.03em}
+.filters input{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:var(--surface);
+  font-size:14px;font-variant-numeric:tabular-nums}
+.deal-list{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.deal-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;border-top:1px solid var(--line)}
+.deal-row:first-child{border-top:0}
+.deal-row:hover{background:var(--surface2)}
+.rank{flex:none;width:27px;height:27px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-disp);font-weight:800;font-size:13px;background:var(--surface2);color:var(--sub)}
+.rank.s{background:#F5C542;color:#33280A}
+.rank.a{background:var(--accent);color:var(--accent-ink)}
+.rank.b{background:var(--accent-soft);color:var(--accent)}
+.deal-row .mid{flex:1;min-width:0}
+.deal-row .dn{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deal-row .dm{font-size:10.5px;color:var(--sub);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deal-row .right{flex:none;text-align:right}
+.deal-row .dp{display:block;font-family:var(--font-disp);font-weight:800;font-size:17px;font-variant-numeric:tabular-nums;color:var(--ok);line-height:1.25}
+.deal-row .dp.neg{color:var(--danger)}
+.deal-row .dp.mute{color:var(--sub)}
+.deal-row .dr{display:block;font-size:10.5px;color:var(--sub);font-variant-numeric:tabular-nums}
+.item-row .right{flex:none;text-align:right}
+.item-row .iprice{display:block}
+.item-row .dr{display:block;font-size:10.5px;color:var(--sub);font-variant-numeric:tabular-nums}
+.item-row .dr.pos{color:var(--ok);font-weight:700}
+.item-row .dr.neg{color:var(--danger);font-weight:700}
+.sec-head{display:flex;align-items:center;gap:8px;margin:20px 2px 0;font-size:12px;font-weight:700;color:var(--sub);letter-spacing:.04em}
+.sec-head .c{margin-left:auto;font-weight:500}
+.judge{display:inline-flex;align-items:center;font-size:11px;font-weight:800;border-radius:999px;padding:3px 11px;flex:none}
+.judge.buy{background:var(--ok);color:#FFFFFF}
+.judge.mid{background:var(--tag-line);color:var(--tag-ink)}
+.judge.no{background:var(--danger);color:#FFFFFF}
+.profit-strip{display:flex;align-items:center;gap:9px;margin-top:11px;padding-top:10px;
+  border-top:1px dashed var(--tag-line);flex-wrap:wrap}
+.profit-strip .p{font-family:var(--font-disp);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums;line-height:1.1}
+.profit-strip .r{font-size:11.5px;font-weight:700;color:var(--tag-sub)}
+.profit-strip .b{width:100%;font-size:10.5px;color:var(--tag-sub);font-variant-numeric:tabular-nums;line-height:1.6}
+.breakdown{margin-top:12px;background:var(--surface2);border-radius:12px;padding:11px 13px;font-size:12.5px}
+.breakdown .b-row{display:flex;gap:10px;padding:3px 0;font-variant-numeric:tabular-nums}
+.breakdown .b-row .v{margin-left:auto;font-weight:700}
+.breakdown .b-row.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-size:14px}
+.breakdown .b-row.tot .v{font-family:var(--font-disp);font-weight:800;color:var(--ok)}
+.breakdown .b-row.tot .v.neg{color:var(--danger)}
+.breakdown .note{color:var(--sub);font-size:11.5px;line-height:1.7}
+.grid2{display:flex;gap:10px}
+.grid2>*{flex:1;min-width:0}
 </style>
 <div id="app"></div>
-<script id="app-db" type="application/json">{"v":1,"products":{"2000000000015":{"name":"ブレンドコーヒー（豆 200g）","price":980,"emoji":"☕","ts":1788100000000,"demo":true},"2000000000022":{"name":"クロワッサン","price":240,"emoji":"🥐","ts":1788100000000,"demo":true},"2000000000039":{"name":"りんごジュース 720ml","price":540,"emoji":"🧃","ts":1788100000000,"demo":true},"2000000000046":{"name":"国産はちみつ 300g","price":1280,"emoji":"🍯","ts":1788100000000,"demo":true}}}</script>
+<script id="app-db" type="application/json">{"v":1,"products":{"2000000000015":{"name":"ブレンドコーヒー（豆 200g）","price":980,"emoji":"☕","ts":1788100000000,"demo":true,"cost":420},"2000000000022":{"name":"クロワッサン","price":240,"emoji":"🥐","ts":1788100000000,"demo":true,"cost":150},"2000000000039":{"name":"りんごジュース 720ml","price":540,"emoji":"🧃","ts":1788100000000,"demo":true,"cost":300},"2000000000046":{"name":"国産はちみつ 300g","price":1280,"emoji":"🍯","ts":1788100000000,"demo":true,"cost":600,"ship":200}}}</script>
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.20.0/umd/index.min.js"></script>
 <script id="app-js">
 'use strict';
@@ -258,6 +314,7 @@ var ZXING_URL = 'https://cdn.jsdelivr.net/npm/@zxing/library@0.20.0/umd/index.mi
 var LS_OVERLAY = 'nedan.overlay.v1';
 var LS_HISTORY = 'nedan.history.v1';
 var SS_STASH   = 'nedan.stash.v1';
+var LS_SETTINGS = 'nedan.settings.v1';
 
 /* ---------- tiny utils ---------- */
 function $(sel, root){ return (root || document).querySelector(sel); }
@@ -306,6 +363,7 @@ var ICONS = {
   flash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2.5 5 13.5h5l-1 8 8-11h-5l1-8Z"/></svg>',
   edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5a2.1 2.1 0 0 1 3 3L8 19l-4 1 1-4L16.5 4.5Z"/></svg>',
   trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2M6.5 7l.8 12a1.5 1.5 0 0 0 1.5 1.4h6.4a1.5 1.5 0 0 0 1.5-1.4l.8-12"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 14 9l5.8 2-5.8 2-2 5.8-2-5.8L4.2 11 10 9l2-5.8Z"/><path d="M18.6 3.4l.6 1.7 1.7.6-1.7.6-.6 1.7-.6-1.7-1.7-.6 1.7-.6.6-1.7Z"/></svg>',
   logo:'<svg viewBox="0 0 30 30" width="30" height="30" fill="none"><g transform="rotate(-14 15 15)"><rect x="5" y="8" width="20" height="13.5" rx="3.4" fill="currentColor"/><circle cx="9.6" cy="14.8" r="1.9" fill="var(--bg)"/><rect x="13.6" y="11.4" width="1.9" height="6.8" rx=".9" fill="var(--bg)"/><rect x="16.9" y="11.4" width="1.2" height="6.8" rx=".6" fill="var(--bg)"/><rect x="19.5" y="11.4" width="2.4" height="6.8" rx=".9" fill="var(--bg)"/></g></svg>'
 };
 var EMOJIS = ['🛒','☕','🍞','🧃','🍎','🍱','🍰','🍬','🧴','📦','🎁','🧸'];
@@ -422,6 +480,47 @@ function parsePrice(s){
   return parseInt(s, 10);
 }
 
+/* ---------- せどり計算 ---------- */
+var DEFAULTS = { fee: 10, minProfit: 300, minRate: 15, sort: 'profit' };
+var settings = Object.assign({}, DEFAULTS, lsGet(LS_SETTINGS, {}));
+function saveSettings(){ lsSet(LS_SETTINGS, settings); }
+function num(v){ return (typeof v === 'number' && isFinite(v)) ? v : 0; }
+function hasCost(p){ return !!p && typeof p.cost === 'number' && isFinite(p.cost); }
+function feeRate(p){ return (p && typeof p.fee === 'number' && isFinite(p.fee)) ? p.fee : settings.fee; }
+/* 売値 −（仕入れ値＋販売手数料＋送料）= 手取りの利益 */
+function calc(p){
+  var sell = num(p.price), cost = num(p.cost), ship = num(p.ship);
+  var fee = Math.round(sell * feeRate(p) / 100);
+  var profit = sell - cost - fee - ship;
+  var spend = cost + ship;
+  return {
+    ready: hasCost(p), sell: sell, cost: cost, ship: ship, fee: fee,
+    profit: profit, spend: spend,
+    rate: sell > 0 ? (profit / sell) * 100 : 0,
+    roi: spend > 0 ? (profit / spend) * 100 : null
+  };
+}
+function rankOf(c){
+  if (!c.ready || c.profit <= 0) return null;
+  if (c.rate >= 30) return 'S';
+  if (c.rate >= 20) return 'A';
+  if (c.rate >= 10) return 'B';
+  return 'C';
+}
+function isDeal(c){ return c.ready && c.profit >= settings.minProfit && c.rate >= settings.minRate; }
+function pct(v){
+  var r = (v >= 100 || v <= -100) ? Math.round(v) : Math.round(v * 10) / 10;
+  return r + '%';
+}
+function roiText(c){ return c.roi === null ? '—' : pct(c.roi); }
+function signedYen(n){ return (n >= 0 ? '+' : '−') + yen(Math.abs(n)); }
+function parseRate(s){
+  s = toHalf(String(s || '')).replace(/[%％\s]/g, '');
+  if (!/^\d{1,3}(\.\d)?$/.test(s)) return null;
+  var v = parseFloat(s);
+  return v > 100 ? null : v;
+}
+
 /* ---------- artifact capability ---------- */
 var nsPromise = (window.claude && typeof window.claude.use === 'function')
   ? window.claude.use('artifact').catch(function(){ return null; })
@@ -501,7 +600,7 @@ function processStash(){
   var stash = ssGet(SS_STASH);
   if (!stash) return;
   ssDel(SS_STASH);
-  if (stash.tab === 'items') state.tab = 'items';
+  if (stash.tab === 'items' || stash.tab === 'deals') state.tab = stash.tab;
   var muts = stash.mutations || {};
   var codes = Object.keys(muts);
   var applied = codes.every(function(c){
@@ -687,7 +786,9 @@ function handleFound(code, source){
   updateResult();
 }
 function addHistory(code, p){
-  state.history.unshift({ code: code, name: p.name, price: p.price, emoji: p.emoji || '', ts: Date.now() });
+  var c = calc(p);
+  state.history.unshift({ code: code, name: p.name, price: p.price, emoji: p.emoji || '',
+    profit: c.ready ? c.profit : null, ts: Date.now() });
   if (state.history.length > 80) state.history.length = 80;
   lsSet(LS_HISTORY, state.history);
 }
@@ -787,10 +888,11 @@ function render(){
       el('header', { class: 'top' },
         el('div', { class: 'brand' },
           el('span', { class: 'mark', html: ICONS.logo }),
-          el('div', { class: 'name' }, 'ねだんカメラ', el('small', { text: 'かざして、値段がすぐわかる' }))),
+          el('div', { class: 'name' }, 'ねだんカメラ', el('small', { text: 'かざして、仕入れの狙い目がわかる' }))),
         chip),
       el('nav', { class: 'tabs', role: 'tablist' },
         tabBtn('scan', ICONS.camera, 'スキャン'),
+        tabBtn('deals', ICONS.spark, '狙い目'),
         tabBtn('items', ICONS.tag, '商品リスト')),
       el('main', { id: 'view' })),
     el('div', { id: 'sheet-root' }),
@@ -798,6 +900,7 @@ function render(){
   updateChip();
   renderView();
 }
+var TABS = ['scan', 'deals', 'items'];
 function tabBtn(tab, icon, label){
   return el('button', {
     class: 'tab', role: 'tab', id: 'tab-' + tab, 'aria-selected': String(state.tab === tab),
@@ -809,14 +912,18 @@ function switchTab(tab){
   if (state.tab === 'scan') stopScan();
   closeSheet();
   state.tab = tab;
-  $('#tab-scan').setAttribute('aria-selected', String(tab === 'scan'));
-  $('#tab-items').setAttribute('aria-selected', String(tab === 'items'));
+  TABS.forEach(function(t){
+    var b = $('#tab-' + t);
+    if (b) b.setAttribute('aria-selected', String(tab === t));
+  });
   renderView();
 }
 function renderView(){
   var view = $('#view');
   view.textContent = '';
-  if (state.tab === 'scan') renderScan(view); else renderItems(view);
+  if (state.tab === 'scan') renderScan(view);
+  else if (state.tab === 'deals') renderDeals(view);
+  else renderItems(view);
 }
 function updateChip(){
   var chip = $('#chip'), label = $('#chip-label');
@@ -920,8 +1027,9 @@ function updateResult(){
       el('div', { class: 'tag-price' },
         el('span', { class: 'yen', text: '¥' }),
         el('span', { class: 'num', text: Number(p.price).toLocaleString('ja-JP') }),
-        el('span', { class: 'tax', text: '税込' })),
+        el('span', { class: 'tax', text: '売値' })),
       el('div', { class: 'tag-code', text: r.code }),
+      profitStrip(p),
       el('div', { class: 'tag-actions' },
         el('button', { class: 'btn btn-sm', type: 'button', onclick: function(){ openSheet('detail', { code: r.code }); } },
           el('span', { html: ICONS.tag }), '値札を表示'),
@@ -943,12 +1051,31 @@ function updateResult(){
         state.lastResult = null; updateResult(); startScan();
       }}, 'もう一度スキャン'))));
 }
+/* スキャン結果の下に出す仕入れ判断（買い / 微妙 / 見送り） */
+function profitStrip(p){
+  var c = calc(p);
+  if (!c.ready){
+    return el('div', { class: 'profit-strip' },
+      el('span', { class: 'judge mid', text: '仕入れ値なし' }),
+      el('span', { class: 'r', text: '編集から仕入れ値を入れると利益を計算します' }));
+  }
+  var kind = c.profit <= 0 ? 'no' : (isDeal(c) ? 'buy' : 'mid');
+  var label = kind === 'buy' ? '買い' : (kind === 'mid' ? '微妙' : '見送り');
+  return el('div', { class: 'profit-strip' },
+    el('span', { class: 'judge ' + kind, text: label }),
+    el('span', { class: 'p', text: signedYen(c.profit) }),
+    el('span', { class: 'r', text: '利益率 ' + pct(c.rate) + '・ROI ' + roiText(c) }),
+    el('span', { class: 'b', text: '売値 ' + yen(c.sell) + ' − 仕入 ' + yen(c.cost) +
+      ' − 手数料 ' + yen(c.fee) + '（' + pct(feeRate(p)) + '）− 送料 ' + yen(c.ship) }));
+}
 function updateHistory(){
   var box = $('#history');
   if (!box) return;
   box.textContent = '';
   if (!state.history.length) return;
   var total = state.history.reduce(function(s, hh){ return s + (hh.price || 0); }, 0);
+  var gain = state.history.reduce(function(s, hh){ return s + (typeof hh.profit === 'number' ? hh.profit : 0); }, 0);
+  var gainCount = state.history.filter(function(hh){ return typeof hh.profit === 'number'; }).length;
   var list = el('div', { class: 'hist-list' });
   state.history.slice(0, 30).forEach(function(hh, idx){
     list.append(el('div', { class: 'hist-row' },
@@ -967,6 +1094,10 @@ function updateHistory(){
       el('span', { class: 'label', text: 'スキャン履歴の合計' }),
       el('span', { class: 'count', text: state.history.length + '点' }),
       el('span', { class: 'total', text: yen(total) })),
+    gainCount ? el('div', { class: 'hist-head' },
+      el('span', { class: 'label', text: '見込み利益' }),
+      el('span', { class: 'count', text: gainCount + '点ぶん' }),
+      el('span', { class: 'total', text: signedYen(gain) })) : null,
     list,
     el('div', { class: 'hist-clear' },
       el('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: function(ev){
@@ -1036,17 +1167,148 @@ function updateItemList(){
   }
   var list = el('div', { class: 'item-list' });
   items.forEach(function(p){
+    var c = calc(p);
     var nameLine = el('div', { class: 'iname' }, p.name);
     if (p.demo) nameLine.append(el('span', { class: 'badge demo', text: 'デモ' }));
     if (p.local) nameLine.append(el('span', { class: 'badge local', text: 'この端末のみ' }));
     list.append(el('button', { class: 'item-row', type: 'button', onclick: function(){ openSheet('detail', { code: p.code }); } },
       el('span', { class: 'avatar', text: p.emoji || '🏷' }),
       el('div', { class: 'mid' }, nameLine, el('div', { class: 'icode', text: p.code })),
-      el('span', { class: 'iprice', text: yen(p.price) })));
+      el('span', { class: 'right' },
+        el('span', { class: 'iprice', text: yen(p.price) }),
+        el('span', { class: 'dr' + (c.ready ? (c.profit > 0 ? ' pos' : ' neg') : ''),
+          text: c.ready ? signedYen(c.profit) : '仕入れ値なし' }))));
   });
   box.append(list);
   if (items.some(function(p){ return p.demo; })){
     box.append(el('div', { class: 'demo-note', text: 'デモ商品はお試し用です。バーコードを開いて別の画面に表示し、スキャンのテストに使えます。不要になったら商品詳細から削除してください。' }));
+  }
+}
+
+/* ----- 狙い目タブ ----- */
+function renderDeals(view){
+  view.append(
+    el('div', { class: 'items-head' },
+      el('h2', { text: '狙い目' }),
+      el('span', { class: 'count', id: 'deal-count' }),
+      el('button', { class: 'btn btn-primary btn-sm', type: 'button', onclick: function(){
+        openSheet('register', { codeEditable: true });
+      }}, el('span', { html: ICONS.plus }), '商品を追加')),
+    el('div', { class: 'kpi', id: 'deal-kpi' }),
+    el('div', { class: 'sorts', role: 'group', 'aria-label': '並べ替え' },
+      sortChip('profit', '利益額順'), sortChip('rate', '利益率順'), sortChip('roi', 'ROI順')),
+    el('div', { class: 'filters' },
+      filterField('最低利益額（円）', 'numeric', String(settings.minProfit), function(v){
+        var n = parsePrice(v); if (n === null && v.trim() !== '') return false;
+        settings.minProfit = n === null ? 0 : n; return true;
+      }),
+      filterField('最低利益率（%）', 'decimal', String(settings.minRate), function(v){
+        var n = parseRate(v); if (n === null && v.trim() !== '') return false;
+        settings.minRate = n === null ? 0 : n; return true;
+      }),
+      filterField('手数料の既定（%）', 'decimal', String(settings.fee), function(v){
+        var n = parseRate(v); if (n === null && v.trim() !== '') return false;
+        settings.fee = n === null ? 0 : n; return true;
+      })),
+    el('div', { class: 'search' },
+      el('span', { html: ICONS.search }),
+      el('input', { type: 'text', placeholder: '商品名・バーコードで絞り込み', value: state.search, oninput: function(ev){
+        state.search = ev.target.value;
+        updateDealList();
+      }})),
+    el('div', { id: 'deal-box' }));
+  updateDealList();
+}
+function sortChip(key, label){
+  return el('button', { class: 'sortchip', type: 'button', 'aria-pressed': String(settings.sort === key),
+    onclick: function(){
+      settings.sort = key; saveSettings();
+      var box = $('.sorts');
+      if (box) Array.prototype.forEach.call(box.children, function(b, i){
+        b.setAttribute('aria-pressed', String(['profit', 'rate', 'roi'][i] === key));
+      });
+      updateDealList();
+    }}, label);
+}
+function filterField(label, mode, value, apply){
+  var input = el('input', { type: 'text', inputmode: mode, value: value, oninput: function(ev){
+    if (apply(ev.target.value)){ saveSettings(); updateDealList(); }
+  }});
+  return el('div', { class: 'f' }, el('label', { text: label }), input);
+}
+function kpiBox(k, v, pos){
+  return el('div', null, el('div', { class: 'k', text: k }), el('div', { class: 'v' + (pos ? ' pos' : ''), text: v }));
+}
+function dealRow(x){
+  var p = x.p, c = x.c, r = rankOf(c);
+  return el('button', { class: 'deal-row', type: 'button', onclick: function(){ openSheet('detail', { code: p.code }); } },
+    el('span', { class: 'rank' + (r ? ' ' + r.toLowerCase() : ''), text: r || '—' }),
+    el('div', { class: 'mid' },
+      el('div', { class: 'dn', text: (p.emoji ? p.emoji + ' ' : '') + p.name }),
+      el('div', { class: 'dm', text: c.ready
+        ? '元手 ' + yen(c.spend) + ' → 売 ' + yen(c.sell) + '・ROI ' + roiText(c)
+        : '売 ' + yen(c.sell) + '・仕入れ値を入れると判定します' })),
+    el('span', { class: 'right' },
+      el('span', { class: 'dp' + (c.ready ? (c.profit > 0 ? '' : ' neg') : ' mute'),
+        text: c.ready ? signedYen(c.profit) : '—' }),
+      el('span', { class: 'dr', text: c.ready ? pct(c.rate) : '未入力' })));
+}
+function dealList(xs){
+  var list = el('div', { class: 'deal-list' });
+  xs.forEach(function(x){ list.append(dealRow(x)); });
+  return list;
+}
+function updateDealList(){
+  var box = $('#deal-box');
+  if (!box) return;
+  box.textContent = '';
+  var q = state.search.trim().toLowerCase();
+  var rows = allProducts().filter(function(p){
+    if (!q) return true;
+    return p.name.toLowerCase().indexOf(q) >= 0 || p.code.indexOf(q) >= 0;
+  }).map(function(p){ return { p: p, c: calc(p) }; });
+
+  var deals = [], others = [], todo = [];
+  rows.forEach(function(x){
+    if (!x.c.ready) todo.push(x);
+    else if (isDeal(x.c)) deals.push(x);
+    else others.push(x);
+  });
+  var key = settings.sort;
+  var val = function(x){
+    if (key === 'rate') return x.c.rate;
+    if (key === 'roi') return x.c.roi === null ? -Infinity : x.c.roi;
+    return x.c.profit;
+  };
+  var byVal = function(a, b){ return val(b) - val(a); };
+  deals.sort(byVal); others.sort(byVal);
+
+  var kpi = $('#deal-kpi');
+  if (kpi){
+    kpi.textContent = '';
+    kpi.append(
+      kpiBox('狙い目', deals.length + '件'),
+      kpiBox('見込み利益', signedYen(deals.reduce(function(t, x){ return t + x.c.profit; }, 0)), deals.length > 0),
+      kpiBox('必要な仕入れ額', yen(deals.reduce(function(t, x){ return t + x.c.spend; }, 0))));
+  }
+  var cnt = $('#deal-count');
+  if (cnt) cnt.textContent = rows.length + '件から抽出';
+
+  if (deals.length) box.append(dealList(deals));
+  else box.append(el('div', { class: 'deal-list' }, el('div', { class: 'items-empty',
+    text: rows.length
+      ? '今の条件に当てはまる商品はありません。最低利益額や最低利益率を下げると増えます。'
+      : 'まだ商品がありません。「商品を追加」から、売値と仕入れ値を入れて登録してください。' })));
+
+  if (others.length){
+    box.append(
+      el('div', { class: 'sec-head' }, '条件から外れた商品', el('span', { class: 'c', text: others.length + '件' })),
+      dealList(others));
+  }
+  if (todo.length){
+    box.append(
+      el('div', { class: 'sec-head' }, '仕入れ値が未入力', el('span', { class: 'c', text: todo.length + '件' })),
+      dealList(todo));
   }
 }
 
@@ -1094,7 +1356,8 @@ function openDetail(code){
     el('div', { class: 'detail-price' },
       el('span', { class: 'yen', text: '¥' }),
       el('span', { class: 'num', text: Number(p.price).toLocaleString('ja-JP') }),
-      el('span', { class: 'tax', text: '税込' })),
+      el('span', { class: 'tax', text: '売値' })),
+    breakdownBox(p),
     svg
       ? el('div', null,
           el('div', { class: 'barcode-box', html: svg }),
@@ -1109,6 +1372,27 @@ function openDetail(code){
       el('button', { class: 'btn btn-soft', type: 'button', onclick: closeSheet }, 'とじる')));
   sheetShell('商品の値札', body);
 }
+function brow(label, value, cls){
+  return el('div', { class: 'b-row' + (cls ? ' ' + cls : '') },
+    el('span', { text: label }), el('span', { class: 'v' + (cls === 'tot' && /−/.test(value) ? ' neg' : ''), text: value }));
+}
+/* 商品詳細に出す利益の内訳 */
+function breakdownBox(p){
+  var c = calc(p);
+  if (!c.ready){
+    return el('div', { class: 'breakdown' },
+      brow('売値', yen(c.sell)),
+      el('div', { class: 'note', text: '仕入れ値がまだ入っていません。編集から入れると、利益・利益率・ROIと狙い目の判定が出ます。' }));
+  }
+  var box = el('div', { class: 'breakdown' },
+    brow('売値', yen(c.sell)),
+    brow('仕入れ値', '−' + yen(c.cost)),
+    brow('販売手数料（' + pct(feeRate(p)) + '）', '−' + yen(c.fee)),
+    brow('送料など', '−' + yen(c.ship)),
+    brow('手取りの利益', signedYen(c.profit), 'tot'),
+    el('div', { class: 'note', text: '利益率 ' + pct(c.rate) + '（売値に対する利益）・ROI ' + roiText(c) + '（仕入れ額に対する利益）' }));
+  return box;
+}
 function removeProduct(code, isLocal){
   var p = getProduct(code);
   var msg = '「' + (p ? p.name : code) + '」を削除しました';
@@ -1122,6 +1406,13 @@ function openRegister(opts){
   var selEmoji = { v: prefill.emoji || '' };
   var nameIn = el('input', { type: 'text', value: prefill.name || '', maxlength: '60', placeholder: '例：ブレンドコーヒー（豆 200g）' });
   var priceIn = el('input', { type: 'text', inputmode: 'numeric', value: (prefill.price !== undefined && prefill.price !== null) ? String(prefill.price) : '', placeholder: '0' });
+  var costIn = el('input', { type: 'text', inputmode: 'numeric', value: (prefill.cost !== undefined && prefill.cost !== null) ? String(prefill.cost) : '', placeholder: '未入力なら判定しません' });
+  var feeIn = el('input', { type: 'text', inputmode: 'decimal', value: (prefill.fee !== undefined && prefill.fee !== null) ? String(prefill.fee) : '', placeholder: String(settings.fee) });
+  var shipIn = el('input', { type: 'text', inputmode: 'numeric', value: prefill.ship ? String(prefill.ship) : '', placeholder: '0' });
+  var costErr = el('div', { class: 'ferr' });
+  var feeErr = el('div', { class: 'ferr' });
+  var shipErr = el('div', { class: 'ferr' });
+  var preview = el('div', { class: 'breakdown' });
   var codeIn = el('input', { type: 'text', inputmode: 'numeric', maxlength: '64', placeholder: '空欄なら自動で発番します', value: opts.code && opts.codeEditable ? opts.code : '' });
   var nameErr = el('div', { class: 'ferr' });
   var priceErr = el('div', { class: 'ferr' });
@@ -1140,10 +1431,26 @@ function openRegister(opts){
   var saveBtn = el('button', { class: 'btn btn-primary', type: 'button' }, opts.editing ? '保存する' : '登録する');
   saveBtn.addEventListener('click', function(){
     nameErr.textContent = ''; priceErr.textContent = ''; codeErr.textContent = '';
+    costErr.textContent = ''; feeErr.textContent = ''; shipErr.textContent = '';
     var name = nameIn.value.trim();
     if (!name){ nameErr.textContent = '商品名を入力してください'; nameIn.focus(); return; }
     var price = parsePrice(priceIn.value);
-    if (price === null){ priceErr.textContent = '値段は0〜9,999,999の数字で入力してください'; priceIn.focus(); return; }
+    if (price === null){ priceErr.textContent = '売値は0〜9,999,999の数字で入力してください'; priceIn.focus(); return; }
+    var cost = null;
+    if (costIn.value.trim() !== ''){
+      cost = parsePrice(costIn.value);
+      if (cost === null){ costErr.textContent = '仕入れ値は0〜9,999,999の数字で入力してください'; costIn.focus(); return; }
+    }
+    var fee = null;
+    if (feeIn.value.trim() !== ''){
+      fee = parseRate(feeIn.value);
+      if (fee === null){ feeErr.textContent = '手数料率は0〜100の数字で入力してください'; feeIn.focus(); return; }
+    }
+    var ship = 0;
+    if (shipIn.value.trim() !== ''){
+      ship = parsePrice(shipIn.value);
+      if (ship === null){ shipErr.textContent = '送料は0〜9,999,999の数字で入力してください'; shipIn.focus(); return; }
+    }
     var code = fixedCode;
     if (!code){
       var raw = toHalf(codeIn.value).trim();
@@ -1167,6 +1474,9 @@ function openRegister(opts){
       }
     }
     var product = { name: name, price: price, ts: Date.now() };
+    if (cost !== null) product.cost = cost;
+    if (fee !== null) product.fee = fee;
+    if (ship) product.ship = ship;
     if (selEmoji.v) product.emoji = selEmoji.v;
     var mut = {}; mut[code] = product;
     saveBtn.disabled = true;
@@ -1199,10 +1509,46 @@ function openRegister(opts){
       sheetGuard = false;
     });
   });
+  function paintPreview(){
+    var draft = {
+      price: parsePrice(priceIn.value) || 0,
+      cost: costIn.value.trim() === '' ? undefined : (parsePrice(costIn.value) === null ? undefined : parsePrice(costIn.value)),
+      fee: feeIn.value.trim() === '' ? undefined : (parseRate(feeIn.value) === null ? undefined : parseRate(feeIn.value)),
+      ship: shipIn.value.trim() === '' ? 0 : (parsePrice(shipIn.value) || 0)
+    };
+    var c = calc(draft);
+    preview.textContent = '';
+    if (!c.ready){
+      preview.append(el('div', { class: 'note', text: '仕入れ値を入れると、ここに利益と狙い目の判定が出ます。' }));
+      return;
+    }
+    var kind = c.profit <= 0 ? 'no' : (isDeal(c) ? 'buy' : 'mid');
+    var label = kind === 'buy' ? '買い' : (kind === 'mid' ? '微妙' : '見送り');
+    preview.append(
+      brow('売値', yen(c.sell)),
+      brow('仕入れ値', '−' + yen(c.cost)),
+      brow('販売手数料（' + pct(feeRate(draft)) + '）', '−' + yen(c.fee)),
+      brow('送料など', '−' + yen(c.ship)),
+      brow('手取りの利益', signedYen(c.profit), 'tot'),
+      el('div', { class: 'note' },
+        el('span', { class: 'judge ' + kind, text: label }),
+        ' 利益率 ' + pct(c.rate) + '・ROI ' + roiText(c)));
+  }
+  [priceIn, costIn, feeIn, shipIn].forEach(function(inp){ inp.addEventListener('input', paintPreview); });
+  paintPreview();
   var body = el('div', null,
     el('div', { class: 'field' }, el('label', { text: '商品名' }), nameIn, nameErr),
-    el('div', { class: 'field' }, el('label', { text: '値段（税込）' }),
-      el('div', { class: 'pricebox' }, el('span', { class: 'yen', text: '¥' }), priceIn), priceErr),
+    el('div', { class: 'grid2' },
+      el('div', { class: 'field' }, el('label', { text: '売値（想定）' }),
+        el('div', { class: 'pricebox' }, el('span', { class: 'yen', text: '¥' }), priceIn), priceErr),
+      el('div', { class: 'field' }, el('label', { text: '仕入れ値' }),
+        el('div', { class: 'pricebox' }, el('span', { class: 'yen', text: '¥' }), costIn), costErr)),
+    el('div', { class: 'grid2' },
+      el('div', { class: 'field' }, el('label', { text: '販売手数料（%）' }), feeIn,
+        el('div', { class: 'fnote', text: '空欄なら既定の ' + pct(settings.fee) }), feeErr),
+      el('div', { class: 'field' }, el('label', { text: '送料など（円）' }),
+        el('div', { class: 'pricebox' }, el('span', { class: 'yen', text: '¥' }), shipIn), shipErr)),
+    el('div', { class: 'field' }, preview),
     el('div', { class: 'field' }, el('label', { text: 'アイコン' }), emojiRow),
     el('div', { class: 'field' }, el('label', { text: 'バーコード' }),
       fixedCode
@@ -1222,9 +1568,13 @@ function openRegister(opts){
   setTimeout(function(){ nameIn.focus(); }, 60);
   return panel;
 }
-function updateItemListSafe(){ if (state.tab === 'items') updateItemList(); }
+function updateItemListSafe(){
+  if (state.tab === 'items') updateItemList();
+  else if (state.tab === 'deals') updateDealList();
+}
 function refreshData(){
   if (state.tab === 'items') updateItemList();
+  else if (state.tab === 'deals') updateDealList();
   else { updateResult(); updateHistory(); }
 }
 
