@@ -190,6 +190,13 @@
   .item-desc { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
   .item-meta { margin-top: 8px; font-size: 0.78rem; color: var(--done); font-weight: 600; display: none; }
   .item.done .item-meta { display: block; }
+  /* 撮影頻度の設定（管理画面） */
+  .pr-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px dashed var(--border); }
+  .pr-row:last-child { border-bottom: none; }
+  .pr-title { flex: 1; min-width: 0; font-size: .85rem; }
+  .pr-only { color: var(--muted); font-size: .72rem; margin-left: 4px; }
+  .pr-sel { flex: 0 0 auto; font-size: .8rem; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--text); }
+  .pr-sel.pr-saved { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; }
   .stale-tag { display: inline-block; background: #fdecea; color: #c62828; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; white-space: nowrap; }
   .insp-btn { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 7px 14px; font-weight: 700; font-size: 1rem; cursor: pointer; color: var(--muted); }
   .insp-btn.sel-ok { background: #e8f5e9; border-color: #43a047; color: #2e7d32; }
@@ -1309,6 +1316,7 @@ function isSyncedKey(key) {
     || key.indexOf('inspection_') === 0
     || key === 'proofPool'
     || key === 'proofSpots'
+    || key === 'proofRates'
     || key.indexOf('proofLog_') === 0
     || key.indexOf('proofCancelLog_') === 0
     || key.indexOf('sdef_') === 0
@@ -2276,16 +2284,47 @@ function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = ((h << 5
 function loadProofPool() {
   try { return JSON.parse(localStorage.getItem('proofPool')) || null; } catch (e) { return null; }
 }
+// 項目ごとの撮影頻度: kv `proofRates` = { "areaKey:itemId": 分母 }
+// 分母 N は 1/N の確率＝「N回に1回くらい」。0 なら撮影なし、1 なら毎日必ず。
+// 未設定の項目は proofPool に入っていれば PROOF_RATE（20 ≒ 5%）、入っていなければ 0。
+// 管理画面（店舗まとめ）の「撮影頻度の設定」から変えられる。3店舗共通。
+const PROOF_LEVELS = [
+  { n: 0, label: 'なし' },
+  { n: 20, label: '通常（約5%）' },
+  { n: 10, label: '多め（約10%）' },
+  { n: 5, label: 'かなり多め（約20%）' },
+  { n: 2, label: '半分くらい（約50%）' },
+  { n: 1, label: '毎日必ず' },
+];
+function loadProofRates() {
+  try { return JSON.parse(localStorage.getItem('proofRates')) || {}; } catch (e) { return {}; }
+}
+function saveProofRates(map) { syncSet('proofRates', JSON.stringify(map)); }
+// プールだけで決まる既定値（頻度の指定が無いときの分母）
+function defaultProofRate(areaKey, itemId, pool) {
+  if (pool === undefined) pool = loadProofPool();
+  if (pool) {
+    const ids = pool[areaKey];
+    if (!ids || ids.indexOf(itemId) === -1) return 0; // 点検に関わらない項目は撮影なし
+  }
+  return PROOF_RATE;
+}
+// 一覧をまとめて計算する時は rates / pool を渡して JSON.parse の繰り返しを避ける
+function proofRateFor(areaKey, itemId, rates, pool) {
+  areaKey = baseArea(areaKey);
+  if (rates === undefined) rates = loadProofRates();
+  const v = rates[areaKey + ':' + itemId];
+  if (typeof v === 'number' && v >= 0) return v;
+  return defaultProofRate(areaKey, itemId, pool);
+}
 function needsProof(areaKey, itemId) {
   if (!currentStore || isRoutineArea(areaKey)) return false; // やることリストは対象外
   areaKey = baseArea(areaKey); // 抜き打ちの当たり外れは時間帯で変えない
-  const pool = loadProofPool();
-  if (pool) {
-    const ids = pool[areaKey];
-    if (!ids || ids.indexOf(itemId) === -1) return false; // 点検に関わらない項目は撮影なし
-  }
+  const n = proofRateFor(areaKey, itemId);
+  if (!n) return false;      // なし
+  if (n === 1) return true;  // 毎日必ず
   const date = dateInput.value || todayStr();
-  return hashStr(date + '|' + currentStore + '|' + areaKey + '|' + itemId) % PROOF_RATE === 0;
+  return hashStr(date + '|' + currentStore + '|' + areaKey + '|' + itemId) % n === 0;
 }
 
 // EXIFの撮影日時(DateTimeOriginal)を読み、現在時刻と比較: 'ok'(10分以内) / 'old' / 'none'
@@ -4158,6 +4197,127 @@ async function cleanupOldProofsOnce() {
   } catch (e) {}
 }
 
+// ===== 撮影頻度の設定（管理画面）=====
+// 頻度は3店舗共通だが、項目は店舗ごとに違うので一覧は3店舗の和集合で作る。
+// やることリスト（routine_*）は撮影が発生しないので出さない。
+function proofRateAreas() {
+  const byKey = {};
+  const order = [];
+  STORES.forEach(st => withDefStore(st, () => {
+    allAreas().forEach(a => {
+      if (isRoutineArea(a.key)) return;
+      const items = areaItems(a.key);
+      if (!items.length) return;
+      let rec = byKey[a.key];
+      if (!rec) {
+        rec = byKey[a.key] = { key: a.key, name: a.name, icon: a.icon || 'circle-dot', items: [], seen: {} };
+        order.push(rec);
+      }
+      items.forEach(it => {
+        const hit = rec.seen[it.id];
+        if (hit) { if (hit.stores.indexOf(st) < 0) hit.stores.push(st); return; }
+        const row = { id: it.id, title: it.title, stores: [st] };
+        rec.seen[it.id] = row;
+        rec.items.push(row);
+      });
+    });
+  }));
+  return order;
+}
+// その設定だと1日あたり何項目に📷が付くかの期待値（店舗ごと）
+// 同じ項目を二度数えないよう areaKey:itemId で重複を落とす
+// （組み込みと同じキーの追加エリアや、組み込みと同じidの追加項目があると二重に出るため）
+function proofExpectedPerDay(store) {
+  const rates = loadProofRates();
+  const pool = loadProofPool();
+  return withDefStore(store, () => {
+    const seen = {};
+    let sum = 0;
+    allAreas().forEach(a => {
+      if (isRoutineArea(a.key)) return;
+      areaItems(a.key).forEach(it => {
+        const k = a.key + ':' + it.id;
+        if (seen[k]) return;
+        seen[k] = 1;
+        const n = proofRateFor(a.key, it.id, rates, pool);
+        if (n) sum += 1 / n;
+      });
+    });
+    return sum;
+  });
+}
+function proofRateLabel(n) {
+  const hit = PROOF_LEVELS.find(l => l.n === n);
+  return hit ? hit.label : '1/' + n + '（手動設定）';
+}
+// 頻度の選択肢。既定と違う値が入っている場合はその値も選べるように足す
+function proofRateOptions(cur) {
+  const list = PROOF_LEVELS.slice();
+  if (!list.some(l => l.n === cur)) list.push({ n: cur, label: proofRateLabel(cur) });
+  return list;
+}
+function proofRateSummaryHtml() {
+  return STORES.map(s => escapeHtml(s) + ' <b>' + proofExpectedPerDay(s).toFixed(1) + '</b> 項目')
+    .join('　/　');
+}
+function updateProofRateSummary() {
+  const el = document.getElementById('prRateSummary');
+  if (el) el.innerHTML = '1日あたりの目安： ' + proofRateSummaryHtml();
+}
+function proofRateSectionHtml() {
+  const rates = loadProofRates();
+  const pool = loadProofPool();
+  let html = '<h3 style="margin:20px 0 6px; font-size:1rem;">📷 撮影頻度の設定（項目ごと）</h3>';
+  html += '<p class="hint" style="text-align:left;margin:0 0 8px;">撮ってほしい項目の頻度を上げられます。'
+    + '<b>3店舗共通</b>の設定で、変えるとすぐ保存されます。'
+    + 'どの項目が当たるかは日付から決まるので、頻度を上げた項目でも毎日当たるわけではありません（「毎日必ず」を除く）。</p>';
+  html += '<div id="prRateSummary" class="hint" style="text-align:left;margin:0 0 10px;">1日あたりの目安： '
+    + proofRateSummaryHtml() + '</div>';
+  html += '<div id="prRateAreas">';
+  // 対象がある エリアを先に出す（並び順は各グループの中では定義順のまま）
+  const areas = proofRateAreas();
+  areas.forEach(a => { a.on = a.items.filter(it => proofRateFor(a.key, it.id, rates, pool) > 0).length; });
+  areas.sort((x, y) => (y.on > 0 ? 1 : 0) - (x.on > 0 ? 1 : 0));
+  areas.forEach(a => {
+    const on = a.on;
+    html += '<details style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-bottom:6px;">'
+      + '<summary style="cursor:pointer;font-weight:700;font-size:.9rem;">' + ic(a.icon) + ' ' + escapeHtml(a.name)
+      + ' <span style="font-weight:400;color:var(--muted);">対象 ' + on + '/' + a.items.length + '件</span></summary>';
+    a.items.forEach(it => {
+      const cur = proofRateFor(a.key, it.id, rates, pool);
+      const only = it.stores.length < STORES.length ? '（' + it.stores.join('・') + 'のみ）' : '';
+      html += '<div class="pr-row">'
+        + '<span class="pr-title">' + escapeHtml(it.title)
+        + (only ? '<span class="pr-only">' + escapeHtml(only) + '</span>' : '') + '</span>'
+        + '<select class="pr-sel" data-pr="' + escapeHtml(a.key + ':' + it.id) + '">'
+        + proofRateOptions(cur).map(l => '<option value="' + l.n + '"' + (l.n === cur ? ' selected' : '') + '>'
+          + escapeHtml(l.label) + '</option>').join('')
+        + '</select></div>';
+    });
+    html += '</details>';
+  });
+  html += '</div>';
+  return html;
+}
+function wireProofRateSection(box) {
+  box.querySelectorAll('select[data-pr]').forEach(sel => {
+    sel.onchange = () => {
+      const key = sel.dataset.pr;
+      const cut = key.indexOf(':');
+      const areaKey = key.slice(0, cut);
+      const itemId = key.slice(cut + 1);
+      const n = parseInt(sel.value, 10);
+      const map = loadProofRates();
+      // 既定どおりの値なら指定を消す（設定を小さく保ち、プールの変更が効くようにする）
+      if (n === defaultProofRate(areaKey, itemId)) delete map[key]; else map[key] = n;
+      saveProofRates(map);
+      updateProofRateSummary();
+      sel.classList.add('pr-saved');
+      setTimeout(() => { sel.classList.remove('pr-saved'); }, 1200);
+    };
+  });
+}
+
 function renderSummary() {
   const box = document.getElementById('summaryContent');
   if (inspectingStore && inspDraft) { renderInspectionForm(box); return; } // 点検の採点中
@@ -4225,7 +4385,7 @@ function renderSummary() {
   // ---- 抜き打ち実施写真 ----
   cleanupOldProofsOnce(); // 保持期間を過ぎた写真の掃除（裏で実行）
   html += '<h3 style="margin:20px 0 6px; font-size:1rem;">📷 実施写真（' + date + '）</h3>';
-  html += '<p class="hint" style="text-align:left;margin:0 0 10px;">月次点検（90点テスト）の採点に関わる清掃項目の約5%に日替わりで📷が付き、その場で撮影しないとチェックできません。カメラ直接起動＋受信日時記録なので、古い写真の使い回しはできない仕組みです。写真は' + PROOF_KEEP_DAYS + '日で自動削除。</p>';
+  html += '<p class="hint" style="text-align:left;margin:0 0 10px;">月次点検（90点テスト）の採点に関わる清掃項目の約5%（初期値）に日替わりで📷が付き、その場で撮影しないとチェックできません。頻度は下の「撮影頻度の設定」で項目ごとに変えられます。カメラ直接起動＋受信日時記録なので、古い写真の使い回しはできない仕組みです。写真は' + PROOF_KEEP_DAYS + '日で自動削除。</p>';
   STORES.forEach(s => {
     let plog = [];
     try { plog = JSON.parse(localStorage.getItem('proofLog_' + s)) || []; } catch (e) {}
@@ -4286,6 +4446,9 @@ function renderSummary() {
     }
   });
 
+  // ---- 撮影頻度の設定（項目ごと）----
+  html += proofRateSectionHtml();
+
   // ---- 期間が空いてチェックが入っていない項目 ----
   html += '<h3 style="margin:20px 0 6px; font-size:1rem;">' + ic('calendar-clock') + ' ' + STALE_DAYS + '日以上チェックが入っていない項目</h3>';
   html += '<p class="hint" style="text-align:left;margin:0 0 10px;">最後のチェックから' + STALE_DAYS + '日以上たっている清掃項目です。放置が長い順に表示します。</p>';
@@ -4321,6 +4484,7 @@ function renderSummary() {
   box.querySelectorAll('[data-inspreport]').forEach(b => { b.onclick = () => copyInspectionReport(b.dataset.inspreport); });
   const inspEdit = document.getElementById('inspEditItems');
   if (inspEdit) inspEdit.onclick = openInspItemsDialog;
+  wireProofRateSection(box); // 撮影頻度の選択
 }
 document.getElementById('sumDate').onchange = () => renderSummary();
 
