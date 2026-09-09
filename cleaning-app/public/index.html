@@ -220,6 +220,19 @@
   .rt-row.done .rt-count { color: var(--done); }
   .rt-chevron { color: var(--muted); font-weight: 700; }
   .rt-child { display: flex; align-items: center; gap: 8px; background: #fbfcfd; border: 1px dashed var(--border); border-radius: 8px; padding: 6px 10px; margin: 0 0 3px 26px; cursor: pointer; font-size: .83rem; }
+  /* 見回りの「場所」の選びボタン。押すと下の一覧がその場所のものに入れ替わる */
+  .rt-places { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 4px 22px; }
+  .rt-place {
+    display: inline-flex; align-items: center; gap: 5px;
+    border: 1.5px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 5px 11px; font-size: .8rem; font-weight: 700;
+    cursor: pointer; line-height: 1.2;
+  }
+  .rt-place-n { font-size: .7rem; font-weight: 700; color: var(--muted); }
+  .rt-place.full { border-color: var(--done); color: var(--done); }
+  .rt-place.full .rt-place-n { color: var(--done); }
+  .rt-place.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .rt-place.on .rt-place-n { color: rgba(255,255,255,.85); }
   .rt-subhead { margin: 4px 0 2px 26px; font-size: .75rem; color: var(--muted); font-weight: 700; }
   .rt-open { margin: 2px 0 8px 26px; }
   .rt-open-btn { border: none; background: transparent; color: var(--primary); font-size: .8rem; cursor: pointer; padding: 2px 0; text-decoration: underline; }
@@ -1698,7 +1711,7 @@ function getGroups(areaKey) {
     });
     // カスタム項目
     custom.filter(ci => ci.section === sec).forEach(ci => {
-      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, url: ci.url || '', nums: ci.nums });
+      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -1857,8 +1870,11 @@ const mediaKeys = new Set(); // 例: "shower:floor:ok"
 const mediaTypes = {};       // id → MIMEタイプ（img/video判定用）
 function mediaUrl(id) { return '/api/media/' + encodeURIComponent(id); }
 // 男女で分けたエリア（toilet_m / toilet_w など）は見本写真を元エリアで共有する
+// 見本写真・清掃方法は「元のエリア」と共有する。
+//   男女別エリア      : toilet_m / esthe_w → toilet / esthe
+//   場所ごとのエリア  : shower_b1 / sauna_b3 → shower / sauna（項目idも元と同じにしてある）
 function mediaBaseArea(areaKey) {
-  const base = String(areaKey || '').replace(/_(m|w)$/, '');
+  const base = String(areaKey || '').replace(/_(m|w|b\d+)$/, '');
   return (base !== areaKey && AREAS.some(a => a.key === base)) ? base : areaKey;
 }
 function mediaId(areaKey, itemId, kind) { return mediaBaseArea(areaKey) + ':' + itemId + ':' + kind; }
@@ -2639,8 +2655,9 @@ function renderTabs() {
     el.appendChild(btn);
   };
   // 上段: 清掃エリア（組み込みエリアで項目を全部消した場合はタブごと隠す＝店舗にない設備の非表示用）
+  // hidden:true のエリアもタブに出さない（やることリストの連動先としてだけ使う枠。例: 見回りの場所）
   allAreas()
-    .filter(a => !isRoutineArea(a.key))
+    .filter(a => !isRoutineArea(a.key) && !a.hidden)
     .filter(a => !AREAS.some(x => x.key === a.key) || areaItems(a.key).length > 0)
     .forEach(a => makeTab(a, tabsEl));
   // 定期清掃タブ（独立枠）
@@ -2928,6 +2945,7 @@ document.getElementById('areaDelete').onclick = () => {
 
 // ===== 朝番・中番・遅番のコンパクト表示（1画面・ツリー展開でその場チェック）=====
 const routineExpanded = new Set(); // 展開中の連動項目id
+const routineLinkTab = {};         // linkTabs の項目で、今どの場所を選んでいるか { 項目id: エリアキー }
 // 朝番・中番・遅番の項目を画面から編集するモード。
 // 追加・編集・削除の仕組みは他のエリアと同じものを使う（保存先も店舗別で同じ）。
 // 通常の使用中に誤ってチェックが入らないよう、切り替え式にしている。
@@ -3053,7 +3071,26 @@ function renderRoutineView() {
       + (descText ? '<div class="rt-desc">' + escapeHtml(descText) + '</div>' : '')
       + '</div>';
     if (expanded) {
-      const keys = String(item.link).split(',').map(s => s.trim()).filter(Boolean);
+      let keys = String(item.link).split(',').map(s => s.trim()).filter(Boolean);
+      // linkTabs: 連動先を「場所の選びボタン」にして、選んだ1つ分だけ一覧を出す。
+      // （見回りのように、同じ清掃リストを場所ごとに繰り返す場合。全部並べると長すぎる）
+      const asTabs = !!item.linkTabs && keys.length > 1 && !routineEditMode;
+      if (asTabs) {
+        const cur = routineLinkTab[item.id] && keys.indexOf(routineLinkTab[item.id]) >= 0
+          ? routineLinkTab[item.id] : keys[0];
+        html += '<div class="rt-places">';
+        keys.forEach(pk => {
+          const pa = getArea(pk);
+          const pc = areaCompletionToday(scopedArea(pk, currentArea));
+          html += '<button type="button" class="rt-place' + (pk === cur ? ' on' : '')
+            + (pc.total > 0 && pc.done === pc.total ? ' full' : '') + '" data-rt-place="'
+            + escapeHtml(item.id) + '" data-rt-area="' + escapeHtml(pk) + '">'
+            + escapeHtml(pa ? pa.name : pk)
+            + '<span class="rt-place-n">' + pc.done + '/' + pc.total + '</span></button>';
+        });
+        html += '</div>';
+        keys = [cur];
+      }
       keys.forEach(k => {
         const area = getArea(k);
         if (keys.length > 1 && area) html += '<div class="rt-subhead">' + escapeHtml(area.name) + '</div>';
@@ -3203,6 +3240,14 @@ function renderRoutineView() {
   });
   checklist.querySelectorAll('.rt-open-btn').forEach(b => {
     b.onclick = (e) => { e.stopPropagation(); currentArea = b.dataset.area; render(); window.scrollTo(0, 0); };
+  });
+  // 場所の選びボタン: 押すと下の一覧がその場所のものに入れ替わる（チェックは場所ごとに残る）
+  checklist.querySelectorAll('.rt-place').forEach(b => {
+    b.onclick = (e) => {
+      e.stopPropagation();
+      routineLinkTab[b.dataset.rtPlace] = b.dataset.rtArea;
+      render();
+    };
   });
   // 進捗バー
   const doneCount = items.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
@@ -4205,7 +4250,7 @@ function proofRateAreas() {
   const order = [];
   STORES.forEach(st => withDefStore(st, () => {
     allAreas().forEach(a => {
-      if (isRoutineArea(a.key)) return;
+      if (isRoutineArea(a.key) || a.hidden) return;
       const items = areaItems(a.key);
       if (!items.length) return;
       let rec = byKey[a.key];
@@ -4234,7 +4279,7 @@ function proofExpectedPerDay(store) {
     const seen = {};
     let sum = 0;
     allAreas().forEach(a => {
-      if (isRoutineArea(a.key)) return;
+      if (isRoutineArea(a.key) || a.hidden) return;
       areaItems(a.key).forEach(it => {
         const k = a.key + ':' + it.id;
         if (seen[k]) return;
