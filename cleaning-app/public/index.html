@@ -1606,7 +1606,7 @@ function getGroups(areaKey) {
     });
     // カスタム項目
     custom.filter(ci => ci.section === sec).forEach(ci => {
-      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', url: ci.url || '', nums: ci.nums });
+      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, url: ci.url || '', nums: ci.nums });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -2464,11 +2464,16 @@ function linkedStatus(item, fromArea) {
   if (!keys.length) return null;
   // fromArea（開いている時間帯）ごとに別々に数える
   const parts = keys.map(k => ({ key: k, area: getArea(k), c: areaCompletionToday(scopedArea(k, fromArea)) }));
-  const complete = parts.every(p => p.c.total > 0 && p.c.done === p.c.total);
   const label = parts.map(p => (p.area ? p.area.name : p.key) + ' ' + p.c.done + '/' + p.c.total).join('、');
   const firstIncomplete = parts.find(p => !(p.c.total > 0 && p.c.done === p.c.total));
   const doneSum = parts.reduce((s, p) => s + p.c.done, 0);
   const totalSum = parts.reduce((s, p) => s + p.c.total, 0);
+  // 項目に linkAny を付けると「どれか1つ以上やれば完了」になる。
+  // マシンメンテのように何日かかけて回すものは、全部そろう日が無く、
+  // 全部そろわないと完了にしないと やることリストが永久に終わらないため。
+  const complete = item.linkAny
+    ? doneSum > 0
+    : parts.every(p => p.c.total > 0 && p.c.done === p.c.total);
   return { complete: complete, label: label, done: doneSum, total: totalSum, jumpTo: firstIncomplete ? firstIncomplete.key : parts[0].key };
 }
 // 項目の実効的な完了判定（連動項目はリンク先の完了、通常項目は自分の記録）
@@ -2930,8 +2935,14 @@ function renderRoutineView() {
         if (keys.length > 1 && area) html += '<div class="rt-subhead">' + escapeHtml(area.name) + '</div>';
         const sk = scopedArea(k, currentArea); // この時間帯ぶんの記録
         const crec = loadRecordMerged(sk); // 他の担当者の分も含める
+        const cgroups = getGroups(k);
         const citems = areaItems(k);
-        citems.forEach((ci, ci_i) => {
+        let ci_i = -1; // 並べ替え用の通し番号（areaItems と同じ並び）
+        cgroups.forEach(g => {
+          // 区分が複数あるエリアは見出しを出す（同じ題名が区分違いで並ぶため）
+          if (cgroups.length > 1) html += '<div class="rt-subhead">' + escapeHtml(g.section) + '</div>';
+          g.items.forEach((ci) => {
+          ci_i++;
           const cdone = !!crec[ci.id];
           // 数値を入れる子項目（ゴルフのクラブ本数など）は、この場で入力できるようにする
           const cNums = !routineEditMode && itemNumFields(ci).length > 0;
@@ -2944,6 +2955,7 @@ function renderRoutineView() {
                 : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
             + (cNums ? numFieldsHtml(ci) : '')
             + '</div>';
+          });
         });
         // 編集中は、この連動先エリアにも項目を足せるようにする
         if (routineEditMode) {
