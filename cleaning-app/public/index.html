@@ -288,6 +288,28 @@
   .rt-child .rt-act { width: 27px; height: 27px; }
   .rt-childadd { margin: 2px 0 8px 26px; }
   .rt-add-btn.rt-add-child { font-size: .78rem; padding: 7px; margin-top: 0; }
+  /* ふりかえり画面 */
+  .rv-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+  .rv-card h3 { margin: 0 0 8px; font-size: .95rem; display: flex; align-items: center; gap: 6px; }
+  .rv-card h3 .ic { width: 17px; height: 17px; }
+  .rv-good { border-left: 4px solid var(--done); }
+  .rv-good h3 { color: var(--done); }
+  .rv-watch { border-left: 4px solid #ef6c00; }
+  .rv-watch h3 { color: #ef6c00; }
+  .rv-next { border-left: 4px solid var(--primary); }
+  .rv-next h3 { color: var(--primary-dark); }
+  .rv-line { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px dashed var(--border); font-size: .85rem; }
+  .rv-line:last-child { border-bottom: none; }
+  .rv-line .v { color: var(--muted); white-space: nowrap; font-weight: 700; }
+  .rv-line .v.warn { color: #ef6c00; }
+  .rv-note { font-size: .78rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .rv-stat { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+  .rv-stat div { flex: 1 1 90px; background: var(--bg); border-radius: 8px; padding: 8px; text-align: center; }
+  .rv-stat b { display: block; font-size: 1.15rem; color: var(--primary-dark); }
+  .rv-stat span { font-size: .72rem; color: var(--muted); }
+  .rv-todo { font-size: .87rem; line-height: 1.6; margin: 0; padding-left: 1.1em; }
+  .rv-todo li { margin-bottom: 5px; }
+  .rv-empty { color: var(--muted); font-size: .85rem; }
   /* 数値入力欄（サーマナイフのショット数など。項目に nums を設定すると出る） */
   .num-wrap { flex-basis: 100%; margin: 8px 0 2px 34px; display: flex; gap: 8px; flex-wrap: wrap; }
   .item .num-wrap { margin: 8px 0 2px; }
@@ -597,6 +619,7 @@
   <div class="mode-switch">
     <button class="mode-btn active" id="modeChecklist"><span class="ic-slot" data-icon="clipboard-list"></span> チェックシート</button>
     <button class="mode-btn" id="modeCompare"><span class="ic-slot" data-icon="bar-chart-3"></span> 結果の比較</button>
+    <button class="mode-btn" id="modeReview"><span class="ic-slot" data-icon="calendar-check"></span> ふりかえり</button>
     <button class="mode-btn" id="modeSummary" style="display:none;"><span class="ic-slot" data-icon="building-2"></span> 店舗まとめ</button>
   </div>
   <div class="tabs" id="tabs"></div>
@@ -653,6 +676,11 @@
       </div>
     </div>
     <div id="compareContent"></div>
+  </div>
+
+  <!-- ②-2 ふりかえり画面（清掃の頻度を見て、よい所と気になる所を出す） -->
+  <div id="reviewView" style="display:none;">
+    <div id="reviewContent"></div>
   </div>
 
   <!-- ③ 店舗まとめ（3店舗ダッシュボード・管理者専用）画面 -->
@@ -3597,9 +3625,11 @@ document.getElementById('staffCsv').onchange = async function () {
 const checklistView = document.getElementById('checklistView');
 const compareView = document.getElementById('compareView');
 const summaryView = document.getElementById('summaryView');
+const reviewView = document.getElementById('reviewView');
 const modeChecklistBtn = document.getElementById('modeChecklist');
 const modeCompareBtn = document.getElementById('modeCompare');
 const modeSummaryBtn = document.getElementById('modeSummary');
+const modeReviewBtn = document.getElementById('modeReview');
 const cmpArea = document.getElementById('cmpArea');
 const cmpStaff = document.getElementById('cmpStaff');
 const headerSub = document.getElementById('headerSub');
@@ -3642,27 +3672,219 @@ function refreshCmpStaff() {
 refreshCmpStaff();
 
 function setMode(mode) {
-  const isCompare = mode === 'compare', isSummary = mode === 'summary';
-  checklistView.style.display = (isCompare || isSummary) ? 'none' : 'block';
+  const isCompare = mode === 'compare', isSummary = mode === 'summary', isReview = mode === 'review';
+  const other = isCompare || isSummary || isReview;
+  checklistView.style.display = other ? 'none' : 'block';
   compareView.style.display = isCompare ? 'block' : 'none';
   summaryView.style.display = isSummary ? 'block' : 'none';
-  tabsEl.style.display = (isCompare || isSummary) ? 'none' : 'flex';
-  tabsRoutineEl.style.display = (isCompare || isSummary) ? 'none' : 'flex';
-  modeChecklistBtn.classList.toggle('active', !isCompare && !isSummary);
+  reviewView.style.display = isReview ? 'block' : 'none';
+  tabsEl.style.display = other ? 'none' : 'flex';
+  tabsRoutineEl.style.display = other ? 'none' : 'flex';
+  modeChecklistBtn.classList.toggle('active', !other);
   modeCompareBtn.classList.toggle('active', isCompare);
   modeSummaryBtn.classList.toggle('active', isSummary);
+  modeReviewBtn.classList.toggle('active', isReview);
   headerSub.textContent = isSummary
     ? '3店舗のその日の実施状況をまとめて確認できます'
-    : isCompare
-      ? '登録した結果を、チェックシートごとに比較できます'
-      : '担当者を選び、エリアごとに完了項目をタップ';
+    : isReview
+      ? 'この2週間の清掃の記録から、よい所と気になる所を出しています'
+      : isCompare
+        ? '登録した結果を、チェックシートごとに比較できます'
+        : '担当者を選び、エリアごとに完了項目をタップ';
   if (isSummary) renderSummary();
+  else if (isReview) renderReview();
   else if (isCompare) renderCompare();
   else render();
 }
 modeChecklistBtn.onclick = () => setMode('check');
 modeCompareBtn.onclick = () => setMode('compare');
 modeSummaryBtn.onclick = () => setMode('summary');
+modeReviewBtn.onclick = () => setMode('review');
+
+// ===== ふりかえり（清掃の頻度から、よい所・気になる所・今後を出す）=====
+const REVIEW_DAYS = 14;   // 見る期間
+const RV_RECENT = 7;      // 「続けてできている」を見る期間
+function shiftDate(dateStr, days) {
+  const d = new Date(dateStr + 'T00:00:00');
+  d.setDate(d.getDate() + days);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+    + '-' + String(d.getDate()).padStart(2, '0');
+}
+// その店舗の記録を全部読む。エリアは @時間帯 / #曜日 を落としてまとめる
+function reviewRecords(store) {
+  const out = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    const p = parseRecordKey(k, store);
+    if (!p) continue;
+    let ids = [];
+    try { ids = Object.keys(JSON.parse(localStorage.getItem(k)) || {}); } catch (e) {}
+    if (ids.length) out.push({ staff: p.staff, area: baseArea(p.area), date: p.date, ids: ids });
+  }
+  return out;
+}
+function reviewData(store) {
+  const recs = reviewRecords(store);
+  const today = todayStr();
+  const from = shiftDate(today, -(REVIEW_DAYS - 1));
+  const recentFrom = shiftDate(today, -(RV_RECENT - 1));
+  const win = recs.filter(r => r.date >= from);
+
+  const areas = allAreas().filter(a => !isRoutineArea(a.key));
+  const daysOf = {}, lastOf = {}, doneEver = {};
+  recs.forEach(r => {
+    if (!doneEver[r.area]) doneEver[r.area] = new Set();
+    r.ids.forEach(id => doneEver[r.area].add(id));
+    if (!lastOf[r.area] || r.date > lastOf[r.area]) lastOf[r.area] = r.date;
+  });
+  win.forEach(r => {
+    if (!daysOf[r.area]) daysOf[r.area] = new Set();
+    daysOf[r.area].add(r.date);
+  });
+
+  // 続けてできている項目（直近7日で過半数の日にチェックがある）
+  const streak = {};
+  recs.filter(r => r.date >= recentFrom).forEach(r => {
+    r.ids.forEach(id => {
+      const kk = r.area + ':' + id;
+      (streak[kk] = streak[kk] || new Set()).add(r.date);
+    });
+  });
+  const good = Object.keys(streak).filter(kk => streak[kk].size >= 4)
+    .map(kk => ({ key: kk, days: streak[kk].size }))
+    .sort((a, b) => b.days - a.days);
+
+  // 使われているエリア（項目がある物だけ見る）
+  const rows = areas.filter(a => areaItems(a.key).length > 0).map(a => ({
+    key: a.key, name: a.name,
+    days: daysOf[a.key] ? daysOf[a.key].size : 0,
+    last: lastOf[a.key] || null,
+    total: areaItems(a.key).length,
+    never: areaItems(a.key).filter(it => !(doneEver[a.key] || new Set()).has(it.id)).length,
+  }));
+
+  const shifts = ROUTINE_KEYS.map(rk => ({
+    key: rk, name: (getArea(rk) || {}).name || rk,
+    days: new Set(win.filter(r => r.area === rk).map(r => r.date)).size,
+  }));
+
+  return {
+    from: from, today: today,
+    recordDays: new Set(win.map(r => r.date)).size,
+    checks: win.reduce((s, r) => s + r.ids.length, 0),
+    staff: new Set(win.map(r => r.staff)).size,
+    rows: rows, shifts: shifts, good: good,
+  };
+}
+// 「今後どうしよう」の提案。数字から自動で組み立てる
+function reviewSuggestions(d) {
+  const out = [];
+  const asa = (d.shifts.find(s => s.key === 'routine_asa') || {}).days || 0;
+  const ban = (d.shifts.find(s => s.key === 'routine_ban') || {}).days || 0;
+  const hiru = (d.shifts.find(s => s.key === 'routine_hiru') || {}).days || 0;
+  const top = Math.max(asa, hiru, ban);
+  if (d.recordDays === 0) {
+    out.push('この2週間、まだ記録がありません。まずは1日1回、終わった項目をタップする所から始めましょう。');
+    return out;
+  }
+  if (d.recordDays < REVIEW_DAYS / 2) {
+    out.push('記録が付いている日が ' + d.recordDays + '日 / ' + REVIEW_DAYS + '日 です。'
+      + '掃除はしていても記録が残っていないと、やった証拠になりません。まず毎日つける所を目標にしましょう。');
+  }
+  [['routine_asa', '朝番', asa], ['routine_hiru', '中番', hiru], ['routine_ban', '遅番', ban]]
+    .forEach(([, nm, v]) => {
+      if (top >= 3 && v <= top * 0.6) {
+        out.push(nm + 'の記録が ' + v + '日 と、他の時間帯（最大 ' + top + '日）より少なめです。'
+          + '交代のタイミングで付ける流れを作れないか見てみましょう。');
+      }
+    });
+  const stale = d.rows.filter(r => r.last && daysSince(r.last) >= 5)
+    .sort((a, b) => daysSince(b.last) - daysSince(a.last));
+  if (stale.length) {
+    out.push('しばらく記録が無い場所があります（' + stale.slice(0, 3).map(r => r.name).join('、')
+      + (stale.length > 3 ? ' ほか' + (stale.length - 3) + '件' : '') + '）。'
+      + '実際にやっているならチェックを、やらなくなったなら項目の見直しを。');
+  }
+  const noRec = d.rows.filter(r => !r.last).sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+  if (noRec.length) {
+    out.push('一度も記録が無い場所が ' + noRec.length + '件 あります（' + noRec.slice(0, 3).map(r => r.name).join('、')
+      + '）。使う予定が無ければ「項目を編集」で整理すると、リストが実態に合います。');
+  }
+  // 使っているエリアの中の抜けだけ数える（使っていないエリアは上の行で別に挙げている）
+  const neverN = d.rows.filter(r => r.last).reduce((s, r) => s + r.never, 0);
+  if (neverN >= 10) {
+    out.push('まだ一度もチェックされていない項目が ' + neverN + '件 あります。'
+      + '本当に必要な項目か、いま一度見直してみましょう。');
+  }
+  if (!out.length) out.push('大きな抜けは見当たりません。この調子で続けましょう。');
+  return out;
+}
+function renderReview() {
+  const box = document.getElementById('reviewContent');
+  if (!currentStore) {
+    box.innerHTML = '<div class="rv-card"><div class="rv-empty">先に「チェックシート」で店舗を選んでください。</div></div>';
+    return;
+  }
+  const d = reviewData(currentStore);
+  const esc = escapeHtml;
+  let h = '';
+
+  h += '<div class="rv-card"><h3>' + ic('calendar-clock') + esc(currentStore)
+    + '｜' + esc(d.from.slice(5).replace('-', '/')) + ' 〜 ' + esc(d.today.slice(5).replace('-', '/')) + '</h3>'
+    + '<div class="rv-stat">'
+    + '<div><b>' + d.recordDays + '</b><span>記録のある日</span></div>'
+    + '<div><b>' + d.checks + '</b><span>チェックした数</span></div>'
+    + '<div><b>' + d.staff + '</b><span>記入した人</span></div>'
+    + '</div>'
+    + '<div class="rv-line"><span>時間帯ごとの日数</span><span class="v">'
+    + d.shifts.map(s => esc(s.name) + ' ' + s.days + '日').join('　') + '</span></div>'
+    + '<div class="rv-note">※「記入した人」は、シフトが重なった日は連名で1つと数えます。</div></div>';
+
+  // よくできている
+  const topAreas = d.rows.filter(r => r.days > 0).sort((a, b) => b.days - a.days).slice(0, 5);
+  h += '<div class="rv-card rv-good"><h3>' + ic('check') + 'よくできている所</h3>';
+  if (!topAreas.length) h += '<div class="rv-empty">この2週間の記録がまだありません。</div>';
+  else {
+    h += topAreas.map(r => '<div class="rv-line"><span>' + esc(r.name) + '</span>'
+      + '<span class="v">' + r.days + '日</span></div>').join('');
+    if (d.good.length) {
+      h += '<div class="rv-note">直近' + RV_RECENT + '日のうち4日以上チェックが付いている項目が <b>'
+        + d.good.length + '件</b> あります。習慣になってきています。</div>';
+    }
+  }
+  h += '</div>';
+
+  // 気になる
+  // 「間があいている」と「そもそも一度も使っていない」は意味が違うので分ける。
+  // 混ぜると、使っていないエリアばかり並んで本当に見てほしい所が埋もれる
+  const gap = d.rows.filter(r => r.last && daysSince(r.last) >= 3)
+    .sort((a, b) => daysSince(b.last) - daysSince(a.last));
+  const none = d.rows.filter(r => !r.last).sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+  h += '<div class="rv-card rv-watch"><h3>' + ic('zap') + '気になる所</h3>';
+  if (!gap.length && !none.length) h += '<div class="rv-empty">3日以上あいている場所はありません。</div>';
+  if (gap.length) {
+    h += gap.slice(0, 6).map(r => '<div class="rv-line"><span>' + esc(r.name) + '</span>'
+      + '<span class="v warn">' + esc(lastDoneLabel(r.last)) + '</span></div>').join('');
+    if (gap.length > 6) h += '<div class="rv-note">ほか ' + (gap.length - 6) + '件あいています。</div>';
+  }
+  if (none.length) {
+    h += '<div class="rv-note">一度も記録が無い場所（' + none.length + '件）：'
+      + esc(none.slice(0, 8).map(r => r.name).join('、'))
+      + (none.length > 8 ? ' ほか' + (none.length - 8) + '件' : '') + '</div>';
+  }
+  const neverN = d.rows.filter(r => r.last).reduce((s, r) => s + r.never, 0);
+  if (neverN) h += '<div class="rv-note">使っている場所の中で、まだ一度もチェックされていない項目：<b>'
+    + neverN + '件</b></div>';
+  h += '<div class="rv-note">※記録が無い＝やっていない、とは限りません。'
+    + 'チェックの付け忘れかどうかも合わせて見てください。</div></div>';
+
+  // 今後
+  h += '<div class="rv-card rv-next"><h3>' + ic('book-open-text') + '今後どうしよう</h3>'
+    + '<ul class="rv-todo">' + reviewSuggestions(d).map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></div>';
+
+  box.innerHTML = h;
+  fillIconSlots(box);
+}
 
 // ===== 店舗まとめ（3店舗ダッシュボード）=====
 // その店舗・その日の全担当者の記録を合算して、エリアごとの完了数を出す
