@@ -275,6 +275,13 @@
   .rt-row.rt-editing { align-items: flex-start; padding-top: 8px; padding-bottom: 8px; }
   .rt-row.rt-editing .rt-check, .rt-row.rt-editing .rt-icon, .rt-row.rt-editing .rt-actions { margin-top: 1px; }
   .rt-child.has-nums { flex-wrap: wrap; }
+  /* 今日の曜日ではない枠。押せないことが分かるように灰色にする */
+  .rt-child.rt-off { background: #eceff1; border-style: solid; border-color: #e0e4e7; cursor: default; opacity: .7; }
+  .rt-child.rt-off .rt-title { color: var(--muted); }
+  .rt-daysec { margin: 6px 0 3px 26px; font-size: .78rem; font-weight: 700; color: var(--primary); }
+  .rt-daysec.off { color: var(--muted); font-weight: 400; }
+  .rt-daysec .today { font-size: .72rem; font-weight: 700; margin-left: 4px; }
+  .rt-daynote { margin: 6px 0 2px 26px; font-size: .72rem; color: var(--muted); }
   .rt-child .num-wrap { margin: 6px 0 2px 28px; }
   .rt-child.rt-editing { align-items: flex-start; }
   .rt-child.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
@@ -1516,8 +1523,47 @@ function allAreas() { return AREAS.concat(loadCustomAreas()); }
 //   例: floor@routine_asa（朝番のフロア） / floor@routine_ban（遅番のフロア）
 // 項目の定義（一覧・見本・清掃方法）は @ の前のエリアを共有し、記録だけを分ける。
 function baseArea(key) {
-  const at = String(key || '').indexOf('@');
-  return at < 0 ? key : key.slice(0, at);
+  let s = String(key || '');
+  const h = s.indexOf('#');       // 曜日の枠（#d1 など）を落とす
+  if (h >= 0) s = s.slice(0, h);
+  const at = s.indexOf('@');      // 時間帯（@routine_hiru）を落とす
+  return at < 0 ? s : s.slice(0, at);
+}
+// 曜日で分ける枠。スプレッドシートの 月・木 / 火・金 / 水・土 と同じ。
+// エリアに weekCycle: true を付けると、そのエリアの記録が枠ごとに分かれる。
+const DAY_GROUPS = [
+  { id: 'd1', name: '月・木', days: [1, 4] },
+  { id: 'd2', name: '火・金', days: [2, 5] },
+  { id: 'd3', name: '水・土', days: [3, 6] },
+];
+let _weekCycleCache = null; // 1回の描画内でのキャッシュ
+function isWeekCycleArea(areaKey) {
+  const b = baseArea(areaKey);
+  if (_weekCycleCache && b in _weekCycleCache) return _weekCycleCache[b];
+  const a = getArea(b);
+  const v = !!(a && a.weekCycle);
+  if (_weekCycleCache) _weekCycleCache[b] = v;
+  return v;
+}
+// その日がどの枠か。日曜は「全体の点検」なので枠を決めない（null）
+function dayGroupOf(dateStr) {
+  const wd = new Date((dateStr || todayStr()) + 'T00:00:00').getDay();
+  const g = DAY_GROUPS.find(x => x.days.indexOf(wd) >= 0);
+  return g ? g.id : null;
+}
+// その週の月曜の日付。「チェックは一週間消さない」に合わせ、
+// 週で分ける記録はこの日付をキーに使う（月にやった分が木にも残る）
+function weekAnchor(dateStr) {
+  const d = new Date((dateStr || todayStr()) + 'T00:00:00');
+  const back = d.getDay() === 0 ? 6 : d.getDay() - 1; // 日曜はその前の月曜へ
+  d.setDate(d.getDate() - back);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+    + '-' + String(d.getDate()).padStart(2, '0');
+}
+// 記録に使う日付。週で分けるエリアだけ週の月曜にする
+function recDate(areaKey) {
+  const d = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
+  return isWeekCycleArea(areaKey) ? weekAnchor(d) : d;
 }
 function scopedArea(areaKey, fromArea) {
   return isRoutineArea(fromArea) ? areaKey + '@' + fromArea : areaKey;
@@ -1541,13 +1587,23 @@ function routinesLinking(areaKey) {
 //       萩野通のシャワーは朝・中・遅から参照 → 16:24 なら中番ぶんに入る
 // どの時間帯からも参照されていないエリア（マシンメンテ等）は今までどおり分けない。
 function recArea(areaKey) {
-  if (typeof areaKey !== 'string' || areaKey.indexOf('@') >= 0) return areaKey; // すでに時間帯つき
+  if (typeof areaKey !== 'string') return areaKey;
+  if (areaKey.indexOf('#') >= 0) return areaKey; // すでに曜日の枠つき
   if (isRoutineArea(areaKey)) return areaKey;
-  const rs = routinesLinking(areaKey);
-  if (!rs.length) return areaKey;
-  const now = nowTimeStr();
-  const started = rs.filter(k => { const w = routineHours(k); return w && now >= w.from; });
-  return areaKey + '@' + (started.length ? started[started.length - 1] : rs[0]);
+  let k = areaKey;
+  if (k.indexOf('@') < 0) { // まだ時間帯が付いていなければ付ける
+    const rs = routinesLinking(k);
+    if (rs.length) {
+      const now = nowTimeStr();
+      const started = rs.filter(x => { const w = routineHours(x); return w && now >= w.from; });
+      k = k + '@' + (started.length ? started[started.length - 1] : rs[0]);
+    }
+  }
+  // 週で分けるエリアは、さらに曜日の枠で分ける。
+  // 日曜は枠が決まらないので、エリアのタブからは先頭の枠に入れる
+  // （やることリストでは日曜だけ3つの枠すべてを触れるようにしている＝全体の点検）
+  if (isWeekCycleArea(k)) k += '#' + (dayGroupOf(dateInput && dateInput.value) || DAY_GROUPS[0].id);
+  return k;
 }
 // 記録キーを分解する: clean_<店舗>_<担当者>_<エリア>_<日付>
 // （店舗名・担当者名に _ は無い前提。store を省くとキーから読む）
@@ -1623,7 +1679,7 @@ function recordKey(areaKey, staff) {
   const who = staff !== undefined ? staff : currentStaff;
   areaKey = recArea(areaKey); // エリアのタブから触った分も、その時間帯の記録に入れる
   // 店舗を含めて記録を分ける（社員は全店舗の名簿に居るため、店舗を跨ぐと同日同エリアの記録が混ざる）
-  return 'clean_' + (currentStore ? currentStore + '_' : '') + who + '_' + areaKey + '_' + dateInput.value;
+  return 'clean_' + (currentStore ? currentStore + '_' : '') + who + '_' + areaKey + '_' + recDate(areaKey);
 }
 function loadRecord(areaKey, staff) {
   try { return JSON.parse(localStorage.getItem(recordKey(areaKey, staff))) || {}; }
@@ -1638,7 +1694,7 @@ function loadRecordMerged(areaKey) {
   for (let i = 0; i < localStorage.length; i++) {
     const p = parseRecordKey(localStorage.key(i), currentStore);
     // その時間帯の記録。加えて、時間帯で分ける前に付いた同日の記録（旧形式）も拾う
-    if (!p || p.date !== dateInput.value || (p.area !== ra && p.area !== base)) continue;
+    if (!p || p.date !== recDate(areaKey) || (p.area !== ra && p.area !== base)) continue;
     try {
       const r = JSON.parse(localStorage.getItem(localStorage.key(i))) || {};
       Object.keys(r).forEach(id => { if (!merged[id]) merged[id] = r[id]; });
@@ -2437,7 +2493,7 @@ let _areaCompCache = null; // 1回の描画内でのキャッシュ（render/ren
 function areaCompletionToday(areaKey) {
   if (_areaCompCache && _areaCompCache[areaKey]) return _areaCompCache[areaKey];
   const ids = areaItems(areaKey).map(i => i.id);
-  const date = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
+  const date = recDate(areaKey);
   const doneSet = new Set();
   if (currentStore) {
     const ra = recArea(areaKey);
@@ -2495,6 +2551,7 @@ const tabsRoutineEl = document.getElementById('tabsRoutine');
 function renderTabs() {
   _areaCompCache = {};
   _linkCache = {};
+  _weekCycleCache = {};
   tabsEl.innerHTML = '';
   tabsRoutineEl.innerHTML = '';
   const makeTab = (area, el) => {
@@ -2933,28 +2990,45 @@ function renderRoutineView() {
       keys.forEach(k => {
         const area = getArea(k);
         if (keys.length > 1 && area) html += '<div class="rt-subhead">' + escapeHtml(area.name) + '</div>';
-        const sk = scopedArea(k, currentArea); // この時間帯ぶんの記録
-        const crec = loadRecordMerged(sk); // 他の担当者の分も含める
+        const baseSk = scopedArea(k, currentArea); // この時間帯ぶんの記録
         const cgroups = getGroups(k);
         const citems = areaItems(k);
-        let ci_i = -1; // 並べ替え用の通し番号（areaItems と同じ並び）
-        cgroups.forEach(g => {
-          // 区分が複数あるエリアは見出しを出す（同じ題名が区分違いで並ぶため）
-          if (cgroups.length > 1) html += '<div class="rt-subhead">' + escapeHtml(g.section) + '</div>';
-          g.items.forEach((ci) => {
-          ci_i++;
-          const cdone = !!crec[ci.id];
-          // 数値を入れる子項目（ゴルフのクラブ本数など）は、この場で入力できるようにする
-          const cNums = !routineEditMode && itemNumFields(ci).length > 0;
-          html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
-            + (cNums ? ' has-nums' : '') + '" data-area="' + escapeHtml(sk) + '" data-id="' + escapeHtml(ci.id) + '">'
-            + '<span class="rt-check">' + ic('check') + '</span>'
-            + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
-            + (routineEditMode
-                ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
-                : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
-            + (cNums ? numFieldsHtml(ci) : '')
-            + '</div>';
+        // 週で分けるエリア（マシンメンテ）は 月・木 / 火・金 / 水・土 の3枠を並べる。
+        // 今日の枠だけ押せて、他の枠は灰色で見るだけ（日曜は全体の点検なので3枠とも押せる）
+        const weekly = isWeekCycleArea(k) && !routineEditMode;
+        const todayG = weekly ? dayGroupOf(dateInput && dateInput.value) : null;
+        const blocks = weekly
+          ? DAY_GROUPS.map(dg => ({ sk: baseSk + '#' + dg.id, day: dg,
+              off: !!todayG && todayG !== dg.id, today: todayG === dg.id }))
+          : [{ sk: baseSk, day: null, off: false, today: false }];
+        // 日曜は枠が決まらない＝全体の点検。3枠とも触れることを書いておく
+        if (weekly && !todayG) html += '<div class="rt-daynote">日曜日は全体の点検（どの枠も確認できます）</div>';
+        blocks.forEach(bl => {
+          const crec = loadRecordMerged(bl.sk); // 他の担当者の分も含める
+          if (bl.day) {
+            html += '<div class="rt-daysec' + (bl.off ? ' off' : '') + '">' + escapeHtml(bl.day.name)
+              + (bl.today ? '<span class="today">← 今日</span>' : '') + '</div>';
+          }
+          let ci_i = -1; // 並べ替え用の通し番号（areaItems と同じ並び）
+          cgroups.forEach(g => {
+            // 区分が複数あるエリアは見出しを出す（同じ題名が区分違いで並ぶため）
+            if (cgroups.length > 1) html += '<div class="rt-subhead">' + escapeHtml(g.section) + '</div>';
+            g.items.forEach((ci) => {
+            ci_i++;
+            const cdone = !!crec[ci.id];
+            // 数値を入れる子項目（ゴルフのクラブ本数など）は、この場で入力できるようにする
+            const cNums = !routineEditMode && itemNumFields(ci).length > 0;
+            html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
+              + (bl.off ? ' rt-off' : '')
+              + (cNums ? ' has-nums' : '') + '" data-area="' + escapeHtml(bl.sk) + '" data-id="' + escapeHtml(ci.id) + '">'
+              + '<span class="rt-check">' + ic('check') + '</span>'
+              + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
+              + (routineEditMode
+                  ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
+                  : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
+              + (cNums ? numFieldsHtml(ci) : '')
+              + '</div>';
+            });
           });
         });
         // 編集中は、この連動先エリアにも項目を足せるようにする
@@ -3055,6 +3129,7 @@ function renderRoutineView() {
   checklist.querySelectorAll('.rt-child').forEach(row => {
     row.onclick = (e) => {
       if (routineEditMode) return; // 編集中はタップでチェックを入れない
+      if (row.classList.contains('rt-off')) return; // 今日の曜日ではない枠は見るだけ
       if (e.target.closest('.rt-act')) return;
       toggleItemIn(row.dataset.area, row.dataset.id);
     };
