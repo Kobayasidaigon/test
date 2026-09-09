@@ -323,6 +323,45 @@
   .rv-line .v { color: var(--muted); white-space: nowrap; font-weight: 700; }
   .rv-line .v.warn { color: #ef6c00; }
   .rv-note { font-size: .78rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  /* ふりかえりの追加分（今日はここから／曜日／時間帯／数の記録 など） */
+  .rv-insp { border-left: 4px solid #6a1b9a; }
+  .rv-insp h3 { color: #6a1b9a; }
+  .rv-week, .rv-shift, .rv-periodic, .rv-nums { border-left: 4px solid var(--border); }
+  .rv-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 4px; }
+  .rv-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--primary); color: #fff; border-radius: 999px;
+    padding: 6px 12px; font-size: .85rem; font-weight: 700;
+  }
+  .rv-chip b { font-size: .72rem; font-weight: 700; color: rgba(255,255,255,.85); }
+  .rv-chip .ic { width: 15px; height: 15px; }
+  .rv-sub { display: block; font-size: .72rem; color: var(--muted); font-weight: 400; }
+  .rv-line .v.good { color: var(--done); }
+  .rv-line .v.bad { color: #c62828; }
+  .rv-wk { display: flex; gap: 4px; margin: 4px 0 2px; }
+  .rv-wk-col {
+    flex: 1; text-align: center; background: var(--bg);
+    border-radius: 8px; padding: 6px 2px;
+  }
+  .rv-wk-col .d { display: block; font-size: .72rem; color: var(--muted); }
+  .rv-wk-col b { font-size: .82rem; color: var(--done); }
+  .rv-wk-col.low b { color: #ef6c00; }
+  .rv-wk-col.zero { background: #fdecea; }
+  .rv-wk-col.zero b { color: #c62828; }
+  .rv-more { margin-top: 10px; }
+  .rv-more > summary {
+    cursor: pointer; font-size: .85rem; font-weight: 700; color: var(--primary-dark);
+    padding: 8px 2px;
+  }
+  .rv-sub-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 12px; margin-bottom: 8px; font-size: .88rem;
+  }
+  .rv-sub-card > b { display: block; margin-bottom: 4px; }
+  .rv-hours { display: flex; align-items: flex-end; gap: 3px; height: 46px; margin: 6px 0 2px; }
+  .rv-hour { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+  .rv-hour i { display: block; width: 100%; background: var(--primary); border-radius: 2px 2px 0 0; }
+  .rv-hour span { font-size: .6rem; color: var(--muted); margin-top: 2px; }
   .rv-stat { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
   .rv-stat div { flex: 1 1 90px; background: var(--bg); border-radius: 8px; padding: 8px; text-align: center; }
   .rv-stat b { display: block; font-size: 1.15rem; color: var(--primary-dark); }
@@ -3861,6 +3900,256 @@ function reviewData(store) {
   };
 }
 // 「今後どうしよう」の提案。数字から自動で組み立てる
+// ===== ふりかえりの追加分析 =====
+// 記録を「項目ごとの中身つき」で拾う（reviewRecords は id だけなので時刻が落ちる）
+function rvRecordsFull(store) {
+  const out = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    const p = parseRecordKey(k, store);
+    if (!p) continue;
+    let rec = {};
+    try { rec = JSON.parse(localStorage.getItem(k)) || {}; } catch (e) {}
+    const ids = Object.keys(rec);
+    if (ids.length) out.push({ staff: p.staff, area: baseArea(p.area), full: p.area, date: p.date, rec: rec });
+  }
+  return out;
+}
+// 表示日付を一時的に差し替えて、過去の日でも既存の判定をそのまま使う
+function withDate(dateStr, fn) {
+  const prev = dateInput.value;
+  const pc = _areaCompCache, pl = _linkCache, pw = _weekCycleCache;
+  dateInput.value = dateStr;
+  _areaCompCache = {}; _linkCache = {}; _weekCycleCache = {};
+  try { return fn(); }
+  finally {
+    dateInput.value = prev;
+    _areaCompCache = pc; _linkCache = pl; _weekCycleCache = pw;
+  }
+}
+function rvDays(n) {
+  const out = [], today = todayStr();
+  for (let i = n - 1; i >= 0; i--) out.push(shiftDate(today, -i));
+  return out;
+}
+
+// 1. 数値の推移（ゴルフのクラブ本数・サーマナイフのショット数など）
+function rvNums(store) {
+  return withDefStore(store, () => {
+    // 数値欄のある項目を集める
+    const defs = [];
+    allAreas().forEach(a => areaItems(a.key).forEach(it => {
+      const f = itemNumFields(it);
+      if (f.length) defs.push({ area: a.name, id: it.id, title: it.title, fields: f });
+    }));
+    if (!defs.length) return [];
+    const days = rvDays(REVIEW_DAYS);
+    const out = [];
+    defs.forEach(d => {
+      d.fields.forEach(f => {
+        const hist = [];
+        days.forEach(dt => {
+          let all = {};
+          try { all = JSON.parse(localStorage.getItem('nums_' + store + '_' + dt)) || {}; } catch (e) {}
+          const v = all[d.id] && all[d.id][f.id];
+          if (v !== undefined && v !== '' && v !== null) hist.push({ date: dt, v: Number(v) });
+        });
+        if (!hist.length) return;
+        const last = hist[hist.length - 1];
+        const prev = hist.length > 1 ? hist[hist.length - 2] : null;
+        out.push({
+          area: d.area, title: d.title, label: f.label,
+          last: last.v, date: last.date,
+          diff: prev ? last.v - prev.v : null, prev: prev ? prev.v : null,
+          n: hist.length,
+        });
+      });
+    });
+    return out;
+  });
+}
+
+// 2. まとめ付けの検知（同じ分に大量のチェックが入っている）
+const RV_BULK_MIN = 10;   // 1分に何項目入っていたら「まとめ付け」とみなすか
+function rvBulk(store) {
+  const from = shiftDate(todayStr(), -(REVIEW_DAYS - 1));
+  const bag = {};
+  rvRecordsFull(store).filter(r => r.date >= from).forEach(r => {
+    Object.keys(r.rec).forEach(id => {
+      const t = r.rec[id] && r.rec[id].time;
+      if (!t) return;
+      const k = r.date + '|' + (r.rec[id].staff || r.staff) + '|' + t;
+      (bag[k] = bag[k] || []).push(r.area);
+    });
+  });
+  return Object.keys(bag).filter(k => bag[k].length >= RV_BULK_MIN).map(k => {
+    const p = k.split('|');
+    return { date: p[0], staff: p[1], time: p[2], n: bag[k].length,
+             areas: Array.from(new Set(bag[k])).length };
+  }).sort((a, b) => b.n - a.n);
+}
+
+// 3. 清掃方法が未登録の項目
+function rvNoMethod(store) {
+  return withDefStore(store, () => {
+    const byArea = [];
+    let total = 0, all = 0;
+    allAreas().filter(a => !isRoutineArea(a.key) && !a.hidden).forEach(a => {
+      const items = areaItems(a.key);
+      if (!items.length) return;
+      const prev = currentArea;
+      currentArea = a.key; // mediaIdsFor は currentArea を見る
+      const miss = items.filter(it => !it.method && countMedia(it.id, 'method') === 0);
+      currentArea = prev;
+      all += items.length;
+      if (miss.length) { total += miss.length; byArea.push({ name: a.name, n: miss.length }); }
+    });
+    byArea.sort((a, b) => b.n - a.n);
+    return { total: total, all: all, byArea: byArea };
+  });
+}
+
+// 4. 記録が空く時間帯（営業時間のうち、チェックが入らない時間）
+function rvQuietHours(store) {
+  const from = shiftDate(todayStr(), -(REVIEW_DAYS - 1));
+  const asa = routineHours('routine_asa'), ban = routineHours('routine_ban');
+  const h0 = asa ? parseInt(asa.from, 10) : 10;
+  const h1 = ban ? parseInt(ban.to, 10) : 23;
+  const perHour = {}, daysWith = {};
+  for (let h = h0; h < h1; h++) { perHour[h] = 0; daysWith[h] = new Set(); }
+  const days = new Set();
+  rvRecordsFull(store).filter(r => r.date >= from).forEach(r => {
+    days.add(r.date);
+    Object.keys(r.rec).forEach(id => {
+      const t = r.rec[id] && r.rec[id].time;
+      if (!t) return;
+      const h = parseInt(t, 10);
+      if (perHour[h] === undefined) return;
+      perHour[h]++; daysWith[h].add(r.date);
+    });
+  });
+  const nd = days.size;
+  const hours = [];
+  for (let h = h0; h < h1; h++) {
+    hours.push({ h: h, checks: perHour[h], days: daysWith[h].size, total: nd });
+  }
+  return { hours: hours, recordDays: nd, from: h0, to: h1 };
+}
+
+// 5. 月次点検で落とした所と、その後の清掃の量
+// 点検の区分（シャワー/トイレ/フロア・マシン…）をエリアに結びつける
+const RV_INSP_AREAS = [
+  { cat: 'シャワー', keys: ['shower'] },
+  { cat: 'トイレ', keys: ['toilet'] },
+  { cat: 'フロア・マシン', keys: ['floor', 'machine'] },
+  { cat: 'サウナ', keys: ['sauna'] },
+];
+function rvInspection(store) {
+  const list = loadInspections(store).slice().sort((a, b) => a.month < b.month ? 1 : -1);
+  const latest = list[0];
+  if (!latest) return null;
+  const rows = (latest.rows || []).filter(r => r.score !== null && r.score !== undefined && r.score < 5);
+  const from = shiftDate(todayStr(), -(REVIEW_DAYS - 1));
+  const daysOf = {};
+  reviewRecords(store).filter(r => r.date >= from).forEach(r => {
+    (daysOf[r.area] = daysOf[r.area] || new Set()).add(r.date);
+  });
+  // 区分ごとにまとめ、その区分に当たるエリアの実施日数を出す
+  const byCat = {};
+  rows.forEach(r => { (byCat[r.cat] = byCat[r.cat] || []).push(r); });
+  const out = Object.keys(byCat).map(cat => {
+    const m = RV_INSP_AREAS.find(x => x.cat === cat);
+    let days = null, names = [];
+    if (m) {
+      const set = new Set();
+      withDefStore(store, () => {
+        allAreas().forEach(a => {
+          const b = baseArea(a.key);
+          if (!m.keys.some(k => b === k || b.indexOf(k + '_') === 0)) return;
+          if (!areaItems(a.key).length) return;
+          names.push(a.name);
+          (daysOf[a.key] || new Set()).forEach(d => set.add(d));
+        });
+      });
+      days = set.size;
+    }
+    return { cat: cat, lost: byCat[cat], days: days, names: names };
+  }).sort((a, b) => b.lost.length - a.lost.length);
+  return { month: latest.month, score: latest.score, cats: out, span: REVIEW_DAYS };
+}
+
+// 6. 曜日のクセ
+const RV_WD = ['日', '月', '火', '水', '木', '金', '土'];
+function rvWeekday(store) {
+  const days = rvDays(REVIEW_DAYS);
+  const dayRec = {};
+  const from = days[0];
+  reviewRecords(store).filter(r => r.date >= from).forEach(r => {
+    (dayRec[r.date] = dayRec[r.date] || new Set()).add(r.area);
+  });
+  const wd = RV_WD.map(() => ({ days: 0, withRec: 0, shifts: {} }));
+  ROUTINE_KEYS.forEach(rk => wd.forEach(w => { w.shifts[rk] = 0; }));
+  days.forEach(dt => {
+    const i = new Date(dt + 'T00:00:00').getDay();
+    wd[i].days++;
+    const set = dayRec[dt] || new Set();
+    if (set.size) wd[i].withRec++;
+    ROUTINE_KEYS.forEach(rk => { if (set.has(rk)) wd[i].shifts[rk]++; });
+  });
+  return wd.map((w, i) => ({ name: RV_WD[i], ...w })).filter(w => w.days > 0);
+}
+
+// 7. 今日やるべき3つ（間があいている順）
+function rvTodo3(store) {
+  return withDefStore(store, () => {
+    const map = lastCheckedByItem(store);
+    const lastOf = {};
+    Object.keys(map).forEach(kk => {
+      const a = kk.slice(0, kk.indexOf(':'));
+      if (!lastOf[a] || lastOf[a] < map[kk]) lastOf[a] = map[kk];
+    });
+    const all = allAreas()
+      .filter(a => !isRoutineArea(a.key) && !a.hidden && areaItems(a.key).length > 0)
+      .map(a => ({ key: a.key, name: a.name, icon: a.icon,
+                   last: lastOf[a.key] || null,
+                   days: lastOf[a.key] ? daysSince(lastOf[a.key]) : null }));
+    // 実際に使っている場所を先に出す。一度も記録が無い場所（その店舗に無い設備かもしれない）は後ろ
+    const used = all.filter(a => a.last && a.days >= 1).sort((a, b) => b.days - a.days);
+    const never = all.filter(a => !a.last).sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+    return used.concat(never).slice(0, 3);
+  });
+}
+
+// 8. やることリストが全部終わった日
+function rvShiftComplete(store) {
+  return withDefStore(store, () => {
+    const days = rvDays(REVIEW_DAYS);
+    return ROUTINE_KEYS.map(rk => {
+      const items = areaItems(rk);
+      if (!items.length) return null;
+      let full = 0, some = 0;
+      days.forEach(dt => {
+        const n = withDate(dt, () => {
+          const rec = loadRecordMerged(rk);
+          return items.filter(i => itemEffectiveDone(rk, i, rec)).length;
+        });
+        if (n >= items.length) full++;
+        else if (n > 0) some++;
+      });
+      return { key: rk, name: (getArea(rk) || {}).name || rk,
+               total: items.length, full: full, some: some, days: days.length };
+    }).filter(Boolean);
+  });
+}
+
+// 9. 定期清掃の期限切れ
+function rvPeriodic(store) {
+  const dm = loadPeriodicDone(store);
+  return loadPeriodic().map(t => ({ t: t, s: periodicStatus(t, dm[t.id]) }))
+    .filter(x => x.s.state === 'due')
+    .sort((a, b) => (b.s.elapsed === null ? 9999 : b.s.elapsed) - (a.s.elapsed === null ? 9999 : a.s.elapsed));
+}
+
 function reviewSuggestions(d) {
   const out = [];
   const asa = (d.shifts.find(s => s.key === 'routine_asa') || {}).days || 0;
@@ -3926,6 +4215,16 @@ function renderReview() {
 
   // よくできている
   const topAreas = d.rows.filter(r => r.days > 0).sort((a, b) => b.days - a.days).slice(0, 5);
+  // 今日やるべき3つ（一番上。読んですぐ動けるように）
+  const todo3 = rvTodo3(currentStore);
+  if (todo3.length) {
+    h += '<div class="rv-card rv-next"><h3>' + ic('zap') + '今日はここから</h3>'
+      + '<div class="rv-chips">'
+      + todo3.map(a => '<span class="rv-chip">' + ic(a.icon) + esc(a.name)
+          + '<b>' + (a.days === null ? '記録なし' : a.days + '日前') + '</b></span>').join('')
+      + '</div><div class="rv-note">間があいている順に3つ出しています。</div></div>';
+  }
+
   h += '<div class="rv-card rv-good"><h3>' + ic('check') + 'よくできている所</h3>';
   if (!topAreas.length) h += '<div class="rv-empty">この2週間の記録がまだありません。</div>';
   else {
@@ -3961,6 +4260,141 @@ function renderReview() {
     + neverN + '件</b></div>';
   h += '<div class="rv-note">※記録が無い＝やっていない、とは限りません。'
     + 'チェックの付け忘れかどうかも合わせて見てください。</div></div>';
+
+  // ---- 月次点検で落とした所 × その後の清掃 ----
+  const insp = rvInspection(currentStore);
+  if (insp) {
+    h += '<div class="rv-card rv-insp"><h3>' + ic('clipboard-list') + '月次点検で落とした所</h3>';
+    h += '<div class="rv-note">' + esc(insp.month) + ' の点検は <b>' + insp.score + '点</b>。'
+      + '下は満点を落とした区分と、その後' + insp.span + '日の清掃の量です。</div>';
+    if (!insp.cats.length) h += '<div class="rv-empty">満点を落とした項目はありませんでした。</div>';
+    insp.cats.forEach(c => {
+      h += '<div class="rv-line"><span>' + esc(c.cat) + '<span class="rv-sub">'
+        + esc(c.lost.map(r => r.title).slice(0, 3).join('、'))
+        + (c.lost.length > 3 ? ' ほか' + (c.lost.length - 3) + '件' : '') + '</span></span>'
+        + '<span class="v' + (c.days === null ? '' : (c.days >= insp.span * 0.7 ? ' good' : ' warn')) + '">'
+        + (c.days === null ? '—' : c.days + '/' + insp.span + '日') + '</span></div>';
+    });
+    h += '<div class="rv-note">落とした区分がよく清掃されていれば、次の点検で戻せます。</div></div>';
+  }
+
+  // ---- 曜日のクセ ----
+  const wds = rvWeekday(currentStore);
+  if (wds.length) {
+    h += '<div class="rv-card rv-week"><h3>' + ic('calendar-clock') + '曜日のクセ</h3>'
+      + '<div class="rv-wk">';
+    wds.forEach(w => {
+      const pct = w.days ? Math.round(w.withRec / w.days * 100) : 0;
+      h += '<div class="rv-wk-col' + (pct === 0 ? ' zero' : (pct < 50 ? ' low' : '')) + '">'
+        + '<span class="d">' + esc(w.name) + '</span>'
+        + '<b>' + w.withRec + '/' + w.days + '</b></div>';
+    });
+    h += '</div>';
+    const weak = wds.filter(w => w.days >= 2 && w.withRec / w.days < 0.5);
+    h += weak.length
+      ? '<div class="rv-note">記録が薄い曜日：<b>' + esc(weak.map(w => w.name + '曜').join('、'))
+        + '</b>。人の配置や引き継ぎを見直せるかもしれません。</div>'
+      : '<div class="rv-note">曜日による偏りは大きくありません。</div>';
+    const sw = [];
+    ROUTINE_KEYS.forEach(rk => {
+      const nm = (getArea(rk) || {}).name || rk;
+      const chk = wds.filter(w => w.days >= 2);
+      const bad = chk.filter(w => w.shifts[rk] === 0);
+      if (!bad.length) return;
+      // 全部の曜日でゼロなら曜日を並べても意味がない
+      if (bad.length === chk.length) sw.push(nm + 'はこの期間ずっと記録なし');
+      else sw.push(nm + 'は ' + bad.slice(0, 3).map(w => w.name).join('・') + '曜'
+        + (bad.length > 3 ? 'ほか' : '') + 'に記録なし');
+    });
+    if (sw.length) h += '<div class="rv-note">' + esc(sw.join(' ／ ')) + '</div>';
+    h += '</div>';
+  }
+
+  // ---- やることリストが全部終わった日 ----
+  const sc = rvShiftComplete(currentStore);
+  if (sc.length) {
+    h += '<div class="rv-card rv-shift"><h3>' + ic('flag') + 'やることリストの完走'
+      + '</h3><div class="rv-note">' + REVIEW_DAYS + '日のうち、全項目そろった日の数です。</div>';
+    sc.forEach(x => {
+      h += '<div class="rv-line"><span>' + esc(x.name) + '<span class="rv-sub">全'
+        + x.total + '項目</span></span>'
+        + '<span class="v' + (x.full >= x.days * 0.7 ? ' good' : (x.full ? ' warn' : ' bad')) + '">'
+        + x.full + '/' + x.days + '日</span></div>';
+    });
+    h += '</div>';
+  }
+
+  // ---- 定期清掃の期限切れ ----
+  const per = rvPeriodic(currentStore);
+  h += '<div class="rv-card rv-periodic"><h3>' + ic('calendar-clock') + 'たまにやる清掃</h3>';
+  if (!per.length) h += '<div class="rv-empty">実施時期のものはありません。</div>';
+  else {
+    h += per.slice(0, 8).map(x => '<div class="rv-line"><span>' + esc(x.t.title) + '</span>'
+      + '<span class="v warn">' + esc(x.s.elapsed === null ? '未実施' : x.s.elapsed + '日前') + '</span></div>').join('');
+    if (per.length > 8) h += '<div class="rv-note">ほか ' + (per.length - 8) + '件</div>';
+  }
+  h += '</div>';
+
+  // ---- 数値の記録 ----
+  const nums = rvNums(currentStore);
+  if (nums.length) {
+    h += '<div class="rv-card rv-nums"><h3>' + ic('cup-soda') + '数の記録</h3>';
+    nums.forEach(n => {
+      const d2 = n.diff;
+      const cls = d2 === null ? '' : (d2 < 0 ? ' bad' : (d2 > 0 ? ' good' : ''));
+      h += '<div class="rv-line"><span>' + esc(n.title) + '<span class="rv-sub">'
+        + esc(n.area + '・' + n.label) + '</span></span>'
+        + '<span class="v' + cls + '">' + n.last
+        + (d2 === null ? '' : (d2 === 0 ? '（前回と同じ）' : '（前回 ' + n.prev + ' ' + (d2 > 0 ? '▲+' : '▼') + d2 + '）'))
+        + '</span></div>';
+    });
+    if (nums.some(n => n.diff !== null && n.diff < 0))
+      h += '<div class="rv-note">数が減っているものがあります。紛失や返却漏れがないか確認してください。</div>';
+    h += '</div>';
+  }
+
+  // ---- くわしく（気づきにくい所。畳んでおく）----
+  h += '<details class="rv-more"><summary>くわしく見る（記録のつけ方・手順の登録・時間帯）</summary>';
+
+  const bulk = rvBulk(currentStore);
+  h += '<div class="rv-sub-card"><b>まとめて付けた記録</b>';
+  if (!bulk.length) h += '<div class="rv-empty">同じ時刻にまとまって入った記録はありません。</div>';
+  else {
+    h += bulk.slice(0, 5).map(b => '<div class="rv-line"><span>' + esc(b.date.slice(5).replace('-', '/'))
+      + ' ' + esc(b.staff) + '<span class="rv-sub">' + esc(b.time) + ' に '
+      + b.areas + 'エリア</span></span><span class="v warn">' + b.n + '項目</span></div>').join('');
+    h += '<div class="rv-note">やりながらチェックすると、どこまでやったかが自分でも分かりやすくなります。'
+      + '（後からまとめて付けるのが悪いわけではありません）</div>';
+  }
+  h += '</div>';
+
+  const nm = rvNoMethod(currentStore);
+  h += '<div class="rv-sub-card"><b>清掃方法が未登録の項目</b>';
+  if (!nm.total) h += '<div class="rv-empty">全部の項目に手順か画像が入っています。</div>';
+  else {
+    h += '<div class="rv-note">全' + nm.all + '項目のうち <b>' + nm.total + '件</b>に手順も画像もありません。'
+      + '新しく入った人が迷いやすい所です。</div>';
+    h += nm.byArea.slice(0, 6).map(a => '<div class="rv-line"><span>' + esc(a.name) + '</span>'
+      + '<span class="v warn">' + a.n + '件</span></div>').join('');
+  }
+  h += '</div>';
+
+  const qh = rvQuietHours(currentStore);
+  h += '<div class="rv-sub-card"><b>時間帯ごとの記録</b>';
+  if (!qh.recordDays) h += '<div class="rv-empty">記録がありません。</div>';
+  else {
+    const mx = Math.max.apply(null, qh.hours.map(x => x.checks).concat([1]));
+    h += '<div class="rv-hours">' + qh.hours.map(x =>
+      '<div class="rv-hour"><i style="height:' + Math.round(x.checks / mx * 34 + 2) + 'px"></i>'
+      + '<span>' + x.h + '</span></div>').join('') + '</div>';
+    const quiet = qh.hours.filter(x => x.days === 0);
+    h += quiet.length
+      ? '<div class="rv-note">' + esc(quiet.slice(0, 4).map(x => x.h + '時台').join('、'))
+        + (quiet.length > 4 ? ' ほか' + (quiet.length - 4) + 'つの時間' : '')
+        + ' は' + qh.recordDays + '日ぶんの記録の中で一度もチェックがありません。</div>'
+      : '<div class="rv-note">' + qh.from + '時〜' + qh.to + '時のあいだ、記録が途切れている時間帯はありません。</div>';
+  }
+  h += '</div></details>';
 
   // 今後
   h += '<div class="rv-card rv-next"><h3>' + ic('book-open-text') + '今後どうしよう</h3>'
