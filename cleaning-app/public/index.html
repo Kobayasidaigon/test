@@ -323,6 +323,17 @@
   .rv-line .v { color: var(--muted); white-space: nowrap; font-weight: 700; }
   .rv-line .v.warn { color: #ef6c00; }
   .rv-note { font-size: .78rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  /* チェックシートの一番上の1行（今日ここをやってほしい） */
+  .focus-bar {
+    display: flex; align-items: center; gap: 8px; width: 100%;
+    border: none; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+    background: var(--primary); color: #fff; cursor: pointer;
+    font-size: .95rem; font-weight: 700; text-align: left; line-height: 1.4;
+  }
+  .focus-bar .ic { width: 20px; height: 20px; flex: 0 0 auto; }
+  .focus-bar .fb-sub { font-size: .78rem; font-weight: 400; color: rgba(255,255,255,.85); }
+  .focus-bar.ok { background: var(--done-bg); color: var(--done); cursor: default; }
+  .focus-bar.ok .fb-sub { color: var(--done); opacity: .8; }
   /* ふりかえりの追加分（今日はここから／曜日／時間帯／数の記録 など） */
   .rv-insp { border-left: 4px solid #6a1b9a; }
   .rv-insp h3 { color: #6a1b9a; }
@@ -689,6 +700,8 @@
 <div class="wrap">
   <!-- ① チェックシート（記入）画面 -->
   <div id="checklistView">
+    <!-- 今日いちばん手薄な所を1行で。みんなが毎日開くのはこの画面なので、ここに置く -->
+    <button type="button" id="focusBar" class="focus-bar" style="display:none;"></button>
     <div class="controls">
       <div class="staff-row">
         <label for="storeSelect"><span class="ic-slot" data-icon="building-2"></span> 店舗</label>
@@ -3298,7 +3311,28 @@ function renderRoutineView() {
   document.getElementById('progressText').textContent = whoLabel + (area ? area.name : '') + ': ' + doneCount + ' / ' + total + ' 完了 (' + pct + '%)';
 }
 
+// チェックシートの一番上の1行。いちばん間があいている場所を1つだけ出す。
+// ふりかえりを開かない人にも目に入るように、ここに置いている。
+function renderFocusBar() {
+  const bar = document.getElementById('focusBar');
+  if (!bar) return;
+  if (!currentStore) { bar.style.display = 'none'; return; }
+  const top = rvTodo3(currentStore).filter(a => a.days !== null)[0];
+  bar.style.display = '';
+  if (!top) {
+    bar.className = 'focus-bar ok';
+    bar.innerHTML = ic('check') + '<span>今日ぶんはひととおり回っています</span>';
+    bar.onclick = null;
+    return;
+  }
+  bar.className = 'focus-bar';
+  bar.innerHTML = ic('zap') + '<span>今日は <b>' + escapeHtml(top.name) + '</b>'
+    + '<span class="fb-sub">（' + top.days + '日あいています）</span></span>';
+  bar.onclick = () => { currentArea = top.key; render(); window.scrollTo(0, 0); };
+}
+
 function render() {
+  renderFocusBar();
   // 項目を全部消した組み込みエリアを開いていたら、表示できるエリアへ戻す
   if (currentArea !== PERIODIC_KEY && !isRoutineArea(currentArea)
       && AREAS.some(x => x.key === currentArea) && areaItems(currentArea).length === 0) {
