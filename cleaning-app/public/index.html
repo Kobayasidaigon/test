@@ -1857,8 +1857,11 @@ const mediaKeys = new Set(); // 例: "shower:floor:ok"
 const mediaTypes = {};       // id → MIMEタイプ（img/video判定用）
 function mediaUrl(id) { return '/api/media/' + encodeURIComponent(id); }
 // 男女で分けたエリア（toilet_m / toilet_w など）は見本写真を元エリアで共有する
+// 見本写真・清掃方法は「元のエリア」と共有する。
+//   男女別エリア      : toilet_m / esthe_w → toilet / esthe
+//   ブースごとのエリア: shower_b1 / sauna_b3 → shower / sauna（項目idも元と同じにしてある）
 function mediaBaseArea(areaKey) {
-  const base = String(areaKey || '').replace(/_(m|w)$/, '');
+  const base = String(areaKey || '').replace(/_(m|w|b\d+)$/, '');
   return (base !== areaKey && AREAS.some(a => a.key === base)) ? base : areaKey;
 }
 function mediaId(areaKey, itemId, kind) { return mediaBaseArea(areaKey) + ':' + itemId + ':' + kind; }
@@ -2639,8 +2642,9 @@ function renderTabs() {
     el.appendChild(btn);
   };
   // 上段: 清掃エリア（組み込みエリアで項目を全部消した場合はタブごと隠す＝店舗にない設備の非表示用）
+  // hidden:true のエリアもタブに出さない（やることリストの連動先としてだけ使う枠。例: 見回りのブース）
   allAreas()
-    .filter(a => !isRoutineArea(a.key))
+    .filter(a => !isRoutineArea(a.key) && !a.hidden)
     .filter(a => !AREAS.some(x => x.key === a.key) || areaItems(a.key).length > 0)
     .forEach(a => makeTab(a, tabsEl));
   // 定期清掃タブ（独立枠）
@@ -4205,7 +4209,7 @@ function proofRateAreas() {
   const order = [];
   STORES.forEach(st => withDefStore(st, () => {
     allAreas().forEach(a => {
-      if (isRoutineArea(a.key)) return;
+      if (isRoutineArea(a.key) || a.hidden) return;
       const items = areaItems(a.key);
       if (!items.length) return;
       let rec = byKey[a.key];
@@ -4234,7 +4238,7 @@ function proofExpectedPerDay(store) {
     const seen = {};
     let sum = 0;
     allAreas().forEach(a => {
-      if (isRoutineArea(a.key)) return;
+      if (isRoutineArea(a.key) || a.hidden) return;
       areaItems(a.key).forEach(it => {
         const k = a.key + ':' + it.id;
         if (seen[k]) return;
