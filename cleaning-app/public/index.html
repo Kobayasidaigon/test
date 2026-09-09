@@ -2266,7 +2266,7 @@ editResetDefault.onclick = () => {
 document.getElementById('editCancel').onclick = () => editDialog.close();
 
 // ===== 抜き打ち実施写真（📷項目）=====
-// 日付+店舗+エリア+項目のハッシュで毎日約10%の項目に📷が付き、その場の撮影がないとチェックできない。
+// 日付+店舗+エリア+項目のハッシュで毎日約5%（PROOF_RATE=20 → 対象プールの1/20）の項目に📷が付き、その場の撮影がないとチェックできない。
 // capture属性でカメラ直接起動（ライブラリ選択不可）＝撮影日時は実質「今」。EXIFの撮影日時も補助チェック。
 const PROOF_RATE = 20;       // 対象プールの20項目に1つ ≒ 5%
 const PROOF_KEEP_DAYS = 60;  // 写真とログの保持日数
@@ -4225,7 +4225,7 @@ function renderSummary() {
   // ---- 抜き打ち実施写真 ----
   cleanupOldProofsOnce(); // 保持期間を過ぎた写真の掃除（裏で実行）
   html += '<h3 style="margin:20px 0 6px; font-size:1rem;">📷 実施写真（' + date + '）</h3>';
-  html += '<p class="hint" style="text-align:left;margin:0 0 10px;">月次点検（90点テスト）の採点に関わる清掃項目の約10%に日替わりで📷が付き、その場で撮影しないとチェックできません。カメラ直接起動＋受信日時記録なので、古い写真の使い回しはできない仕組みです。写真は' + PROOF_KEEP_DAYS + '日で自動削除。</p>';
+  html += '<p class="hint" style="text-align:left;margin:0 0 10px;">月次点検（90点テスト）の採点に関わる清掃項目の約5%に日替わりで📷が付き、その場で撮影しないとチェックできません。カメラ直接起動＋受信日時記録なので、古い写真の使い回しはできない仕組みです。写真は' + PROOF_KEEP_DAYS + '日で自動削除。</p>';
   STORES.forEach(s => {
     let plog = [];
     try { plog = JSON.parse(localStorage.getItem('proofLog_' + s)) || []; } catch (e) {}
