@@ -230,7 +230,10 @@
     white-space: nowrap;
   }
   /* やることリスト内の外部リンク: アイコンではなく行内の全幅ボタンで表示 */
-  .rt-row.has-link { flex-wrap: wrap; }
+  .rt-row.has-link, .rt-row.has-desc { flex-wrap: wrap; }
+  /* 行の2段目に出す説明文（時間目安・曜日のローテーションなど） */
+  .rt-desc { flex-basis: 100%; margin: 1px 0 0 28px; font-size: .72rem; line-height: 1.35; color: var(--muted); }
+  .rt-row.done .rt-desc { color: #9ccc9c; }
   .rt-link-btn {
     flex-basis: 100%;
     margin: 8px 0 2px 34px;
@@ -2904,7 +2907,10 @@ function renderRoutineView() {
     const done = ls ? ls.complete : !!rec[item.id];
     const expanded = ls && routineExpanded.has(item.id);
     const hasNums = itemNumFields(item).length > 0;
+    // 説明文は編集中以外は行の下に小さく出す（時間目安・曜日のローテーション等をその場で読めるように）
+    const descText = routineEditMode ? '' : String(item.desc || '').trim();
     html += '<div class="rt-row' + (done ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
+      + (descText ? ' has-desc' : '')
       + (routineEditMode ? '' : (item.url ? ' has-link' : '') + (hasNums ? ' has-link has-nums' : '')) + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : hasNums ? 'nums' : 'manual') + '">'
       // 連動項目はチェック丸ではなくリスト印（実際のチェックは展開した子項目で行う）
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
@@ -2915,6 +2921,7 @@ function renderRoutineView() {
       + (routineEditMode
           ? routineActionsHtml(item, idx === 0, idx === items.length - 1)
           : itemLinkHtml(item, 'rt-link-btn', '') + numFieldsHtml(item))
+      + (descText ? '<div class="rt-desc">' + escapeHtml(descText) + '</div>' : '')
       + '</div>';
     if (expanded) {
       const keys = String(item.link).split(',').map(s => s.trim()).filter(Boolean);
