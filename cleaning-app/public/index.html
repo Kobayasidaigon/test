@@ -3116,18 +3116,32 @@ document.addEventListener('click', (e) => {
 // やることの何割できていれば良しとするか。ここを下回るとバーが赤くなる。
 const PROGRESS_TARGET = 0.8;
 
+// 進捗バーの分母から外すエリア。
+//
+// シャワーは場所が7ヶ所あって、中身を全部数えると100項目を超える。
+// それを分母に入れると他のやることが数字の中に埋もれてしまうので、
+// シャワーだけは進捗バーから外し、場所の選びボタンの数字で見てもらう。
+// サウナは外していない（部屋数が少なく、埋もれないため）。
+function isShowerArea(areaKey) {
+  return /^shower(_|$)/.test(baseArea(areaKey));
+}
+
 // やることリストの進み具合。分母は「実際にやる項目の数」にする。
 //
 // 1行が連動先のエリアを指しているときは、その中身の数で数える。
-// 「シャワー清掃」は1行だが、実際には7ヶ所ぶんの作業なので、行数で数えると
+// 「トイレ清掃」は1行だが実際には男女2ヶ所ぶんなので、行数で数えると
 // 実際の作業量よりずっと小さく出てしまう。
 function routineProgress(areaKey, items, rec) {
   let done = 0, total = 0;
   const seen = new Set();   // 同じ連動先を2行が指していても、二重に数えない
 
   items.forEach(item => {
-    const keys = item.link
+    const all = item.link
       ? String(item.link).split(',').map(x => x.trim()).filter(Boolean) : [];
+    const keys = all.filter(k => !isShowerArea(k));
+
+    // シャワーだけを指している行（「シャワー清掃」など）は、まるごと数えない
+    if (all.length && !keys.length) return;
 
     // 連動していない行と、linkAny（どれか1つやれば完了）の行は 1 件として数える。
     // linkAny を中身の数で数えると、全部そろう日が無いので永久に埋まらない。
