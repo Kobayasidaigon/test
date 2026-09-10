@@ -30,10 +30,15 @@ function saveState() {
 let stateRev = 0;
 const CHANGE_LOG_MAX = 800;
 const changeLog = [];   // [{ r: 通し番号, k: キー, del: 削除か }]
+// 変化を待っている端末（ロングポーリング）。変わった瞬間に返してあげる
+const waiters = new Set();
 function bumpRev(key, del) {
   stateRev++;
   changeLog.push({ r: stateRev, k: key, del: !!del });
   if (changeLog.length > CHANGE_LOG_MAX) changeLog.shift();
+  const now = Array.from(waiters);
+  waiters.clear();
+  now.forEach(fn => { try { fn(); } catch (e) {} });
 }
 
 function mediaPath(id) {
@@ -193,17 +198,33 @@ app.delete('/api/state/:key', (req, res) => {
 
 // ---- 変わったキーだけ返す（同じ店舗で2台使うときの同期用）----
 // since が古すぎる・サーバーが再起動した場合は full:true（端末は /api/state を取り直す）
+const WAIT_MAX_MS = 25 * 1000;   // 待つ上限（fly のプロキシに切られない範囲）
 app.get('/api/changes', (req, res) => {
   const since = parseInt(req.query.since, 10);
-  const oldest = changeLog.length ? changeLog[0].r : stateRev + 1;
-  if (!Number.isFinite(since) || since < 0 || since > stateRev || since < oldest - 1) {
-    return res.json({ rev: stateRev, full: true });
-  }
-  const last = new Map();   // 同じキーが何度も変わっていたら最後だけ
-  for (const c of changeLog) if (c.r > since) last.set(c.k, c.del);
-  const kv = {}, del = [];
-  last.forEach((isDel, k) => { if (isDel) del.push(k); else kv[k] = state.kv[k]; });
-  res.json({ rev: stateRev, kv: kv, del: del });
+  const reply = () => {
+    const oldest = changeLog.length ? changeLog[0].r : stateRev + 1;
+    if (!Number.isFinite(since) || since < 0 || since > stateRev || since < oldest - 1) {
+      return res.json({ rev: stateRev, full: true });
+    }
+    const last = new Map();   // 同じキーが何度も変わっていたら最後だけ
+    for (const c of changeLog) if (c.r > since) last.set(c.k, c.del);
+    const kv = {}, del = [];
+    last.forEach((isDel, k) => { if (isDel) del.push(k); else kv[k] = state.kv[k]; });
+    res.json({ rev: stateRev, kv: kv, del: del });
+  };
+  // wait=1 なら「変化があるまで待つ」。他の端末が書いた瞬間に返るので、ほぼ即時に伝わる
+  if (req.query.wait !== '1' || !Number.isFinite(since) || since !== stateRev) return reply();
+  let done = false;
+  const fire = () => {
+    if (done) return;
+    done = true;
+    clearTimeout(timer);
+    waiters.delete(fire);
+    reply();
+  };
+  const timer = setTimeout(fire, WAIT_MAX_MS);
+  waiters.add(fire);
+  req.on('close', () => { done = true; clearTimeout(timer); waiters.delete(fire); });
 });
 
 // ---- 見本メディアAPI（画像・動画のバイナリ）----

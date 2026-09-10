@@ -5558,11 +5558,13 @@ function canRefreshNow() {
   if (a && /^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)) return false;
   return true;
 }
-async function pullChanges(force) {
+async function pullChanges(force, wait) {
   if (pullBusy || (document.hidden && !force)) return;
   pullBusy = true;
   try {
-    const r = await fetch('/api/changes?since=' + stateRev);
+    // wait=1 は「変化があるまでサーバーが待つ」形。相手が押した瞬間に返るのでほぼ即時
+    const r = await fetch('/api/changes?since=' + stateRev + (wait ? '&wait=1' : ''),
+      { signal: pullAbort ? pullAbort.signal : undefined });
     if (!r.ok) return;
     const j = await r.json();
     if (j.rev === stateRev && !j.full) return;      // 変わっていない
@@ -5599,8 +5601,31 @@ function refreshAfterPull(rebuildSelects) {
   else if (mode === 'review') renderReview();
   else renderCompare();
 }
-setInterval(() => pullChanges(false), 20 * 1000);   // 20秒ごと
-window.addEventListener('focus', () => pullChanges(true));
+// 変化を待ち受け続ける（返ってきたらすぐ次を張る）。画面を見ていない間は止める
+let pullAbort = null;
+let longPollOn = false;
+async function longPollLoop() {
+  if (longPollOn) return;
+  longPollOn = true;
+  while (longPollOn) {
+    if (document.hidden) break;
+    pullAbort = new AbortController();
+    const before = stateRev;
+    try { await pullChanges(false, true); }
+    catch (e) { /* 中断・回線不良 */ }
+    pullAbort = null;
+    if (!longPollOn || document.hidden) break;
+    // 何も変わらずすぐ返ってきた場合は少し置く（つなぎ直しの暴走を防ぐ）
+    if (stateRev === before) await new Promise(r => setTimeout(r, 1500));
+  }
+  longPollOn = false;
+}
+function stopLongPoll() {
+  longPollOn = false;
+  if (pullAbort) { try { pullAbort.abort(); } catch (e) {} pullAbort = null; }
+}
+setInterval(() => { if (!document.hidden) longPollLoop(); }, 30 * 1000); // 念のための立て直し
+window.addEventListener('focus', () => { pullChanges(true); longPollLoop(); });
 
 // ===== 新版の自動検知：デプロイされたら開きっぱなしの画面を自動リロード =====
 let appVersion = null;
@@ -5618,6 +5643,9 @@ document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     checkAppVersion(); rolloverDateIfNeeded(true); resetStaffIfNewDay(); autoSelectShiftStaff();
     pullChanges(true);  // 他の端末が入れた分をすぐ取り込む
+    longPollLoop();     // 待ち受けを再開
+  } else {
+    stopLongPoll();     // 画面を見ていない間は待ち受けを止める（通信と電池の節約）
   }
 });
 
@@ -5731,6 +5759,7 @@ bootstrap().then(() => {
   autoSelectShiftStaff(); // 今シフト中の人を担当者に自動セット
   refreshCmpStaff();
   render();
+  longPollLoop();   // 他の端末の変更を待ち受ける
 });
 </script>
 </body>
