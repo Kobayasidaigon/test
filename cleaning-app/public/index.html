@@ -1525,16 +1525,24 @@ function buildStaffSelect() {
   ph.value = ''; ph.textContent = currentStore ? '― 担当者を選択 ―' : '― まず店舗を選択 ―';
   staffSelect.appendChild(ph);
   const names = currentStore ? loadRoster()[currentStore].slice() : [];
-  // 連名（2人以上）は名簿に無いので、選択肢として足しておく。
-  // 「今シフト中」と「開いている時間帯の出勤者」の両方が対象。
-  const cands = [];
+  // 名簿に無い名前を、選択肢として足す。
+  const extra = [];
   if (currentStore) {
-    cands.push(shiftStaffForArea(currentArea));
-    cands.push(onShiftCombined());
-    if (currentStaff) cands.push(currentStaff); // 手動で選んだ連名が消えないように
+    if (isPastView()) {
+      // 過去の日を見ているときは、その日に記録を残した人を選べるようにする。
+      // 名簿から外れた人（退職者）の記録も開けるように、連名でなくても足す。
+      staffWithRecords(dateInput.value, null).forEach(n => extra.push(n));
+    } else {
+      // 連名（2人以上）は名簿に無いので足しておく。
+      // 「今シフト中」と「開いている時間帯の出勤者」の両方が対象。
+      [shiftStaffForArea(currentArea), onShiftCombined()].forEach(c => {
+        if (c && c.indexOf('・') >= 0) extra.push(c);
+      });
+    }
+    if (currentStaff) extra.push(currentStaff); // 選んでいる人が消えないように
   }
-  Array.from(new Set(cands)).forEach(c => {
-    if (!c || c.indexOf('・') === -1) return;
+  Array.from(new Set(extra)).forEach(c => {
+    if (!c || names.includes(c)) return;
     const o = document.createElement('option');
     o.value = c; o.textContent = c;
     staffSelect.appendChild(o);
@@ -1547,8 +1555,11 @@ function buildStaffSelect() {
   staffSelect.value = (currentStaff && Array.from(staffSelect.options).some(o => o.value === currentStaff)) ? currentStaff : '';
   staffSelect.onchange = () => {
     currentStaff = staffSelect.value;
-    localStorage.setItem('currentStaff', currentStaff);
-    localStorage.setItem('currentStaffDay', todayStr()); // 選んだ日を記録（日付が変わったら自動リセット）
+    // 過去の日を見ながら選び直したぶんは保存しない。今日に戻したときに引きずらないため。
+    if (!isPastView()) {
+      localStorage.setItem('currentStaff', currentStaff);
+      localStorage.setItem('currentStaffDay', todayStr()); // 選んだ日を記録（日付が変わったら自動リセット）
+    }
     render();
   };
 }
@@ -2723,7 +2734,7 @@ function renderTabs() {
       '<span class="badge">' + (remaining === 0 ? ic('check') : remaining) + '</span>';
     btn.onclick = () => {
       currentArea = area.key;
-      applyShiftStaffForArea(); // 朝番・中番・遅番はその時間帯の出勤者に切り替える
+      syncStaffForView(); // 今日ならその時間帯の出勤者、過去日ならその日に記録した人
       render();
     };
     el.appendChild(btn);
@@ -3624,6 +3635,7 @@ dateInput.onchange = () => {
   }
   dateManual = dateInput.value !== todayStr();
   if (typeof updateDateWarn === 'function') updateDateWarn();
+  syncStaffForView(); // 過去日ならその日に記録した人、今日に戻ったら出勤者に戻す
   render();
 };
 
@@ -5505,6 +5517,66 @@ function combineNames(names) {
   return uniq.join('・');
 }
 
+// 今日ではない日付を表示しているか
+function isPastView() {
+  return !!dateInput.value && dateInput.value !== todayStr();
+}
+
+// その日その店舗で記録を残した担当者を、記録の多い順に返す。
+// areaKey を渡すと、そのエリアに絞る（やることリストなら連動先ぶんも自分のものとして数える）。
+function staffWithRecords(date, areaKey) {
+  if (!currentStore) return [];
+  const ra = areaKey ? recArea(areaKey) : null;
+  const base = ra ? baseArea(ra) : null;
+  const counts = new Map();
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    const p = parseRecordKey(k, currentStore);
+    if (!p || p.date !== date || !p.staff) continue;
+    if (ra) {
+      // 例: 遅番を見ているとき、toilet_m@routine_ban の記録も遅番のものとして数える
+      const hit = p.area === ra || p.area === base
+        || (isRoutineArea(ra) && p.area.slice(-(ra.length + 1)) === '@' + ra);
+      if (!hit) continue;
+    }
+    let n = 0;
+    try { n = Object.keys(JSON.parse(localStorage.getItem(k)) || {}).length; } catch (e) {}
+    if (!n) continue;
+    counts.set(p.staff, (counts.get(p.staff) || 0) + n);
+  }
+  return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+}
+
+// 過去の日を見ているときの担当者。今日の出勤者ではなく、その日に記録した人を出す。
+// 開いているエリアに記録が無ければ、その日いちばん記録を残した人にする。
+function staffForViewedDate(areaKey) {
+  const forArea = staffWithRecords(recDate(areaKey), areaKey);
+  if (forArea.length) return forArea[0];
+  const forDay = staffWithRecords(dateInput.value, null);
+  return forDay.length ? forDay[0] : '';
+}
+
+// 表示している日付・エリアに合わせて担当者を決め直す。変えたら true。
+//   今日     … シフト表の出勤者（これまで通り）
+//   過去の日 … その日に記録を残した人
+function syncStaffForView() {
+  if (isPastView()) {
+    const who = staffForViewedDate(currentArea);
+    if (who === currentStaff) return false;
+    // 過去日ぶんは localStorage に残さない。今日に戻したときに引きずらないため。
+    currentStaff = who;
+    buildStaffSelect();
+    return true;
+  }
+  // 今日に戻ったら、保存してある担当者に戻してからシフトの自動選択をやり直す
+  const saved = localStorage.getItem('currentStaff') || '';
+  let changed = false;
+  if (saved !== currentStaff) { currentStaff = saved; changed = true; }
+  if (applyShiftStaffForArea()) return true;
+  if (changed) buildStaffSelect();
+  return changed;
+}
+
 // 朝番・中番・遅番それぞれの出勤者
 function shiftStaffForArea(areaKey) {
   const w = routineHours(areaKey);
@@ -5514,6 +5586,7 @@ function shiftStaffForArea(areaKey) {
 
 // 開いている時間帯の出勤者を担当者にする。変えたら true
 function applyShiftStaffForArea() {
+  if (isPastView()) return false;   // 過去の日を見ているときは今日の出勤者に変えない
   const who = shiftStaffForArea(currentArea);
   if (!who || who === currentStaff) return false;
   currentStaff = who;
@@ -5547,6 +5620,9 @@ function onShiftCombined() {
 }
 function autoSelectShiftStaff() {
   if (!currentStore) return;
+  // 過去の日を見ているときは触らない（毎分このチェックが走るため、ここを抜かすと
+  // 過去日の担当者が今日の出勤者に戻されてしまう）
+  if (isPastView()) return;
   // 朝番・中番・遅番を開いているときは、その時間帯の出勤者にする（時計の「今」では決めない）
   if (routineHours(currentArea)) {
     if (applyShiftStaffForArea()) render();
@@ -5595,10 +5671,11 @@ function rolloverDateIfNeeded(force) {
   dateInput.max = todayStr(); // 日付が変わったら選べる上限も進める
   if (dateInput.value === todayStr()) { if (force) dateManual = false; updateDateWarn(); return; }
   // 未来日は手動選択でも必ず今日に戻す（明日の日付に記録が入るのを防ぐ）
-  if (dateInput.value > todayStr()) { dateManual = false; dateInput.value = todayStr(); render(); return; }
+  if (dateInput.value > todayStr()) { dateManual = false; dateInput.value = todayStr(); syncStaffForView(); render(); return; }
   if (dateManual && !force) { updateDateWarn(); return; }
   dateManual = false;
   dateInput.value = todayStr();
+  syncStaffForView();
   render();
 }
 // 今日以外を表示中は警告を出す（タップで今日に戻る）
@@ -5609,6 +5686,7 @@ function updateDateWarn() {
 document.getElementById('dateWarn').onclick = () => {
   dateManual = false;
   dateInput.value = todayStr();
+  syncStaffForView();
   render();
 };
 setInterval(() => rolloverDateIfNeeded(false), 60 * 1000); // 毎分（日付が変わった直後に切り替わる）
