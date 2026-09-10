@@ -3077,7 +3077,9 @@ async function openInventorySystem(btn) {
     const r = await fetch('/api/inventory-link', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ store: currentStore || '' })
+      // 担当者の名前も渡す。在庫システムのアカウントは店舗で共用しているので、
+      // これが無いと向こうの画面と履歴が全部「清掃管理表」になる。
+      body: JSON.stringify({ store: currentStore || '', by: (staffSelect && staffSelect.value) || '' })
     });
     let j = {};
     try { j = await r.json(); } catch (e) {}

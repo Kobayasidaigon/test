@@ -144,6 +144,10 @@ try {
   console.log('INVENTORY_ACCOUNTS の書式が不正です: ' + e.message);
 }
 
+// 操作者名の制限。在庫システム側と同じ条件にしてある（向こうで弾かれないように）。
+const INVENTORY_BY_MAX = 40;
+const INVENTORY_BY_NG = /[<>"'&\\]|[\u0000-\u001f\u007f]/;
+
 app.post('/api/inventory-link', express.json({ limit: '1kb' }), (req, res) => {
   // BASIC_PASS が未設定だと /api の保護が丸ごと外れるため、その状態では発行しない
   if (!BASIC_PASS) return res.status(503).json({ error: 'サーバーの認証が未設定のため発行できません' });
@@ -168,8 +172,18 @@ app.post('/api/inventory-link', express.json({ limit: '1kb' }), (req, res) => {
     exp: Math.floor(Date.now() / 1000) + INVENTORY_LINK_TTL,
     nonce: crypto.randomBytes(16).toString('hex')
   };
-  // 署名の対象は loc→user→exp→nonce の順で、値を encodeURIComponent した文字列
-  const canonical = ['loc', 'user', 'exp', 'nonce']
+
+  // 操作している人の名前。在庫システムのアカウントは店舗で共用しているので、
+  // これを渡さないと向こうの画面も履歴も全部「清掃管理表」になる。
+  // 名前として読めない値は付けずに送る（付けて弾かれるとリンク自体が開けなくなる）。
+  const by = req.body && typeof req.body.by === 'string' ? req.body.by.trim() : '';
+  if (by && by.length <= INVENTORY_BY_MAX && !INVENTORY_BY_NG.test(by)) params.by = by;
+
+  // 署名の対象は loc→user→exp→nonce の順。by があれば最後に足す。
+  // ここの並びは在庫システム側の entry-link.js と揃っている必要がある。
+  const fields = ['loc', 'user', 'exp', 'nonce'];
+  if (params.by) fields.push('by');
+  const canonical = fields
     .map(k => k + '=' + encodeURIComponent(params[k])).join('&');
   const sig = crypto.createHmac('sha256', INVENTORY_LINK_SECRET).update(canonical).digest('hex');
   // URLはログに出さない（1回きりとはいえ、有効なうちは入れてしまうため）
