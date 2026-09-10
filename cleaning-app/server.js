@@ -24,6 +24,18 @@ function saveState() {
   fs.renameSync(tmp, STATE_FILE); // 原子的に置き換え（破損防止）
 }
 
+// ---- 変更の通し番号（端末間の同期用）----
+// 端末は /api/changes?since=<番号> を軽く叩いて、変わったキーだけ取りに来る。
+// ログはメモリ内・上限つき。再起動やログから溢れた場合は full:true を返して全部取り直させる。
+let stateRev = 0;
+const CHANGE_LOG_MAX = 800;
+const changeLog = [];   // [{ r: 通し番号, k: キー, del: 削除か }]
+function bumpRev(key, del) {
+  stateRev++;
+  changeLog.push({ r: stateRev, k: key, del: !!del });
+  if (changeLog.length > CHANGE_LOG_MAX) changeLog.shift();
+}
+
 function mediaPath(id) {
   return path.join(MEDIA_DIR, encodeURIComponent(id));
 }
@@ -161,17 +173,37 @@ app.post('/api/inventory-link', express.json({ limit: '1kb' }), (req, res) => {
 
 // ---- 状態API（チェック記録・項目・履歴などの文字列データ）----
 app.get('/api/state', (req, res) => {
-  res.json({ kv: state.kv, media: state.media, mediaIds: Object.keys(state.media) });
+  res.json({ kv: state.kv, media: state.media, mediaIds: Object.keys(state.media), rev: stateRev });
 });
 app.put('/api/state/:key', express.text({ type: '*/*', limit: '5mb' }), (req, res) => {
-  state.kv[req.params.key] = typeof req.body === 'string' ? req.body : '';
+  const v = typeof req.body === 'string' ? req.body : '';
+  const changed = state.kv[req.params.key] !== v;
+  state.kv[req.params.key] = v;
+  if (changed) bumpRev(req.params.key, false);
   saveState();
-  res.json({ ok: true });
+  res.json({ ok: true, rev: stateRev });
 });
 app.delete('/api/state/:key', (req, res) => {
+  const had = Object.prototype.hasOwnProperty.call(state.kv, req.params.key);
   delete state.kv[req.params.key];
+  if (had) bumpRev(req.params.key, true);
   saveState();
-  res.json({ ok: true });
+  res.json({ ok: true, rev: stateRev });
+});
+
+// ---- 変わったキーだけ返す（同じ店舗で2台使うときの同期用）----
+// since が古すぎる・サーバーが再起動した場合は full:true（端末は /api/state を取り直す）
+app.get('/api/changes', (req, res) => {
+  const since = parseInt(req.query.since, 10);
+  const oldest = changeLog.length ? changeLog[0].r : stateRev + 1;
+  if (!Number.isFinite(since) || since < 0 || since > stateRev || since < oldest - 1) {
+    return res.json({ rev: stateRev, full: true });
+  }
+  const last = new Map();   // 同じキーが何度も変わっていたら最後だけ
+  for (const c of changeLog) if (c.r > since) last.set(c.k, c.del);
+  const kv = {}, del = [];
+  last.forEach((isDel, k) => { if (isDel) del.push(k); else kv[k] = state.kv[k]; });
+  res.json({ rev: stateRev, kv: kv, del: del });
 });
 
 // ---- 見本メディアAPI（画像・動画のバイナリ）----

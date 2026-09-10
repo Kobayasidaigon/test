@@ -1406,6 +1406,8 @@ function appKeys() {
 // 未送信キーの記録（オフラインでPUTに失敗した時だけ入る）。
 // これが無いと、起動時にローカルの全データがサーバーへ再アップロードされ、
 // 他端末やAPIで消したデータが復活してしまう。
+// サーバーの変更の通し番号（端末間の同期用。/api/state と /api/changes が返す）
+let stateRev = 0;
 function loadPendingSync() {
   try { return JSON.parse(localStorage.getItem('pendingSync')) || []; } catch (e) { return []; }
 }
@@ -1421,7 +1423,13 @@ function syncSet(key, value) {
   localStorage.setItem(key, value);
   fetch('/api/state/' + encodeURIComponent(key), {
     method: 'PUT', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: value
-  }).then(r => markPendingSync(key, !r.ok)).catch(() => markPendingSync(key, true));
+  }).then(r => {
+    markPendingSync(key, !r.ok);
+    // 自分の書き込みぶんは番号を進めておく（次の取得で自分の変更を引き直さないため）
+    return r.ok ? r.json().catch(() => null) : null;
+  }).then(j => {
+    if (j && typeof j.rev === 'number' && typeof stateRev === 'number' && j.rev === stateRev + 1) stateRev = j.rev;
+  }).catch(() => markPendingSync(key, true));
 }
 function syncRemove(key) {
   localStorage.removeItem(key);
@@ -5539,6 +5547,61 @@ function resetStaffIfNewDay() {
   }
 }
 
+// ===== 端末間の同期 =====
+// 同じ店舗でiPadを2台使うと、片方のチェックがもう片方に出ないため、
+// 定期的に「前回からの変更」だけ取りに行く。全部（/api/state は約1MB）は毎回引かない。
+let pullBusy = false;
+// 入力の最中に画面を作り直すと操作を邪魔するので、その時は表示の更新だけ見送る
+function canRefreshNow() {
+  if (document.querySelector('dialog[open]')) return false;
+  const a = document.activeElement;
+  if (a && /^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)) return false;
+  return true;
+}
+async function pullChanges(force) {
+  if (pullBusy || (document.hidden && !force)) return;
+  pullBusy = true;
+  try {
+    const r = await fetch('/api/changes?since=' + stateRev);
+    if (!r.ok) return;
+    const j = await r.json();
+    if (j.rev === stateRev && !j.full) return;      // 変わっていない
+    if (j.full) {                                    // 追いつけない（再起動など）＝全部取り直す
+      await bootstrap();
+      refreshAfterPull(true);
+      return;
+    }
+    // 送信できていない自分の変更は、サーバーの値で上書きしない
+    const pending = loadPendingSync();
+    let touched = false;
+    Object.keys(j.kv || {}).forEach(k => {
+      if (!isSyncedKey(k) || pending.indexOf(k) >= 0) return;
+      if (localStorage.getItem(k) !== j.kv[k]) { localStorage.setItem(k, j.kv[k]); touched = true; }
+    });
+    (j.del || []).forEach(k => {
+      if (!isSyncedKey(k) || pending.indexOf(k) >= 0) return;
+      if (localStorage.getItem(k) !== null) { localStorage.removeItem(k); touched = true; }
+    });
+    stateRev = j.rev;
+    if (touched) refreshAfterPull(false);
+  } catch (e) { /* 圏外・回線不良時は次の周期で */ }
+  finally { pullBusy = false; }
+}
+// 取り込んだ内容を画面に反映する（今開いている画面だけ描き直す）
+function refreshAfterPull(rebuildSelects) {
+  if (!canRefreshNow()) return;
+  if (rebuildSelects) { buildStoreSelect(); buildStaffSelect(); }
+  const mode = document.getElementById('summaryView').style.display !== 'none' ? 'summary'
+    : document.getElementById('reviewView').style.display !== 'none' ? 'review'
+    : document.getElementById('compareView').style.display !== 'none' ? 'compare' : 'checklist';
+  if (mode === 'checklist') render();
+  else if (mode === 'summary') renderSummary();
+  else if (mode === 'review') renderReview();
+  else renderCompare();
+}
+setInterval(() => pullChanges(false), 20 * 1000);   // 20秒ごと
+window.addEventListener('focus', () => pullChanges(true));
+
 // ===== 新版の自動検知：デプロイされたら開きっぱなしの画面を自動リロード =====
 let appVersion = null;
 async function checkAppVersion() {
@@ -5552,7 +5615,10 @@ async function checkAppVersion() {
 }
 setInterval(checkAppVersion, 15 * 60 * 1000); // 15分ごと
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) { checkAppVersion(); rolloverDateIfNeeded(true); resetStaffIfNewDay(); autoSelectShiftStaff(); }
+  if (!document.hidden) {
+    checkAppVersion(); rolloverDateIfNeeded(true); resetStaffIfNewDay(); autoSelectShiftStaff();
+    pullChanges(true);  // 他の端末が入れた分をすぐ取り込む
+  }
 });
 
 // ===== 認証：初回のみ合言葉を入力（成功でサーバーがクッキーを発行、以後は自動）=====
@@ -5611,6 +5677,7 @@ async function bootstrap() {
     }
     if (!res.ok) throw new Error('state ' + res.status);
     const server = await res.json();
+    stateRev = typeof server.rev === 'number' ? server.rev : 0;
     const serverKv = server.kv || {};
     const serverMedia = server.media || {};
     const serverMediaIds = server.mediaIds || Object.keys(serverMedia);
