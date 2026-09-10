@@ -138,12 +138,26 @@
     overflow: hidden;
     position: relative;
   }
+  /* 目標に届いていないときは、下地ごと赤くする。
+     0% だとバーの幅がゼロで色が見えないため、下地にも色を付けている。 */
+  .progress-bar-wrap.under { background: #ffebee; }
+  /* 目標の位置に細い線を引く。どこまでやれば良いのかが分かるように。
+     位置は JS が --target に入れる（PROGRESS_TARGET と一致させるため）。 */
+  .progress-bar-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: var(--target, 80%);
+    width: 1px;
+    background: rgba(38, 50, 56, 0.3);
+  }
   .progress-bar {
     height: 100%;
     background: linear-gradient(90deg, var(--done), #66bb6a);
     width: 0%;
     transition: width 0.3s ease;
   }
+  .progress-bar.under { background: linear-gradient(90deg, #e53935, #ef5350); }
   .progress-text {
     position: absolute;
     inset: 0;
@@ -3099,6 +3113,65 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   openInventorySystem(btn);
 });
+// やることの何割できていれば良しとするか。ここを下回るとバーが赤くなる。
+const PROGRESS_TARGET = 0.8;
+
+// やることリストの進み具合。分母は「実際にやる項目の数」にする。
+//
+// 1行が連動先のエリアを指しているときは、その中身の数で数える。
+// 「シャワー清掃」は1行だが、実際には7ヶ所ぶんの作業なので、行数で数えると
+// 実際の作業量よりずっと小さく出てしまう。
+function routineProgress(areaKey, items, rec) {
+  let done = 0, total = 0;
+  const seen = new Set();   // 同じ連動先を2行が指していても、二重に数えない
+
+  items.forEach(item => {
+    const keys = item.link
+      ? String(item.link).split(',').map(x => x.trim()).filter(Boolean) : [];
+
+    // 連動していない行と、linkAny（どれか1つやれば完了）の行は 1 件として数える。
+    // linkAny を中身の数で数えると、全部そろう日が無いので永久に埋まらない。
+    if (!keys.length || item.linkAny) {
+      total += 1;
+      if (itemEffectiveDone(areaKey, item, rec)) done += 1;
+      return;
+    }
+
+    let counted = false;
+    keys.forEach(k => {
+      const sk = scopedArea(k, areaKey);
+      if (seen.has(sk)) { counted = true; return; }
+      seen.add(sk);
+      const c = areaCompletionToday(sk);
+      if (c.total > 0) { done += c.done; total += c.total; counted = true; }
+    });
+
+    // 連動先にまだ項目が1つも無い行は、行そのものを 1 件として数える
+    if (!counted) {
+      total += 1;
+      if (itemEffectiveDone(areaKey, item, rec)) done += 1;
+    }
+  });
+
+  return { done: done, total: total };
+}
+
+// 進捗バーを描く。やることリストでも普通のエリアでも同じものを使う。
+function setProgress(doneCount, total, areaName) {
+  const pct = total ? Math.round(doneCount / total * 100) : 0;
+  const wrap = document.querySelector('.progress-bar-wrap');
+  const bar = document.getElementById('progressBar');
+  bar.style.width = pct + '%';
+  // 項目が 0 件のときは達成しようがないので、赤くしない
+  const under = total > 0 && doneCount / total < PROGRESS_TARGET;
+  wrap.classList.toggle('under', under);
+  bar.classList.toggle('under', under);
+  wrap.style.setProperty('--target', Math.round(PROGRESS_TARGET * 100) + '%');
+  const whoLabel = currentStaff ? currentStaff + 'さん／' : '担当者未選択｜';
+  document.getElementById('progressText').textContent =
+    whoLabel + (areaName || '') + ': ' + doneCount + ' / ' + total + ' 完了 (' + pct + '%)';
+}
+
 function renderRoutineView() {
   const checklist = document.getElementById('checklist');
   const rec = loadRecordMerged(currentArea); // 他の担当者の分も含めて表示
@@ -3312,13 +3385,9 @@ function renderRoutineView() {
     };
   });
   // 進捗バー
-  const doneCount = items.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
-  const total = items.length;
-  const pct = total ? Math.round(doneCount / total * 100) : 0;
-  document.getElementById('progressBar').style.width = pct + '%';
+  const prog = routineProgress(currentArea, items, rec);
   const area = getArea(currentArea);
-  const whoLabel = currentStaff ? currentStaff + 'さん／' : '担当者未選択｜';
-  document.getElementById('progressText').textContent = whoLabel + (area ? area.name : '') + ': ' + doneCount + ' / ' + total + ' 完了 (' + pct + '%)';
+  setProgress(prog.done, prog.total, area ? area.name : '');
 }
 
 // チェックシートの一番上の1行。いちばん間があいている場所を1つだけ出す。
@@ -3518,10 +3587,7 @@ function render() {
 
   const doneCount = items.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
   const total = items.length;
-  const pct = total ? Math.round(doneCount / total * 100) : 0;
-  document.getElementById('progressBar').style.width = pct + '%';
-  const whoLabel = currentStaff ? currentStaff + 'さん／' : '担当者未選択｜';
-  document.getElementById('progressText').textContent = `${whoLabel}${area.name}: ${doneCount} / ${total} 完了 (${pct}%)`;
+  setProgress(doneCount, total, area.name);
 
   const undone = items.filter(i => !itemEffectiveDone(currentArea, i, rec));
   const summary = document.getElementById('summary');
