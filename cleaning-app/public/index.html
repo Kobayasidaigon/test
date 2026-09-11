@@ -3126,6 +3126,18 @@ document.addEventListener('click', (e) => {
 });
 // やることの何割できていれば良しとするか。ここを下回るとバーが赤くなる。
 const PROGRESS_TARGET = 0.8;
+// 中番を1人で回しているときの目標。
+// 中番はフロア・マシン清掃（23項目）が入って重くなったので、1人だと8割は厳しい。
+const PROGRESS_TARGET_HIRU_ALONE = 0.65;
+
+// いま見ている画面の目標の割合。
+// 担当者が連名（「山田・佐藤」）なら2人以上。1人のときだけ中番の目標を下げる。
+// 担当者を選んでいないときは誰が何人か分からないので、下げずに 8 割のまま。
+function progressTarget() {
+  const alone = !!currentStaff && currentStaff.indexOf('・') === -1;
+  return (alone && baseArea(currentArea) === 'routine_hiru')
+    ? PROGRESS_TARGET_HIRU_ALONE : PROGRESS_TARGET;
+}
 
 // 進捗バーの分母から外すエリア。
 //
@@ -3184,14 +3196,16 @@ function routineProgress(areaKey, items, rec) {
 // 進捗バーを描く。やることリストでも普通のエリアでも同じものを使う。
 function setProgress(doneCount, total, areaName) {
   const pct = total ? Math.round(doneCount / total * 100) : 0;
+  const target = progressTarget();
   const wrap = document.querySelector('.progress-bar-wrap');
   const bar = document.getElementById('progressBar');
   bar.style.width = pct + '%';
   // 項目が 0 件のときは達成しようがないので、赤くしない
-  const under = total > 0 && doneCount / total < PROGRESS_TARGET;
+  const under = total > 0 && doneCount / total < target;
   wrap.classList.toggle('under', under);
   bar.classList.toggle('under', under);
-  wrap.style.setProperty('--target', Math.round(PROGRESS_TARGET * 100) + '%');
+  // 目標線もここから引く。目標が動けば線も動く。
+  wrap.style.setProperty('--target', Math.round(target * 100) + '%');
   const whoLabel = currentStaff ? currentStaff + 'さん／' : '担当者未選択｜';
   document.getElementById('progressText').textContent =
     whoLabel + (areaName || '') + ': ' + doneCount + ' / ' + total + ' 完了 (' + pct + '%)';
