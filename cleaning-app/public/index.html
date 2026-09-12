@@ -5725,13 +5725,46 @@ function resetStaffIfNewDay() {
 // 同じ店舗でiPadを2台使うと、片方のチェックがもう片方に出ないため、
 // 定期的に「前回からの変更」だけ取りに行く。全部（/api/state は約1MB）は毎回引かない。
 let pullBusy = false;
-// 入力の最中に画面を作り直すと操作を邪魔するので、その時は表示の更新だけ見送る
+// 文字や数字を打っている最中に画面を作り直すと、打ちかけの値が消える。
+// その間だけ表示の更新を見送る。
+//
+// **select と日付欄は止める理由にしない。** iPad ではピッカーを閉じたあとも
+// 焦点が select に残ることがあり、これを「入力中」とみなすと、画面に触るまで
+// チェックもパーセントも更新されないまま固まる。描き直すのはチェックの一覧と
+// タブだけで、選択欄そのものには触らないので、焦点が残っていても困らない。
 function canRefreshNow() {
   if (document.querySelector('dialog[open]')) return false;
   const a = document.activeElement;
-  if (a && /^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)) return false;
+  if (!a) return true;
+  if (a.tagName === 'TEXTAREA') return false;
+  if (a.tagName === 'INPUT') {
+    // 文字を打たない種類の input は、止める理由にならない
+    const t = (a.getAttribute('type') || 'text').toLowerCase();
+    return ['button', 'submit', 'reset', 'checkbox', 'radio', 'date', 'file', 'range', 'color']
+      .indexOf(t) >= 0;
+  }
   return true;
 }
+// 選択欄に触れている間は、選択肢そのものを作り直さない（開いているピッカーが閉じるため）
+function selectFocused() {
+  const a = document.activeElement;
+  return !!a && a.tagName === 'SELECT';
+}
+
+// 見送った更新を覚えておく。
+// 覚えずに捨てると、次に何か変わるまで誰も描き直さないので、画面が古いまま止まる。
+let pendingRefresh = false;         // 描き直しを見送ったか
+let pendingRefreshSelects = false;  // 店舗・担当者の選択肢の作り直しを見送ったか
+function flushPendingRefresh() {
+  if (!pendingRefresh && !pendingRefreshSelects) return;
+  if (!canRefreshNow()) return;
+  refreshAfterPull(false);
+}
+// 入力から離れた／画面に触った直後にやり直す。
+// focusout は焦点が移る前に飛ぶので、1拍おいてから見る。
+document.addEventListener('focusout', () => setTimeout(flushPendingRefresh, 0));
+document.addEventListener('click', () => setTimeout(flushPendingRefresh, 0), true);
+setInterval(flushPendingRefresh, 3000);   // 取りこぼしの保険
 async function pullChanges(force, wait) {
   if (pullBusy || (document.hidden && !force)) return;
   pullBusy = true;
@@ -5765,8 +5798,13 @@ async function pullChanges(force, wait) {
 }
 // 取り込んだ内容を画面に反映する（今開いている画面だけ描き直す）
 function refreshAfterPull(rebuildSelects) {
-  if (!canRefreshNow()) return;
-  if (rebuildSelects) { buildStoreSelect(); buildStaffSelect(); }
+  if (rebuildSelects) pendingRefreshSelects = true;
+  if (!canRefreshNow()) { pendingRefresh = true; return; }
+  if (pendingRefreshSelects && !selectFocused()) {
+    pendingRefreshSelects = false;
+    buildStoreSelect(); buildStaffSelect();
+  }
+  pendingRefresh = false;
   const mode = document.getElementById('summaryView').style.display !== 'none' ? 'summary'
     : document.getElementById('reviewView').style.display !== 'none' ? 'review'
     : document.getElementById('compareView').style.display !== 'none' ? 'compare' : 'checklist';
