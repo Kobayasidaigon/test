@@ -580,11 +580,33 @@
   }
   #mediaDialog { width: 420px; max-height: 88vh; overflow-y: auto; }
   #compareDialog { width: 92vw; max-width: 860px; max-height: 88vh; overflow-y: auto; }
-  .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table.cmp { border-collapse: collapse; width: 100%; font-size: 0.8rem; }
-  table.cmp th, table.cmp td { border: 1px solid var(--border); padding: 7px 9px; text-align: center; white-space: nowrap; }
-  table.cmp th { background: #eceff1; position: sticky; top: 0; font-weight: 700; }
+  /* 結果の比較の表: 表の中だけをスクロールさせ、上の見出し（項目名）と左の「日付・担当者」を固定する。
+     縦横どちらに動かしても「いつ・誰が・どの項目を」やったかを見失わないため。
+     高さは --cmp-max-h（画面の高さ − 固定ヘッダー）をJSで入れる */
+  .cmp-scroll {
+    overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+    max-height: var(--cmp-max-h, 70vh);
+    border: 1px solid var(--border); border-radius: 8px; background: #fff;
+  }
+  /* 固定セルは collapse だと罫線が置いていかれるので separate で各セルに罫線を持たせる */
+  table.cmp { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 0.8rem; }
+  table.cmp th, table.cmp td {
+    border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 7px 9px; text-align: center; white-space: nowrap; background: #fff;
+  }
+  table.cmp th { background: #eceff1; position: sticky; top: 0; z-index: 2; font-weight: 700; }
   table.cmp td.left, table.cmp th.left { text-align: left; }
+  /* 左2列（日付・担当者）は横にスクロールしても残す。担当者列の left は日付列の幅と同じにする */
+  table.cmp .fix-date { position: sticky; left: 0; z-index: 1; width: 96px; min-width: 96px; max-width: 96px; }
+  table.cmp .fix-staff { position: sticky; left: 96px; z-index: 1; box-shadow: 2px 0 0 0 var(--border); }
+  table.cmp th.fix-date, table.cmp th.fix-staff { z-index: 3; }
+  /* セルをタップすると、その行（日付・担当者）とその列（項目名）を強調して「誰の・何の項目か」を追えるようにする */
+  table.cmp tr.hl td, table.cmp .hl-col { background-image: linear-gradient(rgba(249,168,37,0.16), rgba(249,168,37,0.16)); }
+  table.cmp tr.hl .fix-date, table.cmp tr.hl .fix-staff, table.cmp th.hl-col { background-color: #fff59d; }
+  table.cmp td.hl-cell { box-shadow: inset 0 0 0 3px #f9a825; }
+  .cmp-title { margin: 4px 0 10px; font-size: 1rem; }
+  .cmp-title .store { color: var(--primary-dark); }
+  .cmp-hint { font-size: 0.75rem; color: var(--muted); margin: 0 0 8px; }
   table.cmp .ratio-full { background: #e8f5e9; color: #2e7d32; font-weight: 700; }
   table.cmp .ratio-mid  { background: #fff8e1; color: #ef6c00; }
   table.cmp .ratio-low  { background: #ffebee; color: #c62828; font-weight: 700; }
@@ -749,9 +771,13 @@
     <button id="logoutBtn" style="display:block; margin:20px auto 0; border:none; background:transparent; color:#b0bec5; font-size:.72rem; cursor:pointer; text-decoration:underline;">ログアウト（合言葉をやり直す）</button>
   </div>
 
-  <!-- ② 結果の比較画面 -->
+  <!-- ② 結果の比較画面（店舗ごとに表示する） -->
   <div id="compareView" style="display:none;">
     <div class="controls">
+      <div style="grid-column: 1 / -1;">
+        <label for="cmpStore"><span class="ic-slot" data-icon="building-2"></span> 店舗</label>
+        <select id="cmpStore"></select>
+      </div>
       <div>
         <label for="cmpArea"><span class="ic-slot" data-icon="clipboard-list"></span> チェックシート</label>
         <select id="cmpArea"></select>
@@ -3903,9 +3929,32 @@ const modeChecklistBtn = document.getElementById('modeChecklist');
 const modeCompareBtn = document.getElementById('modeCompare');
 const modeSummaryBtn = document.getElementById('modeSummary');
 const modeReviewBtn = document.getElementById('modeReview');
+const cmpStore = document.getElementById('cmpStore');
 const cmpArea = document.getElementById('cmpArea');
 const cmpStaff = document.getElementById('cmpStaff');
 const headerSub = document.getElementById('headerSub');
+
+// 店舗セレクター（結果は店舗ごとに表示する）
+// 手で選ぶまでは、この端末の店舗（店舗合言葉で固定された店舗）に合わせる
+let cmpStoreTouched = false;
+function cmpStoreDefault() {
+  return STORES.includes(currentStore) ? currentStore : STORES[0];
+}
+function cmpStoreValue() {
+  return STORES.includes(cmpStore.value) ? cmpStore.value : cmpStoreDefault();
+}
+function refreshCmpStore() {
+  const prev = cmpStore.value;
+  cmpStore.innerHTML = '';
+  STORES.forEach(s => {
+    const o = document.createElement('option');
+    o.value = s; o.textContent = s;
+    cmpStore.appendChild(o);
+  });
+  cmpStore.value = (cmpStoreTouched && STORES.includes(prev)) ? prev : cmpStoreDefault();
+  cmpStore.onchange = () => { cmpStoreTouched = true; refreshCmpStaff(); renderCompare(); };
+}
+refreshCmpStore();
 
 // 比較対象セレクター（チェックシート：すべて＋各エリア。追加エリアも反映）
 function refreshCmpArea() {
@@ -3924,16 +3973,17 @@ function refreshCmpArea() {
 }
 refreshCmpArea();
 
-// 担当者フィルター（すべて＋名簿の全員＋過去履歴に出てくる人）
+// 担当者フィルター（すべて＋表示中の店舗の名簿＋その店舗の過去履歴に出てくる人）
 function refreshCmpStaff() {
   const prev = cmpStaff.value;
+  const store = cmpStoreValue();
   cmpStaff.innerHTML = '';
   const all = document.createElement('option');
   all.value = '__all__'; all.textContent = 'すべての担当者';
   cmpStaff.appendChild(all);
   const names = [];
-  allRosterNames().forEach(n => { if (!names.includes(n)) names.push(n); });
-  loadHistory().forEach(h => { if (h.staff && !names.includes(h.staff)) names.push(h.staff); });
+  (loadRoster()[store] || []).forEach(n => { if (!names.includes(n)) names.push(n); });
+  storeHistory(store).forEach(h => { if (h.staff && !names.includes(h.staff)) names.push(h.staff); });
   names.forEach(name => {
     const o = document.createElement('option');
     o.value = name; o.textContent = name;
@@ -3962,7 +4012,7 @@ function setMode(mode) {
     : isReview
       ? 'この2週間の清掃の記録から、よい所と気になる所を出しています'
       : isCompare
-        ? '登録した結果を、チェックシートごとに比較できます'
+        ? '店舗を選ぶと、その店舗の記録をチェックシートごとに比較できます'
         : '担当者を選び、エリアごとに完了項目をタップ';
   if (isSummary) renderSummary();
   else if (isReview) renderReview();
@@ -5182,8 +5232,12 @@ function ratioClass(done, total) {
   return 'ratio-low';
 }
 
+// 表示中の店舗の履歴（旧形式の cleanHistory に入っている分も店舗名で拾う）
+function storeHistory(store) {
+  return loadHistory().filter(h => (h.store || '') === store);
+}
 function sortedHistory() {
-  return loadHistory().slice().sort((a, b) =>
+  return storeHistory(cmpStoreValue()).slice().sort((a, b) =>
     a.date < b.date ? 1 : a.date > b.date ? -1 : (a.staff < b.staff ? -1 : 1));
 }
 // 担当者フィルターを適用した履歴
@@ -5203,33 +5257,53 @@ function itemDoneMap(h, areaKey) {
   return { as: as, map: map };
 }
 
+// 表の高さ = 画面の高さ − 固定ヘッダー。表の中だけをスクロールさせて見出しを固定するため
+function fitCompareHeight() {
+  const hdr = document.querySelector('header');
+  const h = window.innerHeight - (hdr ? hdr.offsetHeight : 0) - 24;
+  document.documentElement.style.setProperty('--cmp-max-h', Math.max(240, h) + 'px');
+}
+window.addEventListener('resize', fitCompareHeight);
+
+function cmpTitleHtml(store, what, icon) {
+  return '<h3 class="cmp-title"><span class="store">' + escapeHtml(store) + '</span>　'
+    + (icon ? ic(icon) + ' ' : '') + escapeHtml(what) + '</h3>'
+    + '<p class="cmp-hint">表は上下左右にスクロールできます。日付・担当者と項目名は固定。セルをタップすると行と列が光ります。</p>';
+}
+
 function renderCompare() {
   refreshCmpArea();
+  // まだ手で店舗を選んでいなければ、端末の店舗に合わせる（店舗合言葉の端末は起動後に店舗が決まるため）
+  if (!cmpStoreTouched && cmpStore.value !== cmpStoreDefault()) cmpStore.value = cmpStoreDefault();
+  refreshCmpStaff(); // 他の端末から届いた記録の担当者も選べるように毎回作り直す（選択中の人は保つ）
+  fitCompareHeight();
+  const store = cmpStoreValue();
   const box = document.getElementById('compareContent');
-  if (loadHistory().length === 0) {
-    box.innerHTML = '<div class="cmp-empty">まだ登録された結果がありません。<br>「チェックシート」でチェックし、「この結果を登録」を押すと、ここに記録されます。</div>';
+  if (storeHistory(store).length === 0) {
+    box.innerHTML = '<div class="cmp-empty">' + escapeHtml(store) + ' の記録はまだありません。<br>「チェックシート」でチェックを付けると、自動でここに記録されます。</div>';
     return;
   }
   const hist = filteredHistory();
   if (hist.length === 0) {
-    box.innerHTML = '<div class="cmp-empty">' + escapeHtml(cmpStaff.value) + ' さんの登録結果はまだありません。</div>';
+    box.innerHTML = '<div class="cmp-empty">' + escapeHtml(store) + ' に ' + escapeHtml(cmpStaff.value) + ' さんの記録はまだありません。</div>';
     return;
   }
   const sel = cmpArea.value;
-  if (sel === '__all__') renderOverview(box, hist);
-  else renderAreaMatrix(box, hist, sel);
+  if (sel === '__all__') renderOverview(box, hist, store);
+  else renderAreaMatrix(box, hist, sel, store);
 }
 
 // (A) すべてのエリア＝概要テーブル（行：登録／列：エリアの達成率）
-function renderOverview(box, hist) {
-  let html = '<div class="cmp-scroll"><table class="cmp"><thead><tr>'
-    + '<th class="left">日付</th><th class="left">担当者</th><th>全体</th>';
+function renderOverview(box, hist, store) {
+  let html = cmpTitleHtml(store, 'すべてのエリア（概要）', 'clipboard-list');
+  html += '<div class="cmp-scroll"><table class="cmp"><thead><tr>'
+    + '<th class="left fix-date">日付</th><th class="left fix-staff">担当者</th><th>全体</th>';
   allAreas().forEach(a => { html += '<th>' + ic(a.icon) + '<br>' + escapeHtml(a.name) + '</th>'; });
   html += '<th>登録日時</th><th></th></tr></thead><tbody>';
   hist.forEach(h => {
     const opct = h.total ? Math.round(h.done / h.total * 100) : 0;
-    html += '<tr><td class="left">' + escapeHtml(h.date) + '</td>'
-      + '<td class="left">' + escapeHtml(h.staff + (h.store ? '（' + h.store + '）' : '')) + '</td>'
+    html += '<tr><td class="left fix-date">' + escapeHtml(h.date) + '</td>'
+      + '<td class="left fix-staff">' + escapeHtml(h.staff) + '</td>'
       + '<td class="overall ' + ratioClass(h.done, h.total) + '">' + h.done + '/' + h.total + '<br>' + opct + '%</td>';
     allAreas().forEach(a => {
       const as = (h.areas || []).find(x => x.key === a.key);
@@ -5241,10 +5315,11 @@ function renderOverview(box, hist) {
   html += '</tbody></table></div>';
   box.innerHTML = html;
   wireDelete(box);
+  wireCrosshair(box);
 }
 
 // (B) 特定エリア＝項目ごとの比較マトリクス（行：登録／列：各項目 ✓✗）
-function renderAreaMatrix(box, hist, areaKey) {
+function renderAreaMatrix(box, hist, areaKey, store) {
   const area = getArea(areaKey);
   // 列＝現在の項目名。過去スナップにしか無い項目名も末尾に追加
   const cols = getGroups(areaKey).flatMap(g => g.items).map(i => i.title);
@@ -5253,28 +5328,49 @@ function renderAreaMatrix(box, hist, areaKey) {
     if (as && as.items) as.items.forEach(it => { if (!cols.includes(it.title)) cols.push(it.title); });
   });
 
-  let html = '<h3 style="margin:4px 0 10px;">' + ic(area.icon) + ' ' + escapeHtml(area.name) + '</h3>';
+  let html = cmpTitleHtml(store, area.name, area.icon);
   html += '<div class="cmp-scroll"><table class="cmp"><thead><tr>'
-    + '<th class="left">日付</th><th class="left">担当者</th><th>達成</th>';
+    + '<th class="left fix-date">日付</th><th class="left fix-staff">担当者</th><th>達成</th>';
   cols.forEach(t => { html += '<th class="col-item">' + escapeHtml(t) + '</th>'; });
   html += '<th></th></tr></thead><tbody>';
 
   hist.forEach(h => {
     const { as, map } = itemDoneMap(h, areaKey);
     const done = as ? as.done : 0, total = as ? as.total : cols.length;
-    html += '<tr><td class="left">' + escapeHtml(h.date) + '</td>'
-      + '<td class="left">' + escapeHtml(h.staff + (h.store ? '（' + h.store + '）' : '')) + '</td>'
+    html += '<tr><td class="left fix-date">' + escapeHtml(h.date) + '</td>'
+      + '<td class="left fix-staff">' + escapeHtml(h.staff) + '</td>'
       + '<td class="overall ' + ratioClass(done, total) + '">' + done + '/' + total + '</td>';
     cols.forEach(t => {
-      if (!(t in map)) html += '<td>-</td>';
-      else if (map[t]) html += '<td class="ratio-full">✓</td>';
-      else html += '<td class="ratio-low">✗</td>';
+      // title は PC でマウスを乗せたときの補助表示（誰が・どの項目か）
+      const who = escapeHtml(h.date + ' ' + h.staff + '：' + t);
+      if (!(t in map)) html += '<td title="' + who + '（記録なし）">-</td>';
+      else if (map[t]) html += '<td class="ratio-full" title="' + who + ' ✓">✓</td>';
+      else html += '<td class="ratio-low" title="' + who + ' ✗">✗</td>';
     });
     html += '<td><button class="cmp-del" data-id="' + h.id + '">' + ic('trash-2') + '</button></td></tr>';
   });
   html += '</tbody></table></div>';
   box.innerHTML = html;
   wireDelete(box);
+  wireCrosshair(box);
+}
+
+// セルをタップすると、その行（日付・担当者）と列（項目名）を強調する。もう一度タップで解除
+function wireCrosshair(box) {
+  const table = box.querySelector('table.cmp');
+  if (!table) return;
+  table.addEventListener('click', e => {
+    if (e.target.closest('button')) return;
+    const cell = e.target.closest('td');
+    if (!cell) return;
+    const wasOn = cell.classList.contains('hl-cell');
+    table.querySelectorAll('.hl, .hl-col, .hl-cell').forEach(el => el.classList.remove('hl', 'hl-col', 'hl-cell'));
+    if (wasOn) return;
+    const idx = cell.cellIndex;
+    cell.parentElement.classList.add('hl');
+    table.querySelectorAll('tr').forEach(r => { const c = r.cells[idx]; if (c) c.classList.add('hl-col'); });
+    cell.classList.add('hl-cell');
+  });
 }
 
 function wireDelete(box) {
@@ -5969,6 +6065,7 @@ bootstrap().then(() => {
   buildStoreSelect();
   buildStaffSelect();
   autoSelectShiftStaff(); // 今シフト中の人を担当者に自動セット
+  refreshCmpStore();
   refreshCmpStaff();
   render();
   longPollLoop();   // 他の端末の変更を待ち受ける
