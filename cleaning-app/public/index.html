@@ -608,9 +608,11 @@
   .cmp-title { margin: 4px 0 10px; font-size: 1rem; }
   .cmp-title .store { color: var(--primary-dark); }
   .cmp-hint { font-size: 0.75rem; color: var(--muted); margin: 0 0 8px; }
-  table.cmp .ratio-full { background: #e8f5e9; color: #2e7d32; font-weight: 700; }
-  table.cmp .ratio-mid  { background: #fff8e1; color: #ef6c00; }
-  table.cmp .ratio-low  { background: #ffebee; color: #c62828; font-weight: 700; }
+  /* 達成率の色。進捗バーと同じく 8割（PROGRESS_TARGET）以上を「できている」扱いにする */
+  table.cmp .ratio-full { background: #c8e6c9; color: #1b5e20; font-weight: 700; }   /* 100% */
+  table.cmp .ratio-good { background: #e8f5e9; color: #2e7d32; font-weight: 700; }   /* 80%以上 */
+  table.cmp .ratio-mid  { background: #fff8e1; color: #ef6c00; }                     /* 50%以上 */
+  table.cmp .ratio-low  { background: #ffebee; color: #c62828; font-weight: 700; }   /* 50%未満 */
   table.cmp .overall { font-weight: 800; }
   table.cmp th.col-item {
     white-space: normal; width: 84px; min-width: 84px; max-width: 84px;
@@ -5225,10 +5227,13 @@ function refreshAdminUI() {
 })();
 refreshAdminUI();
 
+// 達成率の色分け。100% だけを緑にすると 98% でも黄色になって寂しいので、
+// 進捗バーの目標（PROGRESS_TARGET = 8割）以上は緑にする。100% はさらに濃い緑
 function ratioClass(done, total) {
   if (total === 0) return '';
   const r = done / total;
   if (r >= 1) return 'ratio-full';
+  if (r >= PROGRESS_TARGET) return 'ratio-good';
   if (r >= 0.5) return 'ratio-mid';
   return 'ratio-low';
 }
