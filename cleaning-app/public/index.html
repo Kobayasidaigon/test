@@ -604,6 +604,7 @@
   table.cmp tr.hl td, table.cmp .hl-col { background-image: linear-gradient(rgba(249,168,37,0.16), rgba(249,168,37,0.16)); }
   table.cmp tr.hl .fix-date, table.cmp tr.hl .fix-staff, table.cmp th.hl-col { background-color: #fff59d; }
   table.cmp td.hl-cell { box-shadow: inset 0 0 0 3px #f9a825; }
+  table.cmp .slot { color: var(--muted); font-size: 0.72rem; font-weight: 600; margin-left: 1px; }
   .cmp-title { margin: 4px 0 10px; font-size: 1rem; }
   .cmp-title .store { color: var(--primary-dark); }
   .cmp-hint { font-size: 0.75rem; color: var(--muted); margin: 0 0 8px; }
@@ -5248,13 +5249,69 @@ function filteredHistory() {
   return hist;
 }
 
-// 登録結果の特定エリアについて「項目名→実施有無」のマップを返す
+// 登録結果の特定エリアについて「項目名→実施有無」のマップを返す。
+// やることリストから付けた記録は floor@routine_asa のように時間帯つきの鍵で入るので、
+// 同じエリアの記録（時間帯違い）をまとめて見る。どれかの時間帯でやっていれば ✓
+function areaSnaps(h, areaKey) {
+  return (h.areas || []).filter(x => baseArea(x.key) === areaKey);
+}
 function itemDoneMap(h, areaKey) {
-  const as = (h.areas || []).find(x => x.key === areaKey);
+  const snaps = areaSnaps(h, areaKey);
   const map = {};
-  if (as && as.items) as.items.forEach(it => { map[it.title] = it.done; });
-  else if (as && as.undone) as.undone.forEach(t => { map[t] = false; });
+  snaps.forEach(as => {
+    if (as.items) as.items.forEach(it => { map[it.title] = !!map[it.title] || !!it.done; });
+    else if (as.undone) as.undone.forEach(t => { if (!(t in map)) map[t] = false; });
+  });
+  let as = null;
+  if (snaps.some(x => x.items)) {
+    const ts = Object.keys(map);
+    as = { done: ts.filter(t => map[t]).length, total: ts.length };
+  } else if (snaps.length) {
+    as = { done: snaps.reduce((n, x) => n + (x.done || 0), 0), total: snaps.reduce((n, x) => n + (x.total || 0), 0) };
+  }
   return { as: as, map: map };
+}
+
+// ---- 担当者の後ろに付ける時間帯（朝番・中番・遅番）----
+const SLOT_LABELS = { routine_asa: '朝番', routine_hiru: '中番', routine_ban: '遅番' };
+// 記録の鍵から時間帯を取る: routine_asa / floor@routine_asa / floor@routine_asa#d1 → routine_asa
+function slotOfKey(key) {
+  let k = String(key || '');
+  const h = k.indexOf('#'); if (h >= 0) k = k.slice(0, h);
+  const at = k.indexOf('@'); if (at >= 0) k = k.slice(at + 1);
+  return SLOT_LABELS[k] ? k : '';
+}
+// 鍵に時間帯が無い記録（エリアのタブから付けた分）は、記録時刻から決める。
+// recArea と同じ考え方: やることリストから参照されているエリアだけが対象で、
+// その時刻より前に始まっている時間帯のうち一番遅いもの。早朝は一番早い時間帯
+function slotOfTime(areaKey, hm) {
+  if (!hm) return '';
+  const rs = routinesLinking(baseArea(areaKey));
+  if (!rs.length) return '';
+  const started = rs.filter(x => { const w = routineHours(x); return w && hm >= w.from; });
+  return started.length ? started[started.length - 1] : rs[0];
+}
+// エントリ（担当者×日付）の時間帯。areaKey を渡すとそのエリアの記録だけで決める（無ければ全体）
+function entrySlots(h, areaKey) {
+  const all = h.areas || [];
+  let snaps = areaKey ? areaSnaps(h, areaKey) : all;
+  if (!snaps.length) snaps = all;
+  const set = new Set();
+  snaps.forEach(a => {
+    const rk = slotOfKey(a.key);
+    if (rk) { set.add(rk); return; }
+    (a.items || []).forEach(it => { if (it.done && it.time) { const t = slotOfTime(a.key, it.time); if (t) set.add(t); } });
+  });
+  return ROUTINE_KEYS.filter(rk => set.has(rk)).map(rk => SLOT_LABELS[rk]);
+}
+// 表示用: 「山田（朝番）」「山田（朝番・遅番）」。時間帯が分からなければ名前だけ
+function staffText(h, areaKey) {
+  const slots = entrySlots(h, areaKey);
+  return h.staff + (slots.length ? '（' + slots.join('・') + '）' : '');
+}
+function staffHtml(h, areaKey) {
+  const slots = entrySlots(h, areaKey);
+  return escapeHtml(h.staff) + (slots.length ? '<span class="slot">（' + escapeHtml(slots.join('・')) + '）</span>' : '');
 }
 
 // 表の高さ = 画面の高さ − 固定ヘッダー。表の中だけをスクロールさせて見出しを固定するため
@@ -5289,8 +5346,14 @@ function renderCompare() {
     return;
   }
   const sel = cmpArea.value;
-  if (sel === '__all__') renderOverview(box, hist, store);
-  else renderAreaMatrix(box, hist, sel, store);
+  // 項目の並び・連動の定義は店舗ごとなので、表示中の店舗の定義で描く（連動のキャッシュも切り替える）
+  const pl = _linkCache; _linkCache = {};
+  try {
+    withDefStore(store, () => {
+      if (sel === '__all__') renderOverview(box, hist, store);
+      else renderAreaMatrix(box, hist, sel, store);
+    });
+  } finally { _linkCache = pl; }
 }
 
 // (A) すべてのエリア＝概要テーブル（行：登録／列：エリアの達成率）
@@ -5303,10 +5366,10 @@ function renderOverview(box, hist, store) {
   hist.forEach(h => {
     const opct = h.total ? Math.round(h.done / h.total * 100) : 0;
     html += '<tr><td class="left fix-date">' + escapeHtml(h.date) + '</td>'
-      + '<td class="left fix-staff">' + escapeHtml(h.staff) + '</td>'
+      + '<td class="left fix-staff">' + staffHtml(h) + '</td>'
       + '<td class="overall ' + ratioClass(h.done, h.total) + '">' + h.done + '/' + h.total + '<br>' + opct + '%</td>';
     allAreas().forEach(a => {
-      const as = (h.areas || []).find(x => x.key === a.key);
+      const as = itemDoneMap(h, a.key).as;
       html += as ? '<td class="' + ratioClass(as.done, as.total) + '">' + as.done + '/' + as.total + '</td>' : '<td>-</td>';
     });
     html += '<td>' + escapeHtml(h.ts || '') + '</td>'
@@ -5324,8 +5387,7 @@ function renderAreaMatrix(box, hist, areaKey, store) {
   // 列＝現在の項目名。過去スナップにしか無い項目名も末尾に追加
   const cols = getGroups(areaKey).flatMap(g => g.items).map(i => i.title);
   hist.forEach(h => {
-    const { as } = itemDoneMap(h, areaKey);
-    if (as && as.items) as.items.forEach(it => { if (!cols.includes(it.title)) cols.push(it.title); });
+    Object.keys(itemDoneMap(h, areaKey).map).forEach(t => { if (!cols.includes(t)) cols.push(t); });
   });
 
   let html = cmpTitleHtml(store, area.name, area.icon);
@@ -5338,11 +5400,11 @@ function renderAreaMatrix(box, hist, areaKey, store) {
     const { as, map } = itemDoneMap(h, areaKey);
     const done = as ? as.done : 0, total = as ? as.total : cols.length;
     html += '<tr><td class="left fix-date">' + escapeHtml(h.date) + '</td>'
-      + '<td class="left fix-staff">' + escapeHtml(h.staff) + '</td>'
+      + '<td class="left fix-staff">' + staffHtml(h, areaKey) + '</td>'
       + '<td class="overall ' + ratioClass(done, total) + '">' + done + '/' + total + '</td>';
     cols.forEach(t => {
       // title は PC でマウスを乗せたときの補助表示（誰が・どの項目か）
-      const who = escapeHtml(h.date + ' ' + h.staff + '：' + t);
+      const who = escapeHtml(h.date + ' ' + staffText(h, areaKey) + '：' + t);
       if (!(t in map)) html += '<td title="' + who + '（記録なし）">-</td>';
       else if (map[t]) html += '<td class="ratio-full" title="' + who + ' ✓">✓</td>';
       else html += '<td class="ratio-low" title="' + who + ' ✗">✗</td>';
