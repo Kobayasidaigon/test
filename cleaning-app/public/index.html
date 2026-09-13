@@ -451,6 +451,41 @@
     padding: 1px 6px; border-radius: 8px; vertical-align: middle; margin-left: 4px;
   }
   .item-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; }
+  /* 見本（いい例・悪い例）のサムネイル。行の右側に出し、タップで拡大する。
+     登録がある種別だけ出す（無ければ何も出ない） */
+  .samples { display: flex; gap: 6px; flex-shrink: 0; align-self: flex-start; margin-top: 2px; }
+  .sample {
+    width: 74px; padding: 0; border: 2px solid var(--border); border-radius: 8px;
+    background: #fff; cursor: pointer; overflow: hidden; position: relative;
+    display: flex; flex-direction: column; align-items: stretch;
+  }
+  .sample.ok { border-color: var(--done); }
+  .sample.ng { border-color: #e53935; }
+  .sample-media { width: 100%; height: 54px; object-fit: cover; display: block; background: #000; }
+  .sample-label { font-size: .62rem; font-weight: 700; padding: 2px 0; line-height: 1.25; }
+  .sample.ok .sample-label { background: var(--done-bg); color: #2e7d32; }
+  .sample.ng .sample-label { background: #ffebee; color: #c62828; }
+  .sample-more {
+    position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff;
+    font-size: .6rem; font-weight: 700; border-radius: 6px; padding: 0 4px; line-height: 1.4;
+  }
+  /* やることリストの行は高さを増やしたくないので、印は画像の角に小さく重ねる */
+  .samples.compact { gap: 4px; margin-top: 0; align-self: center; }
+  .samples.compact .sample { width: 30px; height: 26px; border-width: 1.5px; border-radius: 5px; }
+  .samples.compact .sample-media { height: 100%; }
+  .samples.compact .sample-label {
+    position: absolute; top: 0; left: 0; font-size: .58rem; line-height: 1.15;
+    padding: 0 2px; border-radius: 0 0 4px 0;
+  }
+  .samples.compact .sample-more { top: auto; bottom: 0; font-size: .55rem; padding: 0 2px; }
+  /* スマホは横に2枚並べると題名が潰れるので縦に積む */
+  @media (max-width: 480px) {
+    .samples { flex-direction: column; gap: 4px; }
+    .sample { width: 58px; }
+    .sample-media { height: 42px; }
+    .samples.compact { flex-direction: row; }
+    .samples.compact .sample { width: 30px; }
+  }
   .edit-btn, .del-btn {
     width: 32px; height: 32px; border: none; background: transparent;
     cursor: pointer; font-size: 1.0rem; opacity: 0.55; border-radius: 8px;
@@ -543,6 +578,22 @@
     display: flex; align-items: center; justify-content: center; z-index: 101;
   }
   .lightbox-close .ic { width: 22px; height: 22px; }
+  /* 見本を続けて見るための送り。1枚だけのときは出さない */
+  .lightbox-nav {
+    position: fixed; top: 50%; transform: translateY(-50%); width: 44px; height: 64px; border: none;
+    background: rgba(255,255,255,0.16); color: #fff; font-size: 1.9rem; line-height: 1;
+    border-radius: 10px; cursor: pointer; z-index: 101; display: none;
+    align-items: center; justify-content: center;
+  }
+  .lightbox-nav.prev { left: 10px; }
+  .lightbox-nav.next { right: 10px; }
+  .lightbox-caption {
+    position: fixed; left: 0; right: 0; bottom: 14px; text-align: center; color: #fff;
+    font-size: .92rem; font-weight: 700; z-index: 101; pointer-events: none; text-shadow: 0 1px 3px #000;
+  }
+  .lightbox-caption .ok { color: #a5d6a7; }
+  .lightbox-caption .ng { color: #ef9a9a; }
+  .lightbox-caption .n { opacity: .75; font-weight: 400; }
   .method-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .method-add {
     display: inline-flex; align-items: center; gap: 5px; padding: 7px 11px; background: var(--primary);
@@ -1018,7 +1069,10 @@
 
 <dialog id="lightbox" class="lightbox">
   <button class="lightbox-close" aria-label="閉じる"><span class="ic-slot" data-icon="x"></span></button>
+  <button class="lightbox-nav prev" aria-label="前へ">‹</button>
+  <button class="lightbox-nav next" aria-label="次へ">›</button>
   <div class="lightbox-content"></div>
+  <div class="lightbox-caption" id="lightboxCaption"></div>
 </dialog>
 
 <!-- 管理用：見本写真の登録状況ダイアログ（将来的に削除予定）-->
@@ -2052,32 +2106,130 @@ const mediaDialog = document.getElementById('mediaDialog');
 let mediaCtx = { item: null };
 
 // 種別(ok/ng/method)ごとのメディアID一覧（旧:単数キー、新:複数キーの両対応）
-function mediaIdsFor(itemId, kind) {
-  const base = mediaBaseArea(currentArea) + ':' + itemId + ':' + kind;
+// エリアを指定して見本を探す。やることリストの行は floor@routine_asa のような鍵なので、
+// baseArea で時間帯・曜日枠を落としてから元エリア（男女別・場所別の共有）にそろえる
+function mediaIdsForArea(areaKey, itemId, kind) {
+  const base = mediaBaseArea(baseArea(areaKey)) + ':' + itemId + ':' + kind;
   const out = [];
   mediaKeys.forEach(k => { if (k === base || k.indexOf(base + ':') === 0) out.push(k); });
   return out.sort();
 }
+function mediaIdsFor(itemId, kind) { return mediaIdsForArea(currentArea, itemId, kind); }
 function countMedia(itemId, kind) { return mediaIdsFor(itemId, kind).length; }
 function countMethodMedia(itemId) { return countMedia(itemId, 'method'); } // 互換
+
+// ===== 見本のサムネイル（いい例・悪い例）=====
+// チェックの右側に出して、手を動かす前に「どこまでやればいいか」が分かるようにする。
+// 登録がある種別だけ出す。compact はやることリストの行用（印だけの小さい版）
+const SAMPLE_KINDS = [
+  { kind: 'ok', mark: '○', label: 'いい例' },
+  { kind: 'ng', mark: '✗', label: '悪い例' },
+];
+function isVideoMedia(id) { return String(mediaTypes[id] || '').indexOf('video/') === 0; }
+
+function sampleThumbsHtml(areaKey, itemId, compact) {
+  const groups = SAMPLE_KINDS.map(k => ({ k: k, ids: mediaIdsForArea(areaKey, itemId, k.kind) }))
+    .filter(g => g.ids.length);
+  if (!groups.length) return '';
+  let h = '<div class="samples' + (compact ? ' compact' : '') + '">';
+  groups.forEach(g => {
+    const id = g.ids[0];
+    h += '<button type="button" class="sample ' + g.k.kind + '"'
+      + ' data-sample-area="' + escapeHtml(areaKey) + '"'
+      + ' data-sample-item="' + escapeHtml(itemId) + '"'
+      + ' data-sample-id="' + escapeHtml(id) + '"'
+      + ' aria-label="' + g.k.label + 'を見る">'
+      + (isVideoMedia(id)
+          ? '<video class="sample-media" src="' + mediaUrl(id) + '" preload="metadata" muted playsinline></video>'
+          : '<img class="sample-media" src="' + mediaUrl(id) + '" alt="' + g.k.label + '" loading="lazy" decoding="async">')
+      + (g.ids.length > 1 ? '<span class="sample-more">+' + (g.ids.length - 1) + '</span>' : '')
+      + '<span class="sample-label">' + g.k.mark + (compact ? '' : ' ' + g.k.label) + '</span>'
+      + '</button>';
+  });
+  return h + '</div>';
+}
+
+// サムネイルをタップしたら、その項目の見本をまとめて送りながら見られるようにする
+function openSampleGallery(areaKey, itemId, startId) {
+  const list = [];
+  SAMPLE_KINDS.forEach(k => {
+    const ids = mediaIdsForArea(areaKey, itemId, k.kind);
+    ids.forEach((id, i) => {
+      list.push({
+        id: id, url: mediaUrl(id), isVideo: isVideoMedia(id),
+        caption: '<span class="' + k.kind + '">' + k.mark + ' ' + k.label + '</span>'
+          + (ids.length > 1 ? ' <span class="n">' + (i + 1) + '/' + ids.length + '</span>' : ''),
+      });
+    });
+  });
+  if (!list.length) return;
+  const at = list.findIndex(x => x.id === startId);
+  openLightboxList(list, at < 0 ? 0 : at);
+}
+
+// 行のタップ（チェックの切り替え・エリアへの移動）より先に拾う
+document.getElementById('checklist').addEventListener('click', (e) => {
+  const btn = e.target.closest('.sample');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  openSampleGallery(btn.dataset.sampleArea, btn.dataset.sampleItem, btn.dataset.sampleId);
+}, true);
 
 // 複数メディアのギャラリーを描画（各メディアに削除ボタン）
 // 拡大表示（ライトボックス）= dialog で最前面（top layer）に表示
 const lightbox = document.getElementById('lightbox');
-function clearLightbox() { lightbox.querySelector('.lightbox-content').innerHTML = ''; }
-function openLightbox(url, isVideo) {
-  clearLightbox();
+// 複数の見本を送って見られるようにする。1枚だけのときは送りボタンを出さない
+let lbList = [], lbIndex = 0;
+function clearLightbox() {
+  lightbox.querySelector('.lightbox-content').innerHTML = '';
+  lbList = []; lbIndex = 0;
+}
+function renderLightbox() {
+  const box = lightbox.querySelector('.lightbox-content');
+  box.innerHTML = '';
+  const it = lbList[lbIndex];
+  if (!it) return;
   let el;
-  if (isVideo) { el = document.createElement('video'); el.src = url; el.controls = true; el.autoplay = true; el.playsInline = true; }
-  else { el = document.createElement('img'); el.src = url; }
-  lightbox.querySelector('.lightbox-content').appendChild(el);
+  if (it.isVideo) { el = document.createElement('video'); el.src = it.url; el.controls = true; el.autoplay = true; el.playsInline = true; }
+  else { el = document.createElement('img'); el.src = it.url; }
+  box.appendChild(el);
+  const cap = document.getElementById('lightboxCaption');
+  cap.innerHTML = (it.caption || '')
+    + (lbList.length > 1 ? ' <span class="n">(' + (lbIndex + 1) + '/' + lbList.length + ')</span>' : '');
+  lightbox.querySelectorAll('.lightbox-nav').forEach(b => {
+    b.style.display = lbList.length > 1 ? 'flex' : 'none';
+  });
+}
+function stepLightbox(d) {
+  if (lbList.length < 2) return;
+  lbIndex = (lbIndex + d + lbList.length) % lbList.length;
+  renderLightbox();
+}
+function openLightboxList(list, index) {
+  lbList = Array.isArray(list) ? list : [];
+  lbIndex = Math.min(Math.max(index || 0, 0), Math.max(lbList.length - 1, 0));
+  renderLightbox();
   if (!lightbox.open) lightbox.showModal();
 }
+function openLightbox(url, isVideo, caption) {
+  openLightboxList([{ url: url, isVideo: isVideo, caption: caption || '' }], 0);
+}
 function closeLightbox() { clearLightbox(); if (lightbox.open) lightbox.close(); } // 先に中身を消して動画も止める
-lightbox.onclick = (e) => { if (e.target === lightbox || e.target.closest('.lightbox-close')) closeLightbox(); };
+lightbox.onclick = (e) => {
+  const nav = e.target.closest('.lightbox-nav');
+  if (nav) { e.stopPropagation(); stepLightbox(nav.classList.contains('next') ? 1 : -1); return; }
+  if (e.target === lightbox || e.target.closest('.lightbox-close')) closeLightbox();
+};
 lightbox.addEventListener('cancel', clearLightbox);
 // Escキー（capture で先に処理し、確実に中身をクリア）
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.open) { e.preventDefault(); closeLightbox(); } }, true);
+// 見本が複数あるときは左右キーでも送れる
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.open || lbList.length < 2) return;
+  if (e.key === 'ArrowLeft') { e.preventDefault(); stepLightbox(-1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); stepLightbox(1); }
+});
 
 // メディアはサーバーのURLを直接 src に指定（ブラウザが並列読み込み＋キャッシュ）。速い。
 function renderGalleryInto(container, itemId, kind, onChange, emptyText) {
@@ -3333,6 +3485,7 @@ function renderRoutineView() {
               + (routineEditMode
                   ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
                   : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
+              + (routineEditMode ? '' : sampleThumbsHtml(bl.sk, ci.id, true))
               + (cNums ? numFieldsHtml(ci) : '')
               + '</div>';
             });
@@ -3569,6 +3722,7 @@ function render() {
             <button class="method-btn">${ic('book-open-text')} 清掃方法${(item.method || countMethodMedia(item.id)) ? '' : '<span class="method-empty">（未登録）</span>'}${countMethodMedia(item.id) ? ' <span class="mini-badge ok on">' + countMethodMedia(item.id) + '</span>' : ''}</button>
             <div class="method-box" style="display:none;"></div>`}
           </div>
+          ${isRoutineArea(currentArea) ? '' : sampleThumbsHtml(currentArea, item.id)}
           <div class="item-actions">
             <button class="edit-btn" aria-label="項目を編集">${ic('pencil')}</button>
             <button class="del-btn" aria-label="項目を削除">${ic('trash-2')}</button>
@@ -3578,7 +3732,7 @@ function render() {
         // 連動項目: カード全体がリンク。どこをタップしてもそのエリアへ移動
         div.classList.add('linkable');
         div.addEventListener('click', (e) => {
-          if (e.target.closest('.media-btn, .method-btn, .edit-btn, .del-btn, .method-box, .ext-link')) return;
+          if (e.target.closest('.media-btn, .method-btn, .edit-btn, .del-btn, .method-box, .ext-link, .sample')) return;
           currentArea = ls.complete ? String(item.link).split(',')[0].trim() : ls.jumpTo;
           render();
           window.scrollTo(0, 0);
