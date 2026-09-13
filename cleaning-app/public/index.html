@@ -506,6 +506,7 @@
   /* やることリストの行は1行なので、開く欄は2段目に回す。
      ボタンは行の高さを変えないよう小さめにする */
   .rt-child.has-ex { flex-wrap: wrap; }
+  .rt-row.has-ex { flex-wrap: wrap; }
   .rt-child .ex-btn { padding: 2px 9px; font-size: .72rem; }
   .rt-child .ex-box { margin-top: 8px; }
   /* スマホは題名の幅を残したいので、アイコンを省いて字だけにする */
@@ -973,6 +974,9 @@
     <input type="text" id="editDesc" class="field" placeholder="作業の内容・ポイント">
     <label class="field-label" for="editMethod">清掃方法（手順・使う洗剤・注意点など）</label>
     <textarea id="editMethod" class="field" rows="5" placeholder="例：&#10;①ゴミ・髪の毛を除去&#10;②中性洗剤を散布しブラシで擦る&#10;③水で流しスクイジーで水切り"></textarea>
+    <label class="field-label">見本の写真（いい例・悪い例）</label>
+    <button type="button" id="editSamples" class="btn btn-secondary" style="width:100%;"></button>
+    <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">登録すると、チェックの右に「例を見る」が出ます。</p>
     <label class="field-label" for="editNums">数値の記録欄（任意・カンマ区切り）</label>
     <input type="text" id="editNums" class="field" placeholder="例：男性,女性">
     <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">入力するとこの項目に数値の入力欄が出ます（例：サーマナイフのショット数）。全部の欄が埋まると実施済みになります。空にすると数値欄は消えます。</p>
@@ -2284,7 +2288,8 @@ document.getElementById('checklist').addEventListener('click', (e) => {
   if (!btn) return;
   e.preventDefault();
   e.stopPropagation();
-  const row = btn.closest('.item, .rt-child');
+  // やることリストの親の行（.rt-row）も対象にする
+  const row = btn.closest('.item, .rt-child, .rt-row');
   const box = row && row.querySelector('.ex-box');
   if (!box) return;
   if (box.hidden) {
@@ -2354,8 +2359,8 @@ document.addEventListener('keydown', (e) => {
 });
 
 // メディアはサーバーのURLを直接 src に指定（ブラウザが並列読み込み＋キャッシュ）。速い。
-function renderGalleryInto(container, itemId, kind, onChange, emptyText) {
-  const ids = mediaIdsFor(itemId, kind);
+function renderGalleryInto(container, itemId, kind, onChange, emptyText, areaKey) {
+  const ids = mediaIdsForArea(areaKey || currentArea, itemId, kind);
   container.innerHTML = '';
   if (!ids.length) { if (emptyText) container.innerHTML = '<div class="media-empty">' + emptyText + '</div>'; return; }
   ids.forEach(id => {
@@ -2411,17 +2416,22 @@ async function compressImage(file) {
   finally { if (url) URL.revokeObjectURL(url); }
 }
 
-async function addMediaFile(itemId, kind, file, onChange) {
+async function addMediaFile(itemId, kind, file, onChange, areaKey) {
   file = await compressImage(file);
   if (file.size > 60 * 1024 * 1024 && !confirm('ファイルが大きめです（' + Math.round(file.size / 1048576) + 'MB）。保存しますか？\n動画は短め・低画質を推奨します。')) return;
-  const id = currentArea + ':' + itemId + ':' + kind + ':' + Date.now() + Math.floor(Math.random() * 1000);
+  // 読み出し（mediaIdsForArea）と同じそろえ方にする。
+  // 時間帯・曜日枠を落とし、男女別・場所別は元エリアに寄せる
+  const base = mediaBaseArea(baseArea(areaKey || currentArea));
+  const id = base + ':' + itemId + ':' + kind + ':' + Date.now() + Math.floor(Math.random() * 1000);
   try { await idbSet(id, file); mediaKeys.add(id); mediaTypes[id] = file.type || 'application/octet-stream'; onChange(); }
   catch (e) { alert('保存に失敗しました。ファイルサイズが大きすぎる可能性があります。'); }
 }
 
 // ----- 見本（OK/NG）ダイアログ：複数登録対応 -----
-function openMediaDialog(item) {
-  mediaCtx = { item: item };
+// areaKey を渡すと、その項目が属するエリアの見本として保存・表示する。
+// fromEdit は「項目を編集」から開いた場合（閉じても裏の画面を描き直さない）
+function openMediaDialog(item, areaKey, fromEdit) {
+  mediaCtx = { item: item, area: areaKey || currentArea, fromEdit: !!fromEdit };
   document.getElementById('mediaTitle').textContent = item.title;
   drawSampleGallery('ok');
   drawSampleGallery('ng');
@@ -2430,17 +2440,22 @@ function openMediaDialog(item) {
 function drawSampleGallery(kind) {
   const container = document.getElementById(kind + 'Gallery');
   // ダイアログ表示中は全体renderを呼ばない（ボタン不調の原因になり得るため）。バッジは閉じる時に更新。
-  renderGalleryInto(container, mediaCtx.item.id, kind, () => drawSampleGallery(kind), '未登録');
+  renderGalleryInto(container, mediaCtx.item.id, kind, () => drawSampleGallery(kind), '未登録', mediaCtx.area);
 }
 document.getElementById('okFile').onchange = function () {
   const f = this.files[0]; this.value = '';   // 先にリセット（同じ写真の再選択や再利用に強くする）
-  if (f) addMediaFile(mediaCtx.item.id, 'ok', f, () => drawSampleGallery('ok'));
+  if (f) addMediaFile(mediaCtx.item.id, 'ok', f, () => drawSampleGallery('ok'), mediaCtx.area);
 };
 document.getElementById('ngFile').onchange = function () {
   const f = this.files[0]; this.value = '';
-  if (f) addMediaFile(mediaCtx.item.id, 'ng', f, () => drawSampleGallery('ng'));
+  if (f) addMediaFile(mediaCtx.item.id, 'ng', f, () => drawSampleGallery('ng'), mediaCtx.area);
 };
-document.getElementById('mediaClose').onclick = () => { mediaDialog.close(); render(); };
+document.getElementById('mediaClose').onclick = () => {
+  mediaDialog.close();
+  // 「項目を編集」から開いたときは、そのダイアログが残っているので描き直さない
+  if (mediaCtx && mediaCtx.fromEdit) updateEditSamplesBtn();
+  else render();
+};
 
 // ----- 清掃方法（手順）パネル：複数メディア対応（共通ギャラリーを使用）-----
 function updateMethodBtn(item, box) {
@@ -2620,8 +2635,25 @@ const editMethod = document.getElementById('editMethod');
 const editResetDefault = document.getElementById('editResetDefault');
 let editCtx = { id: null, custom: false };
 
+// 「見本の写真」ボタンの文言（今どれだけ登録されているか）
+function updateEditSamplesBtn() {
+  const btn = document.getElementById('editSamples');
+  if (!btn || !editCtx) return;
+  const n = k => mediaIdsForArea(editCtx.area, editCtx.id, k).length;
+  const ok = n('ok'), ng = n('ng');
+  btn.innerHTML = ic('image') + ' いい例・悪い例の写真を登録する'
+    + (ok || ng
+        ? ' <span class="mini-badge ok on">OK ' + ok + '</span> <span class="mini-badge ng ' + (ng ? 'on' : '') + '">NG ' + ng + '</span>'
+        : ' <span class="method-empty">（未登録）</span>');
+}
+document.getElementById('editSamples').onclick = () => {
+  if (!editCtx) return;
+  openMediaDialog({ id: editCtx.id, title: editTitle.value.trim() || '項目' }, editCtx.area, true);
+};
+
 function openEditDialog(item, focusMethod, areaKey) {
   editCtx = { id: item.id, custom: item.custom, nums: item.nums, area: areaKey || currentArea };
+  updateEditSamplesBtn();
   editTitle.value = item.title;
   editDesc.value = item.desc || '';
   editMethod.value = item.method || '';
@@ -2781,7 +2813,9 @@ async function exifDateStatus(file) {
 }
 
 // 画像を縮小圧縮（容量対策。EXIF確認は圧縮前に行うこと＝圧縮でEXIFは消える）
-function compressImage(file, maxSide, quality) {
+// ※ 名前は compressImage にしないこと。上の方に同名の関数があり、
+//    あとの定義が勝つため、見本写真の登録（addMediaFile）が黙って失敗していた。
+function compressToJpeg(file, maxSide, quality) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
@@ -2862,7 +2896,7 @@ function logProofCancel(ctx) {
     if (!file || !ctx) return;
     try {
       const exif = await exifDateStatus(file);
-      const blob = await compressImage(file, 1280, 0.7);
+      const blob = await compressToJpeg(file, 1280, 0.7);
       const date = dateInput.value || todayStr();
       const mediaId = 'proof:' + currentStore + ':' + ctx.areaKey + ':' + ctx.itemId + ':' + date + ':' + Date.now();
       const r = await fetch('/api/media/' + encodeURIComponent(mediaId), {
@@ -3533,8 +3567,9 @@ function renderRoutineView() {
     const hasNums = itemNumFields(item).length > 0;
     // 説明文は編集中以外は行の下に小さく出す（時間目安・曜日のローテーション等をその場で読めるように）
     const descText = routineEditMode ? '' : String(item.desc || '').trim();
+    const rEx = routineEditMode ? '' : exampleBtnHtml(currentArea, item.id);
     html += '<div class="rt-row' + (done ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
-      + (descText ? ' has-desc' : '')
+      + (descText ? ' has-desc' : '') + (rEx ? ' has-ex' : '')
       + (routineEditMode ? '' : (item.url ? ' has-link' : '') + (hasNums ? ' has-link has-nums' : '')) + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : hasNums ? 'nums' : 'manual') + '">'
       // 連動項目はチェック丸ではなくリスト印（実際のチェックは展開した子項目で行う）
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
@@ -3542,10 +3577,12 @@ function renderRoutineView() {
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
       // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
+      + rEx
       + (routineEditMode
           ? routineActionsHtml(item, idx === 0, idx === items.length - 1)
           : itemLinkHtml(item, 'rt-link-btn', '') + numFieldsHtml(item))
       + (descText ? '<div class="rt-desc">' + escapeHtml(descText) + '</div>' : '')
+      + (rEx ? '<div class="ex-box" hidden></div>' : '')
       + '</div>';
     if (expanded) {
       let keys = String(item.link).split(',').map(s => s.trim()).filter(Boolean);
@@ -3877,7 +3914,7 @@ function render() {
       div.querySelector('.edit-btn').onclick = () => openEditDialog(item);
       div.querySelector('.del-btn').onclick = () => deleteItem(item.id, item.custom, item.title);
       const mediaBtn = div.querySelector('.media-btn');
-      if (mediaBtn) mediaBtn.onclick = () => openMediaDialog(item);
+      if (mediaBtn) mediaBtn.onclick = () => openMediaDialog(item, currentArea);
       const methodBtn = div.querySelector('.method-btn');
       if (methodBtn) methodBtn.onclick = () => {
         const box = div.querySelector('.method-box');
