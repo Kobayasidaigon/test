@@ -3076,30 +3076,49 @@ function renderTabs() {
     };
     el.appendChild(btn);
   };
-  // 上段: 清掃エリア（組み込みエリアで項目を全部消した場合はタブごと隠す＝店舗にない設備の非表示用）
-  // hidden:true のエリアもタブに出さない（やることリストの連動先としてだけ使う枠。例: 見回りの場所）
-  allAreas()
-    .filter(a => !isRoutineArea(a.key) && !a.hidden)
-    .filter(a => !AREAS.some(x => x.key === a.key) || areaItems(a.key).length > 0)
-    .forEach(a => makeTab(a, tabsEl));
-  // 定期清掃タブ（独立枠）
+  // タブは1行にまとめる: 朝番 / 中番 / 遅番 / 定期清掃 /（連動していないエリア）/ ＋エリア。
+  // エリアのタブは、やることリストから開けて例も行の中で見られるようになったので普段は出さない。
+  // ただし、どのやることリストからも連動していないエリアは行き場が無くなるので残す。
+  const routines = allAreas().filter(a => isRoutineArea(a.key));
+  routines.forEach(a => makeTab(a, tabsRoutineEl));
+
+  // 定期清掃（入口はここだけ）
   const due = periodicDueCount();
   const pbtn = document.createElement('button');
   pbtn.className = 'tab tab-periodic' + (currentArea === PERIODIC_KEY ? ' active' : '') + (due === 0 ? ' complete' : '');
   pbtn.innerHTML = ic('calendar-clock') + ' 定期清掃' +
     '<span class="badge">' + (due === 0 ? ic('check') : due) + '</span>';
   pbtn.onclick = () => { currentArea = PERIODIC_KEY; render(); };
-  tabsEl.appendChild(pbtn);
-  // ＋ エリア追加タブ
+  tabsRoutineEl.appendChild(pbtn);
+
+  // 清掃エリア（組み込みエリアで項目を全部消した場合はタブごと隠す＝店舗にない設備の非表示用）
+  // hidden:true のエリアも出さない（やることリストの連動先としてだけ使う枠。例: 見回りの場所）
+  allAreas()
+    .filter(a => !isRoutineArea(a.key) && !a.hidden)
+    .filter(a => !AREAS.some(x => x.key === a.key) || areaItems(a.key).length > 0)
+    // やることリストが1つも無い店舗では、全部のエリアを出す（そうしないとタブが消える）
+    .filter(a => !routines.length || routinesLinking(a.key).length === 0)
+    .forEach(a => makeTab(a, tabsRoutineEl));
+
+  // ＋ エリア追加
   const abtn = document.createElement('button');
   abtn.className = 'tab tab-add';
   abtn.innerHTML = ic('plus') + ' エリア';
   abtn.onclick = () => openAreaDialog(null);
-  tabsEl.appendChild(abtn);
-  // 下段（別枠）: 朝昼晩のやることリスト
-  const routines = allAreas().filter(a => isRoutineArea(a.key));
-  tabsRoutineEl.style.display = routines.length ? '' : 'none';
-  routines.forEach(a => makeTab(a, tabsRoutineEl));
+  tabsRoutineEl.appendChild(abtn);
+
+  tabsEl.style.display = 'none';   // 上段は使わない
+}
+
+// 最初に開く画面。やることリストがあれば、時計に合わせてその時間帯を開く
+function defaultArea() {
+  const routines = allAreas().filter(a => isRoutineArea(a.key)).map(a => a.key);
+  if (!routines.length) return AREAS[0].key;
+  const now = nowTimeStr();
+  const started = ROUTINE_KEYS.filter(k => routines.indexOf(k) >= 0)
+    .filter(k => { const w = routineHours(k); return w && now >= w.from; });
+  if (started.length) return started[started.length - 1];
+  return ROUTINE_KEYS.filter(k => routines.indexOf(k) >= 0)[0] || routines[0];
 }
 
 // ----- 今日やるとよいエリア（最近やっていない順）-----
@@ -3361,7 +3380,7 @@ document.getElementById('areaDelete').onclick = () => {
   }
   dels.forEach(k => syncRemove(k));
   areaDialog.close();
-  currentArea = AREAS[0].key;
+  currentArea = defaultArea();
   render();
 };
 
@@ -4321,7 +4340,7 @@ function setMode(mode) {
   compareView.style.display = isCompare ? 'block' : 'none';
   summaryView.style.display = isSummary ? 'block' : 'none';
   reviewView.style.display = isReview ? 'block' : 'none';
-  tabsEl.style.display = other ? 'none' : 'flex';
+  tabsEl.style.display = 'none';   // 上段は使わない（タブは下段に1行でまとめている）
   tabsRoutineEl.style.display = other ? 'none' : 'flex';
   modeChecklistBtn.classList.toggle('active', !other);
   modeCompareBtn.classList.toggle('active', isCompare);
@@ -5686,12 +5705,17 @@ function renderOverview(box, hist, store) {
   allAreas().forEach(a => { html += '<th>' + ic(a.icon) + '<br>' + escapeHtml(a.name) + '</th>'; });
   html += '<th>登録日時</th><th></th></tr></thead><tbody>';
   hist.forEach(h => {
-    const opct = h.total ? Math.round(h.done / h.total * 100) : 0;
+    // 「全体」は各エリアの列と同じ数え方にする。
+    // 保存時の合計（h.done/h.total）をそのまま出すと、同じエリアを朝番と中番の
+    // 両方で触ったぶんを二重に数えてしまい、列の合計と合わない
+    const cells = allAreas().map(a => itemDoneMap(h, a.key).as);
+    const done = cells.reduce((n, as) => n + (as ? as.done : 0), 0);
+    const total = cells.reduce((n, as) => n + (as ? as.total : 0), 0);
+    const opct = total ? Math.round(done / total * 100) : 0;
     html += '<tr><td class="left fix-date">' + escapeHtml(h.date) + '</td>'
       + '<td class="left fix-staff">' + staffHtml(h) + '</td>'
-      + '<td class="overall ' + ratioClass(h.done, h.total) + '">' + h.done + '/' + h.total + '<br>' + opct + '%</td>';
-    allAreas().forEach(a => {
-      const as = itemDoneMap(h, a.key).as;
+      + '<td class="overall ' + ratioClass(done, total) + '">' + done + '/' + total + '<br>' + opct + '%</td>';
+    cells.forEach(as => {
       html += as ? '<td class="' + ratioClass(as.done, as.total) + '">' + as.done + '/' + as.total + '</td>' : '<td>-</td>';
     });
     html += '<td>' + escapeHtml(h.ts || '') + '</td>'
@@ -6448,6 +6472,7 @@ bootstrap().then(() => {
   // サーバーから取り込んだスタッフ名簿を反映してセレクターを再構築
   buildStoreSelect();
   buildStaffSelect();
+  currentArea = defaultArea();   // 朝番・中番・遅番のうち、今の時間帯を開く
   autoSelectShiftStaff(); // 今シフト中の人を担当者に自動セット
   refreshCmpStore();
   refreshCmpStaff();
