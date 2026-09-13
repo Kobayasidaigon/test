@@ -1705,6 +1705,17 @@ function todayStr() {
   const off = d.getTimezoneOffset();
   return new Date(d.getTime() - off * 60000).toISOString().slice(0, 10);
 }
+// 日付を日数ぶんずらす（昨日・一昨日…を出す）。
+// new Date(d).toISOString() は世界標準時に直してしまうので、日本時間だと1日ずれる。
+//   例）new Date('2026-09-13T00:00:00') は 09-12T15:00Z なので、
+//       1日引いて toISOString すると 09-11 になり、昨日（09-12）を飛ばしてしまう。
+// 画面に出している日付と同じ「その場所の日付」で組み立てること。
+function shiftDate(dateStr, days) {
+  const d = new Date(dateStr + 'T00:00:00');
+  d.setDate(d.getDate() + days);   // 月またぎ・年またぎもこれで正しくなる
+  const p2 = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate());
+}
 function nowTimeStr() {
   const d = new Date();
   return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
@@ -2005,9 +2016,9 @@ function itemNumFields(item) {
 // 直近（今日より前）に記録された値を探す。前回との差が分かるように表示するため。
 function lastNumEntry(itemId, fieldId, maxBack) {
   if (!currentStore) return null;
-  const base = new Date((dateInput.value || todayStr()) + 'T00:00:00');
+  const base = dateInput.value || todayStr();
   for (let i = 1; i <= (maxBack || 120); i++) {
-    const d = new Date(base.getTime() - i * 86400000).toISOString().slice(0, 10);
+    const d = shiftDate(base, -i);
     const v = ((loadNums(d)[itemId]) || {})[fieldId];
     if (v !== undefined && v !== '') return { date: d, value: v };
   }
