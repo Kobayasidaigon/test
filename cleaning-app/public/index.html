@@ -728,6 +728,18 @@
   .data-tools-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
   .data-tools-row { display: flex; gap: 8px; }
   .data-tools-row .btn { flex: 1; }
+  #areaTools {
+    margin-top: 12px; background: var(--card); border-radius: 12px; padding: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .unlinked-head { font-size: .8rem; font-weight: 700; margin: 14px 0 6px; }
+  .unlinked-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .unlinked-btn {
+    display: inline-flex; align-items: center; gap: 5px; padding: 7px 11px;
+    border: 1px solid var(--border); background: #fff; color: var(--text);
+    border-radius: 999px; font-size: .8rem; font-weight: 600; cursor: pointer;
+  }
+  .unlinked-none { font-size: .8rem; color: var(--muted); margin-top: 12px; }
   #coverageTools {
     margin-top: 12px; background: var(--card); border-radius: 12px; padding: 14px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
@@ -904,6 +916,13 @@
       <p class="hint" style="text-align:left;margin:0 0 10px;">前のスタッフの名前が端末に残ったままになっている時に使います。全店舗の全端末で担当者の選択が解除され、次に開いた人が自分の名前を選び直すことになります（記録は消えません）。</p>
       <button class="btn btn-secondary" id="staffResetBtn" style="width:100%;">全端末の担当者選択をリセット</button>
       <div id="staffResetStatus" class="hint" style="text-align:left;margin-top:8px;"></div>
+    </div>
+
+    <div id="areaTools">
+      <div class="data-tools-title"><span class="ic-slot" data-icon="building-2"></span> エリアの管理</div>
+      <p class="hint" style="text-align:left;margin:0 0 10px;">清掃エリアのタブは出していません。ふだんは朝番・中番・遅番から開きます。ここではエリアの追加と、どのやることリストからも連動していないエリアを開けます。</p>
+      <button class="btn btn-secondary" id="areaAddBtn" style="width:100%;">＋ エリアを追加</button>
+      <div id="unlinkedAreaList"></div>
     </div>
 
     <div id="coverageTools">
@@ -3076,13 +3095,13 @@ function renderTabs() {
     };
     el.appendChild(btn);
   };
-  // タブは1行にまとめる: 朝番 / 中番 / 遅番 / 定期清掃 /（連動していないエリア）/ ＋エリア。
-  // エリアのタブは、やることリストから開けて例も行の中で見られるようになったので普段は出さない。
-  // ただし、どのやることリストからも連動していないエリアは行き場が無くなるので残す。
+  // タブは 朝番 / 中番 / 遅番 / 定期清掃 の4つだけ。
+  // 清掃エリアはやることリストから開けて、例も行の中で見られる（2-35）ので出さない。
+  // エリアの追加と、どこからも連動していないエリアへの入口は「店舗まとめ」の中にある。
   const routines = allAreas().filter(a => isRoutineArea(a.key));
   routines.forEach(a => makeTab(a, tabsRoutineEl));
 
-  // 定期清掃（入口はここだけ）
+  // 定期清掃（タブからの入口はここだけ）
   const due = periodicDueCount();
   const pbtn = document.createElement('button');
   pbtn.className = 'tab tab-periodic' + (currentArea === PERIODIC_KEY ? ' active' : '') + (due === 0 ? ' complete' : '');
@@ -3091,23 +3110,28 @@ function renderTabs() {
   pbtn.onclick = () => { currentArea = PERIODIC_KEY; render(); };
   tabsRoutineEl.appendChild(pbtn);
 
-  // 清掃エリア（組み込みエリアで項目を全部消した場合はタブごと隠す＝店舗にない設備の非表示用）
-  // hidden:true のエリアも出さない（やることリストの連動先としてだけ使う枠。例: 見回りの場所）
-  allAreas()
-    .filter(a => !isRoutineArea(a.key) && !a.hidden)
-    .filter(a => !AREAS.some(x => x.key === a.key) || areaItems(a.key).length > 0)
-    // やることリストが1つも無い店舗では、全部のエリアを出す（そうしないとタブが消える）
-    .filter(a => !routines.length || routinesLinking(a.key).length === 0)
-    .forEach(a => makeTab(a, tabsRoutineEl));
-
-  // ＋ エリア追加
-  const abtn = document.createElement('button');
-  abtn.className = 'tab tab-add';
-  abtn.innerHTML = ic('plus') + ' エリア';
-  abtn.onclick = () => openAreaDialog(null);
-  tabsRoutineEl.appendChild(abtn);
+  // やることリストが1つも無い店舗ではタブが定期清掃だけになってしまうので、
+  // その時だけ清掃エリアのタブも出す
+  if (!routines.length) {
+    visibleAreas().forEach(a => makeTab(a, tabsRoutineEl));
+  }
 
   tabsEl.style.display = 'none';   // 上段は使わない
+}
+
+// タブや一覧に出してよい清掃エリア。
+// 組み込みエリアで項目を全部消した場合は出さない（店舗にない設備の非表示用）。
+// hidden:true も出さない（やることリストの連動先としてだけ使う枠。例: 見回りの場所）
+function visibleAreas() {
+  return allAreas()
+    .filter(a => !isRoutineArea(a.key) && !a.hidden)
+    .filter(a => !AREAS.some(x => x.key === a.key) || areaItems(a.key).length > 0);
+}
+
+// どのやることリストからも連動していないエリア。
+// タブに出さないので、ここから開けるようにしておかないと行き場が無くなる
+function unlinkedAreas() {
+  return visibleAreas().filter(a => routinesLinking(a.key).length === 0);
 }
 
 // 最初に開く画面。やることリストがあれば、時計に合わせてその時間帯を開く
@@ -5503,6 +5527,7 @@ function renderSummary() {
   const inspEdit = document.getElementById('inspEditItems');
   if (inspEdit) inspEdit.onclick = openInspItemsDialog;
   wireProofRateSection(box); // 撮影頻度の選択
+  renderUnlinkedAreas();     // 連動していないエリアの一覧（タブに出していないため）
 }
 document.getElementById('sumDate').onchange = () => renderSummary();
 
@@ -5882,6 +5907,31 @@ function mediaCountInArea(areaKey, itemId, kind) {
 }
 const coverageDialog = document.getElementById('coverageDialog');
 document.getElementById('coverageBtn').onclick = () => { renderCoverage(); if (!coverageDialog.open) coverageDialog.showModal(); };
+document.getElementById('areaAddBtn').onclick = () => openAreaDialog(null);
+
+// どこからも連動していないエリアの一覧（店舗まとめの中）。押すとそのエリアを開く
+function renderUnlinkedAreas() {
+  const box = document.getElementById('unlinkedAreaList');
+  if (!box) return;
+  const pl = _linkCache; _linkCache = {};
+  let list;
+  try { list = unlinkedAreas(); } finally { _linkCache = pl; }
+  if (!list.length) {
+    box.innerHTML = '<div class="unlinked-none">連動していないエリアはありません。'
+      + 'すべて朝番・中番・遅番から開けます。</div>';
+    return;
+  }
+  let h = '<div class="unlinked-head">どのやることリストからも連動していないエリア</div>'
+    + '<div class="unlinked-list">';
+  list.forEach(a => {
+    h += '<button type="button" class="unlinked-btn" data-open-area="' + escapeHtml(a.key) + '">'
+      + ic(a.icon) + ' ' + escapeHtml(a.name) + '</button>';
+  });
+  box.innerHTML = h + '</div>';
+  box.querySelectorAll('[data-open-area]').forEach(b => {
+    b.onclick = () => { currentArea = b.dataset.openArea; setMode('check'); window.scrollTo(0, 0); };
+  });
+}
 document.getElementById('coverageClose').onclick = () => coverageDialog.close();
 
 // 既存画像の一括軽量化（管理用）。新しいIDで保存し直すのでキャッシュの影響なく即反映。
