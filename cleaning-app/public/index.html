@@ -410,6 +410,19 @@
   }
   .num-field input:focus { outline: none; border-color: var(--primary); }
   .num-field input.filled { border-color: var(--done); background: var(--done-bg); }
+  /* 残りが少ないとき。filled より後に書いて、緑より赤を優先させる */
+  .num-field input.num-low,
+  .num-field input.num-out {
+    border-color: #e53935; background: #ffebee; color: #b71c1c;
+  }
+  .num-field input.num-out { border-width: 2.5px; }
+  .num-msg {
+    flex-basis: 100%; display: flex; align-items: center; gap: 6px;
+    margin-top: 6px; padding: 8px 10px; border-radius: 8px;
+    background: #ffebee; border: 1.5px solid #e53935;
+    color: #b71c1c; font-size: .82rem; font-weight: 700; line-height: 1.4;
+  }
+  .num-msg .ic-slot { flex-shrink: 0; }
   .num-prev { font-size: .7rem; color: var(--muted); margin-top: 2px; min-height: 1em; }
   .num-prev .diff { color: var(--primary-dark); font-weight: 700; }
   .item-status {
@@ -999,6 +1012,17 @@
     <label class="field-label" for="editNums">数値の記録欄（任意・カンマ区切り）</label>
     <input type="text" id="editNums" class="field" placeholder="例：男性,女性">
     <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">入力するとこの項目に数値の入力欄が出ます（例：サーマナイフのショット数）。全部の欄が埋まると実施済みになります。空にすると数値欄は消えます。</p>
+    <label class="field-label">残りが少ないときの知らせ（任意）</label>
+    <div style="display:flex; gap:8px;">
+      <div style="flex:1;">
+        <input type="number" id="editNumLow" class="field" placeholder="例：2000" style="margin:0;">
+        <p class="hint" style="text-align:left; margin:3px 0 0; font-size:.72rem;">これを下回ると枠が赤くなる</p>
+      </div>
+      <div style="flex:1;">
+        <input type="number" id="editNumOut" class="field" placeholder="例：1000" style="margin:0;">
+        <p class="hint" style="text-align:left; margin:3px 0 0; font-size:.72rem;">これを下回ると「交換してください」</p>
+      </div>
+    </div>
     <button id="editResetDefault" class="restore-btn" style="display:none;"><span class="ic-slot" data-icon="rotate-ccw"></span> この項目を初期内容に戻す</button>
     <div class="dialog-btn-row">
       <button class="dialog-close" id="editCancel" style="margin-top:0;">キャンセル</button>
@@ -1505,7 +1529,8 @@ const ICONS = {
   'vibrate': '<path d="m2 8 2 2-2 2 2 2-2 2"/><path d="m22 8-2 2 2 2-2 2 2 2"/><rect width="8" height="14" x="8" y="5" rx="1"/>',
   'maximize': '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
   'chevron-up': '<path d="m18 15-6-6-6 6"/>',
-  'chevron-down': '<path d="m6 9 6 6 6-6"/>'
+  'chevron-down': '<path d="m6 9 6 6 6-6"/>',
+  'alert-triangle': '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>'
 };
 function ic(name, cls) {
   return '<svg class="ic ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[name] || '') + '</svg>';
@@ -1935,13 +1960,15 @@ function getGroups(areaKey) {
           title: ed && ed.title != null ? ed.title : i.title,
           desc: ed && ed.desc != null ? ed.desc : i.desc,
           method: ed && ed.method != null ? ed.method : (i.method || ''),
-          nums: ed && ed.nums != null ? ed.nums : i.nums
+          nums: ed && ed.nums != null ? ed.nums : i.nums,
+          numLow: ed && ed.numLow != null ? ed.numLow : i.numLow,
+          numOut: ed && ed.numOut != null ? ed.numOut : i.numOut
         });
       });
     });
     // カスタム項目
     custom.filter(ci => ci.section === sec).forEach(ci => {
-      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums });
+      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -2013,6 +2040,29 @@ function itemNumFields(item) {
     return label ? { id: 'n' + i, label: label } : null;
   }).filter(Boolean);
 }
+// 残りが少ないときの基準。項目の定義に入れておく（店舗ごとに変えられる）。
+//   numLow  … これを下回ったら枠を赤くする（例: サーマナイフの2000ショット）
+//   numOut  … これを下回ったら「交換してください」と出す（例: 1000ショット）
+// 入れていない項目（ゴルフのクラブ本数など）は今までどおり何も出ない。
+function itemNumLimits(item) {
+  const num = v => {
+    if (v === undefined || v === null) return null;
+    const raw = String(v).trim();
+    if (raw === '') return null;          // 空欄は「基準なし」。0 と混同しないこと
+    const n = Number(raw);
+    return isFinite(n) ? n : null;
+  };
+  return { low: num(item && item.numLow), out: num(item && item.numOut) };
+}
+// その値がどの段階か。'out'（交換）/ 'low'（赤くする）/ ''（ふつう）
+function numLevel(value, lim) {
+  const n = Number(String(value).trim());
+  if (String(value).trim() === '' || !isFinite(n)) return '';
+  if (lim.out !== null && n < lim.out) return 'out';
+  if (lim.low !== null && n < lim.low) return 'low';
+  return '';
+}
+
 // 直近（今日より前）に記録された値を探す。前回との差が分かるように表示するため。
 function lastNumEntry(itemId, fieldId, maxBack) {
   if (!currentStore) return null;
@@ -2054,9 +2104,13 @@ function numFieldsHtml(item) {
   const fields = itemNumFields(item);
   if (!fields.length) return '';
   const vals = loadNums()[item.id] || {};
+  const lim = itemNumLimits(item);
+  const outNames = [];   // 交換が必要な欄の名前（男性・女性など）
   let h = '<div class="num-wrap" data-item="' + escapeHtml(item.id) + '">';
   fields.forEach(f => {
     const v = vals[f.id] === undefined ? '' : vals[f.id];
+    const level = numLevel(v, lim);
+    if (level === 'out') outNames.push(f.label);
     const prev = lastNumEntry(item.id, f.id);
     let note = '';
     if (prev) {
@@ -2069,10 +2123,15 @@ function numFieldsHtml(item) {
       + '<input type="number" inputmode="numeric" step="1"'
       + ' data-field="' + escapeHtml(f.id) + '"'
       + ' value="' + escapeHtml(v) + '"'
-      + (v !== '' ? ' class="filled"' : '') + '>'
+      + ' class="' + (v !== '' ? 'filled' : '') + (level ? ' num-' + level : '') + '">'
       + '<div class="num-prev">' + note + '</div>'
       + '</div>';
   });
+  if (outNames.length) {
+    h += '<div class="num-msg">' + ic('alert-triangle')
+      + '<span>' + escapeHtml(outNames.join('・')) + 'を交換してください'
+      + '（残り' + lim.out + 'を切りました）</span></div>';
+  }
   return h + '</div>';
 }
 // 数値入力欄の動作を設定する（描画のたびに呼ぶ）
@@ -2689,6 +2748,9 @@ function openEditDialog(item, focusMethod, areaKey) {
   editMethod.value = item.method || '';
   // 数値の記録欄はラベルをカンマ区切りで見せる
   document.getElementById('editNums').value = itemNumFields(item).map(f => f.label).join(',');
+  const lim = itemNumLimits(item);
+  document.getElementById('editNumLow').value = lim.low === null ? '' : lim.low;
+  document.getElementById('editNumOut').value = lim.out === null ? '' : lim.out;
   // デフォルト項目で、編集済みのときだけ「初期内容に戻す」を表示
   editResetDefault.style.display = (!item.custom && item.edited) ? 'block' : 'none';
   if (!editDialog.open) editDialog.showModal();
@@ -2707,6 +2769,13 @@ document.getElementById('editSave').onclick = () => {
     const kept = prevFields.find(f => f.label === label);
     return { id: kept ? kept.id : 'n' + i, label: label };
   });
+  const limOf = id => {
+    const raw = document.getElementById(id).value.trim();
+    const n = Number(raw);
+    return (raw !== '' && isFinite(n)) ? n : null;
+  };
+  const numLow = limOf('editNumLow');
+  const numOut = limOf('editNumOut');
   const ak = editCtx.area || currentArea;
   if (editCtx.custom) {
     // 追加項目：customItems を直接更新
@@ -2715,6 +2784,8 @@ document.getElementById('editSave').onclick = () => {
     if (ci) {
       ci.title = title; ci.desc = desc; ci.method = method;
       if (nums.length) ci.nums = nums; else delete ci.nums;
+      if (numLow !== null) ci.numLow = numLow; else delete ci.numLow;
+      if (numOut !== null) ci.numOut = numOut; else delete ci.numOut;
       saveCustomItems(ak, list);
     }
   } else {
@@ -2722,6 +2793,8 @@ document.getElementById('editSave').onclick = () => {
     const edits = loadEdits(ak);
     const e = { title: title, desc: desc, method: method };
     if (nums.length) e.nums = nums;
+    if (numLow !== null) e.numLow = numLow;
+    if (numOut !== null) e.numOut = numOut;
     edits[editCtx.id] = e;
     saveEdits(ak, edits);
   }
