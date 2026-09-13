@@ -451,40 +451,54 @@
     padding: 1px 6px; border-radius: 8px; vertical-align: middle; margin-left: 4px;
   }
   .item-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; }
-  /* 見本（いい例・悪い例）のサムネイル。行の右側に出し、タップで拡大する。
-     登録がある種別だけ出す（無ければ何も出ない） */
-  .samples { display: flex; gap: 6px; flex-shrink: 0; align-self: flex-start; margin-top: 2px; }
-  .sample {
-    width: 74px; padding: 0; border: 2px solid var(--border); border-radius: 8px;
-    background: #fff; cursor: pointer; overflow: hidden; position: relative;
-    display: flex; flex-direction: column; align-items: stretch;
+  /* 「例を見る」: 行の右に小さく置き、押すと行の中が開いて
+     ○ いい例 / ✗ 悪い例 が横に並び、その下にやり方が出る。
+     見本もやり方も無い項目には出さない */
+  .ex-btn {
+    flex-shrink: 0; align-self: center; border: 1px solid var(--border); background: #fff;
+    color: var(--primary-dark); border-radius: 999px; padding: 4px 10px;
+    font-size: .74rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 4px; line-height: 1.4;
   }
-  .sample.ok { border-color: var(--done); }
-  .sample.ng { border-color: #e53935; }
-  .sample-media { width: 100%; height: 54px; object-fit: cover; display: block; background: #000; }
-  .sample-label { font-size: .62rem; font-weight: 700; padding: 2px 0; line-height: 1.25; }
-  .sample.ok .sample-label { background: var(--done-bg); color: #2e7d32; }
-  .sample.ng .sample-label { background: #ffebee; color: #c62828; }
-  .sample-more {
-    position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff;
-    font-size: .6rem; font-weight: 700; border-radius: 6px; padding: 0 4px; line-height: 1.4;
+  .ex-btn .ic { width: .95em; height: .95em; }
+  .ex-btn.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .ex-box {
+    flex-basis: 100%; margin-top: 10px; padding: 10px;
+    background: #f7f9fb; border: 1px solid var(--border); border-radius: 10px;
   }
-  /* やることリストの行は高さを増やしたくないので、印は画像の角に小さく重ねる */
-  .samples.compact { gap: 4px; margin-top: 0; align-self: center; }
-  .samples.compact .sample { width: 30px; height: 26px; border-width: 1.5px; border-radius: 5px; }
-  .samples.compact .sample-media { height: 100%; }
-  .samples.compact .sample-label {
-    position: absolute; top: 0; left: 0; font-size: .58rem; line-height: 1.15;
-    padding: 0 2px; border-radius: 0 0 4px 0;
+  .ex-pair { display: flex; gap: 10px; }
+  .ex-col { flex: 1 1 0; min-width: 0; }
+  .ex-head { font-size: .78rem; font-weight: 700; margin-bottom: 4px; }
+  .ex-col.ok .ex-head { color: #2e7d32; }
+  .ex-col.ng .ex-head { color: #c62828; }
+  .ex-media {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: #000;
+    border: 2px solid var(--border); border-radius: 8px; cursor: zoom-in; padding: 0;
   }
-  .samples.compact .sample-more { top: auto; bottom: 0; font-size: .55rem; padding: 0 2px; }
-  /* スマホは横に2枚並べると題名が潰れるので縦に積む */
+  .ex-col.ok .ex-media { border-color: var(--done); }
+  .ex-col.ng .ex-media { border-color: #e53935; }
+  .ex-none {
+    width: 100%; aspect-ratio: 4 / 3; border: 2px dashed var(--border); border-radius: 8px;
+    background: #fff; color: var(--muted); font-size: .78rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ex-more { font-size: .68rem; color: var(--muted); margin-top: 3px; }
+  .ex-how { margin-top: 10px; }
+  .ex-how-head { font-weight: 700; font-size: .8rem; margin-bottom: 3px; }
+  .ex-how-text { font-size: .82rem; line-height: 1.6; }
+  .ex-how-none { font-size: .82rem; color: var(--muted); }
+  .ex-how-media { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .ex-how-media .ex-media { width: 84px; aspect-ratio: 4 / 3; border-width: 1px; }
+  /* やることリストの行は1行なので、開く欄は2段目に回す。
+     ボタンは行の高さを変えないよう小さめにする */
+  .rt-child.has-ex { flex-wrap: wrap; }
+  .rt-child .ex-btn { padding: 1px 8px; font-size: .7rem; }
+  .rt-child .ex-box { margin-top: 8px; }
+  /* スマホは題名の幅を残したいので、アイコンを省いて字だけにする */
   @media (max-width: 480px) {
-    .samples { flex-direction: column; gap: 4px; }
-    .sample { width: 58px; }
-    .sample-media { height: 42px; }
-    .samples.compact { flex-direction: row; }
-    .samples.compact .sample { width: 30px; }
+    .ex-btn { padding: 3px 8px; font-size: .7rem; gap: 0; }
+    .ex-btn .ic { display: none; }
+    .ex-pair { gap: 8px; }
   }
   .edit-btn, .del-btn {
     width: 32px; height: 32px; border: none; background: transparent;
@@ -2127,37 +2141,84 @@ const SAMPLE_KINDS = [
 ];
 function isVideoMedia(id) { return String(mediaTypes[id] || '').indexOf('video/') === 0; }
 
-function sampleThumbsHtml(areaKey, itemId, compact) {
-  const groups = SAMPLE_KINDS.map(k => ({ k: k, ids: mediaIdsForArea(areaKey, itemId, k.kind) }))
-    .filter(g => g.ids.length);
-  if (!groups.length) return '';
-  let h = '<div class="samples' + (compact ? ' compact' : '') + '">';
-  groups.forEach(g => {
-    const id = g.ids[0];
-    h += '<button type="button" class="sample ' + g.k.kind + '"'
-      + ' data-sample-area="' + escapeHtml(areaKey) + '"'
-      + ' data-sample-item="' + escapeHtml(itemId) + '"'
-      + ' data-sample-id="' + escapeHtml(id) + '"'
-      + ' aria-label="' + g.k.label + 'を見る">'
-      + (isVideoMedia(id)
-          ? '<video class="sample-media" src="' + mediaUrl(id) + '" preload="metadata" muted playsinline></video>'
-          : '<img class="sample-media" src="' + mediaUrl(id) + '" alt="' + g.k.label + '" loading="lazy" decoding="async">')
-      + (g.ids.length > 1 ? '<span class="sample-more">+' + (g.ids.length - 1) + '</span>' : '')
-      + '<span class="sample-label">' + g.k.mark + (compact ? '' : ' ' + g.k.label) + '</span>'
-      + '</button>';
-  });
-  return h + '</div>';
+const METHOD_KIND = { kind: 'method', mark: '', label: 'やり方' };
+
+// エリアを指定して項目の定義を引く（開いたときに「やり方」を出すため）
+function findItemIn(areaKey, itemId) {
+  return areaItems(baseArea(areaKey)).find(i => i.id === itemId) || null;
 }
 
-// サムネイルをタップしたら、その項目の見本をまとめて送りながら見られるようにする
-function openSampleGallery(areaKey, itemId, startId) {
-  const list = [];
+// 「例を見る」は、いい例か悪い例が登録されている項目にだけ出す。
+// 手順テキストは全項目に入っているので、それを条件にすると全行にボタンが並んでしまう。
+// （開いたときは、ついでにやり方も出す）
+function hasExamples(areaKey, itemId) {
+  return SAMPLE_KINDS.some(k => mediaIdsForArea(areaKey, itemId, k.kind).length > 0);
+}
+
+// 行の右に置く「例を見る」
+function exampleBtnHtml(areaKey, itemId) {
+  if (!hasExamples(areaKey, itemId)) return '';
+  return '<button type="button" class="ex-btn"'
+    + ' data-ex-area="' + escapeHtml(areaKey) + '"'
+    + ' data-ex-item="' + escapeHtml(itemId) + '">'
+    + ic('image') + ' 例を見る</button>';
+}
+
+// 画像・動画のタグ（タップで拡大。種別ごとにまとめて送れる）
+function exMediaHtml(areaKey, itemId, id, kind, label, cls) {
+  const attrs = ' data-ex-area="' + escapeHtml(areaKey) + '"'
+    + ' data-ex-item="' + escapeHtml(itemId) + '"'
+    + ' data-ex-id="' + escapeHtml(id) + '"'
+    + ' data-ex-kind="' + escapeHtml(kind) + '"';
+  return isVideoMedia(id)
+    ? '<video class="' + cls + '" src="' + mediaUrl(id) + '" preload="metadata" muted playsinline' + attrs + '></video>'
+    : '<img class="' + cls + '" src="' + mediaUrl(id) + '" alt="' + escapeHtml(label) + '"'
+      + ' loading="lazy" decoding="async"' + attrs + '>';
+}
+
+// 行の中に開く欄: ○ いい例 と ✗ 悪い例 を横に並べ、その下にやり方
+function renderExamplePanel(box, areaKey, itemId) {
+  const item = findItemIn(areaKey, itemId);
+  let h = '<div class="ex-pair">';
   SAMPLE_KINDS.forEach(k => {
+    const ids = mediaIdsForArea(areaKey, itemId, k.kind);
+    h += '<div class="ex-col ' + k.kind + '">'
+      + '<div class="ex-head">' + k.mark + ' ' + k.label + '</div>';
+    if (ids.length) {
+      h += exMediaHtml(areaKey, itemId, ids[0], k.kind, k.label, 'ex-media');
+      if (ids.length > 1) h += '<div class="ex-more">ほか ' + (ids.length - 1) + '件（タップで送れます）</div>';
+    } else {
+      h += '<div class="ex-none">まだ登録なし</div>';
+    }
+    h += '</div>';
+  });
+  h += '</div>';
+
+  const method = item ? String(item.method || '').trim() : '';
+  const mIds = mediaIdsForArea(areaKey, itemId, METHOD_KIND.kind);
+  h += '<div class="ex-how"><div class="ex-how-head">やり方</div>';
+  h += method
+    ? '<div class="ex-how-text">' + escapeHtml(method).replace(/\n/g, '<br>') + '</div>'
+    : '<div class="ex-how-none">まだ登録されていません。</div>';
+  if (mIds.length) {
+    h += '<div class="ex-how-media">';
+    mIds.forEach(id => { h += exMediaHtml(areaKey, itemId, id, METHOD_KIND.kind, METHOD_KIND.label, 'ex-media'); });
+    h += '</div>';
+  }
+  h += '</div>';
+  box.innerHTML = h;
+}
+
+// 拡大表示。同じ種別のものをまとめて送れるようにする
+function openMediaGallery(areaKey, itemId, startId, kind) {
+  const kinds = kind === METHOD_KIND.kind ? [METHOD_KIND] : SAMPLE_KINDS;
+  const list = [];
+  kinds.forEach(k => {
     const ids = mediaIdsForArea(areaKey, itemId, k.kind);
     ids.forEach((id, i) => {
       list.push({
         id: id, url: mediaUrl(id), isVideo: isVideoMedia(id),
-        caption: '<span class="' + k.kind + '">' + k.mark + ' ' + k.label + '</span>'
+        caption: '<span class="' + k.kind + '">' + (k.mark ? k.mark + ' ' : '') + k.label + '</span>'
           + (ids.length > 1 ? ' <span class="n">' + (i + 1) + '/' + ids.length + '</span>' : ''),
       });
     });
@@ -2169,11 +2230,29 @@ function openSampleGallery(areaKey, itemId, startId) {
 
 // 行のタップ（チェックの切り替え・エリアへの移動）より先に拾う
 document.getElementById('checklist').addEventListener('click', (e) => {
-  const btn = e.target.closest('.sample');
+  const media = e.target.closest('.ex-media');
+  if (media) {
+    e.preventDefault();
+    e.stopPropagation();
+    openMediaGallery(media.dataset.exArea, media.dataset.exItem, media.dataset.exId, media.dataset.exKind);
+    return;
+  }
+  const btn = e.target.closest('.ex-btn');
   if (!btn) return;
   e.preventDefault();
   e.stopPropagation();
-  openSampleGallery(btn.dataset.sampleArea, btn.dataset.sampleItem, btn.dataset.sampleId);
+  const row = btn.closest('.item, .rt-child');
+  const box = row && row.querySelector('.ex-box');
+  if (!box) return;
+  if (box.hidden) {
+    renderExamplePanel(box, btn.dataset.exArea, btn.dataset.exItem);
+    box.hidden = false;
+    btn.classList.add('on');
+  } else {
+    box.hidden = true;
+    box.innerHTML = '';   // 動画を止める
+    btn.classList.remove('on');
+  }
 }, true);
 
 // 複数メディアのギャラリーを描画（各メディアに削除ボタン）
@@ -3477,16 +3556,19 @@ function renderRoutineView() {
             const cdone = !!crec[ci.id];
             // 数値を入れる子項目（ゴルフのクラブ本数など）は、この場で入力できるようにする
             const cNums = !routineEditMode && itemNumFields(ci).length > 0;
+            const cEx = !routineEditMode ? exampleBtnHtml(bl.sk, ci.id) : '';
             html += '<div class="rt-child' + (cdone ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
               + (bl.off ? ' rt-off' : '')
+              + (cEx ? ' has-ex' : '')
               + (cNums ? ' has-nums' : '') + '" data-area="' + escapeHtml(bl.sk) + '" data-id="' + escapeHtml(ci.id) + '">'
               + '<span class="rt-check">' + ic('check') + '</span>'
               + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
               + (routineEditMode
                   ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
                   : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
-              + (routineEditMode ? '' : sampleThumbsHtml(bl.sk, ci.id, true))
+              + cEx
               + (cNums ? numFieldsHtml(ci) : '')
+              + (cEx ? '<div class="ex-box" hidden></div>' : '')
               + '</div>';
             });
           });
@@ -3722,17 +3804,18 @@ function render() {
             <button class="method-btn">${ic('book-open-text')} 清掃方法${(item.method || countMethodMedia(item.id)) ? '' : '<span class="method-empty">（未登録）</span>'}${countMethodMedia(item.id) ? ' <span class="mini-badge ok on">' + countMethodMedia(item.id) + '</span>' : ''}</button>
             <div class="method-box" style="display:none;"></div>`}
           </div>
-          ${isRoutineArea(currentArea) ? '' : sampleThumbsHtml(currentArea, item.id)}
+          ${isRoutineArea(currentArea) ? '' : exampleBtnHtml(currentArea, item.id)}
           <div class="item-actions">
             <button class="edit-btn" aria-label="項目を編集">${ic('pencil')}</button>
             <button class="del-btn" aria-label="項目を削除">${ic('trash-2')}</button>
           </div>
-        </div>`;
+        </div>
+        <div class="ex-box" hidden></div>`;
       if (ls) {
         // 連動項目: カード全体がリンク。どこをタップしてもそのエリアへ移動
         div.classList.add('linkable');
         div.addEventListener('click', (e) => {
-          if (e.target.closest('.media-btn, .method-btn, .edit-btn, .del-btn, .method-box, .ext-link, .sample')) return;
+          if (e.target.closest('.media-btn, .method-btn, .edit-btn, .del-btn, .method-box, .ext-link, .ex-btn, .ex-box')) return;
           currentArea = ls.complete ? String(item.link).split(',')[0].trim() : ls.jumpTo;
           render();
           window.scrollTo(0, 0);
