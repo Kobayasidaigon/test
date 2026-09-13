@@ -485,7 +485,18 @@
     background: #fff; color: var(--muted); font-size: .78rem;
     display: flex; align-items: center; justify-content: center;
   }
-  .ex-more { font-size: .68rem; color: var(--muted); margin-top: 3px; }
+  /* 写真が複数あるとき、下に小さく並べる。今出ているものに枠が付く */
+  .ex-thumbs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+  .ex-thumb {
+    position: relative; width: 50px; padding: 0; line-height: 0; cursor: pointer;
+    border: 2px solid var(--border); border-radius: 6px; background: #eceff1; overflow: hidden;
+  }
+  .ex-thumb > * { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; display: block; background: #eceff1; }
+  .ex-col.ok .ex-thumb.on { border-color: var(--done); }
+  .ex-col.ng .ex-thumb.on { border-color: #e53935; }
+  /* iPadで押しやすいように、見た目は変えずに当たり判定を広げる */
+  .ex-thumb::after { content: ''; position: absolute; top: -6px; bottom: -6px; left: -3px; right: -3px; }
+  .ex-count { font-size: .68rem; color: var(--muted); margin-top: 4px; }
   .ex-how { margin-top: 10px; }
   .ex-how-head { font-weight: 700; font-size: .8rem; margin-bottom: 3px; }
   .ex-how-text { font-size: .82rem; line-height: 1.6; }
@@ -2185,11 +2196,27 @@ function renderExamplePanel(box, areaKey, itemId) {
   let h = '<div class="ex-pair">';
   SAMPLE_KINDS.forEach(k => {
     const ids = mediaIdsForArea(areaKey, itemId, k.kind);
-    h += '<div class="ex-col ' + k.kind + '">'
+    h += '<div class="ex-col ' + k.kind + '"'
+      + ' data-ex-area="' + escapeHtml(areaKey) + '"'
+      + ' data-ex-item="' + escapeHtml(itemId) + '"'
+      + ' data-ex-kind="' + escapeHtml(k.kind) + '"'
+      + ' data-ex-label="' + escapeHtml(k.label) + '">'
       + '<div class="ex-head">' + k.mark + ' ' + k.label + '</div>';
     if (ids.length) {
-      h += exMediaHtml(areaKey, itemId, ids[0], k.kind, k.label, 'ex-media');
-      if (ids.length > 1) h += '<div class="ex-more">ほか ' + (ids.length - 1) + '件（タップで送れます）</div>';
+      h += '<div class="ex-main">'
+        + exMediaHtml(areaKey, itemId, ids[0], k.kind, k.label, 'ex-media') + '</div>';
+      // 2枚以上あるときは下に小さく並べる。どれを見ているか分かり、押せばその場で入れ替わる
+      if (ids.length > 1) {
+        h += '<div class="ex-thumbs">';
+        ids.forEach((id, i) => {
+          h += '<button type="button" class="ex-thumb' + (i === 0 ? ' on' : '') + '"'
+            + ' data-ex-pick="' + escapeHtml(id) + '"'
+            + ' aria-label="' + escapeHtml(k.label) + ' ' + (i + 1) + '枚目">'
+            + exMediaHtml(areaKey, itemId, id, k.kind, k.label, 'ex-thumb-media')
+            + '</button>';
+        });
+        h += '</div><div class="ex-count">' + ids.length + '枚あります</div>';
+      }
     } else {
       h += '<div class="ex-none">まだ登録なし</div>';
     }
@@ -2233,6 +2260,19 @@ function openMediaGallery(areaKey, itemId, startId, kind) {
 
 // 行のタップ（チェックの切り替え・エリアへの移動）より先に拾う
 document.getElementById('checklist').addEventListener('click', (e) => {
+  // 下の一覧: 押すと上の写真が入れ替わる（拡大表示は開かない）
+  const thumb = e.target.closest('.ex-thumb');
+  if (thumb) {
+    e.preventDefault();
+    e.stopPropagation();
+    const col = thumb.closest('.ex-col');
+    const main = col && col.querySelector('.ex-main');
+    if (!main) return;
+    main.innerHTML = exMediaHtml(col.dataset.exArea, col.dataset.exItem,
+      thumb.dataset.exPick, col.dataset.exKind, col.dataset.exLabel, 'ex-media');
+    col.querySelectorAll('.ex-thumb').forEach(b => b.classList.toggle('on', b === thumb));
+    return;
+  }
   const media = e.target.closest('.ex-media');
   if (media) {
     e.preventDefault();
