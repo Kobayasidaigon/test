@@ -4326,9 +4326,16 @@ function refreshCmpArea() {
   const all = document.createElement('option');
   all.value = '__all__'; all.textContent = 'すべてのエリア（概要）';
   cmpArea.appendChild(all);
-  allAreas().forEach(a => {
+  // 清掃エリアを先に、やることリスト（朝番・中番・遅番）は最後にまとめる。
+  // 概要の列には出さないが、中身を項目ごとに見たいときのために選べるようにしておく
+  compareAreas(storeHistory(cmpStoreValue())).forEach(a => {
     const o = document.createElement('option');
     o.value = a.key; o.textContent = a.name;
+    cmpArea.appendChild(o);
+  });
+  allAreas().filter(a => isRoutineArea(a.key)).forEach(a => {
+    const o = document.createElement('option');
+    o.value = a.key; o.textContent = a.name + '（やることリスト）';
     cmpArea.appendChild(o);
   });
   if (prev && Array.from(cmpArea.options).some(o => o.value === prev)) cmpArea.value = prev;
@@ -5723,23 +5730,79 @@ function renderCompare() {
 }
 
 // (A) すべてのエリア＝概要テーブル（行：登録／列：エリアの達成率）
+// 比較の概要に出すエリア。やることリスト（朝番・中番・遅番）は出さない。
+// あれは「その日やること」の一覧で、連動している行は各清掃エリアの完了と同じものを指す。
+// 列に並べると清掃エリアと二重に数えることになり、「全体」がそちらに持っていかれる。
+// 店舗まとめ（storeDayProgress）も同じ考え方でやることリストを外している。
+function compareAreas(hist) {
+  const used = {};
+  (hist || []).forEach(h => (h.areas || []).forEach(x => { used[baseArea(x.key)] = true; }));
+  return allAreas()
+    .filter(a => !isRoutineArea(a.key))
+    // 組み込みエリアで項目を全部消したものは、その店舗に無い設備なので列にしない。
+    // hidden:true は外さない（やることリストの連動先として記録が入る枠なので）
+    .filter(a => used[a.key] || !AREAS.some(x => x.key === a.key) || areaItems(a.key).length > 0);
+}
+
+// やることリストの中で、どの清掃エリアにも連動していない項目（電源・開錠、ゴミ出し など）。
+// 連動している行は清掃エリアの列と同じ中身を指すので二重に数えないが、
+// 連動していない行はどの列にも出てこないので、まとめて「その他のやること」1列にして
+// 「全体」にも入れる。そうしないと、やることリストだけ触った回が「-」になってしまう。
+// 戻り値の鍵は「やることリストの鍵 + 改行 + 項目名」。同じ名前の項目が
+// 朝番と中番の両方にあっても、別のものとして数えるため。
+function soloRoutineTitles(cols) {
+  const known = {};
+  (cols || compareAreas()).forEach(a => { known[a.key] = true; });
+  const set = {};
+  allAreas().filter(a => isRoutineArea(a.key)).forEach(a => {
+    areaItems(a.key).forEach(it => {
+      const links = String(it.link || '').split(',').map(x => x.trim())
+        .filter(x => x && known[x]);
+      if (!links.length) set[a.key + '\n' + it.title] = true;
+    });
+  });
+  return set;
+}
+
+// その回に記録された「連動していないやること」の達成数
+function soloRoutineCount(h, titles) {
+  const map = {};
+  allAreas().filter(a => isRoutineArea(a.key)).forEach(a => {
+    const m = itemDoneMap(h, a.key).map;
+    Object.keys(m).forEach(t => {
+      const k = a.key + '\n' + t;
+      if (titles[k]) map[k] = !!m[t];
+    });
+  });
+  const ts = Object.keys(map);
+  return ts.length ? { done: ts.filter(t => map[t]).length, total: ts.length } : null;
+}
+
 function renderOverview(box, hist, store) {
   let html = cmpTitleHtml(store, 'すべてのエリア（概要）', 'clipboard-list');
   html += '<div class="cmp-scroll"><table class="cmp"><thead><tr>'
     + '<th class="left fix-date">日付</th><th class="left fix-staff">担当者</th><th>全体</th>';
-  allAreas().forEach(a => { html += '<th>' + ic(a.icon) + '<br>' + escapeHtml(a.name) + '</th>'; });
+  const cols = compareAreas(hist);
+  cols.forEach(a => { html += '<th>' + ic(a.icon) + '<br>' + escapeHtml(a.name) + '</th>'; });
+  const solo = soloRoutineTitles(cols);
+  const hasSolo = Object.keys(solo).length > 0;
+  if (hasSolo) html += '<th>' + ic('clipboard-list') + '<br>その他のやること</th>';
   html += '<th>登録日時</th><th></th></tr></thead><tbody>';
   hist.forEach(h => {
     // 「全体」は各エリアの列と同じ数え方にする。
     // 保存時の合計（h.done/h.total）をそのまま出すと、同じエリアを朝番と中番の
-    // 両方で触ったぶんを二重に数えてしまい、列の合計と合わない
-    const cells = allAreas().map(a => itemDoneMap(h, a.key).as);
+    // 両方で触ったぶんと、やることリストそのものの分まで数えてしまい、列の合計と合わない
+    const cells = cols.map(a => itemDoneMap(h, a.key).as);
+    if (hasSolo) cells.push(soloRoutineCount(h, solo));
     const done = cells.reduce((n, as) => n + (as ? as.done : 0), 0);
     const total = cells.reduce((n, as) => n + (as ? as.total : 0), 0);
     const opct = total ? Math.round(done / total * 100) : 0;
     html += '<tr><td class="left fix-date">' + escapeHtml(h.date) + '</td>'
       + '<td class="left fix-staff">' + staffHtml(h) + '</td>'
-      + '<td class="overall ' + ratioClass(done, total) + '">' + done + '/' + total + '<br>' + opct + '%</td>';
+      // 何も記録が無い回は「-」にする。0% とは意味が違う
+      + (total
+          ? '<td class="overall ' + ratioClass(done, total) + '">' + done + '/' + total + '<br>' + opct + '%</td>'
+          : '<td class="overall">-</td>');
     cells.forEach(as => {
       html += as ? '<td class="' + ratioClass(as.done, as.total) + '">' + as.done + '/' + as.total + '</td>' : '<td>-</td>';
     });
