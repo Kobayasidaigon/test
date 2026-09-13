@@ -455,11 +455,14 @@
      ○ いい例 / ✗ 悪い例 が横に並び、その下にやり方が出る。
      見本もやり方も無い項目には出さない */
   .ex-btn {
+    position: relative;
     flex-shrink: 0; align-self: center; border: 1px solid var(--border); background: #fff;
     color: var(--primary-dark); border-radius: 999px; padding: 4px 10px;
     font-size: .74rem; font-weight: 700; cursor: pointer; white-space: nowrap;
     display: inline-flex; align-items: center; gap: 4px; line-height: 1.4;
   }
+  /* iPadで指でも押しやすいように、見た目は変えずに当たり判定だけ広げる */
+  .ex-btn::after { content: ''; position: absolute; top: -9px; bottom: -9px; left: -5px; right: -5px; }
   .ex-btn .ic { width: .95em; height: .95em; }
   .ex-btn.on { background: var(--primary); border-color: var(--primary); color: #fff; }
   .ex-box {
@@ -472,7 +475,7 @@
   .ex-col.ok .ex-head { color: #2e7d32; }
   .ex-col.ng .ex-head { color: #c62828; }
   .ex-media {
-    width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: #000;
+    width: 100%; aspect-ratio: 4 / 3; object-fit: contain; display: block; background: #eceff1;
     border: 2px solid var(--border); border-radius: 8px; cursor: zoom-in; padding: 0;
   }
   .ex-col.ok .ex-media { border-color: var(--done); }
@@ -492,7 +495,7 @@
   /* やることリストの行は1行なので、開く欄は2段目に回す。
      ボタンは行の高さを変えないよう小さめにする */
   .rt-child.has-ex { flex-wrap: wrap; }
-  .rt-child .ex-btn { padding: 1px 8px; font-size: .7rem; }
+  .rt-child .ex-btn { padding: 2px 9px; font-size: .72rem; }
   .rt-child .ex-box { margin-top: 8px; }
   /* スマホは題名の幅を残したいので、アイコンを省いて字だけにする */
   @media (max-width: 480px) {
