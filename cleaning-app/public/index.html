@@ -434,6 +434,14 @@
   .plus-n { margin-left: auto; font-size: .72rem; font-weight: 700; color: #fff;
     background: #fb8c00; padding: 1px 8px; border-radius: 9px; }
   .plus-note { font-size: .7rem; color: #a1663a; margin: 2px 0 8px; line-height: 1.4; }
+  .pdate-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .pdate-row label { font-size: .72rem; font-weight: 700; color: var(--muted); }
+  .pdate { font-size: .8rem; padding: 4px 7px; border: 1px solid var(--border);
+    border-radius: 7px; background: var(--card); color: var(--text); }
+  .pdate-clear { font-size: .7rem; padding: 3px 8px; border: 1px solid var(--border);
+    border-radius: 999px; background: #fff; color: var(--muted); cursor: pointer; }
+  .pitem.unset { border-left-color: var(--border); }
+  .pitem-statusline.unset { color: var(--muted); }
   .plus-gauge { height: 7px; border-radius: 4px; background: #ffe0b2; overflow: hidden; margin-top: 6px; }
   .plus-gauge-fill { height: 100%; border-radius: 4px; background: #fb8c00; transition: width .25s ease; }
   .plus-gauge-fill.full { background: var(--done); }
@@ -3377,21 +3385,15 @@ function renderTodo(staleMap) {
 function renderPeriodicView() {
   const checklist = document.getElementById('checklist');
   const dm = loadPeriodicDone(currentStore);
-  const list = loadPeriodic().slice();
-  const order = { due: 0, soon: 1, ok: 2 };
-  list.sort((a, b) => {
-    const sa = periodicStatus(a, dm[a.id]), sb = periodicStatus(b, dm[b.id]);
-    if (order[sa.state] !== order[sb.state]) return order[sa.state] - order[sb.state];
-    const la = sa.left == null ? -99999 : sa.left, lb = sb.left == null ? -99999 : sb.left;
-    return la - lb; // 残り日数が少ない（過ぎている）順
-  });
+  const list = periodicSort(loadPeriodic(), dm);
   let html = '<div class="periodic-intro">頻度を決めて「たまにやる」項目を管理します。<b>実施時期</b>のものが上に出ます。やったら「完了」を押すと次回までのカウントが戻ります。'
     + (currentStore ? '（実施記録は「' + escapeHtml(currentStore) + '」のもの）' : '<b>上部で店舗を選ぶと、その店舗の実施記録が表示されます。</b>') + '</div>';
   if (list.length === 0) html += '<div class="cmp-empty">定期項目がありません。下の「＋ 定期項目を追加」から登録できます。</div>';
   list.forEach(t => {
     const done = dm[t.id];
     const s = periodicStatus(t, done);
-    const last = done
+    // やる日だけ決めた項目は done があっても date が無い。undefined を出さないこと
+    const last = (done && done.date)
       ? (done.date + '（' + s.elapsed + '日前' + (done.staff ? '・' + escapeHtml(done.staff) : '') + '）')
       : '未実施';
     html += '<div class="pitem ' + s.cls + '">'
@@ -3403,6 +3405,12 @@ function renderPeriodicView() {
       + '<div class="pitem-meta">前回: ' + last
       + (s.next ? '　／　次: ' + s.next + (done && done.next ? '（指定）' : '') : '') + '</div>'
       + '<div class="pitem-statusline ' + s.cls + '">' + s.label + '</div>'
+      + '<div class="pdate-row"><label>やる日</label>'
+      + '<input type="date" class="pdate" data-pdate="' + escapeHtml(t.id) + '" value="'
+      + escapeHtml((done && done.next) || '') + '"' + (currentStore ? '' : ' disabled') + '>'
+      + (done && done.next ? '<button type="button" class="pdate-clear" data-pclear="'
+          + escapeHtml(t.id) + '">消す</button>' : '')
+      + '</div>'
       + '</div>'
       + '<div class="pitem-actions">'
       + '<button class="pdone" data-id="' + t.id + '">' + ic('check') + ' 完了</button>'
@@ -3413,9 +3421,31 @@ function renderPeriodicView() {
   html += '<button class="add-title-btn" id="periodicAddBtn">' + ic('plus') + ' 定期項目を追加</button>';
   checklist.innerHTML = html;
   checklist.querySelectorAll('.pdone').forEach(b => b.onclick = () => periodicDone(b.dataset.id));
+  // 一覧からその場で「やる日」を決める／消す
+  checklist.querySelectorAll('[data-pdate]').forEach(inp => {
+    inp.onchange = () => setPeriodicNext(inp.dataset.pdate, inp.value || null);
+  });
+  checklist.querySelectorAll('[data-pclear]').forEach(b => {
+    b.onclick = () => setPeriodicNext(b.dataset.pclear, null);
+  });
   checklist.querySelectorAll('[data-pedit]').forEach(b => b.onclick = () => openPeriodicDialog(b.getAttribute('data-pedit')));
   checklist.querySelectorAll('[data-pdel]').forEach(b => b.onclick = () => periodicDelete(b.getAttribute('data-pdel')));
   document.getElementById('periodicAddBtn').onclick = () => openPeriodicDialog(null);
+}
+// やる日を決める／消す（店舗ごと）
+function setPeriodicNext(id, date) {
+  if (!currentStore) {
+    alert('先に上部で「店舗」を選んでください。');
+    storeSelect.focus();
+    return;
+  }
+  const dm = loadPeriodicDone(currentStore);
+  const cur = Object.assign({}, dm[id] || {});
+  if (date) cur.next = date; else delete cur.next;
+  // 実施記録もやる日も無くなるなら、まるごと消す（空の殻を残さない）
+  if (!cur.date && !cur.next) delete dm[id]; else dm[id] = cur;
+  savePeriodicDone(currentStore, dm);
+  render();
 }
 function periodicDone(id) {
   if (!currentStore) {
@@ -4294,10 +4324,14 @@ function periodicNext(task, done) {
 function periodicStatus(task, done) {
   const last = done && done.date;
   const next = periodicNext(task, done);
-  if (!next) return { state: 'due', elapsed: null, left: null, next: null, label: '未実施', cls: 'urgent' };
+  // 一度もやっておらず、やる日も決めていない＝いつやるか決まっていない。
+  // これを「実施時期」にすると、登録しただけの項目が全部 plus α に出てしまう
+  if (!next) return { state: 'unset', elapsed: null, left: null, next: null,
+                      label: '日付未設定', cls: 'unset' };
   const today = dateInput.value || todayStr();
   const left = Math.round((new Date(next + 'T00:00:00') - new Date(today + 'T00:00:00')) / 86400000);
   const elapsed = last ? daysSince(last) : null;
+
   const fixed = !!(done && done.next);   // 日にちを決めてあるか（表示の言い回しを変える）
   if (left <= 0) {
     return { state: 'due', elapsed, left, next,
@@ -4317,6 +4351,16 @@ function periodicDueTasks(store) {
   const dm = loadPeriodicDone(st);
   return loadPeriodic().filter(t =>
     periodicStatus(t, dm[t.id]).state === 'due' || periodicDoneToday(t, dm));
+}
+// 並び順は定期清掃の一覧と同じ（過ぎているものが先）
+function periodicSort(list, dm) {
+  const order = { due: 0, soon: 1, ok: 2, unset: 3 };
+  return list.slice().sort((a, b) => {
+    const sa = periodicStatus(a, dm[a.id]), sb = periodicStatus(b, dm[b.id]);
+    if (order[sa.state] !== order[sb.state]) return order[sa.state] - order[sb.state];
+    const la = sa.left == null ? 99999 : sa.left, lb = sb.left == null ? 99999 : sb.left;
+    return la - lb;
+  });
 }
 // その定期項目を「今日やったか」
 function periodicDoneToday(task, dm) {
