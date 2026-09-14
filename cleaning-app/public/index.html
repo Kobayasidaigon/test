@@ -1066,9 +1066,29 @@
     <input type="text" id="pTitle" class="field" placeholder="例：換気扇フィルターの清掃">
     <label class="field-label" for="pDesc">補足説明（任意）</label>
     <input type="text" id="pDesc" class="field" placeholder="例：外して洗浄・乾燥">
-    <label class="field-label" for="pInterval">頻度（どれくらいの間隔でやるか）</label>
-    <select id="pInterval" class="field"></select>
-    <input type="number" id="pIntervalDays" class="field" min="1" placeholder="日数を入力" style="display:none;">
+    <label class="field-label" for="pKind">繰り返し（どう決めるか）</label>
+    <select id="pKind" class="field">
+      <option value="days">◯日ごと</option>
+      <option value="week">毎週 ◯曜日</option>
+      <option value="month">毎月／Nヶ月ごと ◯日</option>
+    </select>
+    <div id="pKindDays">
+      <select id="pInterval" class="field"></select>
+      <input type="number" id="pIntervalDays" class="field" min="1" placeholder="日数を入力" style="display:none;">
+    </div>
+    <div id="pKindWeek" style="display:none;">
+      <div style="display:flex; gap:8px;">
+        <select id="pWeekEvery" class="field" style="flex:1; margin:0;"></select>
+        <select id="pWeekDow" class="field" style="flex:1; margin:0;"></select>
+      </div>
+    </div>
+    <div id="pKindMonth" style="display:none;">
+      <div style="display:flex; gap:8px;">
+        <select id="pMonthEvery" class="field" style="flex:1; margin:0;"></select>
+        <select id="pMonthDay" class="field" style="flex:1; margin:0;"></select>
+      </div>
+      <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.72rem;">その月に無い日（31日など）は、その月の末日になります。</p>
+    </div>
     <label class="field-label" for="pLast">前回やった日（任意・分かれば入力）</label>
     <input type="date" id="pLast" class="field">
     <label class="field-label" for="pNext">次にやる日（任意・この店舗だけ）</label>
@@ -1520,6 +1540,68 @@ const INTERVAL_PRESETS = [
 function intervalLabel(days) {
   const p = INTERVAL_PRESETS.find(x => x.days === days);
   return p ? p.label : days + '日ごと';
+}
+
+// ===== 繰り返しの決め方 =====
+// task.repeat に入れる。入っていない項目は、今までどおり task.interval（何日ごと）。
+//   { kind: 'days',  n: 30 }            30日ごと
+//   { kind: 'week',  every: 1, dow: 1 } 毎週 月曜（every: 2 なら2週ごと）
+//   { kind: 'month', every: 3, day: 15 } 3ヶ月ごとの15日
+const DOW_LABELS = ['日', '月', '火', '水', '木', '金', '土'];
+function taskRepeat(task) {
+  const r = task && task.repeat;
+  if (r && r.kind === 'week') {
+    return { kind: 'week', every: Math.max(1, Number(r.every) || 1),
+             dow: Math.min(6, Math.max(0, Number(r.dow) || 0)) };
+  }
+  if (r && r.kind === 'month') {
+    return { kind: 'month', every: Math.max(1, Number(r.every) || 1),
+             day: Math.min(31, Math.max(1, Number(r.day) || 1)) };
+  }
+  const n = Math.max(1, Number((r && r.n) || (task && task.interval) || 30));
+  return { kind: 'days', n: n };
+}
+function repeatLabel(task) {
+  const r = taskRepeat(task);
+  if (r.kind === 'week') {
+    return (r.every === 1 ? '毎週' : r.every + '週ごと') + ' ' + DOW_LABELS[r.dow] + '曜';
+  }
+  if (r.kind === 'month') {
+    return (r.every === 1 ? '毎月' : r.every + 'ヶ月ごと') + ' ' + r.day + '日';
+  }
+  return intervalLabel(r.n);
+}
+// おおよその間隔（日）。「そろそろ」の判定と並び順に使う
+function repeatDays(task) {
+  const r = taskRepeat(task);
+  if (r.kind === 'week') return r.every * 7;
+  if (r.kind === 'month') return r.every * 30;
+  return r.n;
+}
+// その月の日数（末日を超える指定を丸めるため。31日指定でも2月は末日になる）
+function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+// from の「次」の実施日
+function nextFromRepeat(task, from) {
+  const r = taskRepeat(task);
+  const base = new Date(from + 'T00:00:00');
+  const fmt = d => {
+    const p2 = n => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate());
+  };
+  if (r.kind === 'week') {
+    // その曜日のうち from より後で一番近い日。2週ごとならさらに1週ぶん足す
+    const d = new Date(base.getTime());
+    do { d.setDate(d.getDate() + 1); } while (d.getDay() !== r.dow);
+    if (r.every > 1) d.setDate(d.getDate() + (r.every - 1) * 7);
+    return fmt(d);
+  }
+  if (r.kind === 'month') {
+    // from の月から every ヶ月進めて、指定の日にする（末日を超える分は末日に丸める）
+    const y = base.getFullYear(), m = base.getMonth() + r.every;
+    const ty = y + Math.floor(m / 12), tm = ((m % 12) + 12) % 12;
+    return fmt(new Date(ty, tm, Math.min(r.day, daysInMonth(ty, tm))));
+  }
+  return shiftDate(from, r.n);
 }
 // ============================================================
 
@@ -2129,7 +2211,7 @@ function plusPeriodicHtml(tasks, dm) {
       + escapeHtml(t.id) + '">'
       + '<span class="rt-check">' + ic('check') + '</span>'
       + '<span class="rt-title">' + escapeHtml(t.title) + '</span>'
-      + '<span class="plus-freq">' + escapeHtml(intervalLabel(t.interval)) + '</span>'
+      + '<span class="plus-freq">' + escapeHtml(repeatLabel(t)) + '</span>'
       + '<span class="plus-row-last">' + escapeHtml(isDone ? '今日' : st.label) + '</span>'
       + (t.desc ? '<div class="rt-desc">' + escapeHtml(t.desc) + '</div>' : '')
       + '</div>';
@@ -3399,7 +3481,7 @@ function renderPeriodicView() {
     html += '<div class="pitem ' + s.cls + '">'
       + '<div class="pitem-body">'
       + '<div class="pitem-title">' + escapeHtml(t.title)
-      + ' <span class="pfreq">' + intervalLabel(t.interval) + '</span>'
+      + ' <span class="pfreq">' + escapeHtml(repeatLabel(t)) + '</span>'
       + (t.area ? ' <span class="parea">' + escapeHtml(t.area) + '</span>' : '') + '</div>'
       + (t.desc ? '<div class="pitem-desc">' + escapeHtml(t.desc) + '</div>' : '')
       + '<div class="pitem-meta">前回: ' + last
@@ -3458,7 +3540,7 @@ function periodicDone(id) {
   const today = todayStr();
   // 次にやる日は「今日＋頻度の日数」で自動更新する（手で決め直すこともできる）
   dm[id] = { date: today, staff: currentStaff || '',
-             next: t ? shiftDate(today, t.interval) : null };
+             next: t ? nextFromRepeat(t, today) : null };
   savePeriodicDone(currentStore, dm);
   render();
 }
@@ -3487,6 +3569,28 @@ const pIntervalDays = document.getElementById('pIntervalDays');
 pIntervalSel.onchange = () => {
   pIntervalDays.style.display = pIntervalSel.value === '__custom__' ? 'block' : 'none';
 };
+
+const pKind = document.getElementById('pKind');
+(function buildRepeatPickers() {
+  const add = (sel, v, t) => {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = t; sel.appendChild(o);
+  };
+  const we = document.getElementById('pWeekEvery');
+  [1, 2, 3, 4].forEach(n => add(we, n, n === 1 ? '毎週' : n + '週ごと'));
+  const wd = document.getElementById('pWeekDow');
+  DOW_LABELS.forEach((l, i) => add(wd, i, l + '曜日'));
+  const me = document.getElementById('pMonthEvery');
+  [1, 2, 3, 4, 6, 12].forEach(n => add(me, n, n === 1 ? '毎月' : n + 'ヶ月ごと'));
+  const md = document.getElementById('pMonthDay');
+  for (let d = 1; d <= 31; d++) add(md, d, d + '日');
+})();
+function syncRepeatPicker() {
+  document.getElementById('pKindDays').style.display = pKind.value === 'days' ? '' : 'none';
+  document.getElementById('pKindWeek').style.display = pKind.value === 'week' ? '' : 'none';
+  document.getElementById('pKindMonth').style.display = pKind.value === 'month' ? '' : 'none';
+}
+pKind.onchange = syncRepeatPicker;
 let periodicEditId = null;
 function openPeriodicDialog(id) {
   periodicEditId = id;
@@ -3495,12 +3599,20 @@ function openPeriodicDialog(id) {
   document.getElementById('pArea').value = t ? (t.area || '') : '';
   document.getElementById('pTitle').value = t ? t.title : '';
   document.getElementById('pDesc').value = t ? (t.desc || '') : '';
-  const days = t ? t.interval : 30;
+  const r = taskRepeat(t || { interval: 30 });
+  pKind.value = r.kind;
+  syncRepeatPicker();
+  const days = r.kind === 'days' ? r.n : 30;
   if (INTERVAL_PRESETS.some(p => p.days === days)) {
     pIntervalSel.value = String(days); pIntervalDays.style.display = 'none'; pIntervalDays.value = '';
   } else {
     pIntervalSel.value = '__custom__'; pIntervalDays.style.display = 'block'; pIntervalDays.value = days;
   }
+  // 週・月の欄は、その決め方でないときも既定値を入れておく（切り替えてすぐ保存できるように）
+  document.getElementById('pWeekEvery').value = String(r.kind === 'week' ? r.every : 1);
+  document.getElementById('pWeekDow').value = String(r.kind === 'week' ? r.dow : 1);
+  document.getElementById('pMonthEvery').value = String(r.kind === 'month' ? r.every : 1);
+  document.getElementById('pMonthDay').value = String(r.kind === 'month' ? r.day : 1);
   document.getElementById('pLast').value = (t && t.lastDone) ? t.lastDone : '';
   const dmNow = currentStore ? loadPeriodicDone(currentStore) : {};
   const dNow = id ? dmNow[id] : null;
@@ -3512,20 +3624,36 @@ document.getElementById('pCancel').onclick = () => periodicDialog.close();
 document.getElementById('pSave').onclick = () => {
   const title = document.getElementById('pTitle').value.trim();
   if (!title) { alert('項目名を入力してください'); return; }
-  let interval;
-  if (pIntervalSel.value === '__custom__') {
-    interval = parseInt(pIntervalDays.value, 10);
-    if (!interval || interval < 1) { alert('頻度の日数を入力してください'); return; }
-  } else { interval = parseInt(pIntervalSel.value, 10); }
+  let repeat;
+  if (pKind.value === 'week') {
+    repeat = { kind: 'week', every: parseInt(document.getElementById('pWeekEvery').value, 10),
+               dow: parseInt(document.getElementById('pWeekDow').value, 10) };
+  } else if (pKind.value === 'month') {
+    repeat = { kind: 'month', every: parseInt(document.getElementById('pMonthEvery').value, 10),
+               day: parseInt(document.getElementById('pMonthDay').value, 10) };
+  } else {
+    let n;
+    if (pIntervalSel.value === '__custom__') {
+      n = parseInt(pIntervalDays.value, 10);
+      if (!n || n < 1) { alert('頻度の日数を入力してください'); return; }
+    } else { n = parseInt(pIntervalSel.value, 10); }
+    repeat = { kind: 'days', n: n };
+  }
+  // interval も書いておく（古い記録との行き来と、おおよその間隔として使う）
+  const interval = repeatDays({ repeat: repeat });
   const lastDone = document.getElementById('pLast').value || null;
   const area = document.getElementById('pArea').value.trim();
   const desc = document.getElementById('pDesc').value.trim();
   const list = loadPeriodic();
   if (periodicEditId) {
     const t = list.find(x => x.id === periodicEditId);
-    if (t) { t.area = area; t.title = title; t.desc = desc; t.interval = interval; t.lastDone = lastDone; }
+    if (t) {
+      t.area = area; t.title = title; t.desc = desc;
+      t.repeat = repeat; t.interval = interval; t.lastDone = lastDone;
+    }
   } else {
-    list.push({ id: 'p' + Date.now() + Math.floor(Math.random() * 1000), area, title, desc, interval, lastDone, lastStaff: '' });
+    list.push({ id: 'p' + Date.now() + Math.floor(Math.random() * 1000),
+                area, title, desc, repeat, interval, lastDone, lastStaff: '' });
   }
   savePeriodic(list);
   // 次にやる日は店舗ごとの記録に入れる（店舗によって予定が違うため）
@@ -4316,7 +4444,7 @@ function savePeriodicDone(store, map) { syncSet('periodicDone_' + store, JSON.st
 // 決めていなければ「前回＋頻度の日数」。前回も無ければ null（＝未実施なのですぐやる）
 function periodicNext(task, done) {
   if (done && done.next) return done.next;
-  if (done && done.date) return shiftDate(done.date, task.interval);
+  if (done && done.date) return nextFromRepeat(task, done.date);
   return null;
 }
 // 定期項目の状態：due(実施時期) / soon(そろそろ) / ok(まだ)。done = その店舗の {date, staff, next}
@@ -4337,7 +4465,7 @@ function periodicStatus(task, done) {
     return { state: 'due', elapsed, left, next,
              label: fixed && left < 0 ? (-left) + '日過ぎています' : '実施時期です', cls: 'urgent' };
   }
-  if (left <= Math.max(1, Math.round(task.interval * 0.2))) {
+  if (left <= Math.max(1, Math.round(repeatDays(task) * 0.2))) {
     return { state: 'soon', elapsed, left, next, label: 'そろそろ（あと' + left + '日）', cls: 'warn' };
   }
   return { state: 'ok', elapsed, left, next, label: 'あと' + left + '日', cls: 'ok' };
