@@ -1,0 +1,795 @@
+<title>備品トラブル対応台帳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F3F5F8; --surface: #FFFFFF; --surface-2: #EEF1F5;
+    --ink: #1A2433; --ink-2: #5A6778; --ink-3: #8A96A6;
+    --line: #D9DFE7; --line-2: #EAEEF3;
+    --accent: #2C4F86; --accent-ink: #FFFFFF; --accent-soft: #E4EBF6; --accent-line: #B9C9E3;
+    --s-open-bg: #FBE7E7; --s-open-fg: #A61E1E; --s-open-dot: #C63A3A;
+    --s-prog-bg: #FFF0D2; --s-prog-fg: #7A4A00; --s-prog-dot: #E09A1A;
+    --s-hold-bg: #E9ECF1; --s-hold-fg: #3F4A5A; --s-hold-dot: #8A96A6;
+    --s-done-bg: #DDF3E4; --s-done-fg: #175E33; --s-done-dot: #2E9E5B;
+    --due-over: #C63A3A; --due-over-bg: #FDEDED;
+    --due-soon: #C25E0A; --due-soon-bg: #FFF1E3;
+    --danger: #B42318; --danger-soft: #FBE7E7;
+    --shadow: 0 10px 32px rgba(26, 36, 51, .16);
+    --font-ui: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+    --font-title: "Zen Kaku Gothic New", "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121821; --surface: #1A2230; --surface-2: #222C3B;
+      --ink: #E7ECF3; --ink-2: #A6B2C2; --ink-3: #7C8898;
+      --line: #2E3949; --line-2: #26303F;
+      --accent: #8FB0E6; --accent-ink: #0F1826; --accent-soft: #243650; --accent-line: #3B5680;
+      --s-open-bg: #3E1C1C; --s-open-fg: #F5B0B0; --s-open-dot: #E06565;
+      --s-prog-bg: #3D2E12; --s-prog-fg: #F2CF8B; --s-prog-dot: #E0A93A;
+      --s-hold-bg: #2A3240; --s-hold-fg: #C2CBD7; --s-hold-dot: #8A96A6;
+      --s-done-bg: #16301F; --s-done-fg: #9FDDB6; --s-done-dot: #3FB56C;
+      --due-over: #F07A7A; --due-over-bg: #3A1F1F;
+      --due-soon: #F0A35A; --due-soon-bg: #3B2A16;
+      --danger: #F07A7A; --danger-soft: #3A1F1F;
+      --shadow: 0 10px 32px rgba(0, 0, 0, .55);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121821; --surface: #1A2230; --surface-2: #222C3B;
+    --ink: #E7ECF3; --ink-2: #A6B2C2; --ink-3: #7C8898;
+    --line: #2E3949; --line-2: #26303F;
+    --accent: #8FB0E6; --accent-ink: #0F1826; --accent-soft: #243650; --accent-line: #3B5680;
+    --s-open-bg: #3E1C1C; --s-open-fg: #F5B0B0; --s-open-dot: #E06565;
+    --s-prog-bg: #3D2E12; --s-prog-fg: #F2CF8B; --s-prog-dot: #E0A93A;
+    --s-hold-bg: #2A3240; --s-hold-fg: #C2CBD7; --s-hold-dot: #8A96A6;
+    --s-done-bg: #16301F; --s-done-fg: #9FDDB6; --s-done-dot: #3FB56C;
+    --due-over: #F07A7A; --due-over-bg: #3A1F1F;
+    --due-soon: #F0A35A; --due-soon-bg: #3B2A16;
+    --danger: #F07A7A; --danger-soft: #3A1F1F;
+    --shadow: 0 10px 32px rgba(0, 0, 0, .55);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--font-ui); font-size: 14px; line-height: 1.55;
+    padding-inline: 16px; padding-block: 0 48px;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .wrap { max-width: 1280px; margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  .top {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px;
+    padding-block: 18px 14px; border-bottom: 1px solid var(--line);
+  }
+  .brand h1 { font-family: var(--font-title); font-size: 21px; font-weight: 700; letter-spacing: .01em; }
+  .brand p { margin: 2px 0 0; color: var(--ink-2); font-size: 12.5px; }
+  .top-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); margin-right: 6px; }
+  .sync::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); }
+  .sync[data-state="db"]::before { background: var(--s-done-dot); }
+  .sync[data-state="saving"]::before { background: var(--s-prog-dot); }
+  .sync[data-state="error"]::before { background: var(--s-open-dot); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-weight: 700; font-size: 13px;
+    white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent-line); background: var(--accent-soft); }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.danger { color: var(--danger); border-color: transparent; background: transparent; }
+  .btn.danger:hover { background: var(--danger-soft); border-color: transparent; }
+  .btn.ghost { border-color: transparent; background: transparent; font-weight: 400; color: var(--ink-2); }
+  .btn.ghost:hover { background: var(--surface-2); }
+  .btn:disabled { opacity: .5; cursor: default; }
+
+  .banner {
+    margin-top: 14px; padding: 10px 14px; border-radius: 6px; font-size: 13px;
+    background: var(--s-prog-bg); color: var(--s-prog-fg); border: 1px solid transparent;
+  }
+
+  /* ---------- tiles ---------- */
+  .tiles {
+    display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-top: 18px;
+  }
+  .tile {
+    text-align: left; padding: 12px 14px 10px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--surface); display: flex; flex-direction: column; gap: 2px; min-width: 0;
+    position: relative; transition: border-color .15s, background .15s;
+  }
+  .tile:hover { border-color: var(--accent-line); }
+  .tile .lbl { font-size: 12px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+  .tile .lbl::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--dot, var(--ink-3)); flex: none; }
+  .tile .val { font-size: 30px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
+  .tile .hint { font-size: 11.5px; color: var(--ink-3); }
+  .tile.is-active { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+  .tile[data-quick="status:未対応"] { --dot: var(--s-open-dot); }
+  .tile[data-quick="status:対応中"] { --dot: var(--s-prog-dot); }
+  .tile[data-quick="status:保留"] { --dot: var(--s-hold-dot); }
+  .tile[data-quick="overdue"] { --dot: var(--due-over); }
+  .tile[data-quick="overdue"] .val { color: var(--due-over); }
+  .tile[data-quick="month"] { --dot: var(--accent); }
+  .tile[data-quick="done"] { --dot: var(--s-done-dot); }
+
+  /* ---------- toolbar ---------- */
+  .toolbar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px;
+  }
+  .toolbar .field { display: flex; align-items: center; gap: 6px; }
+  .toolbar label { font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+  .toolbar input[type="search"], .toolbar select {
+    padding: 7px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); min-width: 0;
+  }
+  .toolbar input[type="search"] { width: 240px; max-width: 100%; }
+  .toolbar .grow { flex: 1 1 auto; }
+  .toolbar .count { font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
+  .chk { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+  .chk input { width: 15px; height: 15px; accent-color: var(--accent); }
+  .btn.link { border: 0; background: transparent; padding: 4px 6px; color: var(--accent); font-weight: 400; text-decoration: underline; text-underline-offset: 3px; }
+  .btn.link:hover { background: transparent; }
+
+  /* ---------- table ---------- */
+  .list { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    position: sticky; top: 0; z-index: 1; background: var(--surface-2); color: var(--ink-2);
+    font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-align: left; padding: 9px 10px;
+    border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  tbody td { padding: 9px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover td { background: var(--accent-soft); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr.due-over td:first-child { box-shadow: inset 3px 0 0 var(--due-over); }
+  tbody tr.due-soon td:first-child { box-shadow: inset 3px 0 0 var(--due-soon); }
+  tbody tr.is-done td { color: var(--ink-2); }
+  td.c-no { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13px; white-space: nowrap; }
+  td.c-item { font-weight: 700; min-width: 160px; }
+  td.c-item .sub { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; margin-top: 1px; }
+  td.c-date, td.c-elapsed { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12.5px; white-space: nowrap; }
+  td.c-elapsed { text-align: right; }
+  td.c-cat, td.c-place, td.c-reporter, td.c-assignee { white-space: nowrap; }
+  td .prio { font-size: 11px; font-weight: 700; color: var(--due-over); margin-left: 4px; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px 2px 7px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; white-space: nowrap; background: var(--pill-bg); color: var(--pill-fg);
+  }
+  .pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--pill-dot); }
+  .pill[data-s="未対応"] { --pill-bg: var(--s-open-bg); --pill-fg: var(--s-open-fg); --pill-dot: var(--s-open-dot); }
+  .pill[data-s="対応中"] { --pill-bg: var(--s-prog-bg); --pill-fg: var(--s-prog-fg); --pill-dot: var(--s-prog-dot); }
+  .pill[data-s="保留"]   { --pill-bg: var(--s-hold-bg); --pill-fg: var(--s-hold-fg); --pill-dot: var(--s-hold-dot); }
+  .pill[data-s="完了"]   { --pill-bg: var(--s-done-bg); --pill-fg: var(--s-done-fg); --pill-dot: var(--s-done-dot); }
+  .due { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+  .due[data-d="超過"] { background: var(--due-over-bg); color: var(--due-over); }
+  .due[data-d="間近"] { background: var(--due-soon-bg); color: var(--due-soon); }
+
+  .empty { padding: 44px 20px; text-align: center; color: var(--ink-2); }
+  .empty strong { display: block; color: var(--ink); font-size: 15px; margin-bottom: 4px; }
+
+  /* ---------- drawer ---------- */
+  .scrim { position: fixed; inset: 0; background: rgba(15, 22, 34, .38); z-index: 20; }
+  .drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(600px, 100%); z-index: 21;
+    background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column;
+    border-left: 1px solid var(--line);
+  }
+  .drawer-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 14px 18px; border-bottom: 1px solid var(--line);
+  }
+  .drawer-head h2 { font-size: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .drawer-head h2 .mono { font-size: 15px; color: var(--ink-2); font-weight: 500; }
+  .drawer-body { overflow-y: auto; padding: 6px 18px 20px; flex: 1 1 auto; }
+  .drawer-foot {
+    display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); background: var(--surface);
+  }
+  .drawer-foot .spacer { flex: 1; }
+  .drawer-foot .meta { font-size: 11.5px; color: var(--ink-3); }
+  .drawer-foot .dirty { font-size: 12px; color: var(--s-prog-fg); background: var(--s-prog-bg); padding: 2px 8px; border-radius: 4px; }
+  .close-x { border: 0; background: transparent; font-size: 20px; line-height: 1; padding: 4px 8px; border-radius: 6px; color: var(--ink-2); }
+  .close-x:hover { background: var(--surface-2); color: var(--ink); }
+
+  fieldset { border: 0; padding: 0; margin: 16px 0 0; min-width: 0; }
+  legend {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .06em; color: var(--ink-2); padding: 0; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px; width: 100%;
+  }
+  legend::after { content: ""; flex: 1; height: 1px; background: var(--line-2); }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+  .grid .full { grid-column: 1 / -1; }
+  .f { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .f label { font-size: 12px; color: var(--ink-2); }
+  .f label .req { color: var(--danger); margin-left: 3px; }
+  .f input, .f select, .f textarea {
+    padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); width: 100%; min-width: 0;
+  }
+  .f input:focus, .f select:focus, .f textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .f input.mono { font-family: var(--font-mono); }
+  .f textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
+  .f .help { font-size: 11.5px; color: var(--ink-3); }
+  .f.is-invalid input, .f.is-invalid select { border-color: var(--danger); }
+  .err { font-size: 12px; color: var(--danger); margin-top: 8px; }
+
+  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .seg button { border: 0; background: var(--surface); padding: 8px 4px; font-weight: 700; font-size: 13px; color: var(--ink-2); border-right: 1px solid var(--line); }
+  .seg button:last-child { border-right: 0; }
+  .seg button.is-on[data-s="未対応"] { background: var(--s-open-bg); color: var(--s-open-fg); }
+  .seg button.is-on[data-s="対応中"] { background: var(--s-prog-bg); color: var(--s-prog-fg); }
+  .seg button.is-on[data-s="保留"]   { background: var(--s-hold-bg); color: var(--s-hold-fg); }
+  .seg button.is-on[data-s="完了"]   { background: var(--s-done-bg); color: var(--s-done-fg); }
+
+  .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .log li { display: grid; grid-template-columns: 92px 1fr auto; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-2); align-items: start; }
+  .log li .d { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-2); padding-top: 1px; }
+  .log li .t { white-space: pre-wrap; word-break: break-word; }
+  .log li .rm { border: 0; background: transparent; color: var(--ink-3); padding: 0 4px; font-size: 16px; line-height: 1; border-radius: 4px; }
+  .log li .rm:hover { color: var(--danger); background: var(--danger-soft); }
+  .log-empty { color: var(--ink-3); font-size: 12.5px; padding: 6px 0; }
+  .log-add { display: grid; grid-template-columns: 140px 1fr auto; gap: 8px; margin-top: 10px; align-items: start; }
+  .log-add input, .log-add textarea { padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); width: 100%; }
+  .log-add textarea { min-height: 38px; resize: vertical; }
+
+  /* ---------- modal ---------- */
+  .modal { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 16px; background: rgba(15, 22, 34, .38); }
+  .modal .box { background: var(--surface); border-radius: 10px; box-shadow: var(--shadow); width: min(480px, 100%); padding: 18px 20px 16px; border: 1px solid var(--line); }
+  .modal h2 { font-size: 16px; margin-bottom: 4px; }
+  .modal p { margin: 0 0 10px; color: var(--ink-2); font-size: 12.5px; }
+  .modal textarea { width: 100%; min-height: 160px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); resize: vertical; line-height: 1.6; }
+  .modal .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 40;
+    background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 8px; font-size: 13px; box-shadow: var(--shadow); max-width: calc(100% - 32px);
+  }
+  .toast.is-error { background: var(--danger); color: #fff; }
+
+  /* ---------- phone ---------- */
+  @media (max-width: 860px) {
+    .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .tile .val { font-size: 24px; }
+    .toolbar input[type="search"] { width: 100%; }
+    .toolbar .field.search { flex-basis: 100%; }
+    thead { display: none; }
+    table, tbody { display: block; }
+    tbody tr { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 12px; border-bottom: 1px solid var(--line-2); }
+    tbody tr:last-child { border-bottom: 0; }
+    tbody td { display: block; padding: 0; border: 0; }
+    tbody tr:hover td { background: transparent; }
+    tbody tr:hover { background: var(--accent-soft); }
+    tbody tr.due-over td:first-child, tbody tr.due-soon td:first-child { box-shadow: none; }
+    tbody tr.due-over { box-shadow: inset 3px 0 0 var(--due-over); }
+    tbody tr.due-soon { box-shadow: inset 3px 0 0 var(--due-soon); }
+    td.c-status { margin-left: auto; }
+    td.c-item { flex-basis: 100%; min-width: 0; }
+    td.c-cat::before, td.c-place::before, td.c-reporter::before, td.c-assignee::before, td.c-date::before, td.c-elapsed::before {
+      content: attr(data-l); color: var(--ink-3); font-size: 11px; margin-right: 4px; font-family: var(--font-ui);
+    }
+    td.c-cat, td.c-place, td.c-reporter, td.c-assignee, td.c-date, td.c-elapsed { font-size: 12.5px; white-space: normal; }
+    td.c-due:empty { display: none; }
+    .grid { grid-template-columns: 1fr; }
+    .log li { grid-template-columns: 1fr auto; }
+    .log li .d { grid-column: 1 / -1; }
+    .log-add { grid-template-columns: 1fr; }
+    .drawer-foot { flex-wrap: wrap; }
+  }
+  @media (max-width: 480px) {
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media print {
+    body { background: #fff; color: #000; padding: 0; }
+    .top-actions, .toolbar, .scrim, .drawer, .modal, .toast, .banner { display: none !important; }
+    .list { border: 0; }
+    thead th { position: static; }
+    .tiles { grid-template-columns: repeat(6, 1fr); }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>備品トラブル対応台帳</h1>
+      <p>破損・故障・盗難・紛失の受付と対応状況</p>
+    </div>
+    <div class="top-actions">
+      <span class="sync" id="sync" data-state="loading">接続中…</span>
+      <button class="btn" id="btn-export" type="button" hidden>CSV書き出し</button>
+      <button class="btn" id="btn-settings" type="button">担当者リスト</button>
+      <button class="btn primary" id="btn-new" type="button">＋ 新規登録</button>
+    </div>
+  </header>
+
+  <div class="banner" id="banner" hidden>共有保存が使えないため、入力内容はこのブラウザ内にだけ保存されます。claude.ai 上で開くと、同じ組織のメンバーと同じ一覧を共有できます。</div>
+
+  <section class="tiles" id="tiles" aria-label="対応状況の集計"></section>
+
+  <section class="toolbar" aria-label="絞り込み">
+    <div class="field search"><input type="search" id="q" placeholder="管理No.・品名・場所・報告者・担当で検索" aria-label="検索"></div>
+    <div class="field"><label for="f-cat">区分</label><select id="f-cat"><option value="">すべて</option></select></div>
+    <div class="field"><label for="f-asg">担当</label><select id="f-asg"><option value="">すべて</option></select></div>
+    <div class="field"><label for="f-sort">並び順</label>
+      <select id="f-sort">
+        <option value="deadline">期限が近い順</option>
+        <option value="received">受付日が新しい順</option>
+        <option value="no">管理No.順</option>
+      </select>
+    </div>
+    <label class="chk"><input type="checkbox" id="f-done">完了も表示</label>
+    <span class="grow"></span>
+    <span class="count" id="count"></span>
+    <button class="btn link" id="btn-clear" type="button" hidden>絞り込みを解除</button>
+  </section>
+
+  <section class="list" aria-label="案件一覧">
+    <div class="table-wrap">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th>管理No.</th><th>対応状況</th><th>区分</th><th>対象物</th><th>発生場所</th><th>報告者</th><th>担当</th><th>受付日</th><th>対応期限</th><th>期限</th><th style="text-align:right">経過</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="empty" hidden></div>
+  </section>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="d-title">
+  <div class="drawer-head">
+    <h2 id="d-title"><span id="d-heading">新規登録</span><span class="mono" id="d-no"></span></h2>
+    <button class="close-x" id="d-close" type="button" aria-label="閉じる">×</button>
+  </div>
+  <div class="drawer-body">
+    <form id="form" novalidate>
+      <fieldset>
+        <legend>対応状況</legend>
+        <div class="seg" id="seg" role="radiogroup" aria-label="対応状況">
+          <button type="button" data-s="未対応">未対応</button>
+          <button type="button" data-s="対応中">対応中</button>
+          <button type="button" data-s="保留">保留</button>
+          <button type="button" data-s="完了">完了</button>
+        </div>
+        <div class="grid" style="margin-top:10px">
+          <div class="f"><label for="i-assignee">対応担当者</label><input id="i-assignee" list="asg-list" placeholder="例: 総務 山田"><datalist id="asg-list"></datalist></div>
+          <div class="f"><label for="i-priority">優先度</label><select id="i-priority"><option value="高">高（業務停止・安全に関わる）</option><option value="中" selected>中（業務に支障あり）</option><option value="低">低（急がない）</option></select></div>
+          <div class="f"><label for="i-deadline">対応期限</label><input type="date" id="i-deadline" class="mono"></div>
+          <div class="f"><label for="i-completed">完了日</label><input type="date" id="i-completed" class="mono"><span class="help">完了にして保存すると自動で今日が入ります</span></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>受付</legend>
+        <div class="grid">
+          <div class="f"><label for="i-no">管理No.</label><input id="i-no" class="mono" placeholder="2026-001"></div>
+          <div class="f"><label for="i-category">区分<span class="req">必須</span></label><select id="i-category"><option value="">選択してください</option><option>破損</option><option>故障</option><option>盗難</option><option>紛失</option><option>その他</option></select></div>
+          <div class="f"><label for="i-received">受付日<span class="req">必須</span></label><input type="date" id="i-received" class="mono"></div>
+          <div class="f"><label for="i-occurred">発生日</label><input type="date" id="i-occurred" class="mono"></div>
+          <div class="f"><label for="i-item">対象物（品名）<span class="req">必須</span></label><input id="i-item" placeholder="例: ノートPC（営業部貸与）"></div>
+          <div class="f"><label for="i-asset">資産番号・管理番号</label><input id="i-asset" class="mono" placeholder="例: PC-0123"></div>
+          <div class="f"><label for="i-place">発生場所</label><input id="i-place" placeholder="例: 3F 営業部フロア"></div>
+          <div class="f"><label for="i-reporter">報告者（部署・氏名）</label><input id="i-reporter" placeholder="例: 営業部 田中"></div>
+          <div class="f full"><label for="i-detail">状況・詳細</label><textarea id="i-detail" placeholder="報告時点でわかっている事実を書きます。原因の推測と事実は分けて書くと後で役立ちます。"></textarea></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>届出・費用</legend>
+        <div class="grid">
+          <div class="f"><label for="i-police">警察届出（盗難・紛失時）</label><select id="i-police"><option value="不要">不要</option><option value="未">未</option><option value="済">済</option></select></div>
+          <div class="f"><label for="i-cost">費用（円）</label><input type="number" id="i-cost" class="mono" min="0" step="1" inputmode="numeric" placeholder="修理・買替の見込額でも可"></div>
+          <div class="f full"><label for="i-note">備考</label><textarea id="i-note" placeholder="被害届の受理番号、保険会社への連絡状況など"></textarea></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>対応履歴</legend>
+        <ul class="log" id="log"></ul>
+        <div class="log-add">
+          <input type="date" id="l-date" class="mono" aria-label="履歴の日付">
+          <textarea id="l-text" placeholder="例: メーカーへ修理見積依頼" aria-label="履歴の内容"></textarea>
+          <button class="btn" id="l-add" type="button">追記</button>
+        </div>
+      </fieldset>
+      <div class="err" id="form-err" hidden></div>
+    </form>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn danger" id="d-delete" type="button">削除</button>
+    <span class="spacer"></span>
+    <span class="meta" id="d-meta"></span>
+    <span class="dirty" id="d-dirty" hidden>未保存の変更</span>
+    <button class="btn" id="d-cancel" type="button">閉じる</button>
+    <button class="btn primary" id="d-save" type="button">保存</button>
+  </div>
+</aside>
+
+<div class="modal" id="settings" hidden>
+  <div class="box">
+    <h2>担当者リスト</h2>
+    <p>1行に1人ずつ。案件の「対応担当者」の候補として表示されます（候補にない名前も直接入力できます）。</p>
+    <textarea id="s-assignees" aria-label="担当者リスト"></textarea>
+    <div class="actions">
+      <button class="btn" id="s-cancel" type="button">閉じる</button>
+      <button class="btn primary" id="s-save" type="button">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s, r) => (r || document).querySelector(s);
+  const STATUSES = ['未対応', '対応中', '保留', '完了'];
+  const CATEGORIES = ['破損', '故障', '盗難', '紛失', 'その他'];
+  const LS_CASES = 'bihin-taiou:cases';
+  const LS_SETTINGS = 'bihin-taiou:settings';
+
+  const state = {
+    cases: new Map(), settings: { assignees: [] }, backend: 'loading',
+    quick: null, q: '', category: '', assignee: '', sort: 'deadline', showDone: false,
+    openId: null, draft: null, dirty: false,
+  };
+  let db = null, downloads = null;
+
+  // ---------- helpers ----------
+  const pad = n => String(n).padStart(2, '0');
+  function todayStr() { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function parseDate(s) { if (!s) return null; const p = s.split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); }
+  function daysBetween(a, b) { const da = parseDate(a), dbb = parseDate(b); if (!da || !dbb) return null; return Math.round((dbb - da) / 86400000); }
+  function judge(c) { if (!c.deadline || c.status === '完了') return ''; const d = daysBetween(todayStr(), c.deadline); if (d === null) return ''; if (d < 0) return '超過'; if (d <= 3) return '間近'; return ''; }
+  function elapsed(c) { if (!c.receivedAt) return null; return daysBetween(c.receivedAt, c.completedAt || todayStr()); }
+  function fmtDate(s) { return s ? s.replace(/-/g, '/') : ''; }
+  function fmtDT(iso) { if (!iso) return ''; const d = new Date(iso); if (isNaN(d)) return ''; return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
+  function uid() { return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2, 10)); }
+  function nextNo() {
+    const y = String(new Date().getFullYear()); let max = 0;
+    for (const c of state.cases.values()) { const m = /^(\d{4})-(\d+)$/.exec(c.no || ''); if (m && m[1] === y) max = Math.max(max, Number(m[2])); }
+    return y + '-' + String(max + 1).padStart(3, '0');
+  }
+  let toastTimer = null;
+  function toast(msg, isError) {
+    const t = $('#toast'); t.textContent = msg; t.classList.toggle('is-error', !!isError); t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, isError ? 5000 : 2500);
+  }
+  function setSync(st, label) { const s = $('#sync'); s.dataset.state = st; s.textContent = label; }
+
+  // ---------- storage ----------
+  function localLoad() {
+    try {
+      const raw = localStorage.getItem(LS_CASES); const arr = raw ? JSON.parse(raw) : [];
+      state.cases = new Map(arr.map(c => [c.id, c]));
+      const s = localStorage.getItem(LS_SETTINGS); if (s) state.settings = JSON.parse(s);
+    } catch (e) { state.cases = new Map(); }
+  }
+  function localPersist() {
+    try {
+      localStorage.setItem(LS_CASES, JSON.stringify([...state.cases.entries()].map(([id, c]) => Object.assign({}, c, { id }))));
+      localStorage.setItem(LS_SETTINGS, JSON.stringify(state.settings));
+    } catch (e) { toast('このブラウザには保存できませんでした', true); }
+  }
+  async function saveCase(id, data) {
+    if (db) {
+      setSync('saving', '保存中…');
+      try { await db.doc('cases/' + id).set(data); setSync('db', '共有保存 ON'); }
+      catch (e) {
+        setSync('error', '保存エラー');
+        const msg = e && e.code === 'quota_exceeded' ? '保存できる件数の上限に達しました。古い案件を削除してください。' : '保存できませんでした（' + ((e && e.message) || '不明なエラー') + '）';
+        throw new Error(msg);
+      }
+    } else {
+      state.cases.set(id, data); localPersist(); render();
+    }
+  }
+  async function deleteCase(id) {
+    if (db) { await db.doc('cases/' + id).delete(); }
+    else { state.cases.delete(id); localPersist(); render(); }
+  }
+  async function saveSettings(s) {
+    state.settings = s;
+    if (db) { await db.doc('settings/master').set(s); }
+    else { localPersist(); }
+    renderAssigneeOptions();
+  }
+  function goLocal() {
+    if (state.backend === 'local') return;
+    db = null; state.backend = 'local'; localLoad();
+    setSync('local', 'このブラウザのみ'); $('#banner').hidden = false; render();
+  }
+  async function initStore() {
+    let d = null, dl = null;
+    try {
+      const use = window.claude && typeof window.claude.use === 'function' ? window.claude.use.bind(window.claude) : null;
+      if (use) { [d, dl] = await Promise.all([use('db'), use('downloads')]); }
+    } catch (e) { d = null; }
+    downloads = dl || null; $('#btn-export').hidden = !downloads;
+    if (!d) { goLocal(); return; }
+    db = d;
+    db.collection('cases').onSnapshot(snap => {
+      state.cases = new Map(snap.docs.map(doc => [doc.id, doc.data()]));
+      if (state.backend !== 'db') { state.backend = 'db'; setSync('db', '共有保存 ON'); $('#banner').hidden = true; }
+      render();
+    }, err => { if (state.backend !== 'db') goLocal(); else setSync('error', '接続が切れました。再読み込みしてください'); });
+    db.doc('settings/master').onSnapshot(snap => {
+      if (snap.exists) state.settings = Object.assign({ assignees: [] }, snap.data());
+      renderAssigneeOptions();
+    }, () => {});
+  }
+
+  // ---------- derived ----------
+  function allCases() { return [...state.cases.entries()].map(([id, c]) => Object.assign({ id }, c)); }
+  function counts() {
+    const all = allCases(); const ym = todayStr().slice(0, 7);
+    return {
+      open: all.filter(c => c.status === '未対応').length,
+      prog: all.filter(c => c.status === '対応中').length,
+      hold: all.filter(c => c.status === '保留').length,
+      over: all.filter(c => judge(c) === '超過').length,
+      soon: all.filter(c => judge(c) === '間近').length,
+      month: all.filter(c => (c.receivedAt || '').startsWith(ym)).length,
+      done: all.filter(c => c.status === '完了').length,
+      total: all.length,
+    };
+  }
+  function visible() {
+    const q = state.q.trim().toLowerCase(); const ym = todayStr().slice(0, 7);
+    let rows = allCases().filter(c => {
+      if (state.quick === 'overdue') { if (judge(c) !== '超過') return false; }
+      else if (state.quick === 'month') { if (!(c.receivedAt || '').startsWith(ym)) return false; }
+      else if (state.quick === 'done') { if (c.status !== '完了') return false; }
+      else if (state.quick && state.quick.startsWith('status:')) { if (c.status !== state.quick.slice(7)) return false; }
+      else if (!state.showDone && c.status === '完了') return false;
+      if (state.category && c.category !== state.category) return false;
+      if (state.assignee && (c.assignee || '') !== state.assignee) return false;
+      if (q) {
+        const hay = [c.no, c.item, c.assetNo, c.place, c.reporter, c.assignee, c.detail, c.note, c.category].map(v => String(v || '').toLowerCase()).join('\n');
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+    const openRank = c => c.status === '完了' ? 1 : 0;
+    const cmpStr = (a, b) => (a || '').localeCompare(b || '');
+    if (state.sort === 'deadline') {
+      rows.sort((a, b) => openRank(a) - openRank(b)
+        || ((a.deadline ? 0 : 1) - (b.deadline ? 0 : 1))
+        || cmpStr(a.deadline, b.deadline)
+        || cmpStr(b.receivedAt, a.receivedAt));
+    } else if (state.sort === 'received') {
+      rows.sort((a, b) => cmpStr(b.receivedAt, a.receivedAt) || cmpStr(b.no, a.no));
+    } else {
+      rows.sort((a, b) => cmpStr(b.no, a.no));
+    }
+    return rows;
+  }
+
+  // ---------- render ----------
+  function renderTiles() {
+    const c = counts();
+    const tiles = [
+      { k: 'status:未対応', l: '未対応', v: c.open, h: '担当・期限を決める' },
+      { k: 'status:対応中', l: '対応中', v: c.prog, h: '進行中の案件' },
+      { k: 'status:保留', l: '保留', v: c.hold, h: '先方待ち・予算待ち' },
+      { k: 'overdue', l: '期限超過', v: c.over, h: c.soon ? '3日以内の期限 ' + c.soon + ' 件' : '3日以内の期限なし' },
+      { k: 'month', l: '今月の受付', v: c.month, h: todayStr().slice(0, 7).replace('-', '年') + '月' },
+      { k: 'done', l: '完了', v: c.done, h: '累計 ' + c.total + ' 件中' },
+    ];
+    $('#tiles').innerHTML = tiles.map(t =>
+      '<button type="button" class="tile' + (state.quick === t.k ? ' is-active' : '') + '" data-quick="' + esc(t.k) + '" aria-pressed="' + (state.quick === t.k) + '">' +
+      '<span class="lbl">' + esc(t.l) + '</span><span class="val">' + t.v + '</span><span class="hint">' + esc(t.h) + '</span></button>').join('');
+  }
+  function renderAssigneeOptions() {
+    const fromCases = new Set(allCases().map(c => c.assignee).filter(Boolean));
+    const list = [...new Set([...(state.settings.assignees || []), ...fromCases])];
+    const sel = $('#f-asg'); const cur = sel.value;
+    sel.innerHTML = '<option value="">すべて</option>' + list.map(a => '<option value="' + esc(a) + '">' + esc(a) + '</option>').join('');
+    sel.value = list.includes(cur) ? cur : '';
+    $('#asg-list').innerHTML = (state.settings.assignees || []).map(a => '<option value="' + esc(a) + '"></option>').join('');
+  }
+  function renderTable() {
+    const rows = visible(); const tb = $('#rows'); const empty = $('#empty');
+    const total = state.cases.size;
+    $('#count').textContent = state.backend === 'loading' ? '' : rows.length + ' 件を表示';
+    const filtered = state.quick || state.q || state.category || state.assignee || state.showDone;
+    $('#btn-clear').hidden = !filtered;
+    if (state.backend === 'loading') { tb.innerHTML = ''; empty.hidden = false; empty.innerHTML = '読み込み中…'; return; }
+    if (!rows.length) {
+      tb.innerHTML = ''; empty.hidden = false;
+      empty.innerHTML = total === 0
+        ? '<strong>まだ登録がありません</strong>「＋ 新規登録」から最初の案件を登録してください。'
+        : '<strong>該当する案件はありません</strong>絞り込みを変えるか、「完了も表示」を入れてください。';
+      return;
+    }
+    empty.hidden = true;
+    tb.innerHTML = rows.map(c => {
+      const j = judge(c); const e = elapsed(c);
+      const cls = [j === '超過' ? 'due-over' : j === '間近' ? 'due-soon' : '', c.status === '完了' ? 'is-done' : ''].filter(Boolean).join(' ');
+      return '<tr data-id="' + esc(c.id) + '" class="' + cls + '" tabindex="0">' +
+        '<td class="c-no">' + esc(c.no) + '</td>' +
+        '<td class="c-status"><span class="pill" data-s="' + esc(c.status) + '">' + esc(c.status) + '</span></td>' +
+        '<td class="c-cat" data-l="区分">' + esc(c.category) + (c.priority === '高' ? '<span class="prio">優先:高</span>' : '') + '</td>' +
+        '<td class="c-item">' + esc(c.item) + (c.assetNo ? '<span class="sub mono">' + esc(c.assetNo) + '</span>' : '') + '</td>' +
+        '<td class="c-place" data-l="場所">' + esc(c.place) + '</td>' +
+        '<td class="c-reporter" data-l="報告">' + esc(c.reporter) + '</td>' +
+        '<td class="c-assignee" data-l="担当">' + esc(c.assignee) + '</td>' +
+        '<td class="c-date" data-l="受付">' + esc(fmtDate(c.receivedAt)) + '</td>' +
+        '<td class="c-date" data-l="期限">' + esc(fmtDate(c.deadline)) + '</td>' +
+        '<td class="c-due">' + (j ? '<span class="due" data-d="' + j + '">' + j + '</span>' : '') + '</td>' +
+        '<td class="c-elapsed" data-l="経過">' + (e === null ? '' : e + '日') + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+  function render() { renderTiles(); renderTable(); }
+
+  // ---------- drawer ----------
+  function blankCase() {
+    return { no: nextNo(), receivedAt: todayStr(), occurredAt: '', category: '', item: '', assetNo: '', place: '', reporter: '', detail: '',
+      priority: '中', assignee: '', status: '未対応', deadline: '', completedAt: '', police: '不要', cost: null, note: '', log: [], createdAt: '', updatedAt: '' };
+  }
+  function openDrawer(id) {
+    const isNew = !id; const src = isNew ? blankCase() : Object.assign(blankCase(), state.cases.get(id));
+    state.openId = isNew ? null : id; state.draft = JSON.parse(JSON.stringify(src)); state.dirty = false;
+    $('#d-heading').textContent = isNew ? '新規登録' : '案件の詳細';
+    $('#d-no').textContent = isNew ? '' : (src.no || '');
+    $('#d-delete').hidden = isNew;
+    $('#d-meta').textContent = isNew ? '' : ['登録 ' + fmtDT(src.createdAt), '更新 ' + fmtDT(src.updatedAt)].filter(s => s.length > 3).join(' / ');
+    $('#form-err').hidden = true;
+    fillForm(src); renderLog(); setDirty(false);
+    $('#l-date').value = todayStr(); $('#l-text').value = '';
+    $('#scrim').hidden = false; $('#drawer').hidden = false;
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => { (isNew ? $('#i-category') : $('#i-assignee')).focus(); }, 0);
+  }
+  function closeDrawer(force) {
+    if (!force && state.dirty && !confirm('保存していない変更があります。閉じてよいですか？')) return;
+    $('#scrim').hidden = true; $('#drawer').hidden = true; document.body.style.overflow = '';
+    state.openId = null; state.draft = null; state.dirty = false;
+  }
+  function setDirty(v) { state.dirty = v; $('#d-dirty').hidden = !v; }
+  const F = { no: '#i-no', category: '#i-category', receivedAt: '#i-received', occurredAt: '#i-occurred', item: '#i-item', assetNo: '#i-asset',
+    place: '#i-place', reporter: '#i-reporter', detail: '#i-detail', priority: '#i-priority', assignee: '#i-assignee', deadline: '#i-deadline',
+    completedAt: '#i-completed', police: '#i-police', cost: '#i-cost', note: '#i-note' };
+  function fillForm(c) {
+    for (const k in F) { const el = $(F[k]); el.value = c[k] == null ? '' : c[k]; }
+    setSeg(c.status);
+  }
+  function setSeg(s) { $('#seg').querySelectorAll('button').forEach(b => { b.classList.toggle('is-on', b.dataset.s === s); b.setAttribute('aria-checked', b.dataset.s === s); }); }
+  function readForm() {
+    const d = state.draft;
+    for (const k in F) { const v = $(F[k]).value; d[k] = k === 'cost' ? (v === '' ? null : Number(v)) : v.trim(); }
+    return d;
+  }
+  function renderLog() {
+    const ul = $('#log'); const log = (state.draft && state.draft.log) || [];
+    if (!log.length) { ul.innerHTML = '<li class="log-empty" style="display:block;border:0">まだ履歴がありません。業者連絡や見積などの動きを日付付きで追記してください。</li>'; return; }
+    ul.innerHTML = log.map((e, i) => '<li><span class="d">' + esc(fmtDate(e.at)) + '</span><span class="t">' + esc(e.text) + '</span><button type="button" class="rm" data-i="' + i + '" aria-label="この履歴を削除">×</button></li>').join('');
+  }
+  function validate(d) {
+    const errs = []; ['category', 'receivedAt', 'item'].forEach(k => $(F[k]).closest('.f').classList.remove('is-invalid'));
+    if (!d.category) { errs.push('区分'); $('#i-category').closest('.f').classList.add('is-invalid'); }
+    if (!d.receivedAt) { errs.push('受付日'); $('#i-received').closest('.f').classList.add('is-invalid'); }
+    if (!d.item) { errs.push('対象物'); $('#i-item').closest('.f').classList.add('is-invalid'); }
+    return errs;
+  }
+  async function save() {
+    const d = readForm(); const errs = validate(d); const errEl = $('#form-err');
+    if (errs.length) { errEl.textContent = errs.join('・') + ' を入力してください。'; errEl.hidden = false; return; }
+    errEl.hidden = true;
+    if (!d.no) d.no = nextNo();
+    if (d.status === '完了' && !d.completedAt) d.completedAt = todayStr();
+    if (d.status !== '完了') d.completedAt = '';
+    const now = new Date().toISOString(); if (!d.createdAt) d.createdAt = now; d.updatedAt = now;
+    const id = state.openId || (db ? db.collection('cases').doc().id : uid());
+    const btn = $('#d-save'); btn.disabled = true;
+    try {
+      await saveCase(id, d);
+      toast(state.openId ? '保存しました' : '登録しました（' + d.no + '）');
+      closeDrawer(true);
+    } catch (e) { toast(e.message || '保存できませんでした', true); }
+    finally { btn.disabled = false; }
+  }
+  async function remove() {
+    const c = state.cases.get(state.openId); if (!c) return;
+    if (!confirm('「' + (c.no || '') + ' ' + (c.item || '') + '」を削除します。元に戻せません。よろしいですか？')) return;
+    try { await deleteCase(state.openId); toast('削除しました'); closeDrawer(true); }
+    catch (e) { toast('削除できませんでした（' + ((e && e.message) || '不明なエラー') + '）', true); }
+  }
+
+  // ---------- CSV ----------
+  async function exportCsv() {
+    if (!downloads) return;
+    const head = ['管理No.', '対応状況', '区分', '対象物', '資産番号', '発生場所', '報告者', '状況・詳細', '優先度', '対応担当者', '受付日', '発生日', '対応期限', '完了日', '経過日数', '期限判定', '警察届出', '費用（円）', '備考', '対応履歴'];
+    const rows = allCases().sort((a, b) => (a.no || '').localeCompare(b.no || '')).map(c => [
+      c.no, c.status, c.category, c.item, c.assetNo, c.place, c.reporter, c.detail, c.priority, c.assignee, fmtDate(c.receivedAt), fmtDate(c.occurredAt),
+      fmtDate(c.deadline), fmtDate(c.completedAt), elapsed(c), judge(c), c.police, c.cost, c.note, (c.log || []).map(e => fmtDate(e.at) + ' ' + e.text).join(' / ')]);
+    const cell = v => { const s = v == null ? '' : String(v); return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const csv = '﻿' + [head].concat(rows).map(r => r.map(cell).join(',')).join('\r\n');
+    try { await downloads.save({ filename: '対応台帳_' + todayStr().replace(/-/g, '') + '.csv', data: csv }); toast('CSVを書き出しました'); }
+    catch (e) { if (e && e.code === 'declined') return; toast('書き出しできませんでした（' + ((e && e.message) || e.code || '不明なエラー') + '）', true); }
+  }
+
+  // ---------- events ----------
+  $('#tiles').addEventListener('click', e => {
+    const t = e.target.closest('.tile'); if (!t) return;
+    state.quick = state.quick === t.dataset.quick ? null : t.dataset.quick; render();
+  });
+  $('#q').addEventListener('input', e => { state.q = e.target.value; renderTable(); });
+  $('#f-cat').addEventListener('change', e => { state.category = e.target.value; renderTable(); });
+  $('#f-asg').addEventListener('change', e => { state.assignee = e.target.value; renderTable(); });
+  $('#f-sort').addEventListener('change', e => { state.sort = e.target.value; renderTable(); });
+  $('#f-done').addEventListener('change', e => { state.showDone = e.target.checked; renderTable(); });
+  $('#btn-clear').addEventListener('click', () => {
+    state.quick = null; state.q = ''; state.category = ''; state.assignee = ''; state.showDone = false;
+    $('#q').value = ''; $('#f-cat').value = ''; $('#f-asg').value = ''; $('#f-done').checked = false; render();
+  });
+  $('#rows').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr) openDrawer(tr.dataset.id); });
+  $('#rows').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const tr = e.target.closest('tr[data-id]'); if (tr) { e.preventDefault(); openDrawer(tr.dataset.id); } } });
+  $('#btn-new').addEventListener('click', () => openDrawer(null));
+  $('#btn-export').addEventListener('click', exportCsv);
+  $('#d-close').addEventListener('click', () => closeDrawer(false));
+  $('#d-cancel').addEventListener('click', () => closeDrawer(false));
+  $('#scrim').addEventListener('click', () => closeDrawer(false));
+  $('#d-save').addEventListener('click', save);
+  $('#d-delete').addEventListener('click', remove);
+  $('#form').addEventListener('submit', e => { e.preventDefault(); save(); });
+  $('#form').addEventListener('input', () => setDirty(true));
+  $('#seg').addEventListener('click', e => {
+    const b = e.target.closest('button[data-s]'); if (!b) return;
+    state.draft.status = b.dataset.s; setSeg(b.dataset.s); setDirty(true);
+    if (b.dataset.s === '完了' && !$('#i-completed').value) $('#i-completed').value = todayStr();
+  });
+  $('#l-add').addEventListener('click', () => {
+    const text = $('#l-text').value.trim(); const at = $('#l-date').value || todayStr();
+    if (!text) { $('#l-text').focus(); return; }
+    state.draft.log = (state.draft.log || []).concat([{ at, text }]);
+    $('#l-text').value = ''; renderLog(); setDirty(true);
+  });
+  $('#l-text').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('#l-add').click(); } });
+  $('#log').addEventListener('click', e => {
+    const b = e.target.closest('button.rm'); if (!b) return;
+    state.draft.log.splice(Number(b.dataset.i), 1); renderLog(); setDirty(true);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!$('#settings').hidden) { $('#settings').hidden = true; return; }
+    if (!$('#drawer').hidden) closeDrawer(false);
+  });
+  $('#btn-settings').addEventListener('click', () => { $('#s-assignees').value = (state.settings.assignees || []).join('\n'); $('#settings').hidden = false; $('#s-assignees').focus(); });
+  $('#s-cancel').addEventListener('click', () => { $('#settings').hidden = true; });
+  $('#settings').addEventListener('click', e => { if (e.target === e.currentTarget) $('#settings').hidden = true; });
+  $('#s-save').addEventListener('click', async () => {
+    const assignees = $('#s-assignees').value.split('\n').map(s => s.trim()).filter(Boolean);
+    try { await saveSettings({ assignees }); $('#settings').hidden = true; toast('担当者リストを保存しました'); }
+    catch (e) { toast('保存できませんでした（' + ((e && e.message) || '不明なエラー') + '）', true); }
+  });
+
+  // ---------- boot ----------
+  $('#f-cat').innerHTML = '<option value="">すべて</option>' + CATEGORIES.map(c => '<option>' + c + '</option>').join('');
+  function start(saved) {
+    if (saved && saved.quick) state.quick = saved.quick;
+    if (saved && saved.showDone) { state.showDone = true; $('#f-done').checked = true; }
+    render(); initStore();
+  }
+  try { if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ quick: state.quick, showDone: state.showDone })); } catch (e) {}
+  (window.claude && window.claude.hot && window.claude.hot.ready) ? window.claude.hot.ready(start) : start((window.claude && window.claude.hot && window.claude.hot.data) || {});
+})();
+</script>
