@@ -6832,15 +6832,29 @@ let pullBusy = false;
 // 焦点が select に残ることがあり、これを「入力中」とみなすと、画面に触るまで
 // チェックもパーセントも更新されないまま固まる。描き直すのはチェックの一覧と
 // タブだけで、選択欄そのものには触らないので、焦点が残っていても困らない。
+// 日付を選んでいる間は描き直さない。
+// チェックシートの中にある日付欄（定期清掃の「やる日」）は、描き直すと
+// innerHTML ごと作り直されて、開いているピッカーもろとも消える。
+// iPad は選び終わるまで数秒かかるので、その間に同期が来ると入力が飛んでいた。
+// activeElement が当てにならない端末もあるので、focusin/focusout で自前に持つ。
+let dateEditing = false;
+function isDateInput(el) {
+  return !!el && el.tagName === 'INPUT'
+    && (el.getAttribute('type') || '').toLowerCase() === 'date';
+}
+document.addEventListener('focusin', e => { if (isDateInput(e.target)) dateEditing = true; });
+document.addEventListener('focusout', e => { if (isDateInput(e.target)) dateEditing = false; });
+
 function canRefreshNow() {
   if (document.querySelector('dialog[open]')) return false;
+  if (dateEditing) return false;   // 選び終わったら focusout で見送った分が反映される
   const a = document.activeElement;
   if (!a) return true;
   if (a.tagName === 'TEXTAREA') return false;
   if (a.tagName === 'INPUT') {
-    // 文字を打たない種類の input は、止める理由にならない
+    // 文字を打たない種類の input は、止める理由にならない（date はここに入れない）
     const t = (a.getAttribute('type') || 'text').toLowerCase();
-    return ['button', 'submit', 'reset', 'checkbox', 'radio', 'date', 'file', 'range', 'color']
+    return ['button', 'submit', 'reset', 'checkbox', 'radio', 'file', 'range', 'color']
       .indexOf(t) >= 0;
   }
   return true;
