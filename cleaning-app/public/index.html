@@ -833,6 +833,7 @@
   .pitem-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
   .pdone { border: none; background: var(--done); color: #fff; border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; justify-content: center; }
   .pdone:hover { background: #2e7d32; }
+  .pundo { border: 1px solid var(--border); background: #fff; color: var(--muted); border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; justify-content: center; }
   .pdone .ic { vertical-align: middle; }
   /* エリア追加：アイコン選択 */
   .icon-picker { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
@@ -3532,7 +3533,9 @@ function renderPeriodicView() {
       + '</div>'
       + '</div>'
       + '<div class="pitem-actions">'
-      + '<button class="pdone" data-id="' + t.id + '">' + ic('check') + ' 完了</button>'
+      + (periodicCanUndo(t.id, dm)
+          ? '<button class="pundo" data-undo="' + t.id + '">' + ic('rotate-ccw') + ' 取消</button>'
+          : '<button class="pdone" data-id="' + t.id + '">' + ic('check') + ' 完了</button>')
       + '<button class="edit-btn" data-pedit="' + t.id + '" aria-label="編集">' + ic('pencil') + '</button>'
       + '<button class="del-btn" data-pdel="' + t.id + '" aria-label="削除">' + ic('trash-2') + '</button>'
       + '</div></div>';
@@ -3540,6 +3543,7 @@ function renderPeriodicView() {
   html += '<button class="add-title-btn" id="periodicAddBtn">' + ic('plus') + ' 定期項目を追加</button>';
   checklist.innerHTML = html;
   checklist.querySelectorAll('.pdone').forEach(b => b.onclick = () => periodicDone(b.dataset.id));
+  checklist.querySelectorAll('[data-undo]').forEach(b => b.onclick = () => periodicUndo(b.dataset.undo));
   // 一覧からその場で「やる日」を決める／消す
   checklist.querySelectorAll('[data-pdate]').forEach(inp => {
     inp.onchange = () => setPeriodicNext(inp.dataset.pdate, inp.value || null);
@@ -3575,11 +3579,34 @@ function periodicDone(id) {
   const dm = loadPeriodicDone(currentStore);
   const t = loadPeriodic().find(x => x.id === id);
   const today = todayStr();
+  // 取り消せるように、完了する前の状態を控えておく（prev は入れ子にしない）
+  const before = Object.assign({}, dm[id] || {});
+  delete before.prev;
   // 次にやる日は「今日＋頻度の日数」で自動更新する（手で決め直すこともできる）
   dm[id] = { date: today, staff: currentStaff || '',
-             next: t ? nextFromRepeat(t, today) : null };
+             next: t ? nextFromRepeat(t, today) : null, prev: before };
   savePeriodicDone(currentStore, dm);
   render();
+}
+// 今日つけた完了を取り消す。控えておいた状態に戻す
+function periodicUndo(id) {
+  if (!currentStore) {
+    alert('先に上部で「店舗」を選んでください。');
+    storeSelect.focus();
+    return;
+  }
+  const dm = loadPeriodicDone(currentStore);
+  const cur = dm[id];
+  if (!cur || cur.date !== todayStr()) return;   // 今日つけた分だけ取り消せる
+  const back = cur.prev || {};
+  if (back.date || back.next) dm[id] = back; else delete dm[id];
+  savePeriodicDone(currentStore, dm);
+  render();
+}
+// 今日つけた完了かどうか（取り消せるか）
+function periodicCanUndo(id, dm) {
+  const d = (dm || {})[id];
+  return !!(d && d.date === todayStr() && d.date === (dateInput.value || todayStr()));
 }
 function periodicDelete(id) {
   const list = loadPeriodic();
@@ -4096,8 +4123,13 @@ function renderRoutineView() {
   }
   checklist.innerHTML = html;
   // plus α の定期清掃の行: タップでその場で完了にする
+  // タップで完了／取り消しを切り替える（チェックを外せないと直せなくなる）
   checklist.querySelectorAll('[data-pplus]').forEach(row => {
-    row.onclick = () => periodicDone(row.dataset.pplus);
+    row.onclick = () => {
+      const id = row.dataset.pplus;
+      const dm = currentStore ? loadPeriodicDone(currentStore) : {};
+      if (periodicCanUndo(id, dm)) periodicUndo(id); else periodicDone(id);
+    };
   });
   // 親行: 連動=ツリー開閉 / 手動=チェック切替（🔗リンクは除外）
   // 編集モードでは末尾に「項目を追加」を出す
