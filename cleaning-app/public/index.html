@@ -434,6 +434,10 @@
   .plus-n { margin-left: auto; font-size: .72rem; font-weight: 700; color: #fff;
     background: #fb8c00; padding: 1px 8px; border-radius: 9px; }
   .plus-note { font-size: .7rem; color: #a1663a; margin: 2px 0 8px; line-height: 1.4; }
+  .plus-gauge { height: 7px; border-radius: 4px; background: #ffe0b2; overflow: hidden; margin-top: 6px; }
+  .plus-gauge-fill { height: 100%; border-radius: 4px; background: #fb8c00; transition: width .25s ease; }
+  .plus-gauge-fill.full { background: var(--done); }
+  .plus-periodic .rt-title { flex: 1; }
   .plus-box .rt-row, .plus-box .item { background: var(--card); }
   .plus-freq { font-size: .66rem; font-weight: 700; color: #fff; background: #fb8c00;
     padding: 1px 7px; border-radius: 9px; margin-left: 4px; vertical-align: middle;
@@ -1023,9 +1027,6 @@
     <label class="field-label">見本の写真（いい例・悪い例）</label>
     <button type="button" id="editSamples" class="btn btn-secondary" style="width:100%;"></button>
     <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">登録すると、チェックの右に「例を見る」が出ます。</p>
-    <label class="field-label" for="editEvery">やる頻度</label>
-    <select id="editEvery" class="field"></select>
-    <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">毎日以外にすると、この項目は一覧から外れて<strong>「今日の plus α」</strong>に移ります。パーセントの分母にも入りません。前回から日数が経った日だけ出ます。</p>
     <label class="field-label" for="editNums">数値の記録欄（任意・カンマ区切り）</label>
     <input type="text" id="editNums" class="field" placeholder="例：男性,女性">
     <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">入力するとこの項目に数値の入力欄が出ます（例：サーマナイフのショット数）。全部の欄が埋まると実施済みになります。空にすると数値欄は消えます。</p>
@@ -1062,6 +1063,9 @@
     <input type="number" id="pIntervalDays" class="field" min="1" placeholder="日数を入力" style="display:none;">
     <label class="field-label" for="pLast">前回やった日（任意・分かれば入力）</label>
     <input type="date" id="pLast" class="field">
+    <label class="field-label" for="pNext">次にやる日（任意・この店舗だけ）</label>
+    <input type="date" id="pNext" class="field">
+    <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">決めておくと、その日にチェックシートの<strong>「今日の plus α」</strong>に出ます。空なら「前回＋頻度の日数」で出ます。やり終えると、次の日は自動で入ります。</p>
     <div class="dialog-btn-row">
       <button class="dialog-close" id="pCancel" style="margin-top:0;">キャンセル</button>
       <button class="btn btn-primary" id="pSave" style="flex:1;">保存する</button>
@@ -1979,14 +1983,13 @@ function getGroups(areaKey) {
           method: ed && ed.method != null ? ed.method : (i.method || ''),
           nums: ed && ed.nums != null ? ed.nums : i.nums,
           numLow: ed && ed.numLow != null ? ed.numLow : i.numLow,
-          numOut: ed && ed.numOut != null ? ed.numOut : i.numOut,
-          everyDays: ed && ed.everyDays != null ? ed.everyDays : i.everyDays
+          numOut: ed && ed.numOut != null ? ed.numOut : i.numOut
         });
       });
     });
     // カスタム項目
     custom.filter(ci => ci.section === sec).forEach(ci => {
-      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut, everyDays: ci.everyDays });
+      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -2081,49 +2084,49 @@ function numLevel(value, lim) {
   return '';
 }
 
-// ===== 今日の plus α（毎日はやらない項目）=====
-// 項目に everyDays（何日に1回）を入れると、チェックリスト本体から外れて
-// 「今日の plus α」に移る。パーセントの分母にも入らない。
-// 入れていない項目は今までどおり毎日ぶんとして扱う。
-const PLUS_PRESETS = [
-  { days: 0, label: '毎日（ふつう）' },
-  { days: 2, label: '2日に1回' }, { days: 3, label: '3日に1回' },
-  { days: 7, label: '週に1回' }, { days: 14, label: '2週に1回' },
-  { days: 30, label: '月に1回' }
-];
-function plusLabel(days) {
-  const p = PLUS_PRESETS.find(x => x.days === days);
-  return p ? p.label : days + '日に1回';
+// ===== 今日の plus α =====
+// 「たまにやる仕事」の登録先は定期清掃ひとつ。頻度と次にやる日をそこで決めると、
+// その日が来た日だけ、チェックシートの下に「今日の plus α」として出る。
+// plus α は上のパーセント（毎日ぶん）には入れず、plus α だけのゲージを持たせる。
+// 項目ごとに頻度を付ける作り方も試したが、同じことをする入口が2つになるのでやめた。
+// plus α のゲージの数字（今日やる定期清掃のうち、いくつ終わったか）
+function plusCounts(tasks, dm) {
+  const done = (tasks || []).filter(t => periodicDoneToday(t, dm)).length;
+  return { done: done, total: (tasks || []).length };
 }
-function itemEveryDays(item) {
-  const n = Number(item && item.everyDays);
-  return (isFinite(n) && n >= 2) ? Math.round(n) : 0;   // 0＝毎日（ふつうの項目）
-}
-function isPlusItem(item) { return itemEveryDays(item) > 0; }
 
-// その項目を今日やる日か。staleMap は lastCheckedByItem() の結果。
-// 今日やった分も出したままにする（チェックした瞬間に消えると、やったか分からなくなるため）
-function plusStatus(item, areaKey, staleMap) {
-  const every = itemEveryDays(item);
-  if (!every) return null;
-  const last = (staleMap || {})[baseArea(areaKey) + ':' + item.id] || null;
-  if (!last) return { every: every, last: null, days: null, due: true, doneToday: false };
-  const shown = dateInput.value || todayStr();
-  const days = Math.round((new Date(shown + 'T00:00:00') - new Date(last + 'T00:00:00')) / 86400000);
-  return { every: every, last: last, days: days, due: days >= every || days <= 0, doneToday: days <= 0 };
-}
-// 今日の plus α に出す項目だけを返す
-function plusItemsDue(items, areaKey, staleMap) {
-  return items.filter(it => {
-    const st = plusStatus(it, areaKey, staleMap);
-    return st && st.due;
-  });
-}
-// plus α の見出し（何件やる日か）
-function plusHeadHtml(n) {
+// plus α の見出しとゲージ。
+// 上の進捗バーとは別立てにする（plus α は本来のパーセントの外だが、
+// やった手ごたえが要るので、plus α だけのゲージを持たせる）
+function plusHeadHtml(done, total) {
+  const pct = total ? Math.round(done / total * 100) : 0;
   return '<div class="plus-head">' + ic('sparkles')
-    + '<span>今日の plus α</span><span class="plus-n">' + n + '件</span></div>'
-    + '<div class="plus-note">毎日はやらない項目です。パーセントには入りません。</div>';
+    + '<span>今日の plus α</span>'
+    + '<span class="plus-n">' + done + ' / ' + total + '　' + pct + '%</span></div>'
+    + '<div class="plus-gauge"><div class="plus-gauge-fill' + (done === total ? ' full' : '')
+    + '" style="width:' + pct + '%"></div></div>'
+    + '<div class="plus-note">毎日はやらない項目です。上のパーセントには入りません。</div>';
+}
+
+// 今日やる定期清掃を plus α の行として組み立てる
+function plusPeriodicHtml(tasks, dm) {
+  let h = '';
+  tasks.forEach(t => {
+    const isDone = periodicDoneToday(t, dm);
+    const st = periodicStatus(t, dm[t.id]);
+    // 補足があるときは has-desc を付ける。付けないと折り返さず、
+    // 補足に押されて項目名が潰れる（幅0になって見えなくなる）
+    h += '<div class="rt-row plus-periodic' + (isDone ? ' done' : '')
+      + (t.desc ? ' has-desc' : '') + '" data-pplus="'
+      + escapeHtml(t.id) + '">'
+      + '<span class="rt-check">' + ic('check') + '</span>'
+      + '<span class="rt-title">' + escapeHtml(t.title) + '</span>'
+      + '<span class="plus-freq">' + escapeHtml(intervalLabel(t.interval)) + '</span>'
+      + '<span class="plus-row-last">' + escapeHtml(isDone ? '今日' : st.label) + '</span>'
+      + (t.desc ? '<div class="rt-desc">' + escapeHtml(t.desc) + '</div>' : '')
+      + '</div>';
+  });
+  return h;
 }
 
 // 直近（今日より前）に記録された値を探す。前回との差が分かるように表示するため。
@@ -2814,14 +2817,6 @@ function openEditDialog(item, focusMethod, areaKey) {
   const lim = itemNumLimits(item);
   document.getElementById('editNumLow').value = lim.low === null ? '' : lim.low;
   document.getElementById('editNumOut').value = lim.out === null ? '' : lim.out;
-  // やる頻度。今入っている日数が選択肢に無ければ、その日数も足して選べるようにする
-  const every = itemEveryDays(item);
-  const opts = PLUS_PRESETS.slice();
-  if (every && !opts.some(o => o.days === every)) opts.push({ days: every, label: plusLabel(every) });
-  const sel = document.getElementById('editEvery');
-  sel.innerHTML = opts.map(o =>
-    '<option value="' + o.days + '">' + escapeHtml(o.label) + '</option>').join('');
-  sel.value = String(every);
   // デフォルト項目で、編集済みのときだけ「初期内容に戻す」を表示
   editResetDefault.style.display = (!item.custom && item.edited) ? 'block' : 'none';
   if (!editDialog.open) editDialog.showModal();
@@ -2847,7 +2842,6 @@ document.getElementById('editSave').onclick = () => {
   };
   const numLow = limOf('editNumLow');
   const numOut = limOf('editNumOut');
-  const everyDays = parseInt(document.getElementById('editEvery').value, 10) || 0;
   const ak = editCtx.area || currentArea;
   if (editCtx.custom) {
     // 追加項目：customItems を直接更新
@@ -2858,7 +2852,6 @@ document.getElementById('editSave').onclick = () => {
       if (nums.length) ci.nums = nums; else delete ci.nums;
       if (numLow !== null) ci.numLow = numLow; else delete ci.numLow;
       if (numOut !== null) ci.numOut = numOut; else delete ci.numOut;
-      if (everyDays >= 2) ci.everyDays = everyDays; else delete ci.everyDays;
       saveCustomItems(ak, list);
     }
   } else {
@@ -2868,8 +2861,6 @@ document.getElementById('editSave').onclick = () => {
     if (nums.length) e.nums = nums;
     if (numLow !== null) e.numLow = numLow;
     if (numOut !== null) e.numOut = numOut;
-    // 0（毎日）も覚える。組み込み項目を毎日に戻したときに、元の値へ戻ってしまわないように
-    e.everyDays = everyDays >= 2 ? everyDays : 0;
     edits[editCtx.id] = e;
     saveEdits(ak, edits);
   }
@@ -3175,7 +3166,7 @@ function isNonDailyArea(key) { return isRoutineArea(key) || key === 'machine_men
 let _areaCompCache = null; // 1回の描画内でのキャッシュ（render/renderTabs冒頭でクリア）
 function areaCompletionToday(areaKey) {
   if (_areaCompCache && _areaCompCache[areaKey]) return _areaCompCache[areaKey];
-  const ids = areaItems(areaKey).filter(i => !isPlusItem(i)).map(i => i.id);
+  const ids = areaItems(areaKey).map(i => i.id);
   const date = recDate(areaKey);
   const doneSet = new Set();
   if (currentStore) {
@@ -3241,12 +3232,10 @@ function renderTabs() {
   const makeTab = (area, el) => {
     const items = areaItems(area.key);
     // その日その店舗で「実際に済んでいる分」を数える（担当者を切り替えても数が動かないように）。
-    // 数えるのは画面に出ているもの＝毎日の項目＋今日やる plus α。
-    // 進捗バーは plus α を分母に入れないので、plus α が残っている日はタブの数字のほうが大きくなる。
+    // 中の一覧・進捗バーも同じ合算を見ているので、タブの数字とズレなくなる。
+    // 今日やる定期清掃（plus α）はここには足さない。定期清掃タブに自前のバッジがあるため。
     const rec = loadRecordMerged(area.key);
-    const sm = currentStore ? lastCheckedByItem(currentStore) : {};
-    const todays = items.filter(i => !isPlusItem(i)).concat(plusItemsDue(items, area.key, sm));
-    const remaining = todays.filter(i => !itemEffectiveDone(area.key, i, rec)).length;
+    const remaining = items.filter(i => !itemEffectiveDone(area.key, i, rec)).length;
     const btn = document.createElement('button');
     btn.className = 'tab' + (area.key === currentArea ? ' active' : '') + (remaining === 0 ? ' complete' : '');
     btn.innerHTML = ic(area.icon) + ' ' + area.name +
@@ -3411,7 +3400,8 @@ function renderPeriodicView() {
       + ' <span class="pfreq">' + intervalLabel(t.interval) + '</span>'
       + (t.area ? ' <span class="parea">' + escapeHtml(t.area) + '</span>' : '') + '</div>'
       + (t.desc ? '<div class="pitem-desc">' + escapeHtml(t.desc) + '</div>' : '')
-      + '<div class="pitem-meta">前回: ' + last + '</div>'
+      + '<div class="pitem-meta">前回: ' + last
+      + (s.next ? '　／　次: ' + s.next + (done && done.next ? '（指定）' : '') : '') + '</div>'
       + '<div class="pitem-statusline ' + s.cls + '">' + s.label + '</div>'
       + '</div>'
       + '<div class="pitem-actions">'
@@ -3434,7 +3424,11 @@ function periodicDone(id) {
     return;
   }
   const dm = loadPeriodicDone(currentStore);
-  dm[id] = { date: todayStr(), staff: currentStaff || '' };
+  const t = loadPeriodic().find(x => x.id === id);
+  const today = todayStr();
+  // 次にやる日は「今日＋頻度の日数」で自動更新する（手で決め直すこともできる）
+  dm[id] = { date: today, staff: currentStaff || '',
+             next: t ? shiftDate(today, t.interval) : null };
   savePeriodicDone(currentStore, dm);
   render();
 }
@@ -3478,6 +3472,9 @@ function openPeriodicDialog(id) {
     pIntervalSel.value = '__custom__'; pIntervalDays.style.display = 'block'; pIntervalDays.value = days;
   }
   document.getElementById('pLast').value = (t && t.lastDone) ? t.lastDone : '';
+  const dmNow = currentStore ? loadPeriodicDone(currentStore) : {};
+  const dNow = id ? dmNow[id] : null;
+  document.getElementById('pNext').value = (dNow && dNow.next) || '';
   if (!periodicDialog.open) periodicDialog.showModal();
   document.getElementById('pTitle').focus();
 }
@@ -3501,6 +3498,15 @@ document.getElementById('pSave').onclick = () => {
     list.push({ id: 'p' + Date.now() + Math.floor(Math.random() * 1000), area, title, desc, interval, lastDone, lastStaff: '' });
   }
   savePeriodic(list);
+  // 次にやる日は店舗ごとの記録に入れる（店舗によって予定が違うため）
+  const nextDate = document.getElementById('pNext').value || null;
+  if (currentStore && periodicEditId) {
+    const dm = loadPeriodicDone(currentStore);
+    const cur = dm[periodicEditId] || {};
+    if (nextDate) dm[periodicEditId] = Object.assign({}, cur, { next: nextDate });
+    else if (cur.next) { const c2 = Object.assign({}, cur); delete c2.next; dm[periodicEditId] = c2; }
+    savePeriodicDone(currentStore, dm);
+  }
   periodicDialog.close();
   render();
 };
@@ -3702,7 +3708,6 @@ function routineProgress(areaKey, items, rec) {
   const seen = new Set();   // 同じ連動先を2行が指していても、二重に数えない
 
   items.forEach(item => {
-    if (isPlusItem(item)) return;   // 毎日やらない項目は「今日の plus α」なので数えない
     const all = item.link
       ? String(item.link).split(',').map(x => x.trim()).filter(Boolean) : [];
     const keys = all.filter(k => !isShowerArea(k));
@@ -3767,11 +3772,6 @@ function renderRoutineView() {
     + ic('pencil') + ' ' + (routineEditMode ? '編集を終わる' : '項目を編集') + '</button>'
     + (routineEditMode ? '<span class="rt-edit-hint">上から実施する順に並びます</span>' : '')
     + '</div>';
-  // 毎日やらない項目は本体から外して「今日の plus α」に出す。
-  // ただし編集中は全部出す（外してしまうと、頻度を戻したり並べ替えたりできなくなるため）
-  const bodyItems = routineEditMode ? items : items.filter(it => !isPlusItem(it));
-  const plusDue = routineEditMode ? [] : plusItemsDue(items, currentArea, staleMap);
-
   const renderRows = (list) => {
   let html = '';
   list.forEach((item, idx) => {
@@ -3779,7 +3779,6 @@ function renderRoutineView() {
     const done = ls ? ls.complete : !!rec[item.id];
     const expanded = ls && routineExpanded.has(item.id);
     const hasNums = itemNumFields(item).length > 0;
-    const pst = plusStatus(item, currentArea, staleMap);   // 毎日やらない項目なら中身が入る
     // 説明文は編集中以外は行の下に小さく出す（時間目安・曜日のローテーション等をその場で読めるように）
     const descText = routineEditMode ? '' : String(item.desc || '').trim();
     const rEx = routineEditMode ? '' : exampleBtnHtml(currentArea, item.id);
@@ -3790,9 +3789,6 @@ function renderRoutineView() {
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
-      + (pst ? '<span class="plus-freq">' + escapeHtml(plusLabel(pst.every)) + '</span>'
-             + (routineEditMode ? '' : '<span class="plus-row-last">'
-                 + escapeHtml(lastDoneLabel(pst.last, true)) + '</span>') : '')
       // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
       + rEx
@@ -3883,12 +3879,20 @@ function renderRoutineView() {
   return html;
   };
 
-  html += renderRows(bodyItems);
-  if (plusDue.length) {
-    html += '<div class="plus-box">' + plusHeadHtml(plusDue.length)
-      + renderRows(plusDue) + '</div>';
+  html += renderRows(items);
+  // 今日やる定期清掃を「今日の plus α」として出す（登録する場所は定期清掃、出る場所はここ）
+  const plusTasks = routineEditMode ? [] : periodicDueTasks();
+  const pdm = currentStore ? loadPeriodicDone(currentStore) : {};
+  if (plusTasks.length) {
+    const pc = plusCounts(plusTasks, pdm);
+    html += '<div class="plus-box">' + plusHeadHtml(pc.done, pc.total)
+      + plusPeriodicHtml(plusTasks, pdm) + '</div>';
   }
   checklist.innerHTML = html;
+  // plus α の定期清掃の行: タップでその場で完了にする
+  checklist.querySelectorAll('[data-pplus]').forEach(row => {
+    row.onclick = () => periodicDone(row.dataset.pplus);
+  });
   // 親行: 連動=ツリー開閉 / 手動=チェック切替（🔗リンクは除外）
   // 編集モードでは末尾に「項目を追加」を出す
   if (routineEditMode) {
@@ -3938,10 +3942,12 @@ function renderRoutineView() {
       openAddDialog(gs.length ? gs[0].section : undefined, ak);
     };
   });
-  checklist.querySelectorAll('.rt-row').forEach(row => {
+  // plus α の定期清掃の行は別の配線なので、ここでは触らない（触ると上書きしてしまう）
+  checklist.querySelectorAll('.rt-row:not(.plus-periodic)').forEach(row => {
     row.onclick = (e) => {
       if (e.target.closest('a, [data-inv-link], .rt-act')) return;
       const id = row.dataset.id;
+      if (!id) return;
       if (row.dataset.kind === 'link') {
         // 編集中も開閉はできる（中の細かい項目を編集するため）
         if (routineExpanded.has(id)) routineExpanded.delete(id); else routineExpanded.add(id);
@@ -4078,8 +4084,7 @@ function render() {
     }
     checklist.appendChild(title);
 
-    // 毎日やらない項目はここには出さない（下の「今日の plus α」に出る）
-    group.items.filter(it => !isPlusItem(it)).forEach(item => {
+    group.items.forEach(item => {
       appendItemCard(checklist, item, rec, staleMap);
     });
 
@@ -4090,16 +4095,6 @@ function render() {
     secAdd.onclick = () => openAddDialog(group.section);
     checklist.appendChild(secAdd);
   });
-
-  // 今日の plus α（毎日はやらない項目のうち、今日やる日のものだけ）
-  const plusDue = plusItemsDue(items, currentArea, staleMap);
-  if (plusDue.length) {
-    const box = document.createElement('div');
-    box.className = 'plus-box';
-    box.innerHTML = plusHeadHtml(plusDue.length);
-    plusDue.forEach(item => appendItemCard(box, item, rec, staleMap));
-    checklist.appendChild(box);
-  }
 
   // 項目カード1枚を組み立てて container に足す
   function appendItemCard(container, item, rec, staleMap) {
@@ -4112,12 +4107,8 @@ function render() {
       // 期間が空いている項目に「◯日空き」バッジ（チェック済みなら出さない）
       const staleLast = staleMap[baseArea(currentArea) + ':' + item.id];
       const staleDays = staleLast ? daysSince(staleLast) : null;
-      // plus α の項目には「何日に1回か」を出す（空きバッジは出さない。空いていて当たり前のため）
-      const pst = plusStatus(item, currentArea, staleMap);
-      const staleTag = pst
-        ? ' <span class="plus-freq">' + escapeHtml(plusLabel(pst.every)) + '</span>'
-        : ((!done && !ls && staleDays !== null && staleDays >= STALE_DAYS)
-            ? ' <span class="stale-tag">' + staleDays + '日空き</span>' : '');
+      const staleTag = (!done && !ls && staleDays !== null && staleDays >= STALE_DAYS)
+        ? ' <span class="stale-tag">' + staleDays + '日空き</span>' : '';
       // 📷対象のバッジは意図的に表示しない（見えると「その項目だけ丁寧にやる」逆インセンティブになるため。
       // どの項目で撮影要求が出るかはチェックした瞬間まで分からない）
       const div = document.createElement('div');
@@ -4218,13 +4209,11 @@ function render() {
   };
   checklist.appendChild(resetLink);
 
-  // 毎日やらない項目（plus α）はパーセントの外
-  const daily = items.filter(i => !isPlusItem(i));
-  const doneCount = daily.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
-  const total = daily.length;
+  const doneCount = items.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
+  const total = items.length;
   setProgress(doneCount, total, area.name);
 
-  const undone = daily.filter(i => !itemEffectiveDone(currentArea, i, rec));
+  const undone = items.filter(i => !itemEffectiveDone(currentArea, i, rec));
   const summary = document.getElementById('summary');
   if (undone.length === 0 && total > 0) {
     summary.style.display = 'block';
@@ -4293,15 +4282,46 @@ function loadPeriodicDone(store) {
 }
 function savePeriodicDone(store, map) { syncSet('periodicDone_' + store, JSON.stringify(map)); }
 
-// 定期項目の状態：due(実施時期) / soon(そろそろ) / ok(まだ)。done = その店舗の {date, staff}
+// 次にやる日。店舗ごとに決められる（periodicDone_<店舗> の中の next）。
+// 決めていなければ「前回＋頻度の日数」。前回も無ければ null（＝未実施なのですぐやる）
+function periodicNext(task, done) {
+  if (done && done.next) return done.next;
+  if (done && done.date) return shiftDate(done.date, task.interval);
+  return null;
+}
+// 定期項目の状態：due(実施時期) / soon(そろそろ) / ok(まだ)。done = その店舗の {date, staff, next}
+// 日にちを決めてあればその日で、決めていなければ前回からの日数で判断する。
 function periodicStatus(task, done) {
   const last = done && done.date;
-  if (!last) return { state: 'due', elapsed: null, left: null, label: '未実施', cls: 'urgent' };
-  const elapsed = daysSince(last);
-  const left = task.interval - elapsed;
-  if (elapsed >= task.interval) return { state: 'due', elapsed, left, label: '実施時期です', cls: 'urgent' };
-  if (elapsed >= task.interval * 0.8) return { state: 'soon', elapsed, left, label: 'そろそろ（あと' + left + '日）', cls: 'warn' };
-  return { state: 'ok', elapsed, left, label: 'あと' + left + '日', cls: 'ok' };
+  const next = periodicNext(task, done);
+  if (!next) return { state: 'due', elapsed: null, left: null, next: null, label: '未実施', cls: 'urgent' };
+  const today = dateInput.value || todayStr();
+  const left = Math.round((new Date(next + 'T00:00:00') - new Date(today + 'T00:00:00')) / 86400000);
+  const elapsed = last ? daysSince(last) : null;
+  const fixed = !!(done && done.next);   // 日にちを決めてあるか（表示の言い回しを変える）
+  if (left <= 0) {
+    return { state: 'due', elapsed, left, next,
+             label: fixed && left < 0 ? (-left) + '日過ぎています' : '実施時期です', cls: 'urgent' };
+  }
+  if (left <= Math.max(1, Math.round(task.interval * 0.2))) {
+    return { state: 'soon', elapsed, left, next, label: 'そろそろ（あと' + left + '日）', cls: 'warn' };
+  }
+  return { state: 'ok', elapsed, left, next, label: 'あと' + left + '日', cls: 'ok' };
+}
+// その店舗で今日やる定期清掃。
+// 今日やり終えた分も残す（やった瞬間に消えると、やったのか分からなくなるため）。
+// タブのバッジ（periodicDueCount）は「残り何件か」なので、そちらには足さない。
+function periodicDueTasks(store) {
+  const st = store !== undefined ? store : currentStore;
+  if (!st) return [];
+  const dm = loadPeriodicDone(st);
+  return loadPeriodic().filter(t =>
+    periodicStatus(t, dm[t.id]).state === 'due' || periodicDoneToday(t, dm));
+}
+// その定期項目を「今日やったか」
+function periodicDoneToday(task, dm) {
+  const d = (dm || {})[task.id];
+  return !!(d && d.date === (dateInput.value || todayStr()));
 }
 function periodicDueCount(store) {
   const st = store !== undefined ? store : currentStore;
@@ -4315,9 +4335,8 @@ function snapshotForArea(staff, areaKey) {
   const area = getArea(areaKey);
   const rec = loadRecord(areaKey, staff);
   // 登録時点の全項目を記録（項目単位で後から比較できるように）。連動項目はリンク先の完了状況で判定。
-  // 毎日やらない項目（plus α）は入れない。やらない日に「未実施」として数えると、
-  // 結果の比較でそのエリアの割合が下がってしまうため（パーセントの外、という扱いを揃える）
-  const items = getGroups(areaKey).flatMap(g => g.items).filter(it => !isPlusItem(it)).map(it => {
+  // 定期清掃（plus α）はここには入らない。別枠で管理していて、毎日やる仕事ではないため
+  const items = getGroups(areaKey).flatMap(g => g.items).map(it => {
     const ls = isRoutineArea(areaKey) && it.link ? linkedStatus(it, areaKey) : null;
     const d = ls ? ls.complete : !!rec[it.id];
     return { title: it.title, done: d, time: !ls && rec[it.id] ? rec[it.id].time : null };
