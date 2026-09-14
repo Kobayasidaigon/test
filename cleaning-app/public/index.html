@@ -1580,6 +1580,43 @@ function repeatDays(task) {
 }
 // その月の日数（末日を超える指定を丸めるため。31日指定でも2月は末日になる）
 function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+// まだ一度もやっていない項目の「最初の日」。
+// nextFromRepeat は「やり終えた次」を出すので1周期ぶん先になる。
+// こちらは from 以降で一番近い、その決め方に合う日を返す（from 当日も含む）。
+//   例）毎週月曜で今日が月曜 → 今日。毎月15日で今日が14日 → 明日（15日）。
+function firstFromRepeat(task, from) {
+  const r = taskRepeat(task);
+  const base = new Date(from + 'T00:00:00');
+  const p2 = n => String(n).padStart(2, '0');
+  const fmt = d => d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate());
+  if (r.kind === 'week') {
+    const d = new Date(base.getTime());
+    while (d.getDay() !== r.dow) d.setDate(d.getDate() + 1);
+    return fmt(d);
+  }
+  if (r.kind === 'month') {
+    const y = base.getFullYear(), m = base.getMonth();
+    const dThis = Math.min(r.day, daysInMonth(y, m));
+    if (dThis >= base.getDate()) return fmt(new Date(y, m, dThis));
+    const m2 = m + 1, ty = y + Math.floor(m2 / 12), tm = ((m2 % 12) + 12) % 12;
+    return fmt(new Date(ty, tm, Math.min(r.day, daysInMonth(ty, tm))));
+  }
+  return from;   // ◯日ごとは、決めた日から始める
+}
+// 繰り返しを決めたら、やる日をまだ持っていない店舗に自動で入れる。
+// 決め方は項目に付いていて3店舗で共通なので、店舗ごとに入れ直さなくて済むようにする。
+// すでに日を決めてある店舗と、一度やったことがある店舗（前回＋決め方で出せる）は触らない。
+function scheduleFromRepeat(id, task) {
+  const first = firstFromRepeat(task, todayStr());
+  STORES.forEach(st => {
+    const dm = loadPeriodicDone(st);
+    const cur = dm[id];
+    if (cur && (cur.date || cur.next)) return;
+    dm[id] = Object.assign({}, cur || {}, { next: first });
+    savePeriodicDone(st, dm);
+  });
+}
+
 // from の「次」の実施日
 function nextFromRepeat(task, from) {
   const r = taskRepeat(task);
@@ -3645,18 +3682,26 @@ document.getElementById('pSave').onclick = () => {
   const area = document.getElementById('pArea').value.trim();
   const desc = document.getElementById('pDesc').value.trim();
   const list = loadPeriodic();
+  let id = periodicEditId;
+  // 繰り返しを決め直したときだけ、やる日を自動で入れ直す。
+  // 名前だけ直した場合に、消しておいた日が復活しないようにするため
+  let repeatChanged = true;
   if (periodicEditId) {
     const t = list.find(x => x.id === periodicEditId);
     if (t) {
+      repeatChanged = JSON.stringify(taskRepeat(t)) !== JSON.stringify(taskRepeat({ repeat: repeat }));
       t.area = area; t.title = title; t.desc = desc;
       t.repeat = repeat; t.interval = interval; t.lastDone = lastDone;
     }
   } else {
-    list.push({ id: 'p' + Date.now() + Math.floor(Math.random() * 1000),
-                area, title, desc, repeat, interval, lastDone, lastStaff: '' });
+    id = 'p' + Date.now() + Math.floor(Math.random() * 1000);
+    list.push({ id, area, title, desc, repeat, interval, lastDone, lastStaff: '' });
   }
   savePeriodic(list);
-  // 次にやる日は店舗ごとの記録に入れる（店舗によって予定が違うため）
+
+  // 次にやる日は店舗ごとの記録に入れる（店舗によって予定が違うため）。
+  // 自動で入れるより先にやること。順番が逆だと、空欄で保存したときに
+  // 自動で入れたぶんを消してしまう
   const nextDate = document.getElementById('pNext').value || null;
   if (currentStore && periodicEditId) {
     const dm = loadPeriodicDone(currentStore);
@@ -3665,6 +3710,9 @@ document.getElementById('pSave').onclick = () => {
     else if (cur.next) { const c2 = Object.assign({}, cur); delete c2.next; dm[periodicEditId] = c2; }
     savePeriodicDone(currentStore, dm);
   }
+  // 繰り返しを決めたら、やる日をまだ持っていない店舗に自動で入れる
+  if (repeatChanged) scheduleFromRepeat(id, { repeat: repeat, interval: interval });
+
   periodicDialog.close();
   render();
 };
