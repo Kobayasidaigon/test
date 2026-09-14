@@ -1607,13 +1607,17 @@ function firstFromRepeat(task, from) {
 // 繰り返しを決めたら、やる日をまだ持っていない店舗に自動で入れる。
 // 決め方は項目に付いていて3店舗で共通なので、店舗ごとに入れ直さなくて済むようにする。
 // すでに日を決めてある店舗と、一度やったことがある店舗（前回＋決め方で出せる）は触らない。
-function scheduleFromRepeat(id, task) {
+// force=true なら、「消す」で消したぶんも入れ直す（決め方を変えたとき）
+function scheduleFromRepeat(id, task, force) {
   const first = firstFromRepeat(task, todayStr());
   STORES.forEach(st => {
     const dm = loadPeriodicDone(st);
     const cur = dm[id];
-    if (cur && (cur.date || cur.next)) return;
-    dm[id] = Object.assign({}, cur || {}, { next: first });
+    if (cur && (cur.date || cur.next)) return;   // すでに日があるか、やったことがある
+    if (cur && cur.off && !force) return;        // わざと消したものは復活させない
+    const next = Object.assign({}, cur || {}, { next: first });
+    delete next.off;
+    dm[id] = next;
     savePeriodicDone(st, dm);
   });
 }
@@ -3564,9 +3568,14 @@ function setPeriodicNext(id, date) {
   }
   const dm = loadPeriodicDone(currentStore);
   const cur = Object.assign({}, dm[id] || {});
-  if (date) cur.next = date; else delete cur.next;
-  // 実施記録もやる日も無くなるなら、まるごと消す（空の殻を残さない）
-  if (!cur.date && !cur.next) delete dm[id]; else dm[id] = cur;
+  if (date) { cur.next = date; delete cur.off; }
+  else {
+    delete cur.next;
+    // 「消した」印を残す。まだ決めていないのか、わざと消したのかを区別するため。
+    // 印が無いと、次に保存したときに自動でまた入ってしまう
+    cur.off = true;
+  }
+  dm[id] = cur;
   savePeriodicDone(currentStore, dm);
   render();
 }
@@ -3710,8 +3719,9 @@ document.getElementById('pSave').onclick = () => {
   const desc = document.getElementById('pDesc').value.trim();
   const list = loadPeriodic();
   let id = periodicEditId;
-  // 繰り返しを決め直したときだけ、やる日を自動で入れ直す。
-  // 名前だけ直した場合に、消しておいた日が復活しないようにするため
+  // 決め方を変えたときは、「消す」で消したぶんも入れ直す。
+  // 変えていなくても、日付を持っていない項目には入れる
+  // （すでに同じ決め方が入っている項目を保存しても何も起きなかったため）
   let repeatChanged = true;
   if (periodicEditId) {
     const t = list.find(x => x.id === periodicEditId);
@@ -3738,7 +3748,7 @@ document.getElementById('pSave').onclick = () => {
     savePeriodicDone(currentStore, dm);
   }
   // 繰り返しを決めたら、やる日をまだ持っていない店舗に自動で入れる
-  if (repeatChanged) scheduleFromRepeat(id, { repeat: repeat, interval: interval });
+  scheduleFromRepeat(id, { repeat: repeat, interval: interval }, repeatChanged);
 
   periodicDialog.close();
   render();
