@@ -3145,6 +3145,44 @@ function proofSpotFor(areaKey, itemId) {
 }
 
 let proofCtx = null;
+// 今日すでに撮ってある抜き打ち写真を探す（同じ店舗・同じ項目・同じ日）。
+// タップミスでチェックが外れて付け直すとき、撮り直しを求めないため。
+// 写真の鍵: proof:<店舗>:<エリア>:<項目>:<日付>:<通し番号>
+// 担当者は見ない。写真は「その日その項目をやった証拠」なので、
+// 別の人が撮っていればそれで足りる（誰が付けたかは記録に残る）。
+function proofTakenToday(areaKey, itemId) {
+  if (!currentStore) return null;
+  const date = dateInput.value || todayStr();
+  const base = baseArea(areaKey);
+  let hit = null;
+  mediaKeys.forEach(k => {
+    if (k.indexOf('proof:') !== 0) return;
+    const p = k.split(':');
+    if (p.length < 6) return;
+    if (p[1] !== currentStore || p[3] !== itemId || p[4] !== date) return;
+    if (baseArea(p[2]) !== base) return;   // 時間帯つきの鍵もまとめて見る
+    if (!hit || k > hit) hit = k;          // 同じ日に何枚かあれば新しいほう
+  });
+  return hit;
+}
+// 撮り直さずにチェックを入れる。あとで見たときに撮り直しでないと分かるよう、ログにも残す
+function reuseProof(areaKey, itemId, mediaId) {
+  const logKey = 'proofLog_' + currentStore;
+  let log = [];
+  try { log = JSON.parse(localStorage.getItem(logKey)) || []; } catch (e) {}
+  const areaDef = getArea(areaKey);
+  const itemDef = areaItems(areaKey).find(x => x.id === itemId);
+  log.push({
+    date: dateInput.value || todayStr(),
+    area: areaDef ? areaDef.name : areaKey, item: itemDef ? itemDef.title : itemId,
+    spot: proofSpotFor(areaKey, itemId) || '', staff: currentStaff || '',
+    time: nowTimeStr(), mediaId: mediaId, exif: null, secs: null,
+    reused: true   // 今日撮ってあった写真を使い回した（付け直し）
+  });
+  const cutoff = new Date(Date.now() - PROOF_KEEP_DAYS * 86400000).toISOString().slice(0, 10);
+  syncSet(logKey, JSON.stringify(log.filter(e => e.date >= cutoff)));
+}
+
 function startProofCapture(areaKey, itemId) {
   const spot = proofSpotFor(areaKey, itemId);
   proofCtx = { areaKey: areaKey, itemId: itemId, spot: spot };
@@ -3277,6 +3315,16 @@ function toggleItemIn(areaKey, id) {
     return;
   }
   if (needsProof(areaKey, id)) {
+    // 今日すでに撮ってあれば、それを付け直して撮り直しは求めない
+    const shot = proofTakenToday(areaKey, id);
+    if (shot) {
+      reuseProof(areaKey, id, shot);
+      rec[id] = { staff: currentStaff, time: nowTimeStr(), ts: nowDateTimeStr(), proof: shot };
+      saveRecord(areaKey, rec);
+      scheduleAutoRegister(areaKey);
+      render();
+      return;
+    }
     startProofCapture(areaKey, id); // 撮影完了後にチェックが入る
     return;
   }
