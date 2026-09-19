@@ -460,6 +460,8 @@
   .last-done { font-size: 0.72rem; color: var(--muted); margin-left: 6px; }
   .item.done .last-done { display: none; }
   .rt-last { font-size: 0.72rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+  /* 前の時間帯から引き継いだチェック。誰の手も動いていないことが分かるように出す */
+  .rt-carry { font-size: 0.72rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
   .footer-actions {
     position: fixed; bottom: 0; left: 0; right: 0;
     background: #fff; border-top: 1px solid var(--border);
@@ -744,6 +746,9 @@
     color: #c62828; font-size: 0.8rem; font-weight: 600; cursor: pointer; text-decoration: underline;
   }
   .field-label { font-size: 0.75rem; color: var(--muted); font-weight: 600; display: block; margin: 12px 0 4px; }
+  .area-opt { display: flex; align-items: center; gap: 10px; margin: 16px 0 4px; cursor: pointer; font-size: 0.9rem; }
+  .area-opt input { width: 20px; height: 20px; flex-shrink: 0; margin: 0; }
+  .area-opt-note { font-size: 0.75rem; color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
   .field {
     width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;
     font-size: 1rem; background: #fff; color: var(--text);
@@ -1109,6 +1114,11 @@
     <input type="text" id="areaName" class="field" placeholder="例：プール / スタジオ / 駐車場">
     <label class="field-label">アイコン</label>
     <div class="icon-picker" id="areaIconPicker"></div>
+    <label class="area-opt" for="areaCarry">
+      <input type="checkbox" id="areaCarry">
+      <span>前の時間帯のチェックを引き継ぐ</span>
+    </label>
+    <div class="area-opt-note">同じ場所を朝番・中番・遅番から見ているとき、朝番で付けたチェックを中番・遅番でも「済み」として出します。逆（遅番→朝番）には戻りません。</div>
     <button id="areaDelete" class="restore-btn" style="display:none; color:#c62828;">このエリアを削除</button>
     <div class="dialog-btn-row">
       <button class="dialog-close" id="areaCancel" style="margin-top:0;">キャンセル</button>
@@ -2036,6 +2046,53 @@ function routinesLinking(areaKey) {
   if (_linkCache) _linkCache[areaKey] = hit;
   return hit;
 }
+// 前の時間帯で付けたチェックを、あとの時間帯にも「済み」として見せるエリア。
+//
+// 萩野通のシャワーは朝番・中番・遅番の3回とも同じ7ヶ所を指している。実際には
+// 朝に洗ってしまえば中番・遅番は「汚れていなければそのまま」なので、
+// 朝に付けたチェックを中番・遅番でも済みとして出す。
+//
+// 向きは一方通行（朝→中→遅）。遅番で付けても朝番には戻らない。戻すと、
+// やっていない時間帯まで埋まって見えて、誰がやったのか分からなくなる。
+//
+// エリアに carryForward: true を付けると効く（エリアの編集から切り替えられる）。
+let _carryCache = null; // 1回の描画内でのキャッシュ
+function isCarryArea(areaKey) {
+  const b = baseArea(areaKey);
+  if (_carryCache && b in _carryCache) return _carryCache[b];
+  const a = getArea(b);
+  const v = !!(a && a.carryForward);
+  if (_carryCache) _carryCache[b] = v;
+  return v;
+}
+// その時間帯より前の時間帯（朝→中→遅の順で、今より前のものだけ）
+function earlierSlots(slot) {
+  const i = ROUTINE_KEYS.indexOf(slot);
+  return i > 0 ? ROUTINE_KEYS.slice(0, i) : [];
+}
+// 「済み」を数えるときに見る記録のエリア鍵。
+//   1) その時間帯の鍵（shower_b1@routine_ban）
+//   2) 時間帯で分ける前に付いた同日の鍵（旧形式）
+//   3) 引き継ぎありのエリアは、前の時間帯の鍵（@routine_asa / @routine_hiru）
+function recAreasFor(areaKey) {
+  const ra = recArea(areaKey);
+  const base = baseArea(ra);
+  const list = [ra];
+  if (list.indexOf(base) < 0) list.push(base);
+  const at = ra.indexOf('@');
+  if (at >= 0 && isCarryArea(ra)) {
+    const rest = ra.slice(at + 1);
+    const h = rest.indexOf('#');
+    const slot = h < 0 ? rest : rest.slice(0, h);
+    const tail = h < 0 ? '' : rest.slice(h); // 曜日の枠（#d1）は付けたまま比べる
+    earlierSlots(slot).forEach(sl => {
+      const k = base + '@' + sl + tail;
+      if (list.indexOf(k) < 0) list.push(k);
+    });
+  }
+  return list;
+}
+
 // エリアのタブ（シャワールーム等）から直接チェックしたときに、どの時間帯の記録にするか。
 // やることリストから参照されているエリアだけが対象で、
 // 「今より前に始まっている時間帯のうち一番新しいもの」に入れる。
@@ -2149,14 +2206,23 @@ function loadRecordMerged(areaKey) {
   const merged = Object.assign({}, loadRecord(areaKey)); // 自分の記録を優先
   if (!currentStore) return merged;
   const ra = recArea(areaKey);
-  const base = baseArea(ra);
+  const areas = recAreasFor(areaKey); // その時間帯＋旧形式＋（引き継ぎありなら）前の時間帯
+  const date = recDate(areaKey);
   for (let i = 0; i < localStorage.length; i++) {
     const p = parseRecordKey(localStorage.key(i), currentStore);
-    // その時間帯の記録。加えて、時間帯で分ける前に付いた同日の記録（旧形式）も拾う
-    if (!p || p.date !== recDate(areaKey) || (p.area !== ra && p.area !== base)) continue;
+    if (!p || p.date !== date || areas.indexOf(p.area) < 0) continue;
     try {
       const r = JSON.parse(localStorage.getItem(localStorage.key(i))) || {};
-      Object.keys(r).forEach(id => { if (!merged[id]) merged[id] = r[id]; });
+      Object.keys(r).forEach(id => {
+        if (merged[id]) return;
+        merged[id] = r[id];
+        // 別の鍵から拾った分は、どこから来たか控えておく。
+        // 取り消すときにその鍵を直せるように、「朝番で実施」と出せるようにするため。
+        if (p.area !== ra && merged[id] && typeof merged[id] === 'object') {
+          merged[id]._area = p.area;
+          merged[id]._slot = SLOT_LABELS[slotOfKey(p.area)] || '';
+        }
+      });
     } catch (e) {}
   }
   return merged;
@@ -3296,10 +3362,16 @@ function toggleItemIn(areaKey, id) {
   if (merged[id]) {
     const who = merged[id].staff || '';
     const time = merged[id].time || '';
+    const from = merged[id]._slot ? merged[id]._slot + 'で' : '';
     if (!who) { alert('この項目は実施済みです。'); return; }
-    if (!confirm(who + ' さんが ' + time + ' に実施済みです。\n取り消しますか？')) return;
-    // 時間帯つきの記録を先に見て、無ければ旧形式（時間帯なし）を見る
+    if (!confirm(from + who + ' さんが ' + time + ' に実施済みです。\n取り消しますか？')) return;
+    // 時間帯つきの記録 → 引き継ぎ元の時間帯 → 旧形式（時間帯なし）の順に見る
     const cands = [recordKey(areaKey, who)];
+    if (merged[id]._area) {
+      const carried = 'clean_' + currentStore + '_' + who + '_' + merged[id]._area
+        + '_' + recDate(areaKey);
+      if (cands.indexOf(carried) < 0) cands.push(carried);
+    }
     const bare = 'clean_' + currentStore + '_' + who + '_' + baseArea(areaKey) + '_' + dateInput.value;
     if (cands.indexOf(bare) < 0) cands.push(bare);
     for (const key of cands) {
@@ -3350,13 +3422,12 @@ function areaCompletionToday(areaKey) {
   const date = recDate(areaKey);
   const doneSet = new Set();
   if (currentStore) {
-    const ra = recArea(areaKey);
-    const base = baseArea(ra);
+    const areas = recAreasFor(areaKey);
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
       const p = parseRecordKey(k, currentStore);
-      // その時間帯の記録＋時間帯で分ける前の同日の記録（旧形式）
-      if (!p || p.date !== date || (p.area !== ra && p.area !== base)) continue;
+      // その時間帯の記録＋旧形式＋（引き継ぎありなら）前の時間帯の記録
+      if (!p || p.date !== date || areas.indexOf(p.area) < 0) continue;
       try {
         const r = JSON.parse(localStorage.getItem(k)) || {};
         Object.keys(r).forEach(id => doneSet.add(id));
@@ -3406,6 +3477,7 @@ function renderTabs() {
   _areaCompCache = {};
   _linkCache = {};
   _weekCycleCache = {};
+  _carryCache = {};
   _lastCheckedCache = {};
   tabsEl.innerHTML = '';
   tabsRoutineEl.innerHTML = '';
@@ -3826,6 +3898,7 @@ function openAreaDialog(key) {
   document.getElementById('areaDialogHead').textContent = key ? 'エリアを編集' : 'エリアを追加';
   document.getElementById('areaName').value = a ? a.name : '';
   areaIconSel = a ? a.icon : 'spray-can';
+  document.getElementById('areaCarry').checked = !!(a && a.carryForward);
   buildAreaIconPicker();
   document.getElementById('areaDelete').style.display = key ? 'block' : 'none';
   if (!areaDialog.open) areaDialog.showModal();
@@ -3835,14 +3908,18 @@ document.getElementById('areaCancel').onclick = () => areaDialog.close();
 document.getElementById('areaSave').onclick = () => {
   const name = document.getElementById('areaName').value.trim();
   if (!name) { alert('エリア名を入力してください'); return; }
+  const carry = document.getElementById('areaCarry').checked;
   const list = loadCustomAreas();
   if (areaEditKey) {
     const a = list.find(x => x.key === areaEditKey);
-    if (a) { a.name = name; a.icon = areaIconSel; }
+    // 使っていない項目はデータに残さない（付けたときだけ持たせる）
+    if (a) { a.name = name; a.icon = areaIconSel; if (carry) a.carryForward = true; else delete a.carryForward; }
     saveCustomAreas(list);
   } else {
     const key = 'ca' + Date.now() + Math.floor(Math.random() * 1000);
-    list.push({ key: key, name: name, icon: areaIconSel });
+    const ent = { key: key, name: name, icon: areaIconSel };
+    if (carry) ent.carryForward = true;
+    list.push(ent);
     saveCustomAreas(list);
     saveCustomSections(key, ['清掃']); // 追加直後から項目を足せるよう区分を1つ用意
     currentArea = key;
@@ -4150,7 +4227,10 @@ function renderRoutineView() {
               + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
               + (routineEditMode
                   ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
-                  : (cdone ? '' : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
+                  : (cdone
+                      ? (crec[ci.id] && crec[ci.id]._slot
+                          ? '<span class="rt-carry">' + escapeHtml(crec[ci.id]._slot) + 'で実施</span>' : '')
+                      : '<span class="rt-last">' + escapeHtml(lastDoneLabel(staleMap[k + ':' + ci.id], true)) + '</span>'))
               + cEx
               + (cNums ? numFieldsHtml(ci) : '')
               + (cEx ? '<div class="ex-box" hidden></div>' : '')
@@ -4416,7 +4496,7 @@ function render() {
             <div class="item-title">${escapeHtml(item.title)}${item.custom ? ' <span class="custom-tag">追加</span>' : ''}${staleTag}</div>
             <div class="item-desc">${escapeHtml(item.desc)}</div>
             <div class="item-status">${ls ? escapeHtml('未完了: ' + ls.label + '（タップでそのエリアへ）') : '未実施'}</div>${ls ? '' : `<span class="last-done">${escapeHtml(lastDoneLabel(staleLast))}</span>`}
-            <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml(done.staff) + ' / ' + done.time) : ''}</div>
+            <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml((done._slot ? done._slot + '　' : '') + done.staff) + ' / ' + escapeHtml(done.time || '')) : ''}</div>
             ${itemLinkHtml(item, 'ext-link btn btn-secondary', 'display:inline-block; margin-top:8px; padding:8px 16px; text-decoration:none; font-size:.85rem;')}
             ${numFieldsHtml(item)}
             ${isRoutineArea(currentArea) ? '' : `<button class="media-btn">${ic('image')} 見本
@@ -5027,12 +5107,15 @@ function rvRecordsFull(store) {
 function withDate(dateStr, fn) {
   const prev = dateInput.value;
   const pc = _areaCompCache, pl = _linkCache, pw = _weekCycleCache, plc = _lastCheckedCache;
+  const pcy = _carryCache;
   dateInput.value = dateStr;
   _areaCompCache = {}; _linkCache = {}; _weekCycleCache = {}; _lastCheckedCache = {};
+  _carryCache = {};
   try { return fn(); }
   finally {
     dateInput.value = prev;
     _areaCompCache = pc; _linkCache = pl; _weekCycleCache = pw; _lastCheckedCache = plc;
+    _carryCache = pcy;
   }
 }
 function rvDays(n) {
