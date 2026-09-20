@@ -462,6 +462,8 @@
   .rt-last { font-size: 0.72rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
   /* 前の時間帯から引き継いだチェック。誰の手も動いていないことが分かるように出す */
   .rt-carry { font-size: 0.72rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+  /* まだ保存していない定期項目は、写真のひも付け先が決まらないので押せない */
+  #pSamples:disabled { opacity: .55; cursor: default; }
   .footer-actions {
     position: fixed; bottom: 0; left: 0; right: 0;
     background: #fff; border-top: 1px solid var(--border);
@@ -510,6 +512,9 @@
     flex-basis: 100%; margin-top: 10px; padding: 10px;
     background: #f7f9fb; border: 1px solid var(--border); border-radius: 10px;
   }
+  /* 定期清掃の一覧（.pitem）は横並びの行ではないので、上から順に置く */
+  .pitem-body > .ex-btn { align-self: flex-start; margin-top: 8px; }
+  .pitem-body > .ex-box { margin-top: 8px; }
   .ex-pair { display: flex; gap: 10px; }
   .ex-col { flex: 1 1 0; min-width: 0; }
   .ex-head { font-size: .78rem; font-weight: 700; margin-bottom: 4px; }
@@ -1072,6 +1077,10 @@
     <input type="text" id="pTitle" class="field" placeholder="例：換気扇フィルターの清掃">
     <label class="field-label" for="pDesc">補足説明（任意）</label>
     <input type="text" id="pDesc" class="field" placeholder="例：外して洗浄・乾燥">
+    <label class="field-label" for="pMethod">やり方（任意・1行ずつ）</label>
+    <textarea id="pMethod" class="field" rows="4" placeholder="例：&#10;①フィルターを外す&#10;②中性洗剤で洗う&#10;③乾かしてから戻す"></textarea>
+    <button type="button" id="pSamples" class="btn btn-secondary" style="width:100%;"></button>
+    <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.78rem;">やり方か写真を入れると、今日の plus α と定期清掃の一覧に「例を見る」が出ます。</p>
     <label class="field-label" for="pKind">繰り返し（どう決めるか）</label>
     <select id="pKind" class="field">
       <option value="days">◯日ごと</option>
@@ -2314,14 +2323,18 @@ function plusPeriodicHtml(tasks, dm) {
     const st = periodicStatus(t, dm[t.id]);
     // 補足があるときは has-desc を付ける。付けないと折り返さず、
     // 補足に押されて項目名が潰れる（幅0になって見えなくなる）
+    // たまにしかやらない作業なので、やり方・見本をその場で開けるようにする
+    const ex = exampleBtnHtml(PERIODIC_KEY, t.id);
     h += '<div class="rt-row plus-periodic' + (isDone ? ' done' : '')
-      + (t.desc ? ' has-desc' : '') + '" data-pplus="'
+      + (t.desc ? ' has-desc' : '') + (ex ? ' has-ex' : '') + '" data-pplus="'
       + escapeHtml(t.id) + '">'
       + '<span class="rt-check">' + ic('check') + '</span>'
       + '<span class="rt-title">' + escapeHtml(t.title) + '</span>'
       + '<span class="plus-freq">' + escapeHtml(repeatLabel(t)) + '</span>'
       + '<span class="plus-row-last">' + escapeHtml(isDone ? '今日' : st.label) + '</span>'
+      + ex
       + (t.desc ? '<div class="rt-desc">' + escapeHtml(t.desc) + '</div>' : '')
+      + (ex ? '<div class="ex-box" hidden></div>' : '')
       + '</div>';
   });
   return h;
@@ -2515,15 +2528,29 @@ function isVideoMedia(id) { return String(mediaTypes[id] || '').indexOf('video/'
 const METHOD_KIND = { kind: 'method', mark: '', label: 'やり方' };
 
 // エリアを指定して項目の定義を引く（開いたときに「やり方」を出すため）
+// 定期清掃はエリアに属さないので、定期の一覧から引く
 function findItemIn(areaKey, itemId) {
+  if (baseArea(areaKey) === PERIODIC_KEY) {
+    return loadPeriodic().find(t => t.id === itemId) || null;
+  }
   return areaItems(baseArea(areaKey)).find(i => i.id === itemId) || null;
 }
 
 // 「例を見る」は、いい例か悪い例が登録されている項目にだけ出す。
 // 手順テキストは全項目に入っているので、それを条件にすると全行にボタンが並んでしまう。
 // （開いたときは、ついでにやり方も出す）
+//
+// ただし定期清掃だけは、やり方が入っていれば出す。たまにしかやらない作業で
+// 「何をやるのか分からない」と言われていた所で、やり方が入っている項目のほうが
+// 少ないので、全行にボタンが並ぶ心配もない。
 function hasExamples(areaKey, itemId) {
-  return SAMPLE_KINDS.some(k => mediaIdsForArea(areaKey, itemId, k.kind).length > 0);
+  if (SAMPLE_KINDS.some(k => mediaIdsForArea(areaKey, itemId, k.kind).length > 0)) return true;
+  if (baseArea(areaKey) === PERIODIC_KEY) {
+    const t = findItemIn(areaKey, itemId);
+    if (t && String(t.method || '').trim()) return true;
+    if (mediaIdsForArea(areaKey, itemId, METHOD_KIND.kind).length > 0) return true;
+  }
+  return false;
 }
 
 // 行の右に置く「例を見る」
@@ -2550,8 +2577,11 @@ function exMediaHtml(areaKey, itemId, id, kind, label, cls) {
 // 行の中に開く欄: ○ いい例 と ✗ 悪い例 を横に並べ、その下にやり方
 function renderExamplePanel(box, areaKey, itemId) {
   const item = findItemIn(areaKey, itemId);
-  let h = '<div class="ex-pair">';
-  SAMPLE_KINDS.forEach(k => {
+  // いい例も悪い例も1枚も無いときは、空の枠を2つ並べない（やり方だけを出す）。
+  // 定期清掃は「やり方だけ登録してある」ことが多く、空枠だけで画面が埋まってしまうため。
+  const anyPic = SAMPLE_KINDS.some(k => mediaIdsForArea(areaKey, itemId, k.kind).length > 0);
+  let h = anyPic ? '<div class="ex-pair">' : '';
+  if (anyPic) SAMPLE_KINDS.forEach(k => {
     const ids = mediaIdsForArea(areaKey, itemId, k.kind);
     h += '<div class="ex-col ' + k.kind + '"'
       + ' data-ex-area="' + escapeHtml(areaKey) + '"'
@@ -2579,7 +2609,7 @@ function renderExamplePanel(box, areaKey, itemId) {
     }
     h += '</div>';
   });
-  h += '</div>';
+  if (anyPic) h += '</div>';
 
   const method = item ? String(item.method || '').trim() : '';
   const mIds = mediaIdsForArea(areaKey, itemId, METHOD_KIND.kind);
@@ -2641,8 +2671,8 @@ document.getElementById('checklist').addEventListener('click', (e) => {
   if (!btn) return;
   e.preventDefault();
   e.stopPropagation();
-  // やることリストの親の行（.rt-row）も対象にする
-  const row = btn.closest('.item, .rt-child, .rt-row');
+  // やることリストの親の行（.rt-row）と定期清掃の行（.pitem）も対象にする
+  const row = btn.closest('.item, .rt-child, .rt-row, .pitem');
   const box = row && row.querySelector('.ex-box');
   if (!box) return;
   if (box.hidden) {
@@ -2782,9 +2812,11 @@ async function addMediaFile(itemId, kind, file, onChange, areaKey) {
 
 // ----- 見本（OK/NG）ダイアログ：複数登録対応 -----
 // areaKey を渡すと、その項目が属するエリアの見本として保存・表示する。
-// fromEdit は「項目を編集」から開いた場合（閉じても裏の画面を描き直さない）
-function openMediaDialog(item, areaKey, fromEdit) {
-  mediaCtx = { item: item, area: areaKey || currentArea, fromEdit: !!fromEdit };
+// after は別のダイアログから開いた場合の戻り先。渡すと裏の画面を描き直さない
+// （描き直すと、開いたままのダイアログのボタンの結び付けが外れてしまう）
+function openMediaDialog(item, areaKey, after) {
+  mediaCtx = { item: item, area: areaKey || currentArea,
+               after: typeof after === 'function' ? after : null };
   document.getElementById('mediaTitle').textContent = item.title;
   drawSampleGallery('ok');
   drawSampleGallery('ng');
@@ -2805,8 +2837,8 @@ document.getElementById('ngFile').onchange = function () {
 };
 document.getElementById('mediaClose').onclick = () => {
   mediaDialog.close();
-  // 「項目を編集」から開いたときは、そのダイアログが残っているので描き直さない
-  if (mediaCtx && mediaCtx.fromEdit) updateEditSamplesBtn();
+  // 別のダイアログから開いたときは、そのダイアログが残っているので描き直さない
+  if (mediaCtx && mediaCtx.after) mediaCtx.after();
   else render();
 };
 
@@ -3001,7 +3033,8 @@ function updateEditSamplesBtn() {
 }
 document.getElementById('editSamples').onclick = () => {
   if (!editCtx) return;
-  openMediaDialog({ id: editCtx.id, title: editTitle.value.trim() || '項目' }, editCtx.area, true);
+  openMediaDialog({ id: editCtx.id, title: editTitle.value.trim() || '項目' },
+                  editCtx.area, updateEditSamplesBtn);
 };
 
 function openEditDialog(item, focusMethod, areaKey) {
@@ -3640,6 +3673,7 @@ function renderPeriodicView() {
     const last = (done && done.date)
       ? (done.date + '（' + s.elapsed + '日前' + (done.staff ? '・' + escapeHtml(done.staff) : '') + '）')
       : '未実施';
+    const pEx = exampleBtnHtml(PERIODIC_KEY, t.id);
     html += '<div class="pitem ' + s.cls + '">'
       + '<div class="pitem-body">'
       + '<div class="pitem-title">' + escapeHtml(t.title)
@@ -3649,6 +3683,7 @@ function renderPeriodicView() {
       + '<div class="pitem-meta">前回: ' + last
       + (s.next ? '　／　次: ' + s.next + (done && done.next ? '（指定）' : '') : '') + '</div>'
       + '<div class="pitem-statusline ' + s.cls + '">' + s.label + '</div>'
+      + (pEx ? pEx + '<div class="ex-box" hidden></div>' : '')
       + '<div class="pdate-row"><label>やる日</label>'
       + '<input type="date" class="pdate" data-pdate="' + escapeHtml(t.id) + '" value="'
       + escapeHtml((done && done.next) || '') + '"' + (currentStore ? '' : ' disabled') + '>'
@@ -3792,6 +3827,8 @@ function openPeriodicDialog(id) {
   document.getElementById('pArea').value = t ? (t.area || '') : '';
   document.getElementById('pTitle').value = t ? t.title : '';
   document.getElementById('pDesc').value = t ? (t.desc || '') : '';
+  document.getElementById('pMethod').value = t ? (t.method || '') : '';
+  updatePeriodicSamplesBtn();
   const r = taskRepeat(t || { interval: 30 });
   pKind.value = r.kind;
   syncRepeatPicker();
@@ -3813,6 +3850,30 @@ function openPeriodicDialog(id) {
   if (!periodicDialog.open) periodicDialog.showModal();
   document.getElementById('pTitle').focus();
 }
+// 「見本の写真」ボタンの文言（今どれだけ登録されているか）。
+// 新しく追加するときはまだ id が無く、写真のひも付け先が決まらないので押せない
+function updatePeriodicSamplesBtn() {
+  const btn = document.getElementById('pSamples');
+  if (!btn) return;
+  if (!periodicEditId) {
+    btn.disabled = true;
+    btn.innerHTML = ic('image') + ' いい例・悪い例の写真を登録する'
+      + '<span class="method-empty">（先に保存してください）</span>';
+    return;
+  }
+  btn.disabled = false;
+  const n = k => mediaIdsForArea(PERIODIC_KEY, periodicEditId, k).length;
+  const ok = n('ok'), ng = n('ng');
+  btn.innerHTML = ic('image') + ' いい例・悪い例の写真を登録する'
+    + (ok || ng
+        ? ' <span class="mini-badge ok on">OK ' + ok + '</span> <span class="mini-badge ng ' + (ng ? 'on' : '') + '">NG ' + ng + '</span>'
+        : ' <span class="method-empty">（未登録）</span>');
+}
+document.getElementById('pSamples').onclick = () => {
+  if (!periodicEditId) return;
+  openMediaDialog({ id: periodicEditId, title: document.getElementById('pTitle').value.trim() || '定期項目' },
+                  PERIODIC_KEY, updatePeriodicSamplesBtn);
+};
 document.getElementById('pCancel').onclick = () => periodicDialog.close();
 document.getElementById('pSave').onclick = () => {
   const title = document.getElementById('pTitle').value.trim();
@@ -3837,6 +3898,7 @@ document.getElementById('pSave').onclick = () => {
   const lastDone = document.getElementById('pLast').value || null;
   const area = document.getElementById('pArea').value.trim();
   const desc = document.getElementById('pDesc').value.trim();
+  const method = document.getElementById('pMethod').value.trim();
   const list = loadPeriodic();
   let id = periodicEditId;
   // 決め方を変えたときは、「消す」で消したぶんも入れ直す。
@@ -3848,11 +3910,14 @@ document.getElementById('pSave').onclick = () => {
     if (t) {
       repeatChanged = JSON.stringify(taskRepeat(t)) !== JSON.stringify(taskRepeat({ repeat: repeat }));
       t.area = area; t.title = title; t.desc = desc;
+      if (method) t.method = method; else delete t.method;
       t.repeat = repeat; t.interval = interval; t.lastDone = lastDone;
     }
   } else {
     id = 'p' + Date.now() + Math.floor(Math.random() * 1000);
-    list.push({ id, area, title, desc, repeat, interval, lastDone, lastStaff: '' });
+    const ent = { id, area, title, desc, repeat, interval, lastDone, lastStaff: '' };
+    if (method) ent.method = method;
+    list.push(ent);
   }
   savePeriodic(list);
 
