@@ -315,7 +315,7 @@
     </div>
   </header>
 
-  <div class="banner" id="banner" hidden>共有保存が使えないため、入力内容はこのブラウザ内にだけ保存されます。claude.ai 上で開くと、同じ組織のメンバーと同じ一覧を共有できます。</div>
+  <div class="banner" id="banner" hidden>共有保存が使えないため、入力内容はこのブラウザ内にだけ保存されます。claude.ai 上で開くと、同じページを開いた人と一覧を共有できます。</div>
 
   <section class="tiles" id="tiles" aria-label="対応状況の集計"></section>
 
@@ -368,8 +368,8 @@
           <button type="button" data-s="完了">完了</button>
         </div>
         <div class="grid" style="margin-top:10px">
-          <div class="f"><label for="i-assignee">対応担当者</label><input id="i-assignee" list="asg-list" placeholder="例: 総務 山田"><datalist id="asg-list"></datalist></div>
-          <div class="f"><label for="i-priority">優先度</label><select id="i-priority"><option value="高">高（業務停止・安全に関わる）</option><option value="中" selected>中（業務に支障あり）</option><option value="低">低（急がない）</option></select></div>
+          <div class="f"><label for="i-assignee">対応担当者</label><input id="i-assignee" list="asg-list" placeholder="例: 店長 山田"><datalist id="asg-list"></datalist></div>
+          <div class="f"><label for="i-priority">優先度</label><select id="i-priority"><option value="高">高（利用停止・安全に関わる）</option><option value="中" selected>中（利用に支障あり）</option><option value="低">低（急がない）</option></select></div>
           <div class="f"><label for="i-deadline">対応期限</label><input type="date" id="i-deadline" class="mono"></div>
           <div class="f"><label for="i-completed">完了日</label><input type="date" id="i-completed" class="mono"><span class="help">完了にして保存すると自動で今日が入ります</span></div>
         </div>
@@ -382,10 +382,9 @@
           <div class="f"><label for="i-category">区分<span class="req">必須</span></label><select id="i-category"><option value="">選択してください</option><option>破損</option><option>故障</option><option>盗難</option><option>紛失</option><option>その他</option></select></div>
           <div class="f"><label for="i-received">受付日<span class="req">必須</span></label><input type="date" id="i-received" class="mono"></div>
           <div class="f"><label for="i-occurred">発生日</label><input type="date" id="i-occurred" class="mono"></div>
-          <div class="f"><label for="i-item">対象物（品名）<span class="req">必須</span></label><input id="i-item" placeholder="例: ノートPC（営業部貸与）"></div>
-          <div class="f"><label for="i-asset">資産番号・管理番号</label><input id="i-asset" class="mono" placeholder="例: PC-0123"></div>
-          <div class="f"><label for="i-place">発生場所</label><input id="i-place" placeholder="例: 3F 営業部フロア"></div>
-          <div class="f"><label for="i-reporter">報告者（部署・氏名）</label><input id="i-reporter" placeholder="例: 営業部 田中"></div>
+          <div class="f full"><label for="i-item">対象物（品名）<span class="req">必須</span></label><input id="i-item" placeholder="例: ランニングマシン 3号機"></div>
+          <div class="f"><label for="i-place">発生場所</label><input id="i-place" placeholder="例: 2F マシンエリア"></div>
+          <div class="f"><label for="i-reporter">報告者（スタッフ名）</label><input id="i-reporter" placeholder="例: 田中"></div>
           <div class="f full"><label for="i-detail">状況・詳細</label><textarea id="i-detail" placeholder="報告時点でわかっている事実を書きます。原因の推測と事実は分けて書くと後で役立ちます。"></textarea></div>
         </div>
       </fieldset>
@@ -560,7 +559,7 @@
       if (state.category && c.category !== state.category) return false;
       if (state.assignee && (c.assignee || '') !== state.assignee) return false;
       if (q) {
-        const hay = [c.no, c.item, c.assetNo, c.place, c.reporter, c.assignee, c.detail, c.note, c.category].map(v => String(v || '').toLowerCase()).join('\n');
+        const hay = [c.no, c.item, c.place, c.reporter, c.assignee, c.detail, c.note, c.category].map(v => String(v || '').toLowerCase()).join('\n');
         if (!hay.includes(q)) return false;
       }
       return true;
@@ -625,7 +624,7 @@
         '<td class="c-no">' + esc(c.no) + '</td>' +
         '<td class="c-status"><span class="pill" data-s="' + esc(c.status) + '">' + esc(c.status) + '</span></td>' +
         '<td class="c-cat" data-l="区分">' + esc(c.category) + (c.priority === '高' ? '<span class="prio">優先:高</span>' : '') + '</td>' +
-        '<td class="c-item">' + esc(c.item) + (c.assetNo ? '<span class="sub mono">' + esc(c.assetNo) + '</span>' : '') + '</td>' +
+        '<td class="c-item">' + esc(c.item) + '</td>' +
         '<td class="c-place" data-l="場所">' + esc(c.place) + '</td>' +
         '<td class="c-reporter" data-l="報告">' + esc(c.reporter) + '</td>' +
         '<td class="c-assignee" data-l="担当">' + esc(c.assignee) + '</td>' +
@@ -640,7 +639,7 @@
 
   // ---------- drawer ----------
   function blankCase() {
-    return { no: nextNo(), receivedAt: todayStr(), occurredAt: '', category: '', item: '', assetNo: '', place: '', reporter: '', detail: '',
+    return { no: nextNo(), receivedAt: todayStr(), occurredAt: '', category: '', item: '', place: '', reporter: '', detail: '',
       priority: '中', assignee: '', status: '未対応', deadline: '', completedAt: '', note: '', log: [], createdAt: '', updatedAt: '' };
   }
   function openDrawer(id) {
@@ -663,7 +662,7 @@
     state.openId = null; state.draft = null; state.dirty = false;
   }
   function setDirty(v) { state.dirty = v; $('#d-dirty').hidden = !v; }
-  const F = { no: '#i-no', category: '#i-category', receivedAt: '#i-received', occurredAt: '#i-occurred', item: '#i-item', assetNo: '#i-asset',
+  const F = { no: '#i-no', category: '#i-category', receivedAt: '#i-received', occurredAt: '#i-occurred', item: '#i-item',
     place: '#i-place', reporter: '#i-reporter', detail: '#i-detail', priority: '#i-priority', assignee: '#i-assignee', deadline: '#i-deadline',
     completedAt: '#i-completed', note: '#i-note' };
   function fillForm(c) {
@@ -715,9 +714,9 @@
   // ---------- CSV ----------
   async function exportCsv() {
     if (!downloads) return;
-    const head = ['管理No.', '対応状況', '区分', '対象物', '資産番号', '発生場所', '報告者', '状況・詳細', '優先度', '対応担当者', '受付日', '発生日', '対応期限', '完了日', '経過日数', '期限判定', '備考', '対応履歴'];
+    const head = ['管理No.', '対応状況', '区分', '対象物', '発生場所', '報告者', '状況・詳細', '優先度', '対応担当者', '受付日', '発生日', '対応期限', '完了日', '経過日数', '期限判定', '備考', '対応履歴'];
     const rows = allCases().sort((a, b) => (a.no || '').localeCompare(b.no || '')).map(c => [
-      c.no, c.status, c.category, c.item, c.assetNo, c.place, c.reporter, c.detail, c.priority, c.assignee, fmtDate(c.receivedAt), fmtDate(c.occurredAt),
+      c.no, c.status, c.category, c.item, c.place, c.reporter, c.detail, c.priority, c.assignee, fmtDate(c.receivedAt), fmtDate(c.occurredAt),
       fmtDate(c.deadline), fmtDate(c.completedAt), elapsed(c), judge(c), c.note, (c.log || []).map(e => fmtDate(e.at) + ' ' + e.text).join(' / ')]);
     const cell = v => { const s = v == null ? '' : String(v); return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const csv = '﻿' + [head].concat(rows).map(r => r.map(cell).join(',')).join('\r\n');
