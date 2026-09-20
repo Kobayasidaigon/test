@@ -429,11 +429,11 @@
   .plus-box { margin-top: 14px; padding: 10px 10px 6px; border-radius: 10px;
     background: #fff8e1; border: 1.5px solid #ffcc80; }
   .plus-head { display: flex; align-items: center; gap: 6px;
-    font-size: .85rem; font-weight: 800; color: #e65100; }
+    font-size: .98rem; font-weight: 800; color: #e65100; }
   .plus-head .ic { flex-shrink: 0; }
-  .plus-n { margin-left: auto; font-size: .72rem; font-weight: 700; color: #fff;
-    background: #fb8c00; padding: 1px 8px; border-radius: 9px; }
-  .plus-note { font-size: .7rem; color: #a1663a; margin: 2px 0 8px; line-height: 1.4; }
+  .plus-n { margin-left: auto; font-size: .78rem; font-weight: 700; color: #fff;
+    background: #fb8c00; padding: 2px 10px; border-radius: 9px; }
+  .plus-note { font-size: .76rem; color: #a1663a; margin: 4px 0 10px; line-height: 1.5; }
   .pdate-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
   .pdate-row label { font-size: .72rem; font-weight: 700; color: var(--muted); }
   .pdate { font-size: .8rem; padding: 4px 7px; border: 1px solid var(--border);
@@ -445,12 +445,37 @@
   .plus-gauge { height: 7px; border-radius: 4px; background: #ffe0b2; overflow: hidden; margin-top: 6px; }
   .plus-gauge-fill { height: 100%; border-radius: 4px; background: #fb8c00; transition: width .25s ease; }
   .plus-gauge-fill.full { background: var(--done); }
-  .plus-periodic .rt-title { flex: 1; }
   .plus-box .rt-row, .plus-box .item { background: var(--card); }
   .plus-freq { font-size: .66rem; font-weight: 700; color: #fff; background: #fb8c00;
     padding: 1px 7px; border-radius: 9px; margin-left: 4px; vertical-align: middle;
     white-space: nowrap; flex-shrink: 0; }
   .plus-row-last { font-size: .68rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+
+  /* 定期清掃の行は、毎日の項目より大きく出す。
+     たまにしかやらない作業で「何をやるのか」が伝わらないと困るのと、
+     もともと件数が少ないので、大きくしても画面が埋まらないため。 */
+  .plus-periodic { flex-wrap: wrap; align-items: flex-start; padding: 12px 12px 10px; gap: 10px;
+    margin-bottom: 8px; border-radius: 10px; }
+  .plus-periodic .rt-check { width: 26px; height: 26px; border-width: 2.5px; margin-top: 1px; }
+  .plus-periodic .rt-check .ic { width: 17px; height: 17px; }
+  /* 長い題名を「…」で切らない。何の作業か読めることを優先する */
+  .plus-periodic .rt-title { flex: 1 1 0; min-width: 0; font-size: .97rem; font-weight: 700;
+    line-height: 1.45; white-space: normal; overflow: visible; text-overflow: clip; }
+  .plus-periodic .rt-desc { flex-basis: 100%; margin: 0 0 0 36px; font-size: .8rem; line-height: 1.5; }
+  /* 頻度・いつやるか・「例を見る」は題名の下にまとめる */
+  .plus-meta { flex-basis: 100%; display: flex; align-items: center; flex-wrap: wrap;
+    gap: 8px; margin: 2px 0 0 36px; }
+  .plus-periodic .plus-freq { font-size: .72rem; padding: 3px 10px; margin: 0; }
+  .plus-periodic .plus-row-last { font-size: .8rem; }
+  /* 状態の印は定期清掃の一覧（.pitem）と同じ言い方にそろえる: urgent / warn / ok / unset */
+  .plus-row-last.urgent { color: #c62828; font-weight: 700; }
+  .plus-row-last.warn { color: #e65100; font-weight: 700; }
+  .plus-row-last.done { color: var(--done); font-weight: 700; }
+  .plus-meta .ex-btn { margin-left: auto; padding: 6px 12px; font-size: .78rem; }
+  .plus-periodic .ex-box { margin-top: 10px; }
+  @media (max-width: 480px) {
+    .plus-periodic .rt-desc, .plus-meta { margin-left: 0; }
+  }
   .item-status {
     font-size: 0.72rem; font-weight: 700; color: #e65100;
     background: var(--undone-bg); padding: 2px 8px; border-radius: 10px;
@@ -2325,15 +2350,20 @@ function plusPeriodicHtml(tasks, dm) {
     // 補足に押されて項目名が潰れる（幅0になって見えなくなる）
     // たまにしかやらない作業なので、やり方・見本をその場で開けるようにする
     const ex = exampleBtnHtml(PERIODIC_KEY, t.id);
+    // 題名は行いっぱいに使って折り返す。頻度・状態・「例を見る」はその下にまとめる。
+    // 毎日の項目と同じ1行詰めにすると、長い題名が「…」で切れて何の作業か分からない
     h += '<div class="rt-row plus-periodic' + (isDone ? ' done' : '')
       + (t.desc ? ' has-desc' : '') + (ex ? ' has-ex' : '') + '" data-pplus="'
       + escapeHtml(t.id) + '">'
       + '<span class="rt-check">' + ic('check') + '</span>'
       + '<span class="rt-title">' + escapeHtml(t.title) + '</span>'
-      + '<span class="plus-freq">' + escapeHtml(repeatLabel(t)) + '</span>'
-      + '<span class="plus-row-last">' + escapeHtml(isDone ? '今日' : st.label) + '</span>'
-      + ex
       + (t.desc ? '<div class="rt-desc">' + escapeHtml(t.desc) + '</div>' : '')
+      + '<div class="plus-meta">'
+      + '<span class="plus-freq">' + escapeHtml(repeatLabel(t)) + '</span>'
+      + '<span class="plus-row-last ' + (isDone ? 'done' : st.cls) + '">'
+      + escapeHtml(isDone ? '今日' : st.label) + '</span>'
+      + ex
+      + '</div>'
       + (ex ? '<div class="ex-box" hidden></div>' : '')
       + '</div>';
   });
