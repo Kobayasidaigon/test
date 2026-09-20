@@ -391,11 +391,9 @@
       </fieldset>
 
       <fieldset>
-        <legend>届出・費用</legend>
+        <legend>備考</legend>
         <div class="grid">
-          <div class="f"><label for="i-police">警察届出（盗難・紛失時）</label><select id="i-police"><option value="不要">不要</option><option value="未">未</option><option value="済">済</option></select></div>
-          <div class="f"><label for="i-cost">費用（円）</label><input type="number" id="i-cost" class="mono" min="0" step="1" inputmode="numeric" placeholder="修理・買替の見込額でも可"></div>
-          <div class="f full"><label for="i-note">備考</label><textarea id="i-note" placeholder="被害届の受理番号、保険会社への連絡状況など"></textarea></div>
+          <div class="f full"><textarea id="i-note" aria-label="備考" placeholder="引き継ぎのメモ、関連する案件など"></textarea></div>
         </div>
       </fieldset>
 
@@ -643,7 +641,7 @@
   // ---------- drawer ----------
   function blankCase() {
     return { no: nextNo(), receivedAt: todayStr(), occurredAt: '', category: '', item: '', assetNo: '', place: '', reporter: '', detail: '',
-      priority: '中', assignee: '', status: '未対応', deadline: '', completedAt: '', police: '不要', cost: null, note: '', log: [], createdAt: '', updatedAt: '' };
+      priority: '中', assignee: '', status: '未対応', deadline: '', completedAt: '', note: '', log: [], createdAt: '', updatedAt: '' };
   }
   function openDrawer(id) {
     const isNew = !id; const src = isNew ? blankCase() : Object.assign(blankCase(), state.cases.get(id));
@@ -667,7 +665,7 @@
   function setDirty(v) { state.dirty = v; $('#d-dirty').hidden = !v; }
   const F = { no: '#i-no', category: '#i-category', receivedAt: '#i-received', occurredAt: '#i-occurred', item: '#i-item', assetNo: '#i-asset',
     place: '#i-place', reporter: '#i-reporter', detail: '#i-detail', priority: '#i-priority', assignee: '#i-assignee', deadline: '#i-deadline',
-    completedAt: '#i-completed', police: '#i-police', cost: '#i-cost', note: '#i-note' };
+    completedAt: '#i-completed', note: '#i-note' };
   function fillForm(c) {
     for (const k in F) { const el = $(F[k]); el.value = c[k] == null ? '' : c[k]; }
     setSeg(c.status);
@@ -675,7 +673,7 @@
   function setSeg(s) { $('#seg').querySelectorAll('button').forEach(b => { b.classList.toggle('is-on', b.dataset.s === s); b.setAttribute('aria-checked', b.dataset.s === s); }); }
   function readForm() {
     const d = state.draft;
-    for (const k in F) { const v = $(F[k]).value; d[k] = k === 'cost' ? (v === '' ? null : Number(v)) : v.trim(); }
+    for (const k in F) { d[k] = $(F[k]).value.trim(); }
     return d;
   }
   function renderLog() {
@@ -717,10 +715,10 @@
   // ---------- CSV ----------
   async function exportCsv() {
     if (!downloads) return;
-    const head = ['管理No.', '対応状況', '区分', '対象物', '資産番号', '発生場所', '報告者', '状況・詳細', '優先度', '対応担当者', '受付日', '発生日', '対応期限', '完了日', '経過日数', '期限判定', '警察届出', '費用（円）', '備考', '対応履歴'];
+    const head = ['管理No.', '対応状況', '区分', '対象物', '資産番号', '発生場所', '報告者', '状況・詳細', '優先度', '対応担当者', '受付日', '発生日', '対応期限', '完了日', '経過日数', '期限判定', '備考', '対応履歴'];
     const rows = allCases().sort((a, b) => (a.no || '').localeCompare(b.no || '')).map(c => [
       c.no, c.status, c.category, c.item, c.assetNo, c.place, c.reporter, c.detail, c.priority, c.assignee, fmtDate(c.receivedAt), fmtDate(c.occurredAt),
-      fmtDate(c.deadline), fmtDate(c.completedAt), elapsed(c), judge(c), c.police, c.cost, c.note, (c.log || []).map(e => fmtDate(e.at) + ' ' + e.text).join(' / ')]);
+      fmtDate(c.deadline), fmtDate(c.completedAt), elapsed(c), judge(c), c.note, (c.log || []).map(e => fmtDate(e.at) + ' ' + e.text).join(' / ')]);
     const cell = v => { const s = v == null ? '' : String(v); return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const csv = '﻿' + [head].concat(rows).map(r => r.map(cell).join(',')).join('\r\n');
     try { await downloads.save({ filename: '対応台帳_' + todayStr().replace(/-/g, '') + '.csv', data: csv }); toast('CSVを書き出しました'); }
