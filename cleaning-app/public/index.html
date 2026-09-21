@@ -440,6 +440,17 @@
     border-radius: 7px; background: var(--card); color: var(--text); }
   .pdate-clear { font-size: .7rem; padding: 3px 8px; border: 1px solid var(--border);
     border-radius: 999px; background: #fff; color: var(--muted); cursor: pointer; }
+  /* 出す店舗の選び（定期項目のダイアログ） */
+  .pstores { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+  .pstore { display: flex; align-items: center; gap: 6px; cursor: pointer;
+    border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px;
+    font-size: .85rem; background: #fff; }
+  .pstore input { width: 18px; height: 18px; margin: 0; }
+  .pstore:has(input:checked) { border-color: var(--primary); background: #e8f2fd;
+    color: var(--primary-dark); font-weight: 700; }
+  /* 一部の店舗にだけ出す項目の印（無い設備の項目が他店に出て戸惑わないように） */
+  .pstore-tag { font-size: .66rem; font-weight: 700; color: #fff; background: #5c6bc0;
+    padding: 1px 7px; border-radius: 9px; white-space: nowrap; vertical-align: middle; }
   .pitem.unset { border-left-color: var(--border); }
   .pitem-statusline.unset { color: var(--muted); }
   .plus-gauge { height: 7px; border-radius: 4px; background: #ffe0b2; overflow: hidden; margin-top: 6px; }
@@ -1096,6 +1107,8 @@
 <dialog id="periodicDialog">
   <div class="dialog-body">
     <h3 id="periodicDialogHead">定期項目を追加</h3>
+    <label class="field-label">出す店舗</label>
+    <div class="pstores" id="pStores"></div>
     <label class="field-label" for="pArea">区分（任意のラベル）</label>
     <input type="text" id="pArea" class="field" placeholder="例：設備 / マシン / 共用">
     <label class="field-label" for="pTitle">項目名 <span style="color:#e53935">*</span></label>
@@ -1654,7 +1667,8 @@ function firstFromRepeat(task, from) {
 // force=true なら、「消す」で消したぶんも入れ直す（決め方を変えたとき）
 function scheduleFromRepeat(id, task, force) {
   const first = firstFromRepeat(task, todayStr());
-  STORES.forEach(st => {
+  // 出さない店舗に「やる日」を入れても意味がないので、出す店舗だけに入れる
+  STORES.filter(st => periodicForStore(task, st)).forEach(st => {
     const dm = loadPeriodicDone(st);
     const cur = dm[id];
     if (cur && (cur.date || cur.next)) return;   // すでに日があるか、やったことがある
@@ -3692,7 +3706,7 @@ function renderTodo(staleMap) {
 function renderPeriodicView() {
   const checklist = document.getElementById('checklist');
   const dm = loadPeriodicDone(currentStore);
-  const list = periodicSort(loadPeriodic(), dm);
+  const list = periodicSort(periodicList(), dm);
   let html = '<div class="periodic-intro">頻度を決めて「たまにやる」項目を管理します。<b>実施時期</b>のものが上に出ます。やったら「完了」を押すと次回までのカウントが戻ります。'
     + (currentStore ? '（実施記録は「' + escapeHtml(currentStore) + '」のもの）' : '<b>上部で店舗を選ぶと、その店舗の実施記録が表示されます。</b>') + '</div>';
   if (list.length === 0) html += '<div class="cmp-empty">定期項目がありません。下の「＋ 定期項目を追加」から登録できます。</div>';
@@ -3708,7 +3722,10 @@ function renderPeriodicView() {
       + '<div class="pitem-body">'
       + '<div class="pitem-title">' + escapeHtml(t.title)
       + ' <span class="pfreq">' + escapeHtml(repeatLabel(t)) + '</span>'
-      + (t.area ? ' <span class="parea">' + escapeHtml(t.area) + '</span>' : '') + '</div>'
+      + (t.area ? ' <span class="parea">' + escapeHtml(t.area) + '</span>' : '')
+      + (Array.isArray(t.stores) && t.stores.length && t.stores.length < STORES.length
+          ? ' <span class="pstore-tag">' + escapeHtml(t.stores.join('・')) + 'だけ</span>' : '')
+      + '</div>'
       + (t.desc ? '<div class="pitem-desc">' + escapeHtml(t.desc) + '</div>' : '')
       + '<div class="pitem-meta">前回: ' + last
       + (s.next ? '　／　次: ' + s.next + (done && done.next ? '（指定）' : '') : '') + '</div>'
@@ -3854,6 +3871,7 @@ function openPeriodicDialog(id) {
   periodicEditId = id;
   const t = id ? loadPeriodic().find(x => x.id === id) : null;
   document.getElementById('periodicDialogHead').textContent = id ? '定期項目を編集' : '定期項目を追加';
+  buildPeriodicStores(t);
   document.getElementById('pArea').value = t ? (t.area || '') : '';
   document.getElementById('pTitle').value = t ? t.title : '';
   document.getElementById('pDesc').value = t ? (t.desc || '') : '';
@@ -3880,6 +3898,24 @@ function openPeriodicDialog(id) {
   if (!periodicDialog.open) periodicDialog.showModal();
   document.getElementById('pTitle').focus();
 }
+// 出す店舗のチェック欄。何も持っていない項目は「全店舗」として全部にチェックを入れる
+function buildPeriodicStores(t) {
+  const wrap = document.getElementById('pStores');
+  if (!wrap) return;
+  const on = (t && Array.isArray(t.stores) && t.stores.length) ? t.stores : STORES;
+  wrap.innerHTML = '';
+  STORES.forEach(st => {
+    const lab = document.createElement('label');
+    lab.className = 'pstore';
+    lab.innerHTML = '<input type="checkbox" value="' + escapeHtml(st) + '"'
+      + (on.indexOf(st) >= 0 ? ' checked' : '') + '><span>' + escapeHtml(st) + '</span>';
+    wrap.appendChild(lab);
+  });
+}
+function readPeriodicStores() {
+  return Array.from(document.querySelectorAll('#pStores input:checked')).map(x => x.value);
+}
+
 // 「見本の写真」ボタンの文言（今どれだけ登録されているか）。
 // 新しく追加するときはまだ id が無く、写真のひも付け先が決まらないので押せない
 function updatePeriodicSamplesBtn() {
@@ -3929,6 +3965,10 @@ document.getElementById('pSave').onclick = () => {
   const area = document.getElementById('pArea').value.trim();
   const desc = document.getElementById('pDesc').value.trim();
   const method = document.getElementById('pMethod').value.trim();
+  const stores = readPeriodicStores();
+  if (!stores.length) { alert('出す店舗を1つ以上選んでください'); return; }
+  // 全店舗のときは持たせない。持たせると、あとで店舗が増えたときに出なくなる
+  const someStores = stores.length < STORES.length ? stores : null;
   const list = loadPeriodic();
   let id = periodicEditId;
   // 決め方を変えたときは、「消す」で消したぶんも入れ直す。
@@ -3941,12 +3981,14 @@ document.getElementById('pSave').onclick = () => {
       repeatChanged = JSON.stringify(taskRepeat(t)) !== JSON.stringify(taskRepeat({ repeat: repeat }));
       t.area = area; t.title = title; t.desc = desc;
       if (method) t.method = method; else delete t.method;
+      if (someStores) t.stores = someStores; else delete t.stores;
       t.repeat = repeat; t.interval = interval; t.lastDone = lastDone;
     }
   } else {
     id = 'p' + Date.now() + Math.floor(Math.random() * 1000);
     const ent = { id, area, title, desc, repeat, interval, lastDone, lastStaff: '' };
     if (method) ent.method = method;
+    if (someStores) ent.stores = someStores;
     list.push(ent);
   }
   savePeriodic(list);
@@ -3963,7 +4005,7 @@ document.getElementById('pSave').onclick = () => {
     savePeriodicDone(currentStore, dm);
   }
   // 繰り返しを決めたら、やる日をまだ持っていない店舗に自動で入れる
-  scheduleFromRepeat(id, { repeat: repeat, interval: interval }, repeatChanged);
+  scheduleFromRepeat(id, { repeat: repeat, interval: interval, stores: someStores }, repeatChanged);
 
   periodicDialog.close();
   render();
@@ -4783,6 +4825,24 @@ function periodicStatus(task, done) {
   }
   return { state: 'ok', elapsed, left, next, label: 'あと' + left + '日', cls: 'ok' };
 }
+// 定期項目を出す店舗。
+//
+// 定期清掃の中身は3店舗で共通だが、その店舗にしか無い設備（酸素ルームなど）の
+// 項目まで全店に出ると、無い店舗の人が「これは何だろう」と止まってしまう。
+// stores に店舗名を入れるとそこだけに出る。入っていない項目は今までどおり全店に出す。
+//
+// 店舗を選んでいないときは全部出す（どの店舗の項目があるのか見えなくなるため）。
+function periodicForStore(task, store) {
+  const ss = task && task.stores;
+  if (!Array.isArray(ss) || !ss.length) return true;
+  return !store || ss.indexOf(store) >= 0;
+}
+// その店舗に出す定期項目だけ
+function periodicList(store) {
+  const st = store !== undefined ? store : currentStore;
+  return loadPeriodic().filter(t => periodicForStore(t, st));
+}
+
 // その店舗で今日やる定期清掃。
 // 今日やり終えた分も残す（やった瞬間に消えると、やったのか分からなくなるため）。
 // タブのバッジ（periodicDueCount）は「残り何件か」なので、そちらには足さない。
@@ -4790,7 +4850,7 @@ function periodicDueTasks(store) {
   const st = store !== undefined ? store : currentStore;
   if (!st) return [];
   const dm = loadPeriodicDone(st);
-  return loadPeriodic().filter(t =>
+  return periodicList(st).filter(t =>
     periodicStatus(t, dm[t.id]).state === 'due' || periodicDoneToday(t, dm));
 }
 // 並び順は定期清掃の一覧と同じ（過ぎているものが先）
@@ -4812,7 +4872,7 @@ function periodicDueCount(store) {
   const st = store !== undefined ? store : currentStore;
   if (!st) return 0; // 店舗未選択時はバッジを騒がせない
   const dm = loadPeriodicDone(st);
-  return loadPeriodic().filter(t => periodicStatus(t, dm[t.id]).state === 'due').length;
+  return periodicList(st).filter(t => periodicStatus(t, dm[t.id]).state === 'due').length;
 }
 
 // 表示中の担当者・日付について、指定エリア（清掃場所）の結果スナップショットを作成
@@ -5431,7 +5491,7 @@ function rvShiftComplete(store) {
 // 9. 定期清掃の期限切れ
 function rvPeriodic(store) {
   const dm = loadPeriodicDone(store);
-  return loadPeriodic().map(t => ({ t: t, s: periodicStatus(t, dm[t.id]) }))
+  return periodicList(store).map(t => ({ t: t, s: periodicStatus(t, dm[t.id]) }))
     .filter(x => x.s.state === 'due')
     .sort((a, b) => (b.s.elapsed === null ? 9999 : b.s.elapsed) - (a.s.elapsed === null ? 9999 : a.s.elapsed));
 }
