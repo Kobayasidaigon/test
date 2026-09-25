@@ -330,6 +330,7 @@
   .pri-must  { background: #fdecea; color: #c62828; }
   .pri-next  { background: #fff3e0; color: #ef6c00; }
   .pri-free  { background: #e3f2fd; color: #1565c0; }
+  .pri-stock { background: #e8f5e9; color: #2e7d32; }
   .pri-time  { background: #f3e5f5; color: #6a1b9a; }
   .pri-end   { background: #eceff1; color: #546e7a; }
   /* 順繰りで上に来た行に出す「◯日空き」 */
@@ -4281,98 +4282,85 @@ function setProgress(doneCount, total, areaName) {
     whoLabel + (areaName || '') + ': ' + doneCount + ' / ' + total + ' 完了 (' + pct + '%)';
 }
 
-// ===== 優先度の見出し =====
+// ===== 仕事の区分（見出し）=====
 //
-// 決めた順位（サウナ→シャワー→トイレ→更衣室→水素水・プロテイン→
-// フロア等→エステ等）を、番号ではなく言葉で出す。
-// 「①が何か」を覚えなくても、読めば削っていいかどうかが分かるようにするため。
+// 清掃はサウナ→シャワー→トイレ→更衣室…の順に回る。その順番を、
+// 番号ではなく言葉で出す。
 //
-// 並べ替えはしない。今の並びのどこで区切るかを決めるだけ。
+// 大事なのは「やる／やらない」ではなく「どの順で回るか」。
+// 全部毎日やるのが前提なので、見出しには「手が空いたら」のような
+// 省いてよく読める言い方を置かない。場所の名前だけにする。
+//
+// 順番を持っているのは清掃の行だけ。補充・交換や締めの仕事は
+// 清掃の箱に入れず、別の区分にする（前の作りではここを混ぜてしまい、
+// ゴミ回収や茶色タオル交換が「手が空いたら」に落ちていた）。
 const PRI_HEADS = {
-  start: ['pri-start', 'はじめに', '引き継ぎ・確認'],
-  must:  ['pri-must',  'まずここから', 'サウナ・シャワー・トイレ'],
-  next:  ['pri-next',  '次に', '更衣室・水素水・プロテイン'],
-  free:  ['pri-free',  '手が空いたら', '空いている所から'],
-  time:  ['pri-time',  '時間が決まっている', ''],
-  end:   ['pri-end',   '最後に', '片付け・報告'],
+  hand:  ['pri-start', '引き継ぎ', '電源・申し送り・予約の確認'],
+  c1:    ['pri-must',  '清掃①', 'サウナ・シャワー・トイレ'],
+  c2:    ['pri-next',  '清掃②', '更衣室・水素水・プロテイン'],
+  c3:    ['pri-free',  '清掃③', 'フロア・マシン・入口'],
+  stock: ['pri-stock', '補充・交換', '毎日やる'],
+  time:  ['pri-time',  '決まった時間', ''],
+  close: ['pri-end',   '締め・報告', ''],
 };
+function rowLinkAreas(item) {
+  return String(item && item.link || '').split(',')
+    .map(x => baseArea(x.trim())).filter(Boolean);
+}
 // 連動先のエリアから区分を決める。店舗ごとに鍵が増えている（sauna_b1・
-// shower_b7・toilet_m など）ので、頭の文字で見る。
+// shower_b7・toilet_m・saunamat など）ので、頭の文字で見る。
 function areaPriGroup(key) {
   const k = baseArea(key);
   if (k.indexOf('sauna') === 0 || k.indexOf('shower') === 0
-      || k.indexOf('toilet') === 0) return 'must';
+      || k.indexOf('toilet') === 0) return 'c1';
   if (k.indexOf('men_room') === 0 || k.indexOf('women_room') === 0
-      || k.indexOf('hydrogen') === 0 || k.indexOf('protein') === 0) return 'next';
+      || k.indexOf('hydrogen') === 0 || k.indexOf('protein') === 0) return 'c2';
   if (k.indexOf('golf') === 0) return 'time';
-  return 'free';   // フロア・マシン・エントランス・エステ・ビジリス等
+  return 'c3';   // フロア・マシン・入口・スタジオ・エステ・ビジリス等
 }
-// 連動していない行は題名から拾う（「サウナマット回収」「シャワーマット回収」など、
-// 連動は無いが明らかにその区分のもの）。分からなければ null で、前の行に続ける。
-//
-// 場所の名前だけで決めると「サウナ電源」「ストックルーム・サウナ施錠」
-// 「貸出備品（シャンプー…）の返却」まで拾ってしまう。
-// 場所の名前と、手を動かす言葉の両方がある行だけを拾う。
+// 連動していない行は題名から決める。見る順番が大事で、
+// まず「引き継ぎ」「締め」「補充」を先に押さえてから清掃を見る。
+// 先に清掃を見ると「サウナ電源」「ストックルーム・サウナ施錠」まで
+// 清掃として拾ってしまう。
+const PRI_W_HAND  = ['電源', '引継ぎ', '引き継ぎ', '顧客管理', 'ホワイトボード'];
+const PRI_W_CLOSE = ['金種表', '出納帳', '在庫管理', '閉め', '施錠',
+                     '充電確認', '音量確認', 'インスタグラム', '袋取り付け'];
+const PRI_W_STOCK = ['茶色タオル', 'アルコール', '備品', '駐車券', '冷風機',
+                     'ゴミ回収', 'ショット数', '返却'];
+// 清掃の行は、場所の名前と手を動かす言葉の両方があるものだけ拾う
+// （「サウナマット回収」○ ／「サウナ電源」×）
 const PRI_PLACE = {
-  must: ['サウナ', 'シャワー', 'シャンプー', 'トイレ', 'ペーパー', 'ハンドソープ'],
-  next: ['更衣', 'パウダー', 'プロテイン', '水素水'],
+  c1: ['サウナ', 'シャワー', 'シャンプー', 'トイレ', 'ペーパー', 'ハンドソープ'],
+  c2: ['更衣', 'パウダー', 'プロテイン', '水素水'],
 };
 const PRI_DOING = ['清掃', '掃除', '回収', '交換', '補充', '拭き', '洗い', '洗浄',
                    '排水', 'ネット', 'マット'];
 function titlePriGroup(title) {
   const t = String(title || '');
+  if (PRI_W_HAND.some(w => t.indexOf(w) >= 0)) return 'hand';
+  if (PRI_W_CLOSE.some(w => t.indexOf(w) >= 0)) return 'close';
+  if (PRI_W_STOCK.some(w => t.indexOf(w) >= 0)) return 'stock';
   if (!PRI_DOING.some(w => t.indexOf(w) >= 0)) return null;
-  if (PRI_PLACE.must.some(w => t.indexOf(w) >= 0)) return 'must';
-  if (PRI_PLACE.next.some(w => t.indexOf(w) >= 0)) return 'next';
+  if (PRI_PLACE.c1.some(w => t.indexOf(w) >= 0)) return 'c1';
+  if (PRI_PLACE.c2.some(w => t.indexOf(w) >= 0)) return 'c2';
   return null;
-}
-// 一日の終わりの片付け・報告。下から見て続いている分だけを「最後に」にする
-const PRI_END_WORDS = ['金種表', '出納帳', '在庫管理', '閉め', '施錠',
-                       '充電確認', '音量確認', 'インスタグラム', 'ゴミ回収'];
-function isPriEndRow(item) {
-  if (item.link) return false;
-  const t = String(item.title || '');
-  return PRI_END_WORDS.some(w => t.indexOf(w) >= 0);
 }
 // 各行がどの区分かを、今の並びのまま決める
 function priorityGroups(list) {
   if (!list.some(it => it.link)) return null;   // 連動が1つも無いリストには出さない
-  const g = new Array(list.length).fill(null);
-  // 1) 末尾の「片付け・報告」を先に押さえる（途中の「サウナ施錠」等に引っ張られないように）
-  let endFrom = list.length;
-  for (let i = list.length - 1; i >= 0; i--) {
-    if (!isPriEndRow(list[i])) break;
-    endFrom = i;
-  }
-  for (let i = endFrom; i < list.length; i++) g[i] = 'end';
-  // 2) 連動している行、題名で分かる行
-  for (let i = 0; i < endFrom; i++) {
-    const it = list[i];
+  const g = list.map(it => {
     if (it.link) {
       const keys = rowLinkAreas(it);
-      g[i] = keys.length ? areaPriGroup(keys[0]) : 'free';
-    } else {
-      g[i] = titlePriGroup(it.title);
+      return keys.length ? areaPriGroup(keys[0]) : 'c3';
     }
-  }
-  // 3) 残りは前の行に続ける。先頭にまだ決まっていない分があれば「はじめに」
+    return titlePriGroup(it.title);
+  });
+  // 決まらなかった行は前の行に続ける。先頭に残ったぶんは「引き継ぎ」
   let cur = null;
-  for (let i = 0; i < endFrom; i++) {
-    if (g[i]) cur = g[i];
-    else g[i] = cur;
-  }
-  for (let i = 0; i < endFrom && !g[i]; i++) g[i] = 'start';
-  // 4) 同じ見出しが2回以上出ないようにする。
-  //    並びの都合で「まずここから」があとにもう一度現れることがあるが、
-  //    見出しが行ったり来たりすると、どこまでが必須なのか読めなくなる。
-  //    2回目からは手前の区分に混ぜる。
-  const seen = {};
   for (let i = 0; i < g.length; i++) {
-    const prev = i > 0 ? g[i - 1] : null;
-    if (g[i] === prev) continue;
-    if (seen[g[i]]) g[i] = prev;   // すでに出した見出し → 手前に混ぜる
-    else seen[g[i]] = true;
+    if (g[i]) cur = g[i]; else g[i] = cur;
   }
+  for (let i = 0; i < g.length && !g[i]; i++) g[i] = 'hand';
   return g;
 }
 // 時刻が決まっているもの（ゴルフA=12〜13時 / B=15〜16時）は、見出しに時刻を出す
@@ -4400,10 +4388,6 @@ function priHeadHtml(id, item) {
 const ROTATE_AREAS = ['floor', 'machine', 'machine_mente', 'entrance'];
 let _rotGap = {};   // 1回の描画内で、行id → 空き日数
 
-function rowLinkAreas(item) {
-  return String(item && item.link || '').split(',')
-    .map(x => baseArea(x.trim())).filter(Boolean);
-}
 function isRotateRow(item) {
   return rowLinkAreas(item).some(k => ROTATE_AREAS.indexOf(k) >= 0);
 }
