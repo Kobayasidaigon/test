@@ -4296,10 +4296,9 @@ function setProgress(doneCount, total, areaName) {
 // ゴミ回収や茶色タオル交換が「手が空いたら」に落ちていた）。
 const PRI_HEADS = {
   hand:  ['pri-start', '引き継ぎ', '電源・申し送り・予約の確認'],
-  c1:    ['pri-must',  '清掃①', 'サウナ・シャワー・トイレ'],
-  c2:    ['pri-next',  '清掃②', '更衣室・水素水・プロテイン'],
-  c3:    ['pri-free',  '清掃③', 'フロア・マシン・入口'],
-  stock: ['pri-stock', '補充・交換', '毎日やる'],
+  must:  ['pri-must',  '必須', 'サウナ・シャワー・トイレ'],
+  daily: ['pri-free',  '日替わり', '空いている所から。毎日ぜんぶ回る'],
+  stock: ['pri-stock', '補充・交換', 'すぐ終わる・毎日'],
   time:  ['pri-time',  '決まった時間', ''],
   close: ['pri-end',   '締め・報告', ''],
 };
@@ -4312,11 +4311,10 @@ function rowLinkAreas(item) {
 function areaPriGroup(key) {
   const k = baseArea(key);
   if (k.indexOf('sauna') === 0 || k.indexOf('shower') === 0
-      || k.indexOf('toilet') === 0) return 'c1';
-  if (k.indexOf('men_room') === 0 || k.indexOf('women_room') === 0
-      || k.indexOf('hydrogen') === 0 || k.indexOf('protein') === 0) return 'c2';
+      || k.indexOf('toilet') === 0) return 'must';
   if (k.indexOf('golf') === 0) return 'time';
-  return 'c3';   // フロア・マシン・入口・スタジオ・エステ・ビジリス等
+  // それ以外の清掃はぜんぶ同じ重さ。日によって回る順を変える
+  return 'daily';
 }
 // 連動していない行は題名から決める。見る順番が大事で、
 // まず「引き継ぎ」「締め」「補充」を先に押さえてから清掃を見る。
@@ -4330,8 +4328,8 @@ const PRI_W_STOCK = ['茶色タオル', 'アルコール', '備品', '駐車券'
 // 清掃の行は、場所の名前と手を動かす言葉の両方があるものだけ拾う
 // （「サウナマット回収」○ ／「サウナ電源」×）
 const PRI_PLACE = {
-  c1: ['サウナ', 'シャワー', 'シャンプー', 'トイレ', 'ペーパー', 'ハンドソープ'],
-  c2: ['更衣', 'パウダー', 'プロテイン', '水素水'],
+  must:  ['サウナ', 'シャワー', 'シャンプー', 'トイレ', 'ペーパー', 'ハンドソープ'],
+  daily: ['更衣', 'パウダー', 'プロテイン', '水素水'],
 };
 const PRI_DOING = ['清掃', '掃除', '回収', '交換', '補充', '拭き', '洗い', '洗浄',
                    '排水', 'ネット', 'マット'];
@@ -4341,8 +4339,8 @@ function titlePriGroup(title) {
   if (PRI_W_CLOSE.some(w => t.indexOf(w) >= 0)) return 'close';
   if (PRI_W_STOCK.some(w => t.indexOf(w) >= 0)) return 'stock';
   if (!PRI_DOING.some(w => t.indexOf(w) >= 0)) return null;
-  if (PRI_PLACE.c1.some(w => t.indexOf(w) >= 0)) return 'c1';
-  if (PRI_PLACE.c2.some(w => t.indexOf(w) >= 0)) return 'c2';
+  if (PRI_PLACE.must.some(w => t.indexOf(w) >= 0)) return 'must';
+  if (PRI_PLACE.daily.some(w => t.indexOf(w) >= 0)) return 'daily';
   return null;
 }
 // 各行がどの区分かを、今の並びのまま決める
@@ -4351,7 +4349,7 @@ function priorityGroups(list) {
   const g = list.map(it => {
     if (it.link) {
       const keys = rowLinkAreas(it);
-      return keys.length ? areaPriGroup(keys[0]) : 'c3';
+      return keys.length ? areaPriGroup(keys[0]) : 'daily';
     }
     return titlePriGroup(it.title);
   });
@@ -4385,11 +4383,13 @@ function priHeadHtml(id, item) {
 // サウナ・シャワー・トイレなどの上位は1つも動かない。
 //
 // 記録は店舗ごとなので、並びも自然に店舗ごとに変わる。
-const ROTATE_AREAS = ['floor', 'machine', 'machine_mente', 'entrance'];
 let _rotGap = {};   // 1回の描画内で、行id → 空き日数
 
+// 回すのは「日替わり」の清掃だけ。サウナ・シャワー・トイレ（必須）は動かさず、
+// 補充・締めなどのすぐ終わる仕事も動かさない（連動が無いので空き日数が出ない）。
 function isRotateRow(item) {
-  return rowLinkAreas(item).some(k => ROTATE_AREAS.indexOf(k) >= 0);
+  const keys = rowLinkAreas(item);
+  return keys.length > 0 && areaPriGroup(keys[0]) === 'daily';
 }
 // そのエリアで最後に誰かがチェックを入れた日（項目の中でいちばん新しい日）
 function areaLastDone(areaKey, staleMap) {
