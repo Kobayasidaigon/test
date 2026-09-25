@@ -321,6 +321,17 @@
   .rt-child.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
   .rt-child .rt-act { width: 27px; height: 27px; }
   .rt-childadd { margin: 2px 0 8px 26px; }
+  /* 優先度の見出し（まずここから／次に／手が空いたら…）*/
+  .pri-head { display: inline-block; font-size: .78rem; font-weight: 800;
+    padding: 3px 11px; border-radius: 999px; margin: 12px 0 5px; }
+  .pri-head:first-child { margin-top: 2px; }
+  .pri-head .sub { font-weight: 700; margin-left: 6px; opacity: .85; }
+  .pri-start { background: #eceff1; color: #546e7a; }
+  .pri-must  { background: #fdecea; color: #c62828; }
+  .pri-next  { background: #fff3e0; color: #ef6c00; }
+  .pri-free  { background: #e3f2fd; color: #1565c0; }
+  .pri-time  { background: #f3e5f5; color: #6a1b9a; }
+  .pri-end   { background: #eceff1; color: #546e7a; }
   /* 順繰りで上に来た行に出す「◯日空き」 */
   .rt-gap { flex: 0 0 auto; font-size: .7rem; font-weight: 700; color: #e65100;
     background: #fff3e0; border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
@@ -4270,6 +4281,114 @@ function setProgress(doneCount, total, areaName) {
     whoLabel + (areaName || '') + ': ' + doneCount + ' / ' + total + ' 完了 (' + pct + '%)';
 }
 
+// ===== 優先度の見出し =====
+//
+// 決めた順位（サウナ→シャワー→トイレ→更衣室→水素水・プロテイン→
+// フロア等→エステ等）を、番号ではなく言葉で出す。
+// 「①が何か」を覚えなくても、読めば削っていいかどうかが分かるようにするため。
+//
+// 並べ替えはしない。今の並びのどこで区切るかを決めるだけ。
+const PRI_HEADS = {
+  start: ['pri-start', 'はじめに', '引き継ぎ・確認'],
+  must:  ['pri-must',  'まずここから', 'サウナ・シャワー・トイレ'],
+  next:  ['pri-next',  '次に', '更衣室・水素水・プロテイン'],
+  free:  ['pri-free',  '手が空いたら', '空いている所から'],
+  time:  ['pri-time',  '時間が決まっている', ''],
+  end:   ['pri-end',   '最後に', '片付け・報告'],
+};
+// 連動先のエリアから区分を決める。店舗ごとに鍵が増えている（sauna_b1・
+// shower_b7・toilet_m など）ので、頭の文字で見る。
+function areaPriGroup(key) {
+  const k = baseArea(key);
+  if (k.indexOf('sauna') === 0 || k.indexOf('shower') === 0
+      || k.indexOf('toilet') === 0) return 'must';
+  if (k.indexOf('men_room') === 0 || k.indexOf('women_room') === 0
+      || k.indexOf('hydrogen') === 0 || k.indexOf('protein') === 0) return 'next';
+  if (k.indexOf('golf') === 0) return 'time';
+  return 'free';   // フロア・マシン・エントランス・エステ・ビジリス等
+}
+// 連動していない行は題名から拾う（「サウナマット回収」「シャワーマット回収」など、
+// 連動は無いが明らかにその区分のもの）。分からなければ null で、前の行に続ける。
+//
+// 場所の名前だけで決めると「サウナ電源」「ストックルーム・サウナ施錠」
+// 「貸出備品（シャンプー…）の返却」まで拾ってしまう。
+// 場所の名前と、手を動かす言葉の両方がある行だけを拾う。
+const PRI_PLACE = {
+  must: ['サウナ', 'シャワー', 'シャンプー', 'トイレ', 'ペーパー', 'ハンドソープ'],
+  next: ['更衣', 'パウダー', 'プロテイン', '水素水'],
+};
+const PRI_DOING = ['清掃', '掃除', '回収', '交換', '補充', '拭き', '洗い', '洗浄',
+                   '排水', 'ネット', 'マット'];
+function titlePriGroup(title) {
+  const t = String(title || '');
+  if (!PRI_DOING.some(w => t.indexOf(w) >= 0)) return null;
+  if (PRI_PLACE.must.some(w => t.indexOf(w) >= 0)) return 'must';
+  if (PRI_PLACE.next.some(w => t.indexOf(w) >= 0)) return 'next';
+  return null;
+}
+// 一日の終わりの片付け・報告。下から見て続いている分だけを「最後に」にする
+const PRI_END_WORDS = ['金種表', '出納帳', '在庫管理', '閉め', '施錠',
+                       '充電確認', '音量確認', 'インスタグラム', 'ゴミ回収'];
+function isPriEndRow(item) {
+  if (item.link) return false;
+  const t = String(item.title || '');
+  return PRI_END_WORDS.some(w => t.indexOf(w) >= 0);
+}
+// 各行がどの区分かを、今の並びのまま決める
+function priorityGroups(list) {
+  if (!list.some(it => it.link)) return null;   // 連動が1つも無いリストには出さない
+  const g = new Array(list.length).fill(null);
+  // 1) 末尾の「片付け・報告」を先に押さえる（途中の「サウナ施錠」等に引っ張られないように）
+  let endFrom = list.length;
+  for (let i = list.length - 1; i >= 0; i--) {
+    if (!isPriEndRow(list[i])) break;
+    endFrom = i;
+  }
+  for (let i = endFrom; i < list.length; i++) g[i] = 'end';
+  // 2) 連動している行、題名で分かる行
+  for (let i = 0; i < endFrom; i++) {
+    const it = list[i];
+    if (it.link) {
+      const keys = rowLinkAreas(it);
+      g[i] = keys.length ? areaPriGroup(keys[0]) : 'free';
+    } else {
+      g[i] = titlePriGroup(it.title);
+    }
+  }
+  // 3) 残りは前の行に続ける。先頭にまだ決まっていない分があれば「はじめに」
+  let cur = null;
+  for (let i = 0; i < endFrom; i++) {
+    if (g[i]) cur = g[i];
+    else g[i] = cur;
+  }
+  for (let i = 0; i < endFrom && !g[i]; i++) g[i] = 'start';
+  // 4) 同じ見出しが2回以上出ないようにする。
+  //    並びの都合で「まずここから」があとにもう一度現れることがあるが、
+  //    見出しが行ったり来たりすると、どこまでが必須なのか読めなくなる。
+  //    2回目からは手前の区分に混ぜる。
+  const seen = {};
+  for (let i = 0; i < g.length; i++) {
+    const prev = i > 0 ? g[i - 1] : null;
+    if (g[i] === prev) continue;
+    if (seen[g[i]]) g[i] = prev;   // すでに出した見出し → 手前に混ぜる
+    else seen[g[i]] = true;
+  }
+  return g;
+}
+// 時刻が決まっているもの（ゴルフA=12〜13時 / B=15〜16時）は、見出しに時刻を出す
+const PRI_TIMES = { golf_a: 'ゴルフA 12〜13時', golf_b: 'ゴルフB 15〜16時' };
+function priTimeSub(item) {
+  const hit = rowLinkAreas(item || {}).map(k => PRI_TIMES[k]).filter(Boolean);
+  return hit.length ? hit.join('／') : '';
+}
+function priHeadHtml(id, item) {
+  const h = PRI_HEADS[id];
+  if (!h) return '';
+  const sub = id === 'time' ? (priTimeSub(item) || h[2]) : h[2];
+  return '<div class="pri-head ' + h[0] + '">' + escapeHtml(h[1])
+    + (sub ? '<span class="sub">' + escapeHtml(sub) + '</span>' : '') + '</div>';
+}
+
 // ===== 順繰り（やってある所は下げて、やってない所を上げる）=====
 //
 // 決めた順位では フロア・マシン・エントランス は同列なので、日によって
@@ -4352,7 +4471,12 @@ function renderRoutineView() {
     + '</div>';
   const renderRows = (list) => {
   let html = '';
+  // 編集モードでは出さない（本当の並びをそのまま見せる）
+  const groups = routineEditMode ? null : priorityGroups(list);
   list.forEach((item, idx) => {
+    if (groups && groups[idx] && (idx === 0 || groups[idx] !== groups[idx - 1])) {
+      html += priHeadHtml(groups[idx], item);
+    }
     const ls = item.link ? linkedStatus(item, currentArea) : null;
     const done = ls ? ls.complete : !!rec[item.id];
     const expanded = ls && routineExpanded.has(item.id);
