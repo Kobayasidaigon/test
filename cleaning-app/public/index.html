@@ -125,6 +125,11 @@
   .manage-staff:hover { text-decoration: underline; }
   .roster-list { display: flex; flex-direction: column; gap: 14px; margin: 8px 0 4px; max-height: 260px; overflow: auto; }
   .roster-store-name { font-weight: 700; font-size: .9rem; color: var(--text); margin-bottom: 6px; }
+  /* 「今日はできない」の一覧（店舗まとめ） */
+  table.mini { width: 100%; border-collapse: collapse; font-size: .78rem; margin-bottom: 8px; }
+  table.mini th, table.mini td { border: 1px solid var(--border); padding: 4px 6px;
+    text-align: left; vertical-align: top; }
+  table.mini th { background: #f5f7f8; color: var(--muted); font-weight: 700; white-space: nowrap; }
   .roster-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .roster-chip { display: inline-flex; align-items: center; gap: 2px; background: #eef3f7; border: 1px solid var(--border); border-radius: 16px; padding: 4px 4px 4px 12px; font-size: .9rem; }
   .roster-chip button { border: none; background: none; cursor: pointer; line-height: 0; padding: 3px; color: #c62828; display: inline-flex; }
@@ -333,6 +338,17 @@
   .pri-stock { background: #e8f5e9; color: #2e7d32; }
   .pri-time  { background: #f3e5f5; color: #6a1b9a; }
   .pri-end   { background: #eceff1; color: #546e7a; }
+  /* 日替わりの順番どおりにやってもらうための鍵 */
+  .rt-row.rt-locked { background: #f4f6f7; border-style: dashed; cursor: default; }
+  .rt-row.rt-locked .rt-title, .rt-row.rt-locked .rt-count { color: #9aa5ab; }
+  .rt-row.rt-locked .rt-icon { color: #c2cbd0; }
+  .rt-lock { flex: 0 0 auto; font-size: .7rem; font-weight: 700; color: #78909c;
+    background: #eceff1; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+  .rt-skip { flex: 0 0 auto; border: 1px solid var(--border); background: #fff;
+    color: var(--muted); border-radius: 999px; padding: 2px 10px; font-size: .7rem;
+    font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .rt-skipped { flex: 0 0 auto; font-size: .7rem; font-weight: 700; color: #ef6c00;
+    background: #fff3e0; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
   /* 順繰りで上に来た行に出す「◯日空き」 */
   .rt-gap { flex: 0 0 auto; font-size: .7rem; font-weight: 700; color: #e65100;
     background: #fff3e0; border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
@@ -1785,6 +1801,7 @@ function isSyncedKey(key) {
     || key === 'proofRates'
     || key.indexOf('proofLog_') === 0
     || key.indexOf('proofCancelLog_') === 0
+    || key.indexOf('daySkip_') === 0
     || key.indexOf('sdef_') === 0
     || key === 'customAreas'
     || key === 'staffRoster'
@@ -4361,6 +4378,52 @@ function priorityGroups(list) {
   for (let i = 0; i < g.length && !g[i]; i++) g[i] = 'hand';
   return g;
 }
+// ===== 日替わりは上から順にやる（飛ばせない）=====
+//
+// 空きが出た所を後回しにすると、いつまでも後回しになる。
+// 日替わりの中は、上（いちばん長く空いている所）から順にやり、
+// 終わるまで下は押せない。
+//
+// 止めるのは日替わりの中だけ。必須（サウナ・シャワー・トイレ）・補充・締めは
+// いつでも押せる。設備故障などで本当にできない日のために、
+// 「今日はできない」を理由付きで押せば、その日だけ外れる。
+const DAYSKIP_KEEP_DAYS = 60;
+
+function loadDaySkip(store) {
+  if (!store) return [];
+  try { return JSON.parse(localStorage.getItem('daySkip_' + store)) || []; }
+  catch (e) { return []; }
+}
+function isSkippedToday(store, rowId) {
+  const d = dateInput.value || todayStr();
+  return loadDaySkip(store).some(x => x.date === d && x.id === rowId);
+}
+function addDaySkip(store, rowId, title, why) {
+  const d = dateInput.value || todayStr();
+  const from = shiftDate(todayStr(), -DAYSKIP_KEEP_DAYS);
+  const list = loadDaySkip(store).filter(x => x.date >= from)
+    .filter(x => !(x.date === d && x.id === rowId));
+  list.push({ date: d, id: rowId, title: title || '', why: why || '',
+              staff: currentStaff || '', at: nowDateTimeStr() });
+  syncSet('daySkip_' + store, JSON.stringify(list));
+}
+// 各行が押せるか。日替わりで連動している行だけを上から見て、
+// 終わっていない（かつ「今日はできない」も押していない）行より下を止める。
+function dailyLockInfo(list, groups) {
+  const out = {};
+  if (!groups || !currentStore) return out;
+  let blocker = null;
+  list.forEach((it, i) => {
+    if (groups[i] !== 'daily' || !it.link) return;
+    if (blocker) { out[it.id] = { locked: true, by: blocker }; return; }
+    out[it.id] = { locked: false, by: null };
+    const ls = linkedStatus(it, currentArea);
+    const done = ls ? ls.complete : false;
+    if (!done && !isSkippedToday(currentStore, it.id)) blocker = it.title;
+  });
+  return out;
+}
+
 // 時刻が決まっているもの（ゴルフA=12〜13時 / B=15〜16時）は、見出しに時刻を出す
 const PRI_TIMES = { golf_a: 'ゴルフA 12〜13時', golf_b: 'ゴルフB 15〜16時' };
 function priTimeSub(item) {
@@ -4457,18 +4520,22 @@ function renderRoutineView() {
   let html = '';
   // 編集モードでは出さない（本当の並びをそのまま見せる）
   const groups = routineEditMode ? null : priorityGroups(list);
+  const locks = routineEditMode ? {} : dailyLockInfo(list, groups);
   list.forEach((item, idx) => {
     if (groups && groups[idx] && (idx === 0 || groups[idx] !== groups[idx - 1])) {
       html += priHeadHtml(groups[idx], item);
     }
     const ls = item.link ? linkedStatus(item, currentArea) : null;
     const done = ls ? ls.complete : !!rec[item.id];
-    const expanded = ls && routineExpanded.has(item.id);
+    const lk = locks[item.id];
+    const skipped = lk && !lk.locked && !done && isSkippedToday(currentStore, item.id);
+    const expanded = ls && routineExpanded.has(item.id) && !(lk && lk.locked);
     const hasNums = itemNumFields(item).length > 0;
     // 説明文は編集中以外は行の下に小さく出す（時間目安・曜日のローテーション等をその場で読めるように）
     const descText = routineEditMode ? '' : String(item.desc || '').trim();
     const rEx = routineEditMode ? '' : exampleBtnHtml(currentArea, item.id);
-    html += '<div class="rt-row' + (done ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
+    html += '<div class="rt-row' + (done ? ' done' : '') + (lk && lk.locked ? ' rt-locked' : '')
+      + (routineEditMode ? ' rt-editing' : '')
       + (descText ? ' has-desc' : '') + (rEx ? ' has-ex' : '')
       + (routineEditMode ? '' : (item.url ? ' has-link' : '') + (hasNums ? ' has-link has-nums' : '')) + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : hasNums ? 'nums' : 'manual') + '">'
       // 連動項目はチェック丸ではなくリスト印（実際のチェックは展開した子項目で行う）
@@ -4476,6 +4543,14 @@ function renderRoutineView() {
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
       + gapTagHtml(item)
+      + (lk && lk.locked
+          // 題名が「…」で切れないよう、印は短くする。何が先かは押せば出る
+          ? '<span class="rt-lock" title="' + escapeHtml(lk.by) + ' が先です">🔒 順番待ち</span>'
+          : skipped ? '<span class="rt-skipped">今日はできない</span>'
+          : (lk && !done
+              ? '<button type="button" class="rt-skip" data-skip-id="' + escapeHtml(item.id)
+                + '" data-skip-title="' + escapeHtml(item.title) + '">今日はできない</button>'
+              : ''))
       // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
       + rEx
@@ -4640,9 +4715,15 @@ function renderRoutineView() {
   // plus α の定期清掃の行は別の配線なので、ここでは触らない（触ると上書きしてしまう）
   checklist.querySelectorAll('.rt-row:not(.plus-periodic)').forEach(row => {
     row.onclick = (e) => {
-      if (e.target.closest('a, [data-inv-link], .rt-act')) return;
+      if (e.target.closest('a, [data-inv-link], .rt-act, .rt-skip')) return;
       const id = row.dataset.id;
       if (!id) return;
+      if (row.classList.contains('rt-locked')) {
+        const why = row.querySelector('.rt-lock');
+        alert('先に「' + (why ? (why.getAttribute('title') || '').replace(/ が先です$/, '') : '上の行')
+              + '」を終わらせてください。\n\nどうしても今日できないときは、その行の\n「今日はできない」を押して理由を書いてください。');
+        return;
+      }
       if (row.dataset.kind === 'link') {
         // 編集中も開閉はできる（中の細かい項目を編集するため）
         if (routineExpanded.has(id)) routineExpanded.delete(id); else routineExpanded.add(id);
@@ -4656,6 +4737,18 @@ function renderRoutineView() {
       } else {
         toggleItem(id);
       }
+    };
+  });
+  // 「今日はできない」: 理由を書くとその日だけ鍵が外れる（記録は残る）
+  checklist.querySelectorAll('[data-skip-id]').forEach(b => {
+    b.onclick = (e) => {
+      e.stopPropagation();
+      const why = prompt('「' + b.dataset.skipTitle + '」が今日できない理由を書いてください。\n'
+                         + '（店舗まとめに残ります）', '');
+      if (why === null) return;
+      if (!String(why).trim()) { alert('理由を書いてください'); return; }
+      addDaySkip(currentStore, b.dataset.skipId, b.dataset.skipTitle, String(why).trim());
+      render();
     };
   });
   // 数値入力欄の動作を設定
@@ -6391,6 +6484,41 @@ function renderSummary() {
   });
   html += '</div>';
   html += '<button class="manage-staff" id="inspEditItems">' + ic('pencil') + ' 点検項目を編集</button>';
+
+  // ---- 「今日はできない」で飛ばした所 ----
+  // 飛ばすこと自体は認めているが、どこが何回飛ばされているかは見えるようにする。
+  html += '<h3 style="margin:20px 0 6px; font-size:1rem;">' + ic('alert-triangle')
+    + ' 「今日はできない」で飛ばした所</h3>';
+  html += '<p class="hint" style="text-align:left;margin:0 0 10px;">日替わりは上から順にやる決まりですが、'
+    + '設備の故障などで本当にできない日は、理由を書けば飛ばせます。その記録です。'
+    + '同じ所が何度も出ていれば、順番か中身を見直す合図です。</p>';
+  STORES.forEach(s2 => {
+    let sk = [];
+    try { sk = JSON.parse(localStorage.getItem('daySkip_' + s2)) || []; } catch (e) {}
+    const today = sk.filter(x => x.date === date);
+    const from = shiftDate(todayStr(), -30);
+    const recent = sk.filter(x => x.date >= from);
+    html += '<div class="roster-store-name">' + escapeHtml(s2)
+      + '（' + date + ': ' + today.length + '件 ／ 直近30日: ' + recent.length + '件）</div>';
+    if (today.length) {
+      html += '<table class="mini"><tr><th>やること</th><th>理由</th><th>書いた人</th></tr>';
+      today.forEach(x => {
+        html += '<tr><td>' + escapeHtml(x.title || x.id) + '</td><td>' + escapeHtml(x.why || '')
+          + '</td><td>' + escapeHtml(x.staff || '') + '</td></tr>';
+      });
+      html += '</table>';
+    } else {
+      html += '<div class="hint" style="text-align:left; margin-bottom:8px;">この日はありません。</div>';
+    }
+    // 直近30日で多い所（順番か中身を見直す手がかり）
+    const cnt = {};
+    recent.forEach(x => { const k = x.title || x.id; cnt[k] = (cnt[k] || 0) + 1; });
+    const top = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]).slice(0, 5);
+    if (top.length) {
+      html += '<div class="hint" style="text-align:left; margin-bottom:10px;">直近30日で多い所: '
+        + top.map(k => escapeHtml(k) + ' ' + cnt[k] + '回').join(' ／ ') + '</div>';
+    }
+  });
 
   // ---- 抜き打ち実施写真 ----
   cleanupOldProofsOnce(); // 保持期間を過ぎた写真の掃除（裏で実行）
