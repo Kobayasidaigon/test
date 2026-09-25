@@ -4407,19 +4407,32 @@ function addDaySkip(store, rowId, title, why) {
               staff: currentStaff || '', at: nowDateTimeStr() });
   syncSet('daySkip_' + store, JSON.stringify(list));
 }
+// 止めるのは「2日より前にやったきり」の所だけ。
+// 昨日・一昨日にやってあれば止めない（空きが浅いうちは自由に選べる）。
+// 一度も記録が無い所は、いちばん空いている扱いなので止める。
+const LOCK_GAP_DAYS = 3;
+
 // 各行が押せるか。日替わりで連動している行だけを上から見て、
-// 終わっていない（かつ「今日はできない」も押していない）行より下を止める。
+// 3日以上空いていて、まだ終わっておらず、「今日はできない」も押していない
+// 行があれば、そこから下を止める。
 function dailyLockInfo(list, groups) {
   const out = {};
   if (!groups || !currentStore) return out;
   let blocker = null;
   list.forEach((it, i) => {
     if (groups[i] !== 'daily' || !it.link) return;
-    if (blocker) { out[it.id] = { locked: true, by: blocker }; return; }
-    out[it.id] = { locked: false, by: null };
+    if (blocker) { out[it.id] = { locked: true, by: blocker, deep: false, blocking: false }; return; }
+    const gap = _rotGap[it.id];
+    const deep = gap !== undefined && gap >= LOCK_GAP_DAYS;
+    const entry = { locked: false, by: null, deep: deep, blocking: false };
+    out[it.id] = entry;
+    if (!deep) return;                       // 空きが浅い所は下を止めない
     const ls = linkedStatus(it, currentArea);
     const done = ls ? ls.complete : false;
-    if (!done && !isSkippedToday(currentStore, it.id)) blocker = it.title;
+    if (done) return;
+    if (isSkippedToday(currentStore, it.id)) return;
+    blocker = it.title;
+    entry.blocking = true;
   });
   return out;
 }
@@ -4528,7 +4541,7 @@ function renderRoutineView() {
     const ls = item.link ? linkedStatus(item, currentArea) : null;
     const done = ls ? ls.complete : !!rec[item.id];
     const lk = locks[item.id];
-    const skipped = lk && !lk.locked && !done && isSkippedToday(currentStore, item.id);
+    const skipped = lk && lk.deep && !lk.locked && !done && isSkippedToday(currentStore, item.id);
     const expanded = ls && routineExpanded.has(item.id) && !(lk && lk.locked);
     const hasNums = itemNumFields(item).length > 0;
     // 説明文は編集中以外は行の下に小さく出す（時間目安・曜日のローテーション等をその場で読めるように）
@@ -4547,7 +4560,7 @@ function renderRoutineView() {
           // 題名が「…」で切れないよう、印は短くする。何が先かは押せば出る
           ? '<span class="rt-lock" title="' + escapeHtml(lk.by) + ' が先です">🔒 順番待ち</span>'
           : skipped ? '<span class="rt-skipped">今日はできない</span>'
-          : (lk && !done
+          : (lk && lk.blocking
               ? '<button type="button" class="rt-skip" data-skip-id="' + escapeHtml(item.id)
                 + '" data-skip-title="' + escapeHtml(item.title) + '">今日はできない</button>'
               : ''))
