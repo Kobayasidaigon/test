@@ -338,37 +338,6 @@
   .rv-line .v.warn { color: #ef6c00; }
   .rv-note { font-size: .78rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
   /* チェックシートの一番上の1行（今日ここをやってほしい） */
-  /* 抜き打ち写真で「要やり直し」が付いた所（店舗の画面の一番上） */
-  .fix-bar { background: #fdecea; border: 1.5px solid #ef9a9a; border-radius: 10px;
-    padding: 10px 12px; margin-bottom: 10px; }
-  .fix-head { display: flex; align-items: center; gap: 6px; font-weight: 800;
-    color: #c62828; font-size: .92rem; margin-bottom: 8px; }
-  .fix-head .ic { width: 18px; height: 18px; flex: 0 0 auto; }
-  .fix-row { display: flex; align-items: flex-start; gap: 10px; background: var(--card);
-    border-radius: 8px; padding: 8px; margin-bottom: 6px; }
-  .fix-pic { width: 56px; height: 56px; object-fit: cover; border-radius: 6px;
-    flex: 0 0 auto; cursor: zoom-in; border: 1px solid var(--border); }
-  .fix-body { flex: 1; min-width: 0; }
-  .fix-title { font-weight: 700; font-size: .88rem; line-height: 1.4; }
-  .fix-why { font-size: .82rem; color: #c62828; line-height: 1.5; margin-top: 2px; }
-  .fix-meta { font-size: .72rem; color: var(--muted); margin-top: 2px; }
-  .fix-done { flex: 0 0 auto; align-self: center; border: 1px solid var(--border);
-    background: #fff; color: var(--primary-dark); border-radius: 999px;
-    padding: 7px 14px; font-size: .82rem; font-weight: 700; cursor: pointer; }
-  /* 管理画面: 写真1枚ごとの判定 */
-  .pv-count { font-size: .78rem; color: var(--muted); margin: 2px 0 6px; }
-  .pv-count .ng { color: #c62828; }
-  .pv-card { border-radius: 8px; padding: 2px; }
-  .pv-card.ok { background: #e8f5e9; }
-  .pv-card.ng { background: #fdecea; }
-  .pv-btns { display: flex; gap: 4px; margin-top: 4px; }
-  .pv-btns button { flex: 1; border: 1px solid var(--border); background: #fff;
-    border-radius: 6px; padding: 5px 2px; font-size: .7rem; font-weight: 700;
-    cursor: pointer; color: var(--muted); }
-  .pv-ok.on { background: var(--done); border-color: var(--done); color: #fff; }
-  .pv-ng.on { background: #c62828; border-color: #c62828; color: #fff; }
-  .pv-why { color: #c62828; margin-top: 3px; line-height: 1.4; }
-  .pv-fixed { color: var(--done); margin-top: 2px; }
   .focus-bar {
     display: flex; align-items: center; gap: 8px; width: 100%;
     border: none; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
@@ -382,8 +351,6 @@
   /* ふりかえりの追加分（今日はここから／曜日／時間帯／数の記録 など） */
   .rv-insp { border-left: 4px solid #6a1b9a; }
   .rv-insp h3 { color: #6a1b9a; }
-  .rv-ng { border-left: 4px solid #c62828; }
-  .rv-ng h3 { color: #c62828; }
   .rv-week, .rv-shift, .rv-periodic, .rv-nums { border-left: 4px solid var(--border); }
   .rv-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 4px; }
   .rv-chip {
@@ -952,8 +919,6 @@
   <div id="checklistView">
     <!-- 今日いちばん手薄な所を1行で。みんなが毎日開くのはこの画面なので、ここに置く -->
     <button type="button" id="focusBar" class="focus-bar" style="display:none;"></button>
-    <!-- 抜き打ち写真で「要やり直し」が付いた所。直すまで出し続ける -->
-    <div id="fixBar" class="fix-bar" style="display:none;"></div>
     <div class="controls">
       <div class="staff-row">
         <label for="storeSelect"><span class="ic-slot" data-icon="building-2"></span> 店舗</label>
@@ -1803,7 +1768,6 @@ function isSyncedKey(key) {
     || key === 'proofRates'
     || key.indexOf('proofLog_') === 0
     || key.indexOf('proofCancelLog_') === 0
-    || key.indexOf('proofReview_') === 0
     || key.indexOf('sdef_') === 0
     || key === 'customAreas'
     || key === 'staffRoster'
@@ -3188,77 +3152,6 @@ editResetDefault.onclick = () => {
   render();
 };
 document.getElementById('editCancel').onclick = () => editDialog.close();
-
-// ===== 抜き打ち写真の判定（できている／要やり直し）=====
-//
-// 写真は集まっていたが、見て「これはダメ」と言う所が無かった。
-// 判定が残らないと、どの項目のレベルが低いのかが数字にならず、
-// 撮った本人にも何も返らない。撮らせて終わりだと「撮れば通る」になる。
-//
-// proofReview_<店舗> = { 写真id: { v:'ok'|'ng', why:'…', by:'判定者',
-//                                  at:'YYYY-MM-DD HH:MM', fixed:'…' } }
-// 写真そのもの（proofLog）は書き換えない。別のキーにしておけば、
-// 判定と撮影ログが同時に書かれても潰し合わない。
-const FIX_SHOW_DAYS = 7;   // 「直してほしい所」を出す日数
-
-function loadProofReview(store) {
-  if (!store) return {};
-  try { return JSON.parse(localStorage.getItem('proofReview_' + store)) || {}; }
-  catch (e) { return {}; }
-}
-function saveProofReview(store, map) {
-  syncSet('proofReview_' + store, JSON.stringify(map));
-}
-function setProofReview(store, mediaId, v, why) {
-  const map = loadProofReview(store);
-  if (!v) delete map[mediaId];
-  else {
-    map[mediaId] = Object.assign({}, map[mediaId], {
-      v: v, why: why || '', by: currentStaff || '', at: nowDateTimeStr(),
-    });
-    if (v === 'ok') delete map[mediaId].fixed;   // OKに変えたら「直した」印は要らない
-  }
-  saveProofReview(store, map);
-}
-// 直したと申告する（消さずに残す。あとから件数を数えるため）
-function markProofFixed(store, mediaId) {
-  const map = loadProofReview(store);
-  if (!map[mediaId]) return;
-  map[mediaId] = Object.assign({}, map[mediaId],
-                               { fixed: nowDateTimeStr(), fixedBy: currentStaff || '' });
-  saveProofReview(store, map);
-}
-// まだ直っていない「要やり直し」（新しい順）
-function pendingFixes(store, days) {
-  if (!store) return [];
-  const map = loadProofReview(store);
-  let plog = [];
-  try { plog = JSON.parse(localStorage.getItem('proofLog_' + store)) || []; } catch (e) {}
-  const from = shiftDate(todayStr(), -((days || FIX_SHOW_DAYS) - 1));
-  return plog.filter(e => {
-    const r = map[e.mediaId];
-    return r && r.v === 'ng' && !r.fixed && e.date >= from;
-  }).map(e => Object.assign({}, e, { review: map[e.mediaId] }))
-    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-}
-// 項目ごとの「要やり直し」率（どこのレベルが低いのかを数字にする）
-function proofNgRates(store, days) {
-  const map = loadProofReview(store);
-  let plog = [];
-  try { plog = JSON.parse(localStorage.getItem('proofLog_' + store)) || []; } catch (e) {}
-  const from = shiftDate(todayStr(), -((days || 30) - 1));
-  const agg = {};
-  plog.filter(e => e.date >= from).forEach(e => {
-    const r = map[e.mediaId];
-    if (!r || (r.v !== 'ok' && r.v !== 'ng')) return;  // 見ていないものは数えない
-    const k = (e.area || '') + '／' + (e.item || '');
-    const a = agg[k] || (agg[k] = { area: e.area, item: e.item, ok: 0, ng: 0 });
-    if (r.v === 'ng') a.ng++; else a.ok++;
-  });
-  return Object.values(agg).map(a => Object.assign(a, {
-    total: a.ok + a.ng, rate: a.ng / (a.ok + a.ng),
-  })).filter(a => a.ng > 0).sort((a, b) => b.rate - a.rate || b.ng - a.ng);
-}
 
 // ===== 抜き打ち実施写真（📷項目）=====
 // 日付+店舗+エリア+項目のハッシュで毎日約5%（PROOF_RATE=20 → 対象プールの1/20）の項目に📷が付き、その場の撮影がないとチェックできない。
@@ -4645,49 +4538,8 @@ function renderFocusBar() {
   bar.onclick = () => { currentArea = top.key; render(); window.scrollTo(0, 0); };
 }
 
-// 抜き打ち写真で「要やり直し」が付いた所を、直すまで毎日出す。
-// 撮って終わり・見て終わりにせず、本人に戻すための所。
-function renderFixBar() {
-  const bar = document.getElementById('fixBar');
-  if (!bar) return;
-  const list = currentStore ? pendingFixes(currentStore) : [];
-  if (!list.length) { bar.style.display = 'none'; bar.innerHTML = ''; return; }
-  bar.style.display = '';
-  let h = '<div class="fix-head">' + ic('alert-triangle')
-    + '<span>直してほしい所が ' + list.length + '件あります</span></div>';
-  list.forEach(e => {
-    h += '<div class="fix-row">'
-      + '<img class="fix-pic" src="/api/media/' + encodeURIComponent(e.mediaId) + '"'
-      + ' data-fix-pic="' + escapeHtml(e.mediaId) + '" loading="lazy" alt="">'
-      + '<div class="fix-body">'
-      + '<div class="fix-title">' + escapeHtml(e.area) + '　' + escapeHtml(e.item) + '</div>'
-      + (e.review.why ? '<div class="fix-why">' + escapeHtml(e.review.why) + '</div>' : '')
-      + '<div class="fix-meta">' + escapeHtml(e.date) + '　' + escapeHtml(e.staff || '') + 'さんのぶん</div>'
-      + '</div>'
-      + '<button type="button" class="fix-done" data-fix-id="' + escapeHtml(e.mediaId) + '">直した</button>'
-      + '</div>';
-  });
-  bar.innerHTML = h;
-  bar.querySelectorAll('[data-fix-id]').forEach(b => {
-    b.onclick = () => {
-      if (!confirm('直したことにしますか？\n（管理画面には「直した」と残ります）')) return;
-      markProofFixed(currentStore, b.dataset.fixId);
-      render();
-    };
-  });
-  // 写真はタップで拡大
-  bar.querySelectorAll('[data-fix-pic]').forEach(img => {
-    img.onclick = () => {
-      const id = img.dataset.fixPic;
-      openLightboxList([{ id: id, url: mediaUrl(id), isVideo: isVideoMedia(id),
-                          caption: '要やり直し' }], 0);
-    };
-  });
-}
-
 function render() {
   renderFocusBar();
-  renderFixBar();
   // 項目を全部消した組み込みエリアを開いていたら、表示できるエリアへ戻す
   if (currentArea !== PERIODIC_KEY && !isRoutineArea(currentArea)
       && AREAS.some(x => x.key === currentArea) && areaItems(currentArea).length === 0) {
@@ -5772,20 +5624,6 @@ function renderReview() {
     h += '<div class="rv-note">落とした区分がよく清掃されていれば、次の点検で戻せます。</div></div>';
   }
 
-  // ---- 要やり直しが多かった所 ----
-  // 「やったか」ではなく「どこまでやれていたか」が見えるのはここだけ。
-  const ngs = currentStore ? proofNgRates(currentStore, 30) : [];
-  if (ngs.length) {
-    h += '<div class="rv-card rv-ng"><h3>' + ic('alert-triangle') + '要やり直しが多かった所</h3>';
-    h += '<div class="rv-note">直近30日の抜き打ち写真のうち、見て判定したぶんです。</div>';
-    ngs.slice(0, 6).forEach(a => {
-      h += '<div class="rv-line"><span>' + esc(a.area)
-        + '<span class="rv-sub">' + esc(a.item) + '</span></span>'
-        + '<span class="v warn">' + a.ng + '/' + a.total + '</span></div>';
-    });
-    h += '<div class="rv-note">ここは見本（いい例）を入れておくと伝わります。</div></div>';
-  }
-
   // ---- 曜日のクセ ----
   const wds = rvWeekday(currentStore);
   if (wds.length) {
@@ -6289,25 +6127,6 @@ function proofRateSectionHtml() {
   html += '</div>';
   return html;
 }
-// 判定ボタンを結ぶ。✗ のときだけ理由を1行聞く（何が足りないか本人に返すため）
-function wireProofReview(box) {
-  (box || document).querySelectorAll('[data-pv-id]').forEach(b => {
-    b.onclick = () => {
-      const store = b.dataset.pvStore, id = b.dataset.pvId, v = b.dataset.pvV;
-      const cur = (loadProofReview(store)[id] || {}).v;
-      if (cur === v) { setProofReview(store, id, null); renderSummary(); return; } // もう一度押すと取り消し
-      let why = '';
-      if (v === 'ng') {
-        const prev = (loadProofReview(store)[id] || {}).why || '';
-        why = prompt('どこが足りませんか？（そのまま店舗の画面に出ます）', prev);
-        if (why === null) return;
-      }
-      setProofReview(store, id, v, why);
-      renderSummary();
-    };
-  });
-}
-
 function wireProofRateSection(box) {
   box.querySelectorAll('select[data-pr]').forEach(sel => {
     sel.onchange = () => {
@@ -6401,17 +6220,11 @@ function renderSummary() {
     const todays = plog.filter(e => e.date === date);
     html += '<div class="roster-store-name">' + escapeHtml(s) + '（' + todays.length + '枚）</div>';
     if (todays.length) {
-      const rv = loadProofReview(s);
-      const judged = todays.filter(e => rv[e.mediaId] && rv[e.mediaId].v).length;
-      const ngN = todays.filter(e => rv[e.mediaId] && rv[e.mediaId].v === 'ng').length;
-      html += '<div class="pv-count">見た: ' + judged + '/' + todays.length + '枚'
-        + (ngN ? '　<b class="ng">要やり直し ' + ngN + '</b>' : '') + '</div>';
       html += '<div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px;">';
       todays.forEach(e => {
         const flag = e.exif === 'old' ? ' <span style="color:#c62828;">⚠️日時不一致</span>'
           : e.exif === 'none' ? ' <span style="color:#e65100;">EXIFなし</span>' : ' ✓';
-        const r = rv[e.mediaId] || {};
-        html += '<div class="pv-card' + (r.v ? ' ' + r.v : '') + '" style="width:110px; font-size:.72rem; line-height:1.4;">'
+        html += '<div style="width:110px; font-size:.72rem; line-height:1.4;">'
           + '<a href="/api/media/' + encodeURIComponent(e.mediaId) + '" target="_blank">'
           + '<img src="/api/media/' + encodeURIComponent(e.mediaId) + '" style="width:110px; height:110px; object-fit:cover; border-radius:8px; border:1px solid var(--border);" loading="lazy"></a>'
           + '<div style="font-weight:700;">' + escapeHtml(e.area) + '</div>'
@@ -6419,17 +6232,6 @@ function renderSummary() {
           + (e.spot ? '<div style="color:#2e7d32;">📍' + escapeHtml(e.spot) + '</div>' : '')
           + '<div>' + escapeHtml(e.staff || '') + ' ' + escapeHtml(e.time || '')
           + (e.secs != null ? ' ⏱' + e.secs + '秒' : '') + flag + '</div>'
-          // 見たあとに「これはダメ」と言える所。ここが無いと撮らせて終わりになる
-          + '<div class="pv-btns">'
-          + '<button type="button" class="pv-ok' + (r.v === 'ok' ? ' on' : '') + '"'
-          + ' data-pv-store="' + escapeHtml(s) + '" data-pv-id="' + escapeHtml(e.mediaId) + '"'
-          + ' data-pv-v="ok">○ できてる</button>'
-          + '<button type="button" class="pv-ng' + (r.v === 'ng' ? ' on' : '') + '"'
-          + ' data-pv-store="' + escapeHtml(s) + '" data-pv-id="' + escapeHtml(e.mediaId) + '"'
-          + ' data-pv-v="ng">✗ やり直し</button>'
-          + '</div>'
-          + (r.v === 'ng' && r.why ? '<div class="pv-why">' + escapeHtml(r.why) + '</div>' : '')
-          + (r.fixed ? '<div class="pv-fixed">直した ' + escapeHtml(r.fixed) + '</div>' : '')
           + '</div>';
       });
       html += '</div>';
@@ -6511,7 +6313,6 @@ function renderSummary() {
   const inspEdit = document.getElementById('inspEditItems');
   if (inspEdit) inspEdit.onclick = openInspItemsDialog;
   wireProofRateSection(box); // 撮影頻度の選択
-  wireProofReview(box);      // 写真1枚ごとの「できている／要やり直し」
   renderUnlinkedAreas();     // 連動していないエリアの一覧（タブに出していないため）
 }
 document.getElementById('sumDate').onchange = () => renderSummary();
