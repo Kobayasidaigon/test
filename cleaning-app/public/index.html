@@ -321,6 +321,11 @@
   .rt-child.rt-editing .rt-title { overflow: visible; text-overflow: clip; white-space: normal; }
   .rt-child .rt-act { width: 27px; height: 27px; }
   .rt-childadd { margin: 2px 0 8px 26px; }
+  /* 順繰りで上に来た行に出す「◯日空き」 */
+  .rt-gap { flex: 0 0 auto; font-size: .7rem; font-weight: 700; color: #e65100;
+    background: #fff3e0; border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+  .rt-gap.none { color: #c62828; background: #fdecea; }
+  .rt-row.done .rt-gap { color: var(--muted); background: #eceff1; }
   .rt-add-btn.rt-add-child { font-size: .78rem; padding: 7px; margin-top: 0; }
   /* ふりかえり画面 */
   .rv-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
@@ -4265,6 +4270,74 @@ function setProgress(doneCount, total, areaName) {
     whoLabel + (areaName || '') + ': ' + doneCount + ' / ' + total + ' 完了 (' + pct + '%)';
 }
 
+// ===== 順繰り（やってある所は下げて、やってない所を上げる）=====
+//
+// 決めた順位では フロア・マシン・エントランス は同列なので、日によって
+// どれを先にやるかを「最後にチェックが付いた日」で決める。長く空いている
+// 所が上に来る。入れ替えるのは、その3つが今いる位置の中だけ。
+// サウナ・シャワー・トイレなどの上位は1つも動かない。
+//
+// 記録は店舗ごとなので、並びも自然に店舗ごとに変わる。
+const ROTATE_AREAS = ['floor', 'machine', 'machine_mente', 'entrance'];
+let _rotGap = {};   // 1回の描画内で、行id → 空き日数
+
+function rowLinkAreas(item) {
+  return String(item && item.link || '').split(',')
+    .map(x => baseArea(x.trim())).filter(Boolean);
+}
+function isRotateRow(item) {
+  return rowLinkAreas(item).some(k => ROTATE_AREAS.indexOf(k) >= 0);
+}
+// そのエリアで最後に誰かがチェックを入れた日（項目の中でいちばん新しい日）
+function areaLastDone(areaKey, staleMap) {
+  const base = baseArea(areaKey);
+  let last = null;
+  areaItems(base).forEach(it => {
+    const d = staleMap[base + ':' + it.id];
+    if (d && (!last || d > last)) last = d;
+  });
+  return last;
+}
+// 行の空き日数。連動先が複数あるときは、いちばん長く空いている方に合わせる。
+// 一度も記録が無い所は「いちばん上」に来てほしいので大きな数にする。
+const GAP_NEVER = 9999;
+function rowGapDays(item, staleMap) {
+  let gap = -1;
+  rowLinkAreas(item).forEach(k => {
+    const last = areaLastDone(k, staleMap);
+    const d = last ? daysSince(last) : GAP_NEVER;
+    if (d > gap) gap = d;
+  });
+  return gap < 0 ? GAP_NEVER : gap;
+}
+// 順繰りの行だけを、空き日数の長い順に並べ替える。
+// 編集モードのときは並べ替えない（上へ／下へは保存された本当の並びを動かすので、
+// 画面と食い違うと誤操作になる）。
+function rotateRoutineItems(list, staleMap) {
+  _rotGap = {};
+  if (!currentStore || routineEditMode) return list;
+  const pos = [];
+  list.forEach((it, i) => { if (isRotateRow(it)) pos.push(i); });
+  if (!pos.length) return list;
+  const picked = pos.map(i => ({ i: i, it: list[i], gap: rowGapDays(list[i], staleMap) }));
+  picked.forEach(x => { _rotGap[x.it.id] = x.gap; });
+  if (pos.length < 2) return list;
+  // 空き日数の長い順。同じなら元の並びのまま（毎日むやみに入れ替わらないように）
+  const sorted = picked.slice().sort((a, b) => b.gap - a.gap || a.i - b.i);
+  const out = list.slice();
+  pos.forEach((at, n) => { out[at] = sorted[n].it; });
+  return out;
+}
+// 行に出す「◯日空き」。今日やった所には出さない
+function gapTagHtml(item) {
+  if (routineEditMode) return '';
+  const g = _rotGap[item.id];
+  if (g === undefined) return '';
+  if (g >= GAP_NEVER) return '<span class="rt-gap none">記録なし</span>';
+  if (g <= 0) return '';
+  return '<span class="rt-gap">' + g + '日空き</span>';
+}
+
 function renderRoutineView() {
   const checklist = document.getElementById('checklist');
   const rec = loadRecordMerged(currentArea); // 他の担当者の分も含めて表示
@@ -4294,6 +4367,7 @@ function renderRoutineView() {
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
+      + gapTagHtml(item)
       // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
       + rEx
@@ -4387,7 +4461,7 @@ function renderRoutineView() {
   return html;
   };
 
-  html += renderRows(items);
+  html += renderRows(rotateRoutineItems(items, staleMap));
   // 今日やる定期清掃を「今日の plus α」として出す（登録する場所は定期清掃、出る場所はここ）
   const plusTasks = routineEditMode ? [] : periodicDueTasks();
   const pdm = currentStore ? loadPeriodicDone(currentStore) : {};
