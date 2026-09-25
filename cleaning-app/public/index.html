@@ -4423,7 +4423,10 @@ function dailyLockInfo(list, groups) {
     if (groups[i] !== 'daily' || !it.link) return;
     if (blocker) { out[it.id] = { locked: true, by: blocker, deep: false, blocking: false }; return; }
     const gap = _rotGap[it.id];
-    const deep = gap !== undefined && gap >= LOCK_GAP_DAYS;
+    // 週で分けるエリア（月木／火金／水土のマシンメンテ）は、作りのうえで
+    // 必ず2〜3日空く。ここで鍵を掛けると毎日止まるので外す。
+    const weekly = rowLinkAreas(it).some(k => isWeekCycleArea(k));
+    const deep = !weekly && gap !== undefined && gap >= LOCK_GAP_DAYS;
     const entry = { locked: false, by: null, deep: deep, blocking: false };
     out[it.id] = entry;
     if (!deep) return;                       // 空きが浅い所は下を止めない
@@ -4467,27 +4470,37 @@ function isRotateRow(item) {
   const keys = rowLinkAreas(item);
   return keys.length > 0 && areaPriGroup(keys[0]) === 'daily';
 }
-// そのエリアで最後に誰かがチェックを入れた日（項目の中でいちばん新しい日）
-function areaLastDone(areaKey, staleMap) {
+// エリアの空き日数 ＝ そのエリアの中で「いちばん長くやっていない項目」の空き。
+//
+// 以前は「いちばん新しくやった項目」で数えていた。それだと、28項目のうち
+// 1つを今日やっただけでエリア全体が「今日やった」ことになり、8日放置の
+// 項目があっても鍵が掛からなかった（現場の写真で分かった）。
+// 「全部毎日やりたい」が前提なので、いちばん遅れている項目に合わせる。
+const GAP_NEVER = 9999;
+function areaWorstGap(areaKey, staleMap) {
   const base = baseArea(areaKey);
-  let last = null;
-  areaItems(base).forEach(it => {
-    const d = staleMap[base + ':' + it.id];
-    if (d && (!last || d > last)) last = d;
-  });
-  return last;
+  const items = areaItems(base);
+  if (!items.length) return -1;          // 項目が無いエリアは数えない
+  let worst = -1;
+  for (let i = 0; i < items.length; i++) {
+    const d = staleMap[base + ':' + items[i].id];
+    const g = d ? daysSince(d) : GAP_NEVER;
+    if (g > worst) worst = g;
+    if (worst >= GAP_NEVER) break;
+  }
+  return worst;
 }
 // 行の空き日数。連動先が複数あるときは、いちばん長く空いている方に合わせる。
-// 一度も記録が無い所は「いちばん上」に来てほしいので大きな数にする。
-const GAP_NEVER = 9999;
+// 連動先に項目が1つも無いとき（その店舗で使っていないエリア）は -1 を返す。
+// ここを「記録なし」にすると、使っていないエリアが先頭に居座って
+// 下を永久に止めてしまう。
 function rowGapDays(item, staleMap) {
   let gap = -1;
   rowLinkAreas(item).forEach(k => {
-    const last = areaLastDone(k, staleMap);
-    const d = last ? daysSince(last) : GAP_NEVER;
-    if (d > gap) gap = d;
+    const g = areaWorstGap(k, staleMap);
+    if (g > gap) gap = g;
   });
-  return gap < 0 ? GAP_NEVER : gap;
+  return gap;
 }
 // 順繰りの行だけを、空き日数の長い順に並べ替える。
 // 編集モードのときは並べ替えない（上へ／下へは保存された本当の並びを動かすので、
@@ -4495,11 +4508,18 @@ function rowGapDays(item, staleMap) {
 function rotateRoutineItems(list, staleMap) {
   _rotGap = {};
   if (!currentStore || routineEditMode) return list;
+  // 空き日数が出せない行（連動先に項目が無い＝その店舗で使っていない）は
+  // 並べ替えにも鍵にも入れない。位置はそのまま
   const pos = [];
-  list.forEach((it, i) => { if (isRotateRow(it)) pos.push(i); });
+  list.forEach((it, i) => {
+    if (!isRotateRow(it)) return;
+    const g = rowGapDays(it, staleMap);
+    if (g < 0) return;
+    _rotGap[it.id] = g;
+    pos.push(i);
+  });
   if (!pos.length) return list;
-  const picked = pos.map(i => ({ i: i, it: list[i], gap: rowGapDays(list[i], staleMap) }));
-  picked.forEach(x => { _rotGap[x.it.id] = x.gap; });
+  const picked = pos.map(i => ({ i: i, it: list[i], gap: _rotGap[list[i].id] }));
   if (pos.length < 2) return list;
   // 空き日数の長い順。同じなら元の並びのまま（毎日むやみに入れ替わらないように）
   const sorted = picked.slice().sort((a, b) => b.gap - a.gap || a.i - b.i);
