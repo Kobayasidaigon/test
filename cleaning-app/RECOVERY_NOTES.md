@@ -2778,6 +2778,44 @@ PDFを作り直すときは、画像が印刷時に読み込まれず白紙に�
 - できる：`status` / イメージ取得 / SSH / デプロイ
 - できない：ボリュームのスナップショット操作（日次の自動バックアップは別途有効）
 
+## 触ってはいけない鍵（チェックの記録）
+
+**みんなが押したチェックは、何があっても触らない。** 本人からの指示。
+
+| 触らない鍵 | 中身 |
+|---|---|
+| `clean_<店舗>_<担当者>_<エリア>_<日付>` | **チェックの記録そのもの** |
+| `periodicDone_<店舗>` | 定期清掃の実施記録 |
+| `proofLog_` / `proofCancelLog_` | 抜き打ち写真の記録 |
+| `cleanHistory_` / `nums_` | 履歴・数の記録 |
+
+直してよいのは**定義のほう**だけ（`sdef_*`・`periodicTasks`・`proofPool`・`proofRates`）。
+
+#### 仕組みで止めてある
+
+`cleaning-prod-ops.yml` の「書く」段に**歯止め**を入れた。
+`after.json` に上の鍵が1つでも混ざっていたら、**PUTを1件も出さずにその場で落ちる**。
+
+```python
+MUST_NOT_TOUCH = ('clean_', 'periodicDone_', 'proofLog_', 'proofCancelLog_',
+                  'cleanHistory_', 'nums_', 'daySkip_', 'proofReview_')
+bad = [k for k in after if k.startswith(MUST_NOT_TOUCH)]
+if bad:
+    sys.stderr.write('::error::記録の鍵を書こうとしています。止めました\n')
+    raise SystemExit(1)
+```
+
+**ops を書き換えるときは、この段を消さないこと。**
+
+#### 項目のidを変えるのも同じこと
+
+記録は**項目のid**で引いている。idを変えたり消したりすると、
+記録は消えないが**画面に出なくなる**（迷子になる）。
+題名を直すときは `itemEdits_` で直し、**idはそのまま**にする。
+
+**これまでに迷子にしたもの: 1件だけ。** 2-63 で笠寺の朝番から
+重複していた「シャワーマット回収」を1行減らしたとき（本人の承認あり）。
+
 ## 次に何かする場合の注意
 
 - 項目の削除・変更は `state.json` を直接書き換えず、**アプリのAPI（PUT /api/state/:key）経由**で行うこと。
