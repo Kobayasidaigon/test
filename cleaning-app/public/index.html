@@ -2293,8 +2293,11 @@ function getGroups(areaKey) {
         });
       });
     });
-    // カスタム項目
-    custom.filter(ci => ci.section === sec).forEach(ci => {
+    // カスタム項目（非表示を除外）
+    // 隠すのは「消す」ためではなく、記録を残したまま一覧から下ろすため。
+    // customItems から消すと id ごと消え、それまでのチェックが画面から
+    // 出なくなる（迷子になる）。定期清掃へ移すときなどはここで下ろす。
+    custom.filter(ci => ci.section === sec && !hidden.includes(ci.id)).forEach(ci => {
       items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
