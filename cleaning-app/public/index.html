@@ -348,6 +348,12 @@
     background: #e53935; flex: 0 0 auto; }
   .notice-bar .nb-sub { font-weight: 600; color: var(--muted); margin-left: auto;
     font-size: .76rem; white-space: nowrap; }
+  /* 端末の保存容量が一杯のとき。記録はサーバーに入っているので、慌てさせない */
+  .storage-bar { display: flex; align-items: flex-start; gap: 8px; width: 100%;
+    border: 1px solid #ffcdd2; background: #fff5f5; color: #b71c1c;
+    border-radius: 10px; padding: 8px 12px; margin-bottom: 8px;
+    font-size: .82rem; line-height: 1.5; text-align: left; }
+  .storage-bar .ic { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 2px; }
   .notice-item { border-bottom: 1px solid var(--border); padding: 10px 0; }
   .notice-item:last-child { border-bottom: none; }
   .notice-item .ni-date { font-size: .72rem; color: var(--muted); }
@@ -973,6 +979,8 @@
   <div id="checklistView">
     <!-- 今日いちばん手薄な所を1行で。みんなが毎日開くのはこの画面なので、ここに置く -->
     <!-- 変更のお知らせ。読むまで赤い点が残る -->
+    <!-- 端末の保存容量が一杯のとき（記録はサーバーに入っている） -->
+    <div id="storageBar" class="storage-bar" style="display:none;"></div>
     <button type="button" id="noticeBar" class="notice-bar" style="display:none;"></button>
     <button type="button" id="focusBar" class="focus-bar" style="display:none;"></button>
     <!-- 3日以上空いている所のお知らせ。止めずに見せるだけ -->
@@ -1870,19 +1878,79 @@ function markPendingSync(key, on) {
   if (on && i < 0) list.push(key);
   else if (!on && i >= 0) list.splice(i, 1);
   else return;
-  localStorage.setItem('pendingSync', JSON.stringify(list));
+  try { localStorage.setItem('pendingSync', JSON.stringify(list)); } catch (e) {}
 }
+
+// ===== 端末の保存容量 =====
+//
+// 端末の保存場所（localStorage）は無限ではない。iPadのSafariでは5MBほどで、
+// 記録が増えるといつか必ず一杯になる。一杯になると setItem は例外を投げる。
+//
+// これまでは syncSet が try/catch なしで setItem を先に呼んでいたため、
+// 一杯になった端末では**例外でその場が止まり、チェックが付かないどころか
+// サーバーにも送られない**（＝作業の記録が消える）状態だった。
+// 現場から「遅番でいくつか付けた後、付けられなくなる」と報告があったのがこれ。
+//
+// 直し方は3つ。
+//   ① 例外は必ず受け止める（画面を止めない）
+//   ② サーバーへの送信は、端末に入ったかどうかと関係なく必ずやる
+//   ③ 入らなかったら、無くても困らない控えを捨てて、もう一度だけ試す
+let storageFull = false;
+
+// 捨ててよいもの＝サーバーから引き直せるもの。
+//   cleanHistory_*  … ふりかえり画面用の控え。開くときに引き直せる
+//   古い clean_*    … 30日より前のチェック。サーバーに入っている
+// まだサーバーに送れていないもの（pendingSync）は絶対に捨てない。
+function freeUpSpace(keepKey) {
+  const pending = loadPendingSync();
+  const cutoff = shiftDate(todayStr(), -30);
+  const drop = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (!k || k === keepKey || pending.indexOf(k) >= 0) continue;
+    if (k.indexOf('cleanHistory_') === 0) { drop.push(k); continue; }
+    if (k.indexOf('clean_') === 0 && k.slice(-10) < cutoff) drop.push(k);
+  }
+  let n = 0;
+  drop.forEach(k => { try { localStorage.removeItem(k); n++; } catch (e) {} });
+  return n > 0;
+}
+
+// localStorage への書き込み。入らなくても例外を外に出さない。
+function lsSet(key, value) {
+  try { localStorage.setItem(key, value); return true; } catch (e) {}
+  if (freeUpSpace(key)) {
+    try { localStorage.setItem(key, value); return true; } catch (e) {}
+  }
+  storageFull = true;
+  showStorageWarn();
+  return false;
+}
+
+// 端末に控えを置けないことを1行で伝える。記録そのものはサーバーに入っている。
+function showStorageWarn() {
+  const el = document.getElementById('storageBar');
+  if (!el) return;
+  el.style.display = '';
+  el.innerHTML = ic('info')
+    + '<span><b>この端末の保存容量が一杯です。</b>'
+    + 'チェックはサーバーに記録されています。'
+    + '画面の出方がおかしいときは、いったん閉じて開き直してください。</span>';
+}
+
 function syncSet(key, value) {
-  localStorage.setItem(key, value);
+  const stored = lsSet(key, value);
   fetch('/api/state/' + encodeURIComponent(key), {
     method: 'PUT', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: value
   }).then(r => {
     markPendingSync(key, !r.ok);
+    // 端末にもサーバーにも入らなかったときだけ、記録が本当に消える。黙らない。
+    if (!r.ok && !stored) showStorageWarn();
     // 自分の書き込みぶんは番号を進めておく（次の取得で自分の変更を引き直さないため）
     return r.ok ? r.json().catch(() => null) : null;
   }).then(j => {
     if (j && typeof j.rev === 'number' && typeof stateRev === 'number' && j.rev === stateRev + 1) stateRev = j.rev;
-  }).catch(() => markPendingSync(key, true));
+  }).catch(() => { markPendingSync(key, true); if (!stored) showStorageWarn(); });
 }
 function syncRemove(key) {
   localStorage.removeItem(key);
@@ -7748,7 +7816,14 @@ async function bootstrap() {
     localStorage.setItem('staffResetToken', resetToken);
     // ローカルキャッシュをサーバー内容に合わせる
     locals.forEach(k => localStorage.removeItem(k));
-    Object.keys(serverKv).forEach(k => localStorage.setItem(k, serverKv[k]));
+    // サーバーの中身をそのまま書き戻すが、端末の容量には限りがある。
+    // 大事なもの（定義・名簿・今日のチェック）を先に入れ、
+    // 無くても困らない控え（ふりかえり用の履歴）は最後に回す。
+    // 入らなくても止まらない。
+    const allKeys = Object.keys(serverKv);
+    const bulky = k => k.indexOf('cleanHistory_') === 0;
+    allKeys.filter(k => !bulky(k)).forEach(k => lsSet(k, serverKv[k]));
+    allKeys.filter(bulky).forEach(k => lsSet(k, serverKv[k]));
     // 見本メディア（idと種別を保持）
     mediaKeys.clear();
     Object.keys(mediaTypes).forEach(k => delete mediaTypes[k]);
