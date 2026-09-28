@@ -194,6 +194,14 @@ app.post('/api/inventory-link', express.json({ limit: '1kb' }), (req, res) => {
 app.get('/api/state', (req, res) => {
   res.json({ kv: state.kv, media: state.media, mediaIds: Object.keys(state.media), rev: stateRev });
 });
+// 鍵を1つだけ取る。端末の保存容量には限りがあるので、大きいもの
+// （ふりかえり用の履歴など）は端末に置かず、見るときにここから取りに行く。
+app.get('/api/state/:key', (req, res) => {
+  const v = state.kv[req.params.key];
+  // 無い鍵は 404 ではなく「空」で返す。404 は端末のコンソールに赤い行を出し、
+  // 本当のエラーが埋もれるため（まだ一度も履歴が無い店舗はふつうにある）。
+  res.type('text/plain; charset=utf-8').send(typeof v === 'string' ? v : '');
+});
 app.put('/api/state/:key', express.text({ type: '*/*', limit: '5mb' }), (req, res) => {
   const v = typeof req.body === 'string' ? req.body : '';
   const changed = state.kv[req.params.key] !== v;

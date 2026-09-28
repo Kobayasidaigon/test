@@ -5218,6 +5218,36 @@ function nowDateTimeStr() {
 }
 // 履歴は店舗ごとのキーに保存（cleanHistory_<店舗>）。
 // 自動登録で複数店舗の端末が同時に書いても互いを上書きしないようにするため。
+// ふりかえり用の履歴は3店舗ぶんで1.1MBあり、端末の保存容量（5MB）の
+// 半分近くを1人で使っていた。それで一杯になり、チェックが押せなくなっていた（2-79）。
+// そこで**端末には今いる店舗のぶんだけ置き、他店は見るときに取りに行く**。
+// 記録そのものは1件も捨てない。サーバーには全部ある。
+const historyLoaded = {};   // 店舗 → その店舗の履歴を丸ごと持っているか
+
+function ensureHistory(store, after) {
+  if (!store) { if (after) after(false); return; }
+  if (historyLoaded[store]) { if (after) after(true); return; }
+  fetch('/api/state/' + encodeURIComponent('cleanHistory_' + store))
+    .then(r => (r.ok ? r.text() : (r.status === 404 ? '' : null)))
+    .then(t => {
+      if (t === null) { if (after) after(false); return; }
+      if (!t) t = '[]';                       // まだ履歴が無い店舗
+      try { JSON.parse(t); } catch (e) { t = '[]'; }
+      lsSet('cleanHistory_' + store, t);
+      historyLoaded[store] = true;
+      if (after) after(true);
+    })
+    .catch(() => { if (after) after(false); });
+}
+
+// 見る前に必要な店舗の履歴をそろえて、そろってから描き直す
+function withHistory(stores, cb) {
+  const list = (Array.isArray(stores) ? stores : [stores]).filter(Boolean);
+  let left = list.length;
+  if (!left) { cb(); return; }
+  list.forEach(st => ensureHistory(st, () => { if (--left === 0) cb(); }));
+}
+
 function loadHistory(store) {
   const read = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } };
   if (store) return read('cleanHistory_' + store);
@@ -5227,9 +5257,14 @@ function loadHistory(store) {
   return all;
 }
 function saveHistory(store, h) {
+  // その店舗の履歴を丸ごと持っていないのに書くと、サーバーにある分を
+  // 短いもので上書きしてしまう（＝過去の記録が消える）。持っていなければ書かない。
+  // 取りに行くだけ行って、次の自動登録（3秒ごと）で書けばいい。
+  if (!historyLoaded[store]) { ensureHistory(store); return false; }
   // 60日より古い履歴は自動削除（自動登録で無限に増えて起動が重くなるのを防ぐ）
   const cutoff = new Date(Date.now() - 60 * 86400000).toISOString().slice(0, 10);
   syncSet('cleanHistory_' + store, JSON.stringify(h.filter(e => e.date >= cutoff)));
+  return true;
 }
 
 // ===== 定期清掃（たまにやる項目）=====
@@ -5547,7 +5582,10 @@ function refreshCmpStore() {
     cmpStore.appendChild(o);
   });
   cmpStore.value = (cmpStoreTouched && STORES.includes(prev)) ? prev : cmpStoreDefault();
-  cmpStore.onchange = () => { cmpStoreTouched = true; refreshCmpStaff(); renderCompare(); };
+  cmpStore.onchange = () => {
+    cmpStoreTouched = true; refreshCmpStaff(); renderCompare();
+    withHistory(cmpStoreValue(), renderCompare);   // その店舗の履歴を取りに行く
+  };
 }
 refreshCmpStore();
 
@@ -5616,9 +5654,10 @@ function setMode(mode) {
       : isCompare
         ? '店舗を選ぶと、その店舗の記録をチェックシートごとに比較できます'
         : '担当者を選び、エリアごとに完了項目をタップ';
-  if (isSummary) renderSummary();
-  else if (isReview) renderReview();
-  else if (isCompare) renderCompare();
+  // 履歴は端末に置いていないことがあるので、見る前に取りに行く
+  if (isSummary) { renderSummary(); withHistory(STORES, renderSummary); }
+  else if (isReview) { renderReview(); withHistory(cmpStoreValue(), renderReview); }
+  else if (isCompare) { renderCompare(); withHistory(cmpStoreValue(), renderCompare); }
   else render();
 }
 modeChecklistBtn.onclick = () => setMode('check');
@@ -7821,9 +7860,18 @@ async function bootstrap() {
     // 無くても困らない控え（ふりかえり用の履歴）は最後に回す。
     // 入らなくても止まらない。
     const allKeys = Object.keys(serverKv);
-    const bulky = k => k.indexOf('cleanHistory_') === 0;
-    allKeys.filter(k => !bulky(k)).forEach(k => lsSet(k, serverKv[k]));
-    allKeys.filter(bulky).forEach(k => lsSet(k, serverKv[k]));
+    const isHist = k => k.indexOf('cleanHistory_') === 0;
+    // 60日より前のチェックは端末に置かない（サーバーには残る）。
+    // 空き日数の計算は60日もさかのぼれば足りる。
+    const oldCut = shiftDate(todayStr(), -60);
+    const isOldRec = k => k.indexOf('clean_') === 0 && k.slice(-10) < oldCut;
+    allKeys.filter(k => !isHist(k) && !isOldRec(k)).forEach(k => lsSet(k, serverKv[k]));
+    // 履歴は今いる店舗のぶんだけ端末に置く。他店は見るときに取りに行く。
+    const myStore = localStorage.getItem('currentStore') || '';
+    const myHist = 'cleanHistory_' + myStore;
+    if (myStore && typeof serverKv[myHist] === 'string') {
+      if (lsSet(myHist, serverKv[myHist])) historyLoaded[myStore] = true;
+    }
     // 見本メディア（idと種別を保持）
     mediaKeys.clear();
     Object.keys(mediaTypes).forEach(k => delete mediaTypes[k]);
