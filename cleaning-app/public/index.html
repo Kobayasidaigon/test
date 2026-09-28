@@ -4480,6 +4480,7 @@ function isRotateRow(item) {
 // 項目があっても鍵が掛からなかった（現場の写真で分かった）。
 // 「全部毎日やりたい」が前提なので、いちばん遅れている項目に合わせる。
 const GAP_NEVER = 9999;
+const GAP_TAG_DAYS = 2;   // 「◯日空き」を出し始める日数（1日空き＝昨日やった、は出さない）
 function areaWorstGap(areaKey, staleMap) {
   const base = baseArea(areaKey);
   const items = areaItems(base);
@@ -4536,7 +4537,9 @@ function gapTagHtml(item) {
   const g = _rotGap[item.id];
   if (g === undefined) return '';
   if (g >= GAP_NEVER) return '<span class="rt-gap none">記録なし</span>';
-  if (g <= 0) return '';
+  // 「1日空き」は昨日やった状態。毎日やっていても必ず出るので、
+  // 目印として何も言っていない。2日以上あいたときだけ出す。
+  if (g < GAP_TAG_DAYS) return '';
   return '<span class="rt-gap">' + g + '日空き</span>';
 }
 
