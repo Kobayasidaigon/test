@@ -255,6 +255,9 @@
   .rt-subhead { margin: 4px 0 2px 26px; font-size: .75rem; color: var(--muted); font-weight: 700; }
   /* 曜日わけの区分。今日の枠を目立たせ、他の曜日は薄くする（押せなくはしない） */
   .rt-subhead.sec-off, .section-title.sec-off .sec-name { opacity: .55; }
+  .other-days { margin: 10px 0 4px; text-align: center; }
+  .other-days-btn { background: none; border: none; color: var(--muted); font-size: .8rem;
+                    text-decoration: underline; cursor: pointer; padding: 6px 10px; }
   .sec-today { margin-left: 6px; font-size: .72rem; font-weight: 700; color: #0d6efd;
                background: #e7f1ff; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
   .section-title.sec-on .sec-name { color: #0d6efd; }
@@ -2238,6 +2241,29 @@ function sectionDayClass(section, dateStr) {
   if (!g) return '';
   return g.id === dayGroupOf(dateStr) ? ' sec-on' : ' sec-off';
 }
+// 今日の曜日でない区分は出さない。ただし「見えない＝触れない」にはしない。
+// 前の日に抜けたぶんと、各区分の「しばらく空いている項目のフォロー」は
+// いつでも拾えないと困る（日曜はどの枠にも当たらないので、なおさら）。
+// そのため、たたんだ区分は一番下の1行から開けるようにしてある。
+let showOtherDays = false;
+// 「今日の曜日ではない区分か」。開いているかどうかは見ない。
+// 開いた状態でも1行（閉じる）を出し続けるために、数えるのはこちらを使う。
+function sectionIsOtherDay(section, dateStr) {
+  if (routineEditMode) return false;
+  const g = sectionDayGroup(section);
+  return !!g && g.id !== dayGroupOf(dateStr);
+}
+// 「今、画面に出さないか」
+function sectionFoldedToday(section, dateStr) {
+  return !showOtherDays && sectionIsOtherDay(section, dateStr);
+}
+function otherDaysLineHtml(n) {
+  if (!n) return '';
+  return '<div class="other-days">'
+    + '<button type="button" class="other-days-btn">'
+    + (showOtherDays ? '他の曜日のぶんを閉じる' : '他の曜日のぶんを見る（' + n + '件）')
+    + '</button></div>';
+}
 
 // その週の月曜の日付。「チェックは一週間消さない」に合わせ、
 // 週で分ける記録はこの日付をキーに使う（月にやった分が木にも残る）
@@ -2890,6 +2916,15 @@ function openMediaGallery(areaKey, itemId, startId, kind) {
 
 // 行のタップ（チェックの切り替え・エリアへの移動）より先に拾う
 document.getElementById('checklist').addEventListener('click', (e) => {
+  // 「他の曜日のぶんを見る」。開いた状態は覚えない（開き直せば今日のぶんに戻る）
+  const od = e.target.closest('.other-days-btn');
+  if (od) {
+    e.preventDefault();
+    e.stopPropagation();
+    showOtherDays = !showOtherDays;
+    render();
+    return;
+  }
   // 下の一覧: 押すと上の写真が入れ替わる（拡大表示は開かない）
   const thumb = e.target.closest('.ex-thumb');
   if (thumb) {
@@ -4849,10 +4884,17 @@ function renderRoutineView() {
               + (bl.today ? '<span class="today">← 今日</span>' : '') + '</div>';
           }
           let ci_i = -1; // 並べ替え用の通し番号（areaItems と同じ並び）
+          let folded = 0; // 今日の曜日でないので出さなかった件数
           cgroups.forEach(g => {
+            const dstr = dateInput && dateInput.value;
+            // 今日の曜日でない区分は、見出しごと出さない（下の1行から開ける）
+            if (sectionIsOtherDay(g.section, dstr)) folded += g.items.length;
+            if (sectionFoldedToday(g.section, dstr)) {
+              ci_i += g.items.length;   // 並べ替えの番号はずらさない
+              return;
+            }
             // 区分が複数あるエリアは見出しを出す（同じ題名が区分違いで並ぶため）
             if (cgroups.length > 1) {
-              const dstr = dateInput && dateInput.value;
               html += '<div class="rt-subhead' + sectionDayClass(g.section, dstr) + '">'
                 + escapeHtml(g.section) + sectionDayTagHtml(g.section, dstr) + '</div>';
             }
@@ -4888,6 +4930,7 @@ function renderRoutineView() {
               + '</div>';
             });
           });
+          html += otherDaysLineHtml(folded);
         });
         // 編集中は、この連動先エリアにも項目を足せるようにする
         if (routineEditMode) {
@@ -5104,7 +5147,13 @@ function render() {
     checklist.appendChild(bar);
   }
 
+  let foldedCount = 0; // 今日の曜日でないので出さなかった件数
   groups.forEach(group => {
+    // 今日の曜日でない区分は、見出しごと出さない（下の1行から開ける）
+    if (sectionIsOtherDay(group.section, dateInput && dateInput.value)) {
+      foldedCount += group.items.length;
+    }
+    if (sectionFoldedToday(group.section, dateInput && dateInput.value)) return;
     const title = document.createElement('div');
     title.className = 'section-title' + sectionDayClass(group.section, dateInput && dateInput.value);
     // 見出し（タイトル）。追加したタイトルは名前変更・削除できる
@@ -5131,6 +5180,11 @@ function render() {
     secAdd.onclick = () => openAddDialog(group.section);
     checklist.appendChild(secAdd);
   });
+  if (foldedCount) {
+    const line = document.createElement('div');
+    line.innerHTML = otherDaysLineHtml(foldedCount);
+    checklist.appendChild(line.firstChild);
+  }
 
   // 項目カード1枚を組み立てて container に足す
   function appendItemCard(container, item, rec, staleMap) {
