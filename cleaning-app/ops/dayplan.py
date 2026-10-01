@@ -20,6 +20,8 @@ C = 'C フリーウェイト・整頓【水・土】'
 SECTIONS = [EVERY, A, B, C]
 
 # 本人確認済みの中身。題名で引き当てる（idは本番を読んでから決まる）。
+# 題名は店舗ごとに言い回しが違うことがあるので、候補を並べてよい（上から順に探す）。
+# ぼかした一致はしない。並べた通りの題名が無ければ止める。
 PLAN = [
     (EVERY, 'フロアのモップ・掃除機掛け'),
     (EVERY, '汗・水滴の拭き取り（重点箇所）'),
@@ -33,7 +35,8 @@ PLAN = [
     (A, 'マシンの足場'),
 
     (B, 'ランニングマシンの清掃・除菌'),
-    (B, 'カバー・ベルト・サイドの清掃'),
+    (B, ('ランニングマシンのカバー・ベルト・サイドの清掃',   # 萩野通の実際の題名
+          'カバー・ベルト・サイドの清掃')),
     (B, 'エアロバイクの清掃・除菌'),
     (B, '階段マシンの清掃'),
     (B, 'ウェイトスタックマシンの清掃・除菌'),
@@ -119,9 +122,15 @@ def build(kv, store, builtin):
     assigned = {}       # (エリア, id) -> 新しい区分
     report['ambiguous'] = []
     for sec, title in PLAN:
-        hits = index.get(norm(title)) or []
+        names = (title,) if isinstance(title, str) else tuple(title)
+        hits = []
+        for nm in names:
+            hits = index.get(norm(nm)) or []
+            if hits:
+                title = nm
+                break
         if not hits:
-            report['unmatched_plan'].append((sec, title))
+            report['unmatched_plan'].append((sec, '／'.join(names)))
             continue
         if len(hits) > 1:
             # 同じ題名が2か所にある。どちらを指しているか決められないので黙って選ばない。
