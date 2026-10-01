@@ -4874,9 +4874,10 @@ function renderRoutineView() {
         let folded = 0; // 今日の曜日でないので出さなかった件数（このエリアぶん）
         blocks.forEach(bl => {
           // 今日の曜日ではない枠（マシンメンテの 月・木 / 火・金 / 水・土）は出さない。
+          // 開いても押せない（見るだけの）枠なので、開く1行も付けずに丸ごと落とす。
           // 日曜は todayG が決まらず off にならないので、3枠ともそのまま出る（全体の点検）。
-          if (bl.off) folded += citems.length;
-          if (bl.off && !showOtherDays && !routineEditMode) return;
+          // 項目を編集中は weekly が false になり、枠分けそのものが無い（off も立たない）。
+          if (bl.off) return;
           const crec = loadRecordMerged(bl.sk); // 他の担当者の分も含める
           if (bl.day) {
             // 「← 今日」は付けない。今日の枠しか出さないので、印に意味がない
