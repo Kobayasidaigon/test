@@ -104,12 +104,35 @@ def visible_items(kv, store, area, builtin):
     return out
 
 
+def hidden_items(kv, store, area, builtin):
+    """その店舗で下ろしてある（画面に出ていない）項目。題名は編集を反映した方。
+
+    計画に載っている項目が「この店舗には無い」のか「題名が違う」のかを
+    見分けるために使う。下ろしてあるなら対象外、そうでないなら止める。
+    """
+    hidden = jload(defread(kv, store, 'hiddenItems_' + area), [])
+    edits = jload(defread(kv, store, 'itemEdits_' + area), {})
+    custom = jload(defread(kv, store, 'customItems_' + area), [])
+    out = []
+    for g in builtin.get(area, []):
+        for it in g['items']:
+            if it['id'] in hidden:
+                ed = edits.get(it['id']) or {}
+                out.append({'id': it['id'],
+                            'title': ed.get('title') if ed.get('title') is not None else it['title']})
+    for ci in custom:
+        if isinstance(ci, dict) and ci.get('id') in hidden:
+            out.append({'id': ci['id'], 'title': ci.get('title') or ''})
+    return out
+
+
 def build(kv, store, builtin):
     """書くもの（after）と、人が読むための報告を返す。"""
     writes = {}
     report = {'matched': [], 'unmatched_plan': [], 'left_alone': [], 'store': store}
 
     index = {}          # 正規化した題名 -> [(エリア, 項目), ...]
+    hidden_index = {}   # 正規化した題名 -> [(エリア, 項目id), ...]（下ろしてあるもの）
     before_ids = {}     # エリア -> 見えている項目idの集合
     items_by_area = {}
     for area in AREAS:
@@ -118,6 +141,8 @@ def build(kv, store, builtin):
         before_ids[area] = set(i['id'] for i in items)
         for i in items:
             index.setdefault(norm(i['title']), []).append((area, i))
+        for i in hidden_items(kv, store, area, builtin):
+            hidden_index.setdefault(norm(i['title']), []).append((area, i['id']))
 
     assigned = {}       # (エリア, id) -> 新しい区分
     report['ambiguous'] = []
@@ -130,7 +155,16 @@ def build(kv, store, builtin):
                 title = nm
                 break
         if not hits:
-            report['unmatched_plan'].append((sec, '／'.join(names)))
+            # この店舗で「下ろしてある」項目なら、無くて当たり前。止めずに飛ばす。
+            # 下ろしてもいないのに見つからないときだけ、題名の食い違いとして止める。
+            off = []
+            for nm in names:
+                off += hidden_index.get(norm(nm)) or []
+            if off:
+                report.setdefault('not_here', []).append(
+                    (sec, names[0], '、'.join('%s:%s' % x for x in off)))
+            else:
+                report['unmatched_plan'].append((sec, '／'.join(names)))
             continue
         if len(hits) > 1:
             # 同じ題名が2か所にある。どちらを指しているか決められないので黙って選ばない。
