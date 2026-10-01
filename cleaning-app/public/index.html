@@ -258,9 +258,6 @@
   .other-days { margin: 10px 0 4px; text-align: center; }
   .other-days-btn { background: none; border: none; color: var(--muted); font-size: .8rem;
                     text-decoration: underline; cursor: pointer; padding: 6px 10px; }
-  .sec-today { margin-left: 6px; font-size: .72rem; font-weight: 700; color: #0d6efd;
-               background: #e7f1ff; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
-  .section-title.sec-on .sec-name { color: #0d6efd; }
   .rt-open { margin: 2px 0 8px 26px; }
   .rt-open-btn { border: none; background: transparent; color: var(--primary); font-size: .8rem; cursor: pointer; padding: 2px 0; text-decoration: underline; }
   .rt-link { margin-left: 4px; text-decoration: none; font-size: 1rem; flex-shrink: 0; }
@@ -327,7 +324,6 @@
   .rt-child.rt-off .rt-title { color: var(--muted); }
   .rt-daysec { margin: 6px 0 3px 26px; font-size: .78rem; font-weight: 700; color: var(--primary); }
   .rt-daysec.off { color: var(--muted); font-weight: 400; }
-  .rt-daysec .today { font-size: .72rem; font-weight: 700; margin-left: 4px; }
   .rt-daynote { margin: 6px 0 2px 26px; font-size: .72rem; color: var(--muted); }
   .rt-child .num-wrap { margin: 6px 0 2px 28px; }
   .rt-child.rt-editing { align-items: flex-start; }
@@ -2230,16 +2226,14 @@ function sectionDayGroup(section) {
   const s = String(section || '');
   return DAY_GROUPS.find(dg => s.indexOf(dg.name) >= 0) || null;
 }
-// 今日の枠の見出しに付ける印。今日でない枠には何も付けない（薄くするだけ）
-function sectionDayTagHtml(section, dateStr) {
-  const g = sectionDayGroup(section);
-  if (!g) return '';
-  return g.id === dayGroupOf(dateStr) ? '<span class="sec-today">← 今日</span>' : '';
-}
+// 今日の枠に「← 今日」と付けるのはやめた。
+// 今日の曜日のぶんしか出さないので、出ているものは全部その日のぶん。
+// 印を足しても何も分からない。
+// 「他の曜日のぶんを見る」で開いたときだけ、その日でない区分を薄くする。
 function sectionDayClass(section, dateStr) {
   const g = sectionDayGroup(section);
-  if (!g) return '';
-  return g.id === dayGroupOf(dateStr) ? ' sec-on' : ' sec-off';
+  if (!g || g.id === dayGroupOf(dateStr)) return '';
+  return ' sec-off';
 }
 // 今日の曜日でない区分は出さない。ただし「見えない＝触れない」にはしない。
 // 前の日に抜けたぶんと、各区分の「しばらく空いている項目のフォロー」は
@@ -4877,14 +4871,19 @@ function renderRoutineView() {
           : [{ sk: baseSk, day: null, off: false, today: false }];
         // 日曜は枠が決まらない＝全体の点検。3枠とも触れることを書いておく
         if (weekly && !todayG) html += '<div class="rt-daynote">日曜日は全体の点検（どの枠も確認できます）</div>';
+        let folded = 0; // 今日の曜日でないので出さなかった件数（このエリアぶん）
         blocks.forEach(bl => {
+          // 今日の曜日ではない枠（マシンメンテの 月・木 / 火・金 / 水・土）は出さない。
+          // 日曜は todayG が決まらず off にならないので、3枠ともそのまま出る（全体の点検）。
+          if (bl.off) folded += citems.length;
+          if (bl.off && !showOtherDays && !routineEditMode) return;
           const crec = loadRecordMerged(bl.sk); // 他の担当者の分も含める
           if (bl.day) {
-            html += '<div class="rt-daysec' + (bl.off ? ' off' : '') + '">' + escapeHtml(bl.day.name)
-              + (bl.today ? '<span class="today">← 今日</span>' : '') + '</div>';
+            // 「← 今日」は付けない。今日の枠しか出さないので、印に意味がない
+            html += '<div class="rt-daysec' + (bl.off ? ' off' : '') + '">'
+              + escapeHtml(bl.day.name) + '</div>';
           }
           let ci_i = -1; // 並べ替え用の通し番号（areaItems と同じ並び）
-          let folded = 0; // 今日の曜日でないので出さなかった件数
           cgroups.forEach(g => {
             const dstr = dateInput && dateInput.value;
             // 今日の曜日でない区分は、見出しごと出さない（下の1行から開ける）
@@ -4896,7 +4895,7 @@ function renderRoutineView() {
             // 区分が複数あるエリアは見出しを出す（同じ題名が区分違いで並ぶため）
             if (cgroups.length > 1) {
               html += '<div class="rt-subhead' + sectionDayClass(g.section, dstr) + '">'
-                + escapeHtml(g.section) + sectionDayTagHtml(g.section, dstr) + '</div>';
+                + escapeHtml(g.section) + '</div>';
             }
             g.items.forEach((ci) => {
             ci_i++;
@@ -4930,8 +4929,8 @@ function renderRoutineView() {
               + '</div>';
             });
           });
-          html += otherDaysLineHtml(folded);
         });
+        html += otherDaysLineHtml(folded);
         // 編集中は、この連動先エリアにも項目を足せるようにする
         if (routineEditMode) {
           html += '<div class="rt-childadd"><button type="button" class="rt-add-btn rt-add-child" data-rt-addarea="' + escapeHtml(k) + '">'
@@ -5158,7 +5157,6 @@ function render() {
     title.className = 'section-title' + sectionDayClass(group.section, dateInput && dateInput.value);
     // 見出し（タイトル）。追加したタイトルは名前変更・削除できる
     title.innerHTML = '<span class="sec-name">' + escapeHtml(group.section) + '</span>'
-      + sectionDayTagHtml(group.section, dateInput && dateInput.value)
       + (group.sectionCustom
           ? '<span class="sec-actions"><button class="sec-edit" aria-label="タイトル名を変更">' + ic('pencil') + '</button>'
             + '<button class="sec-del" aria-label="タイトルを削除">' + ic('trash-2') + '</button></span>'
