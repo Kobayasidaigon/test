@@ -2729,10 +2729,13 @@ function findItemIn(areaKey, itemId) {
 // 少ないので、全行にボタンが並ぶ心配もない。
 function hasExamples(areaKey, itemId) {
   if (SAMPLE_KINDS.some(k => mediaIdsForArea(areaKey, itemId, k.kind).length > 0)) return true;
+  // やり方の写真・動画が入っている項目も出す。手順の「文章」は全項目に入っているので
+  // 条件にできないが、やり方の「見本」はわざわざ撮って入れたものなので数が少なく、
+  // 全行にボタンが並ぶ心配がない。入れたのに やることリストから辿れないほうが困る。
+  if (mediaIdsForArea(areaKey, itemId, METHOD_KIND.kind).length > 0) return true;
   if (baseArea(areaKey) === PERIODIC_KEY) {
     const t = findItemIn(areaKey, itemId);
     if (t && String(t.method || '').trim()) return true;
-    if (mediaIdsForArea(areaKey, itemId, METHOD_KIND.kind).length > 0) return true;
   }
   return false;
 }
