@@ -253,6 +253,11 @@
   .rt-place.on { background: var(--primary); border-color: var(--primary); color: #fff; }
   .rt-place.on .rt-place-n { color: rgba(255,255,255,.85); }
   .rt-subhead { margin: 4px 0 2px 26px; font-size: .75rem; color: var(--muted); font-weight: 700; }
+  /* 曜日わけの区分。今日の枠を目立たせ、他の曜日は薄くする（押せなくはしない） */
+  .rt-subhead.sec-off, .section-title.sec-off .sec-name { opacity: .55; }
+  .sec-today { margin-left: 6px; font-size: .72rem; font-weight: 700; color: #0d6efd;
+               background: #e7f1ff; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+  .section-title.sec-on .sec-name { color: #0d6efd; }
   .rt-open { margin: 2px 0 8px 26px; }
   .rt-open-btn { border: none; background: transparent; color: var(--primary); font-size: .8rem; cursor: pointer; padding: 2px 0; text-decoration: underline; }
   .rt-link { margin-left: 4px; text-decoration: none; font-size: 1rem; flex-shrink: 0; }
@@ -2156,6 +2161,18 @@ function loadCustomSections(areaKey) {
   try { return JSON.parse(defRead(customSecKey(areaKey))) || []; }
   catch (e) { return []; }
 }
+// 区分（タイトル）の並び順。店舗ごとに決められる。
+// 曜日わけのように「今日やる区分を上に出したい」ときに使う。
+// ここに載っていない区分は、今までどおりの順で後ろに続く（並べ忘れても消えない）。
+function secOrderKey(areaKey) { return 'sectionOrder_' + areaKey; }
+function loadSectionOrder(areaKey) {
+  try { const v = JSON.parse(defRead(secOrderKey(areaKey))); return Array.isArray(v) ? v : []; }
+  catch (e) { return []; }
+}
+function saveSectionOrder(areaKey, list) {
+  defWrite(secOrderKey(areaKey), JSON.stringify(list));
+}
+
 function saveCustomSections(areaKey, list) {
   defWrite(customSecKey(areaKey), JSON.stringify(list));
 }
@@ -2203,6 +2220,25 @@ function dayGroupOf(dateStr) {
   const g = DAY_GROUPS.find(x => x.days.indexOf(wd) >= 0);
   return g ? g.id : null;
 }
+// 区分（タイトル）の名前に【月・木】のような曜日が入っていたら、その枠を返す。
+// 曜日わけは、項目を押せなくするのではなく「今日はここ」と見せるだけにする。
+// 押せなくすると、前日の抜けを拾えなくなる（2-73 で現場から言われた所）。
+function sectionDayGroup(section) {
+  const s = String(section || '');
+  return DAY_GROUPS.find(dg => s.indexOf(dg.name) >= 0) || null;
+}
+// 今日の枠の見出しに付ける印。今日でない枠には何も付けない（薄くするだけ）
+function sectionDayTagHtml(section, dateStr) {
+  const g = sectionDayGroup(section);
+  if (!g) return '';
+  return g.id === dayGroupOf(dateStr) ? '<span class="sec-today">← 今日</span>' : '';
+}
+function sectionDayClass(section, dateStr) {
+  const g = sectionDayGroup(section);
+  if (!g) return '';
+  return g.id === dayGroupOf(dateStr) ? ' sec-on' : ' sec-off';
+}
+
 // その週の月曜の日付。「チェックは一週間消さない」に合わせ、
 // 週で分ける記録はこの日付をキーに使う（月にやった分が木にも残る）
 function weekAnchor(dateStr) {
@@ -2338,17 +2374,37 @@ function getGroups(areaKey) {
   const customSecs = loadCustomSections(areaKey);
   const defaultSecNames = builtinGroups.map(g => g.section);
 
+  // 組み込み項目が今いる区分。itemEdits に section があればそちらを使う。
+  // 曜日わけのように「組み込みの項目を別の区分へ移したい」ことがあるが、
+  // 項目のidを変えると記録が迷子になるので、idはそのままで置き場所だけ移す。
+  const secOf = (i, g) => {
+    const ed = edits[i.id];
+    return (ed && ed.section != null && String(ed.section).trim()) ? ed.section : g.section;
+  };
+
   // タイトル（区分）の表示順：デフォルト → 追加タイトル → 項目が参照する未知タイトル
   const order = [];
   defaultSecNames.forEach(s => { if (!order.includes(s)) order.push(s); });
   customSecs.forEach(s => { if (!order.includes(s)) order.push(s); });
   custom.forEach(ci => { if (!order.includes(ci.section)) order.push(ci.section); });
+  // 移した先が、どこにも登録されていない区分名だった場合も拾う（空振りさせない）
+  builtinGroups.forEach(g => g.items.forEach(i => {
+    const sec = secOf(i, g);
+    if (!order.includes(sec)) order.push(sec);
+  }));
+  // 並び順の指定があれば、それに従って前に出す。
+  // 指定に無い区分は消さず、今までの順のまま後ろへ続ける（sort は順序を保つ）。
+  const secOrder = loadSectionOrder(areaKey);
+  if (secOrder.length) {
+    const rank = sec => { const n = secOrder.indexOf(sec); return n < 0 ? Number.MAX_SAFE_INTEGER : n; };
+    order.sort((a, b) => rank(a) - rank(b));
+  }
 
   const groups = order.map(sec => {
     const items = [];
     // デフォルト項目（非表示を除外・編集を反映）
-    builtinGroups.filter(g => g.section === sec).forEach(g => {
-      g.items.filter(i => !hidden.includes(i.id)).forEach(i => {
+    builtinGroups.forEach(g => {
+      g.items.filter(i => !hidden.includes(i.id) && secOf(i, g) === sec).forEach(i => {
         const ed = edits[i.id];
         items.push({
           id: i.id, custom: false, edited: !!ed,
@@ -4795,7 +4851,11 @@ function renderRoutineView() {
           let ci_i = -1; // 並べ替え用の通し番号（areaItems と同じ並び）
           cgroups.forEach(g => {
             // 区分が複数あるエリアは見出しを出す（同じ題名が区分違いで並ぶため）
-            if (cgroups.length > 1) html += '<div class="rt-subhead">' + escapeHtml(g.section) + '</div>';
+            if (cgroups.length > 1) {
+              const dstr = dateInput && dateInput.value;
+              html += '<div class="rt-subhead' + sectionDayClass(g.section, dstr) + '">'
+                + escapeHtml(g.section) + sectionDayTagHtml(g.section, dstr) + '</div>';
+            }
             g.items.forEach((ci) => {
             ci_i++;
             const cdone = !!crec[ci.id];
@@ -5046,9 +5106,10 @@ function render() {
 
   groups.forEach(group => {
     const title = document.createElement('div');
-    title.className = 'section-title';
+    title.className = 'section-title' + sectionDayClass(group.section, dateInput && dateInput.value);
     // 見出し（タイトル）。追加したタイトルは名前変更・削除できる
     title.innerHTML = '<span class="sec-name">' + escapeHtml(group.section) + '</span>'
+      + sectionDayTagHtml(group.section, dateInput && dateInput.value)
       + (group.sectionCustom
           ? '<span class="sec-actions"><button class="sec-edit" aria-label="タイトル名を変更">' + ic('pencil') + '</button>'
             + '<button class="sec-del" aria-label="タイトルを削除">' + ic('trash-2') + '</button></span>'
