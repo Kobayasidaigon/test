@@ -106,7 +106,7 @@ def build(kv, store, builtin):
     writes = {}
     report = {'matched': [], 'unmatched_plan': [], 'left_alone': [], 'store': store}
 
-    index = {}          # 正規化した題名 -> (エリア, 項目)
+    index = {}          # 正規化した題名 -> [(エリア, 項目), ...]
     before_ids = {}     # エリア -> 見えている項目idの集合
     items_by_area = {}
     for area in AREAS:
@@ -114,15 +114,21 @@ def build(kv, store, builtin):
         items_by_area[area] = items
         before_ids[area] = set(i['id'] for i in items)
         for i in items:
-            index.setdefault(norm(i['title']), (area, i))
+            index.setdefault(norm(i['title']), []).append((area, i))
 
     assigned = {}       # (エリア, id) -> 新しい区分
+    report['ambiguous'] = []
     for sec, title in PLAN:
-        hit = index.get(norm(title))
-        if not hit:
+        hits = index.get(norm(title)) or []
+        if not hits:
             report['unmatched_plan'].append((sec, title))
             continue
-        area, item = hit
+        if len(hits) > 1:
+            # 同じ題名が2か所にある。どちらを指しているか決められないので黙って選ばない。
+            report['ambiguous'].append(
+                (sec, title, ['%s:%s' % (a, i['id']) for a, i in hits]))
+            continue
+        area, item = hits[0]
         assigned[(area, item['id'])] = sec
         report['matched'].append((sec, area, item['id'], item['title']))
 
