@@ -372,3 +372,95 @@ def build_mente(kv, store):
     if sorted(before) != sorted(after):
         raise SystemExit('::error::%s の %s で項目が変わります' % (store, MENTE_AREA))
     return writes, report
+
+
+# ===== ホコリ取り・拭き上げを「マシンメンテ」から「マシン・器具」へ移す =====
+# フロア・マシン清掃の行で見られるようにするため。
+#
+# 記録はエリアごとに分かれて保存されている（clean_<店舗>_<担当>_<エリア>_<日付>）。
+# エリアをまたぐと、その項目の過去の記録は画面から見えなくなる（「記録なし」に戻る）。
+# 記録そのものは消えない。idも変えないので、元に戻せば history も戻る。
+#
+# 元のエリアからは「下ろす」だけにして、定義は残しておく（戻せるように）。
+MOVE_SECTIONS = [
+    ('ホコリ取り【月・木】', 'ホコリ取り'),
+    ('拭き上げ（上はウエス・足元は雑巾）【月・木】', '拭き上げ（上はウエス・足元は雑巾）'),
+]
+MOVE_FROM = 'machine_mente'
+MOVE_TO = 'machine'
+MOVE_AFTER = 'A 床・鏡まわり【月・木】'   # 並び順でこの区分の次に入れる（同じ 月・木 なので）
+
+
+def build_move(kv, store):
+    writes = {}
+    report = {'store': store, 'moved': [], 'already': [], 'missing': []}
+
+    src = jload(defread(kv, store, 'customItems_' + MOVE_FROM), [])
+    if not src:
+        report['missing'].append('%s が無い' % MOVE_FROM)
+        return writes, report
+
+    dst = jload(defread(kv, store, 'customItems_' + MOVE_TO), [])
+    hidden_src = jload(defread(kv, store, 'hiddenItems_' + MOVE_FROM), [])
+    dst_ids = set(c.get('id') for c in dst if isinstance(c, dict))
+
+    new_dst = json.loads(json.dumps(dst))
+    new_hidden = list(hidden_src)
+    want_secs = []
+    changed = False
+
+    for new_name, old_name in MOVE_SECTIONS:
+        hit = [c for c in src if isinstance(c, dict)
+               and c.get('section') in (new_name, old_name)]
+        if not hit:
+            report['missing'].append(new_name)
+            continue
+        want_secs.append(new_name)
+        for c in hit:
+            iid = c.get('id')
+            if iid in dst_ids:
+                report['already'].append((new_name, iid))
+            else:
+                moved = json.loads(json.dumps(c))
+                moved['section'] = new_name   # 移した先でも 月・木 のままにする
+                new_dst.append(moved)
+                dst_ids.add(iid)
+                report['moved'].append((new_name, iid, c.get('title')))
+                changed = True
+            if iid not in new_hidden:
+                new_hidden.append(iid)
+                changed = True
+
+    if not changed:
+        return writes, report
+
+    writes['sdef_%s_customItems_%s' % (store, MOVE_TO)] = json.dumps(new_dst, ensure_ascii=False)
+    writes['sdef_%s_hiddenItems_%s' % (store, MOVE_FROM)] = json.dumps(new_hidden, ensure_ascii=False)
+
+    # 移した先の区分の一覧と並び順
+    secs = jload(defread(kv, store, 'customSections_' + MOVE_TO), [])
+    new_secs = list(secs) + [s for s in want_secs if s not in secs]
+    if new_secs != secs:
+        writes['sdef_%s_customSections_%s' % (store, MOVE_TO)] = json.dumps(
+            new_secs, ensure_ascii=False)
+
+    order = jload(defread(kv, store, 'sectionOrder_' + MOVE_TO), [])
+    new_order = [x for x in order if x not in want_secs]
+    at = new_order.index(MOVE_AFTER) + 1 if MOVE_AFTER in new_order else len(new_order)
+    new_order[at:at] = want_secs
+    if new_order != order:
+        writes['sdef_%s_sectionOrder_%s' % (store, MOVE_TO)] = json.dumps(
+            new_order, ensure_ascii=False)
+
+    # --- 検算 ---
+    ids_dst = [c.get('id') for c in new_dst if isinstance(c, dict)]
+    if len(ids_dst) != len(set(ids_dst)):
+        raise SystemExit('::error::%s の %s で項目が重複します' % (store, MOVE_TO))
+    lost = set(c.get('id') for c in dst if isinstance(c, dict)) - set(ids_dst)
+    if lost:
+        raise SystemExit('::error::%s の %s で項目が消えます: %s'
+                         % (store, MOVE_TO, '、'.join(sorted(lost))))
+    # 元のエリアの定義は消さない（下ろすだけ）
+    if len(jload(defread(kv, store, 'customItems_' + MOVE_FROM), [])) != len(src):
+        raise SystemExit('::error::%s の %s の定義を消そうとしています' % (store, MOVE_FROM))
+    return writes, report
