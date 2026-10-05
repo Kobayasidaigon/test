@@ -3359,11 +3359,15 @@ document.getElementById('editSave').onclick = () => {
     }
   } else {
     // デフォルト項目：上書き内容を保存
+    // ここで { title, desc, method } を作り直すと、この画面で触っていない
+    // 指定（区分＝section など）が黙って消える。曜日わけが実際にこれで
+    // 崩れた（2026-10-05・萩野通の2項目）ので、元の内容に重ねる形にする。
     const edits = loadEdits(ak);
-    const e = { title: title, desc: desc, method: method };
-    if (nums.length) e.nums = nums;
-    if (numLow !== null) e.numLow = numLow;
-    if (numOut !== null) e.numOut = numOut;
+    const e = Object.assign({}, edits[editCtx.id] || {});
+    e.title = title; e.desc = desc; e.method = method;
+    if (nums.length) e.nums = nums; else delete e.nums;
+    if (numLow !== null) e.numLow = numLow; else delete e.numLow;
+    if (numOut !== null) e.numOut = numOut; else delete e.numOut;
     edits[editCtx.id] = e;
     saveEdits(ak, edits);
   }
@@ -3374,7 +3378,11 @@ document.getElementById('editSave').onclick = () => {
 editResetDefault.onclick = () => {
   const ak = editCtx.area || currentArea;
   const edits = loadEdits(ak);
+  // 戻すのは題名・説明・やり方・数値欄まで。区分の指定（曜日わけ）は残す。
+  // ここで消すと、その項目だけ曜日わけから外れて元の区分に戻ってしまう。
+  const sec = (edits[editCtx.id] || {}).section;
   delete edits[editCtx.id];
+  if (sec) edits[editCtx.id] = { section: sec };
   saveEdits(ak, edits);
   editDialog.close();
   render();
