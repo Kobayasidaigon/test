@@ -49,6 +49,33 @@ PLAN = [
     (C, '小物類の清掃・整頓'),
 ]
 
+# 現場が題名を変えても見失わないように、idでも引けるようにしておく。
+# idは項目の身元そのもので、記録もidで繋がっているから、題名より確か。
+# 題名で引けなかったときだけ、ここを見る（エリアも揃っていないと採らない。
+# floor と machine の両方に mat があるため）。
+ID_HINTS = {
+    'フロアのモップ・掃除機掛け':           (('floor', 'sweep'),),
+    '汗・水滴の拭き取り（重点箇所）':        (('floor', 'floor_sweat'),),
+    '備品の整頓（定位置へ）':              (('floor', 'tidy'),),
+    'アルコール台':                      (('floor', 'c1781246540349698'),),
+    'マット・ラバー床の除菌清掃':           (('floor', 'mat'),),
+    '鏡の清掃':                         (('floor', 'mirror'),),
+    'ストレッチエリア':                   (('floor', 'c1780379683936973'),),
+    'ランニングマシンの下の清掃':           (('machine', 'c1782283932435859'),),
+    'マシンの足場':                      (('machine', 'c1781086515964550'),),
+    'ランニングマシンの清掃・除菌':          (('machine', 'treadmill'),),
+    'ランニングマシンのカバー・ベルト・サイドの清掃': (('machine', 'cardio_belt'),),
+    'エアロバイクの清掃・除菌':             (('machine', 'bike'),),
+    '階段マシンの清掃':                   (('machine', 'c1781085764206927'),),
+    'ウェイトスタックマシンの清掃・除菌':      (('machine', 'strength'),),
+    'グリップ・ハンドルの除菌':             (('machine', 'strength_grip'),),
+    'ダンベル・バーベルの清掃・整頓':         (('machine', 'dumbbell'),),
+    'ラック・ベンチの清掃':                (('machine', 'rack'),),
+    'プレートの整頓（重量順）':             (('machine', 'plate'),),
+    'マシン・ダンベル台の埃の清掃':          (('machine', 'c1780379236456485'),),
+    '小物類の清掃・整頓':                 (('machine', 'small'),),
+}
+
 FOLLOW_TITLE = 'しばらく空いている項目のフォロー（日付が古いものから）'
 FOLLOW_DESC = '「◯日空き」が付いている所を、古いものから拾う枠'
 
@@ -132,6 +159,8 @@ def build(kv, store, builtin):
     report = {'matched': [], 'unmatched_plan': [], 'left_alone': [], 'store': store}
 
     index = {}          # 正規化した題名 -> [(エリア, 項目), ...]
+    by_id = {}          # (エリア, id) -> 項目（題名が変わっていても引けるように）
+    hidden_ids = set()  # 下ろしてある (エリア, id)
     hidden_index = {}   # 正規化した題名 -> [(エリア, 項目id), ...]（下ろしてあるもの）
     before_ids = {}     # エリア -> 見えている項目idの集合
     items_by_area = {}
@@ -141,8 +170,10 @@ def build(kv, store, builtin):
         before_ids[area] = set(i['id'] for i in items)
         for i in items:
             index.setdefault(norm(i['title']), []).append((area, i))
+            by_id[(area, i['id'])] = i
         for i in hidden_items(kv, store, area, builtin):
             hidden_index.setdefault(norm(i['title']), []).append((area, i['id']))
+            hidden_ids.add((area, i['id']))
 
     assigned = {}       # (エリア, id) -> 新しい区分
     report['ambiguous'] = []
@@ -155,11 +186,23 @@ def build(kv, store, builtin):
                 title = nm
                 break
         if not hits:
+            # 題名で引けないときは id で引く。現場が題名を変えても、
+            # 項目そのものは同じ（記録も id で繋がっている）。
+            for a, iid in ID_HINTS.get(names[0], ()):
+                if (a, iid) in by_id:
+                    hits = [(a, by_id[(a, iid)])]
+                    report.setdefault('by_id', []).append(
+                        (sec, names[0], '%s:%s' % (a, iid), by_id[(a, iid)]['title']))
+                    break
+        if not hits:
             # この店舗で「下ろしてある」項目なら、無くて当たり前。止めずに飛ばす。
             # 下ろしてもいないのに見つからないときだけ、題名の食い違いとして止める。
             off = []
             for nm in names:
                 off += hidden_index.get(norm(nm)) or []
+            for a, iid in ID_HINTS.get(names[0], ()):
+                if (a, iid) in hidden_ids:
+                    off.append((a, iid))
             if off:
                 report.setdefault('not_here', []).append(
                     (sec, names[0], '、'.join('%s:%s' % x for x in off)))
