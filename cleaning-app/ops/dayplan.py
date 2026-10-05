@@ -272,3 +272,60 @@ def build(kv, store, builtin):
             sorted(after_ids - before_ids[area]))
 
     return writes, report
+
+
+# ===== マシンメンテ（machine_mente）のホコリ取り・拭き上げを 月・木 に寄せる =====
+# このエリアは weekCycle（月・木 / 火・金 / 水・土 の3枠）で回っているが、
+# どの枠を開いても全項目が並ぶ。区分名に【月・木】を入れると、
+# 曜日わけの仕組み（sectionDayGroup）が効いて 月・木 のときだけ出るようになる。
+#
+# 項目のidは変えない。区分名を書き換えるだけなので、記録は1件も動かない。
+MENTE_AREA = 'machine_mente'
+MENTE_RENAME = [
+    ('ホコリ取り', 'ホコリ取り【月・木】'),
+    ('拭き上げ（上はウエス・足元は雑巾）', '拭き上げ（上はウエス・足元は雑巾）【月・木】'),
+]
+
+
+def build_mente(kv, store):
+    """ホコリ取り・拭き上げの区分名に【月・木】を付ける。無い店舗は何もしない。"""
+    writes = {}
+    report = {'store': store, 'moved': [], 'already': [], 'missing': []}
+
+    custom = jload(defread(kv, store, 'customItems_' + MENTE_AREA), [])
+    if not custom:
+        report['missing'].append('このエリア自体が無い')
+        return writes, report
+
+    new_custom = json.loads(json.dumps(custom))
+    changed = False
+    for old, new in MENTE_RENAME:
+        hit = [c for c in new_custom if isinstance(c, dict) and c.get('section') == old]
+        done = [c for c in new_custom if isinstance(c, dict) and c.get('section') == new]
+        if not hit and done:
+            report['already'].append((new, len(done)))
+            continue
+        if not hit:
+            report['missing'].append(old)
+            continue
+        for c in hit:
+            c['section'] = new
+            changed = True
+        report['moved'].append((old, new, [c.get('id') for c in hit]))
+    if changed:
+        writes['sdef_%s_customItems_%s' % (store, MENTE_AREA)] = json.dumps(
+            new_custom, ensure_ascii=False)
+
+    # 区分の一覧にも、新しい名前で載せ替える（載っていた場合だけ）
+    secs = jload(defread(kv, store, 'customSections_' + MENTE_AREA), [])
+    new_secs = [dict(MENTE_RENAME).get(x, x) for x in secs]
+    if new_secs != secs:
+        writes['sdef_%s_customSections_%s' % (store, MENTE_AREA)] = json.dumps(
+            new_secs, ensure_ascii=False)
+
+    # --- 検算: 項目が1つも消えない・増えない ---
+    before = [c.get('id') for c in custom if isinstance(c, dict)]
+    after = [c.get('id') for c in new_custom if isinstance(c, dict)]
+    if sorted(before) != sorted(after):
+        raise SystemExit('::error::%s の %s で項目が変わります' % (store, MENTE_AREA))
+    return writes, report
