@@ -1203,6 +1203,7 @@
       <option value="days">◯日ごと</option>
       <option value="week">毎週 ◯曜日</option>
       <option value="month">毎月／Nヶ月ごと ◯日</option>
+      <option value="monthEnd">毎月 月末（◯日前）</option>
     </select>
     <div id="pKindDays">
       <select id="pInterval" class="field"></select>
@@ -1220,6 +1221,13 @@
         <select id="pMonthDay" class="field" style="flex:1; margin:0;"></select>
       </div>
       <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.72rem;">その月に無い日（31日など）は、その月の末日になります。</p>
+    </div>
+    <div id="pKindMonthEnd" style="display:none;">
+      <div style="display:flex; gap:8px;">
+        <select id="pMonthEndEvery" class="field" style="flex:1; margin:0;"></select>
+        <select id="pMonthEndBefore" class="field" style="flex:1; margin:0;"></select>
+      </div>
+      <p class="hint" style="text-align:left; margin:4px 0 0; font-size:.72rem;">月によって日が変わります（2月の月末は28日、4月は30日）。</p>
     </div>
     <label class="field-label" for="pLast">前回やった日（任意・分かれば入力）</label>
     <input type="date" id="pLast" class="field">
@@ -1684,6 +1692,8 @@ function intervalLabel(days) {
 //   { kind: 'days',  n: 30 }            30日ごと
 //   { kind: 'week',  every: 1, dow: 1 } 毎週 月曜（every: 2 なら2週ごと）
 //   { kind: 'month', every: 3, day: 15 } 3ヶ月ごとの15日
+//   { kind: 'monthEnd', every: 1, before: 5 } 毎月、末日の5日前（before:0 なら末日）
+// 月末は月によって日が違う（2月28日・4月30日…）ので、日付では決められない。
 const DOW_LABELS = ['日', '月', '火', '水', '木', '金', '土'];
 function taskRepeat(task) {
   const r = task && task.repeat;
@@ -1694,6 +1704,10 @@ function taskRepeat(task) {
   if (r && r.kind === 'month') {
     return { kind: 'month', every: Math.max(1, Number(r.every) || 1),
              day: Math.min(31, Math.max(1, Number(r.day) || 1)) };
+  }
+  if (r && r.kind === 'monthEnd') {
+    return { kind: 'monthEnd', every: Math.max(1, Number(r.every) || 1),
+             before: Math.min(27, Math.max(0, Number(r.before) || 0)) };
   }
   const n = Math.max(1, Number((r && r.n) || (task && task.interval) || 30));
   return { kind: 'days', n: n };
@@ -1706,13 +1720,17 @@ function repeatLabel(task) {
   if (r.kind === 'month') {
     return (r.every === 1 ? '毎月' : r.every + 'ヶ月ごと') + ' ' + r.day + '日';
   }
+  if (r.kind === 'monthEnd') {
+    return (r.every === 1 ? '毎月' : r.every + 'ヶ月ごと') + ' '
+      + (r.before === 0 ? '月末' : '月末の' + r.before + '日前');
+  }
   return intervalLabel(r.n);
 }
 // おおよその間隔（日）。「そろそろ」の判定と並び順に使う
 function repeatDays(task) {
   const r = taskRepeat(task);
   if (r.kind === 'week') return r.every * 7;
-  if (r.kind === 'month') return r.every * 30;
+  if (r.kind === 'month' || r.kind === 'monthEnd') return r.every * 30;
   return r.n;
 }
 // その月の日数（末日を超える指定を丸めるため。31日指定でも2月は末日になる）
@@ -1737,6 +1755,14 @@ function firstFromRepeat(task, from) {
     if (dThis >= base.getDate()) return fmt(new Date(y, m, dThis));
     const m2 = m + 1, ty = y + Math.floor(m2 / 12), tm = ((m2 % 12) + 12) % 12;
     return fmt(new Date(ty, tm, Math.min(r.day, daysInMonth(ty, tm))));
+  }
+  if (r.kind === 'monthEnd') {
+    // 今月ぶんがまだ先なら今月。過ぎていれば来月の同じ決め方の日
+    const y = base.getFullYear(), m = base.getMonth();
+    const dThis = daysInMonth(y, m) - r.before;
+    if (dThis >= base.getDate()) return fmt(new Date(y, m, dThis));
+    const m2 = m + 1, ty = y + Math.floor(m2 / 12), tm = ((m2 % 12) + 12) % 12;
+    return fmt(new Date(ty, tm, daysInMonth(ty, tm) - r.before));
   }
   return from;   // ◯日ごとは、決めた日から始める
 }
@@ -1779,6 +1805,11 @@ function nextFromRepeat(task, from) {
     const y = base.getFullYear(), m = base.getMonth() + r.every;
     const ty = y + Math.floor(m / 12), tm = ((m % 12) + 12) % 12;
     return fmt(new Date(ty, tm, Math.min(r.day, daysInMonth(ty, tm))));
+  }
+  if (r.kind === 'monthEnd') {
+    const y = base.getFullYear(), m = base.getMonth() + r.every;
+    const ty = y + Math.floor(m / 12), tm = ((m % 12) + 12) % 12;
+    return fmt(new Date(ty, tm, daysInMonth(ty, tm) - r.before));
   }
   return shiftDate(from, r.n);
 }
@@ -4097,11 +4128,16 @@ const pKind = document.getElementById('pKind');
   [1, 2, 3, 4, 6, 12].forEach(n => add(me, n, n === 1 ? '毎月' : n + 'ヶ月ごと'));
   const md = document.getElementById('pMonthDay');
   for (let d = 1; d <= 31; d++) add(md, d, d + '日');
+  const mee = document.getElementById('pMonthEndEvery');
+  [1, 2, 3, 4, 6, 12].forEach(n => add(mee, n, n === 1 ? '毎月' : n + 'ヶ月ごと'));
+  const meb = document.getElementById('pMonthEndBefore');
+  for (let d = 0; d <= 14; d++) add(meb, d, d === 0 ? '月末' : '月末の' + d + '日前');
 })();
 function syncRepeatPicker() {
   document.getElementById('pKindDays').style.display = pKind.value === 'days' ? '' : 'none';
   document.getElementById('pKindWeek').style.display = pKind.value === 'week' ? '' : 'none';
   document.getElementById('pKindMonth').style.display = pKind.value === 'month' ? '' : 'none';
+  document.getElementById('pKindMonthEnd').style.display = pKind.value === 'monthEnd' ? '' : 'none';
 }
 pKind.onchange = syncRepeatPicker;
 let periodicEditId = null;
@@ -4129,6 +4165,8 @@ function openPeriodicDialog(id) {
   document.getElementById('pWeekDow').value = String(r.kind === 'week' ? r.dow : 1);
   document.getElementById('pMonthEvery').value = String(r.kind === 'month' ? r.every : 1);
   document.getElementById('pMonthDay').value = String(r.kind === 'month' ? r.day : 1);
+  document.getElementById('pMonthEndEvery').value = String(r.kind === 'monthEnd' ? r.every : 1);
+  document.getElementById('pMonthEndBefore').value = String(r.kind === 'monthEnd' ? r.before : 0);
   document.getElementById('pLast').value = (t && t.lastDone) ? t.lastDone : '';
   const dmNow = currentStore ? loadPeriodicDone(currentStore) : {};
   const dNow = id ? dmNow[id] : null;
@@ -4189,6 +4227,9 @@ document.getElementById('pSave').onclick = () => {
   } else if (pKind.value === 'month') {
     repeat = { kind: 'month', every: parseInt(document.getElementById('pMonthEvery').value, 10),
                day: parseInt(document.getElementById('pMonthDay').value, 10) };
+  } else if (pKind.value === 'monthEnd') {
+    repeat = { kind: 'monthEnd', every: parseInt(document.getElementById('pMonthEndEvery').value, 10),
+               before: parseInt(document.getElementById('pMonthEndBefore').value, 10) };
   } else {
     let n;
     if (pIntervalSel.value === '__custom__') {
