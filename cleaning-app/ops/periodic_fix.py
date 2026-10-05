@@ -3,6 +3,7 @@
 
   1) シフト提出の4件を消す
   2) 月末準備を、やること1つずつに分ける（5件）
+  3) インストラクターレッスンの集計を、やること1つずつに分ける（2件）
 
 消す前に periodicDone_（いつやったかの記録）を読んで、
 その項目に実施記録が付いていないかを確かめる。付いていたら止める。
@@ -38,6 +39,27 @@ MONTH_END = [
 ME_AREA = '事務・連絡'
 ME_DESC = '18:00ごろ'
 ME_REPEAT = {'kind': 'monthEnd', 'every': 1, 'before': 0}
+
+# 3) インストラクターレッスンの集計も、2つのことが1つに入っていたので分ける。
+#    先頭は元のidを使い回す。
+LESSON = [
+    ('p_lesson_shukei', 'インストラクターレッスンの集計を送付',
+     '先月分のレッスン表を、美和さんに送付してください。\n'
+     '\n送付方法は「困ったメモ」をご確認ください。'),
+    ('p_campaign_print', '紹介キャンペーンの用紙を印刷',
+     '先月分の紹介キャンペーン特典のお渡しが、11日より開始します。\n'
+     '\n「困ったメモ」を確認のうえ、'
+     '\n対象となる紹介キャンペーンの用紙の印刷をお願いします。'),
+]
+LESSON_AREA = '事務・連絡'
+LESSON_DESC = '10:00ごろ'
+LESSON_REPEAT = {'kind': 'month', 'every': 1, 'day': 1}
+
+# 分ける組（まとめて同じやり方で入れる）
+GROUPS = [
+    (MONTH_END, ME_AREA, ME_DESC, ME_REPEAT, 30),
+    (LESSON, LESSON_AREA, LESSON_DESC, LESSON_REPEAT, 30),
+]
 
 
 def done_records(kv, task_id):
@@ -86,28 +108,30 @@ def build_fix(kv):
 
     by_id = {t.get('id'): t for t in new_tasks if isinstance(t, dict)}
 
-    # --- 2) 月末準備を分ける ---
-    for tid, title, method in MONTH_END:
-        ent = {
-            'id': tid, 'area': ME_AREA, 'title': title, 'desc': ME_DESC,
-            'method': method, 'repeat': dict(ME_REPEAT), 'interval': 30,
-            'lastDone': None, 'lastStaff': '',
-        }
-        cur = by_id.get(tid)
-        if cur is None:
-            new_tasks.append(ent)
-            report['added'].append((tid, title))
-            continue
-        keep = {k: cur.get(k) for k in ('lastDone', 'lastStaff') if cur.get(k)}
-        merged = dict(ent)
-        merged.update(keep)
-        if json.dumps(cur, ensure_ascii=False, sort_keys=True) == \
-           json.dumps(merged, ensure_ascii=False, sort_keys=True):
-            report['same'].append((tid, title))
-        else:
-            cur.clear()
-            cur.update(merged)
-            report['updated'].append((tid, title))
+    # --- 2) 3) まとまっていた項目を、やること1つずつに分ける ---
+    for items, area, desc, repeat, interval in GROUPS:
+        for tid, title, method in items:
+            ent = {
+                'id': tid, 'area': area, 'title': title, 'desc': desc,
+                'method': method, 'repeat': dict(repeat), 'interval': interval,
+                'lastDone': None, 'lastStaff': '',
+            }
+            cur = by_id.get(tid)
+            if cur is None:
+                new_tasks.append(ent)
+                by_id[tid] = ent
+                report['added'].append((tid, title))
+                continue
+            keep = {k: cur.get(k) for k in ('lastDone', 'lastStaff') if cur.get(k)}
+            merged = dict(ent)
+            merged.update(keep)
+            if json.dumps(cur, ensure_ascii=False, sort_keys=True) == \
+               json.dumps(merged, ensure_ascii=False, sort_keys=True):
+                report['same'].append((tid, title))
+            else:
+                cur.clear()
+                cur.update(merged)
+                report['updated'].append((tid, title))
 
     after_ids = [t.get('id') for t in new_tasks if isinstance(t, dict)]
     if len(after_ids) != len(set(after_ids)):
