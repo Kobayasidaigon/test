@@ -1775,14 +1775,75 @@ function scheduleFromRepeat(id, task, force) {
   // 出さない店舗に「やる日」を入れても意味がないので、出す店舗だけに入れる
   STORES.filter(st => periodicForStore(task, st)).forEach(st => {
     const dm = loadPeriodicDone(st);
-    const cur = dm[id];
-    if (cur && (cur.date || cur.next)) return;   // すでに日があるか、やったことがある
-    if (cur && cur.off && !force) return;        // わざと消したものは復活させない
-    const next = Object.assign({}, cur || {}, { next: first });
-    delete next.off;
-    dm[id] = next;
-    savePeriodicDone(st, dm);
+    if (fillNextInto(dm, id, first, force)) savePeriodicDone(st, dm);
   });
+}
+// その店舗の記録に「やる日」を入れる。入れたら true。
+// 1項目だけ入れる scheduleFromRepeat と、まとめて入れる scheduleMissingDates の
+// どちらからも使う（判断の決まりを1か所にまとめておくため）。
+function fillNextInto(dm, id, first, force) {
+  const cur = dm[id];
+  if (cur && (cur.date || cur.next)) return false;   // すでに日があるか、やったことがある
+  if (cur && cur.off && !force) return false;        // わざと消したものは復活させない
+  const next = Object.assign({}, cur || {}, { next: first });
+  delete next.off;
+  dm[id] = next;
+  return true;
+}
+
+// やる日が決まっていない項目を数える。
+//
+// やる日を入れる処理（scheduleFromRepeat）は、長いあいだ編集画面で保存したときに
+// しか動いていなかった。そのため ops から periodicTasks へ直接足した項目は
+// どの店舗にも やる日 が無いまま「日付未設定」になり、実施時期にならない
+// ＝ 誰にも出ない状態だった。2026-09 に連絡用の仕組みから移した18件が
+// まるごとこれで、リマインドが誰もリマインドしていなかった（2-88）。
+//
+// 戻り値:
+//   fill   : 毎週・毎月・月末のもの。次に来る日が決まるので、まとめて入れられる
+//   manual : 「◯日ごと」のもの。いつから数え始めるかは決められないので人が決める
+//            （firstFromRepeat は「◯日ごと」に今日を返す。まとめて入れると
+//             その場で全部「実施時期です」になり、やることが一気に増えてしまう）
+function missingNextTasks() {
+  const fill = [], manual = [];
+  loadPeriodic().forEach(t => {
+    if (!t || !t.id) return;
+    const some = STORES.filter(st => periodicForStore(t, st)).some(st => {
+      const cur = loadPeriodicDone(st)[t.id];
+      return !(cur && (cur.date || cur.next || cur.off));
+    });
+    if (!some) return;
+    (taskRepeat(t).kind === 'days' ? manual : fill).push(t);
+  });
+  return { fill: fill, manual: manual };
+}
+
+// やる日が決まっていない項目（毎週・毎月・月末のもの）に、決め方どおりの
+// 初回の日を入れる。画面のボタンから呼ぶ。
+//
+// 自動では入れない。ここは一度「開いて保存すれば入る」形に決めた所で（2-72の動画・
+// verify17）、現場の端末が画面を開いた拍子に3店舗ぶんの予定が動くのは重い。
+// 押した人に件数を見せて、押したぶんだけ入れる。
+//
+// 保存は店舗ごとに1回だけにする。項目ごとに保存すると、同じ鍵への書き込みが
+// 項目の数だけ飛び、どれが最後に着くかで前のぶんが消える（18件×3店舗で54回）。
+// 端末の中では順に積まれるので気づけないが、サーバーには途中の状態が残り、
+// 次の同期でそれが戻ってきて入れたぶんが消える。試験で実際に消えた。
+function scheduleMissingDates() {
+  const maps = {};     // 店舗 -> いまの記録（1回だけ読む）
+  const changed = {};  // 書き換えた店舗
+  let n = 0;
+  missingNextTasks().fill.forEach(t => {
+    const first = firstFromRepeat(t, todayStr());
+    let any = false;
+    STORES.filter(st => periodicForStore(t, st)).forEach(st => {
+      if (!maps[st]) maps[st] = loadPeriodicDone(st);
+      if (fillNextInto(maps[st], t.id, first, false)) { changed[st] = true; any = true; }
+    });
+    if (any) n++;
+  });
+  Object.keys(changed).forEach(st => savePeriodicDone(st, maps[st]));
+  return n;
 }
 
 // from の「次」の実施日
@@ -3972,12 +4033,39 @@ function renderTodo(staleMap) {
 }
 
 // ----- 定期清掃ビュー -----
+let periodicFilledNote = 0;   // 「やる日を入れました」を出すための件数
 function renderPeriodicView() {
   const checklist = document.getElementById('checklist');
   const dm = loadPeriodicDone(currentStore);
   const list = periodicSort(periodicList(), dm);
   let html = '<div class="periodic-intro">頻度を決めて「たまにやる」項目を管理します。<b>実施時期</b>のものが上に出ます。やったら「完了」を押すと次回までのカウントが戻ります。'
     + (currentStore ? '（実施記録は「' + escapeHtml(currentStore) + '」のもの）' : '<b>上部で店舗を選ぶと、その店舗の実施記録が表示されます。</b>') + '</div>';
+  if (periodicFilledNote) {
+    html += '<div class="periodic-intro">やる日が決まっていなかった <b>' + periodicFilledNote
+      + '件</b> に、決め方どおりの初回の日を入れました。'
+      + '日をずらしたいときは、その項目の「やる日」で直してください。</div>';
+  }
+  // やる日が決まっていない項目のまとめ入れ。
+  // 決め方（毎週・毎月・月末）があるのに やる日 が無いと「日付未設定」のままで
+  // 実施時期にならず、誰にも出ない。ここから1回で入れられるようにする。
+  const miss = missingNextTasks();
+  if (miss.fill.length || miss.manual.length) {
+    html += '<div class="periodic-intro periodic-missing">';
+    if (miss.fill.length) {
+      html += 'やる日が決まっていない項目が <b>' + miss.fill.length + '件</b> あります。'
+        + 'このままでは「実施時期です」になりません。'
+        + '<button class="btn btn-primary" id="periodicFillBtn">決め方どおりの日を入れる</button>';
+    }
+    if (miss.manual.length) {
+      html += '<div class="hint" style="text-align:left;margin-top:6px;">'
+        + '「◯日ごと」の <b>' + miss.manual.length + '件</b>'
+        + '（' + escapeHtml(miss.manual.map(t => t.title).slice(0, 4).join('、'))
+        + (miss.manual.length > 4 ? ' ほか' : '') + '）は、いつから数え始めるかが'
+        + '決められないのでそのままにしています。その項目の「やる日」で決めるか、'
+        + '一度「完了」を押してください。</div>';
+    }
+    html += '</div>';
+  }
   if (list.length === 0) html += '<div class="cmp-empty">定期項目がありません。下の「＋ 定期項目を追加」から登録できます。</div>';
   list.forEach(t => {
     const done = dm[t.id];
@@ -4029,6 +4117,12 @@ function renderPeriodicView() {
   checklist.querySelectorAll('[data-pedit]').forEach(b => b.onclick = () => openPeriodicDialog(b.getAttribute('data-pedit')));
   checklist.querySelectorAll('[data-pdel]').forEach(b => b.onclick = () => periodicDelete(b.getAttribute('data-pdel')));
   document.getElementById('periodicAddBtn').onclick = () => openPeriodicDialog(null);
+  const fb = document.getElementById('periodicFillBtn');
+  if (fb) fb.onclick = () => {
+    const n = scheduleMissingDates();
+    periodicFilledNote = n;
+    render();
+  };
 }
 // やる日を決める／消す（店舗ごと）
 function setPeriodicNext(id, date) {
