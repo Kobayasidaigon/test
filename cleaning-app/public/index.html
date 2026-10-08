@@ -3886,6 +3886,7 @@ function renderTabs() {
   _weekCycleCache = {};
   _carryCache = {};
   _lastCheckedCache = {};
+  _dayGroupCache = {};   // 区分（曜日わけ）は店舗ごとに違うので必ず捨てる
   tabsEl.innerHTML = '';
   tabsRoutineEl.innerHTML = '';
   const makeTab = (area, el) => {
@@ -4725,9 +4726,10 @@ function priorityGroups(list) {
 //
 // 止めるのはやめて、**見せる**に振り替えた。並べ替え（空いている所が上）と
 // 「◯日空き」はそのまま残し、上に1行だけ出す。押すとその行へ飛ぶ。
-const STALE_NOTICE_DAYS = 3;
+const STALE_NOTICE_DAYS = 3;   // 上のバーに出し始める回数
 
-// 今開いているやることリストの中で、3日以上空いている「日替わり」の行
+// 今開いているやることリストの中で、3回以上飛ばしている「日替わり」の行。
+// 数えるのは日数ではなく「やるはずだった日のうち、やらなかった回数」。
 function staleDailyRows(list, groups) {
   const out = [];
   if (!groups || !currentStore) return out;
@@ -4737,7 +4739,7 @@ function staleDailyRows(list, groups) {
     if (gap === undefined || gap < STALE_NOTICE_DAYS) return;
     const ls = linkedStatus(it, currentArea);
     if (ls && ls.complete) return;          // 今日もう終わっている所は出さない
-    out.push({ id: it.id, title: it.title, gap: gap });
+    out.push({ id: it.id, title: it.title, gap: gap, cyclic: !!_rotCyclic[it.id] });
   });
   return out;
 }
@@ -4764,7 +4766,8 @@ function priHeadHtml(id, item) {
 // サウナ・シャワー・トイレなどの上位は1つも動かない。
 //
 // 記録は店舗ごとなので、並びも自然に店舗ごとに変わる。
-let _rotGap = {};   // 1回の描画内で、行id → 空き日数
+let _rotGap = {};   // 1回の描画内で、行id → 飛ばした回数
+let _rotCyclic = {}; // 行id → その回数を出したのが曜日わけの項目か
 
 // 回すのは「日替わり」の清掃だけ。サウナ・シャワー・トイレ（必須）は動かさず、
 // 補充・締めなどのすぐ終わる仕事も動かさない（連動が無いので空き日数が出ない）。
@@ -4779,20 +4782,62 @@ function isRotateRow(item) {
 // 項目があっても鍵が掛からなかった（現場の写真で分かった）。
 // 「全部毎日やりたい」が前提なので、いちばん遅れている項目に合わせる。
 const GAP_NEVER = 9999;
-const GAP_TAG_DAYS = 2;   // 「◯日空き」を出し始める日数（1日空き＝昨日やった、は出さない）
-function areaWorstGap(areaKey, staleMap) {
+const GAP_TAG_DAYS = 2;   // 「◯回空き」を出し始める回数（1回空き＝前回やった、は出さない）
+
+// 項目ごとの曜日わり（区分に【月・木】などが書いてあればその枠、無ければ null＝毎日）
+// 1回の描画で何度も呼ばれるので、エリアごとに覚えておく。
+let _dayGroupCache = {};
+function itemDayGroups(areaKey) {
+  const base = baseArea(areaKey);
+  if (_dayGroupCache[base]) return _dayGroupCache[base];
+  const map = {};
+  getGroups(base).forEach(g => {
+    const dg = sectionDayGroup(g.section);
+    g.items.forEach(it => { map[it.id] = dg; });
+  });
+  _dayGroupCache[base] = map;
+  return map;
+}
+
+// 前回やった日から今日までに、その項目を「やることになっていた日」が何日あったか。
+//
+// 毎日の項目なら、ただの日数と同じ。
+// 月・木だけの項目なら、月曜と木曜だけ数える。ここを日数で数えると、
+// 決まりどおり月・木にやっていても必ず「3日空き」が出て、
+// 現場が「なんでやっていないことになってるんだろう」と考えることになる。
+// 空きの印は「やるはずだったのに飛ばした回数」を指すべきで、
+// カレンダーの日数ではない。
+function scheduledGap(lastDate, group, today) {
+  if (!lastDate) return GAP_NEVER;
+  const end = new Date((today || todayStr()) + 'T00:00:00');
+  const d = new Date(lastDate + 'T00:00:00');
+  if (!(d < end)) return 0;                      // 今日やってある（先の日付も0扱い）
+  let n = 0;
+  for (let i = 0; i < 400; i++) {                // 念のための上限
+    d.setDate(d.getDate() + 1);
+    if (d > end) break;
+    if (!group || group.days.indexOf(d.getDay()) >= 0) n++;
+  }
+  return n;
+}
+
+// そのエリアで、いちばん空いている項目の「飛ばした回数」。
+// cyclic は、その回数を出したのが曜日わけの項目かどうか（言い回しを変えるため）。
+function areaWorstGapInfo(areaKey, staleMap) {
   const base = baseArea(areaKey);
   const items = areaItems(base);
-  if (!items.length) return -1;          // 項目が無いエリアは数えない
-  let worst = -1;
+  if (!items.length) return { gap: -1, cyclic: false };   // 項目が無いエリアは数えない
+  const dayGroups = itemDayGroups(base);
+  let worst = -1, cyclic = false;
   for (let i = 0; i < items.length; i++) {
     const d = staleMap[base + ':' + items[i].id];
-    const g = d ? daysSince(d) : GAP_NEVER;
-    if (g > worst) worst = g;
+    const g = d ? scheduledGap(d, dayGroups[items[i].id]) : GAP_NEVER;
+    if (g > worst) { worst = g; cyclic = !!dayGroups[items[i].id]; }
     if (worst >= GAP_NEVER) break;
   }
-  return worst;
+  return { gap: worst, cyclic: cyclic };
 }
+function areaWorstGap(areaKey, staleMap) { return areaWorstGapInfo(areaKey, staleMap).gap; }
 // 行の空き日数。連動先が複数あるときは、いちばん長く空いている方に合わせる。
 // 連動先に項目が1つも無いとき（その店舗で使っていないエリア）は -1 を返す。
 // ここを「記録なし」にすると、使っていないエリアが先頭に居座って
@@ -4805,20 +4850,30 @@ function rowGapDays(item, staleMap) {
   });
   return gap;
 }
+// 行の空きと、それを出したのが曜日わけの項目かどうか
+function rowGapInfo(item, staleMap) {
+  let gap = -1, cyclic = false;
+  rowLinkAreas(item).forEach(k => {
+    const r = areaWorstGapInfo(k, staleMap);
+    if (r.gap > gap) { gap = r.gap; cyclic = r.cyclic; }
+  });
+  return { gap: gap, cyclic: cyclic };
+}
 // 順繰りの行だけを、空き日数の長い順に並べ替える。
 // 編集モードのときは並べ替えない（上へ／下へは保存された本当の並びを動かすので、
 // 画面と食い違うと誤操作になる）。
 function rotateRoutineItems(list, staleMap) {
-  _rotGap = {};
+  _rotGap = {}; _rotCyclic = {};
   if (!currentStore || routineEditMode) return list;
   // 空き日数が出せない行（連動先に項目が無い＝その店舗で使っていない）は
   // 並べ替えにも鍵にも入れない。位置はそのまま
   const pos = [];
   list.forEach((it, i) => {
     if (!isRotateRow(it)) return;
-    const g = rowGapDays(it, staleMap);
-    if (g < 0) return;
-    _rotGap[it.id] = g;
+    const r = rowGapInfo(it, staleMap);
+    if (r.gap < 0) return;
+    _rotGap[it.id] = r.gap;
+    _rotCyclic[it.id] = r.cyclic;
     pos.push(i);
   });
   if (!pos.length) return list;
@@ -4836,10 +4891,12 @@ function gapTagHtml(item) {
   const g = _rotGap[item.id];
   if (g === undefined) return '';
   if (g >= GAP_NEVER) return '<span class="rt-gap none">記録なし</span>';
-  // 「1日空き」は昨日やった状態。毎日やっていても必ず出るので、
-  // 目印として何も言っていない。2日以上あいたときだけ出す。
+  // 「1回空き」は前回やった直後の状態。毎日やっていても必ず出るので出さない。
+  // 2回以上飛ばしたときだけ出す。
   if (g < GAP_TAG_DAYS) return '';
-  return '<span class="rt-gap">' + g + '日空き</span>';
+  // 曜日わけの項目で出た数は「日数」ではなく「飛ばした回数」なので言い方を変える。
+  // 月・木の項目に「3日空き」と出すと、決まりどおりやっていても責められて見える。
+  return '<span class="rt-gap">' + g + (_rotCyclic[item.id] ? '回' : '日') + '空き</span>';
 }
 
 // ===== 変更のお知らせ =====
@@ -4918,10 +4975,14 @@ function renderStaleBar(list) {
   if (!stale.length) { bar.style.display = 'none'; bar.innerHTML = ''; return; }
   const top = stale[0];
   bar.style.display = '';
+  // 見出しでは単位を言わない。毎日の項目（◯日）と曜日わけの項目（◯回）が
+  // 混ざるので、「◯日以上」と書くと曜日わけの方が嘘になる。
+  // 中身の数だけ、行の印と同じ出し分けにする。
   bar.innerHTML = ic('zap')
-    + '<span>' + STALE_NOTICE_DAYS + '日以上あいている所が <b>' + stale.length + 'ヶ所</b> あります'
-    + '<span class="sb-sub">いちばん長いのは ' + escapeHtml(top.title)
-    + '（' + (top.gap >= GAP_NEVER ? '記録なし' : top.gap + '日') + '）</span></span>';
+    + '<span>しばらく手が付いていない所が <b>' + stale.length + 'ヶ所</b> あります'
+    + '<span class="sb-sub">いちばん多いのは ' + escapeHtml(top.title)
+    + '（' + (top.gap >= GAP_NEVER ? '記録なし' : top.gap + (top.cyclic ? '回' : '日'))
+    + '）</span></span>';
   bar.onclick = () => {
     const row = document.querySelector('#checklist .rt-row[data-id="'
       + String(top.id).replace(/"/g, '') + '"]');
@@ -6023,12 +6084,12 @@ function withDate(dateStr, fn) {
   const pcy = _carryCache;
   dateInput.value = dateStr;
   _areaCompCache = {}; _linkCache = {}; _weekCycleCache = {}; _lastCheckedCache = {};
-  _carryCache = {};
+  _carryCache = {}; _dayGroupCache = {};
   try { return fn(); }
   finally {
     dateInput.value = prev;
     _areaCompCache = pc; _linkCache = pl; _weekCycleCache = pw; _lastCheckedCache = plc;
-    _carryCache = pcy;
+    _carryCache = pcy; _dayGroupCache = {};
   }
 }
 function rvDays(n) {
