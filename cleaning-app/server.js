@@ -57,6 +57,188 @@ const APP_VERSION = crypto.createHash('sha256')
   .digest('hex').slice(0, 16);
 app.get('/api/version', (req, res) => res.json({ v: APP_VERSION }));
 
+// ---- 見るだけのページ（上に共有する用・署名付きリンク）----
+//
+// 合言葉は渡さない。渡すと相手の端末がスタッフ用の画面に入れてしまい、
+// チェックも項目の編集もできてしまう。合言葉を変えると全端末が再ログインに
+// なるので、漏れたときの後始末も現場に出る。
+//
+// ここでは「現場が見ている画面と同じ中身」を、押せない形で出す。
+// 渡すものはサーバーが絞る。ページ側で絞ると、絞り忘れがそのまま漏れになる。
+//   出す   : エリア・区分・項目名・今日チェックが付いているか・前回やった日
+//   出さない: 担当者名、記録の生データ、名簿、シフト表、在庫連携の設定、写真
+//
+// リンクは STATUS_VIEW_SECRET を変えれば失効する（現場には何も起きない）。
+const VIEW_SECRET = process.env.STATUS_VIEW_SECRET || '';
+const VIEW_ID = process.env.STATUS_VIEW_ID || 'v1';   // 作り直したいときはこれを変える
+function viewToken() {
+  return crypto.createHmac('sha256', VIEW_SECRET).update('view:' + VIEW_ID).digest('hex');
+}
+function viewOk(req) {
+  if (!VIEW_SECRET) return false;
+  const t = String(req.query.t || '');
+  const want = viewToken();
+  if (t.length !== want.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(t), Buffer.from(want));
+}
+
+// 組み込みのエリア・区分・項目を index.html から読む（起動時に1回だけ）。
+// 項目の定義はアプリ本体が持っているので、サーバーが別に持つと必ずズレる。
+function parseBuiltinAreas() {
+  const src = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+  const out = [];
+  const re = /key: "([a-z0-9_]+)", name: "([^"]+)"/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const blk = src.slice(m.index, src.indexOf('\n  {\n    key: "', m.index) + 1 || m.index + 12000);
+    const groups = [];
+    const gre = /\{ section: "([^"]+)", items: \[([\s\S]*?)\n      \]\}/g;
+    let g;
+    while ((g = gre.exec(blk)) !== null) {
+      const items = [];
+      const ire = /\{ id: "([^"]+)", title: "([^"]+)"/g;
+      let i;
+      while ((i = ire.exec(g[2])) !== null) items.push({ id: i[1], title: i[2] });
+      groups.push({ section: g[1], items: items });
+    }
+    out.push({ key: m[1], name: m[2], groups: groups });
+  }
+  return out;
+}
+let BUILTIN_AREAS = [];
+try { BUILTIN_AREAS = parseBuiltinAreas(); }
+catch (e) { console.log('組み込みエリアの読み取りに失敗: ' + e.message); }
+
+const VIEW_STORES = ['笠寺', '枇杷島', '萩野通'];
+function vDefRead(store, base) {
+  const v = state.kv['sdef_' + store + '_' + base];
+  return v === undefined ? state.kv[base] : v;
+}
+function vJson(raw, fb) {
+  if (typeof raw !== 'string') return fb;
+  try { const v = JSON.parse(raw); return v === null ? fb : v; } catch (e) { return fb; }
+}
+function vBaseArea(key) {
+  let s = String(key || '');
+  const h = s.indexOf('#'); if (h >= 0) s = s.slice(0, h);
+  const at = s.indexOf('@'); return at < 0 ? s : s.slice(0, at);
+}
+function vToday() {
+  return new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+}
+
+// その店舗で画面に出ている項目を、アプリの getGroups と同じ順で組み立てる
+function viewGroups(store, areaKey) {
+  const hidden = vJson(vDefRead(store, 'hiddenItems_' + areaKey), []) || [];
+  const edits = vJson(vDefRead(store, 'itemEdits_' + areaKey), {}) || {};
+  const custom = vJson(vDefRead(store, 'customItems_' + areaKey), []) || [];
+  const builtin = (BUILTIN_AREAS.find(a => a.key === areaKey) || {}).groups || [];
+  const secOf = (id, fallback) => {
+    const ed = edits[id];
+    return (ed && ed.section != null && String(ed.section).trim()) ? ed.section : fallback;
+  };
+  const order = [];
+  const bag = {};
+  const push = (sec, item) => {
+    if (!bag[sec]) { bag[sec] = []; order.push(sec); }
+    bag[sec].push(item);
+  };
+  builtin.forEach(g => g.items.forEach(it => {
+    if (hidden.indexOf(it.id) >= 0) return;
+    const ed = edits[it.id] || {};
+    push(secOf(it.id, g.section), { id: it.id, title: ed.title != null ? ed.title : it.title });
+  }));
+  (Array.isArray(custom) ? custom : []).forEach(ci => {
+    if (!ci || !ci.id || hidden.indexOf(ci.id) >= 0) return;
+    push(ci.section || '', { id: ci.id, title: ci.title || '' });
+  });
+  const secOrder = vJson(vDefRead(store, 'sectionOrder_' + areaKey), []) || [];
+  if (Array.isArray(secOrder) && secOrder.length) {
+    order.sort((a, b) => {
+      const ra = secOrder.indexOf(a), rb = secOrder.indexOf(b);
+      return (ra < 0 ? 1e9 : ra) - (rb < 0 ? 1e9 : rb);
+    });
+  }
+  return order.map(sec => ({ section: sec, items: bag[sec] }));
+}
+
+// その店舗の記録を、担当者を混ぜて「項目idの集合」にする。名前は持ち出さない。
+function viewRecords(store) {
+  const doneToday = {};   // エリア -> Set(項目id)
+  const lastDone = {};    // "エリア:項目id" -> いちばん新しい日付
+  const today = vToday();
+  const pre = 'clean_' + store + '_';
+  Object.keys(state.kv).forEach(k => {
+    if (k.indexOf(pre) !== 0) return;
+    const date = k.slice(-10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    const mid = k.slice(pre.length, k.length - 11);
+    const us = mid.indexOf('_');
+    if (us < 0) return;
+    const area = vBaseArea(mid.slice(us + 1));
+    const rec = vJson(state.kv[k], {}) || {};
+    Object.keys(rec).forEach(id => {
+      if (!rec[id]) return;
+      const key = area + ':' + id;
+      if (!lastDone[key] || date > lastDone[key]) lastDone[key] = date;
+      if (date === today) {
+        if (!doneToday[area]) doneToday[area] = {};
+        doneToday[area][id] = true;
+      }
+    });
+  });
+  return { doneToday: doneToday, lastDone: lastDone };
+}
+
+function buildViewData() {
+  const today = vToday();
+  const stores = VIEW_STORES.map(store => {
+    const customAreas = vJson(vDefRead(store, 'customAreas'), []) || [];
+    const areas = BUILTIN_AREAS.map(a => ({ key: a.key, name: a.name }))
+      .concat((Array.isArray(customAreas) ? customAreas : [])
+        .filter(a => a && a.key && !BUILTIN_AREAS.some(b => b.key === a.key))
+        .map(a => ({ key: a.key, name: a.name || a.key })))
+      .filter(a => a.key.indexOf('routine_') !== 0);   // やることリストは出さない（清掃エリアと二重になる）
+    const rec = viewRecords(store);
+    const out = [];
+    areas.forEach(a => {
+      const groups = viewGroups(store, a.key).map(g => ({
+        section: g.section,
+        items: g.items.map(it => ({
+          title: it.title,
+          done: !!(rec.doneToday[a.key] && rec.doneToday[a.key][it.id]),
+          last: rec.lastDone[a.key + ':' + it.id] || null,
+        })),
+      })).filter(g => g.items.length);
+      if (!groups.length) return;                     // その店舗に無い設備は出さない
+      const all = groups.reduce((n, g) => n + g.items.length, 0);
+      const done = groups.reduce((n, g) => n + g.items.filter(i => i.done).length, 0);
+      // そのエリアで最後に何か記録が付いた日。
+      // これが無い／ずっと前のエリアは「その店舗では使っていない設備」のことが多い
+      // （笠寺の共通シャワーは部屋別へ移したので記録が止まっている）。
+      // 隠すと本当の放置まで見えなくなるので、隠さずに分けて出す。
+      let lastAny = null;
+      groups.forEach(g => g.items.forEach(i => {
+        if (i.last && (!lastAny || i.last > lastAny)) lastAny = i.last;
+      }));
+      out.push({ name: a.name, done: done, total: all, last: lastAny, groups: groups });
+    });
+    return { store: store, areas: out };
+  });
+  return { date: today, at: new Date(Date.now() + 9 * 3600000).toISOString().slice(11, 16), stores: stores };
+}
+
+app.get('/view/data', (req, res) => {
+  if (!VIEW_SECRET) return res.status(503).json({ error: '共有リンクは未設定です' });
+  if (!viewOk(req)) return res.sendStatus(401);
+  res.json(buildViewData());
+});
+app.get('/view', (req, res) => {
+  if (!VIEW_SECRET) return res.status(503).send('共有リンクは未設定です');
+  if (!viewOk(req)) return res.status(401).send('リンクが正しくありません');
+  res.sendFile(path.join(__dirname, 'public', 'view.html'));
+});
+
 // ---- 認証（データAPIのみ保護。ページ自体は誰でも開ける）----
 // ホーム画面追加(iOS全画面表示)ではBasic認証ダイアログが出せないため、
 // ページ内のパスワード入力 → /api/login → 認証クッキー(1年) の方式にする。

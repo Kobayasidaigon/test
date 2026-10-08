@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清掃状況</title>
+<style>
+  :root {
+    --bg:#f4f6f8; --card:#fff; --border:#e3e8ee; --text:#1f2a33; --muted:#7b8a99;
+    --head:#1976d2; --ok:#2e7d32; --mid:#ef6c00; --low:#c62828;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    font-size:15px; line-height:1.5; }
+  header { background:var(--head); color:#fff; padding:14px 16px 16px; }
+  header h1 { margin:0; font-size:1.15rem; }
+  header .sub { font-size:.78rem; opacity:.92; margin-top:3px; }
+  .wrap { padding:12px 16px 40px; max-width:720px; margin:0 auto; }
+  .note { background:#fff8e1; border:1px solid #ffe0a3; color:#7a5800;
+    border-radius:10px; padding:9px 12px; font-size:.78rem; margin-bottom:12px; }
+  .store { background:var(--card); border:1px solid var(--border); border-radius:12px;
+    margin-bottom:14px; overflow:hidden; }
+  .store > h2 { margin:0; padding:11px 14px; font-size:1rem; border-bottom:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .store > h2 .n { font-size:.78rem; color:var(--muted); font-weight:400; }
+  .area { border-bottom:1px solid #f0f3f6; }
+  .area:last-child { border-bottom:0; }
+  .area > button { width:100%; background:none; border:0; padding:10px 14px; font:inherit;
+    color:inherit; display:flex; align-items:center; gap:10px; text-align:left; cursor:pointer; }
+  .area > button .nm { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .cnt { font-variant-numeric:tabular-nums; font-weight:700; font-size:.85rem; }
+  .cnt.full { color:var(--ok); } .cnt.part { color:var(--mid); } .cnt.none { color:var(--low); }
+  .bar { height:4px; background:#eceff1; border-radius:3px; width:54px; flex:0 0 auto; overflow:hidden; }
+  .bar > i { display:block; height:100%; background:var(--ok); }
+  .caret { color:var(--muted); font-size:.75rem; width:12px; flex:0 0 auto; }
+  .body { display:none; padding:0 14px 12px; }
+  .area.open .body { display:block; }
+  .sec { font-size:.72rem; color:var(--muted); font-weight:700; margin:10px 0 4px;
+    border-left:3px solid #cfd8dc; padding-left:7px; }
+  .it { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:.88rem;
+    border-bottom:1px dotted #eceff1; }
+  .it:last-child { border-bottom:0; }
+  .mk { width:17px; height:17px; border-radius:50%; flex:0 0 auto; border:1.5px solid #cfd8dc; }
+  .it.done .mk { background:var(--ok); border-color:var(--ok); position:relative; }
+  .it.done .mk::after { content:''; position:absolute; left:5px; top:2px; width:4px; height:8px;
+    border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg); }
+  .it.done .tt { color:var(--ok); }
+  .tt { flex:1; min-width:0; }
+  .gap { font-size:.68rem; background:#fdecea; color:var(--low); border-radius:8px;
+    padding:1px 6px; font-weight:700; flex:0 0 auto; }
+  .gap.none { background:#eceff1; color:var(--muted); }
+  .idle-head { font-size:.7rem; color:var(--muted); background:#f7f9fb; padding:7px 14px;
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
+  .err { padding:30px 16px; text-align:center; color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>清掃状況</h1>
+  <div class="sub" id="sub">読み込み中…</div>
+</header>
+<div class="wrap">
+  <div class="note">
+    このページは<b>見るだけ</b>です。チェックは付けられません。<br>
+    上の数は<b>その日の途中経過</b>です。夜にまとめて付ける日もあるため、
+    日中の数が少なくても終わっていないとは限りません。
+  </div>
+  <div id="main"><div class="err">読み込み中…</div></div>
+</div>
+<footer>自動で最新になります。開き直すと今の状態になります。</footer>
+<script>
+// 曜日わけ（区分に【月・木】などと書いてある）の項目は、決まりどおりやっていても
+// 日数では必ず空く。アプリ本体と同じく「やるはずだった日のうち飛ばした回数」を数える。
+var DAY_GROUPS = [
+  { name: '月・木', days: [1, 4] },
+  { name: '火・金', days: [2, 5] },
+  { name: '水・土', days: [3, 6] }
+];
+function dayGroupOf(section) {
+  var s = String(section || '');
+  for (var i = 0; i < DAY_GROUPS.length; i++) {
+    if (s.indexOf(DAY_GROUPS[i].name) >= 0) return DAY_GROUPS[i];
+  }
+  return null;
+}
+function gapOf(last, group, today) {
+  if (!last) return -1;                       // 記録なし
+  var end = new Date(today + 'T00:00:00');
+  var d = new Date(last + 'T00:00:00');
+  if (!(d < end)) return 0;
+  var n = 0;
+  for (var i = 0; i < 400; i++) {
+    d.setDate(d.getDate() + 1);
+    if (d > end) break;
+    if (!group || group.days.indexOf(d.getDay()) >= 0) n++;
+  }
+  return n;
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function cls(done, total) {
+  if (!total) return '';
+  if (done >= total) return 'full';
+  return done > 0 ? 'part' : 'none';
+}
+function render(d) {
+  document.getElementById('sub').textContent =
+    d.date.replace(/-/g, '/') + ' ' + d.at + ' 現在';
+  var h = '';
+  d.stores.forEach(function (st) {
+    // 合計は「使っている所」だけ。使っていない設備で分母が膨らむと、
+    // いくらやっても低い数字になって意味をなさない。
+    var done = 0, total = 0;
+    st.areas.forEach(function (a) {
+      if (a.last && gapOf(a.last, null, d.date) <= 30) { done += a.done; total += a.total; }
+    });
+    h += '<div class="store"><h2>' + esc(st.store)
+      + '<span class="n">' + done + ' / ' + total + '</span></h2>';
+    if (!st.areas.length) h += '<div class="err">エリアがありません</div>';
+    // 30日以上まったく記録が無いエリアは、その店舗で使っていない設備のことが多い。
+    // 隠さず、下にまとめて「使われていない」と断って出す。
+    var live = [], idle = [];
+    st.areas.forEach(function (a) {
+      (a.last && gapOf(a.last, null, d.date) <= 30 ? live : idle).push(a);
+    });
+    var drawn = 0;
+    live.concat(idle).forEach(function (a) {
+      if (drawn === live.length && idle.length) {
+        h += '<div class="idle-head">しばらく記録がありません（その店舗では使っていない設備かもしれません）</div>';
+      }
+      drawn++;
+      var pct = a.total ? Math.round(a.done / a.total * 100) : 0;
+      h += '<div class="area"><button type="button">'
+        + '<span class="caret">▶</span>'
+        + '<span class="nm">' + esc(a.name) + '</span>'
+        + '<span class="bar"><i style="width:' + pct + '%"></i></span>'
+        + '<span class="cnt ' + cls(a.done, a.total) + '">' + a.done + '/' + a.total + '</span>'
+        + '</button><div class="body">';
+      a.groups.forEach(function (g) {
+        if (g.section) h += '<div class="sec">' + esc(g.section) + '</div>';
+        g.items.forEach(function (it) {
+          var gp = gapOf(it.last, dayGroupOf(g.section), d.date);
+          var tag = '';
+          if (!it.done) {
+            if (gp < 0) tag = '<span class="gap none">記録なし</span>';
+            else if (gp >= 2) tag = '<span class="gap">' + gp
+              + (dayGroupOf(g.section) ? '回' : '日') + '空き</span>';
+          }
+          h += '<div class="it' + (it.done ? ' done' : '') + '">'
+            + '<span class="mk"></span><span class="tt">' + esc(it.title) + '</span>' + tag + '</div>';
+        });
+      });
+      h += '</div></div>';
+    });
+    h += '</div>';
+  });
+  document.getElementById('main').innerHTML = h;
+  Array.prototype.forEach.call(document.querySelectorAll('.area > button'), function (b) {
+    b.onclick = function () {
+      var a = b.parentNode;
+      a.classList.toggle('open');
+      b.querySelector('.caret').textContent = a.classList.contains('open') ? '▼' : '▶';
+    };
+  });
+}
+function load() {
+  fetch('/view/data' + location.search)
+    .then(function (r) {
+      if (!r.ok) throw new Error(r.status === 401 ? 'このリンクは使えません' : '読み込めませんでした');
+      return r.json();
+    })
+    .then(render)
+    .catch(function (e) {
+      document.getElementById('main').innerHTML = '<div class="err">' + esc(e.message) + '</div>';
+      document.getElementById('sub').textContent = '';
+    });
+}
+load();
+setInterval(load, 5 * 60 * 1000);   // 開きっぱなしでも5分ごとに新しくなる
+</script>
+</body>
+</html>
