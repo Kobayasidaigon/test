@@ -50,8 +50,12 @@
   .gap { font-size:.68rem; background:#fdecea; color:var(--low); border-radius:8px;
     padding:1px 6px; font-weight:700; flex:0 0 auto; }
   .gap.none { background:#eceff1; color:var(--muted); }
-  .idle-head { font-size:.7rem; color:var(--muted); background:#f7f9fb; padding:7px 14px;
-    border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .idle-head { display:flex; align-items:center; gap:7px; width:100%; font:inherit;
+    font-size:.74rem; color:var(--muted); background:#f7f9fb; padding:9px 14px; border:0;
+    border-top:1px solid var(--border); text-align:left; cursor:pointer; }
+  .idle-note { color:#9fb0c0; font-size:.68rem; }
+  .idle-body { display:none; }
+  .cnt.idle { color:#b0bec5; }
   footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
   .err { padding:30px 16px; text-align:center; color:var(--muted); }
 </style>
@@ -130,7 +134,12 @@ function render(d) {
     var drawn = 0;
     live.concat(idle).forEach(function (a) {
       if (drawn === live.length && idle.length) {
-        h += '<div class="idle-head">しばらく記録がありません（その店舗では使っていない設備かもしれません）</div>';
+        // 使っていない設備が赤い「0/23」で何行も並ぶと、断り書きがあっても
+        // 「全然やっていない」に見える。1行にたたんで、開きたい人だけ開く。
+        h += '<button type="button" class="idle-head" data-idle="1">'
+          + '<span class="caret">▶</span> しばらく記録がない設備 ' + idle.length + '件'
+          + '<span class="idle-note">その店舗では使っていないものかもしれません</span></button>'
+          + '<div class="idle-body">';
       }
       drawn++;
       var pct = a.total ? Math.round(a.done / a.total * 100) : 0;
@@ -138,7 +147,8 @@ function render(d) {
         + '<span class="caret">▶</span>'
         + '<span class="nm">' + esc(a.name) + '</span>'
         + '<span class="bar"><i style="width:' + pct + '%"></i></span>'
-        + '<span class="cnt ' + cls(a.done, a.total) + '">' + a.done + '/' + a.total + '</span>'
+        + '<span class="cnt ' + (drawn > live.length ? 'idle' : cls(a.done, a.total)) + '">'
+        + a.done + '/' + a.total + '</span>'
         + '</button><div class="body">';
       a.groups.forEach(function (g) {
         if (g.section) h += '<div class="sec">' + esc(g.section) + '</div>';
@@ -156,9 +166,17 @@ function render(d) {
       });
       h += '</div></div>';
     });
+    if (idle.length) h += '</div>';
     h += '</div>';
   });
   document.getElementById('main').innerHTML = h;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-idle]'), function (b) {
+    b.onclick = function () {
+      var open = b.nextElementSibling.style.display === 'block';
+      b.nextElementSibling.style.display = open ? 'none' : 'block';
+      b.querySelector('.caret').textContent = open ? '▶' : '▼';
+    };
+  });
   Array.prototype.forEach.call(document.querySelectorAll('.area > button'), function (b) {
     b.onclick = function () {
       var a = b.parentNode;
