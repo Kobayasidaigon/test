@@ -58,6 +58,15 @@
   .cnt.idle { color:#b0bec5; }
   footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
   .err { padding:30px 16px; text-align:center; color:var(--muted); }
+  .login { background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:20px 16px; text-align:center; }
+  .login p { margin:0 0 14px; font-size:.86rem; color:var(--muted); }
+  .login input { width:100%; max-width:260px; padding:11px 12px; font-size:1rem;
+    border:1px solid var(--border); border-radius:9px; text-align:center; }
+  .login button { margin-top:12px; width:100%; max-width:260px; padding:11px;
+    font-size:1rem; font-weight:700; color:#fff; background:var(--head);
+    border:0; border-radius:9px; cursor:pointer; }
+  .login .ng { color:var(--low); font-size:.8rem; margin-top:10px; min-height:1.2em; }
 </style>
 </head>
 <body>
@@ -66,14 +75,22 @@
   <div class="sub" id="sub">読み込み中…</div>
 </header>
 <div class="wrap">
+  <div id="login" class="login" style="display:none;">
+    <p>管理者の合言葉を入れてください</p>
+    <input type="password" id="pw" autocomplete="current-password" inputmode="text">
+    <button type="button" id="go">見る</button>
+    <div class="ng" id="ng"></div>
+  </div>
+  <div id="content">
   <div class="note">
     このページは<b>見るだけ</b>です。チェックは付けられません。<br>
     上の数は<b>その日の途中経過</b>です。夜にまとめて付ける日もあるため、
     日中の数が少なくても終わっていないとは限りません。
   </div>
   <div id="main"><div class="err">読み込み中…</div></div>
+  </div>
 </div>
-<footer>自動で最新になります。開き直すと今の状態になります。</footer>
+<footer id="foot">自動で最新になります。開き直すと今の状態になります。</footer>
 <script>
 // 曜日わけ（区分に【月・木】などと書いてある）の項目は、決まりどおりやっていても
 // 日数では必ず空く。アプリ本体と同じく「やるはずだった日のうち飛ばした回数」を数える。
@@ -185,20 +202,51 @@ function render(d) {
     };
   });
 }
-function load() {
-  fetch('/view/data' + location.search)
+function showLogin(msg) {
+  document.getElementById('login').style.display = '';
+  document.getElementById('content').style.display = 'none';
+  document.getElementById('foot').style.display = 'none';
+  document.getElementById('sub').textContent = '';
+  if (msg) document.getElementById('ng').textContent = msg;
+  document.getElementById('pw').focus();
+}
+function showContent() {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('content').style.display = '';
+  document.getElementById('foot').style.display = '';
+}
+function load(first) {
+  fetch('/view/data')
     .then(function (r) {
-      if (!r.ok) throw new Error(r.status === 401 ? 'このリンクは使えません' : '読み込めませんでした');
+      if (r.status === 401) { showLogin(first ? '' : '合言葉を入れ直してください'); return null; }
+      if (r.status === 503) throw new Error('管理者の合言葉が設定されていません');
+      if (!r.ok) throw new Error('読み込めませんでした');
       return r.json();
     })
-    .then(render)
+    .then(function (d) { if (d) { showContent(); render(d); } })
     .catch(function (e) {
+      showContent();
       document.getElementById('main').innerHTML = '<div class="err">' + esc(e.message) + '</div>';
       document.getElementById('sub').textContent = '';
     });
 }
-load();
-setInterval(load, 5 * 60 * 1000);   // 開きっぱなしでも5分ごとに新しくなる
+function login() {
+  var pw = document.getElementById('pw');
+  var ng = document.getElementById('ng');
+  ng.textContent = '';
+  fetch('/view/login', { method: 'POST', headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+                         body: pw.value })
+    .then(function (r) {
+      if (r.ok) { pw.value = ''; load(true); return; }
+      if (r.status === 429) return r.json().then(function (j) { ng.textContent = j.error; });
+      ng.textContent = '合言葉が違います';
+    })
+    .catch(function () { ng.textContent = 'つながりませんでした'; });
+}
+document.getElementById('go').onclick = login;
+document.getElementById('pw').onkeydown = function (e) { if (e.key === 'Enter') login(); };
+load(true);
+setInterval(function () { load(false); }, 5 * 60 * 1000);   // 開きっぱなしでも5分ごとに新しくなる
 </script>
 </body>
 </html>

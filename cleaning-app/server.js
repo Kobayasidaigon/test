@@ -68,18 +68,43 @@ app.get('/api/version', (req, res) => res.json({ v: APP_VERSION }));
 //   出す   : エリア・区分・項目名・今日チェックが付いているか・前回やった日
 //   出さない: 担当者名、記録の生データ、名簿、シフト表、在庫連携の設定、写真
 //
-// リンクは STATUS_VIEW_SECRET を変えれば失効する（現場には何も起きない）。
-const VIEW_SECRET = process.env.STATUS_VIEW_SECRET || '';
-const VIEW_ID = process.env.STATUS_VIEW_ID || 'v1';   // 作り直したいときはこれを変える
-function viewToken() {
-  return crypto.createHmac('sha256', VIEW_SECRET).update('view:' + VIEW_ID).digest('hex');
+// 見るのは管理者だけ。管理者合言葉（ADMIN_PASS）で開ける。
+//
+// 署名付きリンクをやめて合言葉にした理由:
+//   リンクは一度LINEに貼ると転送でどこまでも広がり、取り消すには合言葉を
+//   変えるしかない。合言葉なら、知っている人だけが開ける。
+//   リンク自体は貼っても構わない（開いても合言葉を聞かれるだけ）。
+//
+// ADMIN_PASS はスタッフ合言葉とは別物で、これだけでは本体のアプリには入れない
+// （本体の管理者画面は、スタッフ合言葉を通ったうえで更にこれを聞く）。
+// なので上に渡しても、チェックを付けられる画面には届かない。
+// ADMIN_PASS が未設定なら、この機能ごと止まる。
+function viewCookie() {
+  return crypto.createHash('sha256').update('view-v1:' + ADMIN_PASS).digest('hex');
 }
 function viewOk(req) {
-  if (!VIEW_SECRET) return false;
-  const t = String(req.query.t || '');
-  const want = viewToken();
-  if (t.length !== want.length) return false;
-  return crypto.timingSafeEqual(Buffer.from(t), Buffer.from(want));
+  if (!ADMIN_PASS) return false;
+  const m = (req.get('Cookie') || '').match(/(?:^|;\s*)vauth=([0-9a-f]{64})\s*(?:;|$)/);
+  if (!m) return false;
+  return crypto.timingSafeEqual(Buffer.from(m[1]), Buffer.from(viewCookie()));
+}
+
+// 合言葉を総当たりされないよう、間違いが続いたら待たせる。
+// 外に出ている入口なので、ここだけは数えておく。
+const viewTries = new Map();   // IP -> { n, until }
+function viewThrottle(req) {
+  const ip = String(req.ip || req.get('fly-client-ip') || '');
+  const e = viewTries.get(ip);
+  if (e && e.until > Date.now()) return Math.ceil((e.until - Date.now()) / 1000);
+  return 0;
+}
+function viewFailed(req) {
+  const ip = String(req.ip || req.get('fly-client-ip') || '');
+  const e = viewTries.get(ip) || { n: 0, until: 0 };
+  e.n++;
+  if (e.n >= 5) e.until = Date.now() + Math.min(10 * 60, 30 * (e.n - 4)) * 1000;
+  viewTries.set(ip, e);
+  if (viewTries.size > 500) viewTries.clear();   // 増えっぱなしにしない
 }
 
 // 組み込みのエリア・区分・項目を index.html から読む（起動時に1回だけ）。
@@ -228,14 +253,27 @@ function buildViewData() {
   return { date: today, at: new Date(Date.now() + 9 * 3600000).toISOString().slice(11, 16), stores: stores };
 }
 
+// 合言葉を入れる。合えば見るだけのクッキーを出す（本体には何の権限も無い）
+app.post('/view/login', express.text({ type: '*/*', limit: '1kb' }), (req, res) => {
+  if (!ADMIN_PASS) return res.status(503).json({ error: '管理者合言葉が未設定です' });
+  const wait = viewThrottle(req);
+  if (wait) return res.status(429).json({ error: '間違いが続いています。' + wait + '秒おいてください' });
+  const p = typeof req.body === 'string' ? req.body.trim() : '';
+  if (p && p === ADMIN_PASS) {
+    res.set('Set-Cookie', 'vauth=' + viewCookie()
+      + '; Path=/view; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax');
+    return res.json({ ok: true });
+  }
+  viewFailed(req);
+  res.sendStatus(401);
+});
 app.get('/view/data', (req, res) => {
-  if (!VIEW_SECRET) return res.status(503).json({ error: '共有リンクは未設定です' });
+  if (!ADMIN_PASS) return res.status(503).json({ error: '管理者合言葉が未設定です' });
   if (!viewOk(req)) return res.sendStatus(401);
   res.json(buildViewData());
 });
+// ページ自体は誰が開いてもよい（中身は出ない。合言葉を聞く画面が出るだけ）
 app.get('/view', (req, res) => {
-  if (!VIEW_SECRET) return res.status(503).send('共有リンクは未設定です');
-  if (!viewOk(req)) return res.status(401).send('リンクが正しくありません');
   res.sendFile(path.join(__dirname, 'public', 'view.html'));
 });
 
