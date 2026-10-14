@@ -215,40 +215,172 @@ function viewRecords(store) {
   return { doneToday: doneToday, lastDone: lastDone };
 }
 
+// ===== 定期清掃（たまにやる仕事）=====
+// 決め方（repeat）と次にやる日の出し方は index.html と同じ。
+// 食い違うと「遅れている」の数が画面と合わなくなるので、試験で突き合わせている
+// （tests/verify47.js が index.html の関数と総当たりで比べる）。
+function vDaysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+function vFmt(d) {
+  const p2 = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate());
+}
+function vTaskRepeat(task) {
+  const r = task && task.repeat;
+  if (r && r.kind === 'week') {
+    return { kind: 'week', every: Math.max(1, Number(r.every) || 1),
+             dow: Math.min(6, Math.max(0, Number(r.dow) || 0)) };
+  }
+  if (r && r.kind === 'month') {
+    return { kind: 'month', every: Math.max(1, Number(r.every) || 1),
+             day: Math.min(31, Math.max(1, Number(r.day) || 1)) };
+  }
+  if (r && r.kind === 'monthEnd') {
+    return { kind: 'monthEnd', every: Math.max(1, Number(r.every) || 1),
+             before: Math.min(27, Math.max(0, Number(r.before) || 0)) };
+  }
+  const n = Math.max(1, Number((r && r.n) || (task && task.interval) || 30));
+  return { kind: 'days', n: n };
+}
+function vRepeatDays(task) {
+  const r = vTaskRepeat(task);
+  if (r.kind === 'week') return r.every * 7;
+  if (r.kind === 'month' || r.kind === 'monthEnd') return r.every * 30;
+  return r.n;
+}
+function vShiftDate(from, n) {
+  const d = new Date(from + 'T00:00:00');
+  d.setDate(d.getDate() + n);
+  return vFmt(d);
+}
+function vNextFromRepeat(task, from) {
+  const r = vTaskRepeat(task);
+  const base = new Date(from + 'T00:00:00');
+  if (r.kind === 'week') {
+    const d = new Date(base.getTime());
+    do { d.setDate(d.getDate() + 1); } while (d.getDay() !== r.dow);
+    if (r.every > 1) d.setDate(d.getDate() + (r.every - 1) * 7);
+    return vFmt(d);
+  }
+  if (r.kind === 'month') {
+    const y = base.getFullYear(), m = base.getMonth() + r.every;
+    const ty = y + Math.floor(m / 12), tm = ((m % 12) + 12) % 12;
+    return vFmt(new Date(ty, tm, Math.min(r.day, vDaysInMonth(ty, tm))));
+  }
+  if (r.kind === 'monthEnd') {
+    const y = base.getFullYear(), m = base.getMonth() + r.every;
+    const ty = y + Math.floor(m / 12), tm = ((m % 12) + 12) % 12;
+    return vFmt(new Date(ty, tm, vDaysInMonth(ty, tm) - r.before));
+  }
+  return vShiftDate(from, r.n);
+}
+function vRepeatLabel(task) {
+  const DOW = ['日', '月', '火', '水', '木', '金', '土'];
+  const PRESET = { 7: '毎週', 14: '2週ごと', 30: '毎月', 60: '2ヶ月ごと',
+                   90: '3ヶ月ごと', 180: '半年ごと', 365: '毎年' };
+  const r = vTaskRepeat(task);
+  if (r.kind === 'week') {
+    return (r.every === 1 ? '毎週' : r.every + '週ごと') + ' ' + DOW[r.dow] + '曜';
+  }
+  if (r.kind === 'month') {
+    return (r.every === 1 ? '毎月' : r.every + 'ヶ月ごと') + ' ' + r.day + '日';
+  }
+  if (r.kind === 'monthEnd') {
+    return (r.every === 1 ? '毎月' : r.every + 'ヶ月ごと') + ' '
+      + (r.before === 0 ? '月末' : '月末の' + r.before + '日前');
+  }
+  return PRESET[r.n] || (r.n + '日ごと');
+}
+// その店舗に出す定期項目か（stores が空なら全店）
+function vForStore(task, store) {
+  const ss = task && task.stores;
+  if (!Array.isArray(ss) || !ss.length) return true;
+  return ss.indexOf(store) >= 0;
+}
+// その店舗の定期清掃。担当者名は持ち出さない（done.staff は読まない）。
+function viewPeriodic(store) {
+  const tasks = vJson(state.kv['periodicTasks'], []) || [];
+  const dm = vJson(state.kv['periodicDone_' + store], {}) || {};
+  const today = vToday();
+  const out = [];
+  (Array.isArray(tasks) ? tasks : []).forEach(t => {
+    if (!t || !t.id || !vForStore(t, store)) return;
+    const d = dm[t.id] || {};
+    const last = d.date || null;
+    const next = d.next ? d.next : (last ? vNextFromRepeat(t, last) : null);
+    let state_ = 'unset', left = null;
+    if (next) {
+      left = Math.round((new Date(next + 'T00:00:00') - new Date(today + 'T00:00:00')) / 86400000);
+      if (left <= 0) state_ = 'due';
+      else if (left <= Math.max(1, Math.round(vRepeatDays(t) * 0.2))) state_ = 'soon';
+      else state_ = 'ok';
+    }
+    out.push({
+      title: String(t.title || ''),
+      area: String(t.area || ''),
+      every: vRepeatLabel(t),
+      last: last, next: next, left: left, state: state_,
+      fixed: !!d.next,
+    });
+  });
+  const rank = { due: 0, soon: 1, ok: 2, unset: 3 };
+  out.sort((a, b) => (rank[a.state] - rank[b.state])
+    || ((a.left == null ? 99999 : a.left) - (b.left == null ? 99999 : b.left)));
+  return out;
+}
+
 function buildViewData() {
   const today = vToday();
+  const ROUTINES = [['routine_asa', '朝番'], ['routine_hiru', '中番'], ['routine_ban', '遅番']];
   const stores = VIEW_STORES.map(store => {
     const customAreas = vJson(vDefRead(store, 'customAreas'), []) || [];
-    const areas = BUILTIN_AREAS.map(a => ({ key: a.key, name: a.name }))
-      .concat((Array.isArray(customAreas) ? customAreas : [])
-        .filter(a => a && a.key && !BUILTIN_AREAS.some(b => b.key === a.key))
-        .map(a => ({ key: a.key, name: a.name || a.key })))
-      .filter(a => a.key.indexOf('routine_') !== 0);   // やることリストは出さない（清掃エリアと二重になる）
+    const custom = Array.isArray(customAreas) ? customAreas : [];
     const rec = viewRecords(store);
-    const out = [];
-    areas.forEach(a => {
-      const groups = viewGroups(store, a.key).map(g => ({
+
+    // その店舗のエリアを1つぶん組み立てる。中身が無ければ null。
+    const build = (key, name) => {
+      const groups = viewGroups(store, key).map(g => ({
         section: g.section,
         items: g.items.map(it => ({
           title: it.title,
-          done: !!(rec.doneToday[a.key] && rec.doneToday[a.key][it.id]),
-          last: rec.lastDone[a.key + ':' + it.id] || null,
+          done: !!(rec.doneToday[key] && rec.doneToday[key][it.id]),
+          last: rec.lastDone[key + ':' + it.id] || null,
         })),
       })).filter(g => g.items.length);
-      if (!groups.length) return;                     // その店舗に無い設備は出さない
-      const all = groups.reduce((n, g) => n + g.items.length, 0);
+      if (!groups.length) return null;                // その店舗に無い設備は出さない
+      const total = groups.reduce((n, g) => n + g.items.length, 0);
       const done = groups.reduce((n, g) => n + g.items.filter(i => i.done).length, 0);
       // そのエリアで最後に何か記録が付いた日。
       // これが無い／ずっと前のエリアは「その店舗では使っていない設備」のことが多い
       // （笠寺の共通シャワーは部屋別へ移したので記録が止まっている）。
       // 隠すと本当の放置まで見えなくなるので、隠さずに分けて出す。
-      let lastAny = null;
+      let last = null;
       groups.forEach(g => g.items.forEach(i => {
-        if (i.last && (!lastAny || i.last > lastAny)) lastAny = i.last;
+        if (i.last && (!last || i.last > last)) last = i.last;
       }));
-      out.push({ name: a.name, done: done, total: all, last: lastAny, groups: groups });
+      return { name: name, done: done, total: total, last: last, groups: groups };
+    };
+
+    // ① 朝番・中番・遅番のやることリスト（現場が毎日たどる順そのまま）
+    const routines = [];
+    ROUTINES.forEach(([key, label]) => {
+      const def = custom.find(a => a && a.key === key);
+      const a = build(key, (def && def.name) || label);
+      if (a) routines.push(a);
     });
-    return { store: store, areas: out };
+
+    // ② 清掃エリア（やることリストから開く先も含む、場所ごとの一覧）
+    const keys = BUILTIN_AREAS.map(a => ({ key: a.key, name: a.name }))
+      .concat(custom
+        .filter(a => a && a.key && !BUILTIN_AREAS.some(b => b.key === a.key))
+        .map(a => ({ key: a.key, name: a.name || a.key })))
+      .filter(a => a.key.indexOf('routine_') !== 0);
+    const areas = [];
+    keys.forEach(a => { const x = build(a.key, a.name); if (x) areas.push(x); });
+
+    // ③ 定期清掃（たまにやる仕事。毎日の数には混ぜない）
+    const periodic = viewPeriodic(store);
+
+    return { store: store, routines: routines, areas: areas, periodic: periodic };
   });
   return { date: today, at: new Date(Date.now() + 9 * 3600000).toISOString().slice(11, 16), stores: stores };
 }

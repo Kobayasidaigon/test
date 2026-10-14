@@ -56,6 +56,27 @@
   .idle-note { color:#9fb0c0; font-size:.68rem; }
   .idle-body { display:none; }
   .cnt.idle { color:#b0bec5; }
+  .cnt.plain { color:var(--muted); font-weight:400; font-size:.75rem; }
+  /* 店舗の中の区切り。やることリスト / 清掃エリア / 定期清掃 の3つに分ける */
+  .grp { display:flex; justify-content:space-between; align-items:baseline; gap:8px;
+    font-size:.72rem; font-weight:700; color:var(--muted); letter-spacing:.04em;
+    background:#f7f9fb; padding:7px 14px; border-top:1px solid var(--border); }
+  .grp:first-of-type { border-top:0; }
+  .gnote { font-weight:400; color:#9fb0c0; font-size:.68rem; }
+  .gdue { color:var(--low); font-size:.68rem; font-weight:700; }
+  /* 定期清掃の1件。毎日の項目と違い、チェックではなく「次にやる日」で見る */
+  .pit { padding:7px 0 7px 9px; border-bottom:1px dotted #eceff1;
+    border-left:3px solid #cfd8dc; margin-top:2px; }
+  .pit:last-child { border-bottom:0; }
+  .pit.due { border-left-color:var(--low); }
+  .pit.soon { border-left-color:var(--mid); }
+  .pit.ok { border-left-color:var(--ok); }
+  .ptt { display:block; font-size:.88rem; }
+  .pst { display:inline-block; font-size:.7rem; font-weight:700; border-radius:8px;
+    padding:1px 6px; margin-top:3px; background:#eceff1; color:var(--muted); }
+  .pit.due .pst { background:#fdecea; color:var(--low); }
+  .pit.soon .pst { background:#fff6e5; color:var(--mid); }
+  .psub { font-size:.68rem; color:var(--muted); margin-left:6px; }
   footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
   .err { padding:30px 16px; text-align:center; color:var(--muted); }
   .login { background:var(--card); border:1px solid var(--border); border-radius:12px;
@@ -133,57 +154,70 @@ function render(d) {
     d.date.replace(/-/g, '/') + ' ' + d.at + ' 現在';
   var h = '';
   d.stores.forEach(function (st) {
-    // 合計は「使っている所」だけ。使っていない設備で分母が膨らむと、
-    // いくらやっても低い数字になって意味をなさない。
-    var done = 0, total = 0;
-    st.areas.forEach(function (a) {
-      if (a.last && gapOf(a.last, null, d.date) <= 30) { done += a.done; total += a.total; }
-    });
-    h += '<div class="store"><h2>' + esc(st.store)
-      + '<span class="n">' + done + ' / ' + total + '</span></h2>';
-    if (!st.areas.length) h += '<div class="err">エリアがありません</div>';
+    var routines = st.routines || [], areas = st.areas || [], periodic = st.periodic || [];
+
     // 30日以上まったく記録が無いエリアは、その店舗で使っていない設備のことが多い。
     // 隠さず、下にまとめて「使われていない」と断って出す。
     var live = [], idle = [];
-    st.areas.forEach(function (a) {
+    areas.forEach(function (a) {
       (a.last && gapOf(a.last, null, d.date) <= 30 ? live : idle).push(a);
     });
-    var drawn = 0;
-    live.concat(idle).forEach(function (a) {
-      if (drawn === live.length && idle.length) {
-        // 使っていない設備が赤い「0/23」で何行も並ぶと、断り書きがあっても
-        // 「全然やっていない」に見える。1行にたたんで、開きたい人だけ開く。
-        h += '<button type="button" class="idle-head" data-idle="1">'
-          + '<span class="caret">▶</span> しばらく記録がない設備 ' + idle.length + '件'
-          + '<span class="idle-note">その店舗では使っていないものかもしれません</span></button>'
-          + '<div class="idle-body">';
-      }
-      drawn++;
-      var pct = a.total ? Math.round(a.done / a.total * 100) : 0;
+
+    // 上の数は「毎日やる分」だけ。使っていない設備で分母が膨らむと、
+    // いくらやっても低い数字になって意味をなさない。定期清掃は毎日の仕事では
+    // ないので、ここには混ぜず下に別で出す。
+    var done = 0, total = 0;
+    routines.concat(live).forEach(function (a) { done += a.done; total += a.total; });
+
+    var due = periodic.filter(function (t) { return t.state === 'due'; }).length;
+    h += '<div class="store"><h2>' + esc(st.store)
+      + '<span class="n">' + done + ' / ' + total + '</span></h2>';
+
+    // ① やることリスト（朝番・中番・遅番）
+    if (routines.length) {
+      h += '<div class="grp">やることリスト</div>';
+      routines.forEach(function (a) { h += areaHtml(a, d, false); });
+    }
+
+    // ② 清掃エリア
+    h += '<div class="grp">清掃エリア</div>';
+    if (!areas.length) h += '<div class="err">エリアがありません</div>';
+    live.forEach(function (a) { h += areaHtml(a, d, false); });
+    if (idle.length) {
+      // 使っていない設備が赤い「0/23」で何行も並ぶと、断り書きがあっても
+      // 「全然やっていない」に見える。1行にたたんで、開きたい人だけ開く。
+      h += '<button type="button" class="idle-head" data-idle="1">'
+        + '<span class="caret">▶</span> しばらく記録がない設備 ' + idle.length + '件'
+        + '<span class="idle-note">その店舗では使っていないものかもしれません</span></button>'
+        + '<div class="idle-body">';
+      idle.forEach(function (a) { h += areaHtml(a, d, true); });
+      h += '</div>';
+    }
+
+    // ③ 定期清掃（たまにやる仕事）
+    h += '<div class="grp">定期清掃'
+      + (due ? '<span class="gdue">' + due + '件が実施時期です</span>'
+             : '<span class="gnote">実施時期のものはありません</span>')
+      + '</div>';
+    if (!periodic.length) {
+      h += '<div class="err">定期清掃がありません</div>';
+    } else {
+      // 「1/4」のような分数にすると「4件中1件やった」に見えてしまう。
+      // 定期清掃は毎日やる仕事ではないので、件数だけを出す。
       h += '<div class="area"><button type="button">'
-        + '<span class="caret">▶</span>'
-        + '<span class="nm">' + esc(a.name) + '</span>'
-        + '<span class="bar"><i style="width:' + pct + '%"></i></span>'
-        + '<span class="cnt ' + (drawn > live.length ? 'idle' : cls(a.done, a.total)) + '">'
-        + a.done + '/' + a.total + '</span>'
+        + '<span class="caret">▶</span><span class="nm">定期清掃の一覧</span>'
+        + '<span class="cnt plain">全' + periodic.length + '件</span>'
         + '</button><div class="body">';
-      a.groups.forEach(function (g) {
-        if (g.section) h += '<div class="sec">' + esc(g.section) + '</div>';
-        g.items.forEach(function (it) {
-          var gp = gapOf(it.last, dayGroupOf(g.section), d.date);
-          var tag = '';
-          if (!it.done) {
-            if (gp < 0) tag = '<span class="gap none">記録なし</span>';
-            else if (gp >= 2) tag = '<span class="gap">' + gp
-              + (dayGroupOf(g.section) ? '回' : '日') + '空き</span>';
-          }
-          h += '<div class="it' + (it.done ? ' done' : '') + '">'
-            + '<span class="mk"></span><span class="tt">' + esc(it.title) + '</span>' + tag + '</div>';
-        });
+      periodic.forEach(function (t) {
+        h += '<div class="pit ' + t.state + '">'
+          + '<span class="ptt">' + esc(t.title) + '</span>'
+          + '<span class="pst">' + esc(stateLabel(t)) + '</span>'
+          + '<span class="psub">' + esc(t.every)
+          + (t.last ? '／前回 ' + t.last.slice(5).replace('-', '/') : '／まだやっていません')
+          + '</span></div>';
       });
       h += '</div></div>';
-    });
-    if (idle.length) h += '</div>';
+    }
     h += '</div>';
   });
   document.getElementById('main').innerHTML = h;
@@ -202,6 +236,42 @@ function render(d) {
     };
   });
 }
+
+// 定期清掃1件の状態の言い方。アプリの periodicStatus と同じ言い回しにそろえる。
+function stateLabel(t) {
+  if (t.state === 'unset') return '日付未設定';
+  if (t.state === 'due') return (t.fixed && t.left < 0) ? (-t.left) + '日過ぎています' : '実施時期です';
+  if (t.state === 'soon') return 'そろそろ（あと' + t.left + '日）';
+  return 'あと' + t.left + '日';
+}
+
+// エリア1つぶんの折りたたみ。idle=その店舗では使っていないかもしれない設備
+function areaHtml(a, d, isIdle) {
+  var pct = a.total ? Math.round(a.done / a.total * 100) : 0;
+  var h = '<div class="area"><button type="button">'
+    + '<span class="caret">▶</span>'
+    + '<span class="nm">' + esc(a.name) + '</span>'
+    + '<span class="bar"><i style="width:' + pct + '%"></i></span>'
+    + '<span class="cnt ' + (isIdle ? 'idle' : cls(a.done, a.total)) + '">'
+    + a.done + '/' + a.total + '</span>'
+    + '</button><div class="body">';
+  a.groups.forEach(function (g) {
+    if (g.section) h += '<div class="sec">' + esc(g.section) + '</div>';
+    g.items.forEach(function (it) {
+      var gp = gapOf(it.last, dayGroupOf(g.section), d.date);
+      var tag = '';
+      if (!it.done) {
+        if (gp < 0) tag = '<span class="gap none">記録なし</span>';
+        else if (gp >= 2) tag = '<span class="gap">' + gp
+          + (dayGroupOf(g.section) ? '回' : '日') + '空き</span>';
+      }
+      h += '<div class="it' + (it.done ? ' done' : '') + '">'
+        + '<span class="mk"></span><span class="tt">' + esc(it.title) + '</span>' + tag + '</div>';
+    });
+  });
+  return h + '</div></div>';
+}
+
 function showLogin(msg) {
   document.getElementById('login').style.display = '';
   document.getElementById('content').style.display = 'none';
