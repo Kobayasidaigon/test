@@ -71,6 +71,40 @@ w2, r2 = build_routine(kv2)
 ck('書き換える鍵は0件', len(w2) == 0, str(sorted(w2)))
 ck('すでに入っていた扱いが24件', len(r2['same']) == 24, str(len(r2['same'])))
 
+# 言い間違いの名前（掃除のゴミ捨て）だけは、idを変えずに直す
+print('=== 入れたときの名前が「掃除のゴミ捨て」だった場合 ===')
+kvR = dict(kv2)
+touched = []
+for st, sl in REAL:
+    k = 'sdef_%s_customItems_%s' % (st, sl)
+    lst = json.loads(kvR[k])
+    for c in lst:
+        if c['id'].endswith('_trash_dispose'):
+            c['title'] = '掃除のゴミ捨て'
+            touched.append((st, sl))
+    kvR[k] = json.dumps(lst, ensure_ascii=False)
+wR, rR = build_routine(kvR)
+ck('直す対象は9か所', len(touched) == 9, str(len(touched)))
+ck('書き換える鍵は9件', len(wR) == 9, str(len(wR)))
+ck('名前を直したと報告される（9件）', len(rR['retitled']) == 9, str(len(rR['retitled'])))
+ck('足すものは無い', not rR['added'], str(len(rR['added'])))
+ck('違いとしては報告されない', not rR['differs'])
+for st, sl in REAL:
+    k = 'sdef_%s_customItems_%s' % (st, sl)
+    was = json.loads(kvR[k]); now = json.loads(wR[k])
+    lab = '%s/%s' % (st, sl)
+    ck(lab + ': idも並びも変わらない', [c['id'] for c in now] == [c['id'] for c in was])
+    ck(lab + ': 件数も変わらない', len(now) == len(was))
+    t = [c for c in now if c['id'].endswith('_trash_dispose')]
+    ck(lab + ': 名前が「掃除機のゴミ捨て」になる', len(t) == 1 and t[0]['title'] == '掃除機のゴミ捨て',
+       t[0]['title'] if t else 'なし')
+    ck(lab + ': モップの掃除はそのまま',
+       [c['title'] for c in now if c['id'].endswith('_mop_clean')] == ['モップの掃除'])
+# 直したあと、もう一度流しても何も起きない
+kvR2 = dict(kvR); kvR2.update(wR)
+wR2, rR2 = build_routine(kvR2)
+ck('直したあとは書き換え0件', len(wR2) == 0, str(sorted(wR2)))
+
 # 人が名前を変えていたら上書きしない
 print('=== 人が名前を変えていた場合 ===')
 kv3 = dict(kv2)

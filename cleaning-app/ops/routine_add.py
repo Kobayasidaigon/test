@@ -7,7 +7,7 @@
     ・シャワールーム・サウナルームのゴミ箱の清掃
     ・サウナマットを入れる箱の水洗い
   3店舗の【朝番・中番・遅番すべて】に
-    ・掃除のゴミ捨て
+    ・掃除機のゴミ捨て
     ・モップの掃除
 
 入れる場所:
@@ -40,17 +40,27 @@ BAN_ONLY_ITEMS = [
 # 朝・中・遅すべて（3店舗）。時間帯ごとにidを分ける（asa_/hiru_/ban_ の付け方にそろえる）
 EVERY_SLOT_ITEMS = {
     'routine_asa': [
-        {'id': 'asa_trash_dispose', 'title': '掃除のゴミ捨て'},
+        {'id': 'asa_trash_dispose', 'title': '掃除機のゴミ捨て'},
         {'id': 'asa_mop_clean',     'title': 'モップの掃除'},
     ],
     'routine_hiru': [
-        {'id': 'hiru_trash_dispose', 'title': '掃除のゴミ捨て'},
+        {'id': 'hiru_trash_dispose', 'title': '掃除機のゴミ捨て'},
         {'id': 'hiru_mop_clean',     'title': 'モップの掃除'},
     ],
     'routine_ban': [
-        {'id': 'ban_trash_dispose', 'title': '掃除のゴミ捨て'},
+        {'id': 'ban_trash_dispose', 'title': '掃除機のゴミ捨て'},
         {'id': 'ban_mop_clean',     'title': 'モップの掃除'},
     ],
+}
+
+# 名前の言い直し。いまの名前がここに載っているものと同じときだけ、上の名前に直す。
+# 「掃除のゴミ捨て」で入れてしまったが、正しくは「掃除機のゴミ捨て」だった。
+# ★ idは変えない（記録はidで結び付いているので、名前だけ直す）
+# ここに無い名前（人が店舗の都合で付け替えたもの）は上書きしない。
+RETITLE_FROM = {
+    'asa_trash_dispose':  ['掃除のゴミ捨て'],
+    'hiru_trash_dispose': ['掃除のゴミ捨て'],
+    'ban_trash_dispose':  ['掃除のゴミ捨て'],
 }
 
 
@@ -110,7 +120,8 @@ def _section_for(items, anchor, area):
 def build_routine(kv):
     """書き換える鍵と、何をするかの報告を返す。読むだけで、ここでは書かない。"""
     writes = {}
-    report = {'areas': [], 'added': [], 'same': [], 'differs': [], 'hidden': []}
+    report = {'areas': [], 'added': [], 'same': [], 'differs': [], 'hidden': [],
+              'retitled': []}
 
     for store in ALL_STORES:
         for slot, label in SLOTS:
@@ -146,15 +157,22 @@ def build_routine(kv):
                     have[c['id']] = c
 
             new_rows = []
+            retitled = []
             for w in want:
                 cur = have.get(w['id'])
                 if cur is not None:
-                    if str(cur.get('title') or '') == w['title']:
+                    now_title = str(cur.get('title') or '')
+                    if now_title == w['title']:
                         report['same'].append((store, label, w['id'], w['title']))
+                    elif now_title in RETITLE_FROM.get(w['id'], []):
+                        # 入れたときの言い間違い。名前だけ直す（idはそのまま）。
+                        retitled.append((cur, now_title, w['title']))
+                        report['retitled'].append((store, label, w['id'],
+                                                   now_title, w['title']))
                     else:
                         # 人が名前を変えた等。勝手に上書きしない。
                         report['differs'].append((store, label, w['id'],
-                                                  str(cur.get('title') or ''), w['title']))
+                                                  now_title, w['title']))
                     continue
                 if w['id'] in hid:
                     report['hidden'].append((store, label, w['id'], w['title']))
@@ -162,9 +180,13 @@ def build_routine(kv):
                                  'title': w['title'], 'desc': ''})
                 report['added'].append((store, label, sec, w['id'], w['title']))
 
-            if new_rows:
+            if new_rows or retitled:
                 at = anchor if anchor >= 0 else len(items)
-                out = list(items[:at]) + new_rows + list(items[at:])
+                # 名前を直すものは、同じ並びのまま title だけ差し替える
+                fix = {id(c): t for c, _, t in retitled}
+                items2 = [dict(c, title=fix[id(c)]) if isinstance(c, dict) and id(c) in fix else c
+                          for c in items]
+                out = list(items2[:at]) + new_rows + list(items2[at:])
                 # いまある項目が1つも減らず、並びも変わっていないことを確かめる
                 new_ids = set(r['id'] for r in new_rows)
                 kept = [c.get('id') for c in out if isinstance(c, dict) and c.get('id') not in new_ids]
