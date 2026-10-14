@@ -28,11 +28,11 @@ const login = (pw) => fetch(BASE + '/view/login', {
   await put('sdef_笠寺_customSections_floor', JSON.stringify(['A 床・鏡まわり【月・木】']));
   await put('sdef_笠寺_itemEdits_floor', JSON.stringify({ sweep: { section: 'A 床・鏡まわり【月・木】' } }));
   // 記録（担当者名が鍵に入っている）
-  await put('clean_笠寺_田口 杏梨_sauna_b1_' + today, JSON.stringify({ bench: true }));
+  await put('clean_笠寺_山田 花子_sauna_b1_' + today, JSON.stringify({ bench: true }));
   await put('clean_笠寺_鈴木 太郎_floor@routine_asa_' + d(-6), JSON.stringify({ sweep: true }));
   // 渡ってはいけないもの
-  await put('staffRoster', JSON.stringify({ 笠寺: ['田口 杏梨', '鈴木 太郎'] }));
-  await put('shiftSchedule_笠寺', JSON.stringify({ [today]: [{ n: '田口 杏梨', s: '09:00', e: '18:00' }] }));
+  await put('staffRoster', JSON.stringify({ 笠寺: ['山田 花子', '鈴木 太郎'] }));
+  await put('shiftSchedule_笠寺', JSON.stringify({ [today]: [{ n: '山田 花子', s: '09:00', e: '18:00' }] }));
   await put('rosterPinned', JSON.stringify({ 笠寺: ['店長 社員'] }));
 
   // ---- 合言葉なしでは中身が出ない ----
@@ -46,7 +46,7 @@ const login = (pw) => fetch(BASE + '/view/login', {
   const page = await fetch(BASE + '/view');
   check('ページ自体は開ける（中身は出ない）', page.ok, String(page.status));
   check('ページのHTMLに中身が埋まっていない',
-        !(await page.text()).includes('田口'));
+        !(await page.text()).includes('山田'));
 
   // ---- 正しい合言葉 ----
   const ok = await login(PASS);
@@ -62,7 +62,7 @@ const login = (pw) => fetch(BASE + '/view/login', {
   const data = JSON.parse(body);
 
   // ---- 本題：渡ってはいけないものが入っていないか ----
-  check('担当者名が入っていない（田口 杏梨）', body.indexOf('田口') < 0);
+  check('担当者名が入っていない（山田 花子）', body.indexOf('山田') < 0);
   check('担当者名が入っていない（鈴木 太郎）', body.indexOf('鈴木') < 0);
   check('固定枠の社員名が入っていない', body.indexOf('店長') < 0);
   check('記録の生の鍵が入っていない', body.indexOf('clean_') < 0);
@@ -120,7 +120,7 @@ const login = (pw) => fetch(BASE + '/view/login', {
   check('合言葉が合うと中身が出る', (await pg.$$('.store')).length === 3);
   check('「見るだけ」と書いてある', /見るだけ/.test(txt));
   check('途中経過だと断ってある', /途中経過/.test(txt));
-  check('画面にも担当者名は出ない', txt.indexOf('田口') < 0 && txt.indexOf('店長') < 0);
+  check('画面にも担当者名は出ない', txt.indexOf('山田') < 0 && txt.indexOf('店長') < 0);
   check('チェックを付ける部品が無い', (await pg.$$('input[type=checkbox]')).length === 0);
   await pg.click('.area > button');
   await pg.waitForTimeout(200);
