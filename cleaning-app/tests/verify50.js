@@ -136,6 +136,24 @@ const D = '2026-10-12';   // 月曜
   check('画面で例外が出ない', !errs.length, errs.slice(0, 2).join(' | '));
   await b.close();
 
+  // ---- 2人1枚（連名）の担当者が二重に出ないこと ----
+  await put('clean_笠寺_大嶽 梨音・上西 憲伸_sauna_b1@routine_asa_' + D, JSON.stringify({ i1: 1 }));
+  await put('clean_笠寺_大嶽 梨音_sauna_b1@routine_asa_' + D, JSON.stringify({ i2: 1 }));
+  o = await get();
+  const sa = (o.stores.find(s => s.store === '笠寺').areas || [])
+    .find(a => a.name === 'サウナ男A');
+  const cnt = (a, n) => (a || []).filter(x => x === n).length;
+  check('連名と単独名が混ざっても同じ人は1回だけ',
+    cnt(sa.who, '大嶽 梨音') === 1, JSON.stringify(sa.who));
+  check('連名の相手も別の名前として出る',
+    cnt(sa.who, '上西 憲伸') === 1, JSON.stringify(sa.who));
+  check('連名のまま1つの名前にはならない',
+    !(sa.who || []).some(x => x.indexOf('・') >= 0), JSON.stringify(sa.who));
+  const it2 = sa.groups[0].items.find(x => x.title === 'サウナ男A1');
+  check('項目ごとの名前も連名を分ける',
+    cnt(it2.by, '大嶽 梨音') === 1 && cnt(it2.by, '上西 憲伸') === 1,
+    JSON.stringify(it2.by));
+
   console.log('verify50 pass=' + pass + ' fail=' + fail);
   process.exit(fail ? 1 : 0);
 })();

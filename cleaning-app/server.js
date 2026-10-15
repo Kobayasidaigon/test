@@ -224,7 +224,14 @@ function viewRecords(store, day) {
   // 「前回やった日」が未来になってしまう。
   const today = day || vToday();
   const pre = 'clean_' + store + '_';
-  const addTo = (arr, name) => { if (name && arr.indexOf(name) < 0) arr.push(name); };
+  // 担当者は「2人1枚」で記録できる（名前が「大嶽 梨音・上西 憲伸」のように連名で入る）。
+  // そのまま並べると、単独名と連名が混ざって同じ人が2回出てしまうので、
+  // 「・」で分けてから重なりを取り除く。
+  const splitNames = name => String(name || '').split('・')
+    .map(x => x.trim()).filter(Boolean);
+  const addTo = (arr, name) => {
+    splitNames(name).forEach(n => { if (arr.indexOf(n) < 0) arr.push(n); });
+  };
   Object.keys(state.kv).forEach(k => {
     if (k.indexOf(pre) !== 0) return;
     const date = k.slice(-10);
@@ -248,7 +255,7 @@ function viewRecords(store, day) {
         if (!doneToday[area][id]) doneToday[area][id] = [];
         addTo(doneToday[area][id], staff);
         if (!todayBy[area]) todayBy[area] = {};
-        if (staff) todayBy[area][staff] = true;
+        splitNames(staff).forEach(n => { todayBy[area][n] = true; });
         // 曜日の枠（#d1）は落として、時間帯（@routine_asa）だけ残す
         const h = rawArea.indexOf('#');
         const scoped = h < 0 ? rawArea : rawArea.slice(0, h);
