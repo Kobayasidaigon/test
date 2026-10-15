@@ -45,7 +45,8 @@ const login = (pw) => fetch(BASE + '/view/login', {
   // ページ自体は開ける（中身は出ない。合言葉を聞く画面になる）
   const page = await fetch(BASE + '/view');
   check('ページ自体は開ける（中身は出ない）', page.ok, String(page.status));
-  check('ページのHTMLに中身が埋まっていない',
+  // 名前を出すようにしたので、ここに埋まっていないことは前より大事になった
+  check('合言葉を聞く画面に中身が埋まっていない',
         !(await page.text()).includes('山田'));
 
   // ---- 正しい合言葉 ----
@@ -62,9 +63,13 @@ const login = (pw) => fetch(BASE + '/view/login', {
   const data = JSON.parse(body);
 
   // ---- 本題：渡ってはいけないものが入っていないか ----
-  check('担当者名が入っていない（山田 花子）', body.indexOf('山田') < 0);
-  check('担当者名が入っていない（鈴木 太郎）', body.indexOf('鈴木') < 0);
-  check('固定枠の社員名が入っていない', body.indexOf('店長') < 0);
+  //
+  // 担当者名は出す（「誰がやっているか分からないと困る」ため）。
+  // ただし出すのは「実際に記録を付けた人」だけで、名簿そのものは渡さない。
+  // 名簿を渡すと、その日働いていない人・辞めた人まで外に出てしまう。
+  check('今日つけた人の名前は出る（山田 花子）', body.indexOf('山田') >= 0);
+  check('前にやった人の名前も出る（鈴木 太郎）', body.indexOf('鈴木') >= 0);
+  check('記録が1件も無い人は出ない（名簿を渡していない）', body.indexOf('店長') < 0);
   check('記録の生の鍵が入っていない', body.indexOf('clean_') < 0);
   check('名簿・シフト表が入っていない',
         body.indexOf('staffRoster') < 0 && body.indexOf('shiftSchedule') < 0);
@@ -120,7 +125,8 @@ const login = (pw) => fetch(BASE + '/view/login', {
   check('合言葉が合うと中身が出る', (await pg.$$('.store')).length === 3);
   check('「見るだけ」と書いてある', /見るだけ/.test(txt));
   check('途中経過だと断ってある', /途中経過/.test(txt));
-  check('画面にも担当者名は出ない', txt.indexOf('山田') < 0 && txt.indexOf('店長') < 0);
+  check('画面に担当者名が出る', txt.indexOf('山田') >= 0);
+  check('画面にも名簿の名前は出ない', txt.indexOf('店長') < 0);
   check('チェックを付ける部品が無い', (await pg.$$('input[type=checkbox]')).length === 0);
   await pg.click('.area > button');
   await pg.waitForTimeout(200);

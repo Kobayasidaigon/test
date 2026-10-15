@@ -28,7 +28,7 @@
   .area:last-child { border-bottom:0; }
   .area > button { width:100%; background:none; border:0; padding:10px 14px; font:inherit;
     color:inherit; display:flex; align-items:center; gap:10px; text-align:left; cursor:pointer; }
-  .area > button .nm { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .area > button .nm { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .cnt { font-variant-numeric:tabular-nums; font-weight:700; font-size:.85rem; }
   .cnt.full { color:var(--ok); } .cnt.part { color:var(--mid); } .cnt.none { color:var(--low); }
   .bar { height:4px; background:#eceff1; border-radius:3px; width:54px; flex:0 0 auto; overflow:hidden; }
@@ -38,10 +38,20 @@
   .area.open .body { display:block; }
   .sec { font-size:.72rem; color:var(--muted); font-weight:700; margin:10px 0 4px;
     border-left:3px solid #cfd8dc; padding-left:7px; }
-  .it { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:.88rem;
+  .it { display:flex; align-items:flex-start; gap:8px; padding:5px 0; font-size:.88rem;
     border-bottom:1px dotted #eceff1; }
+  .tw { flex:1; min-width:0; }
+  .meta { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:2px; }
+  /* 誰がやったか。これが見たくてページを開くので、薄くしすぎない */
+  .by { font-size:.72rem; color:var(--ok); font-weight:700; }
+  .prev { font-size:.68rem; color:var(--muted); }
+  /* 畳んだままでも、その場所を今日やっている人が分かるように */
+  .nmwrap { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+  .who { font-size:.68rem; color:var(--muted); font-weight:400;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .it:last-child { border-bottom:0; }
-  .mk { width:17px; height:17px; border-radius:50%; flex:0 0 auto; border:1.5px solid #cfd8dc; }
+  .mk { width:17px; height:17px; border-radius:50%; flex:0 0 auto; border:1.5px solid #cfd8dc;
+    margin-top:1px; }
   .it.done .mk { background:var(--ok); border-color:var(--ok); position:relative; }
   .it.done .mk::after { content:''; position:absolute; left:5px; top:2px; width:4px; height:8px;
     border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg); }
@@ -248,9 +258,12 @@ function stateLabel(t) {
 // エリア1つぶんの折りたたみ。idle=その店舗では使っていないかもしれない設備
 function areaHtml(a, d, isIdle) {
   var pct = a.total ? Math.round(a.done / a.total * 100) : 0;
+  var who = (a.who || []).join('・');
   var h = '<div class="area"><button type="button">'
     + '<span class="caret">▶</span>'
-    + '<span class="nm">' + esc(a.name) + '</span>'
+    + '<span class="nmwrap"><span class="nm">' + esc(a.name) + '</span>'
+    + (who ? '<span class="who">' + esc(who) + '</span>' : '')
+    + '</span>'
     + '<span class="bar"><i style="width:' + pct + '%"></i></span>'
     + '<span class="cnt ' + (isIdle ? 'idle' : cls(a.done, a.total)) + '">'
     + a.done + '/' + a.total + '</span>'
@@ -258,15 +271,25 @@ function areaHtml(a, d, isIdle) {
   a.groups.forEach(function (g) {
     if (g.section) h += '<div class="sec">' + esc(g.section) + '</div>';
     g.items.forEach(function (it) {
-      var gp = gapOf(it.last, dayGroupOf(g.section), d.date);
-      var tag = '';
-      if (!it.done) {
-        if (gp < 0) tag = '<span class="gap none">記録なし</span>';
-        else if (gp >= 2) tag = '<span class="gap">' + gp
-          + (dayGroupOf(g.section) ? '回' : '日') + '空き</span>';
+      // 1行目に項目名、2行目に「誰が・いつ」。1行に詰めると横に溢れる。
+      var meta = [];
+      if (it.done) {
+        if (it.by) meta.push('<span class="by">' + esc(it.by.join('・')) + '</span>');
+      } else {
+        var gp = gapOf(it.last, dayGroupOf(g.section), d.date);
+        if (gp < 0) meta.push('<span class="gap none">記録なし</span>');
+        else if (gp >= 2) meta.push('<span class="gap">' + gp
+          + (dayGroupOf(g.section) ? '回' : '日') + '空き</span>');
+        if (it.last) {
+          meta.push('<span class="prev">前回 ' + it.last.slice(5).replace('-', '/')
+            + (it.lastBy ? ' ' + esc(it.lastBy.join('・')) : '') + '</span>');
+        }
       }
       h += '<div class="it' + (it.done ? ' done' : '') + '">'
-        + '<span class="mk"></span><span class="tt">' + esc(it.title) + '</span>' + tag + '</div>';
+        + '<span class="mk"></span>'
+        + '<span class="tw"><span class="tt">' + esc(it.title) + '</span>'
+        + (meta.length ? '<span class="meta">' + meta.join('') + '</span>' : '')
+        + '</span></div>';
     });
   });
   return h + '</div></div>';

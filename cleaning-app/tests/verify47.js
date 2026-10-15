@@ -134,7 +134,15 @@ function driftCheck() {
     per.some(t => t.title === '日付未設定のもの' && t.state === 'unset' && t.next === null));
   check('まだ先のものは ok', per.some(t => t.title === 'まだ先のもの' && t.state === 'ok'));
   check('前回やった日が出る', per[0] && per[0].last === d(-40), per[0] && per[0].last);
-  check('定期清掃に担当者名が入っていない', body.indexOf('山田') < 0 && body.indexOf('staff') < 0);
+  // 定期清掃は「次にやる日」で見るもので、誰がやったかは毎日の分で見る。
+  // periodicDone_ の staff はそのまま渡さない（生の鍵ごと渡さないため）。
+  check('定期清掃に staff の生データが入っていない', body.indexOf('staff') < 0);
+  check('やることリストの記入者は出る', (kasa.routines[0].who || []).indexOf('山田 花子') >= 0,
+    JSON.stringify(kasa.routines[0].who));
+  check('項目ごとに誰がつけたか出る',
+    kasa.routines[0].groups[0].items.some(it => it.done && (it.by || []).indexOf('山田 花子') >= 0));
+  check('つけていない項目には人が付かない',
+    kasa.routines[0].groups[0].items.every(it => it.done || !it.by));
 
   // ---- その3: 画面に描けるか ----
   const { chromium } = require('playwright');
@@ -155,7 +163,7 @@ function driftCheck() {
   check('画面に出る: 実施時期の件数', /\d+件が実施時期です/.test(txt));
   check('定期清掃を分数で出さない（やった数に見えるため）', !/定期清掃の一覧[\s\S]{0,20}\d+\/\d+/.test(txt));
   check('定期清掃は件数で出す', /全\d+件/.test(txt));
-  check('画面にも担当者名は出ない', txt.indexOf('山田') < 0);
+  check('画面に記入者が出る', txt.indexOf('山田 花子') >= 0);
   check('画面の読み込みで例外が出ない', !errs.length, errs.slice(0, 2).join(' | '));
 
   // 定期清掃の一覧を開くと中身が出る

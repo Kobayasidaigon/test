@@ -66,7 +66,14 @@ app.get('/api/version', (req, res) => res.json({ v: APP_VERSION }));
 // ここでは「現場が見ている画面と同じ中身」を、押せない形で出す。
 // 渡すものはサーバーが絞る。ページ側で絞ると、絞り忘れがそのまま漏れになる。
 //   出す   : エリア・区分・項目名・今日チェックが付いているか・前回やった日
-//   出さない: 担当者名、記録の生データ、名簿、シフト表、在庫連携の設定、写真
+//            ＋ 誰が付けたか（今日の記入者と、前回やった人）
+//   出さない: 記録の生データ、名簿そのもの、シフト表、在庫連携の設定、写真
+//
+// 担当者名について:
+//   最初は名前を落としていた（署名付きリンクで広く配る前提だったため）。
+//   いまは管理者合言葉を知っている人しか開けないページで、
+//   「誰がやっているか分からないと困る」という話があったので出すようにした。
+//   合言葉を知らない人には、名前を含めて中身が1つも出ないことは変わらない。
 //
 // 見るのは管理者だけ。管理者合言葉（ADMIN_PASS）で開ける。
 //
@@ -187,12 +194,16 @@ function viewGroups(store, areaKey) {
   return order.map(sec => ({ section: sec, items: bag[sec] }));
 }
 
-// その店舗の記録を、担当者を混ぜて「項目idの集合」にする。名前は持ち出さない。
+// その店舗の記録を、エリアと項目ごとにまとめる。誰が付けたかも持つ。
+// 同じ項目を同じ日に2人が付けることがある（担当者ごとに別の記録になるため）ので、
+// 名前は配列で持って、重なりを取り除いてから返す。
 function viewRecords(store) {
-  const doneToday = {};   // エリア -> Set(項目id)
-  const lastDone = {};    // "エリア:項目id" -> いちばん新しい日付
+  const doneToday = {};   // エリア -> { 項目id: [今日つけた人…] }
+  const lastDone = {};    // "エリア:項目id" -> { date, by: [その日につけた人…] }
+  const todayBy = {};     // エリア -> { 今日その場所を記入した人: true }
   const today = vToday();
   const pre = 'clean_' + store + '_';
+  const addTo = (arr, name) => { if (name && arr.indexOf(name) < 0) arr.push(name); };
   Object.keys(state.kv).forEach(k => {
     if (k.indexOf(pre) !== 0) return;
     const date = k.slice(-10);
@@ -200,19 +211,25 @@ function viewRecords(store) {
     const mid = k.slice(pre.length, k.length - 11);
     const us = mid.indexOf('_');
     if (us < 0) return;
+    const staff = mid.slice(0, us);
     const area = vBaseArea(mid.slice(us + 1));
     const rec = vJson(state.kv[k], {}) || {};
     Object.keys(rec).forEach(id => {
       if (!rec[id]) return;
       const key = area + ':' + id;
-      if (!lastDone[key] || date > lastDone[key]) lastDone[key] = date;
+      const cur = lastDone[key];
+      if (!cur || date > cur.date) lastDone[key] = { date: date, by: staff ? [staff] : [] };
+      else if (date === cur.date) addTo(cur.by, staff);
       if (date === today) {
         if (!doneToday[area]) doneToday[area] = {};
-        doneToday[area][id] = true;
+        if (!doneToday[area][id]) doneToday[area][id] = [];
+        addTo(doneToday[area][id], staff);
+        if (!todayBy[area]) todayBy[area] = {};
+        if (staff) todayBy[area][staff] = true;
       }
     });
   });
-  return { doneToday: doneToday, lastDone: lastDone };
+  return { doneToday: doneToday, lastDone: lastDone, todayBy: todayBy };
 }
 
 // ===== 定期清掃（たまにやる仕事）=====
@@ -340,11 +357,17 @@ function buildViewData() {
     const build = (key, name) => {
       const groups = viewGroups(store, key).map(g => ({
         section: g.section,
-        items: g.items.map(it => ({
-          title: it.title,
-          done: !!(rec.doneToday[key] && rec.doneToday[key][it.id]),
-          last: rec.lastDone[key + ':' + it.id] || null,
-        })),
+        items: g.items.map(it => {
+          const by = (rec.doneToday[key] || {})[it.id] || null;   // 今日つけた人
+          const ld = rec.lastDone[key + ':' + it.id] || null;     // 前回つけた日と人
+          return {
+            title: it.title,
+            done: !!(by && by.length),
+            by: by && by.length ? by : null,
+            last: ld ? ld.date : null,
+            lastBy: ld && ld.by.length ? ld.by : null,
+          };
+        }),
       })).filter(g => g.items.length);
       if (!groups.length) return null;                // その店舗に無い設備は出さない
       const total = groups.reduce((n, g) => n + g.items.length, 0);
@@ -357,7 +380,10 @@ function buildViewData() {
       groups.forEach(g => g.items.forEach(i => {
         if (i.last && (!last || i.last > last)) last = i.last;
       }));
-      return { name: name, done: done, total: total, last: last, groups: groups };
+      // その場所を今日記入した人（畳んだままでも誰がやっているか分かるように）
+      const who = Object.keys(rec.todayBy[key] || {}).sort();
+      return { name: name, done: done, total: total, last: last,
+               who: who, groups: groups };
     };
 
     // ① 朝番・中番・遅番のやることリスト（現場が毎日たどる順そのまま）
