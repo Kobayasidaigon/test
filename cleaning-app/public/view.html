@@ -87,6 +87,16 @@
   .pit.due .pst { background:#fdecea; color:var(--low); }
   .pit.soon .pst { background:#fff6e5; color:var(--mid); }
   .psub { font-size:.68rem; color:var(--muted); margin-left:6px; }
+  /* 日付を選ぶ行。他の日を見たいという話があったので足した */
+  .dayrow { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+  .dayrow button { font:inherit; font-size:1.1rem; line-height:1; padding:9px 13px;
+    background:var(--card); border:1px solid var(--border); border-radius:9px;
+    color:var(--text); cursor:pointer; flex:0 0 auto; }
+  .dayrow button:disabled { color:#cfd8dc; cursor:default; }
+  .dayrow button.today { font-size:.8rem; font-weight:700; padding:10px 12px; }
+  .dayrow input[type=date] { flex:1; min-width:0; font:inherit; font-size:.92rem;
+    padding:9px 10px; border:1px solid var(--border); border-radius:9px;
+    background:var(--card); color:var(--text); }
   footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
   .err { padding:30px 16px; text-align:center; color:var(--muted); }
   .login { background:var(--card); border:1px solid var(--border); border-radius:12px;
@@ -113,11 +123,13 @@
     <div class="ng" id="ng"></div>
   </div>
   <div id="content">
-  <div class="note">
-    このページは<b>見るだけ</b>です。チェックは付けられません。<br>
-    上の数は<b>その日の途中経過</b>です。夜にまとめて付ける日もあるため、
-    日中の数が少なくても終わっていないとは限りません。
+  <div class="dayrow">
+    <button type="button" id="prev" aria-label="前の日">‹</button>
+    <input type="date" id="day">
+    <button type="button" id="next" aria-label="次の日">›</button>
+    <button type="button" id="toToday" class="today">今日</button>
   </div>
+  <div class="note" id="note"></div>
   <div id="main"><div class="err">読み込み中…</div></div>
   </div>
 </div>
@@ -159,9 +171,31 @@ function cls(done, total) {
   if (done >= total) return 'full';
   return done > 0 ? 'part' : 'none';
 }
+var DOW = ['日', '月', '火', '水', '木', '金', '土'];
 function render(d) {
-  document.getElementById('sub').textContent =
-    d.date.replace(/-/g, '/') + ' ' + d.at + ' 現在';
+  // サーバーがその日に直してくれる（おかしな日は今日になる）ので、受け取った日に合わせる
+  viewDay = d.date === d.today ? '' : d.date;
+  var dow = DOW[new Date(d.date + 'T00:00:00').getDay()];
+  document.getElementById('sub').textContent = d.isToday
+    ? d.date.replace(/-/g, '/') + '（' + dow + '） ' + d.at + ' 現在'
+    : d.date.replace(/-/g, '/') + '（' + dow + '）';
+
+  var day = document.getElementById('day');
+  day.value = d.date;
+  day.max = d.today;
+  document.getElementById('next').disabled = d.date >= d.today;
+  document.getElementById('toToday').disabled = d.isToday;
+
+  // 断り書きは日によって変える。今日は途中経過だが、昔の日はもう終わった日なので
+  // 同じ文だと「まだ増えるのかな」と思わせてしまう。
+  document.getElementById('note').innerHTML = d.isToday
+    ? 'このページは<b>見るだけ</b>です。チェックは付けられません。<br>'
+      + '上の数は<b>その日の途中経過</b>です。夜にまとめて付ける日もあるため、'
+      + '日中の数が少なくても終わっていないとは限りません。'
+    : 'このページは<b>見るだけ</b>です。チェックは付けられません。<br>'
+      + '<b>' + esc(d.date.replace(/-/g, '/')) + '（' + dow + '）の記録</b>を出しています。'
+      + '「前回」はその日までで数えています。';
+
   var h = '';
   d.stores.forEach(function (st) {
     var routines = st.routines || [], areas = st.areas || [], periodic = st.periodic || [];
@@ -205,7 +239,7 @@ function render(d) {
     }
 
     // ③ 定期清掃（たまにやる仕事）
-    h += '<div class="grp">定期清掃'
+    h += '<div class="grp">定期清掃' + (d.periodicAsOfToday ? '（今の状態）' : '')
       + (due ? '<span class="gdue">' + due + '件が実施時期です</span>'
              : '<span class="gnote">実施時期のものはありません</span>')
       + '</div>';
@@ -308,8 +342,10 @@ function showContent() {
   document.getElementById('content').style.display = '';
   document.getElementById('foot').style.display = '';
 }
+// いま見ている日。空なら今日。
+var viewDay = '';
 function load(first) {
-  fetch('/view/data')
+  fetch('/view/data' + (viewDay ? '?d=' + encodeURIComponent(viewDay) : ''))
     .then(function (r) {
       if (r.status === 401) { showLogin(first ? '' : '合言葉を入れ直してください'); return null; }
       if (r.status === 503) throw new Error('管理者の合言葉が設定されていません');
@@ -336,6 +372,23 @@ function login() {
     })
     .catch(function () { ng.textContent = 'つながりませんでした'; });
 }
+// 日付の移動。サーバーが受け取った日を返すので、押したら読み直すだけでよい。
+function shiftDay(n) {
+  var cur = document.getElementById('day').value;
+  if (!cur) return;
+  var t = new Date(cur + 'T00:00:00');
+  t.setDate(t.getDate() + n);
+  var p2 = function (x) { return String(x).padStart(2, '0'); };
+  viewDay = t.getFullYear() + '-' + p2(t.getMonth() + 1) + '-' + p2(t.getDate());
+  load(false);
+}
+document.getElementById('prev').onclick = function () { shiftDay(-1); };
+document.getElementById('next').onclick = function () { shiftDay(1); };
+document.getElementById('toToday').onclick = function () { viewDay = ''; load(false); };
+document.getElementById('day').onchange = function () {
+  viewDay = this.value;
+  load(false);
+};
 document.getElementById('go').onclick = login;
 document.getElementById('pw').onkeydown = function (e) { if (e.key === 'Enter') login(); };
 load(true);

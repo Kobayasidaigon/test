@@ -158,6 +158,20 @@ function vBaseArea(key) {
 function vToday() {
   return new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
 }
+// 外から来た日付。形だけでなく、実在する日かも見る（2026-02-30 を弾く）。
+// おかしければ今日にする（画面を壊さない）。
+function vPickDate(raw) {
+  const s = String(raw || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return vToday();
+  const d = new Date(s + 'T00:00:00');
+  if (isNaN(d.getTime()) || vFmtDate(d) !== s) return vToday();
+  if (s < '2025-01-01' || s > vToday()) return vToday();   // 先の日は記録がない
+  return s;
+}
+function vFmtDate(d) {
+  const p2 = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate());
+}
 
 // その店舗で画面に出ている項目を、アプリの getGroups と同じ順で組み立てる
 function viewGroups(store, areaKey) {
@@ -197,17 +211,20 @@ function viewGroups(store, areaKey) {
 // その店舗の記録を、エリアと項目ごとにまとめる。誰が付けたかも持つ。
 // 同じ項目を同じ日に2人が付けることがある（担当者ごとに別の記録になるため）ので、
 // 名前は配列で持って、重なりを取り除いてから返す。
-function viewRecords(store) {
-  const doneToday = {};   // エリア -> { 項目id: [今日つけた人…] }
+function viewRecords(store, day) {
+  const doneToday = {};   // エリア -> { 項目id: [その日つけた人…] }
   const lastDone = {};    // "エリア:項目id" -> { date, by: [その日につけた人…] }
-  const todayBy = {};     // エリア -> { 今日その場所を記入した人: true }
-  const today = vToday();
+  const todayBy = {};     // エリア -> { その日その場所を記入した人: true }
+  // 見ている日より後の記録は数えない。数えると、昔の日を見たときに
+  // 「前回やった日」が未来になってしまう。
+  const today = day || vToday();
   const pre = 'clean_' + store + '_';
   const addTo = (arr, name) => { if (name && arr.indexOf(name) < 0) arr.push(name); };
   Object.keys(state.kv).forEach(k => {
     if (k.indexOf(pre) !== 0) return;
     const date = k.slice(-10);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    if (date > today) return;                 // 見ている日より後は無視する
     const mid = k.slice(pre.length, k.length - 11);
     const us = mid.indexOf('_');
     if (us < 0) return;
@@ -345,13 +362,14 @@ function viewPeriodic(store) {
   return out;
 }
 
-function buildViewData() {
-  const today = vToday();
+function buildViewData(day) {
+  const today = day || vToday();
+  const isToday = today === vToday();
   const ROUTINES = [['routine_asa', '朝番'], ['routine_hiru', '中番'], ['routine_ban', '遅番']];
   const stores = VIEW_STORES.map(store => {
     const customAreas = vJson(vDefRead(store, 'customAreas'), []) || [];
     const custom = Array.isArray(customAreas) ? customAreas : [];
-    const rec = viewRecords(store);
+    const rec = viewRecords(store, today);
 
     // その店舗のエリアを1つぶん組み立てる。中身が無ければ null。
     const build = (key, name) => {
@@ -404,11 +422,20 @@ function buildViewData() {
     keys.forEach(a => { const x = build(a.key, a.name); if (x) areas.push(x); });
 
     // ③ 定期清掃（たまにやる仕事。毎日の数には混ぜない）
-    const periodic = viewPeriodic(store);
+    const periodic = viewPeriodic(store);   // いつも「今の状態」（下の periodicAsOfToday を見ること）
 
     return { store: store, routines: routines, areas: areas, periodic: periodic };
   });
-  return { date: today, at: new Date(Date.now() + 9 * 3600000).toISOString().slice(11, 16), stores: stores };
+  return {
+    date: today,
+    today: vToday(),
+    isToday: isToday,
+    // 定期清掃は「前回やった日」を1件しか持っていないので、昔の日の状態は作れない。
+    // 画面では「今の状態」と断って出す。
+    periodicAsOfToday: !isToday,
+    at: new Date(Date.now() + 9 * 3600000).toISOString().slice(11, 16),
+    stores: stores,
+  };
 }
 
 // 合言葉を入れる。合えば見るだけのクッキーを出す（本体には何の権限も無い）
@@ -428,7 +455,7 @@ app.post('/view/login', express.text({ type: '*/*', limit: '1kb' }), (req, res) 
 app.get('/view/data', (req, res) => {
   if (!ADMIN_PASS) return res.status(503).json({ error: '管理者合言葉が未設定です' });
   if (!viewOk(req)) return res.sendStatus(401);
-  res.json(buildViewData());
+  res.json(buildViewData(vPickDate(req.query.d)));
 });
 // ページ自体は誰が開いてもよい（中身は出ない。合言葉を聞く画面が出るだけ）
 app.get('/view', (req, res) => {
