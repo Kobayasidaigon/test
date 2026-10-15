@@ -192,11 +192,13 @@ function viewGroups(store, areaKey) {
   builtin.forEach(g => g.items.forEach(it => {
     if (hidden.indexOf(it.id) >= 0) return;
     const ed = edits[it.id] || {};
-    push(secOf(it.id, g.section), { id: it.id, title: ed.title != null ? ed.title : it.title });
+    push(secOf(it.id, g.section), { id: it.id, title: ed.title != null ? ed.title : it.title,
+                                    link: it.link || '', linkAny: !!it.linkAny });
   }));
   (Array.isArray(custom) ? custom : []).forEach(ci => {
     if (!ci || !ci.id || hidden.indexOf(ci.id) >= 0) return;
-    push(ci.section || '', { id: ci.id, title: ci.title || '' });
+    push(ci.section || '', { id: ci.id, title: ci.title || '',
+                            link: ci.link || '', linkAny: !!ci.linkAny });
   });
   const secOrder = vJson(vDefRead(store, 'sectionOrder_' + areaKey), []) || [];
   if (Array.isArray(secOrder) && secOrder.length) {
@@ -215,6 +217,9 @@ function viewRecords(store, day) {
   const doneToday = {};   // エリア -> { 項目id: [その日つけた人…] }
   const lastDone = {};    // "エリア:項目id" -> { date, by: [その日につけた人…] }
   const todayBy = {};     // エリア -> { その日その場所を記入した人: true }
+  // やることリストの親項目の判定に使う。時間帯つきの鍵のまま持っておく
+  // （アプリは shower_b1@routine_asa のように時間帯ごとに分けて数えるため）。
+  const onDate = {};      // "エリア@時間帯"（または素のエリア）-> { 項目id: true }
   // 見ている日より後の記録は数えない。数えると、昔の日を見たときに
   // 「前回やった日」が未来になってしまう。
   const today = day || vToday();
@@ -229,7 +234,8 @@ function viewRecords(store, day) {
     const us = mid.indexOf('_');
     if (us < 0) return;
     const staff = mid.slice(0, us);
-    const area = vBaseArea(mid.slice(us + 1));
+    const rawArea = mid.slice(us + 1);
+    const area = vBaseArea(rawArea);
     const rec = vJson(state.kv[k], {}) || {};
     Object.keys(rec).forEach(id => {
       if (!rec[id]) return;
@@ -243,10 +249,16 @@ function viewRecords(store, day) {
         addTo(doneToday[area][id], staff);
         if (!todayBy[area]) todayBy[area] = {};
         if (staff) todayBy[area][staff] = true;
+        // 曜日の枠（#d1）は落として、時間帯（@routine_asa）だけ残す
+        const h = rawArea.indexOf('#');
+        const scoped = h < 0 ? rawArea : rawArea.slice(0, h);
+        if (!onDate[scoped]) onDate[scoped] = {};
+        onDate[scoped][id] = true;
       }
     });
   });
-  return { doneToday: doneToday, lastDone: lastDone, todayBy: todayBy };
+  return { doneToday: doneToday, lastDone: lastDone, todayBy: todayBy,
+           onDate: onDate };
 }
 
 // 曜日わけの区分（【月・木】など）。index.html の DAY_GROUPS と同じ値。
@@ -382,6 +394,54 @@ function viewPeriodic(store) {
   return out;
 }
 
+// ===== やることリストの親項目（リンク先をまとめて見る行）=====
+//
+// 「シャワー清掃」のような行は、自分の記録を持たない。アプリは
+// itemEffectiveDone / linkedStatus で、リンク先のエリアが全部埋まったかを見て
+// 完了を決めている。共有ページが自分の記録だけを探すと、部屋が全部12/12でも
+// 「シャワー清掃は未実施」になり、やることリストが実際より低く出る。
+// ここでアプリと同じ計算をする。
+const V_ROUTINES = ['routine_asa', 'routine_hiru', 'routine_ban'];
+function vEarlierSlots(slot) {
+  const i = V_ROUTINES.indexOf(slot);
+  return i > 0 ? V_ROUTINES.slice(0, i) : [];
+}
+// その店舗のエリアに付いている印（carryForward など）
+function vAreaFlags(store) {
+  const out = {};
+  (vJson(vDefRead(store, 'customAreas'), []) || []).forEach(a => {
+    if (a && a.key) out[a.key] = a;
+  });
+  return out;
+}
+// リンク先1つぶんの「済み/全部」。アプリの areaCompletionToday と同じ見方で、
+// その時間帯の鍵・素の鍵・（持ち越しありなら）前の時間帯の鍵をまとめて見る。
+function vLinkedOne(store, key, slot, rec, flags, itemsOf) {
+  const areas = [key + '@' + slot, key];
+  if (flags[key] && flags[key].carryForward) {
+    vEarlierSlots(slot).forEach(sl => areas.push(key + '@' + sl));
+  }
+  const hit = {};
+  areas.forEach(a => {
+    const m = rec.onDate[a];
+    if (m) Object.keys(m).forEach(id => { hit[id] = true; });
+  });
+  const ids = itemsOf(key);
+  return { done: ids.filter(id => hit[id]).length, total: ids.length };
+}
+// 親項目が完了しているか。linkAny なら「どれか1つ以上」で完了
+function vLinkedComplete(store, item, slot, rec, flags, itemsOf) {
+  const keys = String(item.link || '').split(',').map(x => x.trim()).filter(Boolean);
+  if (!keys.length) return null;
+  const parts = keys.map(k => vLinkedOne(store, k, slot, rec, flags, itemsOf));
+  const sum = parts.reduce((n, p) => n + p.done, 0);
+  const complete = item.linkAny
+    ? sum > 0
+    : parts.every(p => p.total > 0 && p.done === p.total);
+  return { complete: complete, done: sum,
+           total: parts.reduce((n, p) => n + p.total, 0), parts: parts.length };
+}
+
 function buildViewData(day) {
   const today = day || vToday();
   const isToday = today === vToday();
@@ -393,20 +453,34 @@ function buildViewData(day) {
 
     // その店舗のエリアを1つぶん組み立てる。中身が無ければ null。
     const wd = new Date(today + 'T00:00:00').getDay();
+    const flags = vAreaFlags(store);
+    const _itemCache = {};
+    const itemsOf = k => {
+      if (!_itemCache[k]) {
+        _itemCache[k] = viewGroups(store, k).reduce((a, g) => a.concat(g.items.map(i => i.id)), []);
+      }
+      return _itemCache[k];
+    };
     const build = (key, name) => {
+      const slot = V_ROUTINES.indexOf(key) >= 0 ? key : null;
       const groups = viewGroups(store, key).map(g => ({
         section: g.section,
         // その日の担当でない区分。出すが、数には入れない
         offDay: vOffDay(g.section, wd),
         items: g.items.map(it => {
-          const by = (rec.doneToday[key] || {})[it.id] || null;   // 今日つけた人
+          const by = (rec.doneToday[key] || {})[it.id] || null;   // その日つけた人
           const ld = rec.lastDone[key + ':' + it.id] || null;     // 前回つけた日と人
+          // やることリストの親項目は自分の記録を持たない。リンク先から完了を決める
+          const ls = slot && it.link
+            ? vLinkedComplete(store, it, slot, rec, flags, itemsOf) : null;
           return {
             title: it.title,
-            done: !!(by && by.length),
+            done: ls ? ls.complete : !!(by && by.length),
             by: by && by.length ? by : null,
             last: ld ? ld.date : null,
             lastBy: ld && ld.by.length ? ld.by : null,
+            // 親項目は「どこを何件開いたか」を添える（0/84 のように出す）
+            linked: ls ? { done: ls.done, total: ls.total, areas: ls.parts } : null,
           };
         }),
       })).filter(g => g.items.length);

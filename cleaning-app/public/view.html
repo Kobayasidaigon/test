@@ -50,6 +50,9 @@
   /* 誰がやったか。これが見たくてページを開くので、薄くしすぎない */
   .by { font-size:.72rem; color:var(--ok); font-weight:700; }
   .prev { font-size:.68rem; color:var(--muted); }
+  /* やることリストの親項目が開く先の進み具合 */
+  .lk { font-size:.68rem; color:var(--muted); background:#eceff1;
+    border-radius:8px; padding:1px 6px; font-weight:700; }
   /* 畳んだままでも、その場所を今日やっている人が分かるように */
   .nmwrap { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
   .who { font-size:.68rem; color:var(--muted); font-weight:400;
@@ -322,8 +325,15 @@ function areaHtml(a, d, isIdle) {
     g.items.forEach(function (it) {
       // 1行目に項目名、2行目に「誰が・いつ」。1行に詰めると横に溢れる。
       var meta = [];
+      // やることリストの親項目は、リンク先の進み具合を添える
+      if (it.linked) {
+        meta.push('<span class="lk">' + it.linked.areas + 'か所 '
+          + it.linked.done + '/' + it.linked.total + '</span>');
+      }
       if (it.done) {
         if (it.by) meta.push('<span class="by">' + esc(it.by.join('・')) + '</span>');
+      } else if (it.linked) {
+        // 親項目に「記録なし」「◯日空き」は出さない（自分の記録を持たないため）
       } else {
         var gp = gapOf(it.last, dayGroupOf(g.section), d.date);
         if (gp < 0) meta.push('<span class="gap none">記録なし</span>');
