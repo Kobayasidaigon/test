@@ -249,6 +249,26 @@ function viewRecords(store, day) {
   return { doneToday: doneToday, lastDone: lastDone, todayBy: todayBy };
 }
 
+// 曜日わけの区分（【月・木】など）。index.html の DAY_GROUPS と同じ値。
+// アプリ本体は「今日の曜日でない区分」をたたんで見せないので、
+// 共有ページでも数に入れない。入れると、どの日も3分の1しか対象でないのに
+// 全部数えることになり、何をやっても低く出る。
+const V_DAY_GROUPS = [
+  { id: 'd1', name: '月・木', days: [1, 4] },
+  { id: 'd2', name: '火・金', days: [2, 5] },
+  { id: 'd3', name: '水・土', days: [3, 6] },
+];
+function vDayGroupOf(section) {
+  const s = String(section || '');
+  return V_DAY_GROUPS.find(g => s.indexOf(g.name) >= 0) || null;
+}
+// その区分が「その日の担当ではない」か。日曜はどの枠にも当たらないので全部そうなる
+// （アプリ側も日曜は全区分をたたみ、「日曜日は全体の点検」と出す）。
+function vOffDay(section, wd) {
+  const g = vDayGroupOf(section);
+  return !!g && g.days.indexOf(wd) < 0;
+}
+
 // ===== 定期清掃（たまにやる仕事）=====
 // 決め方（repeat）と次にやる日の出し方は index.html と同じ。
 // 食い違うと「遅れている」の数が画面と合わなくなるので、試験で突き合わせている
@@ -372,9 +392,12 @@ function buildViewData(day) {
     const rec = viewRecords(store, today);
 
     // その店舗のエリアを1つぶん組み立てる。中身が無ければ null。
+    const wd = new Date(today + 'T00:00:00').getDay();
     const build = (key, name) => {
       const groups = viewGroups(store, key).map(g => ({
         section: g.section,
+        // その日の担当でない区分。出すが、数には入れない
+        offDay: vOffDay(g.section, wd),
         items: g.items.map(it => {
           const by = (rec.doneToday[key] || {})[it.id] || null;   // 今日つけた人
           const ld = rec.lastDone[key + ':' + it.id] || null;     // 前回つけた日と人
@@ -388,8 +411,12 @@ function buildViewData(day) {
         }),
       })).filter(g => g.items.length);
       if (!groups.length) return null;                // その店舗に無い設備は出さない
-      const total = groups.reduce((n, g) => n + g.items.length, 0);
-      const done = groups.reduce((n, g) => n + g.items.filter(i => i.done).length, 0);
+      // 数えるのは「その日の担当」の区分だけ
+      const on = groups.filter(g => !g.offDay);
+      const total = on.reduce((n, g) => n + g.items.length, 0);
+      const done = on.reduce((n, g) => n + g.items.filter(i => i.done).length, 0);
+      // 今日はどの区分も担当でない（曜日わけだけで出来ているエリアの、当たらない日）
+      const allOff = !on.length;
       // そのエリアで最後に何か記録が付いた日。
       // これが無い／ずっと前のエリアは「その店舗では使っていない設備」のことが多い
       // （笠寺の共通シャワーは部屋別へ移したので記録が止まっている）。
@@ -401,7 +428,7 @@ function buildViewData(day) {
       // その場所を今日記入した人（畳んだままでも誰がやっているか分かるように）
       const who = Object.keys(rec.todayBy[key] || {}).sort();
       return { name: name, done: done, total: total, last: last,
-               who: who, groups: groups };
+               allOff: allOff, who: who, groups: groups };
     };
 
     // ① 朝番・中番・遅番のやることリスト（現場が毎日たどる順そのまま）

@@ -38,6 +38,11 @@
   .area.open .body { display:block; }
   .sec { font-size:.72rem; color:var(--muted); font-weight:700; margin:10px 0 4px;
     border-left:3px solid #cfd8dc; padding-left:7px; }
+  /* その日の担当でない区分。消さずに薄く出し、数には入れない */
+  .sec.off { border-left-style:dotted; color:#b0bec5; }
+  .offnote { font-weight:400; color:#b0bec5; margin-left:6px; }
+  .it.off { opacity:.5; }
+  .it.off .gap { background:#eceff1; color:var(--muted); }
   .it { display:flex; align-items:flex-start; gap:8px; padding:5px 0; font-size:.88rem;
     border-bottom:1px dotted #eceff1; }
   .tw { flex:1; min-width:0; }
@@ -191,10 +196,12 @@ function render(d) {
   document.getElementById('note').innerHTML = d.isToday
     ? 'このページは<b>見るだけ</b>です。チェックは付けられません。<br>'
       + '上の数は<b>その日の途中経過</b>です。夜にまとめて付ける日もあるため、'
-      + '日中の数が少なくても終わっていないとは限りません。'
+      + '日中の数が少なくても終わっていないとは限りません。<br>'
+      + '【月・木】などの区分は、その曜日の日だけ数えています。'
     : 'このページは<b>見るだけ</b>です。チェックは付けられません。<br>'
       + '<b>' + esc(d.date.replace(/-/g, '/')) + '（' + dow + '）の記録</b>を出しています。'
-      + '「前回」はその日までで数えています。';
+      + '「前回」はその日までで数えています。<br>'
+      + '【月・木】などの区分は、その曜日の日だけ数えています。';
 
   var h = '';
   d.stores.forEach(function (st) {
@@ -298,12 +305,20 @@ function areaHtml(a, d, isIdle) {
     + '<span class="nmwrap"><span class="nm">' + esc(a.name) + '</span>'
     + (who ? '<span class="who">' + esc(who) + '</span>' : '')
     + '</span>'
-    + '<span class="bar"><i style="width:' + pct + '%"></i></span>'
-    + '<span class="cnt ' + (isIdle ? 'idle' : cls(a.done, a.total)) + '">'
-    + a.done + '/' + a.total + '</span>'
+    + (a.allOff ? '' : '<span class="bar"><i style="width:' + pct + '%"></i></span>')
+    + (a.allOff
+        ? '<span class="cnt plain">今日は対象外</span>'
+        : '<span class="cnt ' + (isIdle ? 'idle' : cls(a.done, a.total)) + '">'
+          + a.done + '/' + a.total + '</span>')
     + '</button><div class="body">';
   a.groups.forEach(function (g) {
-    if (g.section) h += '<div class="sec">' + esc(g.section) + '</div>';
+    // その日の担当でない区分は、消さずに「対象外」と断って薄く出す。
+    // 消すと、前の日に抜けたぶんが見えなくなる。
+    if (g.section || g.offDay) {
+      h += '<div class="sec' + (g.offDay ? ' off' : '') + '">' + esc(g.section)
+        + (g.offDay ? '<span class="offnote">今日は対象外（数に入れていません）</span>' : '')
+        + '</div>';
+    }
     g.items.forEach(function (it) {
       // 1行目に項目名、2行目に「誰が・いつ」。1行に詰めると横に溢れる。
       var meta = [];
@@ -319,7 +334,7 @@ function areaHtml(a, d, isIdle) {
             + (it.lastBy ? ' ' + esc(it.lastBy.join('・')) : '') + '</span>');
         }
       }
-      h += '<div class="it' + (it.done ? ' done' : '') + '">'
+      h += '<div class="it' + (it.done ? ' done' : '') + (g.offDay ? ' off' : '') + '">'
         + '<span class="mk"></span>'
         + '<span class="tw"><span class="tt">' + esc(it.title) + '</span>'
         + (meta.length ? '<span class="meta">' + meta.join('') + '</span>' : '')
