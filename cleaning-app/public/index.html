@@ -7728,12 +7728,39 @@ function routineHours(areaKey) {
   })[areaKey] || null;
 }
 
-// その日のシフトのうち、指定した時間帯に少しでも重なっている人
+// 「HH:MM」を分に直す（時間帯の重なりを測るため）
+function hhmmToMin(v) {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(String(v || ''));
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+}
+// その人のシフトが、その時間帯に何分重なっているか
+function shiftOverlapMin(x, from, to) {
+  const s = hhmmToMin(x && x.s), e = hhmmToMin(x && x.e);
+  const f = hhmmToMin(from), t = hhmmToMin(to);
+  if (s == null || e == null || f == null || t == null) return 0;
+  return Math.min(e, t) - Math.max(s, f);
+}
+// 時間帯の担当者と見なすのに必要な、重なりの下限（分）。
+//
+// 少しでも重なれば担当者にする作りだと、13:00〜18:00 の人が
+// 朝番（10:00〜14:00）に1時間居ただけで朝番の担当者になり、
+// その名前で朝番ぜんぶの記録が残ってしまう。
+// 交代の前後に少し顔を出しただけの人に、その時間帯ぜんぶを背負わせない。
+const SLOT_MIN_OVERLAP_MIN = 120;   // 2時間
+
+// その日のシフトのうち、指定した時間帯をある程度やっている人。
+// 下限に届く人が誰も居なければ、いちばん長く居る人を返す
+// （空にすると担当者が決まらず、誰の記録か分からなくなるため）。
 function shiftStaffInWindow(store, from, to) {
   try {
     const sched = JSON.parse(localStorage.getItem('shiftSchedule_' + store) || '{}');
     const day = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
-    return (sched[day] || []).filter(x => x.s < to && x.e > from);
+    const list = (sched[day] || []).filter(x => x.s < to && x.e > from);
+    if (!list.length) return [];
+    const enough = list.filter(x => shiftOverlapMin(x, from, to) >= SLOT_MIN_OVERLAP_MIN);
+    if (enough.length) return enough;
+    const best = Math.max.apply(null, list.map(x => shiftOverlapMin(x, from, to)));
+    return list.filter(x => shiftOverlapMin(x, from, to) === best);
   } catch (e) { return []; }
 }
 
