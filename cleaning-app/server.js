@@ -462,12 +462,27 @@ function buildViewData(day) {
     const wd = new Date(today + 'T00:00:00').getDay();
     const flags = vAreaFlags(store);
     const _itemCache = {};
+    // リンク先で数える項目。その日の担当でない区分（【月・木】など）は外す。
+    // 外さないと、月曜に「フロア・マシン清掃」が火金・水土のぶんまで 要求 して
+    // 永久に終わらない行になる。
     const itemsOf = k => {
       if (!_itemCache[k]) {
-        _itemCache[k] = viewGroups(store, k).reduce((a, g) => a.concat(g.items.map(i => i.id)), []);
+        _itemCache[k] = viewGroups(store, k)
+          .filter(g => !vOffDay(g.section, wd))
+          .reduce((a, g) => a.concat(g.items.map(i => i.id)), []);
       }
       return _itemCache[k];
     };
+    // どのやることリストからも開かれないエリア（上の数で重ねて数えないため）
+    const linkedKeys = {};
+    V_ROUTINES.forEach(slot => {
+      viewGroups(store, slot).forEach(g => g.items.forEach(it => {
+        String(it.link || '').split(',').forEach(x => {
+          const k = x.trim();
+          if (k) linkedKeys[k] = true;
+        });
+      }));
+    });
     const build = (key, name) => {
       const slot = V_ROUTINES.indexOf(key) >= 0 ? key : null;
       const groups = viewGroups(store, key).map(g => ({
@@ -492,10 +507,21 @@ function buildViewData(day) {
         }),
       })).filter(g => g.items.length);
       if (!groups.length) return null;                // その店舗に無い設備は出さない
-      // 数えるのは「その日の担当」の区分だけ
+      // 数えるのは「その日の担当」の区分だけ。
+      // やることリストの親項目は 0/1 ではなく「開く先の進み具合」で数える。
+      // 「シャワー清掃」1行を1点にすると、7部屋85項目のうち83件できていても
+      // 1点を落とすだけで、実際より低く出るため。
       const on = groups.filter(g => !g.offDay);
-      const total = on.reduce((n, g) => n + g.items.length, 0);
-      const done = on.reduce((n, g) => n + g.items.filter(i => i.done).length, 0);
+      let total = 0, done = 0;
+      on.forEach(g => g.items.forEach(i => {
+        if (i.linked) {
+          total += i.linked.total;
+          done += i.linked.done;
+        } else {
+          total += 1;
+          if (i.done) done += 1;
+        }
+      }));
       // 今日はどの区分も担当でない（曜日わけだけで出来ているエリアの、当たらない日）
       const allOff = !on.length;
       // そのエリアで最後に何か記録が付いた日。
@@ -509,7 +535,10 @@ function buildViewData(day) {
       // その場所を今日記入した人（畳んだままでも誰がやっているか分かるように）
       const who = Object.keys(rec.todayBy[key] || {}).sort();
       return { name: name, done: done, total: total, last: last,
-               allOff: allOff, who: who, groups: groups };
+               allOff: allOff, who: who, groups: groups,
+               // そのエリアが、やることリストから開かれるか
+               // （開かれるなら上の数では重ねて数えない）
+               viaRoutine: !slot && !!linkedKeys[key] };
     };
 
     // ① 朝番・中番・遅番のやることリスト（現場が毎日たどる順そのまま）

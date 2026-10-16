@@ -59,7 +59,10 @@ const D = '2026-10-12';   // 月曜
     JSON.stringify(item(o, '朝番', 'シャワー清掃').linked) === JSON.stringify({ done: 0, total: 6, areas: 2 }),
     JSON.stringify(item(o, '朝番', 'シャワー清掃').linked));
   check('ふつうの項目に linked は付かない', item(o, '朝番', 'ふつうの項目').linked === null);
-  check('朝番は0/3', slot(o, '朝番').done === 0 && slot(o, '朝番').total === 3);
+  // 行の数ではなく「開く先の進み具合」で数える（verify51 を見ること）。
+  // 朝番 = シャワー6件 + サウナ2件 + ふつう1件 = 9件
+  check('朝番の分母は開く先を含めて9', slot(o, '朝番').total === 9, String(slot(o, '朝番').total));
+  check('朝番は0/9', slot(o, '朝番').done === 0, String(slot(o, '朝番').done));
 
   // ---- 片方の部屋だけ全部つけた ----
   await put('clean_笠寺_山田 花子_shower_b1@routine_asa_' + D, JSON.stringify({ i1: 1, i2: 1, i3: 1 }));
@@ -73,7 +76,9 @@ const D = '2026-10-12';   // 月曜
   o = await get();
   check('両方そろうと親項目が完了になる', item(o, '朝番', 'シャワー清掃').done === true);
   check('進み具合は6/6', item(o, '朝番', 'シャワー清掃').linked.done === 6);
-  check('朝番は1/3に上がる', slot(o, '朝番').done === 1, String(slot(o, '朝番').done));
+  check('朝番は6/9に上がる（シャワー2部屋ぶん）',
+    slot(o, '朝番').done === 6 && slot(o, '朝番').total === 9,
+    slot(o, '朝番').done + '/' + slot(o, '朝番').total);
 
   // ---- 持ち越し：朝のチェックが中番にも効く ----
   o = await get();
@@ -84,7 +89,8 @@ const D = '2026-10-12';   // 月曜
   o = await get();
   check('持ち越しなし：朝番のサウナ清掃は完了', item(o, '朝番', 'サウナ清掃').done === true);
   check('持ち越しなし：中番のサウナ清掃は未完了', item(o, '中番', 'サウナ清掃').done === false);
-  check('中番は1/2（シャワーだけ）', slot(o, '中番').done === 1 && slot(o, '中番').total === 2,
+  check('中番は6/8（持ち越したシャワーだけ）',
+    slot(o, '中番').done === 6 && slot(o, '中番').total === 8,
     slot(o, '中番').done + '/' + slot(o, '中番').total);
 
   // ---- 素の鍵（時間帯なし）でも拾う ----

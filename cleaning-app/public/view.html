@@ -200,11 +200,13 @@ function render(d) {
     ? 'このページは<b>見るだけ</b>です。チェックは付けられません。<br>'
       + '上の数は<b>その日の途中経過</b>です。夜にまとめて付ける日もあるため、'
       + '日中の数が少なくても終わっていないとは限りません。<br>'
-      + '【月・木】などの区分は、その曜日の日だけ数えています。'
+      + '【月・木】などの区分は、その曜日の日だけ数えています。<br>'
+      + '上の数は<b>やることリスト（開く先の項目を含む）</b>で数えています。'
     : 'このページは<b>見るだけ</b>です。チェックは付けられません。<br>'
       + '<b>' + esc(d.date.replace(/-/g, '/')) + '（' + dow + '）の記録</b>を出しています。'
       + '「前回」はその日までで数えています。<br>'
-      + '【月・木】などの区分は、その曜日の日だけ数えています。';
+      + '【月・木】などの区分は、その曜日の日だけ数えています。<br>'
+      + '上の数は<b>やることリスト（開く先の項目を含む）</b>で数えています。';
 
   var h = '';
   d.stores.forEach(function (st) {
@@ -220,8 +222,17 @@ function render(d) {
     // 上の数は「毎日やる分」だけ。使っていない設備で分母が膨らむと、
     // いくらやっても低い数字になって意味をなさない。定期清掃は毎日の仕事では
     // ないので、ここには混ぜず下に別で出す。
+    //
+    // やることリストの行は、開く先の項目をまるごと数に含んでいる。
+    // そのうえで清掃エリアの行も足すと同じ項目を二重に数えるので、
+    // やることリストから開かれるエリア（viaRoutine）は上の数に足さない。
+    // 各行の「◯/◯」はそのまま出す（開いて確かめられるように）。
     var done = 0, total = 0;
-    routines.concat(live).forEach(function (a) { done += a.done; total += a.total; });
+    routines.forEach(function (a) { done += a.done; total += a.total; });
+    live.forEach(function (a) {
+      if (a.viaRoutine) return;
+      done += a.done; total += a.total;
+    });
 
     var due = periodic.filter(function (t) { return t.state === 'due'; }).length;
     h += '<div class="store"><h2>' + esc(st.store)
