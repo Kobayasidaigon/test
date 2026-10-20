@@ -298,6 +298,41 @@
   button.ext-link { font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none;
                     border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text); }
   /* 朝番・中番・遅番の「項目を編集」モード */
+  /* 分担（その時間帯を何人かで分ける）の選び */
+  .sh-panel { background: var(--card); border: 1.5px solid var(--primary);
+    border-radius: 12px; padding: 11px 12px 12px; margin: 0 0 10px; }
+  .sh-head { display: flex; align-items: center; gap: 6px; font-weight: 700;
+    font-size: .92rem; color: var(--primary-dark); }
+  .sh-head .ic { width: 18px; height: 18px; }
+  .sh-sub { font-size: .72rem; color: var(--muted); font-weight: 700;
+    margin: 9px 0 4px; }
+  .sh-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sh-name { font-family: inherit; font-size: .82rem; cursor: pointer;
+    padding: 7px 12px; border-radius: 999px; border: 1.5px solid var(--border);
+    background: var(--card); color: var(--text); }
+  .sh-name.on { background: var(--primary); border-color: var(--primary);
+    color: #fff; font-weight: 700; }
+  .sh-pick { font-family: inherit; cursor: pointer; flex: 1 1 42%;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+    padding: 9px 12px; border-radius: 10px; border: 1.5px solid var(--border);
+    background: var(--card); color: var(--text); text-align: left; }
+  .sh-pick-nm { font-size: .88rem; font-weight: 700; }
+  .sh-pick-n { font-size: .7rem; color: var(--muted); }
+  .sh-pick.sh-all { flex: 1 1 100%; }
+  .sh-note { font-size: .72rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  /* 選んだあとの1行 */
+  .sh-bar { display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+    background: var(--card); border: 1.5px solid var(--primary); border-radius: 10px;
+    padding: 7px 10px; margin: 0 0 9px; }
+  .sh-bar .ic { width: 16px; height: 16px; }
+  .sh-now { display: flex; align-items: center; gap: 5px; font-weight: 700;
+    font-size: .86rem; color: var(--primary-dark); }
+  .sh-me { font-size: .76rem; color: var(--text); background: var(--chip, #eef2f6);
+    border-radius: 999px; padding: 2px 9px; }
+  .sh-n { font-size: .72rem; color: var(--muted); }
+  .sh-change { margin-left: auto; font-family: inherit; font-size: .76rem;
+    cursor: pointer; padding: 5px 11px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: var(--card); color: var(--text); }
   .rt-editbar { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; flex-wrap: wrap; }
   .rt-edit-toggle { font-family: inherit; font-size: .8rem; font-weight: 700; cursor: pointer;
     padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--primary);
@@ -4994,10 +5029,94 @@ function renderStaleBar(list) {
   };
 }
 
+// 分担の選び。決めてある店舗・時間帯だけ出る。
+// 選ぶまでは今までどおり全部出す（見るだけの人を止めない）。
+// 選んだあとは1行に畳んで、いつでも変えられるようにしておく。
+function sharePickerHtml(areaKey, allItems) {
+  const shares = routineShares(areaKey);
+  if (!shares) return '';
+  const chosen = shareChosen(areaKey);
+  const cur = chosen && chosen !== '_all'
+    ? shares.find(s => s.id === chosen) : null;
+  const me = staffPinned(areaKey);
+  // その時間帯のシフトに出ている人（名前を選ぶボタンに使う）
+  const w = routineHours(areaKey);
+  const onShift = (w && currentStore)
+    ? shiftStaffInWindow(currentStore, w.from, w.to).map(x => x.n) : [];
+  const names = [];
+  onShift.forEach(n => { if (n && names.indexOf(n) < 0) names.push(n); });
+  if (me && names.indexOf(me) < 0) names.push(me);
+
+  // ---- 選んだあと: 1行だけ ----
+  if (chosen) {
+    const label = cur ? cur.name : 'ぜんぶ';
+    const n = cur ? applyShare(areaKey, allItems).length : allItems.length;
+    return '<div class="sh-bar">'
+      + '<span class="sh-now">' + ic('users-round') + ' ' + escapeHtml(label) + '</span>'
+      + (me ? '<span class="sh-me">' + escapeHtml(me) + '</span>' : '')
+      + '<span class="sh-n">' + n + '行</span>'
+      + '<button type="button" class="sh-change" data-sh-open="1">変える</button>'
+      + '</div>';
+  }
+
+  // ---- まだ選んでいない: 選ぶ画面 ----
+  return sharePanelHtml(areaKey, allItems, shares, names, me);
+}
+
+function sharePanelHtml(areaKey, allItems, shares, names, me) {
+  const left = shareLeftovers(areaKey, allItems);
+  let h = '<div class="sh-panel" id="shPanel">'
+    + '<div class="sh-head">' + ic('users-round') + ' 今日はどこを担当しますか</div>';
+  if (names.length) {
+    h += '<div class="sh-sub">あなたの名前</div><div class="sh-btns">';
+    names.forEach(n => {
+      h += '<button type="button" class="sh-name' + (n === me ? ' on' : '')
+        + '" data-sh-name="' + escapeHtml(n) + '">' + escapeHtml(n) + '</button>';
+    });
+    h += '</div>';
+  } else {
+    h += '<div class="sh-note">シフト表に今日の出勤が入っていません。'
+      + '上の担当者えらびで名前を選んでください。</div>';
+  }
+  h += '<div class="sh-sub">担当するところ</div><div class="sh-btns">';
+  shares.forEach(s => {
+    const n = applyShare2(areaKey, allItems, s).length;
+    h += '<button type="button" class="sh-pick" data-sh-id="' + escapeHtml(s.id) + '">'
+      + '<span class="sh-pick-nm">' + escapeHtml(s.name) + '</span>'
+      + '<span class="sh-pick-n">' + n + '行</span></button>';
+  });
+  h += '<button type="button" class="sh-pick sh-all" data-sh-id="_all">'
+    + '<span class="sh-pick-nm">ぜんぶ見る</span>'
+    + '<span class="sh-pick-n">' + allItems.length + '行</span></button>';
+  h += '</div>';
+  if (left.length) {
+    h += '<div class="sh-note">どの分担にも入っていない行が ' + left.length
+      + '件あります。「ぜんぶ見る」から開けます。</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+// 指定した分担で絞ったときの行（数を出すためだけに使う）
+function applyShare2(areaKey, list, sh) {
+  const out = [];
+  list.forEach(it => {
+    const link = String(it.link || '').trim();
+    if (link) {
+      if (link.split(',').map(s => s.trim()).some(k => k && sh.areas.indexOf(k) >= 0)) out.push(it);
+      return;
+    }
+    if (sh.items.indexOf(it.id) >= 0) out.push(it);
+  });
+  return out;
+}
+
 function renderRoutineView() {
   const checklist = document.getElementById('checklist');
   const rec = loadRecordMerged(currentArea); // 他の担当者の分も含めて表示
-  const items = areaItems(currentArea);
+  const allItems = areaItems(currentArea);
+  // 編集中は本当の並びをそのまま見せる（分担では絞らない）
+  const items = routineEditMode ? allItems : applyShare(currentArea, allItems);
   const staleMap = currentStore ? lastCheckedByItem(currentStore) : {}; // 子項目の「前回いつ」表示用
   let html = '';
   // 「項目を編集」の切り替え
@@ -5006,6 +5125,8 @@ function renderRoutineView() {
     + ic('pencil') + ' ' + (routineEditMode ? '編集を終わる' : '項目を編集') + '</button>'
     + (routineEditMode ? '<span class="rt-edit-hint">上から実施する順に並びます</span>' : '')
     + '</div>';
+  // 分担の選び（決めてある店舗・時間帯だけ出る）
+  if (!routineEditMode) html += sharePickerHtml(currentArea, allItems);
   const renderRows = (list) => {
   let html = '';
   // 編集モードでは出さない（本当の並びをそのまま見せる）
@@ -5186,6 +5307,33 @@ function renderRoutineView() {
     routineEditMode = !routineEditMode;
     render();
   };
+  // ---- 分担の選び ----
+  // 名前を選ぶ: その時間帯の担当者を自分にして、シフトの連名で上書きされないようにする
+  checklist.querySelectorAll('[data-sh-name]').forEach(b => {
+    b.onclick = () => {
+      const n = b.dataset.shName || '';
+      staffPin(currentArea, n);
+      currentStaff = n;
+      localStorage.setItem('currentStaff', currentStaff);
+      localStorage.setItem('currentStaffDay', todayStr());
+      buildStaffSelect();
+      render();
+    };
+  });
+  // 担当するところを選ぶ
+  checklist.querySelectorAll('[data-sh-id]').forEach(b => {
+    b.onclick = () => {
+      shareSet(currentArea, b.dataset.shId || '');
+      render();
+    };
+  });
+  // 選び直す（1行に畳んであるのを開く）
+  checklist.querySelectorAll('[data-sh-open]').forEach(b => {
+    b.onclick = () => {
+      shareSet(currentArea, '');
+      render();
+    };
+  });
   // 連動先の子項目も対象にするため、エリアは data-rt-area から読む
   const findIn = (ak, id) => (ak === currentArea ? items : areaItems(ak)).find(x => x.id === id);
   checklist.querySelectorAll('[data-rt-up]').forEach(b => {
@@ -7728,6 +7876,101 @@ function routineHours(areaKey) {
   })[areaKey] || null;
 }
 
+// ---- 分担（その時間帯を何人かで分ける）----
+// 決め方: sdef_<店舗>_shares_<時間帯> = [{id, name, areas:[エリア鍵…], items:[項目id…]}]
+//   areas … 開く先のエリア。連動項目は、自分のぶんのエリアだけに絞って出す
+//   items … 開く先を持たない単独の行（サウナ電源・茶色タオル交換など）
+// 入っていない店舗・時間帯では、今までどおり全部出る。
+function routineShares(areaKey) {
+  if (!isRoutineArea(areaKey)) return null;
+  let v = null;
+  try { v = JSON.parse(defRead('shares_' + areaKey) || 'null'); } catch (e) {}
+  if (!Array.isArray(v) || !v.length) return null;
+  const out = v.filter(s => s && s.id && s.name).map(s => ({
+    id: String(s.id), name: String(s.name),
+    areas: Array.isArray(s.areas) ? s.areas.map(String) : [],
+    items: Array.isArray(s.items) ? s.items.map(String) : [],
+  }));
+  return out.length ? out : null;
+}
+
+// 選んだ分担は、その日・その時間帯ごとに覚えておく。
+// 日をまたいで持ち越すと、次の日に別の人が前の人の分担で開いてしまう。
+function shareKey(areaKey) {
+  const day = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
+  return 'share_' + (currentStore || '') + '_' + areaKey + '_' + day;
+}
+function shareChosen(areaKey) {
+  try { return localStorage.getItem(shareKey(areaKey)) || ''; } catch (e) { return ''; }
+}
+function shareSet(areaKey, id) {
+  try {
+    if (id) localStorage.setItem(shareKey(areaKey), id);
+    else localStorage.removeItem(shareKey(areaKey));
+  } catch (e) {}
+}
+// いま選ばれている分担の中身。「ぜんぶ見る」(_all) と未選択は null
+function currentShareDef(areaKey) {
+  const list = routineShares(areaKey);
+  if (!list) return null;
+  const id = shareChosen(areaKey);
+  if (!id || id === '_all') return null;
+  return list.find(s => s.id === id) || null;
+}
+
+// 分担に合わせて行を絞る。連動項目は、自分のぶんのエリアだけに付け替える
+// （linkedStatus はこの link を見るので、進み具合も自分のぶんだけになる）。
+function applyShare(areaKey, list) {
+  const sh = currentShareDef(areaKey);
+  if (!sh) return list;
+  const out = [];
+  list.forEach(it => {
+    const link = String(it.link || '').trim();
+    if (link) {
+      const keys = link.split(',').map(s => s.trim()).filter(Boolean);
+      const mine = keys.filter(k => sh.areas.indexOf(k) >= 0);
+      if (mine.length) {
+        const copy = {};
+        Object.keys(it).forEach(k => { copy[k] = it[k]; });
+        copy.link = mine.join(',');
+        out.push(copy);
+      }
+      return;
+    }
+    if (sh.items.indexOf(it.id) >= 0) out.push(it);
+  });
+  return out;
+}
+
+// どの分担にも入っていない行。決め方を直すまで落としてしまわないよう、
+// 「分担なし」としてまとめて出す（やり忘れを作らない）。
+function shareLeftovers(areaKey, list) {
+  const shares = routineShares(areaKey);
+  if (!shares) return [];
+  const areas = {}, items = {};
+  shares.forEach(s => {
+    s.areas.forEach(k => { areas[k] = true; });
+    s.items.forEach(k => { items[k] = true; });
+  });
+  const out = [];
+  list.forEach(it => {
+    const link = String(it.link || '').trim();
+    if (link) {
+      const rest = link.split(',').map(s => s.trim())
+        .filter(k => k && !areas[k]);
+      if (rest.length) {
+        const copy = {};
+        Object.keys(it).forEach(k => { copy[k] = it[k]; });
+        copy.link = rest.join(',');
+        out.push(copy);
+      }
+      return;
+    }
+    if (!items[it.id]) out.push(it);
+  });
+  return out;
+}
+
 // 「HH:MM」を分に直す（時間帯の重なりを測るため）
 function hhmmToMin(v) {
   const m = /^(\d{1,2}):(\d{2})$/.exec(String(v || ''));
@@ -7840,9 +8083,27 @@ function shiftStaffForArea(areaKey) {
   return combineNames(shiftStaffInWindow(currentStore, w.from, w.to).map(x => x.n));
 }
 
+// 分担で「自分はこれ」と名前を選んだ時間帯。
+// ここが立っている間は、シフトからの連名で担当者を上書きしない
+// （上書きすると、分けたのに記録が3人の連名に戻ってしまう）。
+function staffPinKey(areaKey) {
+  const day = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
+  return 'staffPin_' + (currentStore || '') + '_' + areaKey + '_' + day;
+}
+function staffPinned(areaKey) {
+  try { return localStorage.getItem(staffPinKey(areaKey)) || ''; } catch (e) { return ''; }
+}
+function staffPin(areaKey, name) {
+  try {
+    if (name) localStorage.setItem(staffPinKey(areaKey), name);
+    else localStorage.removeItem(staffPinKey(areaKey));
+  } catch (e) {}
+}
+
 // 開いている時間帯の出勤者を担当者にする。変えたら true
 function applyShiftStaffForArea() {
   if (isPastView()) return false;   // 過去の日を見ているときは今日の出勤者に変えない
+  if (staffPinned(currentArea)) return false;   // 分担で自分を選んである
   const who = shiftStaffForArea(currentArea);
   if (!who || who === currentStaff) return false;
   currentStaff = who;
@@ -7879,6 +8140,8 @@ function autoSelectShiftStaff() {
   // 過去の日を見ているときは触らない（毎分このチェックが走るため、ここを抜かすと
   // 過去日の担当者が今日の出勤者に戻されてしまう）
   if (isPastView()) return;
+  // 分担で自分を選んである時間帯も触らない
+  if (isRoutineArea(currentArea) && staffPinned(currentArea)) return;
   // 朝番・中番・遅番を開いているときは、その時間帯の出勤者にする（時計の「今」では決めない）
   if (routineHours(currentArea)) {
     if (applyShiftStaffForArea()) render();
