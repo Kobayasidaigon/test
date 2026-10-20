@@ -8,15 +8,6 @@
   :root {
     --bg:#f4f6f8; --card:#fff; --border:#e3e8ee; --text:#1f2a33; --muted:#7b8a99;
     --head:#1976d2; --ok:#2e7d32; --mid:#ef6c00; --low:#c62828;
-    /* 棒: ひと続きの同じ数なので1色だけ。地色との明暗差は3:1を超えている。
-       「いちばん新しい日」は色を変えずに、日付を太字＋行の下地で示す
-       （色の濃さで分けると、淡いほうが薄すぎて棒が読めなくなる）。 */
-    --bar:#5c95d4;
-    /* 折れ線: 過去は控えめな灰、直近と終点だけ色を付ける。
-       --spark は地色との明暗差が 2.59:1 で 3:1 に届かないが、
-       数・最小最大・変わった日の表を必ず出しているので読み取りは色に頼らない。
-       濃くすると --spark-end との差が縮んで「直近だけ色が付いている」が消える。 */
-    --spark:#90a4ae; --spark-end:#2a78d6;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body { margin:0; background:var(--bg); color:var(--text);
@@ -114,57 +105,6 @@
   .dayrow input[type=date] { flex:1; min-width:0; font:inherit; font-size:.92rem;
     padding:9px 10px; border:1px solid var(--border); border-radius:9px;
     background:var(--card); color:var(--text); }
-  /* 本数・個数の記録（ゴルフのクラブなど）。1行が「いまの数＋差＋推移」。
-     折れ線は1本だけなので、凡例は置かない（題が何の数かを言っている）。 */
-  .nrow { display:flex; align-items:center; gap:10px; padding:9px 14px;
-    border-bottom:1px dotted #eceff1; }
-  .nrow:last-of-type { border-bottom:0; }
-  .nwho { flex:1; min-width:0; }
-  .nttl { font-size:.84rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .nsub { font-size:.68rem; color:var(--muted); margin-top:1px;
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .nval { text-align:right; flex:0 0 auto; }
-  /* 数の列はそろえたいので tabular-nums。大きい字の見出しには使わない */
-  .nnow { font-size:1.05rem; font-weight:700; line-height:1.2; }
-  .ndif { font-size:.7rem; font-weight:700; font-variant-numeric:tabular-nums; }
-  .ndif.up { color:var(--ok); } .ndif.down { color:var(--low); }
-  .ndif.flat { color:var(--muted); font-weight:400; }
-  .nflag { display:inline-block; font-size:.66rem; font-weight:700; border-radius:8px;
-    padding:1px 5px; background:#fdecea; color:var(--low); margin-top:2px; }
-  .nflag.warn { background:#fff6e5; color:var(--mid); }
-  svg.spark { display:block; flex:0 0 auto; overflow:visible; }
-  .sp-none { font-size:.66rem; color:#b0bec5; flex:0 0 auto; width:104px;
-    text-align:center; }
-  /* 日付ごとの横棒。表の形で組んである（読み上げも効く・値も必ず読める）。
-     棒は 0 から伸ばす。途中から始めると、14と16の差が実際より大きく見える。 */
-  details.nmv { padding:0 14px 8px; }
-  details.nmv > summary { font-size:.7rem; color:var(--muted); cursor:pointer;
-    padding:3px 0; list-style:none; }
-  details.nmv > summary::-webkit-details-marker { display:none; }
-  details.nmv > summary::before { content:'▶ '; font-size:.62rem; }
-  details.nmv[open] > summary::before { content:'▼ '; }
-  table.nmt { width:100%; border-collapse:collapse; font-size:.72rem;
-    font-variant-numeric:tabular-nums; margin-top:3px; }
-  table.nmt caption { caption-side:top; text-align:left; font-size:.66rem;
-    color:var(--muted); padding:2px 0 4px; }
-  table.nmt th { text-align:left; font-weight:700; color:var(--muted);
-    font-size:.66rem; padding:2px 6px 3px 0; border-bottom:1px solid var(--border);
-    white-space:nowrap; }
-  table.nmt th.bar { width:100%; }
-  table.nmt td { padding:0 6px 0 0; border-bottom:1px dotted #eceff1;
-    white-space:nowrap; }
-  table.nmt td.d { color:var(--muted); }
-  table.nmt td.b { width:100%; padding-right:8px; }
-  table.nmt td.v { text-align:right; font-weight:700; }
-  table.nmt td.up { color:var(--ok); font-weight:700; }
-  table.nmt td.down { color:var(--low); font-weight:700; }
-  table.nmt td.same { color:#b0bec5; }
-  /* 棒そのもの。行のすき間が地色の2px、棒の先だけ角を丸める */
-  .bw { display:block; padding:3px 0; }
-  .bb { display:block; height:12px; min-width:2px; background:var(--bar);
-    border-radius:0 4px 4px 0; }
-  table.nmt tr.now { background:#f3f8fd; }
-  table.nmt tr.now td.d { font-weight:700; color:var(--text); }
   footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
   .err { padding:30px 16px; text-align:center; color:var(--muted); }
   .login { background:var(--card); border:1px solid var(--border); border-radius:12px;
@@ -271,7 +211,6 @@ function render(d) {
   var h = '';
   d.stores.forEach(function (st) {
     var routines = st.routines || [], areas = st.areas || [], periodic = st.periodic || [];
-    var nums = st.nums || [];
 
     // 30日以上まったく記録が無いエリアは、その店舗で使っていない設備のことが多い。
     // 隠さず、下にまとめて「使われていない」と断って出す。
@@ -345,17 +284,9 @@ function render(d) {
       h += '</div></div>';
     }
 
-    // ④ 本数・個数の記録（ゴルフのクラブなど）。毎日の清掃率とは別に出す
-    h += '<div class="grp">本数・個数の記録'
-      + (nums.length
-          ? '<span class="gnote">清掃のときに数えたもの。清掃率には入れていません</span>'
-          : '<span class="gnote">まだありません</span>')
-      + '</div>';
-    if (nums.length) {
-      nums.forEach(function (r) { h += numRowHtml(r); });
-    } else {
-      h += '<div class="err">数を数える項目がありません</div>';
-    }
+    // 本数・個数の記録は、このページ（上の人向け）ではなく
+    // スタッフが見る「ふりかえり」に出している。現場が数えたものなので、
+    // 数えた本人たちが見られるほうが先。
     h += '</div>';
   });
   document.getElementById('main').innerHTML = h;
@@ -373,126 +304,6 @@ function render(d) {
       b.querySelector('.caret').textContent = a.classList.contains('open') ? '▼' : '▶';
     };
   });
-}
-
-// 本数・個数の1行。いまの数・前回との差・推移の折れ線・変わった日の表。
-function numRowHtml(r) {
-  var md = function (s) { return s ? s.slice(5).replace('-', '/') : ''; };
-  var dif = '';
-  if (r.diff === null || r.diff === undefined) {
-    dif = '<span class="ndif flat">はじめての記録</span>';
-  } else if (r.diff === 0) {
-    dif = '<span class="ndif flat">前回と同じ</span>';
-  } else {
-    // 色だけに頼らないよう、向きの矢印と数を必ず付ける
-    var up = r.diff > 0;
-    dif = '<span class="ndif ' + (up ? 'up' : 'down') + '">'
-      + (up ? '▲+' : '▼') + r.diff + '</span>';
-  }
-  var flag = '';
-  if (r.outAt !== null && r.outAt !== undefined && r.last < r.outAt) {
-    flag = '<span class="nflag">⚠ 交換のめやすを下回っています</span>';
-  } else if (r.low !== null && r.low !== undefined && r.last < r.low) {
-    flag = '<span class="nflag warn">⚠ 残りが少なくなっています</span>';
-  }
-  var sub = r.n === 1
-    ? md(r.lastDate) + ' の1日ぶんだけ'
-    : md(r.from) + '〜' + md(r.lastDate) + '・' + r.n + '日ぶん'
-      + (r.min === r.max ? '・ずっと' + r.min : '・' + r.min + '〜' + r.max);
-  var h = '<div class="nrow">'
-    + '<div class="nwho">'
-    + '<div class="nttl">' + esc(r.area) + '／' + esc(r.title)
-    + (r.label ? '／' + esc(r.label) : '') + '</div>'
-    + '<div class="nsub">' + esc(sub) + '</div>'
-    + (flag ? '<div>' + flag + '</div>' : '')
-    + '</div>'
-    + sparkHtml(r)
-    + '<div class="nval"><div class="nnow">' + r.last + '</div>' + dif + '</div>'
-    + '</div>';
-  if (r.days && r.days.length) {
-    h += '<details class="nmv"><summary>日付ごと ' + r.days.length + '日ぶん</summary>'
-      + barTableHtml(r) + '</details>';
-  }
-  return h;
-}
-
-// 日付ごとの横棒。表として組む（棒が読めなくても、日付と数は必ず読める）。
-// 棒は 0 から伸ばす。途中から始めると 14 と 16 の差が実際より大きく見える。
-function barTableHtml(r) {
-  var md = function (s) { return s ? s.slice(5).replace('-', '/') : ''; };
-  var top = Math.max(1, r.max);           // いちばん多い日で目いっぱいになる
-  var h = '<table class="nmt">'
-    + '<caption>新しい順。棒の長さは0からの本数（いちばん長い日で' + r.max + '）</caption>'
-    + '<tr><th>日付</th><th class="bar">本数</th><th>数</th><th>前日との差</th></tr>';
-  r.days.forEach(function (p, i) {
-    var w = (p.v / top * 100).toFixed(1);
-    var dif;
-    if (p.diff === null || p.diff === undefined) {
-      dif = '<td class="same">―</td>';
-    } else if (p.diff === 0) {
-      dif = '<td class="same">±0</td>';
-    } else {
-      dif = '<td class="' + (p.diff > 0 ? 'up' : 'down') + '">'
-        + (p.diff > 0 ? '▲+' : '▼') + p.diff + '</td>';
-    }
-    h += '<tr' + (i === 0 ? ' class="now"' : '') + '>'
-      + '<td class="d">' + esc(md(p.d)) + (i === 0 ? '（最新）' : '') + '</td>'
-      + '<td class="b"><span class="bw">'
-      + '<span class="bb" style="width:' + w + '%"'
-      + ' title="' + esc(md(p.d)) + '　' + p.v + '"></span></span></td>'
-      + '<td class="v">' + p.v + '</td>' + dif + '</tr>';
-  });
-  h += '</table>';
-  return h;
-}
-
-// 推移の折れ線。1本だけなので凡例は無し。点が無い日は飛ばし、
-// 横は日付のへだたりで置く（記録のない日が詰まって見えないように）。
-function sparkHtml(r) {
-  var s = r.series || [];
-  if (s.length < 2) return '<span class="sp-none">記録1日ぶん</span>';
-  var W = 104, H = 30, P = 4;
-  var lo = r.min, hi = r.max;
-  if (hi === lo) { lo = hi - 1; hi = hi + 1; }      // 平らなときは真ん中に引く
-  var t0 = Date.parse(s[0].d + 'T00:00:00');
-  var span = Math.max(1, Date.parse(s[s.length - 1].d + 'T00:00:00') - t0);
-  var px = function (p) {
-    return (P + (W - P * 2) * ((Date.parse(p.d + 'T00:00:00') - t0) / span)).toFixed(1);
-  };
-  var py = function (p) {
-    return (H - P - (H - P * 2) * ((p.v - lo) / (hi - lo))).toFixed(1);
-  };
-  var d1 = '', d2 = '';
-  s.forEach(function (p, i) {
-    d1 += (i ? ' L' : 'M') + px(p) + ',' + py(p);
-  });
-  var a = s[s.length - 2], b = s[s.length - 1];
-  d2 = 'M' + px(a) + ',' + py(a) + ' L' + px(b) + ',' + py(b);
-  // 動いた日と、はじめ・おわりだけ指で触れるようにする（全点に置くと重い）
-  var marks = {};
-  marks[s[0].d] = true; marks[b.d] = true;
-  (r.moves || []).forEach(function (m) { marks[m.d] = true; });
-  // 触れる所は点より広く取る。指で狙える大きさにしたいので、
-  // 丸ではなく上下いっぱいの帯にする（高さ30px × 幅24px）。
-  var hits = '';
-  s.forEach(function (p) {
-    if (!marks[p.d]) return;
-    hits += '<rect x="' + (px(p) - 12) + '" y="0" width="24" height="' + H + '"'
-      + ' fill="transparent">'
-      + '<title>' + esc(p.d.slice(5).replace('-', '/')) + '　' + p.v + '</title></rect>';
-  });
-  return '<svg class="spark" width="' + W + '" height="' + H + '"'
-    + ' viewBox="0 0 ' + W + ' ' + H + '" role="img"'
-    + ' aria-label="' + esc(r.area + ' ' + r.title + (r.label ? ' ' + r.label : '')
-        + ' の推移 ' + r.min + '〜' + r.max) + '">'
-    + '<path d="' + d1 + '" fill="none" stroke="var(--spark)" stroke-width="2"'
-    + ' stroke-linecap="round" stroke-linejoin="round"/>'
-    + '<path d="' + d2 + '" fill="none" stroke="var(--spark-end)" stroke-width="2"'
-    + ' stroke-linecap="round"/>'
-    + '<circle cx="' + px(b) + '" cy="' + py(b) + '" r="4" fill="var(--spark-end)"'
-    + ' stroke="var(--card)" stroke-width="2"/>'
-    + hits
-    + '</svg>';
 }
 
 // 定期清掃1件の状態の言い方。アプリの periodicStatus と同じ言い回しにそろえる。

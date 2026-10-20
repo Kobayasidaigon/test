@@ -470,6 +470,51 @@
   /* ふりかえりの追加分（今日はここから／曜日／時間帯／数の記録 など） */
   .rv-insp { border-left: 4px solid #6a1b9a; }
   .rv-insp h3 { color: #6a1b9a; }
+  /* 数の記録の1行（いまの数＋差）と、日付ごとの横棒 */
+  .nm-row { display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px dotted var(--border); }
+  .nm-who { flex: 1; min-width: 0; }
+  .nm-ttl { font-size: .88rem; }
+  .nm-sub { font-size: .7rem; color: var(--muted); margin-top: 1px; }
+  .nm-val { text-align: right; flex: 0 0 auto; }
+  /* 大きい数に tabular-nums は使わない（121 がゆるく見える） */
+  .nm-now { font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+  .nm-dif { font-size: .72rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .nm-dif.up { color: var(--ok, #2e7d32); }
+  .nm-dif.down { color: var(--danger, #c62828); }
+  .nm-dif.flat { color: var(--muted); font-weight: 400; }
+  .nm-flag { display: inline-block; font-size: .66rem; font-weight: 700;
+    border-radius: 8px; padding: 1px 6px; margin-top: 2px;
+    background: #fdecea; color: var(--danger, #c62828); }
+  .nm-flag.warn { background: #fff6e5; color: #ef6c00; }
+  details.nm-mv { padding: 0 0 7px; }
+  details.nm-mv > summary { font-size: .72rem; color: var(--muted); cursor: pointer;
+    padding: 3px 0; list-style: none; }
+  details.nm-mv > summary::-webkit-details-marker { display: none; }
+  details.nm-mv > summary::before { content: '▶ '; font-size: .62rem; }
+  details.nm-mv[open] > summary::before { content: '▼ '; }
+  table.nm-t { width: 100%; border-collapse: collapse; font-size: .72rem;
+    font-variant-numeric: tabular-nums; margin-top: 3px; }
+  table.nm-t caption { caption-side: top; text-align: left; font-size: .66rem;
+    color: var(--muted); padding: 2px 0 4px; }
+  table.nm-t th { text-align: left; font-weight: 700; color: var(--muted);
+    font-size: .66rem; padding: 2px 6px 3px 0;
+    border-bottom: 1px solid var(--border); white-space: nowrap; }
+  table.nm-t th.bar { width: 100%; }
+  table.nm-t td { padding: 0 6px 0 0; border-bottom: 1px dotted var(--border);
+    white-space: nowrap; }
+  table.nm-t td.d { color: var(--muted); }
+  table.nm-t td.b { width: 100%; padding-right: 8px; }
+  table.nm-t td.v { text-align: right; font-weight: 700; }
+  table.nm-t td.up { color: var(--ok, #2e7d32); font-weight: 700; }
+  table.nm-t td.down { color: var(--danger, #c62828); font-weight: 700; }
+  table.nm-t td.same { color: var(--muted); }
+  table.nm-t tr.now { background: #f3f8fd; }
+  table.nm-t tr.now td.d { font-weight: 700; color: var(--text); }
+  /* 棒は1色だけ。いちばん新しい日は色ではなく、日付の太字と下地で示す */
+  .nm-bw { display: block; padding: 3px 0; }
+  .nm-bb { display: block; height: 12px; min-width: 2px; background: #5c95d4;
+    border-radius: 0 4px 4px 0; }
   .rv-week, .rv-shift, .rv-periodic, .rv-nums { border-left: 4px solid var(--border); }
   .rv-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 4px; }
   .rv-chip {
@@ -6370,17 +6415,84 @@ function rvDays(n) {
   return out;
 }
 
+// 数の記録の1行。いまの数・前回との差・日付ごとの横棒。
+// 棒は 0 から伸ばす。途中から始めると 8 と 9 の差が実際より大きく見える。
+function numRowHtml(r) {
+  const md = s => (s ? s.slice(5).replace('-', '/') : '');
+  let dif;
+  if (r.diff === null || r.diff === undefined) {
+    dif = '<span class="nm-dif flat">はじめての記録</span>';
+  } else if (r.diff === 0) {
+    dif = '<span class="nm-dif flat">前回と同じ</span>';
+  } else {
+    // 色だけに頼らないよう、向きの矢印と数を必ず付ける
+    dif = '<span class="nm-dif ' + (r.diff > 0 ? 'up' : 'down') + '">'
+      + (r.diff > 0 ? '▲+' : '▼') + r.diff + '</span>';
+  }
+  let flag = '';
+  if (r.outAt !== null && r.outAt !== undefined && r.last < r.outAt) {
+    flag = '<span class="nm-flag">⚠ 交換のめやすを下回っています</span>';
+  } else if (r.low !== null && r.low !== undefined && r.last < r.low) {
+    flag = '<span class="nm-flag warn">⚠ 残りが少なくなっています</span>';
+  }
+  const sub = r.n === 1
+    ? md(r.date) + ' の1日ぶんだけ'
+    : md(r.from) + '〜' + md(r.date) + '・' + r.n + '日ぶん'
+      + (r.min === r.max ? '・ずっと' + r.min : '・' + r.min + '〜' + r.max);
+  let h = '<div class="nm-row"><div class="nm-who">'
+    + '<div class="nm-ttl">' + escapeHtml(r.title) + '</div>'
+    + '<div class="nm-sub">' + escapeHtml(r.area + '・' + r.label + '／' + sub) + '</div>'
+    + (flag ? '<div>' + flag + '</div>' : '')
+    + '</div><div class="nm-val"><div class="nm-now">' + r.last + '</div>' + dif + '</div></div>';
+  if (r.days && r.days.length) {
+    h += '<details class="nm-mv"><summary>日付ごと ' + r.days.length + '日ぶん</summary>'
+      + numBarTableHtml(r) + '</details>';
+  }
+  return h;
+}
+
+// 日付ごとの横棒。表として組む（棒が読めなくても日付と数は必ず読める）。
+function numBarTableHtml(r) {
+  const md = s => (s ? s.slice(5).replace('-', '/') : '');
+  const top = Math.max(1, r.max);        // いちばん多い日で目いっぱいになる
+  let h = '<table class="nm-t">'
+    + '<caption>新しい順。棒の長さは0からの数（いちばん長い日で' + r.max + '）</caption>'
+    + '<tr><th>日付</th><th class="bar">数</th><th>値</th><th>前の記録との差</th></tr>';
+  r.days.forEach((p, i) => {
+    const w = (p.v / top * 100).toFixed(1);
+    let dif;
+    if (p.diff === null || p.diff === undefined) dif = '<td class="same">―</td>';
+    else if (p.diff === 0) dif = '<td class="same">±0</td>';
+    else dif = '<td class="' + (p.diff > 0 ? 'up' : 'down') + '">'
+      + (p.diff > 0 ? '▲+' : '▼') + p.diff + '</td>';
+    h += '<tr' + (i === 0 ? ' class="now"' : '') + '>'
+      + '<td class="d">' + escapeHtml(md(p.d)) + (i === 0 ? '（最新）' : '') + '</td>'
+      + '<td class="b"><span class="nm-bw"><span class="nm-bb" style="width:' + w + '%"'
+      + ' title="' + escapeHtml(md(p.d)) + '　' + p.v + '"></span></span></td>'
+      + '<td class="v">' + p.v + '</td>' + dif + '</tr>';
+  });
+  return h + '</table>';
+}
+
 // 1. 数値の推移（ゴルフのクラブ本数・サーマナイフのショット数など）
+// 在庫の動きを見たいので、ほかのふりかえりより長めにさかのぼる。
+// 14日だと、週に1〜2回しか数えない項目が2〜3点にしかならず、動きが読めない。
+const NUM_DAYS = 60;
 function rvNums(store) {
   return withDefStore(store, () => {
     // 数値欄のある項目を集める
     const defs = [];
     allAreas().forEach(a => areaItems(a.key).forEach(it => {
       const f = itemNumFields(it);
-      if (f.length) defs.push({ area: a.name, id: it.id, title: it.title, fields: f });
+      if (f.length) {
+        const lim = itemNumLimits(it) || {};
+        defs.push({ area: a.name, id: it.id, title: it.title, fields: f,
+                    low: lim.low == null ? null : lim.low,
+                    outAt: lim.out == null ? null : lim.out });
+      }
     }));
     if (!defs.length) return [];
-    const days = rvDays(REVIEW_DAYS);
+    const days = rvDays(NUM_DAYS);
     const out = [];
     defs.forEach(d => {
       d.fields.forEach(f => {
@@ -6389,16 +6501,26 @@ function rvNums(store) {
           let all = {};
           try { all = JSON.parse(localStorage.getItem('nums_' + store + '_' + dt)) || {}; } catch (e) {}
           const v = all[d.id] && all[d.id][f.id];
-          if (v !== undefined && v !== '' && v !== null) hist.push({ date: dt, v: Number(v) });
+          if (v === undefined || v === '' || v === null) return;
+          const n = Number(v);
+          if (!isFinite(n)) return;          // 数でない書き込みは点にしない
+          hist.push({ date: dt, v: n });
         });
         if (!hist.length) return;
         const last = hist[hist.length - 1];
         const prev = hist.length > 1 ? hist[hist.length - 2] : null;
+        const vals = hist.map(x => x.v);
         out.push({
           area: d.area, title: d.title, label: f.label,
           last: last.v, date: last.date,
           diff: prev ? last.v - prev.v : null, prev: prev ? prev.v : null,
-          n: hist.length,
+          n: hist.length, from: hist[0].date,
+          min: Math.min.apply(null, vals), max: Math.max.apply(null, vals),
+          low: d.low, outAt: d.outAt,
+          // 日付ごとの棒に出す用。新しい順。間引かない
+          days: hist.map((p, i) => ({
+            d: p.date, v: p.v, diff: i ? p.v - hist[i - 1].v : null,
+          })).reverse(),
         });
       });
     });
@@ -6772,19 +6894,11 @@ function renderReview() {
   }
   h += '</div>';
 
-  // ---- 数値の記録 ----
+  // ---- 数値の記録（日付ごとの棒つき）----
   const nums = rvNums(currentStore);
   if (nums.length) {
     h += '<div class="rv-card rv-nums"><h3>' + ic('cup-soda') + '数の記録</h3>';
-    nums.forEach(n => {
-      const d2 = n.diff;
-      const cls = d2 === null ? '' : (d2 < 0 ? ' bad' : (d2 > 0 ? ' good' : ''));
-      h += '<div class="rv-line"><span>' + esc(n.title) + '<span class="rv-sub">'
-        + esc(n.area + '・' + n.label) + '</span></span>'
-        + '<span class="v' + cls + '">' + n.last
-        + (d2 === null ? '' : (d2 === 0 ? '（前回と同じ）' : '（前回 ' + n.prev + ' ' + (d2 > 0 ? '▲+' : '▼') + d2 + '）'))
-        + '</span></div>';
-    });
+    nums.forEach(n => { h += numRowHtml(n); });
     if (nums.some(n => n.diff !== null && n.diff < 0))
       h += '<div class="rv-note">数が減っているものがあります。紛失や返却漏れがないか確認してください。</div>';
     h += '</div>';
