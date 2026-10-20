@@ -320,6 +320,26 @@
   .sh-pick-n { font-size: .7rem; color: var(--muted); }
   .sh-pick.sh-all { flex: 1 1 100%; }
   .sh-note { font-size: .72rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  /* 分担の編集（あとから場所を動かす） */
+  .sh-edit .sh-note { margin: 4px 0 10px; }
+  .sh-erow { font-size: .74rem; font-weight: 700; color: var(--muted);
+    margin: 9px 0 2px; border-left: 3px solid var(--border); padding-left: 7px; }
+  .sh-eline { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 5px 0; border-bottom: 1px dotted var(--border); }
+  .sh-eline:last-of-type { border-bottom: 0; }
+  .sh-enm { flex: 1 1 42%; min-width: 0; font-size: .82rem; }
+  .sh-ebtns { display: flex; gap: 4px; flex-wrap: wrap; }
+  .sh-eb { font-family: inherit; font-size: .72rem; cursor: pointer;
+    padding: 4px 9px; border-radius: 999px; border: 1.5px solid var(--border);
+    background: var(--card); color: var(--muted); }
+  .sh-eb.on { background: var(--primary); border-color: var(--primary);
+    color: #fff; font-weight: 700; }
+  .sh-eb-off.on { background: var(--muted); border-color: var(--muted); }
+  .sh-ebar { display: flex; justify-content: flex-end; margin-top: 11px; }
+  .sh-done { font-family: inherit; font-size: .78rem; font-weight: 700;
+    cursor: pointer; padding: 7px 14px; border-radius: 9px;
+    border: 1.5px solid var(--primary); background: var(--card);
+    color: var(--primary-dark); }
   /* 選んだあとの1行 */
   .sh-bar { display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
     background: var(--card); border: 1.5px solid var(--primary); border-radius: 10px;
@@ -5029,6 +5049,85 @@ function renderStaleBar(list) {
   };
 }
 
+// 分担の編集（あとから場所を動かす）。
+// 動かす単位は「開く先のエリア」と「開く先を持たない行」。
+// 連動項目そのものは動かさない（1行が複数のエリアにまたがるため）。
+let shareEditMode = false;
+
+function shareUnits(areaKey, allItems) {
+  const out = [];
+  allItems.forEach(it => {
+    const link = String(it.link || '').trim();
+    if (link) {
+      link.split(',').map(s => s.trim()).filter(Boolean).forEach(k => {
+        const a = getArea(k);
+        out.push({ kind: 'area', key: k, row: it.title,
+                   name: a ? a.name : k });
+      });
+      return;
+    }
+    out.push({ kind: 'item', key: it.id, row: '', name: it.title });
+  });
+  return out;
+}
+
+// その単位がいま入っている分担のid（どこにも入っていなければ ''）
+function shareOf(shares, u) {
+  const found = shares.find(s => (u.kind === 'area' ? s.areas : s.items).indexOf(u.key) >= 0);
+  return found ? found.id : '';
+}
+
+// 場所を別の分担へ移す。'' なら どの分担からも外す。
+function moveShareUnit(areaKey, kind, key, toId) {
+  const shares = routineShares(areaKey);
+  if (!shares) return;
+  const next = shares.map(s => ({
+    id: s.id, name: s.name,
+    areas: s.areas.filter(k => !(kind === 'area' && k === key)),
+    items: s.items.filter(k => !(kind === 'item' && k === key)),
+  }));
+  if (toId) {
+    const t = next.find(s => s.id === toId);
+    if (t) (kind === 'area' ? t.areas : t.items).push(key);
+  }
+  defWrite('shares_' + areaKey, JSON.stringify(next));
+}
+
+function shareEditHtml(areaKey, allItems) {
+  const shares = routineShares(areaKey);
+  if (!shares) return '';
+  const units = shareUnits(areaKey, allItems);
+  let h = '<div class="sh-panel sh-edit">'
+    + '<div class="sh-head">' + ic('pencil') + ' 分担を編集</div>'
+    + '<div class="sh-note">場所ごとに、担当する分担を選びます。'
+    + 'ここで変えたものは、次に開いた人にも同じように出ます。</div>';
+  let lastRow = null;
+  units.forEach(u => {
+    if (u.row && u.row !== lastRow) {
+      h += '<div class="sh-erow">' + escapeHtml(u.row) + '</div>';
+      lastRow = u.row;
+    }
+    if (!u.row) lastRow = null;
+    const cur = shareOf(shares, u);
+    h += '<div class="sh-eline"><span class="sh-enm">'
+      + (u.row ? '　' : '') + escapeHtml(u.name) + '</span><span class="sh-ebtns">';
+    shares.forEach(s => {
+      h += '<button type="button" class="sh-eb' + (s.id === cur ? ' on' : '') + '"'
+        + ' data-sh-move="' + escapeHtml(s.id) + '"'
+        + ' data-sh-kind="' + u.kind + '" data-sh-key="' + escapeHtml(u.key) + '">'
+        + escapeHtml(s.name) + '</button>';
+    });
+    h += '<button type="button" class="sh-eb sh-eb-off' + (cur ? '' : ' on') + '"'
+      + ' data-sh-move="" data-sh-kind="' + u.kind + '"'
+      + ' data-sh-key="' + escapeHtml(u.key) + '">なし</button>';
+    h += '</span></div>';
+  });
+  h += '<div class="sh-ebar">'
+    + '<button type="button" class="sh-done" data-sh-edit="0">編集を終わる</button>'
+    + '</div></div>';
+  return h;
+}
+
 // 分担の選び。決めてある店舗・時間帯だけ出る。
 // 選ぶまでは今までどおり全部出す（見るだけの人を止めない）。
 // 選んだあとは1行に畳んで、いつでも変えられるようにしておく。
@@ -5047,6 +5146,9 @@ function sharePickerHtml(areaKey, allItems) {
   onShift.forEach(n => { if (n && names.indexOf(n) < 0) names.push(n); });
   if (me && names.indexOf(me) < 0) names.push(me);
 
+  // ---- 分担そのものを編集している ----
+  if (shareEditMode) return shareEditHtml(areaKey, allItems);
+
   // ---- 選んだあと: 1行だけ ----
   if (chosen) {
     const label = cur ? cur.name : 'ぜんぶ';
@@ -5056,6 +5158,7 @@ function sharePickerHtml(areaKey, allItems) {
       + (me ? '<span class="sh-me">' + escapeHtml(me) + '</span>' : '')
       + '<span class="sh-n">' + n + '行</span>'
       + '<button type="button" class="sh-change" data-sh-open="1">変える</button>'
+      + '<button type="button" class="sh-change" data-sh-edit="1">分担を編集</button>'
       + '</div>';
   }
 
@@ -5089,6 +5192,9 @@ function sharePanelHtml(areaKey, allItems, shares, names, me) {
     + '<span class="sh-pick-nm">ぜんぶ見る</span>'
     + '<span class="sh-pick-n">' + allItems.length + '行</span></button>';
   h += '</div>';
+  h += '<div class="sh-ebar">'
+    + '<button type="button" class="sh-done" data-sh-edit="1">分担を編集</button>'
+    + '</div>';
   if (left.length) {
     h += '<div class="sh-note">どの分担にも入っていない行が ' + left.length
       + '件あります。「ぜんぶ見る」から開けます。</div>';
@@ -5334,6 +5440,21 @@ function renderRoutineView() {
       render();
     };
   });
+  // 分担そのものを編集する／やめる
+  checklist.querySelectorAll('[data-sh-edit]').forEach(b => {
+    b.onclick = () => {
+      shareEditMode = b.dataset.shEdit === '1';
+      render();
+    };
+  });
+  // 場所を別の分担へ移す
+  checklist.querySelectorAll('[data-sh-move]').forEach(b => {
+    b.onclick = () => {
+      moveShareUnit(currentArea, b.dataset.shKind, b.dataset.shKey,
+                    b.dataset.shMove || '');
+      render();
+    };
+  });
   // 連動先の子項目も対象にするため、エリアは data-rt-area から読む
   const findIn = (ak, id) => (ak === currentArea ? items : areaItems(ak)).find(x => x.id === id);
   checklist.querySelectorAll('[data-rt-up]').forEach(b => {
@@ -5473,6 +5594,9 @@ function render() {
     renderPeriodicView();
     return;
   }
+  // 分担の編集は、その時間帯を開いている間だけ。
+  // 別の場所へ移っても開いたままだと、違う時間帯の分担を触ってしまう。
+  if (shareEditMode && !routineShares(currentArea)) shareEditMode = false;
   // 朝番・中番・遅番はコンパクトなツリー表示（1画面に収める）
   if (isRoutineArea(currentArea)) {
     document.getElementById('todoPanel').style.display = 'none';

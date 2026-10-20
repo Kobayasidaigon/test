@@ -159,8 +159,97 @@ const room = (n, pre) => JSON.stringify(
   const hiruRows = await pg.$$eval('.rt-row', rs => rs.length);
   check('入れていない時間帯はそのまま全部出る', hiruRows === 2, hiruRows);
 
+  // ---- あとから場所を動かす ----
+  // 直前に中番を見ているので、朝番へ戻してから
+  await pg.evaluate(() => {
+    currentArea = 'routine_asa';
+    shareSet('routine_asa', 'm');
+    render();
+  });
+  await pg.waitForSelector('.sh-bar', { timeout: 15000 });
+  await pg.click('[data-sh-edit="1"]');
+  await pg.waitForSelector('.sh-edit', { timeout: 15000 });
+  const ed = await pg.textContent('.sh-edit');
+  check('編集の画面が出る', /分担を編集/.test(ed));
+  const lines = await pg.$$eval('.sh-eline', ls => ls.map(l => ({
+    nm: l.querySelector('.sh-enm').textContent.trim(),
+    on: (l.querySelector('.sh-eb.on') || {}).textContent || '',
+  })));
+  check('動かせる場所が出そろう', lines.length === 9, JSON.stringify(lines.map(l => l.nm)));
+  check('連動先はエリアごとに出る',
+    lines.some(l => l.nm === 'サウナ男A') && lines.some(l => l.nm === 'サウナ女A'),
+    JSON.stringify(lines.map(l => l.nm)));
+  check('単独の行もそのまま出る', lines.some(l => l.nm === 'サウナ電源・開錠'));
+  const sm = lines.find(l => l.nm === 'サウナ男A');
+  check('いまの分担に印が付く', sm && sm.on === '男性側', sm && sm.on);
+  const orph = lines.find(l => l.nm === 'どの分担にも入れていない行');
+  check('どこにも入っていない場所は「なし」', orph && orph.on === 'なし', orph && orph.on);
+
+  // サウナ男A を 女性側 へ動かす
+  await pg.click('.sh-eline:has(.sh-enm:text-is("サウナ男A")) [data-sh-move="w"]');
+  await pg.waitForTimeout(200);
+  const moved = await pg.evaluate(() => {
+    const s = JSON.parse(localStorage.getItem('sdef_枇杷島_shares_routine_asa'));
+    return { m: s.find(x => x.id === 'm').areas, w: s.find(x => x.id === 'w').areas };
+  });
+  check('男性側から外れる', moved.m.indexOf('sauna_b1') < 0, JSON.stringify(moved.m));
+  check('女性側に入る', moved.w.indexOf('sauna_b1') >= 0, JSON.stringify(moved.w));
+  check('ほかの場所は動かない', moved.m.indexOf('toilet_m') >= 0, JSON.stringify(moved.m));
+
+  // 画面にも効いている（男性側はサウナが消えてトイレだけ）
+  await pg.click('[data-sh-edit="0"]');
+  await pg.waitForSelector('.sh-bar', { timeout: 15000 });
+  const after = await pg.$$eval('.rt-row', rs => rs.map(r => ({
+    t: r.querySelector('.rt-title').textContent,
+    c: (r.querySelector('.rt-count') || {}).textContent || '',
+  })));
+  check('動かしたら男性側からサウナ清掃が消える',
+    !after.some(r => r.t === 'サウナ清掃'), JSON.stringify(after.map(r => r.t)));
+  check('トイレ清掃は残る', after.some(r => r.t === 'トイレ清掃'));
+
+  // 女性側で見ると、サウナが男A＋女Aの22項目になっている
+  await pg.evaluate(() => { shareSet('routine_asa', 'w'); render(); });
+  await pg.waitForSelector('.sh-bar', { timeout: 15000 });
+  const wRows = await pg.$$eval('.rt-row', rs => rs.map(r => ({
+    t: r.querySelector('.rt-title').textContent,
+    c: (r.querySelector('.rt-count') || {}).textContent || '',
+  })));
+  const wSauna = wRows.find(r => r.t === 'サウナ清掃');
+  check('女性側のサウナ清掃が22項目になる', wSauna && /0\/22/.test(wSauna.c),
+    wSauna && wSauna.c);
+
+  // 「なし」に外すと、どの分担からも出なくなる
+  await pg.click('[data-sh-edit="1"]');
+  await pg.waitForSelector('.sh-edit', { timeout: 15000 });
+  await pg.click('.sh-eline:has(.sh-enm:text-is("サウナ男A")) [data-sh-move=""]');
+  await pg.waitForTimeout(200);
+  const off = await pg.evaluate(() => {
+    const s = JSON.parse(localStorage.getItem('sdef_枇杷島_shares_routine_asa'));
+    return s.some(x => x.areas.indexOf('sauna_b1') >= 0);
+  });
+  check('「なし」でどの分担からも外れる', off === false, String(off));
+  const leftNote = await pg.textContent('.sh-edit');
+  check('編集中も画面が壊れない', /分担を編集/.test(leftNote));
+  await pg.click('[data-sh-edit="0"]');
+  await pg.waitForSelector('.sh-bar', { timeout: 15000 });
+
   check('画面で例外が出ない', !errs.length, errs.slice(0, 2).join(' | '));
-  await pg.evaluate(() => { currentArea = 'routine_asa'; shareSet('routine_asa', 'm'); render(); });
+  // 画を残す: 編集の画面（あとから場所を動かすところ）
+  await pg.evaluate(() => {
+    currentArea = 'routine_asa';
+    localStorage.setItem('sdef_枇杷島_shares_routine_asa', JSON.stringify([
+      { id: 'm', name: '男性側', areas: ['sauna_b1', 'toilet_m'], items: ['a_power'] },
+      { id: 'w', name: '女性側', areas: ['sauna_b4', 'toilet_w'], items: ['a_towel'] },
+      { id: 'x', name: '共用・ゴルフ', areas: ['golf_a', 'floor'], items: [] },
+    ]));
+    shareSet('routine_asa', 'm');
+    shareEditMode = true;
+    render();
+  });
+  await pg.waitForSelector('.sh-edit', { timeout: 15000 });
+  await pg.screenshot({ path: (process.env.OUT || 'tests/out') + '/share-edit.png',
+    fullPage: true });
+  await pg.evaluate(() => { shareEditMode = false; render(); });
   await pg.waitForSelector('.sh-bar', { timeout: 15000 });
   await pg.screenshot({ path: (process.env.OUT || 'tests/out') + '/share.png', fullPage: true });
   await b.close();
