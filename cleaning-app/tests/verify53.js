@@ -80,6 +80,23 @@ const row = (o, area, title, label) => (o.nums || []).find(
   check('見ている日より後ろを読まない', m && m.last !== 99, m && m.last);
   check('後ろの日が最大に混ざらない', m && m.max === 16, m && m.max);
 
+  // ---- 日付ごとの値（横棒に出す用）----
+  const dys = (m && m.days) || [];
+  check('日付ごとの値は記録のある日だけ 4件', dys.length === 4, dys.length);
+  check('新しい順に並ぶ', dys[0] && dys[0].d === '2026-10-19', dys[0] && dys[0].d);
+  check('いちばん古いのが最後', dys[3] && dys[3].d === '2026-10-10', dys[3] && dys[3].d);
+  check('10-19 は 15 で 前日との差 +1',
+    dys[0] && dys[0].v === 15 && dys[0].diff === 1, dys[0] && JSON.stringify(dys[0]));
+  check('10-13 は 14 で 差 -2',
+    dys[1] && dys[1].v === 14 && dys[1].diff === -2, dys[1] && JSON.stringify(dys[1]));
+  check('10-12 は 16 で 差 0',
+    dys[2] && dys[2].v === 16 && dys[2].diff === 0, dys[2] && JSON.stringify(dys[2]));
+  check('いちばん古い日の差は null（くらべる相手がない）',
+    dys[3] && dys[3].diff === null, dys[3] && dys[3].diff);
+  check('日付ごとの値は間引かれない', dys.length === m.n, dys.length + '/' + m.n);
+  check('見ている日より後ろは入らない',
+    !dys.some(x => x.d > D), JSON.stringify(dys.map(x => x.d)));
+
   const mv = (m && m.moves) || [];
   check('変わった日は2件', mv.length === 2, mv.length);
   check('新しい順に並ぶ', mv[0] && mv[0].d === '2026-10-19', mv[0] && mv[0].d);
@@ -138,7 +155,7 @@ const row = (o, area, title, label) => (o.nums || []).find(
   check('いつからいつまでが出る', /10\/10〜10\/19・4日ぶん/.test(txt));
   check('1日ぶんだけの行はそう言う', /10\/19 の1日ぶんだけ/.test(txt));
   check('最小〜最大が出る', /14〜16/.test(txt));
-  check('変わった日の表が出せる', /変わった日 2件/.test(txt));
+  check('日付ごとが出せる', /日付ごと 4日ぶん/.test(txt));
   check('交換のめやす割れが出る', /交換のめやすを下回/.test(txt));
 
   const sp = await pg.$$('svg.spark');
@@ -194,6 +211,65 @@ const row = (o, area, title, label) => (o.nums || []).find(
   check('2日あいた所は1日ぶんの約2倍',
     Math.abs(gaps[0] / gaps[1] - 2) < 0.2, g);
   check('画面で例外が出ない', !errs.length, errs.slice(0, 2).join(' | '));
+
+  // ---- 日付ごとの横棒 ----
+  // 棒は閉じてある中なので、開いてから見る
+  await pg.$$eval('details.nmv', ds => ds.forEach(d => { d.open = true; }));
+  await pg.waitForSelector('table.nmt .bb', { timeout: 15000 });
+  const tbl = await pg.evaluate(() => {
+    // 男性の行の次に来る表（numRowHtml が行のすぐ後ろに置く）
+    const rows = Array.from(document.querySelectorAll('.nrow'));
+    const me = rows.find(r => (r.querySelector('.nttl') || {}).textContent
+      && r.querySelector('.nttl').textContent.indexOf('男性') >= 0
+      && r.querySelector('svg.spark'));
+    const d = me && me.nextElementSibling;
+    const t = d && d.querySelector('table.nmt');
+    if (!t) return null;
+    const trs = Array.from(t.querySelectorAll('tr')).slice(1);
+    return {
+      caption: (t.querySelector('caption') || {}).textContent || '',
+      head: Array.from(t.querySelectorAll('th')).map(x => x.textContent),
+      rows: trs.map(tr => ({
+        d: tr.querySelector('td.d').textContent,
+        w: (tr.querySelector('.bb') || {}).style ? tr.querySelector('.bb').style.width : '',
+        v: tr.querySelector('td.v').textContent,
+        dif: tr.children[3].textContent,
+        now: tr.classList.contains('now'),
+        title: (tr.querySelector('.bb') || {}).getAttribute
+          ? tr.querySelector('.bb').getAttribute('title') : '',
+      })),
+    };
+  });
+
+  check('男性の行に日付ごとの表が付く', !!tbl, tbl === null ? 'ない' : 'ある');
+  check('表の見出しは 日付・本数・数・差',
+    tbl && tbl.head.join('/') === '日付/本数/数/前日との差', tbl && tbl.head.join('/'));
+  check('棒は4日ぶん', tbl && tbl.rows.length === 4, tbl && tbl.rows.length);
+  check('新しい順（先頭が10/19）', tbl && tbl.rows[0].d.indexOf('10/19') === 0,
+    tbl && tbl.rows[0].d);
+  check('いちばん新しい日に印が付く', tbl && tbl.rows[0].now && !tbl.rows[1].now,
+    tbl && tbl.rows.map(x => x.now).join(','));
+  check('いちばん新しい日は色だけでなく字でも分かる',
+    tbl && /最新/.test(tbl.rows[0].d), tbl && tbl.rows[0].d);
+  check('どの行にも数が出る',
+    tbl && tbl.rows.map(x => x.v).join(',') === '15,14,16,16',
+    tbl && tbl.rows.map(x => x.v).join(','));
+  check('前日との差が出る',
+    tbl && tbl.rows.map(x => x.dif).join(',') === '▲+1,▼-2,±0,―',
+    tbl && tbl.rows.map(x => x.dif).join(','));
+
+  // 棒は0から。いちばん多い日（16）で100%、14なら87.5%
+  const wOf = s => parseFloat(s);
+  check('いちばん多い日の棒が100%', tbl && wOf(tbl.rows[2].w) === 100, tbl && tbl.rows[2].w);
+  check('14の棒は 14/16 の長さ（0から伸ばしている）',
+    tbl && Math.abs(wOf(tbl.rows[1].w) - 87.5) < 0.2, tbl && tbl.rows[1].w);
+  check('15の棒は 15/16 の長さ',
+    tbl && Math.abs(wOf(tbl.rows[0].w) - 93.8) < 0.2, tbl && tbl.rows[0].w);
+  check('棒に日付と数のふきだしが付く',
+    tbl && /10\/19/.test(tbl.rows[0].title) && /15/.test(tbl.rows[0].title),
+    tbl && tbl.rows[0].title);
+  check('どこから伸ばしているか書いてある',
+    tbl && /0からの本数/.test(tbl.caption), tbl && tbl.caption);
 
   await pg.screenshot({ path: (process.env.OUT || 'tests/out') + '/view-nums.png',
     fullPage: true });

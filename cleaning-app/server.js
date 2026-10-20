@@ -506,9 +506,14 @@ function viewNums(store, day) {
       min: Math.min.apply(null, vals), max: Math.max.apply(null, vals),
       n: series.length, from: series[0].d,
       low: d.low, outAt: d.out,
-      // 折れ線に出す点と、変わった日の一覧（表で見せる用）
+      // 折れ線に出す点（多いときは間引く）
       series: vThin(series, VIEW_NUM_POINTS),
+      // 折れ線で「触れる所」を置く日（動いた日）
       moves: moves.slice(-30).reverse(),
+      // 日付ごとの棒に出す用。記録のある日だけ、新しい順。間引かない。
+      days: series.map((pt, i) => ({
+        d: pt.d, v: pt.v, diff: i ? pt.v - series[i - 1].v : null,
+      })).reverse(),
     });
   }));
   // ゴルフを先に、あとは場所→項目→欄の順

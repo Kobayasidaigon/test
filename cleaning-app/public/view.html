@@ -8,6 +8,10 @@
   :root {
     --bg:#f4f6f8; --card:#fff; --border:#e3e8ee; --text:#1f2a33; --muted:#7b8a99;
     --head:#1976d2; --ok:#2e7d32; --mid:#ef6c00; --low:#c62828;
+    /* 棒: ひと続きの同じ数なので1色だけ。地色との明暗差は3:1を超えている。
+       「いちばん新しい日」は色を変えずに、日付を太字＋行の下地で示す
+       （色の濃さで分けると、淡いほうが薄すぎて棒が読めなくなる）。 */
+    --bar:#5c95d4;
     /* 折れ線: 過去は控えめな灰、直近と終点だけ色を付ける。
        --spark は地色との明暗差が 2.59:1 で 3:1 に届かないが、
        数・最小最大・変わった日の表を必ず出しているので読み取りは色に頼らない。
@@ -131,7 +135,8 @@
   svg.spark { display:block; flex:0 0 auto; overflow:visible; }
   .sp-none { font-size:.66rem; color:#b0bec5; flex:0 0 auto; width:104px;
     text-align:center; }
-  /* 変わった日の一覧。折れ線で読み取れない実数を、表でも出しておく */
+  /* 日付ごとの横棒。表の形で組んである（読み上げも効く・値も必ず読める）。
+     棒は 0 から伸ばす。途中から始めると、14と16の差が実際より大きく見える。 */
   details.nmv { padding:0 14px 8px; }
   details.nmv > summary { font-size:.7rem; color:var(--muted); cursor:pointer;
     padding:3px 0; list-style:none; }
@@ -140,12 +145,26 @@
   details.nmv[open] > summary::before { content:'▼ '; }
   table.nmt { width:100%; border-collapse:collapse; font-size:.72rem;
     font-variant-numeric:tabular-nums; margin-top:3px; }
+  table.nmt caption { caption-side:top; text-align:left; font-size:.66rem;
+    color:var(--muted); padding:2px 0 4px; }
   table.nmt th { text-align:left; font-weight:700; color:var(--muted);
-    font-size:.66rem; padding:2px 6px 3px 0; border-bottom:1px solid var(--border); }
-  table.nmt td { padding:3px 6px 3px 0; border-bottom:1px dotted #eceff1; }
+    font-size:.66rem; padding:2px 6px 3px 0; border-bottom:1px solid var(--border);
+    white-space:nowrap; }
+  table.nmt th.bar { width:100%; }
+  table.nmt td { padding:0 6px 0 0; border-bottom:1px dotted #eceff1;
+    white-space:nowrap; }
   table.nmt td.d { color:var(--muted); }
+  table.nmt td.b { width:100%; padding-right:8px; }
+  table.nmt td.v { text-align:right; font-weight:700; }
   table.nmt td.up { color:var(--ok); font-weight:700; }
   table.nmt td.down { color:var(--low); font-weight:700; }
+  table.nmt td.same { color:#b0bec5; }
+  /* 棒そのもの。行のすき間が地色の2px、棒の先だけ角を丸める */
+  .bw { display:block; padding:3px 0; }
+  .bb { display:block; height:12px; min-width:2px; background:var(--bar);
+    border-radius:0 4px 4px 0; }
+  table.nmt tr.now { background:#f3f8fd; }
+  table.nmt tr.now td.d { font-weight:700; color:var(--text); }
   footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
   .err { padding:30px 16px; text-align:center; color:var(--muted); }
   .login { background:var(--card); border:1px solid var(--border); border-radius:12px;
@@ -390,17 +409,40 @@ function numRowHtml(r) {
     + sparkHtml(r)
     + '<div class="nval"><div class="nnow">' + r.last + '</div>' + dif + '</div>'
     + '</div>';
-  if (r.moves && r.moves.length) {
-    h += '<details class="nmv"><summary>変わった日 ' + r.moves.length + '件</summary>'
-      + '<table class="nmt"><tr><th>日付</th><th>変化</th><th>差</th></tr>';
-    r.moves.forEach(function (m) {
-      h += '<tr><td class="d">' + esc(md(m.d)) + '</td>'
-        + '<td>' + m.from + ' → ' + m.to + '</td>'
-        + '<td class="' + (m.diff > 0 ? 'up' : 'down') + '">'
-        + (m.diff > 0 ? '▲+' : '▼') + m.diff + '</td></tr>';
-    });
-    h += '</table></details>';
+  if (r.days && r.days.length) {
+    h += '<details class="nmv"><summary>日付ごと ' + r.days.length + '日ぶん</summary>'
+      + barTableHtml(r) + '</details>';
   }
+  return h;
+}
+
+// 日付ごとの横棒。表として組む（棒が読めなくても、日付と数は必ず読める）。
+// 棒は 0 から伸ばす。途中から始めると 14 と 16 の差が実際より大きく見える。
+function barTableHtml(r) {
+  var md = function (s) { return s ? s.slice(5).replace('-', '/') : ''; };
+  var top = Math.max(1, r.max);           // いちばん多い日で目いっぱいになる
+  var h = '<table class="nmt">'
+    + '<caption>新しい順。棒の長さは0からの本数（いちばん長い日で' + r.max + '）</caption>'
+    + '<tr><th>日付</th><th class="bar">本数</th><th>数</th><th>前日との差</th></tr>';
+  r.days.forEach(function (p, i) {
+    var w = (p.v / top * 100).toFixed(1);
+    var dif;
+    if (p.diff === null || p.diff === undefined) {
+      dif = '<td class="same">―</td>';
+    } else if (p.diff === 0) {
+      dif = '<td class="same">±0</td>';
+    } else {
+      dif = '<td class="' + (p.diff > 0 ? 'up' : 'down') + '">'
+        + (p.diff > 0 ? '▲+' : '▼') + p.diff + '</td>';
+    }
+    h += '<tr' + (i === 0 ? ' class="now"' : '') + '>'
+      + '<td class="d">' + esc(md(p.d)) + (i === 0 ? '（最新）' : '') + '</td>'
+      + '<td class="b"><span class="bw">'
+      + '<span class="bb" style="width:' + w + '%"'
+      + ' title="' + esc(md(p.d)) + '　' + p.v + '"></span></span></td>'
+      + '<td class="v">' + p.v + '</td>' + dif + '</tr>';
+  });
+  h += '</table>';
   return h;
 }
 
