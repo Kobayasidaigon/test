@@ -369,6 +369,157 @@ function vForStore(task, store) {
   if (!Array.isArray(ss) || !ss.length) return true;
   return ss.indexOf(store) >= 0;
 }
+// ---- 数の記録（ゴルフのクラブ本数・ボール個数など）----
+// 保存の形: nums_<店舗>_<日付> = { "<項目id>": { "<欄id>": "値" } }
+// 項目の定義に nums が入っていると、その項目に数値欄が出る（アプリ側の itemNumFields と同じ読み方）。
+const VIEW_NUM_DAYS = 60;          // さかのぼる日数
+const VIEW_NUM_POINTS = 45;        // 折れ線に出す点の上限（古いほうから間引く）
+
+function vNumFields(nums) {
+  if (!nums) return [];
+  const list = Array.isArray(nums) ? nums : String(nums).split(',');
+  return list.map((n, i) => {
+    if (n && typeof n === 'object') {
+      const label = String(n.label || '').trim();
+      return label ? { id: String(n.id || 'n' + i), label: label } : null;
+    }
+    const label = String(n).trim();
+    return label ? { id: 'n' + i, label: label } : null;
+  }).filter(Boolean);
+}
+
+// その店舗で数値欄が付いている項目を集める。エリア名と項目名も添える。
+function vNumDefs(store) {
+  const customAreas = vJson(vDefRead(store, 'customAreas'), []) || [];
+  const extra = (Array.isArray(customAreas) ? customAreas : [])
+    .filter(a => a && a.key && !BUILTIN_AREAS.some(b => b.key === a.key))
+    .map(a => ({ key: a.key, name: a.name || a.key }));
+  const areas = BUILTIN_AREAS.map(a => ({ key: a.key, name: a.name })).concat(extra);
+  // 名前はこの店舗の設定で上書きされていることがある
+  const nameOf = {};
+  (Array.isArray(customAreas) ? customAreas : []).forEach(a => {
+    if (a && a.key && a.name) nameOf[a.key] = a.name;
+  });
+
+  const out = [];
+  areas.forEach(a => {
+    const edits = vJson(vDefRead(store, 'itemEdits_' + a.key), {}) || {};
+    const custom = vJson(vDefRead(store, 'customItems_' + a.key), []) || [];
+    const areaName = nameOf[a.key] || a.name;
+    const add = (id, title, nums, low, out2) => {
+      const fields = vNumFields(nums);
+      if (!fields.length) return;
+      out.push({ areaKey: a.key, area: areaName, id: id,
+                 title: String(title || id), fields: fields,
+                 low: vNumOrNull(low), out: vNumOrNull(out2) });
+    };
+    // 組み込みの項目に、あとから数値欄を足したもの。
+    // 組み込みの定義そのものは parseBuiltinAreas が id と title しか拾わないので、
+    // index.html の側に nums を書いても、ここでは見えない（いまは1つも無い）。
+    // 組み込みの項目で数を数えたくなったら、拾う所を足すこと。
+    ((BUILTIN_AREAS.find(b => b.key === a.key) || {}).groups || [])
+      .forEach(g => g.items.forEach(it => {
+        const ed = edits[it.id] || {};
+        add(it.id, ed.title != null ? ed.title : it.title,
+            ed.nums != null ? ed.nums : it.nums, ed.numLow, ed.numOut);
+      }));
+    // この店舗で足した項目
+    (Array.isArray(custom) ? custom : []).forEach(ci => {
+      if (!ci || !ci.id) return;
+      const ed = edits[ci.id] || {};
+      add(ci.id, ed.title != null ? ed.title : ci.title,
+          ed.nums != null ? ed.nums : ci.nums,
+          ed.numLow != null ? ed.numLow : ci.numLow,
+          ed.numOut != null ? ed.numOut : ci.numOut);
+    });
+  });
+  return out;
+}
+
+function vNumOrNull(v) {
+  if (v === undefined || v === null || String(v).trim() === '') return null;
+  const n = Number(v);
+  return isFinite(n) ? n : null;
+}
+
+// さかのぼって nums_ を読む。見ている日より後ろは読まない（記録と同じ扱い）。
+function vNumRead(store, day, days) {
+  const out = {};
+  const base = new Date(day + 'T00:00:00');
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(base.getTime() - i * 86400000);
+    const dt = vFmtDate(d);
+    const rec = vJson(state.kv['nums_' + store + '_' + dt], null);
+    if (!rec || typeof rec !== 'object') continue;
+    out[dt] = rec;
+  }
+  return out;
+}
+
+// 点が多いときは古いほうから間引く。いちばん新しい点は必ず残す。
+function vThin(series, max) {
+  if (series.length <= max) return series;
+  const keep = [];
+  const step = (series.length - 1) / (max - 1);
+  for (let i = 0; i < max - 1; i++) keep.push(series[Math.round(i * step)]);
+  keep.push(series[series.length - 1]);
+  // 同じ点を2回拾うことがあるので、日付で重なりを取る
+  const seen = {};
+  return keep.filter(p => (seen[p.d] ? false : (seen[p.d] = true)));
+}
+
+// 1行ぶん（場所・項目・欄ごと）の推移。値の無い日は点を置かない。
+function viewNums(store, day) {
+  const defs = vNumDefs(store);
+  if (!defs.length) return [];
+  const read = vNumRead(store, day, VIEW_NUM_DAYS);
+  const dates = Object.keys(read).sort();
+  const rows = [];
+  defs.forEach(d => d.fields.forEach(f => {
+    const series = [];
+    dates.forEach(dt => {
+      const rec = read[dt][d.id];
+      if (!rec || typeof rec !== 'object') return;
+      const raw = rec[f.id];
+      if (raw === undefined || raw === null || String(raw).trim() === '') return;
+      const v = Number(raw);
+      if (!isFinite(v)) return;
+      series.push({ d: dt, v: v });
+    });
+    if (!series.length) return;
+    const last = series[series.length - 1];
+    const prev = series.length > 1 ? series[series.length - 2] : null;
+    // 変わった日だけ拾う（在庫の動きはここに出る）
+    const moves = [];
+    for (let i = 1; i < series.length; i++) {
+      const diff = series[i].v - series[i - 1].v;
+      if (diff !== 0) {
+        moves.push({ d: series[i].d, from: series[i - 1].v, to: series[i].v, diff: diff });
+      }
+    }
+    const vals = series.map(p => p.v);
+    rows.push({
+      area: d.area, areaKey: d.areaKey, title: d.title, label: f.label,
+      last: last.v, lastDate: last.d,
+      prev: prev ? prev.v : null, prevDate: prev ? prev.d : null,
+      diff: prev ? last.v - prev.v : null,
+      min: Math.min.apply(null, vals), max: Math.max.apply(null, vals),
+      n: series.length, from: series[0].d,
+      low: d.low, outAt: d.out,
+      // 折れ線に出す点と、変わった日の一覧（表で見せる用）
+      series: vThin(series, VIEW_NUM_POINTS),
+      moves: moves.slice(-30).reverse(),
+    });
+  }));
+  // ゴルフを先に、あとは場所→項目→欄の順
+  const rank = r => (r.areaKey.indexOf('golf') === 0 ? 0 : 1);
+  rows.sort((a, b) => rank(a) - rank(b)
+    || (a.areaKey < b.areaKey ? -1 : a.areaKey > b.areaKey ? 1 : 0)
+    || (a.title < b.title ? -1 : a.title > b.title ? 1 : 0)
+    || (a.label < b.label ? -1 : a.label > b.label ? 1 : 0));
+  return rows;
+}
+
 // その店舗の定期清掃。担当者名は持ち出さない（done.staff は読まない）。
 function viewPeriodic(store) {
   const tasks = vJson(state.kv['periodicTasks'], []) || [];
@@ -561,7 +712,11 @@ function buildViewData(day) {
     // ③ 定期清掃（たまにやる仕事。毎日の数には混ぜない）
     const periodic = viewPeriodic(store);   // いつも「今の状態」（下の periodicAsOfToday を見ること）
 
-    return { store: store, routines: routines, areas: areas, periodic: periodic };
+    // ④ 本数・個数の記録（ゴルフのクラブなど）。毎日の清掃率には混ぜない
+    const nums = viewNums(store, today);
+
+    return { store: store, routines: routines, areas: areas,
+             periodic: periodic, nums: nums };
   });
   return {
     date: today,
