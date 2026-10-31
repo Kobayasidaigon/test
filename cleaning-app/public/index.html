@@ -216,6 +216,9 @@
   .pr-only { color: var(--muted); font-size: .72rem; margin-left: 4px; }
   .pr-sel { flex: 0 0 auto; font-size: .8rem; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--text); }
   .pr-sel.pr-saved { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; }
+  /* 追加してから1週間の項目に付ける「新」の印 */
+  .new-tag { display: inline-block; background: #fff3e0; color: #e65100; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; margin-left: 4px; white-space: nowrap; }
+  .rt-row .new-tag { flex-shrink: 0; margin-left: 0; margin-right: 4px; }
   .stale-tag { display: inline-block; background: #fdecea; color: #c62828; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; white-space: nowrap; }
   .insp-btn { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 7px 14px; font-weight: 700; font-size: 1rem; cursor: pointer; color: var(--muted); }
   .insp-btn.sel-ok { background: #e8f5e9; border-color: #43a047; color: #2e7d32; }
@@ -2634,7 +2637,7 @@ function getGroups(areaKey) {
     // customItems から消すと id ごと消え、それまでのチェックが画面から
     // 出なくなる（迷子になる）。定期清掃へ移すときなどはここで下ろす。
     custom.filter(ci => ci.section === sec && !hidden.includes(ci.id)).forEach(ci => {
-      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut });
+      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut, addedAt: ci.addedAt || '' });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -3418,7 +3421,7 @@ document.getElementById('addSave').onclick = () => {
   }
   const ak = addTargetArea || currentArea;
   const list = loadCustomItems(ak);
-  list.push({ id: 'c' + Date.now() + Math.floor(Math.random() * 1000), section: section, title: title, desc: addDesc.value.trim() });
+  list.push({ id: 'c' + Date.now() + Math.floor(Math.random() * 1000), section: section, title: title, desc: addDesc.value.trim(), addedAt: todayStr() });
   saveCustomItems(ak, list);
   addDialog.close();
   render();
@@ -4088,6 +4091,23 @@ function areaLastCleaned(areaKey) {
 function daysSince(dateStr) {
   const a = new Date(dateStr + 'T00:00:00'), b = new Date(todayStr() + 'T00:00:00');
   return Math.round((b - a) / 86400000);
+}
+// 追加してからこの日数のあいだは「新」の印を出す（現場が新しい項目に気づけるように）
+const NEW_ITEM_DAYS = 7;
+// 項目を追加した日。addedAt があればそれ、無ければ画面で足した項目の id（'c' + 追加した時刻）から読む。
+function itemAddedDate(item) {
+  const at = String((item && item.addedAt) || '');
+  if (/^\d{4}-\d{2}-\d{2}$/.test(at)) return at;
+  const m = /^c(\d{13})/.exec(String((item && item.id) || ''));
+  if (!m) return null;
+  const d = new Date(Number(m[1]));
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+function newTagHtml(item) {
+  const at = itemAddedDate(item);
+  if (!at) return '';
+  const n = daysSince(at);
+  return (n >= 0 && n < NEW_ITEM_DAYS) ? ' <span class="new-tag">新</span>' : '';
 }
 // 期間が空いた項目のしきい値（日）。チェックシートのお知らせ・項目バッジ・店舗まとめで共通
 const STALE_DAYS = 7;
@@ -5300,6 +5320,7 @@ function renderRoutineView() {
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
+      + (routineEditMode ? '' : newTagHtml(item))
       + gapTagHtml(item)
       // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
@@ -5727,7 +5748,7 @@ function render() {
         <div class="item-head">
           <button class="check-btn" aria-label="完了切り替え">${ic('check')}</button>
           <div class="item-body">
-            <div class="item-title">${escapeHtml(item.title)}${item.custom ? ' <span class="custom-tag">追加</span>' : ''}${staleTag}</div>
+            <div class="item-title">${escapeHtml(item.title)}${newTagHtml(item) || (item.custom ? ' <span class="custom-tag">追加</span>' : '')}${staleTag}</div>
             <div class="item-desc">${escapeHtml(item.desc)}</div>
             <div class="item-status">${ls ? escapeHtml('未完了: ' + ls.label + '（タップでそのエリアへ）') : '未実施'}</div>${ls ? '' : `<span class="last-done">${escapeHtml(lastDoneLabel(staleLast))}</span>`}
             <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml((done._slot ? done._slot + '　' : '') + done.staff) + ' / ' + escapeHtml(done.time || '')) : ''}</div>
