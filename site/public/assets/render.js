@@ -7,9 +7,10 @@
 
   function man(n) {
     // 円 → 「188.0万円」。1万円未満は円で出す。
+    if (!isFinite(n)) return '—';
     var sign = n < 0 ? '−' : '';
     var a = Math.abs(n);
-    if (a < 10000) return sign + a.toLocaleString('ja-JP') + '円';
+    if (a < 10000) return sign + Math.round(a).toLocaleString('ja-JP') + '円';
     return sign + (a / 10000).toFixed(1) + '万円';
   }
   // 明細の表用：常に万円単位。スマホでは単位を表の説明にまとめて数字だけ見せる
@@ -19,27 +20,37 @@
   }
   function yen(n) { return (n < 0 ? '−' : '') + Math.abs(Math.round(n)).toLocaleString('ja-JP') + '円'; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var NIL = '<span class="nil" aria-label="なし">—</span>';
+  function note(t) { return t ? '<span class="row-note">' + t + '</span>' : ''; }
+
+  function taxNote(s) {
+    if (s.ineligibleReason === 'built') return '1981年6月以降の建築なので控除なし';
+    if (s.ineligibleReason === 'price') return '売却額が1億円を超えるので控除なし';
+    if (s.ineligibleReason === 'expired') return '控除の期限（2027年12月31日）を過ぎるので控除なし';
+    var who = s.heirs >= 3 ? '1人2,000万円×' + s.heirs + '人' : (s.heirs > 1 ? '1人3,000万円×' + s.heirs + '人' : '3,000万円');
+    return '空き家の特別控除（' + who + '）を使えた場合。使えなければ' + man(s.taxWithout);
+  }
 
   function statement(r, input) {
     var k = r.keep, c = r.clear, s = r.sell;
     var rows = [
-      { label: '固定資産税・都市計画税', note: '家が建っている土地は住宅用地の特例で安い', keepN: k.annualTax.total, clearN: c.steadyTax.total, clearNote: '2年目から（特例なし）', sellN: s.yearOneTax, sellNote: '売る年の分' },
-      { label: '火災保険', keepN: input.insurance, clearN: 0, sellN: 0 },
-      { label: '見回り・管理', note: '通う交通費か管理サービス', keepN: input.management, clearN: 0, sellN: 0 },
-      { label: '水道・電気の基本料金', keepN: input.utilities, clearN: 0, sellN: 0 },
-      { label: '草刈り・庭木', keepN: input.mowing, clearN: input.mowing, sellN: 0 },
+      { label: '固定資産税・都市計画税', note: '家が建っている土地は住宅用地の特例で安い', keepN: k.annualTax.total, clearN: c.steadyTax.total, clearNote: '2年目から（特例なし）', sellN: s.yearOneTax, sellNote: '売る年の分（日割り精算の前）' },
+      { label: '火災保険', keepN: input.insurance },
+      { label: '見回り・管理', note: '通う交通費か管理サービス', keepN: input.management },
+      { label: '水道・電気の基本料金', keepN: input.utilities },
+      { label: '草刈り・庭木', keepN: input.mowing, clearN: input.mowing },
     ];
     var body = rows.map(function (row) {
-      return '<tr><th scope="row">' + esc(row.label) + (row.note ? '<span class="row-note">' + esc(row.note) + '</span>' : '') + '</th>' +
-        '<td>' + manT(row.keepN) + '<span class="per">/年</span></td>' +
-        '<td>' + (row.clearN ? manT(row.clearN) + '<span class="per">/年</span>' : '<span class="nil">なし</span>') + (row.clearNote ? '<span class="row-note">' + esc(row.clearNote) + '</span>' : '') + '</td>' +
-        '<td>' + (row.sellN ? manT(row.sellN) : '<span class="nil">なし</span>') + (row.sellNote ? '<span class="row-note">' + esc(row.sellNote) + '</span>' : '') + '</td></tr>';
+      return '<tr><th scope="row">' + esc(row.label) + note(row.note) + '</th>' +
+        '<td>' + (row.keepN ? manT(row.keepN) + '<span class="per">/年</span>' : NIL) + '</td>' +
+        '<td>' + (row.clearN ? manT(row.clearN) + '<span class="per">/年</span>' : NIL) + note(row.clearNote) + '</td>' +
+        '<td>' + (row.sellN ? manT(row.sellN) : NIL) + note(row.sellNote) + '</td></tr>';
     }).join('');
-    body += '<tr><th scope="row">解体費<span class="row-note">' + (input.structureLabel || '') + ' 延床' + Math.round(input.floorSqm / 3.30579) + '坪の目安</span></th><td><span class="nil">なし</span></td><td>' + manT(c.demolitionGross) + '</td><td><span class="nil">なし</span></td></tr>';
-    body += '<tr><th scope="row">解体補助金<span class="row-note">' + (input.subsidyNote || (c.subsidyEligible ? '補助率と上限で計算' : '対象外か制度なし')) + '</span></th><td><span class="nil">なし</span></td><td class="plus">' + (c.subsidy ? '−' + manT(c.subsidy) : '<span class="nil">0円</span>') + '</td><td><span class="nil">なし</span></td></tr>';
-    body += '<tr><th scope="row">売却額<span class="row-note">' + (input.salePrice > 0 ? '入力した額' : '地価×土地面積−解体費') + '</span></th><td><span class="nil">なし</span></td><td><span class="nil">なし</span></td><td class="plus">' + manT(s.price) + '</td></tr>';
-    body += '<tr><th scope="row">仲介手数料</th><td><span class="nil">なし</span></td><td><span class="nil">なし</span></td><td>' + manT(s.fee) + '</td></tr>';
-    body += '<tr><th scope="row">譲渡所得税<span class="row-note">' + (s.deductionEligible ? '3,000万円控除を使った場合' : '1981年6月以降の建築で控除なし') + '</span></th><td><span class="nil">なし</span></td><td><span class="nil">なし</span></td><td>' + manT(s.tax) + '</td></tr>';
+    body += '<tr><th scope="row">解体費' + note(esc(input.structureLabel || '') + ' 延床' + Math.round(input.floorSqm / 3.30579) + '坪×坪' + (c.perTsubo / 10000).toFixed(1) + '万円') + '</th><td>' + NIL + '</td><td>' + manT(c.demolitionGross) + '</td><td>' + NIL + '</td></tr>';
+    body += '<tr><th scope="row">解体の補助金' + note(esc(input.subsidyNote || (c.subsidyEligible ? '補助率と上限で計算' : '対象外か制度なし'))) + '</th><td>' + NIL + '</td><td class="plus">' + (c.subsidy ? '−' + manT(c.subsidy) : NIL) + '</td><td>' + NIL + '</td></tr>';
+    body += '<tr><th scope="row">売却額' + note(input.salePrice > 0 ? '入力した額' : '地価×土地面積−解体費の推定。査定額を入れると正確に') + '</th><td>' + NIL + '</td><td>' + NIL + '</td><td class="plus">' + manT(s.price) + '</td></tr>';
+    body += '<tr><th scope="row">仲介手数料' + note('通常の上限で計算' + (s.lowCost ? '。800万円以下は、事前の説明と合意があれば最大33万円' : '')) + '</th><td>' + NIL + '</td><td>' + NIL + '</td><td>' + manT(s.fee) + '</td></tr>';
+    body += '<tr><th scope="row">譲渡所得の税' + note(taxNote(s)) + '</th><td>' + NIL + '</td><td>' + NIL + '</td><td>' + (s.tax ? manT(s.tax) : '0<span class="u">円</span>') + '</td></tr>';
 
     var foot = '<tr class="sum"><th scope="row">' + r.years + '年の合計</th>' +
       '<td><span class="sum-label">出ていくお金</span>' + manT(k.total) + '</td>' +
@@ -53,50 +64,16 @@
   }
 
   function finding(r) {
-    if (r.crossover) {
-      return 'この条件だと、解体して更地で持つほうが<strong>' + r.crossover + '年目</strong>から安くなります。それまでは、家を残したほうが出ていくお金は少なめです。';
-    }
     var diff = r.clear.total - r.keep.total;
-    if (diff > 0) return 'この条件だと、' + r.years + '年のうちは更地にしても安くなりません。解体費と、特例が外れて上がる土地の税が、家の維持費より重いためです。差は<strong>' + man(diff) + '</strong>です。';
-    return 'この条件だと、最初の年から更地のほうが安くなります。';
+    if (r.crossover === 1) return 'この条件だと、最初の年から最後まで、解体して更地で持つほうが出ていくお金は少なくなります。' + r.years + '年で<strong>' + man(-diff) + '</strong>の差です。';
+    if (r.crossover) return 'この条件だと、解体して更地で持つほうが<strong>' + r.crossover + '年目</strong>から安くなります。それまでは、家を残したほうが出ていくお金は少なめです。';
+    if (diff === 0) return 'この条件だと、' + r.years + '年の合計は、持ち続けても更地にしても同じです。';
+    if (r.reversal) return 'この条件だと、途中で一度は更地のほうが安くなりますが、' + r.years + '年の合計では家を残したほうが<strong>' + man(diff) + '</strong>少なくなります。';
+    return 'この条件だと、' + r.years + '年のうちは更地にしても安くなりません。解体費と、特例が外れて上がる土地の税が、家の維持費より重いためです。差は<strong>' + man(diff) + '</strong>です。';
   }
 
   function legend() {
     return '<ul class="legend" aria-hidden="true"><li><i></i>持ち続ける</li><li class="clear"><i></i>解体して更地で持つ</li></ul>';
-  }
-
-  function chart(r) {
-    // 累計の折れ線。x=年、y=累計の支出。持ち続ける（墨）と更地（緑）。
-    var W = 640, H = 320, L = 86, R = 34, T = 28, B = 50;
-    var n = r.years;
-    var maxV = Math.max(r.keep.total, r.clear.total);
-    var step = niceStep(maxV / 4);
-    var top = Math.ceil(maxV / step) * step;
-    function x(i) { return L + (W - L - R) * (i / n); }
-    function y(v) { return T + (H - T - B) * (1 - v / top); }
-    var grid = '';
-    for (var g = 0; g <= top + 1; g += step) {
-      grid += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g) + '" y2="' + y(g) + '"/>' +
-        '<text class="tick" x="' + (L - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end">' + (g === 0 ? '0' : Math.round(g / 10000) + '万') + '</text>';
-    }
-    var xt = '';
-    for (var i = 1; i <= n; i++) xt += '<text class="tick" x="' + x(i) + '" y="' + (H - B + 22) + '" text-anchor="middle">' + i + '年</text>';
-    function path(rows) {
-      var d = 'M' + x(0) + ',' + y(0);
-      rows.forEach(function (row, idx) { d += ' L' + x(idx + 1) + ',' + y(row.cumulative); });
-      return d;
-    }
-    var mark = '';
-    if (r.crossover) {
-      var cx = x(r.crossover), cy = y(r.clear.rows[r.crossover - 1].cumulative);
-      mark = '<circle class="cross" cx="' + cx + '" cy="' + cy + '" r="6"/>' +
-        '<text class="cross-label" x="' + cx + '" y="' + (cy - 14) + '" text-anchor="middle">' + r.crossover + '年目で逆転</text>';
-    }
-    return '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-labelledby="chart-title">' +
-      '<title id="chart-title">出ていくお金の累計（' + n + '年）。持ち続けると' + man(r.keep.total) + '、解体して更地で持つと' + man(r.clear.total) + '</title>' +
-      grid + xt +
-      '<path class="line keep" d="' + path(r.keep.rows) + '"/>' +
-      '<path class="line clear" d="' + path(r.clear.rows) + '"/>' + mark + '</svg>';
   }
 
   function niceStep(raw) {
@@ -105,7 +82,50 @@
     return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
   }
 
-  var api = { statement: statement, finding: finding, chart: chart, legend: legend, man: man, yen: yen, esc: esc };
+  function chart(r) {
+    // 累計の折れ線。x=年、y=累計の支出。持ち続ける（墨）と更地（緑）。
+    var W = 640, H = 320, L = 86, R = 34, T = 28, B = 50;
+    var n = r.years;
+    var maxV = Math.max(r.keep.total, r.clear.total, 1);
+    var step = Math.max(niceStep(maxV / 4), 10000);
+    var top = Math.max(Math.ceil(maxV / step) * step, step);
+    function x(i) { return L + (W - L - R) * (i / n); }
+    function y(v) { return T + (H - T - B) * (1 - v / top); }
+    var grid = '';
+    for (var g = 0; g <= top + 1; g += step) {
+      var label = g === 0 ? '0' : (step % 10000 === 0 ? Math.round(g / 10000) : (g / 10000).toFixed(1)) + '万';
+      grid += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g) + '" y2="' + y(g) + '"/>' +
+        '<text class="tick" x="' + (L - 10) + '" y="' + (y(g) + 5) + '" text-anchor="end">' + label + '</text>';
+    }
+    var xt = '';
+    for (var i = 1; i <= n; i++) xt += '<text class="tick' + (i % 2 === 0 && i !== n ? ' even' : '') + '" x="' + x(i) + '" y="' + (H - B + 26) + '" text-anchor="middle">' + i + '年</text>';
+    function path(rows) {
+      var d = 'M' + x(0) + ',' + y(0);
+      rows.forEach(function (row, idx) { d += ' L' + x(idx + 1) + ',' + y(row.cumulative); });
+      return d;
+    }
+    var mark = '';
+    if (r.crossover) {
+      var cx = x(r.crossover), cy = y(r.clear.rows[r.crossover - 1].cumulative);
+      var nearEnd = r.crossover >= n - 1;
+      var text = r.crossover === 1 ? '1年目から安い' : r.crossover + '年目で逆転';
+      mark = '<circle class="cross" cx="' + cx + '" cy="' + cy + '" r="6"/>' +
+        '<text class="cross-label" x="' + (nearEnd ? cx + 4 : cx) + '" y="' + (cy - 16) + '" text-anchor="' + (nearEnd ? 'end' : 'middle') + '">' + text + '</text>';
+    }
+    return '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="出ていくお金の累計（' + n + '年）。持ち続けると' + man(r.keep.total) + '、解体して更地で持つと' + man(r.clear.total) + '">' +
+      grid + xt +
+      '<path class="line keep" d="' + path(r.keep.rows) + '"/>' +
+      '<path class="line clear" d="' + path(r.clear.rows) + '"/>' + mark + '</svg>';
+  }
+
+  function jumpText(r) {
+    var j = r.clear.taxJump;
+    if (j === null) return '—';
+    if (!isFinite(j)) return '0円→' + man(r.clear.clearLandTax);
+    return j.toFixed(1) + '倍';
+  }
+
+  var api = { statement: statement, finding: finding, chart: chart, legend: legend, jumpText: jumpText, man: man, yen: yen, esc: esc };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.AkiyaRender = api;
 })(this);

@@ -5,55 +5,48 @@
   var form = document.getElementById('calc');
   if (!cfgEl || !form || !window.AkiyaCalc || !window.AkiyaRender) return;
   var cfg = JSON.parse(cfgEl.textContent);
+  var R = window.AkiyaRender;
   var result = document.getElementById('result');
-  var touched = {};
+  var monthField = document.getElementById('builtMonthField');
 
-  function num(id) {
+  // 空欄なら null。全角数字とカンマも受け付ける
+  function val(id) {
     var el = form.elements[id];
-    if (!el) return 0;
-    var v = parseFloat(String(el.value).replace(/,/g, ''));
-    return isFinite(v) && v > 0 ? v : 0;
+    if (!el) return null;
+    var s = String(el.value).replace(/[０-９]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 0xfee0); }).replace(/[,，\s]/g, '');
+    if (s === '') return null;
+    var v = parseFloat(s);
+    return isFinite(v) && v >= 0 ? v : null;
   }
+  function pick(id, fallback) { var v = val(id); return v === null || v === 0 ? fallback : v; }
 
-  function currentCity() {
-    var sel = form.elements.city;
-    return cfg.cities[sel ? sel.value : cfg.current];
-  }
+  function currentSlug() { return form.elements.city ? form.elements.city.value : cfg.current; }
 
   function read() {
-    var city = currentCity();
+    var city = cfg.cities[currentSlug()];
     var c = city.calc;
-    var structure = (form.querySelector('input[name="structure"]:checked') || {}).value || 'wood';
-    var landSqm = num('landSqm') || cfg.defaults.landSqm;
-    var floorSqm = num('floorSqm') || cfg.defaults.floorSqm;
-    var builtYear = num('builtYear') || cfg.defaults.builtYear;
+    var d = cfg.defaults;
+    var structure = (form.querySelector('input[name="structure"]:checked') || {}).value || d.structure;
+    var landSqm = pick('landSqm', d.landSqm);
+    var floorSqm = pick('floorSqm', d.floorSqm);
+    var builtYear = pick('builtYear', d.builtYear);
+    if (builtYear < 1900 || builtYear > 2100) builtYear = d.builtYear;
+    var builtMonth = builtYear === 1981 && form.elements.builtMonth ? +form.elements.builtMonth.value : 12;
     return {
-      city: { fixedRate: c.fixedRate, planningRate: c.planningRate, landPricePerSqm: num('landPrice'), subsidy: c.subsidy, relief: c.relief },
+      city: { fixedRate: c.fixedRate, planningRate: c.planningRate, landPricePerSqm: pick('landPrice', c.landPricePerSqm), subsidy: c.subsidy, relief: c.relief },
       landSqm: landSqm, floorSqm: floorSqm, structure: structure, structureLabel: cfg.structures[structure],
-      builtYear: builtYear, builtMonth: 12,
-      landAssessed: num('landAssessed'), houseAssessed: num('houseAssessed'), salePrice: num('salePrice'), demolitionPerTsubo: num('demolitionPerTsubo'),
+      builtYear: builtYear, builtMonth: builtMonth,
+      landAssessed: val('landAssessed') || 0, houseAssessed: val('houseAssessed') || 0, salePrice: val('salePrice') || 0, demolitionPerTsubo: val('demolitionPerTsubo') || 0,
       inUrbanArea: form.elements.inUrbanArea ? form.elements.inUrbanArea.checked : true,
-      manyHeirs: form.elements.manyHeirs ? form.elements.manyHeirs.checked : false,
-      insurance: num('insurance'), management: num('management'), utilities: num('utilities'), mowing: num('mowing'),
-      subsidyNote: c.subsidyNote, years: 10,
+      heirs: form.elements.heirs ? +form.elements.heirs.value : 1,
+      insurance: val('insurance') === null ? d.insurance : val('insurance'),
+      management: val('management') === null ? d.management : val('management'),
+      utilities: val('utilities') === null ? c.utilities : val('utilities'),
+      mowing: val('mowing') === null ? d.mowing : val('mowing'),
+      subsidyNote: c.subsidyNote, years: d.years, startYear: d.startYear,
+      cityName: city.name,
       captionText: city.name + '・土地' + landSqm + '㎡・' + cfg.structures[structure] + '延床' + floorSqm + '㎡・' + builtYear + '年築の10年明細',
     };
-  }
-
-  function render(animate) {
-    var input = read();
-    var r = window.AkiyaCalc.compare(input);
-    var R = window.AkiyaRender;
-    var chart = R.chart(r);
-    if (animate) chart = chart.replace('<svg class="chart"', '<svg class="chart draw"');
-    result.innerHTML = '<p class="finding">' + R.finding(r) + '</p>' +
-      '<div class="chart-box">' + R.legend() + chart + '</div>' + R.statement(r, input) +
-      '<p class="hint">土地の評価額' + R.man(r.assumptions.landAssessed) + (r.assumptions.estimatedLand ? '（地価×0.7で推定）' : '') +
-      '、家屋の評価額' + R.man(r.assumptions.houseAssessed) + (r.assumptions.estimatedHouse ? '（築年数が経った家の目安で推定）' : '') +
-      'で計算しました。課税明細書の「価格」を入れると、今払っている税額に近づきます。</p>';
-    bind('keepLand', R.man(r.keep.annualTax.landFixed + r.keep.annualTax.landPlanning));
-    bind('clearLand', R.man(r.clear.steadyTax.total));
-    bind('jump', r.clear.taxJump ? r.clear.taxJump.toFixed(1) + '倍' : '—');
   }
 
   function bind(key, text) {
@@ -61,22 +54,60 @@
     for (var i = 0; i < els.length; i++) els[i].textContent = text;
   }
 
-  // 市を変えたら、利用者がまだ触っていない「地価」「基本料金」をその市の値に入れ替える
+  function render(animate) {
+    var input = read();
+    if (monthField) monthField.hidden = input.builtYear !== 1981;
+    var r = window.AkiyaCalc.compare(input);
+    var chart = R.chart(r);
+    if (animate) chart = chart.replace('<svg class="chart"', '<svg class="chart draw"');
+    result.innerHTML = '<p class="finding">' + R.finding(r) + '</p>' +
+      '<div class="chart-box">' + R.legend() + chart + '</div>' + R.statement(r, input) +
+      '<p class="hint result-note">土地の評価額' + R.man(r.assumptions.landAssessed) + (r.assumptions.estimatedLand ? '（地価×0.7で推定）' : '') +
+      '、家屋の評価額' + R.man(r.assumptions.houseAssessed) + (r.assumptions.estimatedHouse ? '（築年数が経った家の目安で推定）' : '') +
+      'で計算しました。売却額は' + (input.salePrice ? '入力した額です。' : '地価からの推定です。実際の査定額を「売れそうな額」に入れると、3つの比べ方が変わります。') +
+      '<a href="#sell">値段の調べ方</a></p>';
+    // 「税が上がる」の節と、課税明細書の見本
+    var t = r.keep.annualTax;
+    bind('keepLand', R.man(r.clear.keepLandTax));
+    bind('clearLand', R.man(r.clear.clearLandTax));
+    bind('jump', R.jumpText(r));
+    bind('slip-city', input.cityName);
+    bind('slip-area', input.landSqm.toFixed(2) + '㎡');
+    bind('slip-landval', R.yen(r.assumptions.landAssessed));
+    bind('slip-small', Math.min(input.landSqm, 200, input.floorSqm * 10).toFixed(2) + '㎡');
+    bind('slip-base', R.yen(t.bases.landFixed));
+    bind('slip-pbase', R.yen(t.bases.landPlanning));
+    bind('slip-structure', input.structureLabel);
+    bind('slip-floor', input.floorSqm.toFixed(2) + '㎡');
+    bind('slip-houseval', R.yen(r.assumptions.houseAssessed));
+    bind('slip-tax', R.yen(t.total));
+  }
+
+  // 市を変えたとき：市のページなら、その市のページへ移る。トップでは、その市の地価と基本料金に入れ替える。
   function onCityChange() {
-    var c = currentCity().calc;
-    if (!touched.landPrice) form.elements.landPrice.value = c.landPricePerSqm;
-    if (!touched.utilities) form.elements.utilities.value = c.utilities;
+    var slug = currentSlug();
+    if (cfg.isCityPage && slug !== cfg.current) {
+      location.href = slug === 'other' ? cfg.root + 'index.html#tool' : cfg.root + 'city/' + slug + '.html#tool';
+      return false;
+    }
+    var c = cfg.cities[slug].calc;
+    form.elements.landPrice.value = c.landPricePerSqm;
+    form.elements.utilities.value = c.utilities;
+    return true;
   }
 
   var timer = null;
   form.addEventListener('input', function (e) {
-    if (e.target && e.target.name) touched[e.target.name] = true;
-    if (e.target && e.target.name === 'city') { touched.city = true; onCityChange(); }
+    if (e.target && e.target.name === 'city') return; // change で処理する
     clearTimeout(timer);
     timer = setTimeout(function () { render(false); }, 120);
   });
   form.addEventListener('change', function (e) {
-    if (e.target && e.target.name === 'city') { onCityChange(); render(true); }
+    if (e.target && e.target.name === 'city') {
+      clearTimeout(timer);
+      if (onCityChange()) render(true);
+    }
   });
   form.addEventListener('submit', function (e) { e.preventDefault(); render(true); });
+  if (monthField) monthField.hidden = (val('builtYear') || 0) !== 1981;
 })();
