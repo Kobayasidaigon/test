@@ -219,6 +219,9 @@
   /* 追加してから1週間の項目に付ける「新」の印 */
   .new-tag { display: inline-block; background: #fff3e0; color: #e65100; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; margin-left: 4px; white-space: nowrap; }
   .rt-row .new-tag { flex-shrink: 0; margin-left: 0; margin-right: 4px; }
+  /* 新しい項目は行（カード）ごと橙の枠で囲む */
+  .rt-row.rt-new { border: 2px solid #fb8c00; padding: 4px 9px; }
+  .item.item-new { box-shadow: 0 0 0 2px #fb8c00; }
   .stale-tag { display: inline-block; background: #fdecea; color: #c62828; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; white-space: nowrap; }
   .insp-btn { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 7px 14px; font-weight: 700; font-size: 1rem; cursor: pointer; color: var(--muted); }
   .insp-btn.sel-ok { background: #e8f5e9; border-color: #43a047; color: #2e7d32; }
@@ -4103,11 +4106,14 @@ function itemAddedDate(item) {
   const d = new Date(Number(m[1]));
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 }
-function newTagHtml(item) {
+function isNewItem(item) {
   const at = itemAddedDate(item);
-  if (!at) return '';
+  if (!at) return false;
   const n = daysSince(at);
-  return (n >= 0 && n < NEW_ITEM_DAYS) ? ' <span class="new-tag">新</span>' : '';
+  return n >= 0 && n < NEW_ITEM_DAYS;
+}
+function newTagHtml(item) {
+  return isNewItem(item) ? ' <span class="new-tag">新</span>' : '';
 }
 // 期間が空いた項目のしきい値（日）。チェックシートのお知らせ・項目バッジ・店舗まとめで共通
 const STALE_DAYS = 7;
@@ -5314,6 +5320,7 @@ function renderRoutineView() {
     const descText = routineEditMode ? '' : String(item.desc || '').trim();
     const rEx = routineEditMode ? '' : exampleBtnHtml(currentArea, item.id);
     html += '<div class="rt-row' + (done ? ' done' : '') + (routineEditMode ? ' rt-editing' : '')
+      + (!routineEditMode && isNewItem(item) ? ' rt-new' : '')
       + (descText ? ' has-desc' : '') + (rEx ? ' has-ex' : '')
       + (routineEditMode ? '' : (item.url ? ' has-link' : '') + (hasNums ? ' has-link has-nums' : '')) + '" data-id="' + escapeHtml(item.id) + '" data-kind="' + (ls ? 'link' : hasNums ? 'nums' : 'manual') + '">'
       // 連動項目はチェック丸ではなくリスト印（実際のチェックは展開した子項目で行う）
@@ -5743,7 +5750,7 @@ function render() {
       // 📷対象のバッジは意図的に表示しない（見えると「その項目だけ丁寧にやる」逆インセンティブになるため。
       // どの項目で撮影要求が出るかはチェックした瞬間まで分からない）
       const div = document.createElement('div');
-      div.className = 'item' + (done ? ' done' : '');
+      div.className = 'item' + (done ? ' done' : '') + (isNewItem(item) ? ' item-new' : '');
       div.innerHTML = `
         <div class="item-head">
           <button class="check-btn" aria-label="完了切り替え">${ic('check')}</button>

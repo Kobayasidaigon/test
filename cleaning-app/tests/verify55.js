@@ -62,6 +62,8 @@ const now = Date.now();
   check('画面で9日前に足した項目には出ない', !tagged.includes('画面で9日前に足した'));
   check('もとからある項目には出ない', !tagged.includes('もとからある'));
   check('印は3つだけ', tagged.length === 3, tagged.length);
+  const framed = await pg.$$eval('.rt-row.rt-new .rt-title', xs => xs.map(x => x.textContent));
+  check('枠で囲むのも同じ3行', JSON.stringify(framed) === JSON.stringify(tagged), JSON.stringify(framed));
 
   await pg.evaluate(() => { routineEditMode = true; render(); });
   const inEdit = await pg.$$eval('.rt-row .new-tag', x => x.length);
@@ -72,6 +74,8 @@ const now = Date.now();
   const nw = cards.find(t => /トイレ新しい/.test(t)) || '';
   const od = cards.find(t => /トイレもとから/.test(t)) || '';
   check('カード: 新しい項目は「新」で「追加」は出ない', /新/.test(nw) && !/追加/.test(nw), nw);
+  const framedCards = await pg.$$eval('.item.item-new .item-title', xs => xs.map(x => x.textContent));
+  check('カード: 新しい項目だけ枠で囲む', framedCards.length === 1 && /トイレ新しい/.test(framedCards[0]), JSON.stringify(framedCards));
   check('カード: もとからの項目に「新」は出ない', !/新/.test(od.replace('トイレもとから', '')), od);
 
   // 画面から足すと、追加した日が入る
