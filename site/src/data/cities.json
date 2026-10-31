@@ -1,0 +1,84 @@
+{
+  "checkedOn": "2026-10-31",
+  "cities": [
+    {
+      "slug": "kitakyushu",
+      "name": "北九州市",
+      "pref": "福岡県",
+      "kind": "政令指定都市",
+      "summary": "空き家率16.0%（2023年）。2018年は政令指定都市でワースト2位でした。都市計画税0.3%、住宅地の地価公示の平均は1㎡あたり57,900円です。",
+      "calc": {
+        "fixedRate": 0.014,
+        "planningRate": 0.003,
+        "landPricePerSqm": 57900,
+        "subsidy": { "rate": 0.3333333, "cap": 300000, "builtBefore": "1981-05-31" },
+        "subsidyNote": "1/3・上限30万円。判定評点などの要件あり",
+        "relief": null,
+        "utilities": 36000
+      },
+      "facts": [
+        { "label": "固定資産税の税率", "value": "1.4%（標準税率で計算）", "status": "未確認", "note": "市の資料で超過課税の記載は見つからず、標準税率で計算しています。", "source": "" },
+        { "label": "都市計画税の税率", "value": "0.3%", "status": "確認済み", "note": "市街化区域内の土地と家屋が対象です。", "source": "https://www.city.kitakyushu.lg.jp/contents/26000008.html", "asOf": "2026年10月確認" },
+        { "label": "空き家率", "value": "16.0%（82,700戸／住宅総数517,800戸）", "status": "確認済み", "note": "2018年は15.8%で、政令指定都市でワースト2位でした。", "source": "https://www.city.kitakyushu.lg.jp/files/001132327.pdf", "asOf": "2023年住宅・土地統計調査" },
+        { "label": "住宅地の地価公示の平均", "value": "57,900円/㎡（前年比+1.2%、住宅地143地点）", "status": "確認済み", "note": "固定資産税の土地の評価額は、この約7割を目安に決まります。", "source": "https://www.city.kitakyushu.lg.jp/contents/924_00179.html", "asOf": "2026年地価公示" },
+        { "label": "解体の補助金", "value": "老朽空き家等除却促進事業補助金：1/3・上限30万円/戸", "status": "一部確認", "note": "昭和56年5月以前に建てた老朽空き家が対象。申請前に「判定依頼申出書」を出し、評点で要件を確かめます。令和8年度の判定依頼の受付は4月20日〜12月21日（予算に達し次第終了）。補助率と上限は過去年度の資料の値です。", "source": "https://www.city.kitakyushu.lg.jp/page/dayori/260415/infostation/information.html", "asOf": "令和8年度" },
+        { "label": "そのほかの解体の補助", "value": "住替え・建替えを前提とした除却工事補助（木造）", "status": "一部確認", "note": "令和8〜10年度に限り、所有者が70歳以上なら上限を50万円に拡大。老朽空き家等除却促進事業とは別の制度です。", "source": "https://www.city.kitakyushu.lg.jp/ken-to/06700119.html", "asOf": "令和8年度" },
+        { "label": "解体後の固定資産税の減免", "value": "見つからず", "status": "未確認", "note": "", "source": "" },
+        { "label": "空き家バンク", "value": "あり", "status": "確認済み", "note": "市と不動産流通団体の協定で運営しています。", "source": "https://www.city.kitakyushu.lg.jp/contents/28100023.html" },
+        { "label": "相談窓口", "value": "空き家活用推進課（本庁13階）093-582-2777", "status": "確認済み", "note": "平日8:30〜17:00。相続・登記・売買の相談は専門家団体と連携して受けています。", "source": "https://www.city.kitakyushu.lg.jp/page/dayori/260415/infostation/information.html" }
+      ]
+    },
+    {
+      "slug": "utsunomiya",
+      "name": "宇都宮市",
+      "pref": "栃木県",
+      "kind": "中核市",
+      "summary": "空き家率16.9%（2018年、空き家44,410戸）。解体の補助金は毎年4月の短い期間だけ受け付けていて、令和7年度は4月1日〜5月30日でした。",
+      "calc": {
+        "fixedRate": 0.014,
+        "planningRate": 0.003,
+        "landPricePerSqm": 64000,
+        "subsidy": null,
+        "subsidyNote": "上限・補助率が市の資料で未確認のため計算に入れていません",
+        "relief": null,
+        "utilities": 36000
+      },
+      "facts": [
+        { "label": "固定資産税の税率", "value": "1.4%（標準税率で計算）", "status": "未確認", "note": "", "source": "" },
+        { "label": "都市計画税の税率", "value": "0.3%で計算", "status": "未確認", "note": "条例の本則は0.30%。平成3年度から附則で0.25%の特例が続いてきましたが、市は特例の終了を案内する資料を出しています。現在の税率は市の税務課で確認してください。", "source": "https://www.city.utsunomiya.lg.jp/_res/projects/default_project/_page_/001/003/645/toshikeikakuzeitokurei.pdf" },
+        { "label": "空き家率", "value": "16.9%（44,410戸）", "status": "確認済み", "note": "2018年の値。2013年は15.9%（39,800戸）。空き家の71.6%が賃貸用・売却用です。2023年の市の値は未確認です。", "source": "https://www.city.utsunomiya.lg.jp/_res/common/opendata/1021178/2018-houkokusyo.pdf", "asOf": "2018年住宅・土地統計調査" },
+        { "label": "住宅地の地価公示の平均", "value": "64,000円/㎡で計算", "status": "未確認", "note": "民間の集計（totinokati.com、154地点）の2026年の値です。市の地価公示の抜粋で確かめる必要があります。", "source": "https://totinokati.com/kakaku/place/09201/kouji/", "asOf": "2026年地価公示（民間集計）" },
+        { "label": "解体の補助金", "value": "老朽危険空き家除却費補助金", "status": "一部確認", "note": "事前調査の申請が必要。令和7年度の受付は4月1日〜5月30日（令和6年度は4月1日〜5月31日）。補助金を市から解体業者に直接払う代理受領制度があります。上限70万円とする民間サイトの記載がありますが、市の資料では確認できていないため、計算には入れていません。", "source": "https://www.city.utsunomiya.lg.jp/_res/projects/default_project/_page_/001/013/763/kisai.pdf", "asOf": "令和7年度" },
+        { "label": "空き家を活かす改修の補助", "value": "空き家再生支援事業補助金", "status": "一部確認", "note": "地域活動に使う改修が対象。改修費の2/3（上限300万円）と耐震補強の10/10（上限140万円）。金額は外部サイトの記載です。", "source": "https://www.city.utsunomiya.lg.jp/_res/projects/default_project/_page_/001/013/765/bosyu.pdf" },
+        { "label": "解体後の固定資産税の減免", "value": "見つからず", "status": "未確認", "note": "", "source": "" },
+        { "label": "相談窓口", "value": "生活安心課", "status": "確認済み", "note": "解体の補助金と空き家再生支援の窓口です。", "source": "https://www.city.utsunomiya.lg.jp/_res/projects/default_project/_page_/001/013/763/kisai.pdf" }
+      ]
+    },
+    {
+      "slug": "kaga",
+      "name": "加賀市",
+      "pref": "石川県",
+      "kind": "市",
+      "summary": "空き家率23.1%（2023年）で、石川県の15.6%、全国の13.8%を大きく上回ります。都市計画税は0.2%から0.3%に上がりました。",
+      "calc": {
+        "fixedRate": 0.014,
+        "planningRate": 0.003,
+        "landPricePerSqm": 18000,
+        "subsidy": { "rate": 0.4, "cap": 500000, "builtBefore": null },
+        "subsidyNote": "2/5・上限50万円。特定空家等か危険度判定が条件",
+        "relief": null,
+        "utilities": 42360
+      },
+      "facts": [
+        { "label": "固定資産税の税率", "value": "1.4%", "status": "確認済み", "note": "", "source": "https://www.city.kaga.ishikawa.jp/material/files/group/31/R07yosansetsumeisiryou.pdf", "asOf": "令和7年度予算説明資料" },
+        { "label": "都市計画税の税率", "value": "0.3%", "status": "確認済み", "note": "令和6年12月議会の条例改正で0.2%から0.3%に。課税区域は市の税料金課で確認してください。", "source": "https://www.city.kaga.ishikawa.jp/material/files/group/31/R07yosansetsumeisiryou.pdf", "asOf": "令和7年度予算説明資料" },
+        { "label": "空き家率", "value": "23.1%（7,390戸／総住宅数32,060戸）", "status": "確認済み", "note": "賃貸用・売却用と別荘などを除いた空き家は2,950戸（9.2%）。", "source": "https://toukei.pref.ishikawa.lg.jp/dl/5030/R5_jyuutakusetai.pdf", "asOf": "2023年住宅・土地統計調査" },
+        { "label": "住宅地の地価公示の平均", "value": "18,000円/㎡で計算", "status": "未確認", "note": "民間の集計（totinokati.com、7地点）の値です。別の民間サイトとは値が大きく違うため、国土交通省の不動産情報ライブラリで確かめる必要があります。", "source": "https://totinokati.com/kakaku/place/17206/kouji/", "asOf": "2026年地価公示（民間集計）" },
+        { "label": "解体の補助金", "value": "危険空家等除却費補助金：解体工事費の2/5以内・上限50万円", "status": "一部確認", "note": "市が特定空家等と認めた空家か、危険度判定で基準以上になった空家が対象。事前相談と所有者全員の同意が必要で、交付決定前に着工すると対象外。受付期間は未確認です。", "source": "https://www.city.kaga.ishikawa.jp/soshiki/kensetsu/kenchiku/akiyataisaku/1200.html" },
+        { "label": "解体後の固定資産税の減免", "value": "制度あり（内容は未確認）", "status": "一部確認", "note": "市の令和4年度予算説明資料に「空家解体後の土地の固定資産税等の減免」の項目があります。期間・要件・現在も続いているかは、税料金課で確かめてください。計算には入れていません。", "source": "https://www.city.kaga.ishikawa.jp/material/files/group/31/C06R4kaisiryou_bunkatsu.pdf", "asOf": "令和4年度" },
+        { "label": "水道の基本料金", "value": "口径20mm 月2,530円（税込）", "status": "確認済み", "note": "口径13mmは月1,144円。2027年5月請求分から改定予定で、20mmは2,695円（例示）。", "source": "https://www.city.kaga.ishikawa.jp/soshiki/jogesuido/keiei_kikaku/5/1086.html", "asOf": "2026年10月" },
+        { "label": "空き家バンク", "value": "あり", "status": "確認済み", "note": "令和8年度は、登録物件の契約が成立したときに報奨金を出す制度があります。", "source": "https://www.city.kaga.ishikawa.jp/kurashi/sumai/akiya/3299.html" }
+      ]
+    }
+  ]
+}
