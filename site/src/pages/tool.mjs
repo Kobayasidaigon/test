@@ -95,7 +95,7 @@ export function toolPage(ctx, { cities, params, offers }) {
         <h2>入力するとここに結果が出ます</h2>
       </div>
       <div id="offer"></div>
-      <p class="notes">計算は目安です。補助の可否と金額は、申請前に必ず市町村の担当課に確かめてください。<button type="button" class="btn quiet" id="print" style="margin-left:8px;min-height:40px;padding:0 14px">結果を印刷する</button></p>
+      <p class="notes">計算は目安です。補助の可否と金額は、申請前に必ず市町村の担当課に確かめてください。${ctx.artifact ? '' : html`<button type="button" class="btn quiet" id="print" style="margin-left:8px;min-height:40px;padding:0 14px">結果を印刷する</button>`}</p>
       <noscript><div class="noscript">この計算はブラウザのJavaScriptで動きます。オフにしている場合は、下の「計算のしかた」の式で手計算できます。</div></noscript>
     </div>
   </div>

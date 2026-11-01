@@ -73,11 +73,10 @@ ${body}
 </footer>
 <script>
 (function(){
-  var els=document.querySelectorAll('.rise');
-  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var kids=e.target.querySelectorAll(':scope > *');e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
-  els.forEach(function(e,i){e.style.transitionDelay=(Math.min(i%4,3)*75)+'ms';io.observe(e)});
-  setTimeout(function(){els.forEach(function(e){e.classList.add('in')})},2500);
+  var h=window.innerHeight,i=0;
+  document.querySelectorAll('.hero h1, .hero .lead, .hero-actions, .hero .ledger, .rise').forEach(function(e){
+    if(e.getBoundingClientRect().top<h){e.classList.add('rise','enter');e.style.animationDelay=(Math.min(i++,5)*75)+'ms'}
+  });
 })();
 </script>
 ${scripts.map((s) => html`<script type="module" src="${ctx.asset(s)}"></script>`)}

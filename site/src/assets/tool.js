@@ -92,5 +92,5 @@ if ('IntersectionObserver' in window) {
 }
 form.addEventListener('input', render)
 form.addEventListener('change', render)
-$('print').addEventListener('click', () => window.print())
+if ($('print')) $('print').addEventListener('click', () => window.print())
 render()

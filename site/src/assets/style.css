@@ -40,6 +40,7 @@
     --accent: #e2583c;
     --on-accent: #120a08;
     --focus: #f07a5f;
+    color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
@@ -54,6 +55,7 @@
   --accent: #e2583c;
   --on-accent: #120a08;
   --focus: #f07a5f;
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -275,10 +277,11 @@ table.data a { font-weight: 700; }
 @media (max-width: 860px) { .foot .cols { grid-template-columns: 1fr; } }
 
 /* ---------- 動き：入場は1回だけ。スクリプトが無くても中身は見える ---------- */
-.js .rise { opacity: 0; transform: translateY(20px); transition: opacity 520ms ease, transform 520ms ease; }
-.js .rise.in { opacity: 1; transform: none; }
+/* 最初の画面に入っている要素だけ、読み込み時に順に浮かび上がる。それ以外は最初から見えている。 */
+@keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+.rise.enter { animation: rise 520ms ease both; }
 @media (prefers-reduced-motion: reduce) {
-  .js .rise { opacity: 1; transform: none; transition: none; }
+  .rise.enter { animation: none; }
   .btn { transition: none; }
 }
 
