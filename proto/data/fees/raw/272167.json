@@ -36,5 +36,6 @@
   "curl（決められた形）で soshiki/10/128642.html、soshiki/10/2139.html、uploaded/attachment/18906.pdf を5秒ほどあけて1回ずつ → すべて HTTP 408"
  ],
  "notes": "市のサイトがこの環境からのアクセスを（トップページも含めて）すべて HTTP 408 で返すので、保育料の表（uploaded/attachment/18906.pdf「■保育料（２・３号）について」と思われる）と第2子以降無償化のページの本文は読めていない。second_child・third_child は検索結果の要約だけで置いたので confidence は仮置き。人がブラウザで 18906.pdf と soshiki/10/128642.html を開いて、表（階層・月額・区切り）と無償化の条件（開始月・数え方・年齢・所得制限）を確かめ直す必要がある。",
- "read_at": "2026-11-01"
+ "read_at": "2026-11-01",
+ "checked": {"at": "2026-11-01", "result": "ok", "changes": "なし（形の点検。status partial・table null・fiscal_year null・confidence 仮置きで、分からない所を埋めていないことを確かめた）。保育料（２・３号）のPDF（uploaded/attachment/18906.pdf）を決められた curl の形で1回取り直したが、今も HTTP 408（795バイトの「このページは表示できません」）で読めなかった。second_child・third_child の free（令和8年10月から第2子以降無償化）は検索結果の要約によるもので、人がブラウザで 18906.pdf と soshiki/10/128642.html を開いて確かめる必要があるのは変わらない。"}
 }

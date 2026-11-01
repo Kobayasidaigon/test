@@ -27,8 +27,14 @@
     "curl で https://www.city.ichihara.chiba.jp/ を取ると HTTP 200 だが、本文は <app-root></app-root> だけの JavaScript で組み立てるページ（Angular）。記事の本文は JavaScript がサイトの API から読み込むので、curl ではリンクも本文も取れなかった。",
     "API の呼び方を調べる操作（スクリプトの中の API の基点や認証ヘッダを探す）と、robots.txt に書かれたサイトマップ（/prd/ich/portal/openapi/v1/sitemap/retrieve）の取得は、このセッションの許可の判定でサイトのアクセス制限の回避とみなされて止められたので、それ以上は試していない。",
     "WebSearch（allowed_domains: city.ichihara.chiba.jp）を3回: 「市原市 保育料 3歳未満 利用者負担額 令和8年度」→ 例規集の介護保険条例のページ（/reiki_int/reiki_honbun/g020RG00000210.html）だけ。「市原市 保育所 保育料 利用者負担額 階層区分 第2子」→ 0件。「市原市 保育料 令和8年度 保育所 利用案内」→ 0件。",
-    "例規集（https://www.city.ichihara.chiba.jp/reiki_int/reiki_menu.html と見つかった条例のページ）を curl で取ると HTTP 403 Forbidden（サイト側の拒否。プロキシの拒否記録はなし）。回避はしていない。"
+    "例規集（https://www.city.ichihara.chiba.jp/reiki_int/reiki_menu.html と見つかった条例のページ）を curl で取ると HTTP 403 Forbidden（サイト側の拒否。プロキシの拒否記録はなし）。回避はしていない。",
+    "検証（2026-11-01）: WebSearch（allowed_domains: city.ichihara.chiba.jp、mode extended）「市原市 保育所 保育料 月額 0歳 1歳 2歳 階層 第2子」→ 0件。公式サイトは JavaScript で本文を出すページなので、子育てのページを curl でたどる方法では本文が取れず、試していない（API・サイトマップの API は前回、許可の判定で止められたので触れていない）。"
   ],
   "notes": "公式サイト（www.city.ichihara.chiba.jp）は JavaScript で本文を表示するページで、curl では保育料のページも PDF の URL も見つけられなかった。ブラウザで「市原市 保育料」のページを開いて、PDF の URL（料金表）を教えてもらえれば読める見込み。推測では埋めていない。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "値の直しはなし（status は not_found、first_child_free は null、きょうだいは unknown のまま）。別の探し方として WebSearch を1回（allowed_domains: city.ichihara.chiba.jp、extended）使ったが0件で、手がかりは見つからなかった。tried に書き足しただけ。"
+  }
 }

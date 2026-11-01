@@ -37,5 +37,10 @@
  "confidence": "確認済",
  "tried": [],
  "notes": "下調べの保育料ページと第1子無償化のページで読んだ。公開されている階層表は区立延長保育料の表で、保育料の表はない（全員無償）。lunch_jh・cash・one_time は探していない。",
- "read_at": "2026-11-01"
+ "read_at": "2026-11-01",
+ "checked": {
+  "at": "2026-11-01",
+  "result": "ok",
+  "changes": "なし（形の確認のみ）。JSONとして読めること、必要な項目がそろっていること、table が null で first_child_free が true（令和7年9月から全員無償）と矛盾しないこと、きょうだいの欄が free であること、tax_basis 6%（特別区）。"
+ }
 }

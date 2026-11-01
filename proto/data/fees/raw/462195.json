@@ -1,0 +1,33 @@
+{
+  "code": "462195",
+  "pref": "鹿児島県",
+  "name": "いちき串木野市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和5年4月1日から市独自に、国の無償化の対象とならない住民税課税世帯の0〜2歳児の保育料を無償化（令和8年度保育施設等利用のご案内10ページ）。令和8年度も保育料は0円。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が0円なので、階層の決め方（所得割の税率・控除の扱い）は案内に載っていない。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2023年4月",
+  "first_child_free_note": "令和5年4月1日から市独自の子育て支援対策として、幼稚園、保育所、認定こども園を利用する0歳から5歳までの子どもの保育料を完全無償化（保育施設等のページ〔2026年10月20日更新〕）。案内の図では3歳未満の課税世帯は「無料（市独自）」。所得制限・申請の記載はない。園服・園帽、かばん代、教材費、各種教室費用、延長保育料（30分100円など）、遠足代などの実費は別。3歳以上の給食費（副食費）は施設が徴収。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "0〜2歳児は第1子から保育料0円なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    { "label": "未来の宝子育て支援金（出生祝金）", "amount": 20000, "note": "第1子2万円、第2子3万円、第3子10万円。子の出生前に保護者が市に1年以上住所を有していること、市税の滞納がないこと。令和9年5月31日までに出生した児童で廃止（令和9年11月30日までに申請した方は対象）。amount は第1子の額。", "source": { "label": "いちき串木野市／未来の宝子育て支援金支給事業（2026年7月3日更新）", "url": "https://www.city.ichikikushikino.lg.jp/fukushi2/kenko/kosodate/teate/kosodateshien.html" } }
+  ],
+  "sources": [
+    { "label": "いちき串木野市／保育施設等（2026年10月20日更新）", "url": "https://www.city.ichikikushikino.lg.jp/fukushi2/kenko/kosodate/kosodate/hoiku.html" },
+    { "label": "令和8年度 保育施設等利用のご案内（PDF、10ページ「保育料について」）", "url": "https://www.city.ichikikushikino.lg.jp/fukushi2/kenko/kosodate/kosodate/documents/r8siori.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べ（crawl）の文書候補は関係のない様式だけだったので、保育施設等のページから令和8年度の案内を取った。保育料が0円のため保育料の表は案内に載っていない（table は null）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,31 @@
+{
+  "code": "442101",
+  "pref": "大分県",
+  "name": "杵築市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和5年4月から保育料を完全無償化」のページ、2026年4月1日更新）",
+  "period_note": "令和5年4月から全年齢の子どもの保育料を無償化。掲載ページの更新日は2026年4月1日で、令和8年度も続いている。",
+  "tax_basis": "6%",
+  "tax_note": "世帯所得等にかかわらず保育料が無償のため、所得割による階層は保育料に関係しない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2023年4月",
+  "first_child_free_note": "杵築市では、これまで「市町村民税課税世帯の3歳未満第1子」の保育料のみ負担があったが、令和5年4月から世帯所得等にかかわらず、全年齢の子どもの保育料を無償化（対象: 杵築市に住民票があり、市内・市外の認可保育施設に通う子ども）。副食費は従来どおり保護者負担。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "全年齢・全世帯の保育料が無償のため、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。無償化の前から、第2子以降の3歳未満児は負担がなかった（市のページの「これまで『市町村民税課税世帯の3歳未満第1子』の保育料のみご負担いただいていました」）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無償のため第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和5年4月から保育料を完全無償化 杵築市（2026年4月1日更新）", "url": "https://www.city.kitsuki.lg.jp/soshiki/1/fukusi/kitsukikosodatesien/nyuuyouzi/nyugakunyuen/10945.html" },
+    { "label": "保育園・こども園・幼稚園への入園 杵築市（2026年4月1日更新、令和8年度の申込書を掲載）", "url": "https://www.city.kitsuki.lg.jp/soshiki/1/fukusi/kitsukikosodatesien/nyuuyouzi/nyugakunyuen/10077.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べ（index.json）の完全無償化のページで読んだ。0〜2歳の保育料が無料なので表は入れていない（無償化前の基準額表は見ていない）。認可外保育施設・一時預かりなどの利用料の一部無償化のページもある（読んでいない）。cash・one_time・中学校給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

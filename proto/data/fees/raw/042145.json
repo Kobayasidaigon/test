@@ -1,0 +1,51 @@
+{
+  "code": "042145",
+  "pref": "宮城県",
+  "name": "東松島市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度東松島市内保育施設入所申込の受付についての「00 入所申込案内」（Word）: 保育料は原則として3歳児未満の児童に対し、両親の市町村民税所得割課税額の合計によって決定。4月から8月分までは令和7年度、9月から翌年3月分までは令和8年度の市町村民税所得割課税額を基に算定。法改正等により利用者負担額が変更になる場合がある。3歳児未満の給食費は保育料に含まれる。",
+  "tax_basis": "6%",
+  "tax_note": "両親の市町村民税所得割課税額の合計。家計の主となっている人（生計中心者）が祖父母や同居の親族等と判断される場合は、両親のほかに保育料の算定に含める場合がある。市町村民税所得割課税額を計算する際、住宅借入金等特別税額控除、寄付金税額控除等は適用されない（税額控除前）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "令和８年度保育料徴収基準額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）。第2子の列は monthly_second",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "C", "lower": null, "upper": null, "condition": "市町村民税均等割課税世帯", "monthly": 14000, "monthly_second": 7000 },
+      { "label": "D１", "lower": 1, "upper": 48600, "condition": "市町村民税所得割額 48,600円未満", "monthly": 17000, "monthly_second": 8500 },
+      { "label": "D２", "lower": 48600, "upper": 72000, "condition": "市町村民税所得割額 72,000円未満", "monthly": 23000, "monthly_second": 11500 },
+      { "label": "D３", "lower": 72000, "upper": 97000, "condition": "市町村民税所得割額 97,000円未満", "monthly": 28500, "monthly_second": 14250 },
+      { "label": "D４", "lower": 97000, "upper": 133000, "condition": "市町村民税所得割額 133,000円未満", "monthly": 37000, "monthly_second": 18500 },
+      { "label": "D５", "lower": 133000, "upper": 169000, "condition": "市町村民税所得割額 169,000円未満", "monthly": 44500, "monthly_second": 22250 },
+      { "label": "D６", "lower": 169000, "upper": 235000, "condition": "市町村民税所得割額 235,000円未満", "monthly": 49600, "monthly_second": 24800 },
+      { "label": "D７", "lower": 235000, "upper": 301000, "condition": "市町村民税所得割額 301,000円未満", "monthly": 54000, "monthly_second": 27000 },
+      { "label": "D８", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割額 397,000円未満", "monthly": 62000, "monthly_second": 31000 },
+      { "label": "D９", "lower": 397000, "upper": null, "condition": "市町村民税所得割額 397,000円以上", "monthly": 70000, "monthly_second": 35000 }
+    ],
+    "notes": "表は入所申込案内（Word）に埋め込まれた Excel の表。埋め込みの Excel データを openpyxl で読み、LibreOffice で PDF にして表示を画像で確認した（表示ではA〜D8の標準時間の第1子・第2子の列までしか見えず、D9行と短時間の列は埋め込みデータから読んだ。見えている欄はすべて埋め込みデータと一致）。年齢による違いはない（3歳未満で1つ）。表の区分は上限だけの「〜円未満」の書き方なので、lower は1つ上の階層の上限とした（D1は均等割のみのC階層と分けるため lower=1）。短時間（第1子・第2子）: A 0・0／B 0・0／C 13,700・6,850／D1 16,700・8,350／D2 22,600・11,300／D3 28,000・14,000／D4 36,300・18,150／D5 43,700・21,850／D6 48,700・24,350／D7 53,000・26,500／D8 60,900・30,450／D9 68,800・34,400。ひとり親世帯等（配偶者のない者で児童を扶養している世帯等、在宅障害児（者）のいる世帯、特に困窮していると市長が認めた世帯）で所得割77,101円未満の第1子（ひとり親世帯等における第1子児童の利用者負担額表）: 標準時間 A 0／B 0／C 6,250／D1 7,750／D2 9,000／D3 9,000（短時間 C 6,100／D1 7,600／D2 9,000／D3 9,000）、第2子以降は無料。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満の第1子は有料（標準時間で月0〜70,000円）。0円は生活保護世帯と市町村民税非課税世帯。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の第2子の列は第1子の半額（国の基準どおり）。幼稚園、認定こども園、特別支援学校幼稚部、情緒障害児短期治療施設通所部に通う兄弟姉妹や、児童発達支援等を利用している兄弟姉妹がいる場合は、多子軽減届出書（在籍証明書）を出すと数えに入る（同時に保育施設等に通う就学前の子で数える）。市町村民税所得割額57,700円未満の世帯は、保護者と生計が同一の子であれば年齢に関わらず上から順に数え、第1子・第2子は表の額、第3子以降は無料。ひとり親世帯等で所得割77,101円未満の世帯は、年齢に関わらず数えて第2子以降無料。所得制限の記載なし。市独自の上乗せ軽減の記載はない。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "国の基準どおり、同時に保育施設等に通う就学前の子で数えて第3子以降は無料とみられる（表に第3子の列はなく、案内では第2子まで記載。所得割57,700円未満の世帯は年齢に関わらず生計同一の子を数えて第3子以降無料と明記）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度東松島市内保育施設入所申込の受付について：東松島市公式ウェブサイト（更新日：2025年10月1日）", "url": "https://www.city.higashimatsushima.miyagi.jp/kurashi/kenko-fukushi/kosodate/hoikusyo-yochien/hoiku.html" },
+    { "label": "00 入所申込案内（Word）「３ 保育料について」「令和８年度保育料徴収基準額表」", "url": "https://www.city.higashimatsushima.miyagi.jp/kurashi/kenko-fukushi/kosodate/hoikusyo-yochien/hoiku.files/00.docx" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（index.json）には候補の文書がなかった。下調べで見つかっていた「令和8年度東松島市内保育施設入所申込の受付について」のページを開き、入所申込案内（Word）を取った。"
+  ],
+  "notes": "Word の本文には表の文字がなく（Excel のオブジェクトとして埋め込み）、自作のスクリプト（docx から埋め込み Excel を取り出して openpyxl で読む）で表を読んだ。third_count は資料に第3子の数え方の明記がないので、国の基準（同時に通う子で数える）とみて together にした（推定）。令和9年度の入所申込のページ（hoiku2027.html）は開いていない。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

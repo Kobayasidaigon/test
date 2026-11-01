@@ -1,0 +1,58 @@
+{
+ "code": "273821",
+ "pref": "大阪府",
+ "name": "河南町",
+ "status": "ok",
+ "fiscal_year": "表に年度の表示はない（「認定こども園 保育園部門(2号・3号認定)保育料」のページ〔2022年9月30日更新〕に今も載っている現行の表。令和8年度も現行と判断）",
+ "period_note": "保育料は保護者等の市町村民税所得割額で決める。4〜8月分と9〜3月分で使う税の年度は、読んだページに書かれていない（多子世帯の助成は4〜8月分を10月末までに、9〜3月分を5月末までに交付）。未申告等で所得不明の場合は最高額。",
+ "tax_basis": "6%",
+ "tax_note": "保護者等（父母、同居の生計主宰者）の市町村民税所得割額。父母それぞれの収入額が103万円未満の場合は、同居の生計主宰者の所得割額で決める（平成29年9月改定）。所得割額は、調整控除以外の税額控除（住宅借入金等特別控除、寄付金税額控除、配当控除等）が適用される前の額。政令市ではない。",
+ "table": {
+  "title": "保育園・認定こども園 保育園部門（2号・3号認定）保育料の詳細（単位：円）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）、ひとり親世帯等以外の世帯",
+  "rows": [
+   { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等または里親", "monthly": 0, "monthly_second": null },
+   { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+   { "label": "C1", "lower": null, "upper": null, "condition": "市町村民税課税額が均等割額のみの世帯", "monthly": 8400, "monthly_second": null },
+   { "label": "C2", "lower": 1, "upper": 48600, "condition": "48,600円未満", "monthly": 11100, "monthly_second": null },
+   { "label": "D1", "lower": 48600, "upper": 58000, "condition": "48,600円以上 58,000円未満", "monthly": 12300, "monthly_second": null },
+   { "label": "D2", "lower": 58000, "upper": 67000, "condition": "58,000円以上 67,000円未満", "monthly": 14200, "monthly_second": null },
+   { "label": "D3", "lower": 67000, "upper": 77000, "condition": "67,000円以上 77,000円未満", "monthly": 16700, "monthly_second": null },
+   { "label": "D4（その1）", "lower": 77000, "upper": 77101, "condition": "77,000円以上 77,101円未満", "monthly": 22400, "monthly_second": null },
+   { "label": "D4（その2）", "lower": 77101, "upper": 87000, "condition": "77,101円以上 87,000円未満", "monthly": 22400, "monthly_second": null },
+   { "label": "D5", "lower": 87000, "upper": 97000, "condition": "87,000円以上 97,000円未満", "monthly": 28600, "monthly_second": null },
+   { "label": "D6", "lower": 97000, "upper": 121000, "condition": "97,000円以上 121,000円未満", "monthly": 35500, "monthly_second": null },
+   { "label": "D7", "lower": 121000, "upper": 169000, "condition": "121,000円以上 169,000円未満", "monthly": 43600, "monthly_second": null },
+   { "label": "D8", "lower": 169000, "upper": 202000, "condition": "169,000円以上 202,000円未満", "monthly": 48700, "monthly_second": null },
+   { "label": "D9", "lower": 202000, "upper": 239000, "condition": "202,000円以上 239,000円未満", "monthly": 52200, "monthly_second": null },
+   { "label": "D10", "lower": 239000, "upper": 266000, "condition": "239,000円以上 266,000円未満", "monthly": 55000, "monthly_second": null },
+   { "label": "D11", "lower": 266000, "upper": 301000, "condition": "266,000円以上 301,000円未満", "monthly": 55100, "monthly_second": null },
+   { "label": "D12", "lower": 301000, "upper": null, "condition": "301,000円以上", "monthly": 55500, "monthly_second": null }
+  ],
+  "notes": "HTMLの表。列は「0〜2歳児 標準時間」「0〜2歳児 短時間」。適用範囲は市町村民税所得割額。D4は表では1つの階層だが、77,101円未満にひとり親世帯等の行があるので2行（77,000〜77,101円未満、77,101〜87,000円未満、ひとり親世帯等以外はどちらも22,400円）にした。保育短時間（ひとり親世帯等以外）: C1 8,300／C2 11,000／D1 12,100／D2 14,000／D3 16,400／D4 22,000／D5 28,100／D6 35,000／D7 43,000／D8 47,900／D9 51,300／D10 54,100／D11 54,200／D12 54,600（A・Bは0）。ひとり親世帯等（標準/短時間）: B 0／C1 0／C2 5,550/5,500／D1 6,150/6,050／D2 7,100/7,000／D3 8,350/8,200／D4（77,101円未満）9,000/8,850。77,101円以上はひとり親世帯等も一般と同じ額。第2子以降は別の制度（町の助成）で保育料相当額が全額補助される（下の second_note）。区切りは前後の行とつながっていることを確かめた。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月8,400〜55,500円）。無料は生活保護世帯等・里親・市町村民税非課税世帯と、ひとり親世帯等の均等割のみの世帯。生活保護世帯やひとり親世帯で市町村民税非課税の場合は第1子から無料。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "町の多子世帯保育料軽減（国の制度を拡充）: 所得制限や多子カウントの年齢制限を撤廃し、第2子以降の保育料を無償化（全額補助）。河南町に居住し、子どもを2人以上養育している場合、第1子の年齢にかかわらず、幼稚園・保育園・認定こども園に入園している子が第2子以降に該当すれば保育料相当額を助成する。いったん保育料を納め、納付の確認後に4〜8月分を10月末日までに、9〜3月分を翌年5月末日までに交付（町外の園は年度終了後に一括で5月末日までに交付）。申請書類は各園を通じて配布。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第2子以降が全額補助なので第3子以降も同じ（第1子の年齢にかかわらず数える。所得制限なし）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  { "label": "認定こども園 保育園部門(2号・3号認定)保育料｜河南町（2022年9月30日更新）", "url": "https://www.town.kanan.osaka.jp/kosodate_kyoiku/yochien_hoikuen_ninteikodomoen/3104.html" },
+  { "label": "多子世帯の保育料の軽減について｜河南町（2022年9月30日更新）", "url": "https://www.town.kanan.osaka.jp/kosodate_kyoiku/yochien_hoikuen_ninteikodomoen/3102.html" }
+ ],
+ "confidence": "推定",
+ "tried": [
+  "下調べは公式サイトの一番上で失敗していた（OSError）。サイトは 408（「このページは表示できません」）を返すことが多く、15秒あけて取り直すと読めた",
+  "子育て・教育 → 幼稚園・保育園・認定こども園、くらしのナビ「入園・入学」を見たが、令和8年度の入園案内や年度の入った保育料表は見当たらなかった",
+  "トップページに例規集へのリンクが見当たらず、条例・規則の別表では確かめていない"
+ ],
+ "notes": "保育料の表と多子軽減のページはどちらも2022年9月30日更新で、表に年度の表示がない。今も公式サイトに現行の保育料として載っているので令和8年度も同じと判断したが、今年度の資料で確かめてはいないので confidence は推定。下調べのページ一覧に乳幼児給食費助成事業（にこにこランチ事業）のページもあった（読んでいない）。",
+ "read_at": "2026-11-01"
+}

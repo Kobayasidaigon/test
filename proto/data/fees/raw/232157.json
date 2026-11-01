@@ -1,0 +1,48 @@
+{
+  "code": "232157",
+  "pref": "愛知県",
+  "name": "犬山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月〜8月分の保育料は令和7年度市町村民税額、9月〜3月分は令和8年度市町村民税額により決定。保護者（父母）の市町村民税額の合計額（非課税世帯に区分された世帯で同居の祖父母がいる場合は祖父母の税額も加えることがある）。年度途中で3歳の誕生日を迎えても保育料の無償化は対象外（年度中は3歳未満の額）。市民税未申告は暫定的に第8階層。変更は申請日の翌月から。",
+  "tax_basis": "6%",
+  "tax_note": "階層は市町村民税所得割額で判定（父母の合計）。税額控除（住宅ローン控除など）を引く前か後かは、利用案内に書かれていない。政令市ではない。",
+  "table": {
+    "title": "０歳児～２歳児の保育料について 月額保育料（円）（令和８年度 保育施設の利用案内 p.12）",
+    "kind": "3歳未満（0〜2歳児）・保育標準時間・第1子（月額）。一般世帯の列（要保護等世帯の額は notes）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3-1階層", "lower": null, "upper": null, "condition": "市町村民税所得割額非課税世帯", "monthly": 11000, "monthly_second": null },
+      { "label": "第3-2階層", "lower": 1, "upper": 48600, "condition": "市町村民税所得割額48,600円未満世帯", "monthly": 13400, "monthly_second": null },
+      { "label": "第4-1階層", "lower": 48600, "upper": 77101, "condition": "市町村民税所得割額77,101円未満世帯", "monthly": 21000, "monthly_second": null },
+      { "label": "第4-2階層", "lower": 77101, "upper": 97000, "condition": "市町村民税所得割額97,000円未満世帯", "monthly": 22500, "monthly_second": null },
+      { "label": "第5階層", "lower": 97000, "upper": 169000, "condition": "市町村民税所得割額169,000円未満世帯", "monthly": 30600, "monthly_second": null },
+      { "label": "第6階層", "lower": 169000, "upper": 301000, "condition": "市町村民税所得割額301,000円未満世帯", "monthly": 42600, "monthly_second": null },
+      { "label": "第7階層", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割額397,000円未満世帯", "monthly": 51800, "monthly_second": null },
+      { "label": "第8階層", "lower": 397000, "upper": null, "condition": "市町村民税所得割額397,000円以上世帯", "monthly": 51800, "monthly_second": null }
+    ],
+    "notes": "列は 保育短時間（要保護等世帯・一般世帯）／保育標準時間（要保護等世帯・一般世帯）。第7・第8階層は同じ額のセル（51,800円）。第3-1階層は「所得割額非課税世帯」（均等割のみ課税）なので lower・upper を null、第3-2階層の lower を1とした。保育短時間（一般世帯）: 第1・第2 0／第3-1 8,000／第3-2 10,400／第4-1 18,000／第4-2 19,500／第5 27,600／第6 39,600／第7・第8 48,800。要保護等世帯（ひとり親家庭、同世帯内に身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた人、特別児童扶養手当・障害基礎年金の受給者がいる世帯）は第3-1〜第4-1階層が標準時間5,000円・短時間3,500円、第4-2階層以上は一般世帯と同じ。令和9年度の利用案内（2026年9月作成）も同じ金額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（無償化は3〜5歳児と非課税世帯）。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "多子軽減「第2子軽減（「きょうだい」は18歳未満の方を指します）」: 第4-2階層以下（所得割97,000円未満）は無料、第5〜6階層（97,000円以上301,000円未満）は半額、第7〜8階層（301,000円以上）は同時入園の場合のみ半額。所得で変わるので second_child は多くの共働き世帯が入る第5〜6階層の「半額」とし、数え方は18歳未満のきょうだいで数える household にした（第7〜8階層は同時入園の子だけで数える、上の子の年齢の上限は18歳未満）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "「第3子軽減（「きょうだい」の年齢は問いません）すべての階層で無料です」（令和9年度の案内では「免除」）。上の子の年齢・所得制限なし。3歳以上の給食費も第3子以降は免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育施設の利用案内（子ども未来園（公立保育園・公立認定こども園）・私立保育園）｜犬山市", "url": "https://www.city.inuyama.aichi.jp/kurashi/kosodate/1001369/1001906/1002473/1004645.html" },
+    { "label": "令和8年度 保育施設の利用案内（PDF。p.12 0歳児～2歳児の保育料について、p.13 多子軽減）", "url": "https://www.city.inuyama.aichi.jp/_res/projects/default_project/_page_/001/004/645/siori.pdf" },
+    { "label": "令和9年度 保育施設の利用案内（PDF、照合用）", "url": "https://www.city.inuyama.aichi.jp/_res/projects/default_project/_page_/001/004/645/9siori.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「保育施設の利用案内」ページから令和8年度の利用案内PDF（文字が取れる）を開き、表は画像でも列の並び（要保護等世帯のセルが第3-1〜第4-1階層で結合、第7・8階層が結合）を確かめた。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

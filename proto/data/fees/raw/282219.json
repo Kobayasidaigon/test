@@ -1,0 +1,53 @@
+{
+  "code": "282219",
+  "pref": "兵庫県",
+  "name": "丹波篠山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和8年度保育園・認定こども園保育料基準額表、令和8年3月現在）",
+  "period_note": "4月〜8月分は前年度市民税額、9月〜3月分は本年度市民税額により決定（毎年9月・3月に保育料の見直しがある）。年度途中で3歳になっても、その年度内は3歳未満の保育料。",
+  "tax_basis": "6%",
+  "tax_note": "世帯の市民税所得割額（原則として父・母の合算。別居や事実婚の場合も合算）で決定。市民税の額は、住宅借入金等特別控除や寄付金控除（ふるさと納税等）は適用されない（控除前の額）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "令和8年度保育園・認定こども園保育料基準額表（2号・3号認定）",
+    "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": 0, "upper": 48600, "condition": "市民税所得割課税世帯であって、その所得割額が 48,600円未満", "monthly": 17500, "monthly_second": null },
+      { "label": "4A", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満", "monthly": 24300, "monthly_second": null },
+      { "label": "4B", "lower": 57700, "upper": 65000, "condition": "57,700円以上 65,000円未満", "monthly": 24300, "monthly_second": null },
+      { "label": "5", "lower": 65000, "upper": 81000, "condition": "65,000円以上 81,000円未満", "monthly": 27000, "monthly_second": null },
+      { "label": "6", "lower": 81000, "upper": 97000, "condition": "81,000円以上 97,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "7", "lower": 97000, "upper": 121000, "condition": "97,000円以上 121,000円未満", "monthly": 36000, "monthly_second": null },
+      { "label": "8", "lower": 121000, "upper": 145000, "condition": "121,000円以上 145,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "9", "lower": 145000, "upper": 169000, "condition": "145,000円以上 169,000円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "10", "lower": 169000, "upper": 213000, "condition": "169,000円以上 213,000円未満", "monthly": 49500, "monthly_second": null },
+      { "label": "11", "lower": 213000, "upper": 257000, "condition": "213,000円以上 257,000円未満", "monthly": 54900, "monthly_second": null },
+      { "label": "12", "lower": 257000, "upper": 301000, "condition": "257,000円以上 301,000円未満", "monthly": 61000, "monthly_second": null },
+      { "label": "13", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 72000, "monthly_second": null },
+      { "label": "14", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 81460, "monthly_second": null }
+    ],
+    "notes": "保育短時間: 3 17,200／4A・4B 23,880／5 26,540／6 29,490／7 35,380／8 39,320／9 43,740／10 48,650／11 53,960／12 59,960／13 70,770／14 80,070（1・2は0）。3歳以上児（2号認定）は0円。表の注: 「２子目は上記表の半額、３子目以降は無料とする（対象となる子どもは多子算定の欄を参照）」。2号・3号認定（ひとり親家庭等）の表: 2 市民税非課税 0円、3 所得割48,600円未満 標準5,390円・短時間5,350円、4 所得割65,000円未満 7,290円・7,250円、5 所得割77,101円未満 8,100円・8,060円、2子目以降は無料（年齢制限なし）。行3は「市民税所得割課税世帯で48,600円未満」で、均等割のみの世帯を分けた行がないので lower=0 とした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月0〜81,460円）。0円は生活保護世帯と市民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "2子目は基準額の半額、3子目以降は無料。数える子ども（表の「多子算定」欄と「多子算定について」の図）: 階層2〜4A（市民税非課税・所得割57,700円未満）とひとり親家庭等で所得割77,101円未満は【0〜5歳児】年齢制限なし（図4: 小学生以上の兄姉も数える）。階層4B〜14（所得割57,700円以上）の0〜3歳児は【0〜3歳児】就学前まで（図5: 小1以上はカウントしない、例: 小3の兄と1歳なら1歳は第1子で全額）。上の子が保育所等に通っていることが条件かは図と表には書かれていない（就学前の子の範囲で数える）。ひとり親家庭等は2子目以降無料。市独自の第2子無償化は書かれていない。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "3子目以降は無料（所得制限なし）。所得割57,700円以上の世帯の0〜3歳児は就学前の子の範囲で数え、57,700円未満などは年齢制限なしで数える。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "【0～3歳児】保育園・こども園（公私立）一覧について（保育料・施設受入状況等）／丹波篠山市（2026年10月21日更新）", "url": "https://www.city.tambasasayama.lg.jp/soshikikarasagasu/hoiku/2/5168.html" },
+    { "label": "保育料基準額表（PDF、令和8年度保育園・認定こども園保育料基準額表）", "url": "https://www.city.tambasasayama.lg.jp/material/files/group/159/hoikuryoukijyungaku2.pdf" },
+    { "label": "多子算定について（PDF、多子算定の考え方図解）", "url": "https://www.city.tambasasayama.lg.jp/material/files/group/159/hoikuryoutashisantei.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json の「保育料基準額表」「多子算定について」PDFを読み、表は pdftotext と画像（pdftoppm -r 110）で列（3歳未満児 標準/短時間、3歳以上児、多子算定）を、多子算定は図（-r 150）で図4〜図6を確かめた。公立園の3〜5歳児の給食費は別表（3歳児 月6,150円、4〜5歳児2号 月5,340円など）。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}
