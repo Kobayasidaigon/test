@@ -6,6 +6,7 @@
   --ink-soft: #5a6170;
   --red: #d93a2b;
   --red-deep: #b8321f;
+  --red-text: #b52f22; /* 紙の上の小さな赤字（6:1） */
   --yolk: #ffc928;
   --yolk-deep: #e0a800;
   --bg: #bfe8dc;
@@ -42,9 +43,13 @@
   outline: 3px solid var(--ink);
   outline-offset: 3px;
 }
+/* 赤い胴体の上では白い枠、その中の紙の上ではまた墨色の枠 */
 .va .va-on-red:focus-visible,
 .va-on-red :focus-visible {
   outline-color: #fff;
+}
+.va-on-red .va-paper :focus-visible {
+  outline-color: var(--ink);
 }
 
 /* 筐体の赤い胴体。縦の細いみぞで、成形したプラスチックっぽさを出す */
@@ -157,4 +162,11 @@
   .va-bulb {
     animation: none;
   }
+}
+
+/* 演出の画面の床（ドット） */
+.va-dots {
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.62) 0 3.5px, transparent 4.5px);
+  background-size: 26px 26px;
 }

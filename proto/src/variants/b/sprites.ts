@@ -1,39 +1,17 @@
 // 案B「ドット絵の旅」— ドット絵の元データ。
 // すべてこの案のために手で打った文字グリッド（1文字＝1ドット、'.' は透明）。
+// 左右対称の絵は左半分だけを書き、mirror() で右半分を作る。
 // 色は PAL の文字に対応。キャラクターごとに h（髪）x（服）z（ズボン）などを差し替える。
 
 export type Grid = readonly string[]
 export type Pal = Record<string, string>
 
-export const COLOR = {
-  ink: '#2a1e17',
-  ink2: '#5b4636',
-  paper: '#fbf3dc',
-  paper2: '#f1e4bf',
-  paper3: '#e3cf9c',
-  white: '#fffdf6',
-  gold: '#ffcc33',
-  gold2: '#d99a1e',
-  red: '#d9452f',
-  red2: '#9e2f22',
-  green: '#6bb34f',
-  green2: '#3f8a3a',
-  deepGreen: '#2c6b35',
-  blue: '#3a6fb0',
-  blue2: '#274b7d',
-  calm: '#2f5f9e',
-  teal: '#2f8f86',
-  sky: '#9fd9ef',
-  night: '#23304f',
-  pink: '#f4a3b5',
-} as const
-
 export const PAL: Pal = {
   k: '#2a1e17', // 輪郭
   s: '#f7c9a0', // はだ
-  S: '#e2a77c',
+  S: '#d99872', // くち（閉じ）
   q: '#f2938a', // ほっぺ
-  m: '#b8463a', // くち
+  m: '#b8463a', // くち（開き）
   w: '#fffdf6',
   c: '#fbf3dc',
   C: '#e3cf9c',
@@ -59,7 +37,7 @@ export const PAL: Pal = {
   l: '#a8dcf0',
   L: '#5fb0d6',
   j: '#22301f', // のり
-  u: '#c98a4b', // せんべい
+  u: '#d39552', // せんべい
   U: '#a8682f',
   h: '#3b2a20', // 髪（差し替え用）
   x: '#d9452f', // 服（差し替え用）
@@ -67,7 +45,10 @@ export const PAL: Pal = {
   z: '#2b3a67', // ズボン（差し替え用）
 }
 
-// 1ドットだけ書き換えたグリッドを返す（表情づくりに使う）
+const mirror = (half: string[]): Grid => half.map((r) => r + [...r].reverse().join(''))
+const mirrorOdd = (half: string[]): Grid => half.map((r) => r + [...r.slice(0, -1)].reverse().join(''))
+
+// ドットを書き換えたグリッドを返す（表情づくりに使う）
 export function patch(grid: Grid, dots: [number, number, string][]): Grid {
   const rows = grid.map((r) => r.split(''))
   for (const [x, y, ch] of dots) if (rows[y] && x >= 0 && x < rows[y].length) rows[y][x] = ch
@@ -77,185 +58,120 @@ export function patch(grid: Grid, dots: [number, number, string][]): Grid {
 /* ───────── 家族 ───────── */
 
 // 大人（短い髪）18×19
-const HEAD_SHORT: Grid = [
-  '......kkkkkk......',
-  '.....khhhhhhk.....',
-  '....khhhhhhhhk....',
-  '....khhhhhhhhk....',
-  '....khsshhsshk....',
-  '....kssssssssk....',
-  '....kskssssksk....',
-  '....kqssssssqk....',
-  '.....kssmmssk.....',
-  '......kkkkkk......',
-]
-// 大人（ボブ）18×19
-const HEAD_BOB: Grid = [
-  '......kkkkkk......',
-  '.....khhhhhhk.....',
-  '....khhhhhhhhk....',
-  '...khhhhhhhhhhk...',
-  '...khhsssssshhk...',
-  '...khsssssssshk...',
-  '...khsksssskshk...',
-  '...khqssssssqhk...',
-  '...khhssmmsshhk...',
-  '....khkkkkkkhk....',
-]
-const BODY_ADULT: Grid = [
-  '.....kxxxxxxk.....',
-  '....kxxxxxxxxk....',
-  '....kxxxxxxxxk....',
-  '....ksxxxxxxsk....',
-  '....kkzzzzzzkk....',
-]
+const HEAD_SHORT = mirror([
+  '......kkk',
+  '.....khhh',
+  '....khhhh',
+  '....khhhh',
+  '....khssh',
+  '....kssss',
+  '....kskss',
+  '....kqssm',
+  '.....ksss',
+  '......kkk',
+])
+// 大人（ボブ）
+const HEAD_BOB = mirror([
+  '......kkk',
+  '.....khhh',
+  '....khhhh',
+  '...khhhhh',
+  '...khhsss',
+  '...khssss',
+  '...khskss',
+  '...khqssm',
+  '...khhsss',
+  '....khkkk',
+])
+const BODY_ADULT = mirror(['.....kxxx', '....kxxxx', '....kxxxx', '....ksxxx', '....kkzzz'])
 const LEGS_ADULT = {
-  stand: ['.....kzzzzzzk.....', '.....kzzkkzzk.....', '.....kzk..kzk.....', '.....kkk..kkk.....'],
-  a: ['.....kzzzzzzk.....', '....kzzk..kzzk....', '....kzk....kzk....', '....kkk....kkk....'],
-  b: ['.....kzzzzzzk.....', '......kzzzzk......', '......kzkkzk......', '......kkkkkk......'],
-} as const
+  stand: mirror(['.....kzzz', '.....kzzk', '.....kzk.', '.....kkk.']),
+  a: mirror(['.....kzzz', '....kzzk.', '....kzk..', '....kkk..']),
+  b: mirror(['.....kzzz', '......kzz', '......kzk', '......kkk']),
+}
+// ばんざい（頭の上半分はそのまま、5行目から下を差し替え）
+const CHEER_SHORT = mirror([
+  '..kkkssss',
+  '..kskskss',
+  '..kxkqssm',
+  '...kxksss',
+  '....kxkkk',
+  '.....kxxx',
+  '.....kxxx',
+  '.....kxxx',
+  '.....kxxx',
+  '.....kzzz',
+])
+const CHEER_BOB = mirror([
+  '.kkkhssss',
+  '.kskhskss',
+  '.kxkhqssm',
+  '.kxkhhsss',
+  '..kxkhkkk',
+  '...kxkxxx',
+  '....kxxxx',
+  '.....kxxx',
+  '.....kxxx',
+  '.....kzzz',
+])
 
-const CHEER_SHORT: Grid = [
-  '..kkkssssssssskk..',
-  '..kskskssssksksk..',
-  '..kxkqssssssqkxk..',
-  '...kxkssmmsskxk...',
-  '....kxkkkkkkxk....',
-  '.....kxxxxxxk.....',
-  '.....kxxxxxxk.....',
-  '.....kxxxxxxk.....',
-  '.....kxxxxxxk.....',
-  '.....kzzzzzzk.....',
-]
-const CHEER_BOB: Grid = [
-  '.kkkhsssssssshkkk.',
-  '.kskhsksssskshksk.',
-  '.kxkhqssssssqhkxk.',
-  '.kxkhhssmmsshhkxk.',
-  '..kxkhkkkkkkhkxk..',
-  '...kxkxxxxxxkxk...',
-  '....kxxxxxxxxk....',
-  '.....kxxxxxxk.....',
-  '.....kxxxxxxk.....',
-  '.....kzzzzzzk.....',
-]
-
-// 中高生 18×18
-const HEAD_TEEN: Grid = [
-  '......kkkkkk......',
-  '.....khhhhhhk.....',
-  '....khhhhhhhhk....',
-  '....khhhhhhhhk....',
-  '....khhhhhssshk...',
-  '....kssssssssk....',
-  '....kskssssksk....',
-  '....kqssssssqk....',
-  '.....kssmmssk.....',
-  '......kkkkkk......',
-].map((r) => r.slice(0, 18))
-const BODY_TEEN: Grid = [
-  '.....kwwbbwwk.....',
-  '....kwwwbbwwwk....',
-  '....kswwbbwwsk....',
-  '....kkzzzzzzkk....',
-]
+// 中高生 18×18（前髪だけ左右ちがう）
+const HEAD_TEEN = patch(HEAD_SHORT, [
+  [5, 4, 'h'], [6, 4, 'h'], [7, 4, 'h'], [8, 4, 'h'], [9, 4, 'h'], [10, 4, 's'], [11, 4, 's'], [12, 4, 's'],
+])
+const BODY_TEEN = mirror(['.....kwwb', '....kwwwb', '....kswwb', '....kkzzz'])
 
 // 小学生くらい 14×15
-const HEAD_KID: Grid = [
-  '....kkkkkk....',
-  '...khhhhhhk...',
-  '..khhhhhhhhk..',
-  '..khsshhsshk..',
-  '..kssssssssk..',
-  '..kskssssksk..',
-  '..kqssssssqk..',
-  '...kssmmssk...',
-  '....kkkkkk....',
-]
-const BODY_KID: Grid = ['....kxxxxk....', '...kxxxxxxk...', '...ksxxxxsk...', '...kkzzzzkk...']
+const HEAD_KID = mirror(['....kkk', '...khhh', '..khhhh', '..khssh', '..kssss', '..kskss', '..kqssm', '...ksss', '....kkk'])
+const BODY_KID = mirror(['....kxx', '...kxxx', '...ksxx', '...kkzz'])
 const LEGS_KID = {
-  stand: ['....kskksk....', '....kkkkkk....'],
-  a: ['...ksk..ksk...', '...kkk..kkk...'],
-  b: ['.....kssk.....', '.....kkkk.....'],
-} as const
-const CHEER_KID: Grid = [
-  'kkkssssssssskk',
-  'kskskssssksksk',
-  'kxkqssssssqkxk',
-  '.kxkssmmsskxk.',
-  '..kxkkkkkkxk..',
-  '....kxxxxk....',
-  '....kxxxxk....',
-  '....kxxxxk....',
-  '....kzzzzk....',
-]
+  stand: mirror(['....ksk', '....kkk']),
+  a: mirror(['...ksk.', '...kkk.']),
+  b: mirror(['.....ks', '.....kk']),
+}
+const CHEER_KID = mirror(['kkkssss', 'kskskss', 'kxkqssm', '.kxksss', '..kxkkk', '....kxx', '....kxx', '....kxx', '....kzz'])
 
 // 0〜2歳 12×13
-const TODDLER_TOP: Grid = [
-  '.....kk.....',
-  '....khhk....',
-  '..kkhsshkk..',
-  '.kssssssssk.',
-  '.kssssssssk.',
-  '.kskssssksk.',
-  '.kqssmmssqk.',
-  '..kssssssk..',
-  '...kkkkkk...',
-  '..kxxxxxxk..',
-  '..ksxxxxsk..',
-  '..kkxxxxkk..',
-]
-const LEGS_TODDLER = { stand: ['...kk..kk...'], a: ['..kk....kk..'], b: ['....kkkk....'] } as const
+const TODDLER_TOP = mirror([
+  '.....k',
+  '....kh',
+  '..kkhs',
+  '.kssss',
+  '.kssss',
+  '.kskss',
+  '.kqssm',
+  '..ksss',
+  '...kkk',
+  '..kxxx',
+  '..ksxx',
+  '..kkxx',
+])
+const LEGS_TODDLER = { stand: mirror(['...kk.']), a: mirror(['..kk..']), b: mirror(['....kk']) }
 
 // これから生まれる子（おくるみ）12×10
-export const BUNDLE: Grid = [
-  '....kkkk....',
-  '...kppppk...',
-  '..kpsssspk..',
-  '..kpksskpk..',
-  '..kpqssqpk..',
-  '.kccppppcck.',
-  '.kcccccccck.',
-  '.kcccccccck.',
-  '..kcccccck..',
-  '...kkkkkk...',
-]
+const BUNDLE = mirror(['....kk', '...kpp', '..kpss', '..kpks', '..kpqs', '.kccpp', '.kcccc', '.kcccc', '..kccc', '...kkk'])
 
 export type Pose = 'stand' | 'a' | 'b' | 'cheer'
-export type Face = 'smile' | 'calm' | 'open'
 export type Who = 'adultA' | 'adultB' | 'teen' | 'kid' | 'toddler' | 'bundle'
 
-const join = (...parts: Grid[]) => parts.flatMap((p) => [...p])
+const join = (...parts: Grid[]): Grid => parts.flatMap((p) => [...p])
+const closeMouth = (g: Grid): Grid => g.map((r) => r.replace(/m/g, 'S'))
 
-function face(grid: Grid, f: Face): Grid {
-  // くちの 'm' を表情で塗りかえる
-  if (f === 'open') return grid
-  return grid.map((r) => r.replace(/m/g, f === 'calm' ? 'S' : 'S'))
-}
-
-export function personGrid(who: Who, pose: Pose, f: Face = 'smile'): Grid {
-  let g: Grid
+export function personGrid(who: Who, pose: Pose): Grid {
   switch (who) {
     case 'adultA':
-      g = pose === 'cheer' ? join(HEAD_SHORT.slice(0, 5), CHEER_SHORT, LEGS_ADULT.stand) : join(HEAD_SHORT, BODY_ADULT, LEGS_ADULT[pose])
-      break
+      return pose === 'cheer' ? join(HEAD_SHORT.slice(0, 5), CHEER_SHORT, LEGS_ADULT.stand) : closeMouth(join(HEAD_SHORT, BODY_ADULT, LEGS_ADULT[pose]))
     case 'adultB':
-      g = pose === 'cheer' ? join(HEAD_BOB.slice(0, 5), CHEER_BOB, LEGS_ADULT.stand) : join(HEAD_BOB, BODY_ADULT, LEGS_ADULT[pose])
-      break
+      return pose === 'cheer' ? join(HEAD_BOB.slice(0, 5), CHEER_BOB, LEGS_ADULT.stand) : closeMouth(join(HEAD_BOB, BODY_ADULT, LEGS_ADULT[pose]))
     case 'teen':
-      g = join(HEAD_TEEN, BODY_TEEN, LEGS_ADULT[pose === 'cheer' ? 'stand' : pose])
-      break
+      return pose === 'cheer' ? join(HEAD_TEEN, BODY_TEEN, LEGS_ADULT.stand) : closeMouth(join(HEAD_TEEN, BODY_TEEN, LEGS_ADULT[pose]))
     case 'kid':
-      g = pose === 'cheer' ? join(HEAD_KID.slice(0, 4), CHEER_KID, LEGS_KID.stand) : join(HEAD_KID, BODY_KID, LEGS_KID[pose])
-      break
+      return pose === 'cheer' ? join(HEAD_KID.slice(0, 4), CHEER_KID, LEGS_KID.stand) : closeMouth(join(HEAD_KID, BODY_KID, LEGS_KID[pose]))
     case 'toddler':
-      g = join(TODDLER_TOP, LEGS_TODDLER[pose === 'cheer' ? 'stand' : pose])
-      break
+      return pose === 'cheer' ? join(TODDLER_TOP, LEGS_TODDLER.stand) : join(TODDLER_TOP, LEGS_TODDLER[pose])
     case 'bundle':
-      g = BUNDLE
-      break
+      return BUNDLE
   }
-  return face(g, pose === 'cheer' ? 'open' : f)
 }
 
 export const PERSON_PAL: Record<Who, Pal> = {
@@ -270,22 +186,22 @@ export const PERSON_PAL: Record<Who, Pal> = {
 export const KID_SHIRTS = ['#ffcc33', '#f4a3b5', '#6bb34f', '#f08a3a', '#a8dcf0']
 
 /* ───────── 貯金箱（家族の財布）18×14 ───────── */
-const PIG_BASE: Grid = [
-  '..kkk........kkk..',
-  '..kPpkkkkkkkkpPk..',
-  '.kpppppkkkkpppppk.',
-  'kppppppppppppppppk',
-  'kppppppppppppppppk',
-  'kpqpppPPPPPPpppqpk',
-  'kpppppPkPPkPpppppk',
-  'kpppppPPPPPPpppppk',
-  'kppppppppppppppppk',
-  'kppppppppppppppppk',
-  'kppppppppppppppppk',
-  '.kppppppppppppppk.',
-  '..kPPkkkkkkkkPPk..',
-  '..kkkk......kkkk..',
-]
+const PIG_BASE = mirror([
+  '..kkk....',
+  '..kPpkkkk',
+  '.kpppppkk',
+  'kpppppppp',
+  'kpppppppp',
+  'kpqpppPPP',
+  'kpppppPkP',
+  'kpppppPPP',
+  'kpppppppp',
+  'kpppppppp',
+  'kpppppppp',
+  '.kppppppp',
+  '..kPPkkkk',
+  '..kkkk...',
+])
 export type PigMood = 'happy' | 'plain' | 'sad'
 export function pigGrid(mood: PigMood): Grid {
   if (mood === 'happy')
@@ -303,7 +219,7 @@ export function pigGrid(mood: PigMood): Grid {
   return patch(PIG_BASE, [[4, 4, 'k'], [13, 4, 'k'], [8, 9, 'k'], [9, 9, 'k']])
 }
 
-/* ───────── ハト駅長（案内役）16×16 ───────── */
+/* ───────── ハト駅長（案内役）16×16・右向き ───────── */
 export const PIGEON: Grid = [
   '................',
   '.....kkkkkk.....',
@@ -311,11 +227,11 @@ export const PIGEON: Grid = [
   '....kvvyyvvk....',
   '....kkkkkkkkkk..',
   '....keeeeeeek...',
-  '...keeeeeowkek..',
-  '...keeeeeeeewCk.',
-  '...kttteeeeekk..',
-  '..kttgtteeeek...',
-  '..ktgttEeeeeek..',
+  '...keeeeeokek...',
+  '...keeeeeeeewEk.',
+  '...keeeeeeeekk..',
+  '..keetgteeeek...',
+  '..keettgEeeeek..',
   '.keeeeEEeeeeeek.',
   '.keeeeeEEeeeeek.',
   '..keeeeeEEEEek..',
@@ -325,6 +241,7 @@ export const PIGEON: Grid = [
 
 /* ───────── 小物 ───────── */
 export const ITEMS = {
+  // 草加せんべい
   senbei: [
     '....kkkk....',
     '..kkuuuukk..',
@@ -339,30 +256,11 @@ export const ITEMS = {
     '..kkuuuukk..',
     '....kkkk....',
   ],
-  pot: [
-    '......kk......',
-    '.....kEEk.....',
-    '..kkkkkkkkkk..',
-    '.kEEEEEEEEEEk.',
-    'kkkkkkkkkkkkkk',
-    'kEeEEEEEEEEEEk',
-    'kEeEEEEEEEEEEk',
-    '.kEEEEEEEEEEk.',
-    '..kEEEEEEEEk..',
-    '...kkkkkkkk...',
-    '...kk....kk...',
-  ],
-  briefcase: [
-    '....kkkk....',
-    '....k..k....',
-    '.kkkkkkkkkk.',
-    'knnnnnnnnnnk',
-    'knnnnnnnnnnk',
-    'kNNNNyyNNNNk',
-    'knnnnnnnnnnk',
-    'knnnnnnnnnnk',
-    '.kkkkkkkkkk.',
-  ],
+  // 鋳物の鍋
+  pot: patch(mirror(['......k', '.....kE', '..kkkkk', '.kEEEEE', 'kkkkkkk', 'kEeEEEE', 'kEeEEEE', '.kEEEEE', '..kEEEE', '...kkkk', '...kk..']), [[11, 5, 'E'], [11, 6, 'E']]),
+  // 求人（かばん）
+  briefcase: mirror(['....kk', '....k.', '.kkkkk', 'knnnnn', 'knnnnn', 'kNNNNy', 'knnnnn', 'knnnnn', '.kkkkk']),
+  // 工場
   factory: [
     '..kk.....kk...',
     '..kEk....kEk..',
@@ -376,46 +274,22 @@ export const ITEMS = {
     '.kEEEEEkkEEEk.',
     'kkkkkkkkkkkkkk',
   ],
-  rocket: [
-    '....kk....',
-    '...kwwk...',
-    '...kwwk...',
-    '..kwwwwk..',
-    '..kwllwk..',
-    '..kwllwk..',
-    '..kwwwwk..',
-    '..kwwwwk..',
-    '.krwwwwrk.',
-    'krrwwwwrrk',
-    'krkkkkkkrk',
-    'kk.kook.kk',
-    '...kyyk...',
-    '....kk....',
-  ],
+  // 宇宙のまち（ロケット）
+  rocket: mirror(['....k', '...kw', '...kw', '..kww', '..kwl', '..kwl', '..kww', '..kww', '.krww', 'krrww', 'krkkk', 'kk.ko', '...ky', '....k']),
+  // 粉もん（たこ焼き）
   takoyaki: [
-    '...kkk....kkk...',
-    '..knNnk..knNnk..',
-    '.knwNNnkknNwNnk.',
-    '.knNgNnkknNNgnk.',
-    '..knnnk..knnnk..',
-    'kkkkkkkkkkkkkkkk',
-    'kCCCCCCCCCCCCCCk',
-    '.kCCCCCCCCCCCCk.',
-    '..kkkkkkkkkkkk..',
+    '.kkk..kkk..kkk.',
+    'knNnkknNnkknNnk',
+    'knwNkkNgnkknNwk',
+    'kngnkknwnkkgnnk',
+    'kkkkkkkkkkkkkkk',
+    'kCCCCCCCCCCCCCk',
+    '.kCCCCCCCCCCCk.',
+    '..kkkkkkkkkkk..',
   ],
-  drop: [
-    '...kk...',
-    '...kk...',
-    '..kllk..',
-    '..kllk..',
-    '.kllllk.',
-    '.klwllk.',
-    'kllwlllk',
-    'kllllllk',
-    'klllllLk',
-    '.kllLLk.',
-    '..kkkk..',
-  ],
+  // 水（下水道代）
+  drop: ['...kk...', '...kk...', '..kllk..', '..kllk..', '.kllllk.', '.klwllk.', 'kllwlllk', 'kllllllk', 'klllllLk', '.kllLLk.', '..kkkk..'],
+  // とうもろこし（北海道の農業）
   corn: [
     '...k..k...',
     '..kGkkGk..',
@@ -430,18 +304,22 @@ export const ITEMS = {
     '...kggk...',
     '....kk....',
   ],
+  // 桜島
   volcano: [
-    '......eee.......',
-    '.....eeeee......',
-    '......eee.......',
-    '......kkkk......',
-    '.....kNnnNk.....',
-    '....knnNnnnk....',
-    '...knnnnnNnnk...',
-    '..knNnnnnnnnnk..',
-    '.knnnnnNnnnnNnk.',
-    'kkkkkkkkkkkkkkkk',
+    '.......eee........',
+    '......eeeee.......',
+    '.......eee........',
+    '........kk........',
+    '.......knnk.......',
+    '......knNnnk......',
+    '.....knnnnNnk.....',
+    '....kGnnNnnnGk....',
+    '...kGGgnnnnGGgk...',
+    '..kGgGGGgGGGgGGk..',
+    '.kGGGgGGGGgGGGGGk.',
+    'kkkkkkkkkkkkkkkkkk',
   ],
+  // 保育園
   nursery: [
     '.....kk.....',
     '....kRRk....',
@@ -449,13 +327,14 @@ export const ITEMS = {
     '..kRrrrrRk..',
     '.kRrrrrrrRk.',
     'kkkkkkkkkkkk',
-    '.kccccccck..',
+    '.kcccccccck.',
     '.kcbbcckcck.',
     '.kcbbckrkck.',
     '.kcccckgkck.',
     '.kccccckcck.',
     'kkkkkkkkkkkk',
   ],
+  // 現金の給付（封筒とお金）
   envelope: [
     '....kkkkkk....',
     '..kkyyyyyykk..',
@@ -464,10 +343,11 @@ export const ITEMS = {
     'kcckcccccckcck',
     'kccckcccckccck',
     'kcccckkkkcccck',
-    'kccccccccccccc',
-    'kccccccccccccc',
+    'kcccccccccccck',
+    'kcccccccccccck',
     'kkkkkkkkkkkkkk',
-  ].map((r) => (r.endsWith('cc') && r.length === 14 ? r.slice(0, 13) + 'k' : r)),
+  ],
+  // 給食
   lunch: [
     '..........kk..',
     '.........kwwk.',
@@ -479,42 +359,14 @@ export const ITEMS = {
     'kCCCCCCCCCCCCk',
     '.kkkkkkkkkkkk.',
   ],
-  bandage: [
-    '...kkkkkkkk...',
-    '..kssssssssk..',
-    '.ksskccccksk..',
-    'ksssskcCkcsssk',
-    'ksssskcCkcsssk',
-    '.ksskccccksk..',
-    '..kssssssssk..',
-    '...kkkkkkkk...',
-  ].map((r) => r.padEnd(14, '.').slice(0, 14)),
-  suitcase: [
-    '....kkkk....',
-    '....k..k....',
-    '.kkkkkkkkkk.',
-    'krrrrrrrrrrk',
-    'krRrrrrrrRrk',
-    'krRryyyyrRrk',
-    'krRryyyyrRrk',
-    'krRrrrrrrRrk',
-    'krrrrrrrrrrk',
-    '.kkkkkkkkkk.',
-    '..k......k..',
-  ],
-  coin: ['..kkkk..', '.kyyyyk.', 'kyyYYyyk', 'kyYyyYyk', 'kyYyyYyk', 'kyyYYyyk', '.kyyyyk.', '..kkkk..'],
-  gift: [
-    '..kk..kk....',
-    '.kRrkkrRk...',
-    '..kkrrkk....',
-    'kkkkrrkkkkk.',
-    'kcccrrccccck',
-    'kkkkrrkkkkkk',
-    '.kcccrrcccck',
-    '.kcccrrcccck',
-    '.kcccrrcccck',
-    '.kkkkkkkkkkk',
-  ].map((r) => r.padEnd(12, '.').slice(0, 12)),
+  // 医療費（ばんそうこう）
+  bandage: mirror(['...kkkk', '..kssss', '.ksskcc', 'ksssskc', 'ksssskc', '.ksskcc', '..kssss', '...kkkk']),
+  // 移住（スーツケース）
+  suitcase: mirror(['....kk', '....k.', '.kkkkk', 'krrrrr', 'krRrrr', 'krRryy', 'krRryy', 'krRrrr', 'krrrrr', '.kkkkk', '..k...']),
+  coin: mirror(['..kk', '.kyy', 'kyyY', 'kyYy', 'kyYy', 'kyyY', '.kyy', '..kk']),
+  // 一度きり（おくりもの）
+  gift: mirror(['..kk..', '.kRrkk', '..kkrr', 'kkkkkr', 'kccccr', 'kkkkkr', '.kcccr', '.kcccr', '.kcccr', '.kkkkk']),
+  // 確認中（工事中の柵）
   barrier: [
     '..kk......kk..',
     '..ko......ok..',
@@ -526,20 +378,37 @@ export const ITEMS = {
     '..kk......kk..',
     '.kkkk....kkkk.',
   ],
-  heart: ['.kk.kk.', 'krrkrrk', 'krrrrrk', '.krrrk.', '..krk..', '...k...'],
-  sparkle: ['..y..', '..y..', 'yywyy', '..y..', '..y..'],
+  // 次の一歩（道しるべ）
+  signpost: [
+    '.....kk.....',
+    '.kkkkkkkkkk.',
+    '.kyyyyyyyyyk',
+    '.kyyyyyyyyyk',
+    '.kkkkkkkkkk.',
+    '....kNNk....',
+    'kkkkkkkkkk..',
+    'kccccccccck.',
+    'kccccccccck.',
+    '.kkkkkkkkkk.',
+    '....kNNk....',
+    '....kNNk....',
+    '...kkkkkk...',
+  ],
+  heart: mirrorOdd(['.kk.', 'krrk', 'krrr', '.krr', '..kr', '...k']),
+  sparkle: mirrorOdd(['..y', '..y', 'yyw', '..y', '..y']),
   sweat: ['.k..', 'klk.', 'kllk', 'kllk', '.kk.'],
   note: ['..kkk', '..kyk', '..k..', 'kkk..', 'kkk..'],
+  // 働き方
   train: [
-    '..kkkkkkkkkk..',
-    '.kggggggggggk.',
-    '.kgllkgglllgk.',
-    '.kgllkgglllgk.',
-    '.kggggggggggk.',
-    '.kwwggggggwwk.',
-    '.kggggggggggk.',
-    '..kkkkkkkkkk..',
-    '...kEk..kEk...',
+    '.kkkkkkkkkkkkkk.',
+    'kggggggggggggggk',
+    'kgllgllgllgllggk',
+    'kgllgllgllgllggk',
+    'kggggggggggggggk',
+    'kyyyyyyyyyyyyyyk',
+    'kggggggggggggggk',
+    '.kkkkkkkkkkkkkk.',
+    '..kEk......kEk..',
   ],
   laptop: [
     '..kkkkkkkkkk..',
@@ -552,39 +421,22 @@ export const ITEMS = {
     'keeeeeeeeeeeek',
     '.kkkkkkkkkkkk.',
   ],
-  tools: [
-    '......kkk.....',
-    '.....kEeEk....',
-    '....kEk.kEk...',
-    'kkkkkkkkkkkkkk',
-    'krrrrrrrrrrrrk',
-    'krrrrkyykrrrrk',
-    'kRRRRkkkkRRRRk',
-    'krrrrrrrrrrrrk',
-    'kkkkkkkkkkkkkk',
-  ],
-  clock: [
-    '..kkkkkk..',
-    '.kwwwwwwk.',
-    'kwwwkwwwwk',
-    'kwwwkwwwwk',
-    'kwwwkkkwwk',
-    'kwwwwwwwwk',
-    'kwwwwwwwwk',
-    '.kwwwwwwk.',
-    '..kkkkkk..',
-  ],
-  ticket: [
-    'kkkkkkkkkkkkkkkkkk',
-    'kcccccccccccccccck',
-    'kcCCCCCCccccccccck',
-    '.cccccccccccccccck',
-    'kcCCCCCCCCCCCcccck',
-    'kccccccccccccccccc',
-    'kcCCCCCcccccccccck',
-    'kcccccccccccccccck',
-    'kkkkkkkkkkkkkkkkkk',
-  ],
+  tools: mirror(['......k', '.....kE', '....kEk', 'kkkkkkk', 'krrrrrr', 'krrrrky', 'kRRRRkk', 'krrrrrr', 'kkkkkkk']),
+  clock: ['..kkkkkk..', '.kwwwwwwk.', 'kwwwkwwwwk', 'kwwwkwwwwk', 'kwwwkkkwwk', 'kwwwwwwwwk', 'kwwwwwwwwk', '.kwwwwwwk.', '..kkkkkk..'],
 } satisfies Record<string, Grid>
 
 export type ItemKey = keyof typeof ITEMS
+
+// 開発用: すべての絵の行の幅がそろっているか
+export function checkGrids(): string[] {
+  const bad: string[] = []
+  const all: Record<string, Grid> = { ...ITEMS, PIGEON, BUNDLE }
+  for (const who of ['adultA', 'adultB', 'teen', 'kid', 'toddler', 'bundle'] as Who[])
+    for (const pose of ['stand', 'a', 'b', 'cheer'] as Pose[]) all[`${who}-${pose}`] = personGrid(who, pose)
+  for (const m of ['happy', 'plain', 'sad'] as PigMood[]) all[`pig-${m}`] = pigGrid(m)
+  for (const [k, g] of Object.entries(all)) {
+    const w = g[0].length
+    g.forEach((r, i) => r.length !== w && bad.push(`${k} row ${i}: ${r.length} != ${w}`))
+  }
+  return bad
+}

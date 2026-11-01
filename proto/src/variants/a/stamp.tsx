@@ -85,7 +85,7 @@ export function EmptyStamp({ size = 72, name }: { size?: number; name: string })
   return (
     <svg viewBox="0 0 200 200" width={size} height={size} role="img" aria-label={`${name}のはんこは、まだ`}>
       <circle cx="100" cy="100" r="88" fill="none" stroke="var(--ink-soft)" strokeWidth="5" strokeDasharray="10 12" opacity="0.6" />
-      <text x="100" y="110" textAnchor="middle" fontSize="30" fontWeight={900} fill="var(--ink-soft)" fontFamily="'Zen Maru Gothic', sans-serif" opacity="0.8">
+      <text x="100" y="110" textAnchor="middle" fontSize="30" fontWeight={900} fill="var(--ink-soft)" fontFamily="'Zen Maru Gothic', sans-serif">
         {name}
       </text>
     </svg>

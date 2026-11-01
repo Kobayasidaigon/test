@@ -69,18 +69,21 @@ export function itemAmount(i: Breakdown, c: Comparison): { tone: Tone | 'unknown
 export function shelfLine(c: Comparison): [string, string] {
   const t = toneOf(c.perYear)
   if (t === 'even') return ['ほぼ同じ', '']
-  if (t === 'plus') return ['年 約' + yenMan(c.perYear), '得']
-  return ['いまの街のままが', `年 約${yenMan(-c.perYear)} お得`]
+  if (t === 'plus') return ['この街だと', `年${yenMan(c.perYear)}得`]
+  return ['いまの街が', `年${yenMan(-c.perYear)}お得`]
 }
 
 // 次の一歩（結果に合わせて、最大3つ）
-export function nextSteps(c: Comparison): string[] {
+export function nextSteps(c: Comparison, others = 0): string[] {
   const s: string[] = []
+  const tone = toneOf(c.perYear)
   if (c.unknown.length) s.push(`確認中の「${c.unknown.map((u) => u.label).join('・')}」を、${c.to.name}の窓口で聞いてみる`)
+  if (tone === 'even') s.push('子育ての制度の差はほとんどないので、家賃・通勤・住みごこちで比べてみる')
   if (c.oneTime > 0) s.push('移住支援金の条件（対象になる人・申し込みの時期）を、市のページで確かめる')
-  if (toneOf(c.perYear) === 'stay') s.push(`${c.from.name}の子育ての制度を、もれなく使えているか見直す`)
+  if (tone === 'stay') s.push(`${c.from.name}の子育ての制度を、もれなく使えているか見直す`)
   if (c.items.some((i) => i.key === 'nursery' && i.perYear !== null && Math.abs(i.perYear) >= 1000)) s.push(`${c.to.name}の保育園の空きぐあいを調べる`)
-  s.push('家賃や通勤時間も、あわせて比べてみる')
+  if (others > 0 && s.length < 3) s.push('棚にある、ほかのカプセルも開けてみる')
+  if (tone !== 'even') s.push('家賃や通勤時間も、あわせて比べてみる')
   return s.slice(0, 3)
 }
 
