@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Shippori+Mincho+B1:wght@800&family=M+PLUS+1:wght@800&family=M+PLUS+1+Code:wght@500&family=Overpass:wght@800&family=Anton&family=Press+Start+2P&family=Mochiy+Pop+One&display=swap">
 <style>
 /* Layout: 携帯ゲーム機のような「画面＋ダッシュボード」が主役。広い画面では右に条件パネル、狭い画面では1列に積む */
 :root{
@@ -22,7 +22,9 @@
   --sky-top:#79b6e6; --sky-bot:#d6ecfa; --sun:#fff3c4; --mtn-far:#a6bfd6; --mtn-near:#7da78a;
   --ground:#93bf83; --tree:#4f8a5b; --tree-2:#3d7449; --road:#4a515b; --road-line:#eef1f4;
   --pole:#6b6157; --wire:rgba(40,40,40,.4); --smoke:rgba(110,114,120,.45); --glass:rgba(168,206,234,.95);
-  --night:0;
+  --night:0; --pixel:0;
+  --cta:#f3c02d; --cta-edge:#a77d00; --cta-ink:#1b1504;
+  --font-num:"Dela Gothic One","Hiragino Sans",sans-serif; --cv-hud:"DotGothic16"; --cv-display:"Dela Gothic One";
   --font-display:"Dela Gothic One","Hiragino Sans","Noto Sans JP",sans-serif;
   --font-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
   --font-hud:"DotGothic16","Osaka-Mono",ui-monospace,monospace;
@@ -95,7 +97,7 @@ h1{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(24px
 .chip .v{font-size:17px;font-variant-numeric:tabular-nums}
 .odo{display:flex;align-items:baseline;gap:4px}
 .odo-digits{display:flex;background:#0b0d10;border-radius:3px;padding:1px 2px;gap:1px}
-.odo-d{width:.72em;height:1.2em;overflow:hidden;font-size:17px;background:#16191f;border-radius:2px;text-align:center}
+.odo-d{width:.72em;height:1.2em;overflow:hidden;font-size:17px;background:#16191f;color:#f2f4f7;border-radius:2px;text-align:center}
 .odo-d:last-child{color:#ffcf6b}
 .odo-strip{display:flex;flex-direction:column;will-change:transform}
 .odo-strip span{height:1.2em;line-height:1.2em}
@@ -123,7 +125,7 @@ h1{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(24px
 .dash{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:8px;color:var(--bezel-ink)}
 .cell{background:var(--bezel-2);border-radius:10px;padding:8px 10px;display:grid;gap:2px;min-width:0;align-content:start}
 .cell .k{font-size:11px;color:var(--bezel-ink-2);line-height:1.3}
-.cell .v{font-family:var(--font-display);font-size:clamp(17px,2.6vw,22px);line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cell .v{font-family:var(--font-num);font-size:clamp(17px,2.6vw,22px);line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
 .cell .v[data-sign="neg"]{color:var(--keep-hi)}
 .cell .v[data-sign="pos"]{color:var(--bezel-ink)}
 .cell .s{font-size:11px;color:var(--bezel-ink-2);line-height:1.3}
@@ -140,11 +142,11 @@ h1{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(24px
 }
 
 .actions{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
-.btn-go,.btn-sell{appearance:none;border:2px solid var(--warn-edge);background:var(--warn);color:var(--warn-ink);font-family:var(--font-display);font-size:18px;line-height:1.2;border-radius:12px;padding:12px 22px;box-shadow:0 4px 0 var(--warn-edge);cursor:pointer;transition:transform .06s, box-shadow .06s}
-.btn-go:active,.btn-sell:active{transform:translateY(3px);box-shadow:0 1px 0 var(--warn-edge)}
+.btn-go,.btn-sell{appearance:none;border:2px solid var(--cta-edge);background:var(--cta);color:var(--cta-ink);font-family:var(--font-display);font-size:18px;line-height:1.2;border-radius:12px;padding:12px 22px;box-shadow:0 4px 0 var(--cta-edge);cursor:pointer;transition:transform .06s, box-shadow .06s}
+.btn-go:active,.btn-sell:active{transform:translateY(3px);box-shadow:0 1px 0 var(--cta-edge)}
 .btn-sell{flex:1 1 220px;font-size:22px;display:grid;gap:2px;padding:12px 18px}
 .btn-sell small{font-family:var(--font-body);font-weight:700;font-size:12px;opacity:.8}
-.btn-sell:disabled{opacity:.55;cursor:default;transform:none;box-shadow:0 4px 0 var(--warn-edge)}
+.btn-sell:disabled{opacity:.55;cursor:default;transform:none}
 .actions .btn-go{flex:1 1 200px}
 .btn-ghost{appearance:none;border:1.5px solid var(--bezel-line);background:transparent;color:var(--bezel-ink);border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer}
 .btn-ghost:hover{background:var(--bezel-2)}
@@ -182,7 +184,7 @@ input[type="range"]{width:100%;accent-color:var(--sign);margin:0;height:28px}
 .preview{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--panel-2);border-radius:10px;padding:10px 12px}
 .preview div{display:grid;gap:0;line-height:1.35}
 .preview span{font-size:11px;color:var(--ink-3)}
-.preview b{font-family:var(--font-display);font-weight:400;font-size:18px;font-variant-numeric:tabular-nums}
+.preview b{font-family:var(--font-num);font-weight:400;font-size:18px;font-variant-numeric:tabular-nums}
 .setup .btn-go{width:100%}
 @media (max-width:939px){ .app.is-playing .setup,.app.is-result .setup{display:none} }
 
@@ -197,7 +199,7 @@ input[type="range"]{width:100%;accent-color:var(--sign);margin:0;height:28px}
 .result-kicker{margin:0;font-family:var(--font-hud);font-size:13px;color:var(--ink-3);letter-spacing:.08em}
 .result-title{margin:0;font-family:var(--font-display);font-size:24px;line-height:1.25}
 .result-score{margin:0;color:var(--ink-2)}
-.result-score b{font-family:var(--font-display);font-weight:400;font-size:22px;color:var(--ink)}
+.result-score b{font-family:var(--font-num);font-weight:400;font-size:22px;color:var(--ink)}
 .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0}
 .result-grid > div{background:var(--panel-2);border-radius:10px;padding:12px;display:grid;gap:2px;min-width:0}
 .result-grid dt{font-size:12px;color:var(--ink-3)}
@@ -287,6 +289,278 @@ tr.is-best td:first-child{background:var(--panel-2)}
 .small{font-size:12px;color:var(--ink-3);margin:0}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+
+/* =================================================================
+   デザイン案（html[data-skin]）— 比較用。各案は1つの世界観に決め打ち
+   ================================================================= */
+.skinbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:#23272e;color:#e9edf2;
+  font:500 12px/1.4 system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap}
+.skinbar .lbl{opacity:.65;margin-right:4px}
+.skinbar button{appearance:none;border:1px solid #4b525d;background:transparent;color:inherit;border-radius:999px;padding:4px 11px;font:inherit;cursor:pointer;flex:none}
+.skinbar button[aria-pressed="true"]{background:#e9edf2;color:#23272e;border-color:#e9edf2;font-weight:700}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:#23272e}
+body.video-mode .skinbar{display:none}
+.gauge-wrap{display:none}
+
+/* ---------- 案1 帳票：車両維持費 試算書 ---------- */
+html:root[data-skin="paper"]{
+  --bg:#d3d9cd; --panel:#f8f9f3; --panel-2:#eef1e7; --ink:#1c2620; --ink-2:#46544b; --ink-3:#69766d; --line:#a9b6a4;
+  --sign:#2c6a4c; --sign-ink:#ffffff; --sign-tint:rgba(44,106,76,.10);
+  --warn:#f3c02d; --warn-edge:#a77d00; --warn-ink:#1b1504; --cta:#1c2620; --cta-edge:#2c6a4c; --cta-ink:#f8f9f3;
+  --keep:#c4402b; --swap:#2a5c9a; --gain-fill:rgba(42,92,154,.14); --loss-fill:rgba(196,64,43,.14);
+  --bezel:#f8f9f3; --bezel-2:#f8f9f3; --bezel-ink:#1c2620; --bezel-ink-2:#56635a; --bezel-line:#c9d1c3;
+  --keep-hi:#c4402b; --swap-hi:#2a5c9a; --hud-bg:rgba(248,249,243,.9); --hud-ink:#1c2620;
+  --sky-top:#9fbccb; --sky-bot:#e2ebe7; --sun:#f4ecd0; --mtn-far:#b2c3c6; --mtn-near:#93ad93; --ground:#aec39d; --tree:#5f8a62; --tree-2:#4c7651;
+  --road:#5b605d; --road-line:#eef0ea; --pole:#6d665c; --wire:rgba(30,30,30,.35); --smoke:rgba(110,110,105,.4); --glass:rgba(176,204,214,.95); --night:0; --pixel:0;
+  --font-display:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif; --font-body:"Zen Kaku Gothic New","Hiragino Sans",sans-serif;
+  --font-hud:"M PLUS 1 Code",ui-monospace,monospace; --font-num:"M PLUS 1 Code",ui-monospace,monospace;
+  --cv-hud:"M PLUS 1 Code"; --cv-display:"Shippori Mincho B1";
+  color-scheme:light;
+}
+html[data-skin="paper"] body{background-image:radial-gradient(rgba(28,38,32,.06) 1px,transparent 1.2px);background-size:4px 4px}
+html[data-skin="paper"] .top{border-bottom:4px double var(--ink);padding-bottom:14px}
+html[data-skin="paper"] .eyebrow{color:var(--keep);letter-spacing:.2em}
+html[data-skin="paper"] h1{font-weight:800;letter-spacing:.04em}
+html[data-skin="paper"] .panel{border-radius:0;border:1px solid var(--ink);box-shadow:4px 4px 0 rgba(28,38,32,.14);
+  background-image:repeating-linear-gradient(0deg,transparent 0 27px,rgba(44,106,76,.07) 27px 28px)}
+html[data-skin="paper"] .panel h2,html[data-skin="paper"] .setup legend{font-weight:800;border-bottom:1px solid var(--ink);padding-bottom:4px;width:100%}
+html[data-skin="paper"] .console{position:relative;background:var(--panel);border:1px solid var(--ink);border-radius:0;padding:16px;box-shadow:4px 4px 0 rgba(28,38,32,.14)}
+html[data-skin="paper"] .console::before{content:"様式第一号　車両維持費 試算書";position:absolute;left:14px;top:0;transform:translateY(-120%);font:500 11px/1.4 var(--font-hud);letter-spacing:.12em;color:var(--ink-2)}
+html[data-skin="paper"] .screen{border-radius:0;outline:1px solid var(--ink);outline-offset:5px}
+html[data-skin="paper"] #scene{filter:saturate(.72) sepia(.14) contrast(1.03)}
+html[data-skin="paper"] .chip{border-radius:0;border:1px solid var(--ink)}
+html[data-skin="paper"] .odo-digits{background:#1c2620}
+html[data-skin="paper"] .dash{gap:0;border:1px solid var(--ink)}
+html[data-skin="paper"] .cell{border-radius:0;background:transparent;padding:0 0 8px;border-left:1px solid var(--ink)}
+html[data-skin="paper"] .cell:first-child{border-left:0}
+html[data-skin="paper"] .cell .k{background:var(--sign);color:#fff;padding:2px 10px;font-weight:700;letter-spacing:.06em}
+html[data-skin="paper"] .cell > :not(.k){margin-inline:10px}
+html[data-skin="paper"] .cell .v{font-weight:500;font-size:clamp(18px,2.6vw,23px)}
+html[data-skin="paper"] .meter{border-radius:0;background:#e2e7da;outline:1px solid var(--ink)}
+html[data-skin="paper"] .meter-bar{border-radius:0}
+html[data-skin="paper"] .over-flag{background:var(--keep);color:#fff;border-radius:0}
+@media (max-width:560px){ html[data-skin="paper"] .cell{border-left:0;border-top:1px solid var(--ink)} html[data-skin="paper"] .cell:first-child{border-top:0} html[data-skin="paper"] .dash .cell:nth-child(3){border-left:1px solid var(--ink)} }
+html[data-skin="paper"] .btn-go,html[data-skin="paper"] .btn-sell{border-radius:0;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--sign);font-family:var(--font-display);font-weight:800;letter-spacing:.1em}
+html[data-skin="paper"] .btn-ghost{border-radius:0;border-color:var(--ink);color:var(--ink)}
+html[data-skin="paper"] .btn-ghost:hover{background:var(--panel-2)}
+html[data-skin="paper"] .btn-link,html[data-skin="paper"] .hint-line{color:var(--ink-2)}
+html[data-skin="paper"] .hint-line kbd{border-color:var(--ink)}
+html[data-skin="paper"] .type-card,html[data-skin="paper"] .seg,html[data-skin="paper"] .seg-btn,html[data-skin="paper"] .preview,html[data-skin="paper"] .view-seg,html[data-skin="paper"] .view-seg button{border-radius:0}
+html[data-skin="paper"] .type-card{background:transparent;border-color:var(--ink)}
+html[data-skin="paper"] .opt input:checked + .type-card{background:var(--sign-tint);box-shadow:inset 0 0 0 2px var(--sign)}
+html[data-skin="paper"] .preview{border:1px dashed var(--ink);background:transparent}
+/* 結果：レシートのように1行ずつ印字（Kokonut UI Receipt Printer の技法を移植） */
+html[data-skin="paper"] .result{background:#fffffb;border-radius:0;padding-bottom:34px;
+  -webkit-mask:conic-gradient(from -45deg at 50% 100%,#0000,#000 1deg 89deg,#0000 90deg) 50% 100%/12px 6px repeat-x,linear-gradient(#000 0 0) 0 0/100% calc(100% - 6px) no-repeat;
+          mask:conic-gradient(from -45deg at 50% 100%,#0000,#000 1deg 89deg,#0000 90deg) 50% 100%/12px 6px repeat-x,linear-gradient(#000 0 0) 0 0/100% calc(100% - 6px) no-repeat}
+html[data-skin="paper"] .result.printing{animation:print-feed 1.6s steps(18,end) both}
+@keyframes print-feed{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+html[data-skin="paper"] .result-grid > div{border-radius:0;background:transparent;border:1px solid var(--ink)}
+html[data-skin="paper"] .result-grid .best{box-shadow:inset 0 0 0 3px var(--panel),inset 0 0 0 4px var(--keep);border-color:var(--keep)}
+html[data-skin="paper"] .rank{background:transparent;color:#c4402b;border:3px solid #c4402b;box-shadow:inset 0 0 0 3px #fffffb,inset 0 0 0 5px #c4402b;font-family:var(--font-display);font-size:46px;mix-blend-mode:multiply;animation:hanko .5s 1.5s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes hanko{0%{transform:rotate(-14deg) scale(1.9);opacity:0}100%{transform:rotate(-14deg) scale(1);opacity:.9}}
+html[data-skin="paper"] .result-title{font-weight:800}
+html[data-skin="paper"] .events .st{border-radius:0}
+html[data-skin="paper"] .slot{border-radius:0;border-color:var(--ink)}
+html[data-skin="paper"] details.panel summary{font-family:var(--font-display);font-weight:800}
+
+/* ---------- 案2 8bit：ファミコンの売り時クエスト ---------- */
+html:root[data-skin="pixel"]{
+  --bg:#0b0b16; --panel:#15152b; --panel-2:#22223e; --ink:#fcfcfc; --ink-2:#c8c8e6; --ink-3:#9a9ac0; --line:#5c5c8a;
+  --sign:#0058f8; --sign-ink:#fff; --sign-tint:rgba(60,188,252,.18);
+  --warn:#f8b800; --warn-edge:#ac7c00; --warn-ink:#000; --cta:#f8b800; --cta-edge:#ac7c00; --cta-ink:#000;
+  --keep:#f87858; --swap:#3cbcfc; --gain-fill:rgba(60,188,252,.28); --loss-fill:rgba(248,120,88,.28);
+  --bezel:#000; --bezel-2:#15152b; --bezel-ink:#fcfcfc; --bezel-ink-2:#bcbcd8; --bezel-line:#5c5c8a;
+  --keep-hi:#f87858; --swap-hi:#3cbcfc; --hud-bg:#000; --hud-ink:#fcfcfc;
+  --sky-top:#3cbcfc; --sky-bot:#a4e4fc; --sun:#fce0a8; --mtn-far:#0078f8; --mtn-near:#00a800; --ground:#58d854; --tree:#005800; --tree-2:#007800;
+  --road:#747474; --road-line:#fcfcfc; --pole:#ac7c00; --wire:rgba(0,0,0,.6); --smoke:rgba(200,200,200,.75); --glass:#a4e4fc; --night:0; --pixel:1;
+  --font-display:"DotGothic16",monospace; --font-body:"DotGothic16",monospace; --font-hud:"DotGothic16",monospace; --font-num:"Press Start 2P","DotGothic16",monospace;
+  --cv-hud:"DotGothic16"; --cv-display:"DotGothic16";
+  color-scheme:dark;
+}
+html[data-skin="pixel"] body{font-size:15px}
+html[data-skin="pixel"] h1{font-size:clamp(24px,4.6vw,40px);text-shadow:4px 4px 0 #f83800;letter-spacing:.02em}
+html[data-skin="pixel"] .eyebrow{color:var(--warn);font-family:"Press Start 2P",monospace;font-size:10px;letter-spacing:.08em;line-height:1.8}
+html[data-skin="pixel"] .panel,html[data-skin="pixel"] .console,html[data-skin="pixel"] .cell,html[data-skin="pixel"] .type-card,html[data-skin="pixel"] .seg,html[data-skin="pixel"] .preview,html[data-skin="pixel"] .result-grid > div,html[data-skin="pixel"] .view-seg{
+  border:0;border-radius:0;margin:4px;box-shadow:0 -4px 0 0 #fcfcfc,0 4px 0 0 #fcfcfc,-4px 0 0 0 #fcfcfc,4px 0 0 0 #fcfcfc}
+html[data-skin="pixel"] .cell,html[data-skin="pixel"] .type-card,html[data-skin="pixel"] .seg,html[data-skin="pixel"] .preview,html[data-skin="pixel"] .view-seg{box-shadow:0 -3px 0 0 var(--line),0 3px 0 0 var(--line),-3px 0 0 0 var(--line),3px 0 0 0 var(--line)}
+html[data-skin="pixel"] .opt input:checked + .type-card{background:var(--sign);box-shadow:0 -3px 0 0 #fcfcfc,0 3px 0 0 #fcfcfc,-3px 0 0 0 #fcfcfc,3px 0 0 0 #fcfcfc}
+html[data-skin="pixel"] .console{background:#000;padding:14px}
+html[data-skin="pixel"] .screen{border-radius:0}
+html[data-skin="pixel"] .screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 2px,transparent 2px 4px)}
+html[data-skin="pixel"] #scene{image-rendering:pixelated}
+html[data-skin="pixel"] .chip{border-radius:0;box-shadow:0 0 0 2px #fcfcfc}
+html[data-skin="pixel"] .cell .v,html[data-skin="pixel"] .preview b{font-size:clamp(12px,1.9vw,15px);line-height:1.6}
+html[data-skin="pixel"] .meter,html[data-skin="pixel"] .meter-bar,html[data-skin="pixel"] .meter-line,html[data-skin="pixel"] .over-flag,html[data-skin="pixel"] .seg-btn,html[data-skin="pixel"] .view-seg button,html[data-skin="pixel"] .paint{border-radius:0}
+html[data-skin="pixel"] .meter-bar{background:repeating-linear-gradient(90deg,var(--keep-hi) 0 8px,transparent 8px 10px)}
+html[data-skin="pixel"] .btn-go,html[data-skin="pixel"] .btn-sell{border:0;border-radius:0;margin:4px;font-family:var(--font-display);box-shadow:0 -4px 0 0 #000,0 4px 0 0 #000,-4px 0 0 0 #000,4px 0 0 0 #000,inset -4px -4px 0 0 var(--cta-edge),inset 4px 4px 0 0 #fce0a8}
+html[data-skin="pixel"] .btn-go:active,html[data-skin="pixel"] .btn-sell:active{transform:translateY(2px)}
+html[data-skin="pixel"] .actions .btn-go::before,html[data-skin="pixel"] .setup .btn-go::before{content:"▶ ";animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+html[data-skin="pixel"] .btn-ghost{border-radius:0;border:3px solid var(--bezel-line)}
+html[data-skin="pixel"] .result::before{content:"STAGE CLEAR!";font-family:"Press Start 2P",monospace;font-size:14px;color:var(--warn);letter-spacing:.06em;text-shadow:3px 3px 0 #f83800}
+html[data-skin="pixel"] .rank{border-radius:0;transform:none;border:0;font-family:"Press Start 2P",monospace;font-size:38px;box-shadow:0 -4px 0 0 #fcfcfc,0 4px 0 0 #fcfcfc,-4px 0 0 0 #fcfcfc,4px 0 0 0 #fcfcfc;animation:pixel-pop .6s steps(4) both}
+@keyframes pixel-pop{0%{transform:scale(.25)}100%{transform:scale(1)}}
+html[data-skin="pixel"] .result-title{font-size:22px}
+html[data-skin="pixel"] .events .st{border-radius:0}
+html[data-skin="pixel"] .slot{border-radius:0}
+html[data-skin="pixel"] .tip,html[data-skin="pixel"] .chart-msg{border-radius:0}
+html[data-skin="pixel"] input[type="range"]{accent-color:var(--warn)}
+
+/* ---------- 案3 道路標識：高速道路の案内看板 ---------- */
+html:root[data-skin="sign"]{
+  --bg:#c8cdd2; --panel:#ffffff; --panel-2:#eef1f4; --ink:#0f1317; --ink-2:#3c4650; --ink-3:#5f6b77; --line:#0f1317;
+  --sign:#0a6b45; --sign-ink:#fff; --sign-tint:rgba(10,107,69,.10);
+  --warn:#f3c02d; --warn-edge:#a77d00; --warn-ink:#1b1504; --cta:#0a6b45; --cta-edge:#05452c; --cta-ink:#ffffff;
+  --keep:#e5581f; --swap:#1f5fbf; --gain-fill:rgba(31,95,191,.15); --loss-fill:rgba(229,88,31,.16);
+  --bezel:#2b3037; --bezel-2:#383e46; --bezel-ink:#ffffff; --bezel-ink-2:#c6ced6; --bezel-line:#59616b;
+  --keep-hi:#ff7a3d; --swap-hi:#6aa8ff; --hud-bg:rgba(10,107,69,.92); --hud-ink:#ffffff;
+  --sky-top:#79b6e6; --sky-bot:#d6ecfa; --sun:#fff3c4; --mtn-far:#a6bfd6; --mtn-near:#7da78a; --ground:#93bf83; --tree:#4f8a5b; --tree-2:#3d7449;
+  --road:#454b53; --road-line:#f4f6f8; --pole:#7a7f86; --wire:rgba(40,40,40,.4); --smoke:rgba(110,114,120,.45); --glass:rgba(168,206,234,.95); --night:0; --pixel:0;
+  --font-display:"M PLUS 1","Hiragino Sans",sans-serif; --font-body:"Zen Kaku Gothic New","Hiragino Sans",sans-serif;
+  --font-hud:"Overpass","M PLUS 1",sans-serif; --font-num:"Overpass","M PLUS 1",sans-serif;
+  --cv-hud:"M PLUS 1"; --cv-display:"M PLUS 1";
+  color-scheme:light;
+}
+html[data-skin="sign"] body{background-image:linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.18) 1px,transparent 1px);background-size:48px 48px}
+html[data-skin="sign"] .eyebrow{justify-self:start;background:#1f5fbf;color:#fff;font-family:var(--font-display);font-size:13px;letter-spacing:.06em;padding:4px 12px;border-radius:6px;box-shadow:inset 0 0 0 2px #1f5fbf,inset 0 0 0 4px #fff}
+html[data-skin="sign"] .eyebrow::before{content:"↑ ";}
+html[data-skin="sign"] h1{justify-self:start;background:var(--sign);color:#fff;font-weight:800;padding:.32em .7em .38em;border-radius:14px;box-shadow:inset 0 0 0 5px var(--sign),inset 0 0 0 8px #fff,0 6px 0 #6b737c}
+html[data-skin="sign"] .panel{border:3px solid var(--ink);border-radius:14px;box-shadow:0 5px 0 #8a929b}
+html[data-skin="sign"] .panel h2,html[data-skin="sign"] .setup legend{display:inline-block;width:auto;background:var(--sign);color:#fff;font-weight:800;padding:4px 14px;border-radius:8px;box-shadow:inset 0 0 0 2px var(--sign),inset 0 0 0 4px #fff}
+html[data-skin="sign"] .console{border-radius:16px;background:var(--bezel);background-image:linear-gradient(90deg,#f4f6f8 50%,transparent 50%);background-size:46px 5px;background-repeat:repeat-x;background-position:0 calc(100% - 4px);padding-bottom:18px}
+html[data-skin="sign"] .cell{border-radius:10px;box-shadow:inset 0 0 0 2px #59616b}
+html[data-skin="sign"] .cell .v{font-weight:800;font-size:clamp(19px,2.8vw,25px)}
+html[data-skin="sign"] .chip{border-radius:6px;box-shadow:inset 0 0 0 1.5px #fff}
+html[data-skin="sign"] .btn-go,html[data-skin="sign"] .btn-sell{border:0;border-radius:12px;font-family:var(--font-display);font-weight:800;box-shadow:inset 0 0 0 4px var(--cta),inset 0 0 0 7px #fff,0 5px 0 var(--cta-edge)}
+html[data-skin="sign"] .actions .btn-go::after,html[data-skin="sign"] .setup .btn-go::after{content:" →"}
+html[data-skin="sign"] .btn-sell{background:#1f5fbf;box-shadow:inset 0 0 0 4px #1f5fbf,inset 0 0 0 7px #fff,0 5px 0 #123a75}
+html[data-skin="sign"] .opt input:checked + .type-card{background:var(--sign);color:#fff;box-shadow:inset 0 0 0 2px var(--sign),inset 0 0 0 4px #fff}
+html[data-skin="sign"] .type-card,html[data-skin="sign"] .seg{border:2px solid var(--ink)}
+html[data-skin="sign"] .result-grid .best{background:var(--sign);color:#fff;box-shadow:inset 0 0 0 3px var(--sign),inset 0 0 0 6px #fff}
+html[data-skin="sign"] .result-grid .best dt{color:#e6f2ec}
+html[data-skin="sign"] .result-grid .best dt::before{content:"出口 ";display:inline-block;background:#fff;color:var(--sign);font-weight:800;border-radius:4px;padding:0 6px;margin-right:6px}
+html[data-skin="sign"] .result-grid .best dd.sub{color:#fff}
+html[data-skin="sign"] .result-grid .best dd:not(.sub)::after{content:" ↗"}
+html[data-skin="sign"] .rank{background:#fff;color:#1f5fbf;border:9px solid #d23b33;transform:none;font-family:var(--font-num);font-weight:800;font-size:44px;box-shadow:0 0 0 2px #fff,0 0 0 3px #9aa1a8}
+html[data-skin="sign"] .events .badge.shaken{border-radius:3px}
+
+/* ---------- 案4 メーター：インパネで走る ---------- */
+html:root[data-skin="meter"]{
+  --bg:#07090c; --panel:#10141a; --panel-2:#171c24; --ink:#e9eef4; --ink-2:#9ba7b7; --ink-3:#6f7b8c; --line:#262e3a;
+  --sign:#2f72cf; --sign-ink:#fff; --sign-tint:rgba(56,214,255,.10);
+  --warn:#f3c02d; --warn-edge:#9a7300; --warn-ink:#1b1504; --cta:#ffb020; --cta-edge:#8a5a00; --cta-ink:#120c00;
+  --keep:#ff9a1f; --swap:#38d6ff; --gain-fill:rgba(56,214,255,.18); --loss-fill:rgba(255,154,31,.2);
+  --bezel:#040507; --bezel-2:#0c1016; --bezel-ink:#e9eef4; --bezel-ink-2:#8b97a8; --bezel-line:#29323f;
+  --keep-hi:#ffb020; --swap-hi:#38d6ff; --hud-bg:rgba(0,0,0,.62); --hud-ink:#ffcf7a;
+  --sky-top:#060c1d; --sky-bot:#1b2a4a; --sun:#e9edf7; --mtn-far:#1a2741; --mtn-near:#173022; --ground:#1b3424; --tree:#14301d; --tree-2:#10271a;
+  --road:#262b33; --road-line:#aab2bd; --pole:#3b3631; --wire:rgba(200,210,225,.18); --smoke:rgba(170,176,186,.32); --glass:rgba(58,80,112,.95); --night:1; --pixel:0;
+  --font-display:"M PLUS 1","Hiragino Sans",sans-serif; --font-body:"Zen Kaku Gothic New","Hiragino Sans",sans-serif;
+  --font-hud:"M PLUS 1 Code",ui-monospace,monospace; --font-num:"M PLUS 1 Code",ui-monospace,monospace;
+  --cv-hud:"M PLUS 1 Code"; --cv-display:"M PLUS 1";
+  color-scheme:dark;
+}
+html[data-skin="meter"] body{background-image:linear-gradient(45deg,rgba(255,255,255,.028) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.028) 75%),linear-gradient(45deg,rgba(255,255,255,.028) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.028) 75%);background-size:8px 8px;background-position:0 0,4px 4px}
+html[data-skin="meter"] .eyebrow{color:var(--swap);font-family:var(--font-hud)}
+html[data-skin="meter"] h1{font-weight:800}
+html[data-skin="meter"] .panel{border-radius:20px;background:linear-gradient(180deg,#141921,#0d1015);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+html[data-skin="meter"] .console{border-radius:34px 34px 20px 20px;padding:14px;background:radial-gradient(120% 80% at 50% 0%,#151a22,#040507 70%);box-shadow:inset 0 2px 0 rgba(255,255,255,.06),0 18px 40px -20px #000}
+html[data-skin="meter"] .screen{border-radius:22px 22px 10px 10px}
+html[data-skin="meter"] .cell{background:radial-gradient(100% 120% at 50% 0%,#121821,#080b10);box-shadow:inset 0 0 0 1px #1e2631;border-radius:16px}
+html[data-skin="meter"] .cell .k{color:#7fa0b8;letter-spacing:.06em}
+html[data-skin="meter"] .cell .v{color:#ffcf7a;text-shadow:0 0 10px rgba(255,176,32,.45)}
+html[data-skin="meter"] .cell .v,html[data-skin="meter"] .meter,html[data-skin="meter"] .meter-legend{display:none}
+html[data-skin="meter"] .gauge-wrap{display:grid;justify-items:center;gap:2px}
+html[data-skin="meter"] .cell .s{text-align:center}
+.gauge{width:100%;max-width:190px;height:auto;overflow:visible}
+.gauge .g-tick{stroke:#5d6b7c;stroke-width:1.4}
+.gauge .g-tick.major{stroke:#c8d3df;stroke-width:2}
+.gauge .g-arc{fill:none;stroke-width:5;stroke-linecap:butt}
+.gauge .g-arc.pos{stroke:#38d6ff;filter:drop-shadow(0 0 3px rgba(56,214,255,.6))}
+.gauge .g-arc.neg{stroke:#ff6a3d;filter:drop-shadow(0 0 3px rgba(255,106,61,.6))}
+.gauge .g-num{fill:#8fa1b5;font:600 7px "M PLUS 1 Code",monospace}
+.gauge .g-needle{stroke:#ff3b2f;stroke-width:2.6;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(255,59,47,.8));transition:transform .18s ease-out}
+.gauge .g-hub{fill:#1c232d;stroke:#3a4656;stroke-width:1.5}
+.seg7{display:flex;align-items:flex-end;gap:2px;color:#ffcf7a;filter:drop-shadow(0 0 6px rgba(255,176,32,.5));line-height:1}
+.seg7 svg{width:15px;height:26px}
+.seg7 path{fill:none;stroke-linecap:round;stroke-width:1.8}
+.seg7 .on{stroke:#ffcf7a} .seg7 .off{stroke:rgba(255,207,122,.08)}
+.seg7 .sgn{font:700 18px "M PLUS 1 Code",monospace;margin-right:2px;align-self:center}
+.seg7 .dp{width:4px;height:4px;border-radius:50%;background:#ffcf7a;margin:0 1px 2px}
+.seg7 small{font:500 11px var(--font-body);color:#c6a76a;margin-left:4px}
+.seg7.neg{color:#ff8a5c} .seg7.neg .on{stroke:#ff8a5c} .seg7.neg .dp{background:#ff8a5c}
+html[data-skin="meter"] .meter-cell .gauge-wrap{grid-template-columns:1fr}
+html[data-skin="meter"] #goBtn{flex:0 0 auto;width:118px;height:118px;border-radius:50%;padding:0;display:grid;place-items:center;align-content:center;gap:2px;
+  background:radial-gradient(circle at 50% 30%,#3b414a,#121519 70%);color:#fff;border:4px solid #e23b2e;font-size:16px;
+  box-shadow:0 0 22px rgba(226,59,46,.55),inset 0 3px 0 rgba(255,255,255,.14),inset 0 -6px 12px rgba(0,0,0,.6)}
+html[data-skin="meter"] #goBtn::before{content:"ENGINE START";font:700 9px "M PLUS 1 Code",monospace;letter-spacing:.12em;color:#ff8a7f}
+html[data-skin="meter"] #actionsSetup{align-items:center}
+html[data-skin="meter"] .btn-sell,html[data-skin="meter"] .setup .btn-go{border-radius:999px;box-shadow:0 0 18px rgba(255,176,32,.35),0 4px 0 var(--cta-edge)}
+html[data-skin="meter"] .btn-ghost{border-radius:999px}
+html[data-skin="meter"] .type-card,html[data-skin="meter"] .seg,html[data-skin="meter"] .preview{background:#0b0f14;border-color:#232b36}
+html[data-skin="meter"] .opt input:checked + .type-card{border-color:var(--swap);box-shadow:0 0 0 1px var(--swap) inset,0 0 14px rgba(56,214,255,.25)}
+html[data-skin="meter"] .preview b{color:#ffcf7a}
+html[data-skin="meter"] .rank{background:#0b0f14;color:#ffcf7a;border:3px solid #ffb020;transform:none;box-shadow:0 0 0 6px rgba(255,176,32,.12),0 0 26px rgba(255,176,32,.45);text-shadow:0 0 12px rgba(255,176,32,.7)}
+html[data-skin="meter"] input[type="range"]{accent-color:var(--swap)}
+
+/* ---------- 案5 チラシ：中古車情報誌の売り時セール ---------- */
+html:root[data-skin="flyer"]{
+  --bg:#ffe14d; --panel:#ffffff; --panel-2:#fff6c4; --ink:#111111; --ink-2:#333333; --ink-3:#575757; --line:#111111;
+  --sign:#1f5fbf; --sign-ink:#fff; --sign-tint:rgba(230,0,18,.07);
+  --warn:#ffd400; --warn-edge:#a68a00; --warn-ink:#111; --cta:#e60012; --cta-edge:#111111; --cta-ink:#ffffff;
+  --keep:#e60012; --swap:#1f5fbf; --gain-fill:rgba(31,95,191,.16); --loss-fill:rgba(230,0,18,.16);
+  --bezel:#111111; --bezel-2:#ffffff; --bezel-ink:#111111; --bezel-ink-2:#444444; --bezel-line:#111111;
+  --keep-hi:#e60012; --swap-hi:#1f5fbf; --hud-bg:#111111; --hud-ink:#ffe14d;
+  --sky-top:#3fa9ff; --sky-bot:#c6ebff; --sun:#fff07a; --mtn-far:#8fc0e8; --mtn-near:#4fb36b; --ground:#7fd25a; --tree:#2f8f45; --tree-2:#237536;
+  --road:#3d424a; --road-line:#ffffff; --pole:#6b6157; --wire:rgba(40,40,40,.45); --smoke:rgba(110,114,120,.45); --glass:rgba(168,214,240,.95); --night:0; --pixel:0;
+  --font-display:"Mochiy Pop One","M PLUS 1",sans-serif; --font-body:"Zen Kaku Gothic New","Hiragino Sans",sans-serif;
+  --font-hud:"M PLUS 1",sans-serif; --font-num:"Anton","M PLUS 1",sans-serif;
+  --cv-hud:"M PLUS 1"; --cv-display:"Mochiy Pop One";
+  color-scheme:light;
+}
+html[data-skin="flyer"] body{background-image:radial-gradient(rgba(230,0,18,.16) 1.3px,transparent 1.7px);background-size:11px 11px}
+html[data-skin="flyer"] .eyebrow{justify-self:start;background:var(--keep);color:#fff;font-family:var(--font-display);font-size:14px;letter-spacing:.04em;padding:4px 16px;transform:rotate(-3deg);box-shadow:4px 4px 0 #111}
+html[data-skin="flyer"] h1{font-size:clamp(28px,5.4vw,46px);color:#111;text-shadow:3px 3px 0 #fff,6px 6px 0 var(--keep)}
+html[data-skin="flyer"] .lede{color:#222;font-weight:700}
+html[data-skin="flyer"] .panel{border:3px solid #111;border-radius:6px;box-shadow:7px 7px 0 #111}
+html[data-skin="flyer"] .console{border-radius:8px;box-shadow:7px 7px 0 rgba(17,17,17,.35)}
+html[data-skin="flyer"] .screen{border-radius:4px}
+html[data-skin="flyer"] .screen::after{content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;background:radial-gradient(rgba(0,0,0,.13) 1px,transparent 1.5px) 0 0/6px 6px}
+html[data-skin="flyer"] .cell{border-radius:4px;border:2px solid #111}
+html[data-skin="flyer"] .cell .v{font-family:var(--font-num);color:var(--keep);font-size:clamp(24px,3.6vw,34px);letter-spacing:.01em}
+html[data-skin="flyer"] .cell .v[data-sign="pos"]{color:var(--keep)}
+html[data-skin="flyer"] .cell .v[data-sign="neg"]{color:#111}
+html[data-skin="flyer"] .cell .k{font-weight:700;color:#111}
+html[data-skin="flyer"] .meter{background:#eee;border:2px solid #111;border-radius:2px}
+html[data-skin="flyer"] .meter-bar{border-radius:0}
+html[data-skin="flyer"] .btn-go,html[data-skin="flyer"] .btn-sell{border:3px solid #111;border-radius:8px;font-family:var(--font-display);box-shadow:5px 5px 0 #111;text-shadow:2px 2px 0 rgba(0,0,0,.25)}
+html[data-skin="flyer"] .btn-go:active,html[data-skin="flyer"] .btn-sell:active{transform:translate(3px,3px);box-shadow:2px 2px 0 #111}
+html[data-skin="flyer"] .btn-ghost{background:#fff;color:#111;border:3px solid #111;border-radius:8px}
+html[data-skin="flyer"] .btn-link,html[data-skin="flyer"] .hint-line{color:#fff}
+html[data-skin="flyer"] .type-card,html[data-skin="flyer"] .seg,html[data-skin="flyer"] .preview{border:2px solid #111;background:#fff}
+html[data-skin="flyer"] .opt input:checked + .type-card{background:var(--warn);border-color:#111;box-shadow:3px 3px 0 #111}
+html[data-skin="flyer"] .preview b{font-family:var(--font-num);color:var(--keep);font-size:24px}
+html[data-skin="flyer"] .result-grid .best{background:var(--warn);box-shadow:none;border:3px solid #111;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);padding-right:28px}
+html[data-skin="flyer"] .result-grid .best dd:not(.sub){color:var(--keep)}
+html[data-skin="flyer"] .rank{width:104px;height:104px;border:0;border-radius:0;background:var(--keep);color:#fff;font-family:var(--font-num);font-size:50px;
+  clip-path:polygon(50.0% 0.0%, 57.6% 11.7%, 69.1% 3.8%, 71.7% 17.6%, 85.4% 14.6%, 82.4% 28.3%, 96.2% 30.9%, 88.3% 42.4%, 100.0% 50.0%, 88.3% 57.6%, 96.2% 69.1%, 82.4% 71.7%, 85.4% 85.4%, 71.7% 82.4%, 69.1% 96.2%, 57.6% 88.3%, 50.0% 100.0%, 42.4% 88.3%, 30.9% 96.2%, 28.3% 82.4%, 14.6% 85.4%, 17.6% 71.7%, 3.8% 69.1%, 11.7% 57.6%, 0.0% 50.0%, 11.7% 42.4%, 3.8% 30.9%, 17.6% 28.3%, 14.6% 14.6%, 28.3% 17.6%, 30.9% 3.8%, 42.4% 11.7%);
+  animation:burst .7s cubic-bezier(.2,1.7,.4,1) both, wobble 2.4s .7s ease-in-out infinite}
+html[data-skin="flyer"] .rank[data-rank]{background:var(--keep);color:#fff}
+@keyframes burst{0%{transform:scale(.2) rotate(-40deg)}100%{transform:scale(1) rotate(-8deg)}}
+@keyframes wobble{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(4deg) scale(1.04)}}
+html[data-skin="flyer"] .result-title{color:var(--keep)}
+html[data-skin="flyer"] .events .st.paid{background:#111;color:#fff}
+html[data-skin="flyer"] .events .st.saved{background:var(--warn);color:#111;border:1.5px solid #111}
+html[data-skin="flyer"] .slot{border:3px dashed #111;color:#111;background:#fff}
+@media (prefers-reduced-motion: reduce){
+  html[data-skin] .rank,html[data-skin="paper"] .result.printing,html[data-skin="pixel"] .btn-go::before{animation:none}
+}
+
+body.video-mode .app{display:none}
+#vcanvas{display:block;width:540px;height:960px}
+
 @media (prefers-reduced-motion: reduce){
   .count,.warning-band,.stamp span,.rank{animation:none}
   .meter-bar{transition:none}
@@ -294,6 +568,15 @@ tr.is-best td:first-child{background:var(--panel-2)}
 </style>
 </head>
 <body>
+<nav class="skinbar" id="skinbar" aria-label="デザイン案の切り替え" lang="ja">
+  <span class="lbl">デザイン案（比較用）</span>
+  <button type="button" data-skin="paper" data-n="1" aria-pressed="false">1 帳票</button>
+  <button type="button" data-skin="pixel" data-n="2" aria-pressed="false">2 8bit</button>
+  <button type="button" data-skin="sign" data-n="3" aria-pressed="false">3 道路標識</button>
+  <button type="button" data-skin="meter" data-n="4" aria-pressed="false">4 メーター</button>
+  <button type="button" data-skin="flyer" data-n="5" aria-pressed="false">5 チラシ</button>
+  <button type="button" data-skin="base" data-n="0" aria-pressed="false">いまの版</button>
+</nav>
 <div class="app" id="app" lang="ja">
 
   <header class="top">
@@ -321,6 +604,7 @@ tr.is-best td:first-child{background:var(--panel-2)}
       <div class="cell">
         <span class="k">乗り換えた場合と比べて</span>
         <span class="v" id="gapNow" data-sign="pos">±0円</span>
+        <div class="gauge-wrap" aria-hidden="true"><svg class="gauge" id="gGap" viewBox="0 0 120 80"></svg><div class="seg7" id="sGap"></div></div>
         <span class="s" id="gapNowSub">ここまでの差</span>
       </div>
       <div class="cell meter-cell">
@@ -330,10 +614,12 @@ tr.is-best td:first-child{background:var(--panel-2)}
           <span><i class="sw" style="background:var(--keep-hi)"></i>この年 <b id="meterVal">0万円</b><span class="over-flag" id="overFlag" hidden>乗り換えより高い</span></span>
           <span><i class="sw" style="background:var(--swap-hi)"></i>乗り換えライン <b id="meterEac">0万円</b></span>
         </div>
+        <div class="gauge-wrap" aria-hidden="true"><svg class="gauge" id="gCost" viewBox="0 0 120 80"></svg><div class="seg7" id="sCost"></div></div>
       </div>
       <div class="cell">
         <span class="k">いま売ると</span>
         <span class="v" id="priceNow">0万円</span>
+        <div class="gauge-wrap" aria-hidden="true"><div class="seg7" id="sPrice"></div></div>
         <span class="s">買取価格の目安</span>
       </div>
     </div>
@@ -583,6 +869,8 @@ var CarModel = (function(){
 'use strict';
 var M = CarModel, H = M.H, START_YEAR = M.START_YEAR, clamp = M.clamp;
 var YEAR_SEC = 1.6;
+var VIDEO = location.hash==='#video';
+var vEvent=function(){}, vWarn=function(){};
 var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var PAINT = {white:'#f3f4f6', red:'#cf3a31', blue:'#2b5ea6', silver:'#a7afb9'};
 function $(s){return document.querySelector(s);}
@@ -606,10 +894,10 @@ function readInputs(){
 var C = {};
 function readTheme(){
   var cs=getComputedStyle(document.documentElement);
-  ['sky-top','sky-bot','sun','mtn-far','mtn-near','ground','tree','tree-2','road','road-line','pole','wire','smoke','glass','sign','warn','warn-ink','keep','swap','night'].forEach(function(k){
+  ['sky-top','sky-bot','sun','mtn-far','mtn-near','ground','tree','tree-2','road','road-line','pole','wire','smoke','glass','sign','warn','warn-ink','keep','swap','night','pixel','cv-hud','cv-display'].forEach(function(k){
     C[k]=cs.getPropertyValue('--'+k).trim();
   });
-  C.isNight = C.night==='1';
+  C.isNight = C.night==='1'; C.pixel = C.pixel==='1';
   drawTypeCards();
 }
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
@@ -686,14 +974,17 @@ function drawTypeCards(){
 /* ---------- 場面（canvas） ---------- */
 var cv=$('#scene'), ctx=cv.getContext('2d'), CW=0, CH=0;
 function resize(){
+  if(VIDEO) return;
   var w=cv.parentElement.clientWidth; CW=w; CH=Math.round(clamp(w*0.44,210,330));
-  var dpr=Math.min(2,window.devicePixelRatio||1);
+  var dpr=C.pixel?0.34:Math.min(2,window.devicePixelRatio||1);
   cv.width=Math.round(CW*dpr); cv.height=Math.round(CH*dpr); cv.style.height=CH+'px';
   ctx.setTransform(dpr,0,0,dpr,0,0);
   renderChart();
 }
 function geo(){
   var horizon=CH*0.57, roadTop=CH*0.66, roadBot=CH*0.95;
+  if(VIDEO) return {horizon:horizon, roadTop:roadTop, roadBot:roadBot, lane:roadTop+(roadBot-roadTop)*0.8,
+          carX:CW*0.28, carLen:CW*0.3, yearPx:CW*0.9, s:CH/250};
   return {horizon:horizon, roadTop:roadTop, roadBot:roadBot, lane:roadTop+(roadBot-roadTop)*0.8,
           carX:CW*0.3, carLen:clamp(CW*0.21,92,165), yearPx:Math.max(CW*0.86,300), s:clamp(CH/250,0.8,1.3)};
 }
@@ -859,8 +1150,8 @@ function drawStar(x, y, r){
   for(var i=0;i<10;i++){var a=-Math.PI/2+i*Math.PI/5, rr=i%2?r*0.45:r; ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);}
   ctx.closePath(); ctx.fill(); ctx.stroke();
 }
-function fontHud(){return '"DotGothic16", ui-monospace, monospace';}
-function fontDisplay(){return '"Dela Gothic One", "Hiragino Sans", sans-serif';}
+function fontHud(){return (C['cv-hud']||'"DotGothic16"')+', ui-monospace, monospace';}
+function fontDisplay(){return (C['cv-display']||'"Dela Gothic One"')+', "Hiragino Sans", sans-serif';}
 
 /* ---------- 粒子・ポップアップ ---------- */
 function coins(amt){
@@ -941,11 +1232,13 @@ function buildScene(sim){
 }
 function fire(e){
   var sim=G.sim;
+  if(VIDEO){ G.sfx.push({t:G.vt, kind:{year:'coin',shaken:'gate',heavy:'boss',w18:'boss',parts:'crash'}[e.kind]}); vEvent(e); }
   if(e.kind==='year'){
     if(e.b>=H) return;
     var y=sim.years[e.b], base=0;
     y.items.forEach(function(it){ if(it.k==='tax'||it.k==='maint'||it.k==='fuel') base+=it.amt; });
-    popup(y.Y+'年の維持費','−'+man(base)+'円','small'); coins(base);
+    if(!VIDEO) popup(y.Y+'年の維持費','−'+man(base)+'円','small');
+    coins(base);
     announce(y.Y+'年。税金・修理・ガソリンで'+man(base)+'円。');
   } else if(e.kind==='shaken'){
     popup('車検'+(e.lv?'（重量税も高い）':''),'−'+man(e.amt)+'円','big'); coins(e.amt); shake(4);
@@ -963,6 +1256,7 @@ function fire(e){
   }
 }
 function showWarning(e){
+  if(VIDEO){ vWarn(e); return; }
   if(RM) return;
   var w=$('#warning');
   w.innerHTML='<div class="warning-band">WARNING '+(e.kind==='heavy'?'13年超えの増税ゾーン':'18年超えの重量税ゾーン')+'<small>この先、'+(e.kind==='heavy'?'自動車税と重量税が上がります':'車検のたびの重量税がさらに上がります')+'</small></div>';
@@ -1045,6 +1339,7 @@ function updateDash(){
   $('#overFlag').hidden = !(y.marginal>sim.rep.eac);
   $('#meter').setAttribute('aria-label', y.Y+'年にかかるお金は'+man(y.marginal)+'円。乗り換えた場合の1年あたりは'+man(sim.rep.eac)+'円。');
   $('#priceNow').textContent=man(tagValue(p))+'円';
+  if(G.skin==='meter') updateGauges(gNow, y, maxM, tagValue(p));
 }
 
 /* ---------- グラフ ---------- */
@@ -1192,7 +1487,7 @@ function refresh(){
   $('#annualOut').textContent=inp.annual.toLocaleString('ja-JP')+'km';
   $('#pvPrice').textContent=man(G.sim.V[0])+'円';
   $('#pvEac').textContent=man(G.sim.rep.eac)+'円';
-  drawTypeCards(); updateDash(); renderChart(); renderTable();
+  drawTypeCards(); setupGauges(); updateDash(); renderChart(); renderTable();
 }
 function onSetupChange(){
   if(G.state==='result') toSetup(false);
@@ -1235,6 +1530,7 @@ function sell(){
 }
 function finish(t, auto){
   var sim=G.sim;
+  if(VIDEO){ G.state='result'; G.sold=t; G.p=t; G.vNow=0; return; }
   G.state='result'; G.sold=t; G.sellTarget=t; G.p=t; G.vNow=0;
   setPlaying(false); $('#actionsSetup').hidden=true;
   $('#app').classList.add('is-result');
@@ -1249,7 +1545,8 @@ function finish(t, auto){
   clearTimeout(G.resultTimer);
   G.resultTimer=setTimeout(function(){
     $('#stamp').hidden=true;
-    $('#result').hidden=false; $('#actionsSetup').hidden=true;
+    var rEl=$('#result'); rEl.hidden=false; $('#actionsSetup').hidden=true;
+    rEl.classList.remove('printing'); void rEl.offsetWidth; rEl.classList.add('printing');
     renderChart();
     $('#result').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
   }, G.answerOnly?0:1100);
@@ -1317,13 +1614,312 @@ document.addEventListener('keydown',function(e){
   }
 });
 
+/* ---------- 動画モード（#video）：縦型1080×1920のSNS動画を1コマずつ描く ---------- */
+function setupVideo(){
+  var VW=1080, VH=1920, DT=1/30;
+  document.body.classList.add('video-mode');
+  var vc=document.createElement('canvas'); vc.id='vcanvas'; vc.width=VW; vc.height=VH; document.body.appendChild(vc);
+  var v=vc.getContext('2d');
+  var SX=40, SY=560, SW=1000, SH=640;
+  var sc=document.createElement('canvas'); sc.width=SW; sc.height=SH;
+  cv=sc; ctx=sc.getContext('2d'); CW=SW; CH=SH;
+  YEAR_SEC=1.25;
+  var sim=G.sim, inp=sim.inp, best=sim.best, T=sim.T;
+  var VS={phase:'intro', t:0, cap:null, queue:[], done:false, cdIdx:-1, firstShaken:true, warn:null, ts:0, tl:0, te:0, sold:false};
+  G.sfx=[]; G.vt=0; G.state='setup'; G.p=0;
+  var YELLOW='#ffd23f', ORANGE='#ff8a5c', WHITE='#ffffff', MUTED='#9fb0c8';
+  function sfx(k){G.sfx.push({t:VS.t, kind:k});}
+  function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+  function backOut(t){var c1=1.70158,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2);}
+
+  /* 字幕 */
+  function caption(lines, hl, opt){
+    opt=opt||{};
+    var c={lines:lines, hl:hl, color:opt.color||YELLOW, min:opt.min||1.3};
+    if(opt.force || !VS.cap || VS.t-VS.cap.t0>=VS.cap.min){ c.t0=VS.t; VS.cap=c; VS.queue=[]; }
+    else VS.queue=[c];
+  }
+  vEvent=function(e){
+    if(e.kind==='shaken'){
+      if(VS.firstShaken){
+        caption(e.lv===1?['13年超えの車検','−'+man(e.amt)+'円（重量税も高い）']:e.lv===2?['18年超えの車検','重量税がさらに高い']:['車検で','−'+man(e.amt)+'円'],1);
+      }
+      VS.firstShaken=false;
+    } else if(e.kind==='heavy') caption(['13年を超えると','自動車税が毎年 +'+yen(e.amt)],1);
+    else if(e.kind==='w18') caption(['18年を超えると','重量税がさらにアップ'],1,{color:ORANGE,min:1});
+    else if(e.kind==='parts') caption(e.th===100000?['10万kmの壁！','部品交換＋買取ダウン']:['15万km','大きな修理 −'+man(e.amt)+'円'],1,{color:e.th===100000?YELLOW:ORANGE,min:VS.phase==='ghost'?1:1.3});
+  };
+  vWarn=function(e){ VS.warn={e:e,t0:VS.t}; sfx('warn'); };
+
+  /* 進行 */
+  function step(){
+    VS.t+=DT; G.vt=VS.t; G.time+=DT;
+    if(VS.queue.length && VS.t-VS.cap.t0>=VS.cap.min){var n=VS.queue.shift(); n.t0=VS.t; VS.cap=n;}
+    var ph=VS.phase;
+    if(ph==='intro'){ if(VS.t>=3.0){VS.phase='spec'; caption([inp.regYear+'年式 '+T.label,'走行'+(inp.km/10000).toFixed(1)+'万km','売り時はいつ？'],2,{force:true});} update(DT); }
+    else if(ph==='spec'){ if(VS.t>=4.4){VS.phase='count'; VS.cd0=VS.t;} update(DT); }
+    else if(ph==='count'){
+      var idx=Math.floor((VS.t-VS.cd0)/0.45);
+      if(idx!==VS.cdIdx && idx<4){VS.cdIdx=idx; sfx(idx<3?'beep':'go'); if(idx===3){G.state='drive'; sfx('engine_on'); caption(['線が一番高いところが','売り時'],1,{force:true});}}
+      if(VS.t-VS.cd0>=1.8) VS.phase='drive';
+      update(DT);
+    }
+    else if(ph==='drive'){
+      if(G.state==='drive' && !VS.sold && G.p>=best-0.55 && best>0){
+        VS.sold=true; G.sellTarget=best; G.state='stopping';
+        var nx=sim.years[best], sh=nx && nx.items.some(function(it){return it.k==='shaken';});
+        caption(sh?['次は'+nx.Y+'年の車検','その手前で売る！']:['ここで売る！'],sh?1:0,{force:true});
+      }
+      update(DT);
+      if(G.state==='result'){VS.phase='stamp'; VS.ts=VS.t; sfx('engine_off'); sfx('stamp'); shake(14);}
+    }
+    else if(ph==='stamp'){ update(DT); if(VS.t-VS.ts>=1.1){VS.phase='answer'; sfx('answer'); caption(['一番得な売り時は',(START_YEAR+best)+'年末（あと'+best+'年）'],1,{force:true,min:3});} }
+    else if(ph==='answer'){ update(DT); if(VS.t-VS.ts>=4.7){VS.phase='ghost'; G.state='drive'; G.speedMul=2.6; G.sellTarget=null; sfx('engine_on'); caption(['もし、このまま','乗り続けたら…'],1,{force:true,color:ORANGE,min:1.1});} }
+    else if(ph==='ghost'){ update(DT); if(G.state==='result'){VS.phase='lose'; VS.tl=VS.t; sfx('engine_off'); sfx('lose'); caption([(START_YEAR+H)+'年には',signed(sim.gap[H])],1,{force:true,color:ORANGE,min:2});} }
+    else if(ph==='lose'){ update(DT); if(VS.t-VS.tl>=2.4){VS.phase='end'; VS.te=VS.t; sfx('end');} }
+    else if(ph==='end'){ if(VS.t-VS.te>=3.8) VS.done=true; }
+  }
+
+  /* 描画 */
+  function draw(){
+    var bg=v.createLinearGradient(0,0,0,VH); bg.addColorStop(0,'#0d1422'); bg.addColorStop(1,'#16223a');
+    v.fillStyle=bg; v.fillRect(0,0,VW,VH);
+    v.fillStyle='#8fb4ff'; v.font='36px '+fontHud(); v.textAlign='center'; v.textBaseline='middle';
+    v.fillText('売り時ゲーム ・ 愛車ロード',VW/2,196);
+    drawCaption();
+    // 場面
+    drawScene(DT);
+    rr(v,SX-10,SY-10,SW+20,SH+20,30); v.fillStyle='#1b222d'; v.fill();
+    v.save(); rr(v,SX,SY,SW,SH,20); v.clip(); v.drawImage(cv,SX,SY);
+    if(VS.phase==='ghost'||VS.phase==='lose'){var pulse=0.16+0.06*Math.sin(VS.t*8); v.fillStyle='rgba(210,40,40,'+pulse+')'; v.fillRect(SX,SY,SW,SH);}
+    v.restore();
+    drawHud();
+    if(VS.phase==='ghost'||VS.phase==='lose') chip('損ゾーン', VW/2, SY+40, '#d23b33', WHITE, 40);
+    if(VS.phase==='count') drawCount();
+    drawWarn();
+    if(VS.phase==='stamp'||(VS.phase==='answer'&&VS.t-VS.ts<1.4)) drawStamp();
+    drawDash();
+    drawVChart(40,1418,1000,300);
+    v.fillStyle='#6f7f99'; v.font='26px '+fontHud(); v.textAlign='center'; v.textBaseline='middle';
+    v.fillText('※金額は概算です（デモ）',VW/2,1762);
+    if(VS.phase==='end') drawEnd();
+  }
+  function fitFont(text, size, maxW, family){
+    v.font=size+'px '+family; var w=v.measureText(text).width;
+    if(w>maxW){size=Math.floor(size*maxW/w); v.font=size+'px '+family;}
+    return size;
+  }
+  function drawCaption(){
+    var c=VS.cap; if(!c) return;
+    var age=VS.t-c.t0, k=age<0.2?0.82+0.18*backOut(age/0.2):1, a=Math.min(1,age/0.1);
+    var n=c.lines.length, lh=108, cy=402-(n-1)*lh/2;
+    v.save(); v.globalAlpha=a; v.translate(VW/2,402); v.scale(k,k); v.translate(-VW/2,-402);
+    v.textAlign='center'; v.textBaseline='middle'; v.lineJoin='round';
+    c.lines.forEach(function(line,i){
+      var size=fitFont(line, i===c.hl?96:80, 980, fontDisplay());
+      v.lineWidth=14; v.strokeStyle='#05080f'; v.strokeText(line,VW/2,cy+i*lh);
+      v.fillStyle=i===c.hl?c.color:WHITE; v.fillText(line,VW/2,cy+i*lh);
+    });
+    v.restore();
+  }
+  function chip(text,x,y,bgc,fg,size,align){
+    v.font=size+'px '+fontHud(); var w=v.measureText(text).width+size*0.9, h=size*1.5;
+    var left=align==='left'?x:align==='right'?x-w:x-w/2;
+    rr(v,left,y-h/2,w,h,12); v.fillStyle=bgc; v.fill();
+    v.fillStyle=fg; v.textAlign='center'; v.textBaseline='middle'; v.fillText(text,left+w/2,y+2);
+  }
+  function drawHud(){
+    var yearNow=START_YEAR+Math.ceil(G.p-1e-9);
+    chip(yearNow+'年', SX+16, SY+42, 'rgba(9,14,24,.66)', WHITE, 34, 'left');
+    chip('車齢'+(yearNow-inp.regYear)+'年', SX+190, SY+42, 'rgba(9,14,24,.66)', WHITE, 34, 'left');
+    chip(Math.round(kmAt(G.p)).toLocaleString('ja-JP')+' km', SX+SW-16, SY+42, 'rgba(9,14,24,.66)', '#ffd36b', 34, 'right');
+  }
+  function drawCount(){
+    var age=VS.t-VS.cd0, idx=Math.min(3,Math.floor(age/0.45)), local=age-idx*0.45, labels=['3','2','1','出発！'];
+    var k=local<0.2?0.3+0.7*backOut(local/0.2):1;
+    v.save(); v.translate(SX+SW/2,SY+SH*0.42); v.scale(k,k);
+    v.font=(idx===3?150:230)+'px '+fontDisplay(); v.textAlign='center'; v.textBaseline='middle'; v.lineJoin='round';
+    v.lineWidth=18; v.strokeStyle='#05080f'; v.strokeText(labels[idx],0,0); v.fillStyle=WHITE; v.fillText(labels[idx],0,0);
+    v.restore();
+  }
+  function drawWarn(){
+    var w=VS.warn; if(!w) return; var age=VS.t-w.t0; if(age>1.7) return;
+    var open=Math.min(1,age/0.12)*(age>1.5?Math.max(0,(1.7-age)/0.2):1), blink=(Math.floor(age*6)%2)?0.7:1;
+    var y=SY+SH*0.36, h=150*open;
+    v.save(); v.beginPath(); v.rect(SX,y-h/2,SW,h); v.clip();
+    v.fillStyle='#b3241f'; v.fillRect(SX,y-h/2,SW,h);
+    v.strokeStyle='#d63a33'; v.lineWidth=22;
+    for(var x=SX-200;x<SX+SW+200;x+=56){v.beginPath();v.moveTo(x,y+80);v.lineTo(x+160,y-80);v.stroke();}
+    v.fillStyle=YELLOW; v.fillRect(SX,y-h/2,SW,7); v.fillRect(SX,y+h/2-7,SW,7);
+    v.globalAlpha=blink; v.textAlign='center'; v.textBaseline='middle'; v.fillStyle=WHITE;
+    v.font='60px '+fontDisplay(); v.fillText('WARNING',SX+SW/2,y-26);
+    v.font='38px '+fontHud(); v.fillText(w.e.kind==='heavy'?'13年超えの増税ゾーン':'18年超えの重量税ゾーン',SX+SW/2,y+38);
+    v.restore();
+  }
+  function drawStamp(){
+    var age=VS.t-VS.ts, k=age<0.25?2.4-1.4*(age/0.25):1, a=Math.min(1,age/0.12);
+    v.save(); v.globalAlpha=a; v.translate(SX+SW/2,SY+SH*0.4); v.rotate(-0.17); v.scale(k,k);
+    v.font='130px '+fontDisplay(); var tw=v.measureText('売却！').width;
+    rr(v,-tw/2-40,-100,tw+80,200,26); v.fillStyle='rgba(255,255,255,.92)'; v.fill(); v.lineWidth=14; v.strokeStyle='#e0362e'; v.stroke();
+    v.fillStyle='#e0362e'; v.textAlign='center'; v.textBaseline='middle'; v.fillText('売却！',0,8);
+    v.restore();
+  }
+  function drawDash(){
+    var y=1236, h=162, started=VS.phase!=='intro'&&VS.phase!=='spec'&&VS.phase!=='count';
+    var gNow=started?interp(sim.gap,G.p):0;
+    rr(v,40,y,490,h,24); v.fillStyle='#1b2433'; v.fill();
+    rr(v,550,y,490,h,24); v.fillStyle='#1b2433'; v.fill();
+    v.textAlign='left'; v.textBaseline='alphabetic';
+    v.fillStyle=MUTED; v.font='28px '+fontHud(); v.fillText('乗り換えた場合と比べて',68,y+50); v.fillText('いま売ると（買取の目安）',578,y+50);
+    v.font='70px '+fontDisplay(); v.fillStyle=gNow<0?ORANGE:WHITE; v.fillText(started?signed(gNow):'±0円',68,y+132);
+    v.fillStyle=WHITE; v.fillText(man(tagValue(G.p))+'円',578,y+132);
+  }
+  function drawVChart(x,y,w,h){
+    rr(v,x,y,w,h,24); v.fillStyle='#1b2433'; v.fill();
+    v.fillStyle=MUTED; v.font='28px '+fontHud(); v.textAlign='left'; v.textBaseline='alphabetic';
+    v.fillText('得の推移（万円）　山のてっぺんが売り時',x+28,y+48);
+    var m={l:x+96,r:x+w-36,t:y+78,b:y+h-52};
+    var lo=Math.min(0,Math.min.apply(null,sim.gap))/1e4, hi=Math.max(0,Math.max.apply(null,sim.gap))/1e4;
+    var stp=niceStep((hi-lo)||1,3), minV=Math.floor(lo/stp+1e-9)*stp, maxV=Math.ceil(hi/stp-1e-9)*stp; if(maxV<=minV) maxV=minV+stp;
+    function X(i){return m.l+(m.r-m.l)*i/H;} function Y(val){return m.b-(m.b-m.t)*((val/1e4)-minV)/(maxV-minV);}
+    v.font='24px '+fontHud(); v.textAlign='right'; v.textBaseline='middle';
+    for(var g=minV; g<=maxV+1e-9; g+=stp){var gy=Y(g*1e4); v.strokeStyle=Math.abs(g)<1e-9?'#6b7d99':'#2c3a52'; v.lineWidth=Math.abs(g)<1e-9?3:2; v.beginPath(); v.moveTo(m.l,gy); v.lineTo(m.r,gy); v.stroke(); v.fillStyle=MUTED; v.fillText(String(Math.round(g)),m.l-14,gy);}
+    v.textAlign='center'; v.textBaseline='alphabetic';
+    for(var i=0;i<=H;i+=2) v.fillText(i===0?'いま':String(START_YEAR+i),X(i),y+h-16);
+    var ph=VS.phase, solidTo=0, ghostTo=0;
+    if(ph==='drive') solidTo=G.p;
+    else if(ph==='stamp'||ph==='answer') solidTo=best;
+    else if(ph==='ghost'){solidTo=best; ghostTo=G.p;}
+    else if(ph==='lose'||ph==='end'){solidTo=best; ghostTo=H;}
+    var to=Math.max(solidTo,ghostTo), Z=Y(0);
+    for(i=0;i<Math.ceil(to-1e-9);i++){
+      var t1=Math.min(1,to-i), g0=sim.gap[i], g1=g0+(sim.gap[i+1]-g0)*t1, x0=X(i), x1=X(i+t1);
+      var segs = g0*g1>=0 ? [[x0,g0,x1,g1]] : (function(){var xc=x0+(x1-x0)*(g0/(g0-g1)); return [[x0,g0,xc,0],[xc,0,x1,g1]];})();
+      segs.forEach(function(sg){ var pos=(sg[1]+sg[3])>=0; v.fillStyle=pos?'rgba(93,158,233,.38)':'rgba(240,122,74,.4)'; v.beginPath(); v.moveTo(sg[0],Y(sg[1])); v.lineTo(sg[2],Y(sg[3])); v.lineTo(sg[2],Z); v.lineTo(sg[0],Z); v.closePath(); v.fill(); });
+    }
+    function line(from,toP,color,dash){
+      if(toP<=from+1e-6) return;
+      v.save(); v.strokeStyle=color; v.lineWidth=7; v.lineCap='round'; v.lineJoin='round'; if(dash) v.setLineDash([14,12]);
+      v.beginPath(); v.moveTo(X(from),Y(sim.gap[from]));
+      for(var j=from+1;j<=Math.floor(toP+1e-9);j++) v.lineTo(X(j),Y(sim.gap[j]));
+      if(toP-Math.floor(toP)>1e-6) v.lineTo(X(toP),Y(interp(sim.gap,toP)));
+      v.stroke(); v.restore();
+    }
+    line(0,solidTo,WHITE,false);
+    if(ghostTo>0) line(best,ghostTo,ORANGE,true);
+    if(to>0){
+      var ev=interp(sim.gap,to), ex=X(to), ey=Y(ev);
+      v.fillStyle=ghostTo>0?ORANGE:WHITE; v.beginPath(); v.arc(ex,ey,11,0,Math.PI*2); v.fill();
+      v.font='34px '+fontDisplay(); v.textAlign=ex>m.r-200?'right':'left'; v.textBaseline='middle'; v.lineJoin='round';
+      var lx=ex+(ex>m.r-200?-20:20), ly=ey+(ev>=0?-30:34);
+      v.lineWidth=8; v.strokeStyle='#1b2433'; v.strokeText(signed(ev),lx,ly); v.fillStyle=ghostTo>0?ORANGE:WHITE; v.fillText(signed(ev),lx,ly);
+    }
+    if(ph==='answer'||ph==='ghost'||ph==='lose'||ph==='end'){
+      var bx=X(best), by=Y(sim.gap[best]);
+      v.save(); v.translate(bx,by-46); var r=24; v.fillStyle=YELLOW; v.strokeStyle='#1b1504'; v.lineWidth=3; v.beginPath();
+      for(var q=0;q<10;q++){var an=-Math.PI/2+q*Math.PI/5, rq=q%2?r*0.45:r; v.lineTo(Math.cos(an)*rq,Math.sin(an)*rq);} v.closePath(); v.fill(); v.stroke(); v.restore();
+    }
+  }
+  function drawEnd(){
+    var age=VS.t-VS.te, a=Math.min(1,age/0.35);
+    v.save(); v.globalAlpha=a;
+    v.fillStyle='rgba(11,17,30,.97)'; v.fillRect(0,0,VW,VH);
+    v.textAlign='center'; v.textBaseline='middle'; v.lineJoin='round';
+    v.fillStyle=WHITE; fitFont('あなたの車は',84,980,fontDisplay()); v.fillText('あなたの車は',VW/2,560);
+    v.fillStyle=YELLOW; fitFont('何年目が売り時？',104,980,fontDisplay()); v.fillText('何年目が売り時？',VW/2,690);
+    v.fillStyle='#c9d6ea'; v.font='46px '+fontHud(); v.fillText('年式と走行距離を入れるだけ',VW/2,830);
+    // 走り抜ける車
+    v.fillStyle='#3a4352'; v.fillRect(0,1150,VW,90); v.fillStyle='#e6e9ee';
+    for(var dx=-((age*700)%160); dx<VW; dx+=160) v.fillRect(dx,1193,80,6);
+    var cx=-260+age*560;
+    drawCar(v, inp.type, PAINT[inp.paint], cx, 1222, 430, {wheel:age*18, glass:'rgba(168,206,234,.95)'});
+    var bw=880, bh=136, byy=1330;
+    rr(v,VW/2-bw/2,byy+8,bw,bh,30); v.fillStyle='#a77d00'; v.fill();
+    rr(v,VW/2-bw/2,byy,bw,bh,30); v.fillStyle='#f3c02d'; v.fill();
+    v.fillStyle='#1b1504'; fitFont('▶ プロフィールのリンクから遊べる',50,bw-60,fontDisplay()); v.fillText('▶ プロフィールのリンクから遊べる',VW/2,byy+bh/2+4);
+    v.fillStyle='#7e8ca3'; v.font='30px '+fontHud(); v.fillText('※金額は概算です（デモ）',VW/2,1540);
+    v.restore();
+  }
+
+  var ALL='その車、あと何年乗るのが一番得？年式走行万km売り時はいつ？線が一番高いところが売り時次はの車検その手前で売る！ここで売る！一番得な売り時は年末（あと年）もし、このまま乗り続けたら…には13年を超えると自動車税が毎年+−円18年を超えると重量税がさらにアップ10万kmの壁！部品交換＋買取ダウン15万km大きな修理13年超えの車検（重量税も高い）車検でWARNING増税ゾーン3 2 1出発！売却！あなたの車は何年目が売り時？年式と走行距離を入れるだけ▶プロフィールのリンクから遊べる※金額は概算です（デモ）損ゾーン乗り換えた場合と比べていま売ると（買取の目安）得の推移（万円）　山のてっぺんが売り時0123456789.,±年車齢走行距離kmの維持費・買取ダウン税金UP重量税UP年末いまR売り時ゲーム愛車ロード軽自動車コンパクトミニバンSUV13年超え！ 自動車税アップ毎年車検ごとに10万km！ 部品交換15万km！ 大きな修理18年超え！ 重量税アップ（重量税も高い）';
+  window.__video={
+    ready:function(){
+      var fams=['"Dela Gothic One"','"DotGothic16"','"Zen Kaku Gothic New"'];
+      return Promise.all(fams.map(function(f){return document.fonts.load('80px '+f, ALL);})).then(function(){return document.fonts.ready;}).then(function(){
+        return fams.map(function(f){return f+':'+document.fonts.check('80px '+f,'得売');});
+      });
+    },
+    frame:function(){ step(); draw(); return {img:vc.toDataURL('image/jpeg',0.92), done:VS.done, phase:VS.phase, t:VS.t}; },
+    sfx:function(){ return G.sfx; }
+  };
+  draw();
+}
+
+
+/* ---------- 案4 メーター用：針のメーターと7セグ数字 ----------
+   7セグの点灯パターンは 21st「Segmented LCD Number Ticker」（shadcnspace）の SEGMENT_MAP / SEGMENT_PATHS を移植 */
+var SEG_MAP=[63,6,91,79,102,109,125,7,127,111], SEG_PATHS=['M2.5 1h7','M11 2.5v6.5','M11 12v6.5','M2.5 20h7','M1 12v6.5','M1 2.5v6.5','M2.5 10.5h7'];
+function segDigit(bits){var h='<svg viewBox="0 0 12 21">';for(var i=0;i<7;i++) h+='<path d="'+SEG_PATHS[i]+'" class="'+(((bits>>i)&1)?'on':'off')+'"/>';return h+'</svg>';}
+function seg7(el, v, withSign){
+  var txt=(Math.abs(v)/10000).toFixed(1), key=(withSign?(v<0?'-':'+'):'')+txt;
+  if(el._k===key) return; el._k=key;
+  var h=withSign?'<span class="sgn">'+(v<0?'−':'+')+'</span>':'';
+  for(var i=0;i<txt.length;i++){var ch=txt[i]; h+= ch==='.'?'<i class="dp"></i>':segDigit(SEG_MAP[+ch]);}
+  el.innerHTML=h+'<small>万円</small>'; el.classList.toggle('neg',!!withSign && v<0);
+}
+var GC={cx:60,cy:66,r:48};
+function gPt(a,rr){var t=(a-90)*Math.PI/180;return [GC.cx+rr*Math.cos(t),GC.cy+rr*Math.sin(t)];}
+function gArc(a0,a1,rr){if(a1-a0<0.5) return ''; var p0=gPt(a0,rr),p1=gPt(a1,rr); return 'M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+' A'+rr+' '+rr+' 0 '+(a1-a0>180?1:0)+' 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1);}
+function gNum(a,label){var q=gPt(a,GC.r-17);return '<text class="g-num" x="'+q[0].toFixed(1)+'" y="'+(q[1]+2.5).toFixed(1)+'" text-anchor="middle">'+label+'</text>';}
+function gFrame(){var h='';for(var i=0;i<=20;i++){var a=-100+i*10,mj=i%5===0,p1=gPt(a,GC.r),p2=gPt(a,GC.r-(mj?8:4));h+='<line class="g-tick'+(mj?' major':'')+'" x1="'+p1[0].toFixed(1)+'" y1="'+p1[1].toFixed(1)+'" x2="'+p2[0].toFixed(1)+'" y2="'+p2[1].toFixed(1)+'"/>';}return h;}
+var gScale={};
+function setupGauges(){
+  var sim=G.sim; if(!sim) return;
+  var lo=Math.min(0,sim.minGap), hi=Math.max(0,sim.gap[sim.best], ...sim.gap); if(hi-lo<1) hi=lo+1;
+  var az=-100+200*(0-lo)/(hi-lo);
+  gScale.gap={lo:lo,hi:hi};
+  $('#gGap').innerHTML=gFrame()+'<path class="g-arc neg" d="'+gArc(-100,az,GC.r+4)+'"/><path class="g-arc pos" d="'+gArc(az,100,GC.r+4)+'"/>'+
+    gNum(-100,Math.round(lo/10000))+gNum(az,'0')+gNum(100,'+'+Math.round(hi/10000))+
+    '<line class="g-needle" id="nGap" x1="60" y1="66" x2="60" y2="24" style="transform-origin:60px 66px"/><circle class="g-hub" cx="60" cy="66" r="5"/>';
+  var maxM=sim.rep.eac*1.6; sim.years.forEach(function(z){maxM=Math.max(maxM,z.marginal);}); maxM*=1.04;
+  var ae=-100+200*sim.rep.eac/maxM;
+  gScale.cost={max:maxM};
+  $('#gCost').innerHTML=gFrame()+'<path class="g-arc pos" d="'+gArc(-100,ae,GC.r+4)+'"/><path class="g-arc neg" d="'+gArc(ae,100,GC.r+4)+'"/>'+
+    gNum(-100,'0')+gNum(ae,'乗換')+gNum(100,Math.round(maxM/10000))+
+    '<line class="g-needle" id="nCost" x1="60" y1="66" x2="60" y2="24" style="transform-origin:60px 66px"/><circle class="g-hub" cx="60" cy="66" r="5"/>';
+}
+function updateGauges(gNow, y, maxM, price){
+  var gs=gScale.gap, n1=$('#nGap'), n2=$('#nCost'); if(!gs||!n1) return;
+  n1.style.transform='rotate('+(-100+200*clamp((gNow-gs.lo)/(gs.hi-gs.lo),0,1)).toFixed(1)+'deg)';
+  n2.style.transform='rotate('+(-100+200*clamp(y.marginal/gScale.cost.max,0,1)).toFixed(1)+'deg)';
+  seg7($('#sGap'),gNow,true); seg7($('#sCost'),y.marginal,false); seg7($('#sPrice'),price,false);
+}
+
+/* ---------- デザイン案の切り替え（#an1〜#an5、#an0 はいまの版） ---------- */
+var SKIN_FONT_TEXT='車検税金UP重量税年末いま13年18年10万km15万km令和R0123456789万円−+の維持費超え！自動車税アップ毎年部品交換大きな修理買取ダウン';
+function skinFromHash(){var m=/^#an(\d)$/.exec(location.hash||''); var b=document.querySelector('#skinbar button[data-n="'+(m?m[1]:'1')+'"]'); return b?b.dataset.skin:'paper';}
+function applySkin(id){
+  G.skin=id;
+  if(id==='base') delete document.documentElement.dataset.skin; else document.documentElement.dataset.skin=id;
+  document.querySelectorAll('#skinbar button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.skin===id?'true':'false');});
+  readTheme(); resize(); setupGauges(); updateDash(); renderChart();
+  if(document.fonts && document.fonts.load){
+    Promise.all([document.fonts.load('16px '+fontHud(),SKIN_FONT_TEXT),document.fonts.load('16px '+fontDisplay(),SKIN_FONT_TEXT)]).then(function(){drawTypeCards();}).catch(function(){});
+  }
+}
+document.querySelectorAll('#skinbar button').forEach(function(b){
+  b.addEventListener('click',function(){ var h='#an'+b.dataset.n; if(location.hash!==h) location.hash=h; else applySkin(b.dataset.skin); });
+});
+window.addEventListener('hashchange',function(){ if(!VIDEO) applySkin(skinFromHash()); });
+
 /* ---------- 起動 ---------- */
 readTheme();
 refresh();
 resize();
+if(!VIDEO) applySkin(skinFromHash());
 window.addEventListener('resize',resize);
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){drawTypeCards(); renderChart();});
-requestAnimationFrame(frame);
+if(VIDEO) setupVideo(); else requestAnimationFrame(frame);
 })();
 </script>
 </body>
