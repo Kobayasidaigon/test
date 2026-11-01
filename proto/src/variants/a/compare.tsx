@@ -4,11 +4,11 @@
 // 被災した街は、得する順の並びに入れず、区切りの下に置く（金額でもくらべない）。
 import { motion, useReducedMotion } from 'motion/react'
 import { useMemo, useState } from 'react'
-import { yenMan } from '@/shared'
+import { sortTier, yenMan } from '@/shared'
 import type { Comparison, FamilyInput } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { ItemIcon } from './art'
-import { ijuPending, isHit, levelTag, lookOf, perYearChip, thinCity, toneOf } from './lib'
+import { IJU_SHORT, ijuState, isHit, levelTag, lookOf, perYearChip, thinCity, toneOf } from './lib'
 import { NamedCapsuleG } from './machine'
 import { DetailGrid, Notice, NextStepsBox, ResultHeader, RetryButtons, SectionTitle, StampBook, rentOf, type SampleMark } from './result'
 import { GotouchiStamp } from './stamp'
@@ -123,8 +123,12 @@ export function CompareShelf({ list, sel, onSelect }: { list: Comparison[]; sel:
   const { main, apart } = useMemo(() => {
     const ids = list.map((_, i) => i)
     if (order === 'picked') return { main: ids, apart: [] as number[] }
-    const rankOf = (c: Comparison) => (c.status === 'unknown' || thinCity(c) ? 1 : 0)
-    const sorted = ids.filter((i) => !isHit(list[i])).sort((a, b) => rankOf(list[a]) - rankOf(list[b]) || list[b].perYear - list[a].perYear)
+    // 段は共有の並び（sortTier）と同じ：わかる分で得にならない確認中の街は、全部わかる街の後ろ。まだ比べられない街はいちばん後ろ
+    const rankOf = (c: Comparison) => (c.status === 'unknown' || thinCity(c) ? 2 : sortTier(c))
+    const okFirst = (c: Comparison) => (c.status === 'ok' ? 0 : 1)
+    const sorted = ids
+      .filter((i) => !isHit(list[i]))
+      .sort((a, b) => rankOf(list[a]) - rankOf(list[b]) || list[b].perYear - list[a].perYear || okFirst(list[a]) - okFirst(list[b]))
     return { main: sorted, apart: ids.filter((i) => isHit(list[i])) }
   }, [list, order])
   // 目盛りの最大は20万円より小さくしない（知っている額が1つだけでも、棒がいっぱいに見えないように）
@@ -210,7 +214,7 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
           <table className="w-full min-w-[520px] border-collapse text-[13px]">
             <thead>
               <tr className="bg-[var(--paper-2)]">
-                <th scope="col" className="sticky left-0 z-10 bg-[var(--paper-2)] px-2 py-2 text-left text-[12px] font-black">
+                <th scope="col" className="sticky left-0 z-10 min-w-[6.5em] bg-[var(--paper-2)] px-2 py-2 text-left text-[12px] font-black">
                   項目
                 </th>
                 {list.map((c) => (
@@ -227,7 +231,7 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
             <tbody>
               {rows.map((r) => (
                 <tr key={r.key} className="border-t-2 border-[var(--ink)]/15">
-                  <th scope="row" className="sticky left-0 z-10 bg-[var(--paper)] px-2 py-2 text-left text-[12.5px] font-black">
+                  <th scope="row" className="sticky left-0 z-10 min-w-[6.5em] bg-[var(--paper)] px-2 py-2 text-left text-[12.5px] font-black">
                     {r.label}
                   </th>
                   {list.map((c) => {
@@ -241,17 +245,23 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
                 </tr>
               ))}
               <tr className="border-t-2 border-[var(--ink)]/15">
-                <th scope="row" className="sticky left-0 z-10 bg-[var(--paper)] px-2 py-2 text-left text-[12.5px] font-black">
-                  一度きりのお金
+                <th scope="row" className="sticky left-0 z-10 min-w-[6.5em] bg-[var(--paper)] px-2 py-2 text-left text-[12.5px] font-black">
+                  移住支援金
+                  <span className="block text-[12px] font-bold text-[var(--ink-soft)]">一度きり</span>
                 </th>
-                {list.map((c) => (
-                  <td key={c.to.id} className={cn('px-2 py-2 text-center font-black', ijuPending(c, input) && 'text-[12px] text-[var(--ink-soft)]')}>
-                    {c.oneTime > 0 ? `最大 ${yenMan(c.oneTime, 0)}` : ijuPending(c, input) ? '準備中（移住支援金）' : '—'}
-                  </td>
-                ))}
+                {list.map((c) => {
+                  // 調べていない街は「—」（ない）に見せず「準備中」。対象外・一部の地域だけと分かった街は、そう書く
+                  const st = ijuState(c, input)
+                  const soft = st === 'pending' || st === 'none' || st === 'part'
+                  return (
+                    <td key={c.to.id} className={cn('px-2 py-2 text-center font-black', soft && 'text-[12px] text-[var(--ink-soft)]')}>
+                      {c.oneTime > 0 ? `最大 ${yenMan(c.oneTime, 0)}` : st && st !== 'item' ? IJU_SHORT[st] : '—'}
+                    </td>
+                  )
+                })}
               </tr>
               <tr className="border-t-2 border-[var(--ink)]/15 bg-[#fff7e0]">
-                <th scope="row" className="sticky left-0 z-10 bg-[#fff7e0] px-2 py-2 text-left text-[12.5px] font-black">
+                <th scope="row" className="sticky left-0 z-10 min-w-[6.5em] bg-[#fff7e0] px-2 py-2 text-left text-[12.5px] font-black">
                   家賃の目安（月）
                   <span className="block text-[12px] font-bold text-[var(--ink-soft)]">
                     今の街 {from?.name} {fromRent !== null ? man1(fromRent) : 'データなし'}

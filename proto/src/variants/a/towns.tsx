@@ -18,7 +18,7 @@ import { citiesInPref, cityById, distanceKm, nearbyCities, searchCities } from '
 import type { City } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Capsule } from './art'
-import { FEATURED, LEVEL_LEGEND, LEVEL_ORDER, REGIONS, kmText, levelTag, levelText, lookOf, prefsFor } from './lib'
+import { ALL_COUNT, FEATURED, FEATURED_GROUPS, LEVEL_LEGEND, LEVEL_ORDER, REGIONS, groupOf, kmText, levelTag, levelText, lookOf, prefsFor, type TownGroup } from './lib'
 
 const SEARCH_LIMIT = 20
 
@@ -352,6 +352,95 @@ export function PrefBrowser({ onPick, isOn, isOut, fromId, startPref }: { onPick
   )
 }
 
+/* ───────── くわしく調べた街（地域の札で切りかえる） ─────────
+   33個のチップを一度に並べると、スマホで長くなる。地域の札（東京23区・埼玉…）を押して、その地域の街だけを出す。
+   行きたい街では、札も街も、今の街から近い順にする（はじめに開くのは、いちばん近い地域）。 */
+
+export function FeaturedPicker({ isOn, isOut, onPick, nearFrom, startCode, label, single = false }: {
+  isOn: (c: City) => boolean
+  isOut?: (c: City) => boolean
+  onPick: (c: City) => void
+  nearFrom?: string // 近い順に並べる基準の街（行きたい街をえらぶとき）
+  startCode?: string // はじめに開く地域を決める街（今の街をえらぶとき）
+  label?: string
+  single?: boolean // 1つだけえらぶとき（今の街）。札には数ではなく点を付ける
+}) {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '')
+  // 近い順は、開いたときの今の街で決める（えらぶたびに札が動かないように）
+  const groups = useMemo<TownGroup[]>(() => {
+    const from = nearFrom ? cityById(nearFrom) : undefined
+    if (!from) return FEATURED_GROUPS
+    // 今の街は、行きたい街にはえらべないので、札の数にも、チップにも入れない
+    const d = (c: City) => distanceKm(from, c) ?? 1e9
+    return FEATURED_GROUPS.map((g) => ({ ...g, cities: g.cities.filter((c) => c.code !== from.code).sort((a, b) => d(a) - d(b)) }))
+      .filter((g) => g.cities.length > 0)
+      .sort((a, b) => d(a.cities[0]) - d(b.cities[0]))
+  }, [nearFrom])
+  const [open, setOpen] = useState(() => {
+    const start = startCode ? cityById(startCode) : undefined
+    if (!start) return 0
+    // 今の街がくわしい街ならその地域、ちがえば、いちばん近い街のある地域
+    const near = (g: TownGroup) => Math.min(...g.cities.map((c) => distanceKm(start, c) ?? 1e9))
+    const g = groupOf(start) ?? [...groups].sort((a, b) => near(a) - near(b))[0]
+    return Math.max(0, groups.findIndex((x) => x.key === g?.key))
+  })
+  const group = groups[Math.min(open, groups.length - 1)]
+  const from = nearFrom ? cityById(nearFrom) : undefined
+  return (
+    <div>
+      <p id={`${uid}-h`} className="mb-1.5 text-[13px] font-black">
+        {label ?? `くわしく調べた${FEATURED.length}の街`}
+        <span className="ml-1 whitespace-nowrap text-[12px] font-bold text-[var(--ink-soft)]">（札で地域を切りかえ）</span>
+      </p>
+      <div role="group" aria-labelledby={`${uid}-h`} className="flex flex-wrap gap-1.5">
+        {groups.map((g, i) => {
+          const on = g === group
+          const picked = g.cities.filter(isOn).length
+          return (
+            <button
+              key={g.key}
+              type="button"
+              aria-pressed={on}
+              aria-label={`${g.name}（${g.cities.length}の街${picked ? (single ? '、えらんでいる街があります' : `、${picked}個えらんでいます`) : ''}）`}
+              onClick={() => setOpen(i)}
+              className={cn(
+                'relative inline-flex min-h-[40px] items-center gap-1 rounded-[10px] border-[2.5px] border-[var(--ink)] px-2.5 py-1 text-[13px] font-black',
+                on ? 'bg-[var(--ink)] text-white' : 'bg-[var(--paper)]',
+              )}
+            >
+              {g.name}
+              <span className={cn('text-[12px] font-bold', on ? 'text-white/80' : 'text-[var(--ink-soft)]')}>{g.cities.length}</span>
+              {picked > 0 &&
+                (single ? (
+                  <span aria-hidden className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-[var(--ink)] bg-[var(--yolk)]" />
+                ) : (
+                  <span aria-hidden className="absolute -right-1.5 -top-1.5 grid h-[18px] min-w-[18px] place-items-center rounded-full border-2 border-[var(--ink)] bg-[var(--yolk)] px-0.5 text-[11px] font-black leading-none text-[var(--ink)]">{picked}</span>
+                ))}
+            </button>
+          )
+        })}
+      </div>
+      <div className="mt-2 flex flex-wrap gap-1.5 rounded-[14px] border-[2.5px] border-dashed border-[var(--ink)]/30 bg-[var(--paper-2)] p-1.5">
+        {group.cities.map((c) => {
+          const out = isOut?.(c)
+          if (out && from) return null
+          const d = from && c.code !== from.code ? distanceKm(from, c) : undefined
+          return (
+            <TownChip
+              key={c.id}
+              city={c}
+              on={isOn(c)}
+              disabled={out}
+              onClick={() => onPick(c)}
+              extra={d !== undefined ? <span className="text-[12px] font-bold text-[var(--ink-soft)]">{kmText(d)}</span> : undefined}
+            />
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 /* ───────── 開け閉めできる枠 ───────── */
 
 export function Drawer({ title, children, open, onOpenChange, icon, id }: { title: string; children: ReactNode; open?: boolean; onOpenChange?: (open: boolean) => void; icon?: ReactNode; id?: string }) {
@@ -435,16 +524,9 @@ export function NowCityPicker({ value, onChange }: { value: string; onChange: (i
         </motion.div>
       </AnimatePresence>
 
-      <TownSearch label="名前で探す（全国1,741の市区町村）" onPick={(c) => onChange(c.id)} onBrowse={browse.openAt} />
+      <TownSearch label={`名前で探す（全国${ALL_COUNT}の市区町村）`} onPick={(c) => onChange(c.id)} onBrowse={browse.openAt} />
 
-      <div>
-        <p className="mb-1.5 text-[13px] font-black">くわしく調べた13の街</p>
-        <div className="flex flex-wrap gap-1.5">
-          {FEATURED.map((c) => (
-            <TownChip key={c.id} city={c} on={c.id === city.id} onClick={() => onChange(c.id)} />
-          ))}
-        </div>
-      </div>
+      <FeaturedPicker single startCode={value} isOn={(c) => c.code === city.code} onPick={(c) => onChange(c.id)} />
 
       <Drawer id={browse.id} title="地方と県からさがす" open={browse.state.open} onOpenChange={browse.setOpen} icon={<MapPin className="h-4 w-4" strokeWidth={3} aria-hidden />}>
         <PrefBrowser key={browse.state.n} startPref={browse.state.pref} fromId={value} isOn={(c) => c.id === city.id} onPick={(c) => onChange(c.id)} />
@@ -470,7 +552,7 @@ export function PickTray({ picks, onRemove }: { picks: string[]; onRemove: (id: 
           const id = picks[i]
           const c = id ? cityById(id) : null
           return (
-            <li key={i} className="relative flex min-h-[92px] flex-col items-center justify-start rounded-[12px] border-2 border-dashed border-[var(--ink)]/35 bg-white/50 pb-1 pt-1.5">
+            <li key={i} className="relative flex min-h-[96px] flex-col items-center justify-start rounded-[12px] border-2 border-dashed border-[var(--ink)]/35 bg-white/50 pb-1 pt-3">
               <AnimatePresence>
                 {c && (
                   <motion.div
@@ -483,18 +565,31 @@ export function PickTray({ picks, onRemove }: { picks: string[]; onRemove: (id: 
                   >
                     <div className="relative">
                       <TownCapsule city={c} size={46} />
-                      <span className="absolute left-1/2 top-[9px] max-w-[48px] -translate-x-1/2 -rotate-6 truncate rounded-[4px] border-2 border-[var(--ink)] bg-[var(--paper)] px-0.5 text-[10px] font-black leading-tight" aria-hidden>
+                      {/* カプセルの名札（飾り。名前は下に書く）。4文字以上は字を小さくして、札に収める */}
+                      <span
+                        className={cn(
+                          'absolute left-1/2 top-[9px] max-w-[48px] -translate-x-1/2 -rotate-6 truncate rounded-[4px] border-2 border-[var(--ink)] bg-[var(--paper)] px-0.5 font-black leading-tight',
+                          [...c.name.replace(/(市|区|町|村)$/, '')].length >= 4 ? 'text-[9px]' : 'text-[10px]',
+                        )}
+                        aria-hidden
+                      >
                         {c.name.replace(/(市|区|町|村)$/, '')}
                       </span>
                     </div>
-                    <span className="mt-0.5 w-full px-0.5 text-center text-[12px] font-black leading-tight [overflow-wrap:anywhere]">{c.name}</span>
+                    {/* 名前は「市・区・町・村」の前でだけ折る（「さいた／ま市」にしない）。5文字以上は字を少し小さく */}
+                    <span className={cn('mt-0.5 w-full text-center font-black leading-tight [word-break:keep-all] [overflow-wrap:anywhere]', [...c.name].length >= 5 ? 'text-[11px]' : 'text-[12px]')}>
+                      {c.name.replace(/(市|区|町|村)$/, '')}
+                      <wbr />
+                      {c.name.match(/(市|区|町|村)$/)?.[0] ?? ''}
+                    </span>
+                    {/* はずすボタンは、スロットの角（カプセルの名札の上）に小さく置く。押せる範囲は after で広げる */}
                     <button
                       type="button"
                       onClick={() => onRemove(c.id)}
                       aria-label={`${c.name}をカプセル置き場からはずす`}
-                      className="absolute -right-1.5 -top-1.5 grid h-7 w-7 place-items-center rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] after:absolute after:-inset-2 after:content-['']"
+                      className="absolute -right-2 -top-2 z-10 grid h-6 w-6 place-items-center rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] after:absolute after:-inset-2.5 after:content-['']"
                     >
-                      <X className="h-3.5 w-3.5" strokeWidth={3.4} aria-hidden />
+                      <X className="h-3 w-3" strokeWidth={3.6} aria-hidden />
                     </button>
                   </motion.div>
                 )}
@@ -561,7 +656,7 @@ export function TownPicker({ picks, setPicks, fromId }: { picks: string[]; setPi
           {note}
         </p>
       )}
-      <TownSearch label="行きたい街の名前を書く（全国1,741の市区町村）" fromId={fromId} exclude={[from.id, ...picks]} onPick={tryAdd} onBrowse={browse.openAt} />
+      <TownSearch label={`行きたい街の名前を書く（全国${ALL_COUNT}の市区町村）`} fromId={fromId} exclude={[from.id, ...picks]} onPick={tryAdd} onBrowse={browse.openAt} />
       {near.length > 0 && (
         <div>
           <p className="mb-1.5 text-[13px] font-black">{from.name}の近く（30km以内）</p>
@@ -572,14 +667,7 @@ export function TownPicker({ picks, setPicks, fromId }: { picks: string[]; setPi
           </div>
         </div>
       )}
-      <div>
-        <p className="mb-1.5 text-[13px] font-black">くわしく調べた13の街</p>
-        <div className="flex flex-wrap gap-1.5">
-          {FEATURED.filter((c) => c.code !== from.code).map((c) => (
-            <TownChip key={c.id} city={c} on={has(c)} onClick={() => tryAdd(c)} />
-          ))}
-        </div>
-      </div>
+      <FeaturedPicker nearFrom={fromId} isOn={has} isOut={isOut} onPick={tryAdd} />
       <Drawer id={browse.id} title="地方と県からさがす" open={browse.state.open} onOpenChange={browse.setOpen} icon={<MapPin className="h-4 w-4" strokeWidth={3} aria-hidden />}>
         <PrefBrowser key={browse.state.n} startPref={browse.state.pref} fromId={fromId} isOn={has} isOut={isOut} onPick={tryAdd} />
       </Drawer>

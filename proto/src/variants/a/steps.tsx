@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { Coin } from './art'
 import { Dial } from './dial'
 import { FamilyStand } from './family'
-import { familySummary, useNarrowScreen, yearsActual } from './lib'
+import { ALL_COUNT, familySummary, useNarrowScreen, yearsActual } from './lib'
 import { Stepper } from './stepper'
 import { TagGroup } from './tags'
 import { NowCityPicker } from './towns'
@@ -19,7 +19,7 @@ export const STEP_INFO: Record<StepKey, { short: string; q: string; hint: string
   family: { short: '家族', q: 'だれと住む？', hint: 'フィギュアを台にならべてね。子どもを押すと、年齢を回せます。' },
   income: { short: '年収', q: '世帯の年収は？', hint: 'コイン1枚で1段。家族みんなの年収（税こみ）のところまで入れてね。' },
   work: { short: '働き方', q: 'どう働いてる？', hint: '働き方で、おまかせで出てくる街のはんいが変わります。' },
-  city: { short: '今の街', q: 'いま住んでいる街は？', hint: 'この街とくらべて、年にいくら違うかを出します。全国1,741の市区町村から選べます。' },
+  city: { short: '今の街', q: 'いま住んでいる街は？', hint: `この街とくらべて、年にいくら違うかを出します。全国${ALL_COUNT}の市区町村から選べます。` },
   years: { short: '期間', q: '何年ぶんでくらべる？', hint: 'つまみを回すか、まわりの札を押してね。' },
   pick: { short: '行きたい街', q: '行きたい街は？', hint: '2〜5個えらんでね。名前を書いたカプセルを、筐体に入れます。' },
   turn: { short: '回す', q: 'ハンドルを回そう', hint: '' },

@@ -22,12 +22,12 @@
 ## 共通データの新しい使い方（@/shared。編集はしない）
 - `ALL_CITIES` … 全国1,741市区町村の `City`。`city.level` が `detailed`（市の制度まで調べた街。13）、`pref`（都道府県の制度だけ分かる街。東京都・埼玉県の市区町村など）、`basic`（国の制度だけ。くわしいデータは準備中）。`DATA_LEVEL_TEXT[level]` に説明文。
   - `city.kana`、`city.lat`/`city.lng`（役所の位置）、`city.url`（公式サイト）、`city.phrase`（街のキャッチフレーズ）もある。
-- `CITIES` … くわしい街（detailed）13件。おすすめのチップなどに使える。
+- `CITIES` … くわしい街（detailed）。2026年11月1日に20市を足して33件（`src/shared/detailed20.ts`）。全国データを合わせたあとの City（ALL_CITIES と同じもの）。
 - `cityById(id)` … 短いid（'adachi'）でも、地方公共団体コード（'131211'）でも引ける。
 - `PREFS` … 47都道府県（北から順）。`citiesInPref(pref)` でその県の市区町村。
 - `searchCities(query, limit)` … 名前・読みがな（ひらがな・カタカナどちらでも）で探す。
 - `nearbyCities(fromId, km, limit)` … 今の街の近く（直線距離）。
-- `rank(input, { pool, radiusKm, limit })` … おまかせの候補。`pool: 'featured'`（くわしい街だけ。既定）、`'nearby'`（近く。通勤・パートの人向け）、`'all'`（全国。リモート・自営の人向け）。並びは「毎年の差が大きい順。確認中だけの街は後ろ。被災した街は入れない」。一度きりのお金は並びに足さない。
+- `rank(input, { pool, radiusKm, limit })` … おまかせの候補。`pool: 'featured'`（くわしい街だけ。既定）、`'nearby'`（近く。通勤・パートの人向け）、`'all'`（全国。リモート・自営の人向け）。並びは、段（全部わかる街と、確認中の項目があってもわかる分で年1万円以上得になる街 → 確認中の項目があり、わかる分では得にならない街 → わかる差が1つもない街）→ 毎年の差が大きい順 → 同じ額なら、全部わかる街・一度きりのお金がある街・くわしい街・今の街に近い順（calc.ts の sortTier と sortComparisons）。被災した街は入れない。一度きりのお金は額の大きさには足さない。
 - `compareMany(input, ids)` … 選んだ街を、選んだ順のまま比べる。
 - `Comparison` に増えたもの: `status`、`perYearLabel`、`excluded`、`care`（災害への配慮）、`distanceKm`。
 - `moodText(comparison)` … 表情の一言（確認中・配慮も含めて決める）。

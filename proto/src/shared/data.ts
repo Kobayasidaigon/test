@@ -3,11 +3,12 @@
 // 数字を足すときは、必ず出典と確からしさを一緒に入れること。
 //
 // 2つの層がある:
-//   CITIES     … 市の制度まで調べた「くわしい街」（detailed）
-//   ALL_CITIES … 全国1,741市区町村。くわしい街はそのまま、それ以外は都道府県の制度（pref）か国の制度だけ（basic）
+//   CITIES     … 市の制度まで調べた「くわしい街」（level 'detailed'）。全国データ（国の医療費・家賃・災害への配慮）を合わせたあとの City
+//   ALL_CITIES … 全国1,741市区町村。くわしい街は合わせたあとの City、それ以外は都道府県の制度（pref）か国の制度だけ（basic）
 import type { Care, City, Source } from './types'
 import { MUNICIPALITIES, PREFS, type Muni } from './municipalities'
 import { MEDICAL_R7, RENT_R5 } from './national'
+import { DETAILED_20 } from './detailed20'
 
 export { PREFS }
 
@@ -17,7 +18,12 @@ const S = {
   kita: { label: '北区 0〜2歳の保育料', url: 'https://www.city.kita.lg.jp/children-edu/childcare/1002975/1002976/1002984/1020563.html' },
   ota: { label: '大田区 保育料の決め方', url: 'https://www.city.ota.tokyo.jp/seikatsu/kodomo/hoiku/hoikuryo/ketteihouhou.html' },
   edogawa: { label: '江戸川区 保育料の無償化', url: 'https://www.city.edogawa.tokyo.jp/e048/kosodate/kosodate/hoiku/azukeru/musyouka.html' },
-  t018: { label: '東京都 018サポート', url: 'https://www.fukushi.metro.tokyo.lg.jp/kodomo/kosodate/018/index.html' },
+  t018: { label: '東京都福祉局 018サポート（令和8年度も子1人に月5,000円、所得制限なし）', url: 'https://www.fukushi.metro.tokyo.lg.jp/kodomo/kosodate/018/index.html' },
+  tokyoFirstFree: { label: '東京都福祉局 保育料等の無償化について（第1子の無償化を実施する区市町村を、都が令和7年9月から支援）', url: 'https://www.fukushi.metro.tokyo.lg.jp/kodomo/hoiku/mushouka' },
+  kunitachiFree: { label: '国立市 認可保育所等における利用者負担額（保育料）の第1子無償化について', url: 'https://www.city.kunitachi.tokyo.jp/soshiki/Dept04/Div03/Sec01/gyomu/0276/0277/0279/12840.html' },
+  tokyoLunchR6: { label: '東京都教育委員会 令和6年度 東京都公立学校給食費負担軽減事業（費用の2分の1を補助）', url: 'https://www.kyoiku.metro.tokyo.lg.jp/information/press/2024/07/2024071602' },
+  tokyoLunchAll: { label: '東京都「東京都の少子化対策2025」p.19（都内全ての区市町村で学校給食費を無償化、2025年1月から）', url: 'https://www.spt.metro.tokyo.lg.jp/kodomoseisaku/book/2025-02_tokyo_syoshika2025/pageindices/index19.html' },
+  tokyoLunchR8: { label: '東京都「『叶えたい』を支えたいアクションプラン2026」p.42（国の交付金を受けて都の支援のしくみを変更）', url: 'https://www.spt.metro.tokyo.lg.jp/kodomoseisaku/book/202602-kanasasa-actionplan/pageindices/index42.html' },
   jil: { label: '労働政策研究・研修機構 都道府県別の有効求人倍率（2025年平均）', url: 'https://www.jil.go.jp/kokunai/blt/backnumber/2026/04/c_01.html' },
   kawaguchiR4: { label: '川口市 保育料徴収基準表（令和4年度）', url: 'https://www.city.kawaguchi.lg.jp/material/files/group/79/tyousyuukijunnhyou_R4.pdf' },
   saitama3: { label: '埼玉県議会 第3子以降の保育料無償化（63市町村）', url: 'https://www.pref.saitama.lg.jp/e1601/gikai-gaiyou/r0509/4/k0210.html' },
@@ -28,7 +34,6 @@ const S = {
   kawasakiSib: { label: '川崎市 きょうだいの保育料', url: 'https://www.city.kawasaki.jp/450/cmsfiles/contents/0000154/154113/tirashi2.pdf' },
   kawasakiFee: { label: '川崎市の保育料の目安（第三者サイト・年度不明）', url: 'https://www.seikatsu-guide.com/keyword/2600/14/14130/' },
   kawasakiMed: { label: '川崎市 小児医療費助成の拡大（2026年9月〜）', url: 'https://www.city.kawasaki.jp/450/cmsfiles/contents/0000181/181307/kakujuu.pdf' },
-  yokohamaMed: { label: '横浜市 小児医療費助成（2026年6月〜18歳年度末まで）', url: 'https://www.city.yokohama.lg.jp/kenko-iryo-fukushi/kenko-iryo/iryohijosei/shoni/child.html' },
   sagamiFee: { label: '相模原市の保育料の目安（第三者サイト・年度不明）', url: 'https://www.seikatsu-guide.com/keyword/2600/14/14150/' },
   sagamiMed: { label: '相模原市 医療費助成の拡大（報道）', url: 'https://www.kanaloco.jp/taxonomy/term/1403' },
   osakaFirst: { label: '大阪市 0〜2歳第1子の保育料無償化（2026年9月〜）', url: 'https://www.city.osaka.lg.jp/hodoshiryo/seisakukikakushitsu/0000669117.html' },
@@ -72,7 +77,8 @@ const tokyoWard = (id: string, code: string, name: string, src: Source[], confir
 })
 
 // ---------- くわしい街（市の制度まで調べた街） ----------
-export const CITIES: City[] = [
+// 最初に調べた13の街。2026年11月1日に調べ終わった20市は detailed20.ts（下で足す）
+const FIRST_13: City[] = [
   tokyoWard('adachi', '131211', '足立区', [S.adachi], true),
   tokyoWard('kita', '131172', '北区', [S.kita], true),
   tokyoWard('ota', '131113', '大田区', [S.ota], true),
@@ -80,10 +86,10 @@ export const CITIES: City[] = [
   {
     id: 'kawaguchi', pref: '埼玉県', name: '川口市', region: 'saitama', metro: 'shutoken', level: 'detailed', ...meta('112038'),
     nursery: {
-      firstChildFree: false, secondChild: 'half', thirdChild: 'free',
+      firstChildFree: false, secondChild: 'half', thirdChild: 'free', thirdCount: 'household',
       monthly: { '400_600': [33000, 33000], '600_800': [44000, 54000], '800_1000': [57000, 57000] },
       fiscalYear: '令和4年度の表で代用（令和8年度は未確認）', confidence: '推定',
-      note: '世帯年収から住民税の所得割を推計して階層を当てた目安。2人目の半額は国の基準どおりと仮定。',
+      note: '世帯年収から住民税の所得割を推計して階層を当てた目安。2人目の半額は国の基準どおりと仮定。3人目以降は、上の子の年齢を問わず0円（埼玉県の事業）。',
       sources: [S.kawaguchiR4, S.saitama3],
     },
     medical: { coversTo: 18, note: '埼玉県は県内全市町村で18歳年度末まで（解説サイトの記述）', confidence: '推定', sources: [S.saitamaMed] },
@@ -96,10 +102,10 @@ export const CITIES: City[] = [
   {
     id: 'soka', pref: '埼玉県', name: '草加市', region: 'saitama', metro: 'shutoken', level: 'detailed', ...meta('112216'),
     nursery: {
-      firstChildFree: false, secondChild: 'half', thirdChild: 'free',
+      firstChildFree: false, secondChild: 'half', thirdChild: 'free', thirdCount: 'household',
       monthly: { '400_600': [32600, 32600], '600_800': [42000, 47600], '800_1000': [53800, 53800] },
       fiscalYear: '令和8年度', confidence: '推定',
-      note: '金額は令和8年度の表。世帯年収から所得割を推計して階層を当てた目安。2人目の半額は国の基準どおりと仮定。',
+      note: '金額は令和8年度の表。世帯年収から所得割を推計して階層を当てた目安。2人目の半額は国の基準どおりと仮定。3人目以降は、上の子の年齢を問わず0円（埼玉県の事業）。',
       sources: [S.soka, S.saitama3],
     },
     medical: { coversTo: 18, note: '埼玉県は県内全市町村で18歳年度末まで（解説サイトの記述）', confidence: '推定', sources: [S.saitamaMed] },
@@ -204,6 +210,9 @@ export const CITIES: City[] = [
   },
 ]
 
+// くわしい街の全部（全国データを合わせる前）。20市には、役所の位置・読みがななどを全国データから足す
+const DETAILED_RAW: City[] = [...FIRST_13, ...DETAILED_20.map((c): City => ({ ...c, ...meta(c.code!) }))]
+
 // ---------- 国の統計（全国の市区町村） ----------
 function nationalMedical(pref: string, name: string): City['medical'] | null {
   const r = MEDICAL_R7[pref + name]
@@ -238,6 +247,17 @@ function careFor(m: Muni): Care | undefined {
 const REGION_BY_PREF: Record<string, City['region']> = { 埼玉県: 'saitama', 神奈川県: 'kanagawa', 千葉県: 'chiba', 大阪府: 'osaka' }
 const METRO_BY_PREF: Record<string, City['metro']> = { 東京都: 'shutoken', 埼玉県: 'shutoken', 神奈川県: 'shutoken', 千葉県: 'shutoken', 大阪府: 'kansai', 京都府: 'kansai', 兵庫県: 'kansai', 奈良県: 'kansai' }
 
+// 東京都の区以外の市町村で、第1子の保育料の無償化を市のページで確かめた市（くわしい街の町田・八王子・調布のほか）
+const TOKYO_FIRST_FREE: Record<string, Source> = { '132152': S.kunitachiFree } // 国立市
+
+// 東京都の区以外の市町村の、中学校の給食費。都は2025年1月から全区市町村で無償化と発表したが、
+// 令和8年度に都の支援のしくみが変わり（国の交付金は小学校だけ）、中学校がいまも無料かは市町村ごとに確かめていないので「確認中」
+const tokyoLunch = (): City['lunch'] => ({
+  juniorHighFree: null, confidence: '仮置き',
+  note: '東京都は2025年1月から全区市町村で給食費を無償化と発表した（都が半分を補助）。令和8年度に都の支援のしくみが変わり、この市町村の中学校がいまも無料かは確認中。',
+  sources: [S.tokyoLunchAll, S.tokyoLunchR6, S.tokyoLunchR8],
+})
+
 function buildFromPref(m: Muni): City {
   const isWard = m.pref === '東京都' && m.name.endsWith('区')
   const city: City = {
@@ -259,37 +279,55 @@ function buildFromPref(m: Muni): City {
     if (isWard) {
       city.nursery = { ...unknownNursery(), firstChildFree: true, secondChild: 'free', thirdChild: 'free', fiscalYear: '令和8年度', confidence: '推定', note: '23区は0〜2歳の第1子から0円（2025年9月から。都の補助で区が実施）。この区のページでは未確認。', sources: [S.tokyoFree] }
       city.lunch = { juniorHighFree: true, confidence: '推定', note: '区立中学校の給食費は無償（公開前に区の公式ページで確認）', sources: [] }
+    } else if (TOKYO_FIRST_FREE[m.code]) {
+      // 市のページで、第1子の無償化（2025年9月から）を確かめた市（検索結果の抜粋で確かめたので 推定）
+      city.nursery = {
+        ...unknownNursery(), firstChildFree: true, secondChild: 'free', thirdChild: 'free', fiscalYear: '令和8年度（2025年9月から）', confidence: '推定',
+        note: '0〜2歳クラスは第1子から0円（2025年9月から。都の補助で市が実施。市のページの検索結果の抜粋で確かめた）。延長保育料などは別にかかる場合がある。',
+        sources: [TOKYO_FIRST_FREE[m.code], S.tokyoFirstFree],
+      }
+      city.lunch = tokyoLunch()
     } else {
-      city.nursery = { ...unknownNursery('東京都は0〜2歳の第1子の保育料を無償にする市町村に補助している。この市町村の実施状況は確認中。'), secondChild: 'free', thirdChild: 'free', sources: [S.tokyoFree] }
+      // 第1子・第2子の無償化は、都が区市町村を補助するしくみで、実施は区市町村ごと。
+      // 全区市町村で実施という都の発表・一覧は見つからなかった（第2子は都の資料で55区市町村という数も出ている）ので、
+      // この市町村では確かめていないとして、国の基準（同時に通う2人目は半額、3人目は0円）で計算する（月額がないので「確認中」になる）
+      city.nursery = {
+        ...unknownNursery('都は2025年9月から、0〜2歳の第1子の保育料を無償にする区市町村を補助している。実施は区市町村ごとで、この市町村の実施は確認中（全区市町村で実施という都の発表は見つからなかった）。第2子の無償化も同じく確認中なので、国の基準（同時に通う2人目は半額、3人目は0円）で計算。'),
+        thirdChild: 'free', sources: [S.tokyoFirstFree],
+      }
+      city.lunch = tokyoLunch()
     }
   } else if (m.pref === '埼玉県') {
     city.level = 'pref'
     city.medical = { coversTo: 18, note: '埼玉県は県内全市町村で18歳年度末まで（解説サイトの記述）', confidence: '推定', sources: [S.saitamaMed] }
-    city.nursery = { ...unknownNursery('第3子以降は県内すべてで0円。第1子・第2子の月額は確認中。'), thirdChild: 'free', sources: [S.saitama3] }
+    city.nursery = { ...unknownNursery('第3子以降は、上の子の年齢を問わず県内すべてで0円（県の事業）。第1子・第2子の月額は確認中。'), thirdChild: 'free', thirdCount: 'household', sources: [S.saitama3] }
     city.pride = [{ label: '第3子は保育料0円', kind: 'life', fact: '埼玉県は63市町村すべてで、第3子以降の保育料が無料。', confidence: '確認済', source: S.saitama3 }]
-  } else if (m.code === '141003') {
-    city.level = 'pref'
-    city.medical = { coversTo: 18, note: '2026年6月から18歳年度末まで（申請不要）', confidence: '確認済', sources: [S.yokohamaMed] }
   }
-  // 国の全国調査で分かる医療費助成（横浜市は2026年6月の拡大を優先）
-  const med = m.code === '141003' ? null : nationalMedical(m.pref, m.name)
+  // 国の全国調査で分かる医療費助成（横浜市はくわしい街になったので、ここには来ない）
+  const med = nationalMedical(m.pref, m.name)
   if (med) city.medical = med
   city.rent = nationalRent(m.code)
   return city
 }
 
-const FEATURED_BY_CODE = new Map(CITIES.map((c) => [c.code!, c]))
+const FEATURED_BY_CODE = new Map(DETAILED_RAW.map((c) => [c.code!, c]))
 export const ALL_CITIES: City[] = MUNICIPALITIES.map((m) => {
   const f = FEATURED_BY_CODE.get(m.code)
   if (!f) return buildFromPref(m)
-  // くわしい街: 医療費が未確認なら国の全国調査で埋める（市の新しい情報があればそちらを優先）
-  const med = f.medical.coversTo === null || f.medical.confidence !== '確認済' && f.region !== 'kanagawa' ? nationalMedical(m.pref, m.name) : null
-  return { ...f, medical: med ?? f.medical, rent: f.rent ?? nationalRent(m.code), care: f.care ?? careFor(m) }
+  // くわしい街: 医療費が未確認（または弱い）なら国の全国調査で埋める（神奈川の市は、国の調査より新しい市の情報を優先）
+  const weak = f.medical.coversTo === null || (f.medical.confidence !== '確認済' && f.region !== 'kanagawa')
+  const nat = weak ? nationalMedical(m.pref, m.name) : null
+  // 調べたが照合で確かめきれなかった市（coversTo が null で出典つき）は、そのメモと出典を国の調査に添える
+  const medical = nat ? (f.medical.coversTo === null && f.medical.sources.length ? { ...nat, note: `${nat.note}。${f.medical.note}`, sources: [...nat.sources, ...f.medical.sources] } : nat) : f.medical
+  return { ...f, medical, rent: f.rent ?? nationalRent(m.code), care: f.care ?? careFor(m) }
 })
 
 const BY_ID = new Map<string, City>()
 for (const c of ALL_CITIES) { BY_ID.set(c.id, c); if (c.code) BY_ID.set(c.code, c) }
-for (const c of CITIES) BY_ID.set(c.id, BY_ID.get(c.code!) ?? c)
+
+// くわしい街（level 'detailed'）の一覧。全国データを合わせたあとの City（ALL_CITIES と同じもの）を、くわしい街の並びで
+export const CITIES: City[] = DETAILED_RAW.map((c) => BY_ID.get(c.code!)!)
+for (const c of CITIES) BY_ID.set(c.id, c)
 
 // id（'adachi' などの短い名前）でも、地方公共団体コード（'131211'）でも引ける
 export const cityById = (id: string) => BY_ID.get(id)!

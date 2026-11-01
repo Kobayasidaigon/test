@@ -95,7 +95,11 @@ function useWidth(ref: RefObject<HTMLElement>, fallback: number) {
   useEffect(() => {
     const el = ref.current
     if (!el || typeof ResizeObserver === 'undefined') return
-    const ro = new ResizeObserver(([e]) => setW(Math.round(e.contentRect.width)))
+    // 隠れている間などに幅0が来ることがあるので、そのときは前の幅のままにする（SVG の幅が負にならないように）
+    const ro = new ResizeObserver(([e]) => {
+      const w = Math.round(e.contentRect.width)
+      if (w > 0) setW(w)
+    })
     ro.observe(el)
     return () => ro.disconnect()
   }, [ref])
@@ -105,7 +109,7 @@ function useWidth(ref: RefObject<HTMLElement>, fallback: number) {
 export function FamilyCheer({ input, mood, still = false }: { input: FamilyInput; mood: Mood; still?: boolean }) {
   const reduce = useReducedMotion()
   const ref = useRef<HTMLDivElement>(null)
-  const room = Math.min(460, useWidth(ref, 320) - 24)
+  const room = Math.min(460, Math.max(120, useWidth(ref, 320) - 24))
   const inView = useInView(ref, { amount: 0.6 })
   const figs = useAnimationControls()
   const pig = useAnimationControls()

@@ -2,6 +2,7 @@
 import { useId, type CSSProperties } from 'react'
 import type { DataLevel, Mood } from '@/shared/types'
 import type { MotifKey } from './lib'
+import { Charm20, Stamp20, isMotif20 } from './art20'
 
 const INK = 'var(--ink)'
 
@@ -258,6 +259,8 @@ export function Coin({ size = 44, className, style }: { size?: number; className
 const KO = 'var(--paper)'
 
 export function Motif({ name }: { name: MotifKey }) {
+  // 20市を足したときに描いた絵は art20.tsx
+  if (isMotif20(name)) return <Stamp20 name={name} />
   const s = { stroke: 'currentColor', strokeWidth: 3.4, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, fill: 'none' }
   switch (name) {
     case 'job':
@@ -406,6 +409,7 @@ export function Motif({ name }: { name: MotifKey }) {
 const ST = { stroke: INK, strokeWidth: 3.2, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const }
 
 export function CharmArt({ motif, glyph, color }: { motif: MotifKey | null; glyph: string; color: string }) {
+  if (isMotif20(motif)) return <Charm20 name={motif} />
   switch (motif) {
     case 'senbei':
       return (

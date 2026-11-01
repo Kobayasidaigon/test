@@ -12,8 +12,8 @@ import { Marquee } from './machine'
 import { EmptyStamp, GotouchiStamp } from './stamp'
 import { LevelTag } from './towns'
 import {
-  TONE_BG, TONE_INK, avgLead, everydayText, fromHit, headlineOf, ijuPending, isHit, isPending, isSharedPride, itemAmount, levelTag, levelText, lookOf, manNumber,
-  missingText, moodLine, nextSteps, perYearChip, prefKind, prideIsPref, prideMotif, scopeOf, shelfLine, sublineOf, thinText, tiesAtTop, toneOf,
+  TONE_BG, TONE_INK, avgLead, everydayText, fromHit, headlineOf, ijuState, isHit, isPending, isSharedPride, itemAmount, levelTag, levelText, lookOf, manNumber,
+  missingText, moodLine, nextSteps, perYearChip, prefKind, prideIsPref, scopeOf, shelfLine, sublineOf, thinText, tiesAtTop, toneOf,
 } from './lib'
 
 /* ───────── 小さな部品 ───────── */
@@ -581,7 +581,8 @@ export function Omake({ c }: { c: Comparison }) {
       <SectionTitle id="va-omake" color={look.capsule} sub={`カプセルに入っていた、${city.name}のおまけ。押すとゆれます。`}>
         おまけ
       </SectionTitle>
-      <KeyChain art={own ? prideMotif(own) : null} glyph={look.glyph} color={look.capsule} label={own ? own.label : `${look.glyph}の字`}>
+      {/* 名物に絵がない街（白みりんなど）は、街の字のキーホルダーにして、名物の説明はそのまま出す */}
+      <KeyChain art={look.motif} glyph={look.glyph} color={look.capsule} label={look.motif && own ? own.label : `${look.glyph}の字`}>
         {own ? (
           <>
             <p className="text-[12px] font-black text-[var(--ink-soft)]">{title(own)}</p>
@@ -637,7 +638,10 @@ export function Omake({ c }: { c: Comparison }) {
 export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInput }) {
   const known = c.items.filter((i) => !i.oneTime && i.total !== null)
   const once = c.items.filter((i) => i.oneTime)
-  const ijuWait = ijuPending(c, input)
+  const iju = ijuState(c, input)
+  const ijuWait = iju === 'pending'
+  // 調べた結果、対象外・一部の地域だけと分かった街（額は一度きりにも入れない）
+  const ijuKnown = (iju === 'none' || iju === 'part') && c.to.ijuCheck ? c.to.ijuCheck : null
   const hit = isHit(c)
   return (
     <div className="space-y-8">
@@ -699,9 +703,17 @@ export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInpu
         </section>
       )}
 
-      {(once.length > 0 || ijuWait) && (
+      {(once.length > 0 || ijuWait || ijuKnown) && (
         <section aria-labelledby="va-once">
-          <SectionTitle id="va-once" color="var(--yolk)" sub="引っ越したときに一度だけもらえるお金です。毎年の差とは別に数えていて、家族の顔にも、並び順にも入れていません。">
+          <SectionTitle
+            id="va-once"
+            color="var(--yolk)"
+            sub={
+              once.length > 0
+                ? '引っ越したときに一度だけもらえるお金です。毎年の差とは別に数えていて、家族の顔にも、上の金額にも入れていません。'
+                : '移住支援金のように、引っ越したときに一度だけのお金。毎年の差とは別に書いています。'
+            }
+          >
             一度きりのお金
           </SectionTitle>
           <div className="space-y-3">
@@ -725,6 +737,26 @@ export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInpu
                     <SourceLink s={{ label: `${c.to.name}の公式サイト`, url: c.to.url }} />
                   </p>
                 )}
+              </article>
+            )}
+            {ijuKnown && (
+              <article className="rounded-[18px] border-[3px] border-[var(--ink)] bg-[var(--paper-2)] px-3.5 pb-2 pt-3">
+                <div className="flex items-start gap-3">
+                  <ItemIcon name="iju" size={44} />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <h3 className="text-[16px] font-black leading-snug">移住支援金（一度きり）</h3>
+                      <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-1.5 text-[12px] font-black">{ijuKnown.result === 'none' ? '対象外' : '一部の地域だけ'}</span>
+                      <Conf c={ijuKnown.confidence} />
+                    </div>
+                    <p className="text-[12.5px] font-bold text-[var(--ink-soft)]">かかわる人：家族みんな</p>
+                  </div>
+                </div>
+                <p className="mt-2 text-[14px] leading-relaxed">
+                  {ijuKnown.note}
+                  {ijuKnown.result === 'part' ? '住む場所で変わるので、上の金額にも、一度きりの額にも入れていません。' : ''}
+                </p>
+                <Sources list={ijuKnown.sources} />
               </article>
             )}
             {once.map((i) => (
@@ -834,13 +866,13 @@ export function Shelf({ ranked, sel, onSelect, limit = 12 }: { ranked: Compariso
         </div>
       )}
       {restShown.length > 0 && (
-        <ul className="va-shelf -mx-1 flex overflow-x-auto px-1 pb-1 pt-3 lg:grid lg:grid-cols-[repeat(auto-fill,minmax(112px,1fr))] lg:overflow-visible">
+        <ul className={cn('va-shelf -mx-1 flex px-1 pb-1 pt-3 lg:grid lg:grid-cols-[repeat(auto-fill,minmax(112px,1fr))] lg:overflow-visible', all ? 'flex-wrap' : 'overflow-x-auto')}>
           {restShown.map((r, k) => {
             const i = k + group
             const on = i === sel
             const tag = i === 0 && ties === 1 ? 'いちばん上' : ties === 2 && i < 2 ? '同じ額' : null
             return (
-              <li key={r.to.id} className="va-plank flex w-[124px] shrink-0 snap-start flex-col items-center px-1 pb-3 pt-1 lg:w-auto">
+              <li key={r.to.id} className={cn('va-plank flex shrink-0 snap-start flex-col items-center px-1 pb-3 pt-1 lg:w-auto', all ? 'w-1/3' : 'w-[106px]')}>
                 <button
                   type="button"
                   onClick={() => onSelect(i)}
@@ -1094,9 +1126,10 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoP
                       </summary>
                       <ul className="mt-1 space-y-0.5 rounded-[10px] bg-white/70 px-2.5 py-2 text-[12.5px] leading-relaxed text-[var(--ink)]">
                         <li>・毎年の差（{perYearChip(c)}）が大きい順。</li>
-                        <li>・確認中だけの街と、まだ準備中の街は後ろ。</li>
-                        <li>・同じ額の街は、くわしい街から、今の街に近い順。</li>
-                        <li>・一度きりのお金（移住支援金など）は、並びに入れていません。</li>
+                        <li>・確認中の項目がある街は、わかる分の額で並べます。わかる分で得にならない街は、全部わかる街の後ろ。</li>
+                        <li>・確認中だけの街と、まだ準備中の街は、いちばん後ろ。</li>
+                        <li>・同じ額の街は、全部わかる街から。そのあとは、くわしい街から、今の街に近い順。</li>
+                        <li>・一度きりのお金（移住支援金など）は、額に足さずに並べます（同じ額のときだけ、あるほうを先に）。</li>
                         <li>・地震で大きな被害を受けた街は、並べていません。</li>
                       </ul>
                     </details>

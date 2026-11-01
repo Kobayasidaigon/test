@@ -43,6 +43,11 @@ export type DataLevel = 'detailed' | 'pref' | 'basic'
 // 災害などへの配慮。hit = 被災した市町村（順位と悲しい演出を出さない）、area = 被災した地域を含む県
 export interface Care { level: 'hit' | 'area'; note: string; sources: Source[] }
 
+// 保育料の「2人目」「3人目」の数え方。
+//   together  … 保育園・幼稚園などに同時に通う就学前の子だけを、年上から数える（国の基準）
+//   household … 生計が同じ子を、年齢や園に通っているかを問わず、年上から数える（上の子が小学生でも2人目になる）
+export type SiblingCount = 'together' | 'household'
+
 export interface Pride {
   label: string        // バッジに出す短い名前（例: 草加せんべい）
   kind: 'food' | 'craft' | 'industry' | 'nature' | 'job' | 'life'
@@ -70,8 +75,11 @@ export interface City {
   // 0〜2歳の保育料（認可保育所・保育標準時間・第1子の月額）。3〜5歳は国の無償化で0円。
   nursery: {
     firstChildFree: boolean          // 0〜2歳の第1子から無料
-    secondChild: 'free' | 'half'     // 同時に通う2人目
-    thirdChild: 'free' | 'half'
+    secondChild: 'free' | 'half'     // 2人目（数え方は secondCount）
+    thirdChild: 'free' | 'half'      // 3人目以降（数え方は thirdCount）
+    secondCount?: SiblingCount       // 2人目の数え方。書いていなければ together（国の基準）
+    thirdCount?: SiblingCount        // 3人目の数え方。書いていなければ together（国の基準）
+    countConfidence?: Confidence     // 数え方の確からしさ（書いていなければ confidence と同じ。民間サイトの解説だけなら 推定）
     monthly: Partial<Record<IncomeBand, [number, number]>>  // 第1子の月額の幅（見つからない所得帯は未確認）
     fiscalYear: string
     confidence: Confidence
@@ -86,6 +94,9 @@ export interface City {
   lunch: { juniorHighFree: boolean | null; confidence: Confidence; note?: string; sources: Source[] }
   // 移住支援金（23区から移る家族が対象）
   iju?: { family: number; perChild: number; note: string; confidence: Confidence; sources: Source[] }
+  // 移住支援金を調べた結果（iju がない街だけ）。none = 調べて対象外と分かった、part = 一部の地域だけ対象（額は合計に入れない）。
+  // 東京圏の外の街で iju も ijuCheck もないときは「まだ調べていない」（画面は「準備中」と出す。「ない」とは言わない）
+  ijuCheck?: { result: 'none' | 'part'; note: string; confidence: Confidence; sources: Source[] }
   pride: Pride[]
 }
 

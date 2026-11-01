@@ -1,10 +1,15 @@
 // 案A「カプセルトイ」 — 見た目のための小さな道具。計算は @/shared の rank / compare / compareMany をそのまま使う。
 // ここでは数字は変えない。くわしくない街（県の制度だけ／準備中）や被災した街で、言い切りすぎないための言い方だけを決める。
 import { useCallback, useEffect, useState } from 'react'
-import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, everyday, moodText, periodYears, yenMan } from '@/shared'
+import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, everyday, moodText, periodYears, sortTier, yenMan } from '@/shared'
 import type { Breakdown, Child, City, Comparison, DataLevel, FamilyInput, Pride } from '@/shared/types'
 
-export type MotifKey = 'job' | 'kettle' | 'senbei' | 'factory' | 'rocket' | 'takoyaki' | 'corn' | 'volcano' | 'drop' | 'house' | 'pear' | 'knife'
+export type MotifKey =
+  | 'job' | 'kettle' | 'senbei' | 'factory' | 'rocket' | 'takoyaki' | 'corn' | 'volcano' | 'drop' | 'house' | 'pear' | 'knife'
+  // 20市を足したときに描いた絵
+  | 'bonsai' | 'imo' | 'daruma' | 'boat' | 'tea' | 'lotus' | 'kabu' | 'anchor' | 'shirasu' | 'melon' | 'mountain' | 'soba' | 'baseball' | 'beef'
+  // 同じ地域で絵がかぶらないように、あとから描き足した絵（船橋・松戸・西宮・尼崎）
+  | 'clam' | 'ferry' | 'sake' | 'bean'
 
 /* ───────── 街ごとの見た目（全国1,741） ───────── */
 
@@ -37,6 +42,29 @@ const HAND: Record<string, { capsule: string; ink: string; pride?: number }> = {
   sakai: { capsule: '#b9c3cc', ink: '#2f3a48' },
   sapporo: { capsule: '#8fd14f', ink: '#3f7a12' },
   kagoshima: { capsule: '#ff5a36', ink: '#a8321f' },
+  // 20市（id は地方公共団体コード）。同じ地域の中でかぶらないように決めた。
+  // 首都圏の市は、23区の4色（足立・北・大田・江戸川）と草加の色を使わない（同じ額の棚や、入力例の今の街と並ぶため）。
+  // 関西の市は、北区の色（入力例のリモートの家族の今の街）を使わず、はんこのインクの色相を離した
+  '111007': { capsule: '#8fd14f', ink: '#3f7a12' }, // さいたま市（盆栽）
+  '112011': { capsule: '#b4505a', ink: '#7a2a33' }, // 川越市（さつまいも）
+  '112224': { capsule: '#ff5a36', ink: '#a8321f' }, // 越谷市（だるま）
+  '112241': { capsule: '#3d7be0', ink: '#24489a' }, // 戸田市（ボート）
+  '112089': { capsule: '#2f4b8f', ink: '#22346b' }, // 所沢市（狭山茶）
+  '121002': { capsule: '#ff9fb8', ink: '#b8264f' }, // 千葉市（大賀ハス）
+  '122041': { capsule: '#3d7be0', ink: '#24489a', pride: 1 }, // 船橋市（ホンビノス貝。梨は市川市と同じ絵になるので2つめの名物）
+  '122076': { capsule: '#ff5a36', ink: '#a8321f', pride: 1 }, // 松戸市（矢切の渡し。二十世紀梨も梨の絵になるので2つめの名物）
+  '122173': { capsule: '#b9c3cc', ink: '#3b4a57' }, // 柏市（カブ）
+  '122203': { capsule: '#2f4b8f', ink: '#22346b' }, // 流山市
+  '141003': { capsule: '#b4505a', ink: '#7a2a33' }, // 横浜市（港）
+  '142051': { capsule: '#ff9fb8', ink: '#b8264f' }, // 藤沢市（しらす）
+  '132098': { capsule: '#8fd14f', ink: '#3f7a12' }, // 町田市（メロン）
+  '132012': { capsule: '#ff9fb8', ink: '#b8264f' }, // 八王子市（高尾山）
+  '132080': { capsule: '#b4505a', ink: '#7a2a33' }, // 調布市（そば）
+  '272035': { capsule: '#ff5a36', ink: '#a8321f' }, // 豊中市（野球）
+  '272051': { capsule: '#3cc8a4', ink: '#1f7a5a' }, // 吹田市
+  '282022': { capsule: '#8fd14f', ink: '#3f7a12' }, // 尼崎市（富松一寸豆）
+  '282049': { capsule: '#e3a857', ink: '#8a4b2a' }, // 西宮市（宮水と酒だる）
+  '281000': { capsule: '#3d7be0', ink: '#24489a' }, // 神戸市（牛肉）
 }
 
 function hash(s: string) {
@@ -61,30 +89,69 @@ const PRIDE_MOTIF: Record<string, MotifKey> = {
   '第3子は保育料0円': 'house',
   梨: 'pear',
   刃物: 'knife',
+  // 20市の名物。ロゴ・マスコット・商品の包み・著作物（太陽の塔など）・有名キャラクターに似た形は描かない
+  '盆栽（大宮盆栽村）': 'bonsai',
+  'さつまいも（川越いも）': 'imo',
+  越谷だるま: 'daruma',
+  '戸田ボートコース（戸田漕艇場）': 'boat',
+  狭山茶: 'tea',
+  大賀ハス: 'lotus',
+  二十世紀梨の発祥地: 'pear',
+  カブ: 'kabu',
+  横浜港: 'anchor',
+  'しらす（湘南しらす）': 'shirasu',
+  まちだシルクメロン: 'melon',
+  高尾山: 'mountain',
+  深大寺そば: 'soba',
+  高校野球発祥の地: 'baseball',
+  阪神甲子園球場: 'baseball',
+  阪神工業地帯のものづくり: 'factory',
+  神戸ビーフ: 'beef',
+  // 同じ地域で絵がかぶらないように描き足した（梨×3・野球×2・工場夜景を、ほかの名物の絵に）
+  'ホンビノス貝（三番瀬）': 'clam',
+  矢切の渡し: 'ferry',
+  宮水と灘の日本酒: 'sake',
+  富松一寸豆: 'bean',
 }
-const KIND_MOTIF: Record<Pride['kind'], MotifKey> = { food: 'senbei', craft: 'kettle', industry: 'factory', nature: 'volcano', job: 'job', life: 'house' }
-export const prideMotif = (p: Pride): MotifKey => PRIDE_MOTIF[p.label] ?? KIND_MOTIF[p.kind]
+// 絵のある名物だけ絵を返す。絵がない名物（白みりん・万博記念公園など）は null（街の字のキーホルダー・はんこにする）
+export const prideMotif = (p: Pride): MotifKey | null => PRIDE_MOTIF[p.label] ?? null
 
-// 県全体で同じ名物（東京都の「求人の多さ」、埼玉県の「第3子は保育料0円」など）は、その街だけのものではない
+// 県全体で同じ名物（東京都の「求人の多さ」、埼玉県の「第3子は保育料0円」など）は、その街だけのものではない。
+// 名前と説明の両方が同じものを数える（市川市の「梨」と船橋市の「梨」は、説明が違うので、それぞれの街の名物）
 let sharedCache: Set<string> | null = null
+const prideKey = (p: Pride) => `${p.label}\u0000${p.fact}`
 export function isSharedPride(p: Pride) {
   if (!sharedCache) {
     const n = new Map<string, number>()
-    for (const c of ALL_CITIES) for (const q of c.pride) n.set(q.label, (n.get(q.label) ?? 0) + 1)
+    for (const c of ALL_CITIES) for (const q of c.pride) n.set(prideKey(q), (n.get(prideKey(q)) ?? 0) + 1)
     sharedCache = new Set([...n].filter(([, v]) => v > 1).map(([k]) => k))
   }
-  return sharedCache.has(p.label)
+  return sharedCache.has(prideKey(p))
 }
 
 export type Frame = 'circle' | 'square' | 'octagon'
 export interface Look {
   capsule: string
   ink: string
-  motif: MotifKey | null // はんこの真ん中の絵。その街だけの名物がないときは null（街の名前の字を置く）
+  motif: MotifKey | null // はんこの真ん中の絵。その街だけの名物に絵がないとき（名物がないときも）は null（街の名前の字を置く）
   pride: Pride | null // はんこの絵にした名物
   glyph: string // はんこの真ん中に置く字（例: 足立）
   frame: Frame // 市は丸、区は角丸の四角、町と村は八角形
   under: string // はんこの下に入れる短い言葉
+}
+
+// はんこの下に入れる字が長い名物は、短い呼び名にする（はんこのふちの字とぶつからないように）
+const UNDER_SHORT: Record<string, string> = {
+  '農業産出額 全国1位': '農業産出額1位',
+  '戸田ボートコース（戸田漕艇場）': 'ボートコース',
+  二十世紀梨の発祥地: '二十世紀梨',
+  まちだシルクメロン: 'シルクメロン',
+  高校野球発祥の地: '高校野球',
+  万博記念公園と太陽の塔: '万博公園',
+  阪神工業地帯のものづくり: 'ものづくり',
+  阪神甲子園球場: '甲子園',
+  '新選組ゆかりの地（近藤勇陣屋跡）': '新選組',
+  宮水と灘の日本酒: '灘の酒',
 }
 
 const SUFFIX = /(市|区|町|村)$/
@@ -99,7 +166,8 @@ export function lookOf(city: City): Look {
   // 被災した街は、落ち着いた水色と藍のインクにする
   const sw = hand ?? (city.care?.level === 'hit' ? { capsule: '#9fdcef', ink: '#1d5fae' } : SWATCHES[hash(city.code ?? city.id) % SWATCHES.length])
   const own = city.pride.filter((p) => !isSharedPride(p))
-  const pick = hand?.pride !== undefined ? city.pride[hand.pride] : own[0]
+  // 絵のある名物を先に。どれにも絵がなければ、はじめの名物（絵は街の字にする）
+  const pick = hand?.pride !== undefined ? city.pride[hand.pride] : own.find((p) => prideMotif(p)) ?? own[0]
   const pride = pick && !isSharedPride(pick) ? pick : null
   const stem = stemOf(city.name)
   const chars = [...stem]
@@ -112,14 +180,16 @@ export function lookOf(city: City): Look {
     pride,
     glyph,
     frame,
-    under: pride ? pride.label : kanaStem(city) || city.pref,
+    // はんこの下の字は短く（「盆栽（大宮盆栽村）」→「盆栽」。長い名前は UNDER_SHORT）
+    under: pride ? UNDER_SHORT[pride.label] ?? pride.label.replace(/（[^）]*）/g, '') : kanaStem(city) || city.pref,
   }
   lookCache.set(city.id, look)
   return look
 }
 
 // 名物の説明が、街ではなく都道府県のこと（例: 北海道は農業産出額が全国1位）なら、見出しは「北海道の自慢」にする
-export const prideIsPref = (p: Pride, city: City) => isSharedPride(p) || p.fact.startsWith(city.pref)
+// （「兵庫県産の但馬牛のうち…」のように県の名前で始まるだけの説明は、街の名物のまま）
+export const prideIsPref = (p: Pride, city: City) => isSharedPride(p) || p.fact.startsWith(`${city.pref}は`)
 
 /* ───────── データの細かさ ───────── */
 
@@ -134,8 +204,14 @@ export function levelTag(city: City) {
 }
 // 説明の言葉
 export function levelText(city: City) {
-  if (city.level === 'pref') return `${prefKind(city.pref)}の制度だけ分かる街（市区町村の上乗せは、まだ調べていません）`
-  return DATA_LEVEL_TEXT[city.level]
+  if (city.level !== 'pref') return DATA_LEVEL_TEXT[city.level]
+  // 東京都の区以外の市町村：保育料の無償化は都の補助で市町村が行うので、「都の制度」には入れていない（確かめた市だけ入れた）
+  if (city.pref === '東京都' && city.region !== 'tokyo23') {
+    return city.nursery.firstChildFree
+      ? '都の制度（018サポート）と、市の保育料の無償化だけ分かる街（ほかの市独自の制度は、まだ調べていません）'
+      : '都の制度（018サポート）だけ分かる街（保育料の無償化など、市町村が行う制度は、まだ調べていません）'
+  }
+  return `${prefKind(city.pref)}の制度だけ分かる街（市区町村の上乗せは、まだ調べていません）`
 }
 export const LEVEL_ORDER: DataLevel[] = ['detailed', 'pref', 'basic']
 export const LEVEL_LEGEND: Record<DataLevel, { tag: string; text: string }> = {
@@ -148,6 +224,8 @@ export const LEVEL_COUNT: Record<DataLevel, number> = {
   pref: ALL_CITIES.filter((c) => c.level === 'pref').length,
   basic: ALL_CITIES.filter((c) => c.level === 'basic').length,
 }
+// 画面に書く数（ハードコードしない）。例: 1,741
+export const ALL_COUNT = ALL_CITIES.length.toLocaleString('ja-JP')
 
 /* ───────── 地方 → 県 → 街 ───────── */
 
@@ -161,6 +239,38 @@ export const REGIONS: { name: string; prefs: string[] }[] = [
   { name: '九州・沖縄', prefs: PREFS.slice(39) },
 ]
 export const FEATURED = CITIES
+
+/* ───────── くわしい街を、地域ごとにまとめる ─────────
+   東京23区／東京の市／埼玉／千葉／神奈川／大阪・兵庫／北海道・九州 のように、実際の一覧から名前を作る（街を足しても崩れない） */
+export interface TownGroup {
+  key: string
+  name: string
+  cities: City[]
+}
+const GROUP_ORDER = ['tokyo23', 'tokyo', '埼玉県', '千葉県', '神奈川県', 'kansai', 'other']
+const groupKeyOf = (c: City) => (c.region === 'tokyo23' ? 'tokyo23' : c.pref === '東京都' ? 'tokyo' : c.metro === 'shutoken' ? c.pref : c.metro === 'kansai' ? 'kansai' : 'other')
+const prefShort = (p: string) => p.replace(/(都|府|県)$/, '')
+const areaShort = (p: string) => (p === '北海道' ? '北海道' : (REGIONS.find((r) => r.prefs.includes(p))?.name ?? p).split('・')[0])
+const uniq = (list: string[]) => [...new Set(list)]
+function groupName(key: string, cities: City[]) {
+  if (key === 'tokyo23') return '東京23区'
+  if (key === 'tokyo') return cities.every((c) => c.name.endsWith('市')) ? '東京の市' : '東京の市町村'
+  if (key === 'kansai') return uniq(cities.map((c) => prefShort(c.pref))).join('・')
+  if (key === 'other') return uniq(cities.map((c) => areaShort(c.pref))).join('・')
+  return prefShort(key)
+}
+export const FEATURED_GROUPS: TownGroup[] = (() => {
+  const by = new Map<string, City[]>()
+  for (const c of FEATURED) by.set(groupKeyOf(c), [...(by.get(groupKeyOf(c)) ?? []), c])
+  const ord = (k: string) => (GROUP_ORDER.includes(k) ? GROUP_ORDER.indexOf(k) : GROUP_ORDER.length)
+  const keys = [...by.keys()].sort((a, b) => ord(a) - ord(b))
+  // 地域の中は、地方公共団体コードの順（北から・県庁所在地から）
+  return keys.map((k) => {
+    const cities = [...by.get(k)!].sort((a, b) => (a.code ?? '').localeCompare(b.code ?? ''))
+    return { key: k, name: groupName(k, cities), cities }
+  })
+})()
+export const groupOf = (c: City) => FEATURED_GROUPS.find((g) => g.cities.some((x) => x.code === c.code))
 
 /* ───────── 家族の言い方 ───────── */
 
@@ -307,33 +417,38 @@ export function shelfLine(c: Comparison): { l1: string; l2: string; tone: Tone |
   return { l1: 'いまの街が', l2: `年${yenMan(-c.perYear)}お得`, tone: t, part }
 }
 
-// 上から同じ額の街がいくつ続くか（確認中・準備中・配慮の街は数えない）
+// 上から同じ額の街がいくつ続くか（確認中・準備中・配慮の街は数えない。全部わかる街と、確認中のある街も分ける）
 export function tiesAtTop(ranked: Comparison[]) {
   if (!ranked.length) return 0
   const top = ranked[0]
   if (isPending(top) || isHit(top)) return 0
   let n = 0
   for (const r of ranked) {
-    if (isPending(r) || Math.abs(r.perYear - top.perYear) >= 1000) break
+    if (isPending(r) || r.status !== top.status || Math.abs(r.perYear - top.perYear) >= 1000) break
     n++
   }
   return n
 }
 
-// 同じ額の街の並べ方：共有の並び（毎年の差が大きい順）はそのまま。同じ額のなかだけ、
-// 一度きりのお金がある街 → くわしい街 → 県の制度 → 準備中、そのなかは今の街から近い順にする
+// 同じ額の街の並べ方：共有の並び（段 → 毎年の差が大きい順。sortTier）はそのまま。1,000円未満の差しかない街のなかだけ、
+// 全部わかる街 → 一度きりのお金がある街 → くわしい街 → 県の制度 → 準備中、そのなかは今の街から近い順にする
 const LEVEL_RANK: Record<DataLevel, number> = { detailed: 0, pref: 1, basic: 2 }
 export function settleTies(list: Comparison[]): Comparison[] {
   const out = [...list]
-  const cls = (c: Comparison) => (c.status === 'unknown' ? 1 : 0)
   let i = 0
   while (i < out.length) {
     let j = i + 1
-    while (j < out.length && cls(out[j]) === cls(out[i]) && Math.abs(out[j].perYear - out[i].perYear) < 1000) j++
+    while (j < out.length && sortTier(out[j]) === sortTier(out[i]) && Math.abs(out[j].perYear - out[i].perYear) < 1000) j++
     if (j - i > 1) {
       const seg = out
         .slice(i, j)
-        .sort((a, b) => b.oneTime - a.oneTime || LEVEL_RANK[a.to.level] - LEVEL_RANK[b.to.level] || (a.distanceKm ?? 1e9) - (b.distanceKm ?? 1e9))
+        .sort(
+          (a, b) =>
+            (a.status === 'ok' ? 0 : 1) - (b.status === 'ok' ? 0 : 1) ||
+            b.oneTime - a.oneTime ||
+            LEVEL_RANK[a.to.level] - LEVEL_RANK[b.to.level] ||
+            (a.distanceKm ?? 1e9) - (b.distanceKm ?? 1e9),
+        )
       out.splice(i, j - i, ...seg)
     }
     i = j
@@ -341,9 +456,22 @@ export function settleTies(list: Comparison[]): Comparison[] {
   return out
 }
 
-// 移住支援金：23区から東京圏の外へ移る家族で、まだ調べていない街（くわしい街以外）は「準備中」
-export const ijuPending = (c: Comparison, input: FamilyInput) =>
-  c.from.region === 'tokyo23' && c.to.level !== 'detailed' && c.to.metro !== 'shutoken' && input.work !== 'part' && !c.items.some((i) => i.key === 'iju')
+/* ───────── 移住支援金（一度きり）の言い方 ─────────
+   23区から東京圏の外へ移る家族（パート・時短は対象外として計算）だけに関係する。判定はここ1か所で行う。
+   item    … 額が分かる（共有の計算が「一度きり」の項目を出している）
+   none    … 調べて、対象外と分かった（city.ijuCheck）
+   part    … 一部の地域だけ対象（city.ijuCheck。額は合計にも一度きりにも入れない）
+   pending … まだ調べていない。くわしい街でも「ない」とは言わず「準備中」 */
+export type IjuState = 'item' | 'none' | 'part' | 'pending'
+export function ijuState(c: Comparison, input: FamilyInput): IjuState | null {
+  if (c.items.some((i) => i.key === 'iju')) return 'item'
+  if (c.from.region !== 'tokyo23' || c.to.metro === 'shutoken' || input.work === 'part') return null
+  if (c.to.ijuCheck) return c.to.ijuCheck.result
+  return 'pending'
+}
+// 表に出す短い言葉（item は額を出すので、ここでは扱わない）
+// 表の行の見出しが「移住支援金（一度きり）」なので、マスには短い言葉だけを書く
+export const IJU_SHORT: Record<'none' | 'part' | 'pending', string> = { none: '対象外', part: '一部の地域だけ', pending: '準備中' }
 
 /* ───────── 次の一歩（結果に合わせて、最大3つ） ───────── */
 
@@ -371,7 +499,9 @@ export function nextSteps(c: Comparison, others = 0, input?: FamilyInput): NextS
     if (x.level === 'basic' && x.url && x.care?.level !== 'hit' && (x === c.to || thin === x)) s.push({ text: `${x.name}の子育ての制度を、公式サイトで見る`, href: x.url, link: `${x.name}の公式サイト` })
   }
   if (thin && thin.level === 'pref' && thin.url) s.push({ text: `${thin.name}独自の子育ての制度を、公式サイトで見る`, href: thin.url, link: `${thin.name}の公式サイト` })
-  if (input && ijuPending(c, input)) s.push({ text: `移住支援金の対象になるかを、${c.to.name}のページで確かめる（まだ調べていません）`, href: c.to.url, link: `${c.to.name}の公式サイト` })
+  const iju = input ? ijuState(c, input) : null
+  if (iju === 'pending') s.push({ text: `移住支援金の対象になるかを、${c.to.name}のページで確かめる（まだ調べていません）`, href: c.to.url, link: `${c.to.name}の公式サイト` })
+  if (iju === 'part') s.push({ text: `移住支援金は一部の地域だけ。住みたい場所が対象かを、${c.to.name}の窓口で確かめる`, href: c.to.ijuCheck?.sources[0]?.url, link: c.to.ijuCheck?.sources[0]?.label })
   if (c.status === 'ok' && !thin && tone === 'even') s.push({ text: '子育ての制度の差はほとんどないので、家賃・通勤・住みごこちで比べてみる' })
   if (c.oneTime > 0) s.push({ text: '移住支援金の条件（対象になる人・申し込みの時期）を、市のページで確かめる' })
   if (tone === 'stay' && c.status !== 'unknown' && !isHit(c)) s.push({ text: `${c.from.name}の子育ての制度を、もれなく使えているか見直す` })

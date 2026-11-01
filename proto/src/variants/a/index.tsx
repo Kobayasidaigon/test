@@ -6,16 +6,16 @@
 // 21st から借りた部品は CREDITS.md と各ファイルの先頭に書いた。
 import './theme.css'
 import { motion, useReducedMotion } from 'motion/react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight, ChevronRight } from 'lucide-react'
+import { Fragment, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { ALL_CITIES, CITIES, SAMPLE_INPUT, SAMPLE_INPUT_REMOTE, cityById, compareMany, rank } from '@/shared'
-import type { Comparison, DataLevel, FamilyInput } from '@/shared/types'
+import type { City, Comparison, DataLevel, FamilyInput } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Capsule, Coin, Figure, MiniMachine } from './art'
 import { CompareResult } from './compare'
 import { GachaShow } from './gacha'
 import { GachaHandle } from './handle'
-import { LEVEL_COUNT, isHit, isPending, lookOf, settleTies, spoken, tiesAtTop, useShortScreen, useStampBook } from './lib'
+import { ALL_COUNT, FEATURED_GROUPS, LEVEL_COUNT, isHit, isPending, lookOf, settleTies, spoken, tiesAtTop, useShortScreen, useStampBook, type TownGroup } from './lib'
 import { Dome, MachineFront, Marquee, Outlet, type FrontCap, type Mix } from './machine'
 import { Result, type SampleMark } from './result'
 import { STEP_INFO, StepBody, Summary, stepsFor, type Mode, type StepKey } from './steps'
@@ -69,33 +69,109 @@ function Poster({ title, tilt = 0, children, className }: { title: string; tilt?
   )
 }
 
-function CityLineup() {
+// くわしく調べた街の名前を「・」でつなぐ。名前の途中や「・」の前では折り返さない（「・」だけの行や「鹿児島／市」を出さない）
+function CityNames({ cities }: { cities: City[] }) {
   return (
-    <ul className="flex flex-wrap gap-x-2 gap-y-1">
-      {CITIES.map((c) => (
-        <li key={c.id} className="inline-flex items-center gap-1 text-[12.5px] font-black">
-          <Capsule color={lookOf(c).capsule} size={16} />
-          {c.name}
-        </li>
+    <>
+      {cities.map((c, i) => (
+        <Fragment key={c.id}>
+          <span className="whitespace-nowrap">
+            {c.name}
+            {i < cities.length - 1 ? '・' : ''}
+          </span>
+          {i < cities.length - 1 && <wbr />}
+        </Fragment>
       ))}
-    </ul>
+    </>
   )
 }
 
-function TownsInside() {
+// 地域の札（カプセル3つと地域の名前。count で街の数も）
+function GroupTag({ g, count = false }: { g: TownGroup; count?: boolean }) {
+  return (
+    <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border-2 border-[var(--ink)] bg-[var(--paper-2)] py-px pl-0.5 pr-1.5 text-[12px] font-black leading-tight">
+      <span className="flex -space-x-1.5" aria-hidden>
+        {g.cities.slice(0, 3).map((c) => (
+          <Capsule key={c.id} color={lookOf(c).capsule} size={14} />
+        ))}
+      </span>
+      {g.name}
+      {count && <span className="va-pop ml-0.5 text-[12.5px] text-[var(--red-text)]">{g.cities.length}</span>}
+    </span>
+  )
+}
+
+// スマホ：くわしく調べた街を、地域ごとに。札と名前を1つのグリッドにして、名前の書き出しをそろえる
+function CityLineup() {
+  return (
+    <dl className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-2 gap-y-1.5">
+      {FEATURED_GROUPS.map((g) => (
+        <div key={g.key} className="contents">
+          <dt>
+            <GroupTag g={g} />
+          </dt>
+          <dd className="text-[12.5px] font-bold leading-relaxed">
+            <CityNames cities={g.cities} />
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+// 広い画面の壁のポスター：地域の札と街の数だけを並べ、名前は開いて見る（ポスターが画面より長くならないように）
+function CityLineupPoster() {
+  return (
+    <>
+      <ul className="flex flex-wrap gap-1.5" aria-label="地域ごとの、くわしく調べた街の数">
+        {FEATURED_GROUPS.map((g) => (
+          <li key={g.key}>
+            <GroupTag g={g} count />
+          </li>
+        ))}
+      </ul>
+      <details className="mt-1.5">
+        <summary className="inline-flex min-h-[36px] cursor-pointer items-center gap-1 text-[12.5px] font-black underline decoration-2 underline-offset-4">
+          <ChevronRight className="va-caret h-3.5 w-3.5 transition-transform" strokeWidth={3} aria-hidden />
+          街の名前を見る
+        </summary>
+        <dl className="mt-1 space-y-1.5">
+          {FEATURED_GROUPS.map((g) => (
+            <div key={g.key}>
+              <dt>
+                <GroupTag g={g} />
+              </dt>
+              <dd className="mt-0.5 text-[12.5px] font-bold leading-relaxed">
+                <CityNames cities={g.cities} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+    </>
+  )
+}
+
+function TownsInside({ poster = false }: { poster?: boolean }) {
   return (
     <div>
       <p className="text-[13.5px] font-bold leading-relaxed">
-        全国<span className="va-pop mx-0.5 text-[17px]">1,741</span>の市区町村が入っています。カプセルの見た目は、どこまで調べたかのちがいです。
+        全国<span className="va-pop mx-0.5 text-[17px]">{ALL_COUNT}</span>の市区町村が入っています。カプセルの見た目は、どこまで調べたかのちがいです。
       </p>
-      <LevelLegend className="mt-2" />
+      {poster ? (
+        <>
+          {/* 1024〜1279px の細いポスターでは、見た目の札だけにして縦に長くしない */}
+          <LevelLegend className="mt-2 xl:hidden" compact />
+          <LevelLegend className="mt-2 hidden xl:block" />
+        </>
+      ) : (
+        <LevelLegend className="mt-2" />
+      )}
       <p className="mt-2 text-[12.5px] font-bold text-[var(--ink-soft)]">
         くわしい{LEVEL_COUNT.detailed}・県の制度{LEVEL_COUNT.pref}・準備中{LEVEL_COUNT.basic.toLocaleString('ja-JP')}
       </p>
-      <p className="mt-2 text-[12.5px] font-black">くわしく調べた13の街</p>
-      <div className="mt-1">
-        <CityLineup />
-      </div>
+      <p className="mt-2 text-[12.5px] font-black">くわしく調べた{CITIES.length}の街</p>
+      <div className="mt-1">{poster ? <CityLineupPoster /> : <CityLineup />}</div>
     </div>
   )
 }
@@ -132,10 +208,13 @@ function Start({ onStart }: { onStart: (m: Mode) => void }) {
   const [jiggle, setJiggle] = useState(0)
   return (
     <div className="mx-auto grid min-h-[100dvh] w-full max-w-[1240px] grid-cols-1 px-2.5 lg:grid-cols-[minmax(0,1fr)_460px_minmax(0,1fr)] lg:gap-12 lg:px-8">
-      <aside className="hidden items-center justify-end lg:flex">
-        <Poster title="あそびかた" tilt={-2} className="w-full max-w-[330px]">
-          <HowTo />
-        </Poster>
+      {/* 壁のポスターは上にそろえ、スクロールしても上が切れないように止める */}
+      <aside className="hidden lg:block">
+        <div className="sticky top-10 mt-28 flex justify-end">
+          <Poster title="あそびかた" tilt={-2} className="w-full max-w-[330px]">
+            <HowTo />
+          </Poster>
+        </div>
       </aside>
       <div className="flex min-h-[100dvh] w-full flex-col pt-4 sm:pt-8">
         <div className="va-body va-on-red relative flex flex-1 flex-col rounded-t-[36px] border-[3px] border-b-0 border-[var(--ink)] px-3.5 pb-8 pt-6">
@@ -177,11 +256,13 @@ function Start({ onStart }: { onStart: (m: Mode) => void }) {
           </div>
         </div>
       </div>
-      <aside className="hidden items-center justify-start lg:flex">
-        <Poster title="入っている街" tilt={2} className="w-full max-w-[340px]">
-          <TownsInside />
-          <p className="mt-3 rounded-[12px] bg-[var(--paper-2)] px-3 py-2 text-[12.5px] font-bold leading-relaxed">数字は2026年11月1日時点の調べと、推定をふくみます。たしかめた度合いは、結果に小さな札で出ます。</p>
-        </Poster>
+      <aside className="hidden lg:block">
+        <div className="sticky top-10 mt-20 flex justify-start">
+          <Poster title="入っている街" tilt={2} className="w-full max-w-[340px]">
+            <TownsInside poster />
+            <p className="mt-3 rounded-[12px] bg-[var(--paper-2)] px-3 py-2 text-[12.5px] font-bold leading-relaxed">数字は2026年11月1日時点の調べと、推定をふくみます。たしかめた度合いは、結果に小さな札で出ます。</p>
+          </Poster>
+        </div>
       </aside>
     </div>
   )
@@ -226,6 +307,7 @@ const POOL_INFO: Record<Pool, { name: string; where: string; body: string }> = {
 interface PoolStat {
   count: number
   pending: number // 確認中・準備中（まだ中身を比べられない）の数
+  full: number // 確認中の項目がなく、全部わかる街の数
   caps: { color: string; level: DataLevel }[]
   mix: Mix
 }
@@ -236,8 +318,10 @@ const allPendingPool = (s?: PoolStat) => !!s && s.count > 0 && s.pending === s.c
 function poolNote(p: Pool, s: PoolStat) {
   if (allPendingPool(s)) return `この台の街（${n(s.count)}個）は、保育料などがまだ準備中。回すと、はんこと、家賃・医療費の目安が出ます。`
   if (p === 'featured') return `${POOL_INFO[p].where}（${n(s.count)}個）から。毎年の差がいちばん大きい街が出てきます。`
+  // わかる差がある街には、018サポートの差だけが分かる街もふくむので、「保育料などが分かる」とは言わない。
+  // 準備中の街は、わかる差がなければ後ろに並ぶが、わかる差が0円近くの街（県の制度の区など）はその額の所に並ぶので、「後ろ」とは言い切らない
   const known = s.count - s.pending
-  return `${POOL_INFO[p].where}の${n(s.count)}個。保育料などが分かる街（${n(known)}個）から先に出ます。${s.pending ? `準備中の${n(s.pending)}個は、確認中として後ろに並びます。` : ''}${p === 'all' ? '棚には上の30個を出します。' : ''}`
+  return `${POOL_INFO[p].where}の${n(s.count)}個。わかる差がある街は${n(known)}個${known ? `（確認中の項目がない街は${n(s.full)}個）` : ''}。${s.pending ? `準備中の${n(s.pending)}個は、0円とはせず「確認中」として並べます。` : ''}${p === 'all' ? '棚には上の30個を出します。' : ''}`
 }
 
 function PoolPicker({ pools, value, onChange, stats, compact }: { pools: Pool[]; value: Pool; onChange: (p: Pool) => void; stats: Record<Pool, PoolStat>; compact?: boolean }) {
@@ -337,6 +421,7 @@ export default function VariantA() {
       out[p] = {
         count: all.length,
         pending: all.filter(isPending).length,
+        full: all.filter((c) => c.status === 'ok' && !isPending(c)).length,
         caps: all.slice(0, 5).map((c) => ({ color: lookOf(c.to).capsule, level: c.to.level })),
         mix: mixOf(all),
       }

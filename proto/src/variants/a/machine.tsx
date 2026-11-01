@@ -91,18 +91,24 @@ function CapsuleG({ color, level = 'detailed', r = 19 }: { color: string; level?
 // 手前に並べる「名前を書いたカプセル」の位置（窓の座標）
 export const DOME_W = 320
 export function frontSpots(n: number, height: number) {
-  const gap = n <= 3 ? 74 : n === 4 ? 64 : 54
+  // 5個のときも、左右のはしのカプセルが窓の白いハイライトの線にかからないように、少しつめて置く
+  const gap = n <= 3 ? 74 : n === 4 ? 62 : 50
   return Array.from({ length: n }, (_, i) => ({ x: DOME_W / 2 + (i - (n - 1) / 2) * gap, y: height - 40 }))
 }
 
 export function NamedCapsuleG({ cap, r = 25 }: { cap: FrontCap; r?: number }) {
   const n = [...cap.name].length
-  const fs = Math.min(12.5, 52 / Math.max(n, 1))
+  // 字の大きさは札の幅から決める（両はしに3pxずつのすき間）。9pxより小さくなる長い名前（いちき串木野など）は、
+  // 9pxのまま字の幅をつめて札に収める
+  const room = (r - 3) * 2 - 6
+  const fit = room / Math.max(n, 1)
+  const fs = Math.min(12.5, Math.max(9, fit))
+  const squeeze = fit < 9 ? { textLength: room, lengthAdjust: 'spacingAndGlyphs' as const } : {}
   return (
     <g>
       <CapsuleG color={cap.color} level={cap.level} r={r} />
       <rect x={-r + 3} y={-r * 0.62} width={(r - 3) * 2} height={r * 0.52} rx="3" fill="var(--paper)" stroke="var(--ink)" strokeWidth="1.8" transform="rotate(-6)" />
-      <text x="0" y={-r * 0.24} textAnchor="middle" fontSize={fs} fontWeight={900} fill="var(--ink)" fontFamily="'Zen Maru Gothic', sans-serif" transform="rotate(-6)">
+      <text x="0" y={-r * 0.36} textAnchor="middle" dominantBaseline="central" fontSize={fs} fontWeight={900} fill="var(--ink)" fontFamily="'Zen Maru Gothic', sans-serif" transform="rotate(-6)" {...squeeze}>
         {cap.name}
       </text>
     </g>
