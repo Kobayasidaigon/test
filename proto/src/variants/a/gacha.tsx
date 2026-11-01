@@ -267,7 +267,8 @@ function ShowMany({ list, finish }: { list: Comparison[]; finish: () => void }) 
   const shelfY = 600
   const slotX = (i: number) => SW / 2 + (i - (n - 1) / 2) * 66
   const latest = phase.reduce((a, p, i) => (p >= 1 ? i : a), -1)
-  const caption = done ? 'そろった！ くらべ棚へ' : turning ? 'ガチャ ガチャ…' : latest >= 0 ? `${list[latest].to.name}！` : 'ガチャ…'
+  // 回し終わってから最初のカプセルが落ちるまでは「ガチャ ガチャ…」のまま（ちらつかせない）
+  const caption = done ? 'そろった！ くらべ棚へ' : latest >= 0 ? `${list[latest].to.name}！` : 'ガチャ ガチャ…'
   const CAP = 56
   return (
     <>
@@ -333,28 +334,27 @@ function ShowMany({ list, finish }: { list: Comparison[]; finish: () => void }) 
   )
 }
 
-function Caption({ text, top = 296 }: { text: string; top?: number }) {
+// 吹き出し。切りかわるときは古い文字をすぐ消して、新しい文字をポンと出す（2つが重ならないように、退場の動きは付けない）
+function Caption({ text, sub, top = 296 }: { text: string; sub?: string; top?: number }) {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-x-0 z-40 flex justify-center" style={{ top }}>
-      <AnimatePresence mode="popLayout">
-        <motion.p
-          key={text}
-          className="va-pop whitespace-nowrap rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)] px-3 py-1.5 text-[20px] leading-none text-[var(--ink)] shadow-[3px_4px_0_var(--ink)]"
-          initial={{ y: 12, opacity: 0, scale: 0.8 }}
-          animate={{ y: 0, opacity: 1, scale: 1 }}
-          exit={{ y: -8, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 520, damping: 24 }}
-        >
-          {text}
-        </motion.p>
-      </AnimatePresence>
+      <motion.div
+        key={text}
+        className="flex flex-col items-center rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)] px-3 py-1.5 text-[var(--ink)] shadow-[3px_4px_0_var(--ink)]"
+        initial={{ y: 10, scale: 0.85 }}
+        animate={{ y: 0, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 560, damping: 24 }}
+      >
+        <span className="va-pop whitespace-nowrap text-[20px] leading-none">{text}</span>
+        {sub && <span className="mt-1 whitespace-nowrap text-[13px] font-black leading-none text-[var(--ink-soft)]">{sub}</span>}
+      </motion.div>
     </div>
   )
 }
 
 /* ───────── 外枠（とばす・読み上げ・大きさ合わせ） ───────── */
 
-export function GachaShow({ list, many = false, onDone }: { list: Comparison[]; many?: boolean; onDone: () => void }) {
+export function GachaShow({ list, many = false, onDone, note }: { list: Comparison[]; many?: boolean; onDone: () => void; note?: string }) {
   const k = useStageScale()
   const skipRef = useRef<HTMLButtonElement>(null)
   const done = useRef(false)
@@ -382,7 +382,7 @@ export function GachaShow({ list, many = false, onDone }: { list: Comparison[]; 
     >
       <div style={{ width: SW * k, height: SH * k }} className="relative">
         <div className="absolute left-0 top-0 origin-top-left" style={{ width: SW, height: SH, transform: `scale(${k})` }}>
-          {many ? <ShowMany list={list} finish={finish} /> : <ShowOne c={list[0]} finish={finish} />}
+          {many ? <ShowMany list={list} finish={finish} /> : <ShowOne c={list[0]} finish={finish} note={note} />}
         </div>
       </div>
       <button
