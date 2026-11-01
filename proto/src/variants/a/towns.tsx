@@ -56,7 +56,7 @@ export function LevelLegend({ className, compact = false }: { className?: string
   )
 }
 
-// チップ（押すと選ぶ）。くわしい街以外には、文字の札（準備中・県の制度）も小さく付ける
+// チップ（押すと選ぶ）。くわしい街以外には、文字の札（一部わかる・国の調査だけ）も小さく付ける
 export function TownChip({ city, on, onClick, disabled, extra, showTag = true }: { city: City; on?: boolean; onClick: () => void; disabled?: boolean; extra?: ReactNode; showTag?: boolean }) {
   return (
     <button
@@ -613,8 +613,8 @@ function PickNotes({ picks }: { picks: string[] }) {
   if (!hit.length && !basic.length && !pref.length) return null
   return (
     <ul className="space-y-1 rounded-[12px] bg-[var(--paper-2)] px-3 py-2 text-[12.5px] font-bold leading-snug">
-      {basic.length > 0 && <li>・{names(basic)}は準備中。保育料などは「確認中」になります。</li>}
-      {pref.length > 0 && <li>・{names(pref)}は{pref.every((c) => c.pref === '東京都') ? '都' : '県'}の制度だけ。市区町村の上乗せは、まだ調べていません。</li>}
+      {basic.length > 0 && <li>・{names(basic)}は、国の全国調査（医療費・待機児童・家賃）だけ分かる街。保育料などは「確認中」になります。</li>}
+      {pref.length > 0 && <li>・{names(pref)}は、制度が一部だけ分かる街。分からない項目は「確認中」になります。</li>}
       {hit.length > 0 && <li>・{names(hit)}は地震で被害を受けた街。得・損は出さず、制度の中身だけ見せます。</li>}
     </ul>
   )

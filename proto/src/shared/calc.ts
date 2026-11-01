@@ -3,11 +3,14 @@
 //   - 確かめられない項目は 0円にせず「未確認」として合計から外す（status と excluded で知らせる）
 //   - 一度きりのお金（移住支援金）は毎年の差と混ぜない。並べる順番にも足さない
 //   - 被災した街（care.level === 'hit'）は順位に入れず、悲しい表情も出さない
-import { ALL_CITIES, CITIES, cityById } from './data'
-import type { Breakdown, City, Comparison, DataLevel, FamilyInput, IncomeBand, Mood, Source } from './types'
+import { ALL_CITIES, CITIES, MEXT_LUNCH_SOURCE, cityById } from './data'
+import type { Breakdown, City, Comparison, Confidence, DataLevel, FamilyInput, IncomeBand, Mood, Source } from './types'
 
 const MEDICAL_HIGHSCHOOL_YEARLY = 25000 // 高校生年代1人の通院・入院の窓口負担の平均（横浜市の試算 年約25,000円）
-const JUNIOR_HIGH_LUNCH_MONTHLY = 5367 // 中学校給食費の全国平均月額（令和5年度、文部科学省の調査）
+// 中学校給食費の全国平均月額（公立・完全給食。令和7年5月1日現在、文部科学省の学校給食実施状況等調査 令和7年度）
+const JUNIOR_HIGH_LUNCH_MONTHLY = 6013
+const IJU_SINGLE_MAX = 600000 // 移住支援金の単身の上限（国の制度。市町村でもっと少ないことがある）
+const weaker = (c: Confidence): Confidence => (c === '確認済' ? '推定' : '仮置き')
 
 export const yenMan = (yen: number, digits = 1) => {
   const v = Math.abs(yen) / 10000
@@ -38,13 +41,52 @@ function whoInRange(input: FamilyInput, years: number, lo: number, hi: number, s
 //   paid      … お金がかかる子の順番と割合（説明の文に使う）
 interface FeeResult { fee: number | null; lines: string[]; household: boolean; paid: { order: number; rate: number }[] }
 type Kid = { age: number; nursery: boolean }
+type Rule = 'free' | 'half' | 'full' | 'unknown'
+const RULE_RANK: Record<Rule, number> = { free: 0, half: 1, full: 2, unknown: 3 }
+
+// 所得の条件つきの0円が、この年収帯に当てはまるか（true 当てはまる / false 当てはまらない / null 年収帯の途中に境目があって分からない）
+const BAND_RANGE: Record<IncomeBand, [number, number]> = { u400: [0, 400], '400_600': [400, 600], '600_800': [600, 800], '800_1000': [800, 1000], o1000: [1000, Infinity] }
+export function underCap(cap: number | undefined, band: IncomeBand): boolean | null {
+  if (cap === undefined) return true
+  const [lo, hi] = BAND_RANGE[band]
+  return hi <= cap ? true : lo >= cap ? false : null
+}
+// この年収帯で、0〜2歳の第1子から0円の街か
+const firstFreeAt = (c: City, band: IncomeBand) => c.nursery.firstChildFree || (c.nursery.firstFreeUnder !== undefined && underCap(c.nursery.firstFreeUnder, band) === true)
+
+// 1人の子の扱い。国の基準（同時に通う子で数えて2人目は半額、3人目以降は0円。どの街にも当てはまる）と、街の制度のうち有利なほう。
+// useHome が false のときは、きょうだいを同時に通う子だけで数える（数え方で結果が変わったかを見るため）
+function ruleFor(n: City['nursery'], band: IncomeBand, age: number, together: number, inHome: number, useHome: boolean): { rule: Rule; order: number } {
+  if (n.firstChildFree || (n.freeFromAge !== undefined && age >= n.freeFromAge)) return { rule: 'free', order: 1 }
+  const nat: Rule = together >= 3 ? 'free' : together === 2 ? 'half' : 'full'
+  const o2 = useHome && n.secondCount === 'household' ? inHome : together
+  const o3 = useHome && n.thirdCount === 'household' ? inHome : together
+  let local: Rule = 'full'
+  if (o3 >= 3) local = n.thirdChild
+  // 2人目だけの制度（secondOnly）は、3人目以降の子には使わない（3人目以降は国の基準）
+  else if (o2 >= 2 && !(n.secondOnly && o2 > 2)) {
+    if (n.secondChild === 'half') local = 'half'
+    else {
+      const u = underCap(n.secondFreeUnder, band)
+      local = u === true ? 'free' : u === null ? 'unknown' : 'full'
+    }
+  }
+  let rule: Rule = nat === 'free' ? 'free' : local === 'unknown' ? 'unknown' : RULE_RANK[local] < RULE_RANK[nat] ? local : nat
+  // 第1子の0円に所得の条件があるとき：この年収帯で当てはまれば0円、境目が年収帯の途中なら（ほかで0円でなければ）分からない
+  if (n.firstFreeUnder !== undefined && rule !== 'free') {
+    const u = underCap(n.firstFreeUnder, band)
+    if (u === true) rule = 'free'
+    else if (u === null) rule = 'unknown'
+  }
+  return { rule, order: o3 >= 3 ? o3 : o2 >= 2 ? o2 : 1 }
+}
+
 function nurseryFee(city: City, band: IncomeBand, kids: Kid[]): FeeResult {
   const n = city.nursery
   // 国の基準：就学前（0〜5歳）で園に通う子を、年上から第1子・第2子…と数える（3〜5歳は国の無償化で0円）
   const preschool = kids.filter((k) => k.age <= 5 && (k.age >= 3 || k.nursery)).sort((a, b) => b.age - a.age)
   // 生計が同じ子（0〜18歳）を、年上から数える（household の市で使う。上の子が小学生でも数える）
   const home = [...kids].sort((a, b) => b.age - a.age)
-  const ruleOf = (o2: number, o3: number) => (o3 >= 3 ? n.thirdChild : o2 >= 2 ? n.secondChild : 'full')
   let fee = 0
   let household = false
   const lines: string[] = []
@@ -52,24 +94,21 @@ function nurseryFee(city: City, band: IncomeBand, kids: Kid[]): FeeResult {
   for (let i = 0; i < preschool.length; i++) {
     const k = preschool[i]
     if (k.age >= 3) continue
-    if (n.firstChildFree) { lines.push(`${ageLabel(k.age)}: 0円`); continue }
     const together = i + 1
     const inHome = home.indexOf(k) + 1
-    const o2 = n.secondCount === 'household' ? inHome : together
-    const o3 = n.thirdCount === 'household' ? inHome : together
-    const rule = ruleOf(o2, o3)
-    const byHome = rule !== ruleOf(together, together)
+    const { rule, order } = ruleFor(n, band, k.age, together, inHome, true)
+    const byHome = rule !== ruleFor(n, band, k.age, together, inHome, false).rule
     if (byHome) household = true
-    const order = o3 >= 3 ? o3 : o2 >= 2 ? o2 : 1
     const tag = order >= 2 ? (byHome ? `上の子から数えて${order}人目` : `${order}人目`) : ''
-    if (rule === 'free') { lines.push(`${ageLabel(k.age)}（${tag}）: 0円`); continue }
+    if (rule === 'free') { lines.push(`${ageLabel(k.age)}${tag ? `（${tag}）` : ''}: 0円`); continue }
+    if (rule === 'unknown') return { fee: null, lines: [`${ageLabel(k.age)}${tag ? `（${tag}）` : ''}: 所得の条件があり、この年収帯で0円になるかは確認中`], household, paid }
     const m = n.monthly[band]
     if (!m) return { fee: null, lines: [`${ageLabel(k.age)}${tag ? `（${tag}）` : ''}: この年収帯の月額は確認中`], household, paid }
     const mid = (m[0] + m[1]) / 2
     const rate = rule === 'half' ? 0.5 : 1
     fee += mid * rate * 12
     paid.push({ order, rate })
-    lines.push(`${ageLabel(k.age)}${tag ? `（${tag}・半額）` : ''}: 月 約${Math.round((mid * rate) / 100) * 100}円`)
+    lines.push(`${ageLabel(k.age)}${tag ? `（${tag}${rate === 0.5 ? '・半額' : ''}）` : rate === 0.5 ? '（半額）' : ''}: 月 約${Math.round((mid * rate) / 100) * 100}円`)
   }
   return { fee, lines, household, paid }
 }
@@ -77,8 +116,8 @@ function nurseryFee(city: City, band: IncomeBand, kids: Kid[]): FeeResult {
 // 保育料の差の理由（1年目）。
 //   安いほうの街が0〜2歳の第1子から0円 … 高いほうの街で払う子が第1子か、2人目以降（半額）かで言い分ける
 //   安いほうの街だけが、きょうだいを上の子の年齢などを問わずに数える（household）… そう言う
-function nurseryReason(cheap: City, dear: City, cheapFee: FeeResult, dearFee: FeeResult): string {
-  if (cheap.nursery.firstChildFree && !dear.nursery.firstChildFree && dearFee.paid.length) {
+function nurseryReason(cheap: City, dear: City, cheapFee: FeeResult, dearFee: FeeResult, band: IncomeBand): string {
+  if (firstFreeAt(cheap, band) && !firstFreeAt(dear, band) && dearFee.paid.length) {
     if (dearFee.paid.some((p) => p.rate === 1)) return `${cheap.name}は0〜2歳の第1子から0円だからです。`
     const orders = [...new Set(dearFee.paid.map((p) => p.order))].sort((a, b) => a - b).map((o) => `${o}人目`).join('・')
     return `${dear.name}では${orders}が半額、${cheap.name}は0円だからです。`
@@ -132,7 +171,7 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
       const firstYear = fa.fee === null || fb.fee === null ? null : fa.fee - fb.fee
       const unknownCity = fb.fee === null ? to : from
       const countSure = (c: City, used: boolean) => !used || (c.nursery.countConfidence ?? c.nursery.confidence) === '確認済'
-      const reason = firstYear === null ? '' : firstYear > 0 ? nurseryReason(to, from, fb, fa) : nurseryReason(from, to, fa, fb)
+      const reason = firstYear === null ? '' : firstYear > 0 ? nurseryReason(to, from, fb, fa, input.income) : nurseryReason(from, to, fa, fb, input.income)
       items.push({
         key: 'nursery', label: '0〜2歳の保育料', icon: 'nursery', perYear: unknown ? null : total / years, total: unknown ? null : total, oneTime: false,
         confidence: from.nursery.confidence === '確認済' && to.nursery.confidence === '確認済' && countSure(from, homeFrom) && countSure(to, homeTo) ? '確認済' : '推定',
@@ -192,9 +231,9 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
         confidence: '推定', who: whoInRange(input, years, 12, 14, '中学生'),
         plain: unknown
           ? `${to.lunch.juniorHighFree === null ? to.name : from.name}の中学校の給食費が無料かどうかは、まだ確かめられていません。`
-          : total === 0 ? '中学校の給食費の差はありません。' : `中学校の給食費（月 約5,400円）が${total > 0 ? `${to.name}では無料` : `${from.name}では無料`}です。1人で年 約5.9万円。`,
-        detail: `全国平均の月額${JUNIOR_HIGH_LUNCH_MONTHLY.toLocaleString('ja-JP')}円×11か月で計算（令和5年度）。${to.lunch.note ?? ''}`,
-        sources: sumSources(from.lunch.sources, to.lunch.sources),
+          : total === 0 ? '中学校の給食費の差はありません。' : `中学校の給食費（月 約${(Math.round(JUNIOR_HIGH_LUNCH_MONTHLY / 100) * 100).toLocaleString('ja-JP')}円）が${total > 0 ? `${to.name}では無料` : `${from.name}では無料`}です。1人で年 約${yenMan(JUNIOR_HIGH_LUNCH_MONTHLY * 11)}。`,
+        detail: `全国平均の月額${JUNIOR_HIGH_LUNCH_MONTHLY.toLocaleString('ja-JP')}円×11か月で計算（公立中学校の完全給食、令和7年5月1日現在）。${from.name}: ${from.lunch.note ?? (from.lunch.juniorHighFree === null ? '確認中' : '')}　${to.name}: ${to.lunch.note ?? (to.lunch.juniorHighFree === null ? '確認中' : '')}`,
+        sources: sumSources(from.lunch.sources, to.lunch.sources, [MEXT_LUNCH_SOURCE]),
       })
     }
   }
@@ -222,15 +261,21 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
   }
 
   // --- 移住支援金（一度きり。23区から地方へ移る家族） ---
+  // 世帯の額や子どもの加算が「最大」（市町村の要綱でもっと少ないことがある）なら、額は最大の見込みとして書き、確からしさを1つ下げる
   if (to.iju && from.region === 'tokyo23' && input.work !== 'part') {
+    const iju = to.iju
     const kids = firstYearKids.filter((k) => k.age < 18).length
-    const amount = to.iju.family + to.iju.perChild * kids
+    const single = input.adults === 1 && kids === 0 // 単身。額が書いてない街は国の上限（最大60万円）
+    const family = single ? iju.single ?? Math.min(iju.family, IJU_SINGLE_MAX) : iju.family
+    const amount = family + iju.perChild * kids
+    const childUpTo = kids > 0 && !!iju.perChildUpTo
+    const upTo = single ? iju.single === undefined : !!iju.familyUpTo || childUpTo
     items.push({
-      key: 'iju', label: '移住支援金（一度きり）', icon: 'iju', perYear: null, total: amount, oneTime: true,
-      confidence: to.iju.confidence, who: '家族みんな',
-      plain: `23区から${to.name}へ移って条件を満たすと、一度だけ 約${yenMan(amount, 0)}。5年以内に転出すると返す決まりがあります。毎年の差には入れていません。`,
-      detail: to.iju.note,
-      sources: to.iju.sources,
+      key: 'iju', label: '移住支援金（一度きり）', icon: 'iju', perYear: null, total: amount, oneTime: true, upTo,
+      confidence: upTo ? weaker(iju.confidence) : iju.confidence, who: '家族みんな',
+      plain: `23区から${to.name}へ移って条件を満たすと、一度だけ${upTo ? ' 最大' : ''} 約${yenMan(amount, 0)}。${childUpTo ? '子どもの加算は市町村が決めていて、もっと少ないことがあります。' : ''}5年以内に転出すると返す決まりがあります。毎年の差には入れていません。`,
+      detail: `${single ? '単身' : '世帯'}${upTo && !childUpTo ? '最大' : ''}${yenMan(family, 0)}${kids ? `＋18歳未満の子${kids}人×${childUpTo ? '最大' : ''}${yenMan(iju.perChild, 0)}` : ''}で計算。${iju.note}`,
+      sources: iju.sources,
     })
   }
 
@@ -266,7 +311,10 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
     note: '借家に住んでいる世帯が払っている家賃の平均（居住室18〜24畳）。募集家賃とは違う。毎年の差には入れていない',
     source: (to.rent ?? from.rent)!.source,
   } : undefined
-  return { from, to, years, perYear, total, oneTime, items, unknown: unknownItems, mood, headline, subline, status, perYearLabel, excluded, care: to.care, distanceKm: distanceKm(from, to), rent }
+  // 待機児童の数（暮らしの目安。お金の差には入れない）
+  const wl = to.waitlist ?? from.waitlist
+  const waitlist = wl ? { from: from.waitlist?.count ?? null, to: to.waitlist?.count ?? null, asOf: wl.asOf, note: wl.note, source: wl.source } : undefined
+  return { from, to, years, perYear, total, oneTime, items, unknown: unknownItems, mood, headline, subline, status, perYearLabel, excluded, care: to.care, distanceKm: distanceKm(from, to), rent, waitlist }
 }
 
 // ---------- 候補の選び方 ----------
@@ -349,12 +397,34 @@ export function nearbyCities(fromId: string, km = 20, limit = 12): City[] {
     .sort((a, b) => a[0] - b[0]).slice(0, limit).map(([, c]) => c)
 }
 
-// どこまで分かるか（UIでカプセルの色の濃さなどに使う）
+// どこまで分かるか（UIでカプセルの色の濃さなどに使う）。どの街も、国の全国調査（子ども医療費・待機児童・家賃）は分かる
+// （家賃は人口の少ない町村では集計されていない）。保育料の月額の表があるのは、くわしい街の一部だけ
 export const DATA_LEVEL_TEXT = {
-  detailed: '市の制度まで調べた街',
-  pref: '都道府県の制度だけ分かる街',
-  basic: '国の統計（医療費助成・家賃）だけ分かる街。保育料などは準備中',
+  detailed: '市区町村の制度まで調べた街',
+  pref: '県や市区町村の制度が一部わかる街（保育料の月額の表はまだない）',
+  basic: '国の全国調査（子ども医療費・待機児童・家賃）が分かる街。保育料・給食などの制度は準備中',
 } as const
+
+// その街で分かっている制度（国の基準より先のもの）を短い言葉で。段の説明や、街の札の説明に使う
+export function knownFacts(c: City): string[] {
+  const out: string[] = []
+  const n = c.nursery
+  if (n.firstChildFree) out.push('保育料（0〜2歳は第1子から0円）')
+  else {
+    const parts: string[] = []
+    if (n.firstFreeUnder !== undefined) parts.push(`年収約${n.firstFreeUnder}万円未満は第1子から0円`)
+    if (n.freeFromAge !== undefined) parts.push(`${n.freeFromAge}歳児クラスは0円`)
+    if (n.secondChild === 'free') parts.push(`${n.secondFreeUnder !== undefined ? `年収約${n.secondFreeUnder}万円未満なら` : ''}${n.secondOnly ? '2人目は0円' : '2人目から0円'}`)
+    if (n.thirdChild === 'free' && n.thirdCount === 'household' && n.secondChild !== 'free') parts.push('上の子の年齢を問わず3人目から0円')
+    if (parts.length) out.push(`保育料（${parts.join('・')}）`)
+  }
+  if (Object.keys(n.monthly).length) out.push('保育料の月額の表')
+  if (c.cash) out.push(c.cash.label)
+  if (c.lunch.juniorHighFree !== null) out.push(`中学校の給食費（${c.lunch.juniorHighFree ? '無料' : '無料ではない'}）`)
+  if (c.iju) out.push('移住支援金（あり）')
+  else if (c.ijuCheck && c.metro !== 'shutoken') out.push(`移住支援金（${c.ijuCheck.result === 'none' ? '対象外' : '一部の地域だけ'}）`)
+  return out
+}
 
 // 噛み砕き: 年額を「月」「1日」に言い換える
 export function everyday(yearly: number) {

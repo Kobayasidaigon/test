@@ -9,8 +9,8 @@ const INK = 'var(--ink)'
 /* ───────── カプセル ─────────
    データの細かさを見た目で分ける。
    detailed … 下半分に色がしっかり（市区町村の制度まで調べた街）
-   pref     … 下半分がしま模様（都道府県の制度だけ）
-   basic    … 下半分もすけている（国の制度だけ。くわしいデータは準備中） */
+   pref     … 下半分がしま模様（県や市区町村の制度が一部わかる街）
+   basic    … 下半分もすけている（国の全国調査だけ分かる街。市区町村の制度は準備中） */
 
 export function Capsule({ color, size = 64, level = 'detailed', className, style, label }: {
   color: string

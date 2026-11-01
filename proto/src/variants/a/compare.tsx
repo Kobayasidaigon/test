@@ -8,7 +8,7 @@ import { sortTier, yenMan } from '@/shared'
 import type { Comparison, FamilyInput } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { ItemIcon } from './art'
-import { IJU_SHORT, ijuState, isHit, levelTag, lookOf, perYearChip, thinCity, toneOf } from './lib'
+import { IJU_SHORT, WAIT_NOTE, ijuState, isHit, levelTag, lookOf, perYearChip, thinCity, toneOf, waitOf, waitText } from './lib'
 import { NamedCapsuleG } from './machine'
 import { DetailGrid, Notice, NextStepsBox, ResultHeader, RetryButtons, SectionTitle, StampBook, rentOf, type SampleMark } from './result'
 import { GotouchiStamp } from './stamp'
@@ -22,7 +22,7 @@ function amountWords(c: Comparison): { main: string; sub: string } {
   if (isHit(c)) return { main: '地震で被害を受けた街なので、得・損は出していません', sub: '制度の中身は、カプセルを開けると見られます' }
   if (c.status === 'unknown') return { main: '確認中', sub: c.unknown.map((u) => u.label).join('・') }
   const thin = thinCity(c)
-  if (thin) return { main: thin.level === 'pref' ? 'まだ調べ中' : '準備中', sub: `わかる制度では差が見つからず。${thin === c.to ? '' : `${thin.name}（今の街）の`}${thin.level === 'pref' ? '独自の給付など' : '保育料など'}は準備中` }
+  if (thin) return { main: thin.level === 'pref' ? 'まだ調べ中' : '準備中', sub: `わかる制度では差が見つからず。${thin === c.to ? '' : `${thin.name}（今の街）の`}${thin.level === 'pref' ? 'ほかの制度' : '保育料・給食などの制度'}は${thin.level === 'pref' ? 'まだ調べていません' : '準備中'}` }
   const t = toneOf(c.perYear)
   const part = c.status === 'partial' ? 'わかる分で ' : ''
   if (t === 'even') return { main: `${part}ほぼ同じ`, sub: '' }
@@ -68,13 +68,15 @@ function ShelfCapsule({ c }: { c: Comparison }) {
 function rowAria(c: Comparison) {
   const w = amountWords(c)
   const r = rentOf(c)
+  const wt = waitOf(c)
   const miss = c.unknown.length && !isHit(c) ? `。確認中の${c.unknown.map((u) => u.label).join('・')}は入っていません` : ''
-  return `${c.to.pref}${c.to.name}（${levelTag(c.to)}）：${w.main}${w.sub && !isHit(c) ? `（${w.sub}）` : ''}${miss}${c.oneTime ? `。ほかに一度きり 最大 約${yenMan(c.oneTime, 0)}` : ''}${r && r.to !== null ? `。家賃の目安 月${man1(r.to)}` : ''}${c.care ? '。災害への配慮あり' : ''}`
+  return `${c.to.pref}${c.to.name}（${levelTag(c.to)}）：${w.main}${w.sub && !isHit(c) ? `（${w.sub}）` : ''}${miss}${c.oneTime ? `。ほかに一度きり 最大 約${yenMan(c.oneTime, 0)}` : ''}${r && r.to !== null ? `。家賃の目安 月${man1(r.to)}` : ''}${wt && wt.to !== null ? `。待機児童 ${waitText(wt.to)}` : ''}${c.care ? '。災害への配慮あり' : ''}`
 }
 
 function ShelfRow({ c, on, onClick, max }: { c: Comparison; on: boolean; onClick: () => void; max: number }) {
   const w = amountWords(c)
   const r = rentOf(c)
+  const wt = waitOf(c)
   return (
     <li className="va-plank pb-2.5">
       <button
@@ -104,6 +106,7 @@ function ShelfRow({ c, on, onClick, max }: { c: Comparison; on: boolean; onClick
                 {r.diff !== null && Math.abs(r.diff) >= 1000 && `（今の街${r.diff > 0 ? '＋' : '−'}${man1(Math.abs(r.diff))}）`}
               </span>
             )}
+            {wt && wt.to !== null && <span className="text-[12px] font-bold text-[var(--ink-soft)]">待機児童 {waitText(wt.to)}</span>}
           </span>
         </span>
         <span className="col-start-2 mt-1 min-w-0 sm:col-start-3 sm:mt-0">
@@ -196,6 +199,8 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
   const rows = ROWS.filter((r) => list.some((c) => c.items.some((i) => i.key === r.key)))
   const from = list[0]?.from
   const fromRent = list.map(rentOf).find((r) => r && r.from !== null)?.from ?? null
+  const fromWait = list.map(waitOf).find((w) => w && w.from !== null)?.from ?? null
+  const waitAsOf = list.map(waitOf).find((w) => w)?.asOf
   const hasHit = list.some(isHit)
   return (
     <details className="group mt-3 rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)]">
@@ -279,10 +284,29 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
                   )
                 })}
               </tr>
+              {waitAsOf && (
+                <tr className="border-t-2 border-[var(--ink)]/15 bg-[var(--stay-bg)]">
+                  <th scope="row" className="sticky left-0 z-10 min-w-[6.5em] bg-[var(--stay-bg)] px-2 py-2 text-left text-[12.5px] font-black">
+                    待機児童（{waitAsOf}）
+                    <span className="block text-[12px] font-bold text-[var(--ink-soft)]">
+                      今の街 {from?.name} {waitText(fromWait)}
+                    </span>
+                  </th>
+                  {list.map((c) => {
+                    const w = waitOf(c)
+                    return (
+                      <td key={c.to.id} className="px-2 py-2 text-center font-bold">
+                        {waitText(w?.to ?? null)}
+                      </td>
+                    )
+                  })}
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
         <p className="mt-2 px-1 text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{RENT_NOTE}</p>
+        {waitAsOf && <p className="mt-1 px-1 text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{WAIT_NOTE}</p>}
         {hasHit && (
           <p className="mt-1 px-1 text-[12px] font-bold leading-snug text-[var(--stay)]">
             地震で大きな被害を受けた街は、金額でくらべていません。制度の中身は、カプセルを開けると見られます。

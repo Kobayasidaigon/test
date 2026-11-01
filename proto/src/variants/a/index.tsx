@@ -15,7 +15,7 @@ import { Capsule, Coin, Figure, MiniMachine } from './art'
 import { CompareResult } from './compare'
 import { GachaShow } from './gacha'
 import { GachaHandle } from './handle'
-import { ALL_COUNT, FEATURED_GROUPS, LEVEL_COUNT, isHit, isPending, lookOf, settleTies, spoken, tiesAtTop, useShortScreen, useStampBook, type TownGroup } from './lib'
+import { ALL_COUNT, FEATURED_GROUPS, LEVEL_COUNT, LEVEL_ORDER, LEVEL_TAG, isHit, isPending, lookOf, settleTies, spoken, tiesAtTop, useShortScreen, useStampBook, type TownGroup } from './lib'
 import { Dome, MachineFront, Marquee, Outlet, type FrontCap, type Mix } from './machine'
 import { Result, type SampleMark } from './result'
 import { STEP_INFO, StepBody, Summary, stepsFor, type Mode, type StepKey } from './steps'
@@ -168,7 +168,19 @@ function TownsInside({ poster = false }: { poster?: boolean }) {
         <LevelLegend className="mt-2" />
       )}
       <p className="mt-2 text-[12.5px] font-bold text-[var(--ink-soft)]">
-        くわしい{LEVEL_COUNT.detailed}・県の制度{LEVEL_COUNT.pref}・準備中{LEVEL_COUNT.basic.toLocaleString('ja-JP')}
+        {/* 数と札の名前のあいだで折り返さない */}
+        {LEVEL_ORDER.map((lv, i) => (
+          <Fragment key={lv}>
+            <span className="whitespace-nowrap">
+              {LEVEL_TAG[lv]}
+              {LEVEL_COUNT[lv].toLocaleString('ja-JP')}
+            </span>
+            {i < LEVEL_ORDER.length - 1 ? '・' : ''}
+          </Fragment>
+        ))}
+      </p>
+      <p className="mt-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">
+        どの街も、国の全国調査（子ども医療費・待機児童・家賃）は分かります。保育料の月額の表があるのは、くわしい街の一部だけです。
       </p>
       <p className="mt-2 text-[12.5px] font-black">くわしく調べた{CITIES.length}の街</p>
       <div className="mt-1">{poster ? <CityLineupPoster /> : <CityLineup />}</div>
@@ -314,14 +326,14 @@ interface PoolStat {
 const n = (v: number) => v.toLocaleString('ja-JP')
 const allPendingPool = (s?: PoolStat) => !!s && s.count > 0 && s.pending === s.count
 
-// 台の説明：何が出てくるかを正直に（準備中しか入っていない台は、回す前に言う）
+// 台の説明：何が出てくるかを正直に（まだ比べられない街しか入っていない台は、回す前に言う）
 function poolNote(p: Pool, s: PoolStat) {
-  if (allPendingPool(s)) return `この台の街（${n(s.count)}個）は、保育料などがまだ準備中。回すと、はんこと、家賃・医療費の目安が出ます。`
+  if (allPendingPool(s)) return `この台の街（${n(s.count)}個）は、この家族に関係する制度がまだ確認中。回すと、はんこと、医療費・待機児童・家賃の目安が出ます。`
   if (p === 'featured') return `${POOL_INFO[p].where}（${n(s.count)}個）から。毎年の差がいちばん大きい街が出てきます。`
   // わかる差がある街には、018サポートの差だけが分かる街もふくむので、「保育料などが分かる」とは言わない。
-  // 準備中の街は、わかる差がなければ後ろに並ぶが、わかる差が0円近くの街（県の制度の区など）はその額の所に並ぶので、「後ろ」とは言い切らない
+  // まだ比べられない街は、わかる差がなければ後ろに並ぶが、わかる差が0円近くの街（制度が一部わかる区など）はその額の所に並ぶので、「後ろ」とは言い切らない
   const known = s.count - s.pending
-  return `${POOL_INFO[p].where}の${n(s.count)}個。わかる差がある街は${n(known)}個${known ? `（確認中の項目がない街は${n(s.full)}個）` : ''}。${s.pending ? `準備中の${n(s.pending)}個は、0円とはせず「確認中」として並べます。` : ''}${p === 'all' ? '棚には上の30個を出します。' : ''}`
+  return `${POOL_INFO[p].where}の${n(s.count)}個。わかる差がある街は${n(known)}個${known ? `（確認中の項目がない街は${n(s.full)}個）` : ''}。${s.pending ? `まだ比べられない${n(s.pending)}個は、0円とはせず「確認中」として並べます。` : ''}${p === 'all' ? '棚には上の30個を出します。' : ''}`
 }
 
 function PoolPicker({ pools, value, onChange, stats, compact }: { pools: Pool[]; value: Pool; onChange: (p: Pool) => void; stats: Record<Pool, PoolStat>; compact?: boolean }) {
@@ -342,7 +354,7 @@ function PoolPicker({ pools, value, onChange, stats, compact }: { pools: Pool[];
               aria-pressed={on}
               disabled={empty}
               onClick={() => onChange(p)}
-              aria-label={`${POOL_INFO[p].name}の台（${count}${onlyPending ? '。準備中の街だけ' : ''}。${POOL_INFO[p].where}）`}
+              aria-label={`${POOL_INFO[p].name}の台（${count}${onlyPending ? '。まだ比べられない街だけ' : ''}。${POOL_INFO[p].where}）`}
               className={cn(
                 'rounded-[14px] border-[3px] transition-colors disabled:opacity-45',
                 compact ? 'flex items-center gap-1 px-1 py-1 text-left' : 'flex flex-col items-center px-1 pb-1.5 pt-2 text-center',
@@ -353,7 +365,7 @@ function PoolPicker({ pools, value, onChange, stats, compact }: { pools: Pool[];
               <span className={cn('min-w-0', compact ? 'block' : 'contents')}>
                 <span className={cn('block text-[13px] font-black leading-tight', !compact && 'mt-1')}>{POOL_INFO[p].name}</span>
                 <span className="block text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{count}</span>
-                {onlyPending && <span className="mt-0.5 inline-block rounded-full border-2 border-dashed border-[var(--ink)] px-1 text-[12px] font-black leading-tight">準備中だけ</span>}
+                {onlyPending && <span className="mt-0.5 inline-block rounded-full border-2 border-dashed border-[var(--ink)] px-1 text-[12px] font-black leading-tight">確認中だけ</span>}
               </span>
             </button>
           )
@@ -742,6 +754,7 @@ export default function VariantA() {
                       ['年にいくら違うか', '子育ての制度の差を、月・1日にも言いかえます'],
                       ['項目ごとの説明書', '保育料・給付・給食・医療費を分けて'],
                       ['家賃の目安', '暮らしのお金として、別の札で'],
+                      ['待機児童の目安', '保育園の空きぐあいの手がかり。お金の差とは別'],
                       ['一度きりのお金', '移住支援金などは、別の枠で'],
                       ['おまけ', 'その街の名物のキーホルダー'],
                     ].map(([a, b]) => (

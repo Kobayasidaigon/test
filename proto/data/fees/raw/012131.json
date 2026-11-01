@@ -1,0 +1,206 @@
+{
+  "code": "012131",
+  "pref": "北海道",
+  "name": "苫小牧市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月〜8月分の保育料は前年度の市町村民税所得割額（前々年1〜12月の収入）、9月〜翌3月分は当該年度の市町村民税所得割額（前年1〜12月の収入）で決める（令和8年4〜8月は令和7年度、令和8年9月〜令和9年3月は令和8年度の市町村民税）。料金表は年度を通じて同じ。4月にクラス年齢が上がると保育料が変わる場合がある。月の途中の入退園はその月の額を日割り。3歳児クラス以上は無償（副食費は別、階層・きょうだいで免除あり）。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（父母）の市町村民税所得割額の合計で決める。住宅借入金等特別控除・配当控除・外国税額控除・寄附金控除などの税額控除は適用しない（控除前の額。通知書の所得割額に控除額のうち市民税分を足し、100円未満を切り上げた値）。道民税は使わない。父母の収入が一定額以下（父母合わせて年収約180万円、ひとり親約140万円）で同居の祖父母がいる場合は、祖父母の税額の高い方も合算。ひとり親家庭が同居で事実婚状態になった場合や離婚後も父母が同居している場合は2人の合計。現階層区分は年少扶養控除の廃止に伴う措置として年少扶養人数2名分が反映されている。市民税の申告がない場合は最高階層で算定されることがある。",
+  "table": {
+    "title": "（案）保育料徴収金額表（月額）（令和8年度 苫小牧市入所ガイド P19「保育料等について（2・3号認定）」）",
+    "kind": "3歳未満（0〜2歳児クラス）・保育標準時間・第1子（基準額、月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "B（AB）",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯（AB）",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯（B）",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税均等割のみ",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 33300,
+        "condition": "市民税所得割 33,300円未満",
+        "monthly": 9800,
+        "monthly_second": 0
+      },
+      {
+        "label": "C3",
+        "lower": 33300,
+        "upper": 48600,
+        "condition": "48,600円未満",
+        "monthly": 13200,
+        "monthly_second": 0
+      },
+      {
+        "label": "C4",
+        "lower": 48600,
+        "upper": 50900,
+        "condition": "50,900円未満",
+        "monthly": 14100,
+        "monthly_second": 0
+      },
+      {
+        "label": "C5",
+        "lower": 50900,
+        "upper": 63600,
+        "condition": "63,600円未満",
+        "monthly": 16700,
+        "monthly_second": 0
+      },
+      {
+        "label": "C6",
+        "lower": 63600,
+        "upper": 78600,
+        "condition": "78,600円未満",
+        "monthly": 21400,
+        "monthly_second": 0
+      },
+      {
+        "label": "C7",
+        "lower": 78600,
+        "upper": 97000,
+        "condition": "97,000円未満",
+        "monthly": 25400,
+        "monthly_second": 0
+      },
+      {
+        "label": "C8",
+        "lower": 97000,
+        "upper": 117300,
+        "condition": "117,300円未満",
+        "monthly": 31600,
+        "monthly_second": 0
+      },
+      {
+        "label": "C9",
+        "lower": 117300,
+        "upper": 138300,
+        "condition": "138,300円未満",
+        "monthly": 39200,
+        "monthly_second": 0
+      },
+      {
+        "label": "C10",
+        "lower": 138300,
+        "upper": 169000,
+        "condition": "169,000円未満",
+        "monthly": 42900,
+        "monthly_second": 0
+      },
+      {
+        "label": "C11",
+        "lower": 169000,
+        "upper": 183300,
+        "condition": "183,300円未満",
+        "monthly": 47100,
+        "monthly_second": 23550
+      },
+      {
+        "label": "C12",
+        "lower": 183300,
+        "upper": 228900,
+        "condition": "228,900円未満",
+        "monthly": 53000,
+        "monthly_second": 26500
+      },
+      {
+        "label": "C13",
+        "lower": 228900,
+        "upper": 301000,
+        "condition": "301,000円未満",
+        "monthly": 61000,
+        "monthly_second": 30500
+      },
+      {
+        "label": "C14",
+        "lower": 301000,
+        "upper": 346600,
+        "condition": "346,600円未満",
+        "monthly": 66500,
+        "monthly_second": 33250
+      },
+      {
+        "label": "C15",
+        "lower": 346600,
+        "upper": null,
+        "condition": "346,600円以上",
+        "monthly": 75600,
+        "monthly_second": 37800
+      }
+    ],
+    "notes": "monthly は「標準時間・基準額」、monthly_second は「標準時間・半額」の列（第2子に当たる子の額。C2〜C10は第2子以降無料なので0、C11〜C15は半額）。短時間・基準額: C2 9,600／C3 13,000／C4 13,900／C5 16,400／C6 21,000／C7 25,000／C8 31,100／C9 38,500／C10 42,200／C11 46,300／C12 52,100／C13 60,000／C14 65,400／C15 74,300（短時間・半額: C11 23,150／C12 26,050／C13 30,000／C14 32,700／C15 37,150、C2〜C10は0）。ひとり親世帯又は在宅障がい者世帯（C2〜C6）は第1子が基準額の1/4: 標準時間 C2 2,450／C3 3,300／C4 3,500／C5 4,200／C6 5,350、短時間 C2 2,400／C3 3,250／C4 3,500／C5 4,100／C6 5,250（第2子以降は無料）。A・B（AB・B）・C1（均等割のみ）は0円。表の題名に「（案）」とあるが、金額はホームページの「保育料徴収金額表（令和元年10月以降分）」（fee.pdf）や令和7年度の資料と同じ。C2 の下限は表にないが、C1（均等割のみ＝所得割0円）と分けるため lower=1 とした。災害・失業などの減免、婚姻によらないひとり親への寡婦（夫）控除のみなし適用あり。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は階層により月0〜75,600円（標準時間）。A・B・C1（均等割のみ課税）は0円。",
+  "second_child": "other",
+  "second_count": "household",
+  "second_note": "C2〜C10階層（所得割169,000円未満）: 北海道の多子世帯の保育料軽減（平成29年度から）を活用し、生計が同一の子どもについて同時就園の条件をなくし、子の年齢に関係なく年齢の高い順に数えて第2子以降は無料（上の子の年齢要件なし）。C11〜C15階層（所得割169,000円以上）: 同一世帯（A階層を除く）で保育所・幼稚園・認定こども園・企業主導型保育施設・特別支援学校幼稚部・児童心理治療施設通所部に入園し又は児童発達支援・医療型児童発達支援を利用している就学前児童から数え、第2子は半額（上の子の年齢要件あり＝同時に通う子だけ）。A・B・C1は第1子から0円。児童順位は住民票と保護者の申請書で決める（別居の子は幼保施設課に相談）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全階層で第3子以降は無料。C2〜C10は生計同一の子を年齢に関係なく数える。C11〜C15は保育所・幼稚園・こども園等に通っている就学前の子から数える（同時に通う子だけ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和８年度「苫小牧市入所ガイド（入所の手引きと教育・保育施設情報）」表紙～入所、その他保育サービス（PDF、P19〜20「保育料等について（2・3号認定）」）",
+      "url": "https://www.city.tomakomai.hokkaido.jp/files/00036100/00036183/20260930152655.pdf"
+    },
+    {
+      "label": "令和８年度「苫小牧市入所ガイド」｜北海道苫小牧市",
+      "url": "https://www.city.tomakomai.hokkaido.jp/kenko/kosodate/kanrenshisetsu/gaido.html"
+    },
+    {
+      "label": "利用者負担額（保育料）について｜北海道苫小牧市",
+      "url": "https://www.city.tomakomai.hokkaido.jp/kenko/kosodate/kanrenshisetsu/kyokahoikujo/hoikuryo.html"
+    },
+    {
+      "label": "保育料徴収金額表（令和元年10月以降分）【保育認定用】（PDF）",
+      "url": "https://www.city.tomakomai.hokkaido.jp/files/00007400/00007418/fee.pdf"
+    },
+    {
+      "label": "多子世帯にかかる保育料の軽減について｜北海道苫小牧市",
+      "url": "https://www.city.tomakomai.hokkaido.jp/kenko/kosodate/h2904dai2shimusyouka.html"
+    },
+    {
+      "label": "利用者負担額（保育料）を算定するための「市民税」の確認方法（PDF）",
+      "url": "https://www.city.tomakomai.hokkaido.jp/files/00007400/00007418/howto.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "保育料のページ（hoikuryo.html）の徴収金額表は「令和元年10月以降分」で年度の記載がなく、きょうだいのPDF（071016多子保育料減額.pdf）は令和7年度版だった。",
+    "令和8年度入所ガイドのページ（gaido.html）の「表紙～入所、その他保育サービス」PDF（42ページ、文字の取れるPDF）の19ページ（PDFの24枚目）に令和8年度の表があった。pdftotext -layout で読み、画像で列（標準時間・短時間 × 基準額・半額）を確かめた。"
+  ],
+  "notes": "表は令和8年度入所ガイド（令和8年4月〜8月は令和7年度、9月〜令和9年3月は令和8年度の市町村民税で決める、と明記）のP19。題名に「（案）」とある。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

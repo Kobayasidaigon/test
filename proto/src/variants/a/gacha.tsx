@@ -120,8 +120,8 @@ function ShowOne({ c, finish, note }: { c: Comparison; finish: () => void; note?
   const pending = isPending(c)
   const caption =
     phase === 'turn' ? 'ガチャ ガチャ…' : phase === 'fall' ? 'コロン…' : phase === 'roll' ? 'ゴロン！' : phase === 'stamp' ? (pending ? `${c.to.name}のカプセル` : `${c.to.name}のカプセル！`) : 'ぱかっ！'
-  // はんこを押したあとの小さな一言：中身が準備中のときは先に言う。同じ額の街がほかにもあるときは、なぜこの街かを言う
-  const sub = phase === 'stamp' ? (pending ? '中身は、まだ準備中' : note) : undefined
+  // はんこを押したあとの小さな一言：中身がまだ比べられないときは先に言う。同じ額の街がほかにもあるときは、なぜこの街かを言う
+  const sub = phase === 'stamp' ? (pending ? '中身は、まだ確認中' : note) : undefined
   const CAP = 64
   const outletCenter = { x: OUT.left + OUT.w / 2, y: OUT.top + OUT.h - CAP / 2 - 6 }
   // カプセルを開ける位置。台紙（高さ226）は中心から上がって、上端は 292−75+70−200 = 87px（看板の下端 約69px より下）

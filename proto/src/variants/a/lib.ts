@@ -1,7 +1,7 @@
 // 案A「カプセルトイ」 — 見た目のための小さな道具。計算は @/shared の rank / compare / compareMany をそのまま使う。
-// ここでは数字は変えない。くわしくない街（県の制度だけ／準備中）や被災した街で、言い切りすぎないための言い方だけを決める。
+// ここでは数字は変えない。くわしくない街（制度が一部わかる街／国の調査だけの街）や被災した街で、言い切りすぎないための言い方だけを決める。
 import { useCallback, useEffect, useState } from 'react'
-import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, everyday, moodText, periodYears, sortTier, yenMan } from '@/shared'
+import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, cityById, everyday, knownFacts, moodText, periodYears, sortTier, yenMan } from '@/shared'
 import type { Breakdown, Child, City, Comparison, DataLevel, FamilyInput, Pride } from '@/shared/types'
 
 export type MotifKey =
@@ -196,28 +196,22 @@ export const prideIsPref = (p: Pride, city: City) => isSharedPride(p) || p.fact.
 export const prefKind = (pref: string) => (pref.endsWith('都') ? '都' : pref.endsWith('道') ? '道' : pref.endsWith('府') ? '府' : '県')
 // 街の種類の字（市・区・町・村）
 export const townKind = (name: string) => (name.endsWith('区') ? '区' : name.endsWith('町') ? '町' : name.endsWith('村') ? '村' : '市')
-// 札に書く短い言葉
-export function levelTag(city: City) {
-  if (city.level === 'detailed') return 'くわしい'
-  if (city.level === 'pref') return `${prefKind(city.pref)}の制度`
-  return '準備中'
-}
-// 説明の言葉
+// 札に書く短い言葉。どの街も、国の全国調査（医療費・待機児童・家賃）は分かる
+export const LEVEL_TAG: Record<DataLevel, string> = { detailed: 'くわしい', pref: '一部わかる', basic: '国の調査だけ' }
+export const levelTag = (city: City) => LEVEL_TAG[city.level]
+// 説明の言葉（一部わかる街は、分かっている制度を名前で言う。保育料の月額の表がないことも隠さない）。
+// 「〇〇市は、」に続けても、1文で置いても読めるように書く
 export function levelText(city: City) {
   if (city.level !== 'pref') return DATA_LEVEL_TEXT[city.level]
-  // 東京都の区以外の市町村：保育料の無償化は都の補助で市町村が行うので、「都の制度」には入れていない（確かめた市だけ入れた）
-  if (city.pref === '東京都' && city.region !== 'tokyo23') {
-    return city.nursery.firstChildFree
-      ? '都の制度（018サポート）と、市の保育料の無償化だけ分かる街（ほかの市独自の制度は、まだ調べていません）'
-      : '都の制度（018サポート）だけ分かる街（保育料の無償化など、市町村が行う制度は、まだ調べていません）'
-  }
-  return `${prefKind(city.pref)}の制度だけ分かる街（市区町村の上乗せは、まだ調べていません）`
+  const facts = knownFacts(city)
+  const fee = city.nursery.firstChildFree ? '' : '保育料の月額の表はまだないので、お金がかかる子の保育料は確認中。'
+  return `${facts.join('・')}が分かっている街。${fee}ほかの制度は、まだ調べていません`
 }
 export const LEVEL_ORDER: DataLevel[] = ['detailed', 'pref', 'basic']
 export const LEVEL_LEGEND: Record<DataLevel, { tag: string; text: string }> = {
-  detailed: { tag: 'くわしい', text: '市区町村の制度まで調べた街。色がしっかりついたカプセル' },
-  pref: { tag: '県の制度', text: '都道府県の制度だけ分かる街。しま模様のカプセル' },
-  basic: { tag: '準備中', text: '国の統計（医療費助成・家賃）だけ分かる街。すけたカプセル。保育料などは準備中' },
+  detailed: { tag: LEVEL_TAG.detailed, text: '市区町村の制度まで調べた街。保育料の月額の表があるのは、この中の一部。色がしっかりついたカプセル' },
+  pref: { tag: LEVEL_TAG.pref, text: '県や市区町村の制度（保育料の無償化・給食費・移住支援金など）が一部わかる街。保育料の月額の表はまだない。しま模様のカプセル' },
+  basic: { tag: LEVEL_TAG.basic, text: '国の全国調査（子ども医療費・待機児童・家賃）が分かる街。保育料・給食などの制度は準備中。すけたカプセル' },
 }
 export const LEVEL_COUNT: Record<DataLevel, number> = {
   detailed: ALL_CITIES.filter((c) => c.level === 'detailed').length,
@@ -300,7 +294,7 @@ export const fromHit = (c: Comparison) => c.from.care?.level === 'hit'
 
 /* ───────── どこまで言い切れるか ─────────
    共有の計算は、当てはまる項目が0件だと status を 'ok' にする。
-   くわしくない街（県の制度だけ／準備中）では、市の給付や保育料をまだ調べていないので、
+   くわしくない街（制度が一部わかる街／国の調査だけの街）では、市の給付や保育料の一部をまだ調べていないので、
    差が1万円未満でも「ほぼ同じ」とは言わない（画面側で判定する）。 */
 
 // くわしくない街がからむ比べで、わかる差が1万円未満のときの、その街（候補を先に見る）
@@ -322,15 +316,14 @@ export function scopeOf(c: Comparison): Scope {
 // 準備中（まだ中身を比べられない）として扱うか
 export const isPending = (c: Comparison) => c.status === 'unknown' || !!thinCity(c)
 
-// まだ調べていないことの言い方（県の制度の街は「独自の給付など」、準備中の街は「保育料や市の給付」）
+// まだ調べていないことの言い方（一部わかる街は「ほかの制度（独自の手当など）」、国の調査だけの街は「保育料・給食などの制度」）
 function notYet(cities: City[]) {
   const names = (list: City[]) => list.map((c) => c.name).join('と')
   const basic = cities.filter((c) => c.level === 'basic')
   const pref = cities.filter((c) => c.level === 'pref')
-  const kinds = [...new Set(basic.map((c) => townKind(c.name)))]
   const parts: string[] = []
-  if (basic.length) parts.push(`${names(basic)}の保育料や${kinds.length === 1 ? kinds[0] : '市町村'}の給付`)
-  if (pref.length) parts.push(`${names(pref)}独自の給付など`)
+  if (basic.length) parts.push(`${names(basic)}の保育料・給食などの制度`)
+  if (pref.length) parts.push(`${names(pref)}のほかの制度（独自の手当など）`)
   return parts.join('、')
 }
 
@@ -340,7 +333,7 @@ export function headlineOf(c: Comparison): string {
   const thin = thinCity(c)
   if (thin) {
     const who = thin === c.to ? thin.name : `${thin.name}（今の街）`
-    return thin.level === 'pref' ? `${who}独自の制度は、まだ調べていません` : `${who}の制度は、まだ準備中`
+    return thin.level === 'pref' ? `${who}の制度は、一部だけ分かっています` : `${who}の制度は、まだ準備中`
   }
   if (c.status === 'partial' && toneOf(c.perYear) === 'even') return `${c.to.name}は、わかる分では差が小さい`
   return c.headline
@@ -359,10 +352,7 @@ export function missingText(c: Comparison): string {
 }
 // わかる差が見つからなかったときの1文（金額の箱・くらべ棚で使う）
 export function thinText(c: Comparison): string {
-  const cities = [c.to, c.from].filter((x) => x.level !== 'detailed')
-  const pref = cities.find((x) => x.level === 'pref')
-  const known = pref ? `国・${prefKind(pref.pref)}` : '国'
-  return `わかっている${known}の制度では、差は見つかりませんでした。${missingText(c)}`
+  return `わかっている制度では、差は見つかりませんでした。${missingText(c)}`
 }
 // 家族の吹き出し（moodText をもとに、くわしくない街・被災した街・わかる分だけの比べを言いかえる）
 export function moodLine(c: Comparison): string {
@@ -394,7 +384,7 @@ export function everydayText(yearly: number) {
 
 // 項目ごとの金額の言い方（期間が2年以上のときは、カードの上に「◯年でならすと」を小さく添える）
 export function itemAmount(i: Breakdown, c: Comparison): { tone: Tone | 'unknown' | 'once' | 'care'; text: string } {
-  if (i.oneTime) return { tone: 'once', text: `一度だけ 約${yenMan(i.total ?? 0, 0)}` }
+  if (i.oneTime) return { tone: 'once', text: `一度だけ ${i.upTo ? '最大 ' : ''}約${yenMan(i.total ?? 0, 0)}` }
   if (i.perYear === null) return { tone: 'unknown', text: '確認中' }
   if (Math.abs(i.perYear) < 1000) return { tone: 'even', text: '差はなし' }
   // 被災した街では、得・損の向きの言葉を使わず、どちらの制度の中身かだけを書く
@@ -431,7 +421,7 @@ export function tiesAtTop(ranked: Comparison[]) {
 }
 
 // 同じ額の街の並べ方：共有の並び（段 → 毎年の差が大きい順。sortTier）はそのまま。1,000円未満の差しかない街のなかだけ、
-// 全部わかる街 → 一度きりのお金がある街 → くわしい街 → 県の制度 → 準備中、そのなかは今の街から近い順にする
+// 全部わかる街 → 一度きりのお金がある街 → くわしい街 → 一部わかる街 → 国の調査だけの街、そのなかは今の街から近い順にする
 const LEVEL_RANK: Record<DataLevel, number> = { detailed: 0, pref: 1, basic: 2 }
 export function settleTies(list: Comparison[]): Comparison[] {
   const out = [...list]
@@ -455,6 +445,20 @@ export function settleTies(list: Comparison[]): Comparison[] {
   }
   return out
 }
+
+/* ───────── 待機児童の目安（暮らしの目安。お金の差とは別） ───────── */
+export interface WaitInfo { from: number | null; to: number | null; asOf: string; note: string; source?: { label: string; url: string } }
+export function waitOf(c: Comparison): WaitInfo | null {
+  const fromCity = cityById(c.from.id), toCity = cityById(c.to.id)
+  const from = c.waitlist?.from ?? fromCity?.waitlist?.count ?? null
+  const to = c.waitlist?.to ?? toCity?.waitlist?.count ?? null
+  const w = c.waitlist ?? toCity?.waitlist ?? fromCity?.waitlist
+  if ((from === null && to === null) || !w) return null
+  return { from, to, asOf: w.asOf, note: w.note, source: w.source }
+}
+// 「0人」は「表で0人」。国の定義で数えた人数なので、希望の園に入れるとは限らない
+export const waitText = (n: number | null) => (n === null ? 'データなし' : `${n.toLocaleString('ja-JP')}人`)
+export const WAIT_NOTE = '待機児童は国の定義で数えた人数（2026年4月1日）。0人でも、希望の園に入れるとは限りません。お金の差には入れていません。'
 
 /* ───────── 移住支援金（一度きり）の言い方 ─────────
    23区から東京圏の外へ移る家族（パート・時短は対象外として計算）だけに関係する。判定はここ1か所で行う。

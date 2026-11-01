@@ -3,11 +3,15 @@
 // 数字を足すときは、必ず出典と確からしさを一緒に入れること。
 //
 // 2つの層がある:
-//   CITIES     … 市の制度まで調べた「くわしい街」（level 'detailed'）。全国データ（国の医療費・家賃・災害への配慮）を合わせたあとの City
-//   ALL_CITIES … 全国1,741市区町村。くわしい街は合わせたあとの City、それ以外は都道府県の制度（pref）か国の制度だけ（basic）
-import type { Care, City, Source } from './types'
+//   CITIES     … 市の制度まで調べた「くわしい街」（level 'detailed'）。全国データ（国の医療費・家賃・待機児童・災害への配慮）を合わせたあとの City
+//   ALL_CITIES … 全国1,741市区町村。くわしい街は合わせたあとの City、それ以外は、県や市区町村の制度が一部わかる街（pref）か、国の全国調査だけ分かる街（basic）
+//
+// 全国の材料（scripts/gen-national.mjs が national.ts に入れる）の使い方:
+//   - くわしい街は、その街の調べを先に使う。全国の材料で埋めるのは、まだ調べていない項目（仮の値のまま・出典なし）だけ
+//   - 全国の材料に入っていない街・項目は「確認中」「準備中」のまま（0円・「ない」にしない）
+import type { Care, City, Confidence, DataLevel, Source } from './types'
 import { MUNICIPALITIES, PREFS, type Muni } from './municipalities'
-import { MEDICAL_R7, RENT_R5 } from './national'
+import { IJU, LUNCH, MEDICAL, MEDICAL_META, NAT_SOURCES, NAT_TEXTS, NURSERY, RENT_R5, WAITLIST_META, WAITLIST_R8 } from './national'
 import { DETAILED_20 } from './detailed20'
 
 export { PREFS }
@@ -46,13 +50,17 @@ const S = {
   maff: { label: '農林水産省 食料・農業・農村白書（農業産出額）', url: 'https://www.maff.go.jp/j/wpaper/w_maff/r7/r7_h/trend/part1/pdf/c2_1_00.pdf' },
   kumamotoQuake: { label: '内閣府 令和8年熊本地震の被害状況（2026年10月5日）', url: 'https://www.bousai.go.jp/updates/r8kumamoto_jishin/status/pdf/r8kumamoto_jishin_20261005.pdf' },
   jmaQuake: { label: '気象庁 令和8年熊本地震', url: 'https://www.jma.go.jp/jma/menu/20260728_kumamoto_jishin.html' },
-  cfaR7: { label: 'こども家庭庁 こどもに係る医療費の助成についての調査（令和7年4月1日時点）', url: 'https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r7' },
+  cfaMed: { label: MEDICAL_META.label, url: MEDICAL_META.url },
   rentR5: { label: '総務省統計局 令和5年住宅・土地統計調査 第111-3表（e-Stat、加工して作成）', url: 'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040210044&fileKind=0' },
 } satisfies Record<string, Source>
 
-const unknownNursery = (note = '0〜2歳の保育料はまだ集めていません。'): City['nursery'] => ({
-  firstChildFree: false, secondChild: 'half', thirdChild: 'half', monthly: {}, fiscalYear: '未確認', confidence: '仮置き', note, sources: [],
+// まだ調べていない街の保育料。国の基準（同時に通う子で数えて2人目は半額・3人目以降は0円）だけを置く。
+// 月額の表がないので、お金がかかる子は「確認中」になる
+const unknownNursery = (note = '0〜2歳の保育料はまだ集めていません（国の基準だけで計算）。'): City['nursery'] => ({
+  firstChildFree: false, secondChild: 'half', thirdChild: 'free', monthly: {}, fiscalYear: '未確認', confidence: '仮置き', note, sources: [],
 })
+// くわしい街のうち、保育料をまだ調べていない街（unknownNursery のまま）か
+const isPlaceholderNursery = (n: City['nursery']) => n.fiscalYear === '未確認' && n.confidence === '仮置き' && !n.sources.length
 
 const muniByCode = new Map(MUNICIPALITIES.map((m) => [m.code, m]))
 const meta = (code: string) => {
@@ -203,7 +211,7 @@ const FIRST_13: City[] = [
     nursery: unknownNursery(),
     medical: { coversTo: null, note: '確認中', confidence: '仮置き', sources: [] },
     lunch: { juniorHighFree: null, confidence: '仮置き', sources: [] },
-    iju: { family: 1000000, perChild: 1000000, note: '子1人あたり最大100万円の加算（市の資料）。世帯の基本額は国の上限どおりと仮定。', confidence: '推定', sources: [S.kagoshimaIju] },
+    iju: { family: 1000000, perChild: 1000000, familyUpTo: true, perChildUpTo: true, note: '子1人あたり最大100万円の加算（市の資料）。世帯の基本額は国の上限（最大100万円）どおりと仮定。', confidence: '推定', sources: [S.kagoshimaIju] },
     pride: [
       { label: '桜島', kind: 'nature', fact: '目の前に桜島が見える街。', confidence: '推定' },
     ],
@@ -213,17 +221,21 @@ const FIRST_13: City[] = [
 // くわしい街の全部（全国データを合わせる前）。20市には、役所の位置・読みがななどを全国データから足す
 const DETAILED_RAW: City[] = [...FIRST_13, ...DETAILED_20.map((c): City => ({ ...c, ...meta(c.code!) }))]
 
-// ---------- 国の統計（全国の市区町村） ----------
+// ---------- 国の統計と全国の材料（national.ts） ----------
+const CONF: Confidence[] = ['確認済', '推定', '仮置き']
+const natSources = (idx: number[]) => idx.map((i) => NAT_SOURCES[i])
+const uniqSources = (list: Source[]) => list.filter((s, i) => list.findIndex((x) => x.url === s.url) === i)
+
 function nationalMedical(pref: string, name: string): City['medical'] | null {
-  const r = MEDICAL_R7[pref + name]
+  const r = MEDICAL[pref + name]
   if (!r) return null
   const [tsuin, , incomeLimit, copay, note] = r
   const ageText = tsuin === 6 ? '小学校に上がる前まで' : `${tsuin}歳の年度末まで`
   return {
     coversTo: tsuin,
-    note: `通院は${ageText}${incomeLimit ? '（所得制限あり。年収によっては対象外）' : ''}${copay ? '（一部自己負担あり）' : ''}。令和7年4月1日時点の全国調査${note ? `。${note}` : ''}`,
+    note: `通院は${ageText}${incomeLimit ? '（所得制限あり。年収によっては対象外）' : ''}${copay ? '（一部自己負担あり）' : ''}。${MEDICAL_META.asOf}時点の全国調査${note ? `。${note}` : ''}`,
     confidence: incomeLimit ? '推定' : '確認済',
-    sources: [S.cfaR7],
+    sources: [S.cfaMed],
   }
 }
 
@@ -234,7 +246,67 @@ function nationalRent(code: string): City['rent'] {
   return { family: a18 ?? all, all, note: '借家に住んでいる世帯が払っている家賃の平均（居住室18〜24畳）。募集家賃より低めに出やすい', source: S.rentR5 }
 }
 
-// ---------- 全国（都道府県の制度で下地を作る） ----------
+// 待機児童（全1,741市区町村が表に載っている。0人も、表に書かれた数）
+const WAITLIST_SOURCE: Source = { label: WAITLIST_META.label, url: WAITLIST_META.url }
+function nationalWaitlist(m: Muni): City['waitlist'] {
+  const count = WAITLIST_R8[m.code]
+  if (count === undefined) return undefined
+  const kuma = m.pref === '熊本県'
+  return {
+    count, asOf: WAITLIST_META.asOf, source: WAITLIST_SOURCE,
+    note: kuma ? `${WAITLIST_META.note}。${WAITLIST_META.kumamotoNote}` : WAITLIST_META.note,
+    confidence: kuma ? '推定' : '確認済',
+  }
+}
+
+// 中学校の給食費（表にない街は null のまま＝確認中）
+function nationalLunch(code: string): City['lunch'] | null {
+  const r = LUNCH[code]
+  if (!r) return null
+  const [free, conf, asOf, note, src] = r
+  return { juniorHighFree: free === 1, confidence: CONF[conf], note: `${NAT_TEXTS[note]}（時点: ${NAT_TEXTS[asOf]}）`, sources: natSources(src) }
+}
+
+// 移住支援金（表にない街は、iju も ijuCheck も付けない＝準備中）
+function nationalIju(code: string): Pick<City, 'iju' | 'ijuCheck'> {
+  const r = IJU[code]
+  if (!r) return {}
+  const sources = natSources(r.src)
+  const note = `${NAT_TEXTS[r.note]}（時点: ${NAT_TEXTS[r.asOf]}）`
+  if (r.s === 'yes') {
+    const cond = r.cn !== undefined ? `子どもの加算は${NAT_TEXTS[r.cn]}。` : ''
+    return { iju: { family: r.f!, perChild: r.c!, ...(r.s1 ? { single: r.s1 } : {}), familyUpTo: !!r.fu, perChildUpTo: !!r.cu, note: `${cond}${note}`, confidence: CONF[r.conf], sources } }
+  }
+  return { ijuCheck: { result: r.s, note, confidence: CONF[r.conf], sources } }
+}
+
+// 0〜2歳の保育料の制度を、下地（国の基準・都や県の制度）に重ねる。制度が表にない街は null
+function nationalNursery(code: string, base: City['nursery'], extra: Source[] = []): City['nursery'] | null {
+  const r = NURSERY[code]
+  if (!r) return null
+  const n: City['nursery'] = { ...base, monthly: { ...base.monthly } }
+  if (r.ff) Object.assign(n, { firstChildFree: true, secondChild: 'free', thirdChild: 'free' })
+  if (r.ffu && !n.firstChildFree) n.firstFreeUnder = r.ffu
+  if (r.sf && n.secondChild !== 'free') {
+    n.secondChild = 'free'
+    if (r.sfu) n.secondFreeUnder = r.sfu
+    if (r.so) n.secondOnly = true
+    if (r.sc === 'h') n.secondCount = 'household'
+  }
+  if (r.tf && !n.firstChildFree) {
+    n.thirdChild = 'free'
+    if (r.tc === 'h') n.thirdCount = 'household'
+  }
+  if (r.fa !== undefined && !n.firstChildFree) n.freeFromAge = r.fa
+  if (r.cc !== undefined) n.countConfidence = CONF[r.cc]
+  n.confidence = CONF[r.conf]
+  n.fiscalYear = NAT_TEXTS[r.asOf]
+  n.note = NAT_TEXTS[r.note]
+  n.sources = uniqSources([...extra, ...base.sources, ...natSources(r.src)])
+  return n
+}
+
+// ---------- 全国（都道府県の制度で下地を作り、全国の材料を重ねる） ----------
 const KUMAMOTO_HIT = new Set(['432024', '432130', '434426', '434442', '434680']) // 八代市・宇城市・嘉島町・甲佐町・氷川町（内閣府の速報で犠牲者が出た市町村）
 
 function careFor(m: Muni): Care | undefined {
@@ -247,16 +319,26 @@ function careFor(m: Muni): Care | undefined {
 const REGION_BY_PREF: Record<string, City['region']> = { 埼玉県: 'saitama', 神奈川県: 'kanagawa', 千葉県: 'chiba', 大阪府: 'osaka' }
 const METRO_BY_PREF: Record<string, City['metro']> = { 東京都: 'shutoken', 埼玉県: 'shutoken', 神奈川県: 'shutoken', 千葉県: 'shutoken', 大阪府: 'kansai', 京都府: 'kansai', 兵庫県: 'kansai', 奈良県: 'kansai' }
 
-// 東京都の区以外の市町村で、第1子の保育料の無償化を市のページで確かめた市（くわしい街の町田・八王子・調布のほか）
+// 東京都の区以外で、第1子の保育料の無償化を市のページでも確かめた市（くわしい街の町田・八王子・調布のほか）。出典に足す
 const TOKYO_FIRST_FREE: Record<string, Source> = { '132152': S.kunitachiFree } // 国立市
 
-// 東京都の区以外の市町村の、中学校の給食費。都は2025年1月から全区市町村で無償化と発表したが、
-// 令和8年度に都の支援のしくみが変わり（国の交付金は小学校だけ）、中学校がいまも無料かは市町村ごとに確かめていないので「確認中」
+// 都の全区市町村の給食費の無償化（2025年1月から）。中学校の今年度の値は、全国の材料（lunch-mext.csv）にある街だけ入れる
 const tokyoLunch = (): City['lunch'] => ({
   juniorHighFree: null, confidence: '仮置き',
   note: '東京都は2025年1月から全区市町村で給食費を無償化と発表した（都が半分を補助）。令和8年度に都の支援のしくみが変わり、この市町村の中学校がいまも無料かは確認中。',
   sources: [S.tokyoLunchAll, S.tokyoLunchR6, S.tokyoLunchR8],
 })
+
+// 段（どこまで分かるか）。くわしい街でなければ、国の基準より先の制度が1つでも分かる街は pref、なければ basic
+// （東京圏の中の街は移住支援金の対象外の街が多いので、移住支援金は「実施」と分かった街だけ数える）
+export function levelFor(c: City): DataLevel {
+  if (c.level === 'detailed') return 'detailed'
+  const n = c.nursery
+  const nursery = n.firstChildFree || n.firstFreeUnder !== undefined || n.secondChild === 'free' || n.freeFromAge !== undefined ||
+    n.secondCount === 'household' || n.thirdCount === 'household' || Object.keys(n.monthly).length > 0
+  const iju = !!c.iju || (c.metro !== 'shutoken' && !!c.ijuCheck)
+  return nursery || !!c.cash || c.lunch.juniorHighFree !== null || iju ? 'pref' : 'basic'
+}
 
 function buildFromPref(m: Muni): City {
   const isWard = m.pref === '東京都' && m.name.endsWith('区')
@@ -272,41 +354,36 @@ function buildFromPref(m: Muni): City {
     care: careFor(m),
   }
   if (m.pref === '東京都') {
-    city.level = 'pref'
     city.cash = { label: '018サポート', perChildYearly: 60000, maxAge: 18, confidence: '確認済', sources: [S.t018] }
     city.medical = { coversTo: 18, note: '東京都の制度で高校生年代まで（区市町村が実施）', confidence: '推定', sources: [] }
     city.pride = [{ label: '求人の多さ', kind: 'job', fact: '求人を受け付けた場所で数えた有効求人倍率は、東京が全国1位（1.73倍、2025年平均）。', confidence: '確認済', source: S.jil }]
     if (isWard) {
       city.nursery = { ...unknownNursery(), firstChildFree: true, secondChild: 'free', thirdChild: 'free', fiscalYear: '令和8年度', confidence: '推定', note: '23区は0〜2歳の第1子から0円（2025年9月から。都の補助で区が実施）。この区のページでは未確認。', sources: [S.tokyoFree] }
-      city.lunch = { juniorHighFree: true, confidence: '推定', note: '区立中学校の給食費は無償（公開前に区の公式ページで確認）', sources: [] }
-    } else if (TOKYO_FIRST_FREE[m.code]) {
-      // 市のページで、第1子の無償化（2025年9月から）を確かめた市（検索結果の抜粋で確かめたので 推定）
-      city.nursery = {
-        ...unknownNursery(), firstChildFree: true, secondChild: 'free', thirdChild: 'free', fiscalYear: '令和8年度（2025年9月から）', confidence: '推定',
-        note: '0〜2歳クラスは第1子から0円（2025年9月から。都の補助で市が実施。市のページの検索結果の抜粋で確かめた）。延長保育料などは別にかかる場合がある。',
-        sources: [TOKYO_FIRST_FREE[m.code], S.tokyoFirstFree],
-      }
-      city.lunch = tokyoLunch()
+      city.lunch = { juniorHighFree: true, confidence: '推定', note: '区立中学校の給食費は無償（区のページでは未確認）', sources: [S.tokyoLunchAll] }
     } else {
-      // 第1子・第2子の無償化は、都が区市町村を補助するしくみで、実施は区市町村ごと。
-      // 全区市町村で実施という都の発表・一覧は見つからなかった（第2子は都の資料で55区市町村という数も出ている）ので、
-      // この市町村では確かめていないとして、国の基準（同時に通う2人目は半額、3人目は0円）で計算する（月額がないので「確認中」になる）
-      city.nursery = {
-        ...unknownNursery('都は2025年9月から、0〜2歳の第1子の保育料を無償にする区市町村を補助している。実施は区市町村ごとで、この市町村の実施は確認中（全区市町村で実施という都の発表は見つからなかった）。第2子の無償化も同じく確認中なので、国の基準（同時に通う2人目は半額、3人目は0円）で計算。'),
-        thirdChild: 'free', sources: [S.tokyoFirstFree],
-      }
+      // 第1子の無償化は、都が区市町村を補助するしくみで、実施は区市町村ごと。都の実績（令和7年度）で実施が分かった街は、全国の材料で入れる。
+      // 分からない街は、国の基準（同時に通う2人目は半額、3人目は0円）で計算する（月額がないので「確認中」になる）
+      city.nursery = { ...unknownNursery('都は2025年9月から、0〜2歳の第1子の保育料を無償にする区市町村を補助している。この市町村が実施しているかは確認中なので、国の基準（同時に通う2人目は半額、3人目は0円）で計算。'), sources: [S.tokyoFirstFree] }
       city.lunch = tokyoLunch()
     }
   } else if (m.pref === '埼玉県') {
-    city.level = 'pref'
     city.medical = { coversTo: 18, note: '埼玉県は県内全市町村で18歳年度末まで（解説サイトの記述）', confidence: '推定', sources: [S.saitamaMed] }
     city.nursery = { ...unknownNursery('第3子以降は、上の子の年齢を問わず県内すべてで0円（県の事業）。第1子・第2子の月額は確認中。'), thirdChild: 'free', thirdCount: 'household', sources: [S.saitama3] }
     city.pride = [{ label: '第3子は保育料0円', kind: 'life', fact: '埼玉県は63市町村すべてで、第3子以降の保育料が無料。', confidence: '確認済', source: S.saitama3 }]
   }
+  // 全国の材料を重ねる（保育料の制度・中学校の給食費・移住支援金・待機児童）
+  const tokyoBase = m.pref === '東京都' && !isWard ? { ...unknownNursery(''), sources: [S.tokyoFirstFree] } : city.nursery
+  const nat = nationalNursery(m.code, tokyoBase, TOKYO_FIRST_FREE[m.code] ? [TOKYO_FIRST_FREE[m.code]] : [])
+  if (nat) city.nursery = nat
+  const lunch = nationalLunch(m.code)
+  if (lunch) city.lunch = lunch
+  Object.assign(city, nationalIju(m.code))
   // 国の全国調査で分かる医療費助成（横浜市はくわしい街になったので、ここには来ない）
   const med = nationalMedical(m.pref, m.name)
   if (med) city.medical = med
   city.rent = nationalRent(m.code)
+  city.waitlist = nationalWaitlist(m)
+  city.level = levelFor(city)
   return city
 }
 
@@ -316,10 +393,17 @@ export const ALL_CITIES: City[] = MUNICIPALITIES.map((m) => {
   if (!f) return buildFromPref(m)
   // くわしい街: 医療費が未確認（または弱い）なら国の全国調査で埋める（神奈川の市は、国の調査より新しい市の情報を優先）
   const weak = f.medical.coversTo === null || (f.medical.confidence !== '確認済' && f.region !== 'kanagawa')
-  const nat = weak ? nationalMedical(m.pref, m.name) : null
+  const natMed = weak ? nationalMedical(m.pref, m.name) : null
   // 調べたが照合で確かめきれなかった市（coversTo が null で出典つき）は、そのメモと出典を国の調査に添える
-  const medical = nat ? (f.medical.coversTo === null && f.medical.sources.length ? { ...nat, note: `${nat.note}。${f.medical.note}`, sources: [...nat.sources, ...f.medical.sources] } : nat) : f.medical
-  return { ...f, medical, rent: f.rent ?? nationalRent(m.code), care: f.care ?? careFor(m) }
+  const medical = natMed ? (f.medical.coversTo === null && f.medical.sources.length ? { ...natMed, note: `${natMed.note}。${f.medical.note}`, sources: [...natMed.sources, ...f.medical.sources] } : natMed) : f.medical
+  // 保育料: まだ調べていない街（unknownNursery のまま）だけ、全国の材料で埋める
+  const nursery = isPlaceholderNursery(f.nursery) ? nationalNursery(m.code, f.nursery) ?? f.nursery : f.nursery
+  // 給食: まだ調べていない街（値も出典もメモもない）は全国の材料で埋める。値が同じで出典がない街は、出典の付いた全国の材料にする
+  const natLunch = nationalLunch(m.code)
+  const lunch = natLunch && !f.lunch.sources.length && (f.lunch.juniorHighFree === null ? !f.lunch.note : f.lunch.juniorHighFree === natLunch.juniorHighFree) ? natLunch : f.lunch
+  // 移住支援金: 街の調べ（iju・ijuCheck）がなければ全国の材料
+  const iju = f.iju || f.ijuCheck ? {} : nationalIju(m.code)
+  return { ...f, ...iju, medical, nursery, lunch, rent: f.rent ?? nationalRent(m.code), waitlist: nationalWaitlist(m), care: f.care ?? careFor(m) }
 })
 
 const BY_ID = new Map<string, City>()
@@ -335,3 +419,14 @@ export const cityById = (id: string) => BY_ID.get(id)!
 export const DATA_AS_OF = '2026年11月1日'
 export const DISCLAIMER = '試作版です。数字は2026年11月1日時点の調査値と推定を含みます。申請の前に、必ず市区町村の窓口で確かめてください。'
 export const MUNI_SOURCE: Source = { label: '市区町村の一覧（Code for FUKUI「localgovjp」、CC0）', url: 'https://github.com/code4fukui/localgovjp' }
+// 中学校の給食費の全国平均（計算に使う月額の出典）
+export const MEXT_LUNCH_SOURCE: Source = { label: '文部科学省 学校給食実施状況等調査 令和7年度（中学校の給食費の全国平均 月6,013円、2026年7月30日公表）', url: 'https://www.mext.go.jp/content/20260730-mxt-kenshoku-000051287_03.pdf' }
+// 全国のデータの出典（画面の「ご注意」と site/public/about.html に書く。どれも加工して作成）。
+// 保育料の無償化・給食費・移住支援金の街ごとの値は、都道府県・市区町村の公開資料から（出典は項目ごとに付けている）
+export const NATIONAL_SOURCES: Source[] = [
+  { label: MEDICAL_META.label, url: MEDICAL_META.url },
+  S.rentR5,
+  { label: WAITLIST_META.label, url: WAITLIST_META.url },
+  MEXT_LUNCH_SOURCE,
+  { label: '内閣府 地方創生「移住支援金」（制度のしくみ。実施している市町村は都道府県・市町村の案内から）', url: 'https://www.chisou.go.jp/sousei/ijyu_shienkin.html' },
+]

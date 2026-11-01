@@ -1,9 +1,9 @@
-// 案A「カプセルトイ」 — 結果：カプセルの中身（はんこ・金額・家賃の目安・家族の顔・説明書・確認中・一度きり・おまけ・棚・スタンプ帳・次の一歩）
+// 案A「カプセルトイ」 — 結果：カプセルの中身（はんこ・金額・家賃と待機児童の目安・家族の顔・説明書・確認中・一度きり・おまけ・棚・スタンプ帳・次の一歩）
 import NumberFlow from '@number-flow/react'
 import { AnimatePresence, motion, useAnimationControls, useInView, useReducedMotion } from 'motion/react'
 import { ArrowDown, ArrowLeft, ArrowRight, ChevronRight, ExternalLink, RotateCcw, Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react'
-import { ALL_CITIES, DATA_AS_OF, DISCLAIMER, MUNI_SOURCE, cityById, compare, yenMan } from '@/shared'
+import { DATA_AS_OF, DISCLAIMER, MUNI_SOURCE, NATIONAL_SOURCES, cityById, compare, yenMan } from '@/shared'
 import type { Breakdown, Care, City, Comparison, Confidence, FamilyInput, Mood, Pride, Source } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Capsule, CapsuleBottom, CapsuleTop, CharmArt, Coin, ItemIcon, Piggy } from './art'
@@ -13,7 +13,7 @@ import { EmptyStamp, GotouchiStamp } from './stamp'
 import { LevelTag } from './towns'
 import {
   TONE_BG, TONE_INK, avgLead, everydayText, fromHit, headlineOf, ijuState, isHit, isPending, isSharedPride, itemAmount, levelTag, levelText, lookOf, manNumber,
-  missingText, moodLine, nextSteps, perYearChip, prefKind, prideIsPref, scopeOf, shelfLine, sublineOf, thinText, tiesAtTop, toneOf,
+  missingText, moodLine, nextSteps, perYearChip, prefKind, prideIsPref, scopeOf, shelfLine, sublineOf, thinText, tiesAtTop, toneOf, waitOf, waitText,
 } from './lib'
 
 /* ───────── 小さな部品 ───────── */
@@ -351,6 +351,33 @@ export function RentTag({ c, compact = false, className }: { c: Comparison; comp
       {!compact && r.source && (
         <p className="mt-0.5 text-[12px] leading-snug">
           <SourceLink s={r.source} />
+        </p>
+      )}
+    </div>
+  )
+}
+
+// 待機児童の目安：家賃と同じく、お金の差とは別の札。0人は「表で0人」で、入りやすさを約束するものではない
+export function WaitTag({ c, compact = false, className }: { c: Comparison; compact?: boolean; className?: string }) {
+  const w = waitOf(c)
+  if (!w) return null
+  return (
+    <div className={cn('relative rounded-[12px] border-[3px] border-[var(--ink)] bg-[var(--stay-bg)] py-2.5 pl-7 pr-3 shadow-[3px_4px_0_var(--ink)]', className)}>
+      <span aria-hidden className="absolute left-2.5 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--bg)]" />
+      <p className="flex flex-wrap items-center gap-x-1.5 text-[13px] font-black">
+        保育園の待機児童
+        <span className="rounded-full border-2 border-[var(--ink)]/60 px-1.5 text-[12px] font-bold leading-tight text-[var(--ink-soft)]">お金の差とは別</span>
+      </p>
+      <p className="mt-0.5 text-[14px] font-black leading-snug">
+        {c.from.name} {waitText(w.from)}
+        <span className="mx-1 text-[var(--ink-soft)]">→</span>
+        {c.to.name} {waitText(w.to)}
+        <span className="ml-1 text-[12px] font-bold text-[var(--ink-soft)]">（{w.asOf}）</span>
+      </p>
+      {!compact && <p className="mt-1 text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{w.note}。0人でも、希望の園に入れるとは限りません。</p>}
+      {!compact && w.source && (
+        <p className="mt-0.5 text-[12px] leading-snug">
+          <SourceLink s={w.source} />
         </p>
       )}
     </div>
@@ -1005,32 +1032,27 @@ export function NextStepsBox({ c, others, input }: { c: Comparison; others: numb
   )
 }
 
-const CFA = ALL_CITIES.flatMap((c) => c.medical.sources).find((s) => s.url.includes('cfa.go.jp'))
-const ESTAT = ALL_CITIES.find((c) => c.rent)?.rent?.source
+const madeFrom = (s: Source): Source => ({ ...s, label: s.label.includes('加工') ? s.label : `${s.label}を加工して作成` })
 
 export function Notice() {
   return (
     <footer className="rounded-[14px] border-2 border-[var(--ink)]/30 bg-white/60 px-3.5 py-3 text-[12.5px] leading-relaxed text-[var(--ink)]">
       <p className="font-black">ご注意</p>
       <p className="mt-1">{DISCLAIMER}</p>
-      <p className="mt-1">データは{DATA_AS_OF}時点。上の金額は子育ての制度の差だけで、家賃・通勤費・税金は入っていません（家賃は目安として別に出しています）。</p>
+      <p className="mt-1">データは{DATA_AS_OF}時点。上の金額は子育ての制度の差だけで、家賃・通勤費・税金は入っていません（家賃と待機児童は目安として別に出しています）。</p>
       <p className="mt-1">入力した家族のことは、この端末の中だけで使い、どこにも送りません。出てくる街は計算で決まり、くじではありません。</p>
       <p className="mt-2 font-black">出典</p>
       <ul className="mt-0.5">
         <li className="flex min-h-[40px] items-center py-1">
           <SourceLink s={MUNI_SOURCE} />
         </li>
-        {CFA && (
-          <li className="flex min-h-[40px] items-center py-1">
-            <SourceLink s={{ ...CFA, label: `${CFA.label}を加工して作成` }} />
+        {NATIONAL_SOURCES.map((s) => (
+          <li key={s.url} className="flex min-h-[40px] items-center py-1">
+            <SourceLink s={madeFrom(s)} />
           </li>
-        )}
-        {ESTAT && (
-          <li className="flex min-h-[40px] items-center py-1">
-            <SourceLink s={{ ...ESTAT, label: ESTAT.label.includes('加工') ? ESTAT.label : `${ESTAT.label}を加工して作成` }} />
-          </li>
-        )}
+        ))}
       </ul>
+      <p className="mt-1">保育料の無償化・中学校の給食費・移住支援金の街ごとの値は、都道府県や市区町村の公開資料をもとに、このサイトがまとめたものです（出典は項目ごとの「出典を見る」に）。</p>
     </footer>
   )
 }
@@ -1095,7 +1117,7 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoP
       {allPending && onGoPick && (
         <div className="mx-auto mb-4 flex max-w-[520px] flex-col gap-2 rounded-[16px] border-[3px] border-dashed border-[var(--ink)] bg-[var(--paper)] px-3.5 py-3 lg:max-w-none lg:flex-row lg:items-center lg:justify-between">
           <p className="text-[14px] font-bold leading-relaxed">
-            この台の街は、どれも保育料などが<span className="font-black">まだ準備中</span>でした。はんこと、家賃・医療費の目安は見られます。
+            この台の街は、どれも、この家族に関係する制度が<span className="font-black">まだ確認中</span>でした。はんこと、医療費・待機児童・家賃の目安は見られます。
           </p>
           <button type="button" onClick={onGoPick} className="va-push inline-flex min-h-[44px] shrink-0 items-center justify-center gap-1.5 px-4 py-2 text-[15px] font-black">
             くわしい街とくらべる
@@ -1188,6 +1210,7 @@ export function DetailGrid({ c, input, sample, note, side, book, bottom }: { c: 
         <div className="space-y-3">
           <FamilyFaces c={c} input={input} />
           <RentTag c={c} />
+          <WaitTag c={c} />
         </div>
         <CapsuleContents c={c} input={input} />
       </div>
