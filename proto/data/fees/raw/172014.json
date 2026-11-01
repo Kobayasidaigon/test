@@ -1,0 +1,166 @@
+{
+  "code": "172014",
+  "pref": "石川県",
+  "name": "金沢市",
+  "status": "partial",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月から8月までは令和7年度の市町村民税、令和8年9月から令和9年8月までは令和8年度の市町村民税にもとづき算定。3歳未満児（この表の対象）は令和5年4月2日以降に生まれた子ども。表（月額）は年度を通じて同じ。公立と私立の認可保育所・こども園で保育料の違いはない。",
+  "tax_basis": "6%",
+  "tax_note": "市町村民税の額は、主に寄附金税額控除、外国税額控除、配当控除、住宅借入金等特別税額控除等の適用前の税額。金沢市は中核市で、6%・8%の換算の注記はない（市町村民税の標準税率6%）。誰の税額を合算するか（祖父母の扱いなど）は表の注記に書かれていない。",
+  "table": {
+    "title": "令和8年度の保育料（月額） 保育認定の子ども（3歳未満児）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯 等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割額のみ課税世帯",
+        "monthly": 9500,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "所得割の課税世帯 48,600円未満",
+        "monthly": 12400,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 48600,
+        "upper": 55700,
+        "condition": "48,600円以上 55,700円未満",
+        "monthly": 16200,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 55700,
+        "upper": 59200,
+        "condition": "55,700円以上 59,200円未満",
+        "monthly": 19100,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 59200,
+        "upper": 79500,
+        "condition": "59,200円以上 79,500円未満",
+        "monthly": 23600,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 79500,
+        "upper": 97000,
+        "condition": "79,500円以上 97,000円未満",
+        "monthly": 29500,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 97000,
+        "upper": 106800,
+        "condition": "97,000円以上 106,800円未満",
+        "monthly": 35100,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 106800,
+        "upper": 133600,
+        "condition": "106,800円以上 133,600円未満",
+        "monthly": 39500,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 133600,
+        "upper": 169000,
+        "condition": "133,600円以上 169,000円未満",
+        "monthly": 42700,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 169000,
+        "upper": 301000,
+        "condition": "169,000円以上 301,000円未満",
+        "monthly": 45400,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 301000,
+        "upper": null,
+        "condition": "301,000円以上",
+        "monthly": 46300,
+        "monthly_second": null
+      }
+    ],
+    "notes": "画像のPDF（300dpiのスキャン画像1枚で、文字が取れない）。https://www.kanazawa-kosodate.net/ho/2026fee.pdf を90dpiと150dpiの画像にして目で読み、数字を2回見直した。表の列は「保育料（1人につき）」の標準時間・短時間と、軽減①②の対象となる階層の印。保育短時間: C 9,400／D1 12,200／D2 16,000／D3 18,800／D4 23,200／D5 29,000／D6 34,600／D7 38,900／D8 42,000／D9 44,700／D10 45,600。第2子の別欄はない（第2子以降は0円）。D1 の下限は表に書かれていないが、C（均等割額のみ）と分けるため lower=1 とした。軽減①（第2子以降0円）は C〜D10 が対象。軽減②: C階層〜市町村民税の所得割額77,101円未満の世帯（D4 は所得割77,101円未満に限る）で、母子及び父子世帯、在宅障害児（者）のいる世帯等は、生計を同一にする子どものうち第1子が2分の1相当額（上限9,000円）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（表で月9,500〜46,300円）。0円は生活保護世帯等（A）と非課税世帯（B）だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和7年4月分保育料から多子軽減を拡充: 保護者の所得及び保育施設等の同時利用の有無にかかわらず、第2子以降は0円（所得制限なし）。大学生など別居の兄弟姉妹や、18歳以上（平成20年4月1日以前の生まれ）の兄弟姉妹がいる場合は申請が必要（上の子の年齢の上限は書かれていない）。兄弟姉妹が別々の保育所・認定こども園に通っていても第2子の適用になる。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降0円に含まれる（所得・同時利用を問わない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度の保育料（月額）（PDF、画像のPDF）金沢子育てお役立ちウェブ のびのびビ～ノ（金沢市こども未来局）",
+      "url": "https://www.kanazawa-kosodate.net/ho/2026fee.pdf"
+    },
+    {
+      "label": "保育料 金沢子育てお役立ちウェブ のびのびビ～ノ（金沢市こども未来局）",
+      "url": "https://www.kanazawa-kosodate.net/ho/fee.html"
+    },
+    {
+      "label": "第2子以降の保育料はどのようになりますか 金沢市公式ホームページ",
+      "url": "https://www4.city.kanazawa.lg.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/10020.html"
+    },
+    {
+      "label": "兄弟姉妹が、別々の保育所・認定こども園に通っている場合でも第2子の保育料が適用されますか 金沢市公式ホームページ",
+      "url": "https://www4.city.kanazawa.lg.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/10019.html"
+    },
+    {
+      "label": "保育料はいくらですか 金沢市公式ホームページ",
+      "url": "https://www4.city.kanazawa.lg.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/10022.html"
+    },
+    {
+      "label": "公立と私立で保育料は違いますか 金沢市公式ホームページ",
+      "url": "https://www4.city.kanazawa.lg.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/10636.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "市の公式サイトのFAQ（保育料はいくらですか）から、市こども未来局の「金沢子育てお役立ちウェブ」の保育料ページへ進み、2026fee.pdf を取った。",
+    "令和9年4月保育所等利用申込みの案内パンフレット（r9_ho1.pdf、2026年8月作成、12ページ）も画像のPDFで文字が取れなかった。"
+  ],
+  "notes": "status を partial にしたのは、料金表が画像のPDF（文字なし）で、画像を目で読んで書き写したため（決まりに合わせた。表は令和8年度の公式の表で、数字は2回見直した）。中核市。D1〜D10 の範囲は切れ目・重なりなし。cash・one_time・中学校給食は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}
