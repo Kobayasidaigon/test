@@ -222,7 +222,13 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
     '家賃・通勤費・税金・引越し代',
     oneTime ? '一度きりのお金' : '',
   ].filter(Boolean).join('、') + 'は、この金額に入っていません。'
-  return { from, to, years, perYear, total, oneTime, items, unknown: unknownItems, mood, headline, subline, status, perYearLabel, excluded, care: to.care, distanceKm: distanceKm(from, to) }
+  const rf = from.rent?.family ?? null, rt = to.rent?.family ?? null
+  const rent = from.rent || to.rent ? {
+    from: rf, to: rt, diffMonthly: rf !== null && rt !== null ? rt - rf : null,
+    note: '借家に住んでいる世帯が払っている家賃の平均（居住室18〜24畳）。募集家賃とは違う。毎年の差には入れていない',
+    source: (to.rent ?? from.rent)!.source,
+  } : undefined
+  return { from, to, years, perYear, total, oneTime, items, unknown: unknownItems, mood, headline, subline, status, perYearLabel, excluded, care: to.care, distanceKm: distanceKm(from, to), rent }
 }
 
 // ---------- 候補の選び方 ----------
@@ -298,7 +304,7 @@ export function nearbyCities(fromId: string, km = 20, limit = 12): City[] {
 export const DATA_LEVEL_TEXT = {
   detailed: '市の制度まで調べた街',
   pref: '都道府県の制度だけ分かる街',
-  basic: '国の制度だけ分かる街（くわしいデータは準備中）',
+  basic: '国の統計（医療費助成・家賃）だけ分かる街。保育料などは準備中',
 } as const
 
 // 噛み砕き: 年額を「月」「1日」に言い換える

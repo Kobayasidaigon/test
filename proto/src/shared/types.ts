@@ -65,6 +65,8 @@ export interface City {
   url?: string         // 公式サイト
   phrase?: string      // 街のキャッチフレーズ（localgovjp より）
   care?: Care
+  // 借家の家賃の平均（令和5年住宅・土地統計調査。いま住んでいる世帯が払っている額で、募集家賃より低めに出やすい）
+  rent?: { family: number | null; all: number | null; note: string; source: Source }
   // 0〜2歳の保育料（認可保育所・保育標準時間・第1子の月額）。3〜5歳は国の無償化で0円。
   nursery: {
     firstChildFree: boolean          // 0〜2歳の第1子から無料
@@ -122,4 +124,6 @@ export interface Comparison {
   excluded: string              // 合計に入っていないもの（確認中の項目、家賃、通勤費、税金など）
   care?: Care
   distanceKm?: number           // 今の街からの直線距離
+  // 暮らしのお金の目安（家賃）。毎年の差（perYear）には入れない。to − from（プラスなら候補の街のほうが高い）
+  rent?: { from: number | null; to: number | null; diffMonthly: number | null; note: string; source: Source }
 }

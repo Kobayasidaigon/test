@@ -7,6 +7,7 @@
 //   ALL_CITIES … 全国1,741市区町村。くわしい街はそのまま、それ以外は都道府県の制度（pref）か国の制度だけ（basic）
 import type { Care, City, Source } from './types'
 import { MUNICIPALITIES, PREFS, type Muni } from './municipalities'
+import { MEDICAL_R7, RENT_R5 } from './national'
 
 export { PREFS }
 
@@ -40,6 +41,8 @@ const S = {
   maff: { label: '農林水産省 食料・農業・農村白書（農業産出額）', url: 'https://www.maff.go.jp/j/wpaper/w_maff/r7/r7_h/trend/part1/pdf/c2_1_00.pdf' },
   kumamotoQuake: { label: '内閣府 令和8年熊本地震の被害状況（2026年10月5日）', url: 'https://www.bousai.go.jp/updates/r8kumamoto_jishin/status/pdf/r8kumamoto_jishin_20261005.pdf' },
   jmaQuake: { label: '気象庁 令和8年熊本地震', url: 'https://www.jma.go.jp/jma/menu/20260728_kumamoto_jishin.html' },
+  cfaR7: { label: 'こども家庭庁 こどもに係る医療費の助成についての調査（令和7年4月1日時点）', url: 'https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r7' },
+  rentR5: { label: '総務省統計局 令和5年住宅・土地統計調査 第111-3表（e-Stat、加工して作成）', url: 'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040210044&fileKind=0' },
 } satisfies Record<string, Source>
 
 const unknownNursery = (note = '0〜2歳の保育料はまだ集めていません。'): City['nursery'] => ({
@@ -201,6 +204,27 @@ export const CITIES: City[] = [
   },
 ]
 
+// ---------- 国の統計（全国の市区町村） ----------
+function nationalMedical(pref: string, name: string): City['medical'] | null {
+  const r = MEDICAL_R7[pref + name]
+  if (!r) return null
+  const [tsuin, , incomeLimit, copay, note] = r
+  const ageText = tsuin === 6 ? '小学校に上がる前まで' : `${tsuin}歳の年度末まで`
+  return {
+    coversTo: tsuin,
+    note: `通院は${ageText}${incomeLimit ? '（所得制限あり。年収によっては対象外）' : ''}${copay ? '（一部自己負担あり）' : ''}。令和7年4月1日時点の全国調査${note ? `。${note}` : ''}`,
+    confidence: incomeLimit ? '推定' : '確認済',
+    sources: [S.cfaR7],
+  }
+}
+
+function nationalRent(code: string): City['rent'] {
+  const r = RENT_R5[code.slice(0, 5)]
+  if (!r) return undefined
+  const [all, a18] = r
+  return { family: a18 ?? all, all, note: '借家に住んでいる世帯が払っている家賃の平均（居住室18〜24畳）。募集家賃より低めに出やすい', source: S.rentR5 }
+}
+
 // ---------- 全国（都道府県の制度で下地を作る） ----------
 const KUMAMOTO_HIT = new Set(['432024', '432130', '434426', '434442', '434680']) // 八代市・宇城市・嘉島町・甲佐町・氷川町（内閣府の速報で犠牲者が出た市町村）
 
@@ -247,13 +271,20 @@ function buildFromPref(m: Muni): City {
     city.level = 'pref'
     city.medical = { coversTo: 18, note: '2026年6月から18歳年度末まで（申請不要）', confidence: '確認済', sources: [S.yokohamaMed] }
   }
+  // 国の全国調査で分かる医療費助成（横浜市は2026年6月の拡大を優先）
+  const med = m.code === '141003' ? null : nationalMedical(m.pref, m.name)
+  if (med) city.medical = med
+  city.rent = nationalRent(m.code)
   return city
 }
 
 const FEATURED_BY_CODE = new Map(CITIES.map((c) => [c.code!, c]))
 export const ALL_CITIES: City[] = MUNICIPALITIES.map((m) => {
   const f = FEATURED_BY_CODE.get(m.code)
-  return f ? { ...f, care: f.care ?? careFor(m) } : buildFromPref(m)
+  if (!f) return buildFromPref(m)
+  // くわしい街: 医療費が未確認なら国の全国調査で埋める（市の新しい情報があればそちらを優先）
+  const med = f.medical.coversTo === null || f.medical.confidence !== '確認済' && f.region !== 'kanagawa' ? nationalMedical(m.pref, m.name) : null
+  return { ...f, medical: med ?? f.medical, rent: f.rent ?? nationalRent(m.code), care: f.care ?? careFor(m) }
 })
 
 const BY_ID = new Map<string, City>()
