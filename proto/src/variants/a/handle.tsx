@@ -6,6 +6,7 @@
  * 変えたところ: 端のあるダイヤルではなく、時計回りにしか進まない「ラチェット」にした。
  *   1/4回転ごとにカチッと止まり、ぐるっと1周すると onTurned。タップ・Enter・Space なら自動で1周する。
  *   影は回らない台の円盤に付け、回すのは黄色い面と赤いバーだけ（光が回って見えないように）。
+ *   「回してね」の矢印は、ハンドルの左上に、金属の輪にそった黄色い弧（墨のふち）で描いた（筐体のふちや紙にかからない）。
  */
 import { animate, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from 'motion/react'
 import { type KeyboardEvent, type PointerEvent, type Ref, useRef, useState } from 'react'
@@ -147,12 +148,38 @@ export function GachaHandle({ onTurned, onNotch, disabled = false, size = 168, k
           <span className="absolute left-1/2 top-1/2 block -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-[var(--ink)] bg-[var(--paper)]" style={{ width: size * 0.15, height: size * 0.15 }} />
         </motion.div>
       </div>
-      {!disabled && !busy && (
-        <svg aria-hidden viewBox="0 0 60 60" width="54" height="54" className="va-nudge pointer-events-none absolute -right-7 -top-6" overflow="visible">
-          <path d="M10 22 A26 26 0 0 1 48 20" fill="none" stroke="var(--ink)" strokeWidth="5" strokeLinecap="round" />
-          <path d="M48 20 L50 8 M48 20 L37 17" fill="none" stroke="var(--ink)" strokeWidth="5" strokeLinecap="round" />
-        </svg>
-      )}
+      {!disabled && !busy && <NudgeArrow size={size} />}
     </div>
+  )
+}
+
+// 「回してね」の矢印。ハンドルの左上（8時〜11時）に、金属の輪にそった黄色い弧で描く（筐体のふちや紙にかからない）。
+// 輪の中心を軸に少しだけ時計回りにゆれる
+function NudgeArrow({ size }: { size: number }) {
+  const c = size / 2
+  const r = size / 2 + 9
+  const at = (deg: number) => {
+    const a = (deg * Math.PI) / 180
+    return { x: c + r * Math.sin(a), y: c - r * Math.cos(a) }
+  }
+  const p1 = at(-112)
+  const p2 = at(-34)
+  // 矢じり：時計回りの向き（接線）から ±38° 開いた2本
+  const t = (-34 * Math.PI) / 180
+  const dir = { x: Math.cos(t), y: Math.sin(t) }
+  const head = (s: number) => {
+    const a = Math.atan2(dir.y, dir.x) + Math.PI + s
+    return `M${p2.x.toFixed(1)} ${p2.y.toFixed(1)} L${(p2.x + 13 * Math.cos(a)).toFixed(1)} ${(p2.y + 13 * Math.sin(a)).toFixed(1)}`
+  }
+  const d = `M${p1.x.toFixed(1)} ${p1.y.toFixed(1)} A${r} ${r} 0 0 1 ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`
+  return (
+    <svg aria-hidden viewBox={`0 0 ${size} ${size}`} width={size} height={size} className="va-nudge pointer-events-none absolute inset-0" overflow="visible">
+      {[d, head(0.66), head(-0.66)].map((p, i) => (
+        <path key={`o${i}`} d={p} fill="none" stroke="var(--ink)" strokeWidth="9" strokeLinecap="round" />
+      ))}
+      {[d, head(0.66), head(-0.66)].map((p, i) => (
+        <path key={`i${i}`} d={p} fill="none" stroke="var(--yolk)" strokeWidth="4" strokeLinecap="round" />
+      ))}
+    </svg>
   )
 }

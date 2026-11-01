@@ -8,6 +8,8 @@
  *   - 横一列のピルをやめ、ひもで吊るした札を格子に並べた。すべっていくのは黄色い札の地。
  *   - 選んだ札は少しゆれて、赤い丸のしるしがポンと付く。札には小さな説明（hint）と絵（icon）も付けられ、
  *     選んだときの地の色（tint。街のカプセルの色など）も変えられる。
+ *   - 小さい札（compact）は字を13pxにして折り返さない。minCol を渡すと、札がその幅より細くなる画面では
+ *     札を縦に並べる（「通わない」が札のふちからはみ出さないように）。
  */
 import { motion, useReducedMotion } from 'motion/react'
 import { Check } from 'lucide-react'
@@ -24,13 +26,14 @@ export interface TagOption<T extends string> {
   tint?: string
 }
 
-export function TagGroup<T extends string>({ options, value, onChange, ariaLabel, columns = 2, compact = false }: {
+export function TagGroup<T extends string>({ options, value, onChange, ariaLabel, columns = 2, compact = false, minCol }: {
   options: TagOption<T>[]
   value: T
   onChange: (v: T) => void
   ariaLabel: string
   columns?: number
   compact?: boolean
+  minCol?: number // 札の最小の幅（px）。入りきらない幅では、札を縦に並べる
 }) {
   const pill = useId()
   const reduce = useReducedMotion()
@@ -48,7 +51,12 @@ export function TagGroup<T extends string>({ options, value, onChange, ariaLabel
     }
   }
   return (
-    <div role="radiogroup" aria-label={ariaLabel} className="grid gap-x-2.5 gap-y-3.5" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
+    <div
+      role="radiogroup"
+      aria-label={ariaLabel}
+      className={cn('grid gap-y-3.5', compact ? 'gap-x-1.5' : 'gap-x-2.5')}
+      style={{ gridTemplateColumns: minCol ? `repeat(auto-fit, minmax(${minCol}px, 1fr))` : `repeat(${columns}, minmax(0, 1fr))` }}
+    >
       {options.map((o, index) => {
         const on = o.value === value
         return (
@@ -72,7 +80,7 @@ export function TagGroup<T extends string>({ options, value, onChange, ariaLabel
             <motion.span
               className={cn(
                 'relative block rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)] shadow-[3px_4px_0_var(--ink)]',
-                compact ? 'px-2.5 pb-2 pt-3' : 'px-3 pb-3 pt-3.5',
+                compact ? 'px-1.5 pb-1.5 pt-2.5 text-center' : 'px-3 pb-3 pt-3.5',
               )}
               style={{ transformOrigin: '50% -12px' }}
               animate={on && !reduce ? { rotate: [0, -5, 3.5, -1.5, 0] } : { rotate: 0 }}
@@ -92,7 +100,7 @@ export function TagGroup<T extends string>({ options, value, onChange, ariaLabel
                 {o.icon && <span className="shrink-0">{o.icon}</span>}
                 <span className="block min-w-0">
                 {o.sub && <span className="block text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{o.sub}</span>}
-                <span className={cn('block font-black leading-snug [word-break:keep-all]', compact ? 'text-[15px]' : 'text-[16px]')}>
+                <span className={cn('block font-black leading-snug [word-break:keep-all]', compact ? 'whitespace-nowrap text-[13px]' : 'text-[16px]')}>
                   {typeof o.label === 'string' ? o.label.replace(/・/g, '・\u200b') : o.label}
                 </span>
                 {o.hint && <span className="mt-0.5 block text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{o.hint}</span>}
@@ -103,7 +111,7 @@ export function TagGroup<T extends string>({ options, value, onChange, ariaLabel
                   aria-hidden
                   initial={reduce ? false : { scale: 1.8, opacity: 0, rotate: -20 }}
                   animate={{ scale: 1, opacity: 1, rotate: -12 }}
-                  transition={{ type: 'spring', stiffness: 520, damping: 22 }}
+                  transition={{ type: 'spring', stiffness: 520, damping: 22, opacity: { duration: 0.12 } }}
                   className="absolute -right-2 -top-2.5 grid h-8 w-8 place-items-center rounded-full border-[3px] border-[var(--ink)] bg-[var(--red)] text-white"
                 >
                   <Check className="h-4 w-4" strokeWidth={4} />

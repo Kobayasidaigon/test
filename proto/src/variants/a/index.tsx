@@ -218,20 +218,39 @@ function Lamps({ steps, step, onJump }: { steps: StepKey[]; step: StepKey; onJum
   )
 }
 
-const POOL_INFO: Record<Pool, { name: string; note: string; body: string }> = {
-  featured: { name: 'くわしい街', note: '市区町村の制度まで調べた13の街から', body: 'var(--red)' },
-  nearby: { name: '近くの街', note: '今の街から30km以内', body: 'var(--mint)' },
-  all: { name: '全国', note: '全国の市区町村から（上の30個を棚に）', body: 'var(--sky)' },
+const POOL_INFO: Record<Pool, { name: string; where: string; body: string }> = {
+  featured: { name: 'くわしい街', where: '市区町村の制度まで調べた街', body: 'var(--red)' },
+  nearby: { name: '近くの街', where: '今の街から30km以内', body: 'var(--mint)' },
+  all: { name: '全国', where: '全国の市区町村', body: 'var(--sky)' },
+}
+interface PoolStat {
+  count: number
+  pending: number // 確認中・準備中（まだ中身を比べられない）の数
+  caps: { color: string; level: DataLevel }[]
+  mix: Mix
+}
+const n = (v: number) => v.toLocaleString('ja-JP')
+const allPendingPool = (s?: PoolStat) => !!s && s.count > 0 && s.pending === s.count
+
+// 台の説明：何が出てくるかを正直に（準備中しか入っていない台は、回す前に言う）
+function poolNote(p: Pool, s: PoolStat) {
+  if (allPendingPool(s)) return `この台の街（${n(s.count)}個）は、保育料などがまだ準備中。回すと、はんこと、家賃・医療費の目安が出ます。`
+  if (p === 'featured') return `${POOL_INFO[p].where}（${n(s.count)}個）から。毎年の差がいちばん大きい街が出てきます。`
+  const known = s.count - s.pending
+  return `${POOL_INFO[p].where}の${n(s.count)}個。保育料などが分かる街（${n(known)}個）から先に出ます。${s.pending ? `準備中の${n(s.pending)}個は、確認中として後ろに並びます。` : ''}${p === 'all' ? '棚には上の30個を出します。' : ''}`
 }
 
-function PoolPicker({ pools, value, onChange, counts, caps }: { pools: Pool[]; value: Pool; onChange: (p: Pool) => void; counts: Record<Pool, number>; caps: Record<Pool, { color: string; level: DataLevel }[]> }) {
+function PoolPicker({ pools, value, onChange, stats, compact }: { pools: Pool[]; value: Pool; onChange: (p: Pool) => void; stats: Record<Pool, PoolStat>; compact?: boolean }) {
   return (
     <div>
       <p className="mb-1.5 text-[13px] font-black">どの台を回す？</p>
       <div role="group" aria-label="どの台を回すか" className={cn('grid gap-2', pools.length === 3 ? 'grid-cols-3' : 'grid-cols-2')}>
         {pools.map((p) => {
+          const s = stats[p]
           const on = p === value
-          const empty = counts[p] === 0
+          const empty = s.count === 0
+          const onlyPending = allPendingPool(s)
+          const count = empty ? '入っていません' : `${n(s.count)}個`
           return (
             <button
               key={p}
@@ -239,20 +258,24 @@ function PoolPicker({ pools, value, onChange, counts, caps }: { pools: Pool[]; v
               aria-pressed={on}
               disabled={empty}
               onClick={() => onChange(p)}
-              aria-label={`${POOL_INFO[p].name}の台（${counts[p].toLocaleString('ja-JP')}個。${POOL_INFO[p].note}）`}
+              aria-label={`${POOL_INFO[p].name}の台（${count}${onlyPending ? '。準備中の街だけ' : ''}。${POOL_INFO[p].where}）`}
               className={cn(
-                'flex flex-col items-center rounded-[14px] border-[3px] px-1 pb-1.5 pt-2 text-center transition-colors disabled:opacity-45',
-                on ? 'border-[var(--ink)] bg-[var(--yolk)] shadow-[2px_3px_0_var(--ink)]' : 'border-[var(--ink)]/30 bg-white/60',
+                'rounded-[14px] border-[3px] transition-colors disabled:opacity-45',
+                compact ? 'flex items-center gap-1 px-1 py-1 text-left' : 'flex flex-col items-center px-1 pb-1.5 pt-2 text-center',
+                on ? 'border-[var(--ink)] bg-[var(--yolk)] shadow-[2px_3px_0_var(--ink)] [--ink-soft:var(--ink)]' : 'border-[var(--ink)]/30 bg-white/60',
               )}
             >
-              <MiniMachine body={POOL_INFO[p].body} caps={caps[p]} size={44} />
-              <span className="mt-1 text-[13px] font-black leading-tight">{POOL_INFO[p].name}</span>
-              <span className="text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{empty ? '入っていません' : `${counts[p].toLocaleString('ja-JP')}個`}</span>
+              <MiniMachine body={POOL_INFO[p].body} caps={s.caps} size={compact ? 24 : 44} className="shrink-0" />
+              <span className={cn('min-w-0', compact ? 'block' : 'contents')}>
+                <span className={cn('block text-[13px] font-black leading-tight', !compact && 'mt-1')}>{POOL_INFO[p].name}</span>
+                <span className="block text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{count}</span>
+                {onlyPending && <span className="mt-0.5 inline-block rounded-full border-2 border-dashed border-[var(--ink)] px-1 text-[12px] font-black leading-tight">準備中だけ</span>}
+              </span>
             </button>
           )
         })}
       </div>
-      <p className="mt-1.5 text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{POOL_INFO[value].note}。出てくるのは、毎年の差がいちばん大きい街です。</p>
+      <p className="mt-1.5 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">{poolNote(value, stats[value])}</p>
     </div>
   )
 }
@@ -270,7 +293,8 @@ export default function VariantA() {
   const [touched, setTouched] = useState<Set<StepKey>>(() => new Set())
   const [pool, setPool] = useState<Pool>('featured')
   const [picks, setPicksState] = useState<string[]>(() => (boot.step === 'compare' || boot.step === 'pick' ? [...boot.picks] : []))
-  const [ranked, setRanked] = useState<Comparison[]>(() => (boot.step === 'result' ? rank(bootSample) : []))
+  // 同じ額の街は、くわしい街から・今の街に近い順に並べ直す（共有の並び＝毎年の差が大きい順は変えない）
+  const [ranked, setRanked] = useState<Comparison[]>(() => (boot.step === 'result' ? settleTies(rank(bootSample)) : []))
   const [list, setList] = useState<Comparison[]>(() => (boot.step === 'compare' ? compareMany(bootSample, boot.picks) : []))
   const [sel, setSel] = useState(0)
   const [jiggle, setJiggle] = useState(0)
@@ -280,6 +304,8 @@ export default function VariantA() {
   const [bootSampleResult, setBootSampleResult] = useState(boot.step === 'result' || boot.step === 'compare')
   const book = useStampBook()
   const handleRef = useRef<HTMLDivElement>(null)
+  const short = useShortScreen(740)
+  const veryShort = useShortScreen(700)
   const steps = stepsFor(mode)
   const idx = Math.max(0, steps.indexOf(step))
 
@@ -305,10 +331,15 @@ export default function VariantA() {
   const pools: Pool[] = wideWork(input) ? ['featured', 'nearby', 'all'] : ['featured', 'nearby']
   const poolData = useMemo(() => {
     if (screen !== 'input' || step !== 'turn' || mode !== 'gacha') return null
-    const out = {} as Record<Pool, { count: number; caps: { color: string; level: DataLevel }[]; mix: Mix }>
+    const out = {} as Record<Pool, PoolStat>
     for (const p of pools) {
-      const all = rank(input, { pool: p, limit: 2000 })
-      out[p] = { count: all.length, caps: all.slice(0, 5).map((c) => ({ color: lookOf(c.to).capsule, level: c.to.level })), mix: mixOf(all) }
+      const all = settleTies(rank(input, { pool: p, limit: 2000 }))
+      out[p] = {
+        count: all.length,
+        pending: all.filter(isPending).length,
+        caps: all.slice(0, 5).map((c) => ({ color: lookOf(c.to).capsule, level: c.to.level })),
+        mix: mixOf(all),
+      }
     }
     return out
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -360,21 +391,25 @@ export default function VariantA() {
     }
     const t = window.setTimeout(() => {
       if (screen === 'input') {
-        if (step === 'turn' && handleRef.current) handleRef.current.focus({ preventScroll: true })
-        else document.getElementById('va-q')?.focus({ preventScroll: true })
+        if (step === 'turn' && handleRef.current) {
+          // ハンドルが下の帯に隠れる背の低い画面では、見える所まで送る（帯の高さは scroll-padding-bottom で空ける）
+          handleRef.current.focus({ preventScroll: true })
+          handleRef.current.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' })
+        } else document.getElementById('va-q')?.focus({ preventScroll: true })
       }
       if (screen === 'result') document.getElementById('va-headline')?.focus({ preventScroll: true })
     }, 60)
     return () => window.clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, step])
 
   const announce = (c: Comparison | undefined, many?: Comparison[]) => {
     if (many) {
-      setLive(`${many.length}個の街を、くらべ棚にならべました。${many.map((x) => `${x.to.name}：${isHit(x) ? '損得の演出は出していません' : x.headline}`).join('。')}`)
+      setLive(`${many.length}個の街を、くらべ棚にならべました。${many.map((x) => `${x.to.name}：${isHit(x) ? '地震で被害を受けた街なので、得・損は出していません' : spoken(x).replace(/。$/, '')}`).join('。')}。`)
       return
     }
     if (!c) return
-    setLive(isHit(c) ? `${c.to.name}のカプセル。${c.care?.note ?? ''}` : c.status === 'unknown' ? `${c.headline}。まだ比べられません` : `${c.headline}。${c.perYearLabel}の金額です`)
+    setLive(spoken(c))
   }
 
   const onTurned = () => {
@@ -387,7 +422,9 @@ export default function VariantA() {
       book.add(l[0].to.id)
       announce(undefined, l)
     } else {
-      const r = rank(input, { pool })
+      // 同じ額の街を並べ直してから、棚に出す30個を切り出す（全国・近くの台）
+      const full = settleTies(rank(input, { pool, limit: 2000 }))
+      const r = pool === 'featured' ? full : full.slice(0, 30)
       if (!r.length) return
       setRanked(r)
       setSel(0)
@@ -410,7 +447,8 @@ export default function VariantA() {
   const resultInput = bootSampleResult ? bootSample : input
   const fromCity = cityById(input.fromCityId)
   const turnBlocked = mode === 'gacha' ? !!poolData && !poolData[pool]?.count : picks.length < PICK_MIN
-  const domeHeight = step === 'family' ? 56 : step === 'turn' ? 104 : 92
+  // 背の低い画面では窓を細くして、ハンドルやつまみが下の帯に隠れにくくする
+  const domeHeight = step === 'family' || short ? 56 : step === 'turn' ? 104 : 92
   const domeMix: Mix = step === 'turn' && mode === 'gacha' && poolData ? poolData[pool]?.mix ?? { detailed: 1 } : mode === 'pick' ? { detailed: 2, pref: 3, basic: 5 } : { detailed: 1 }
   const front = mode === 'pick' && (step === 'pick' || step === 'turn') && picks.length ? frontOf(picks) : undefined
 
@@ -438,7 +476,7 @@ export default function VariantA() {
       )}
 
       {screen === 'input' && (
-        <div className="mx-auto grid w-full max-w-[1240px] grid-cols-1 px-2.5 lg:grid-cols-[minmax(0,1fr)_460px_minmax(0,1fr)] lg:gap-12 lg:px-8">
+        <div className="va-input mx-auto grid w-full max-w-[1240px] grid-cols-1 px-2.5 lg:grid-cols-[minmax(0,1fr)_460px_minmax(0,1fr)] lg:gap-12 lg:px-8">
           <aside className="hidden lg:block">
             <div className="sticky top-10 mt-24 flex justify-end">
               <Poster title="いまの答え" tilt={-1.5} className="w-full max-w-[330px]">
@@ -473,9 +511,12 @@ export default function VariantA() {
               <div className="mt-3">
                 <Lamps steps={steps} step={step} onJump={go} />
               </div>
-              <div className="mt-3">
-                <Dome height={domeHeight} jiggle={jiggle} shaking={shaking} mix={domeMix} front={front} />
-              </div>
+              {/* iPhone SE ほどの高さでは、家族の問いの窓を省いて、台とつまみを上に寄せる */}
+              {!(veryShort && step === 'family') && (
+                <div className="mt-3">
+                  <Dome height={domeHeight} jiggle={jiggle} shaking={shaking} mix={domeMix} front={front} />
+                </div>
+              )}
 
               <section aria-labelledby="va-q" className="va-paper relative mt-3 px-3.5 pb-5 pt-3.5 text-[var(--ink)]">
                 <div className="flex flex-wrap items-center gap-2">
@@ -507,15 +548,7 @@ export default function VariantA() {
                       <StepBody step={step} input={input} set={set} onCoin={() => setJiggle((j) => j + 1)} mode={mode} />
                     ) : (
                       <div className="space-y-3.5">
-                        {mode === 'gacha' && poolData && (
-                          <PoolPicker
-                            pools={pools}
-                            value={pool}
-                            onChange={setPool}
-                            counts={Object.fromEntries(pools.map((p) => [p, poolData[p].count])) as Record<Pool, number>}
-                            caps={Object.fromEntries(pools.map((p) => [p, poolData[p].caps])) as Record<Pool, { color: string; level: DataLevel }[]>}
-                          />
-                        )}
+                        {mode === 'gacha' && poolData && <PoolPicker pools={pools} value={pool} onChange={setPool} stats={poolData} compact={short} />}
                         {mode === 'gacha' && turnBlocked && (
                           <div className="rounded-[14px] border-[3px] border-dashed border-[var(--ink)] bg-[var(--paper-2)] px-3 py-3">
                             <p className="text-[14px] font-bold leading-relaxed">{fromCity.name}から通える範囲の台に、候補の街が入っていません。働き方をリモートや自営にするか、街をえらんでくらべてください。</p>
@@ -647,6 +680,7 @@ export default function VariantA() {
         <GachaShow
           list={mode === 'pick' ? list : [ranked[0]]}
           many={mode === 'pick'}
+          note={mode === 'gacha' && tiesAtTop(ranked) > 1 ? `同じ額の街が${tiesAtTop(ranked)}個。まずは${ranked[0].to.name}から` : undefined}
           onDone={() => {
             setScreen('result')
             window.scrollTo({ top: 0 })
@@ -670,6 +704,13 @@ export default function VariantA() {
             setScreen('input')
             setTurnKey((k) => k + 1)
             go('turn')
+          }}
+          onGoPick={() => {
+            // 準備中の街しか出なかったとき：同じ答えのまま、えらんでくらべるへ
+            setMode('pick')
+            setScreen('input')
+            setTurnKey((k) => k + 1)
+            go('pick')
           }}
           onRestart={restart}
           sample={sampleMark}

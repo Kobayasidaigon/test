@@ -124,8 +124,8 @@ function ShowOne({ c, finish, note }: { c: Comparison; finish: () => void; note?
   const sub = phase === 'stamp' ? (pending ? '中身は、まだ準備中' : note) : undefined
   const CAP = 64
   const outletCenter = { x: OUT.left + OUT.w / 2, y: OUT.top + OUT.h - CAP / 2 - 6 }
-  // カプセルを開ける位置。台紙（高さ226）は中心から −205 まで上がるので、上端は 286−75+70−200 = 81px（看板の下）
-  const center = { x: SW / 2, y: 286 }
+  // カプセルを開ける位置。台紙（高さ226）は中心から上がって、上端は 292−75+70−200 = 87px（看板の下端 約69px より下）
+  const center = { x: SW / 2, y: 292 }
   return (
     <>
       <p className="va-sr" aria-live="polite">
@@ -201,7 +201,7 @@ function ShowOne({ c, finish, note }: { c: Comparison; finish: () => void; note?
                         animate={{ scale: 1.6, opacity: 0 }}
                         transition={{ duration: 0.6, ease: 'easeOut' }}
                       />
-                      <motion.div initial={{ scale: 2.3, opacity: 0, rotate: -22 }} animate={{ scale: 1, opacity: 1, rotate: -7 }} transition={{ type: 'spring', stiffness: 540, damping: 19 }}>
+                      <motion.div initial={{ scale: 2.3, opacity: 0, rotate: -22 }} animate={{ scale: 1, opacity: 1, rotate: -7 }} transition={{ type: 'spring', stiffness: 540, damping: 19, opacity: { duration: 0.12 } }}>
                         <GotouchiStamp city={c.to} size={156} />
                       </motion.div>
                       <CapsuleConfetti fireKey={c.mood >= 1 && !isHit(c) ? 1 : 0} />

@@ -12,13 +12,15 @@
  * 1,741件を一度に描かないよう、検索は20件まで、県の一覧は48件ずつ出す。
  */
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { ChevronRight, MapPin, Pencil, X } from 'lucide-react'
+import { ChevronRight, ExternalLink, MapPin, Pencil, X } from 'lucide-react'
 import { useId, useMemo, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { citiesInPref, cityById, distanceKm, nearbyCities, searchCities } from '@/shared'
 import type { City } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Capsule } from './art'
-import { FEATURED, LEVEL_LEGEND, LEVEL_ORDER, REGIONS, kmText, levelTag, levelText, lookOf } from './lib'
+import { FEATURED, LEVEL_LEGEND, LEVEL_ORDER, REGIONS, kmText, levelTag, levelText, lookOf, prefsFor } from './lib'
+
+const SEARCH_LIMIT = 20
 
 /* ───────── 小さな部品 ───────── */
 
@@ -54,43 +56,64 @@ export function LevelLegend({ className, compact = false }: { className?: string
   )
 }
 
-// チップ（押すと選ぶ）
-export function TownChip({ city, on, onClick, disabled, extra }: { city: City; on?: boolean; onClick: () => void; disabled?: boolean; extra?: ReactNode }) {
+// チップ（押すと選ぶ）。くわしい街以外には、文字の札（準備中・県の制度）も小さく付ける
+export function TownChip({ city, on, onClick, disabled, extra, showTag = true }: { city: City; on?: boolean; onClick: () => void; disabled?: boolean; extra?: ReactNode; showTag?: boolean }) {
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       aria-pressed={on}
-      aria-label={`${city.pref}${city.name}（${levelTag(city)}）${on ? '：えらんでいます' : ''}`}
+      aria-label={`${city.pref}${city.name}（${levelTag(city)}）${city.care?.level === 'hit' ? '・地震の配慮' : ''}${on ? '：えらんでいます' : ''}`}
       className={cn(
-        'inline-flex min-h-[40px] items-center gap-1.5 rounded-full border-[2.5px] border-[var(--ink)] py-1 pl-1 pr-3 text-left transition-colors disabled:opacity-40',
-        on ? 'bg-[var(--yolk)] shadow-[0_3px_0_var(--ink)]' : 'bg-[var(--paper)] hover:bg-white',
+        'inline-flex min-h-[40px] items-center gap-1.5 rounded-full border-[2.5px] border-[var(--ink)] py-1 pl-1 pr-2.5 text-left transition-colors disabled:opacity-40',
+        on ? 'bg-[var(--yolk)] shadow-[0_3px_0_var(--ink)] [--ink-soft:var(--ink)]' : 'bg-[var(--paper)] hover:bg-white',
       )}
     >
       <TownCapsule city={city} size={26} />
       <span className="text-[14px] font-black leading-tight">{city.name}</span>
+      {showTag && city.level !== 'detailed' && <span className="text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{levelTag(city)}</span>}
       {extra}
     </button>
   )
 }
 
+// カプセルの見た目の凡例を1行で（スマホでも、えらぶ場所のすぐそばに）
+export function LevelLegendRow({ className }: { className?: string }) {
+  const sample = ['#ffc928', '#4cc3e8', '#3cc8a4']
+  return (
+    <ul aria-label="カプセルの見た目と、データのくわしさ" className={cn('flex flex-wrap items-center gap-x-3 gap-y-1', className)}>
+      {LEVEL_ORDER.map((lv, i) => (
+        <li key={lv} className="inline-flex items-center gap-1 text-[12.5px] font-black">
+          <Capsule color={sample[i]} level={lv} size={20} />
+          {LEVEL_LEGEND[lv].tag}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 /* ───────── 名前・読みがなで探す ───────── */
 
-export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = '街の名前か、よみがな（例: はちおうじ）', autoFocus }: {
+export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = '街の名前か、よみがな（例: はちおうじ）', autoFocus, onBrowse }: {
   onPick: (c: City) => void
   exclude?: string[]
   fromId?: string
   label: string
   placeholder?: string
   autoFocus?: boolean
+  onBrowse?: (pref: string | null) => void // 「地方と県からさがす」を開く（県を指定できる）
 }) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '')
   const [q, setQ] = useState('')
   const [active, setActive] = useState(-1) // -1 = まだどの候補も指していない（Enter なら1番目を選ぶ）
   const [open, setOpen] = useState(false)
   const from = fromId ? cityById(fromId) : undefined
-  const results = useMemo(() => (q.trim() ? searchCities(q, 20) : []), [q])
+  // 1件多く探して、20件で切れたかどうかを知る
+  const found = useMemo(() => (q.trim() ? searchCities(q, SEARCH_LIMIT + 1) : []), [q])
+  const results = found.slice(0, SEARCH_LIMIT)
+  const more = found.length > SEARCH_LIMIT
+  const prefs = useMemo(() => prefsFor(q), [q])
   const listId = `${uid}-list`
   const isOut = (c: City) => exclude.includes(c.id) || (c.code ? exclude.includes(c.code) : false)
   const pick = (c: City) => {
@@ -120,7 +143,8 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
       setOpen(false)
     }
   }
-  const showList = open && q.trim().length > 0
+  // 見つからないときは、候補の箱は出さず、下の案内（県の一覧へ）だけにする
+  const showList = open && q.trim().length > 0 && (results.length > 0 || !onBrowse)
   return (
     <div className="relative">
       <label htmlFor={`${uid}-input`} className="mb-1 block text-[13px] font-black">
@@ -148,7 +172,7 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
           onFocus={() => setOpen(true)}
           onBlur={() => window.setTimeout(() => setOpen(false), 120)}
           onKeyDown={onKey}
-          className="h-11 min-w-0 flex-1 bg-transparent text-[16px] font-bold outline-none placeholder:text-[13px] placeholder:font-bold placeholder:text-[#7a808c]"
+          className="h-11 min-w-0 flex-1 bg-transparent text-[16px] font-bold outline-none placeholder:text-[13px] placeholder:font-bold placeholder:text-[var(--ink-soft)]"
         />
         {q && (
           <button type="button" aria-label="書いた文字を消す" onClick={() => setQ('')} className="grid h-9 w-9 place-items-center rounded-full">
@@ -157,7 +181,11 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
         )}
       </div>
       <p className="va-sr" aria-live="polite">
-        {q.trim() ? (results.length ? `${results.length}件の街が見つかりました。下の矢印キーでえらべます。` : '見つかりませんでした') : ''}
+        {q.trim()
+          ? results.length
+            ? `${more ? `${SEARCH_LIMIT}件より多く見つかりました。上の${SEARCH_LIMIT}件を出しています` : `${results.length}件の街が見つかりました`}。下の矢印キーでえらべます。`
+            : `見つかりませんでした。${prefs.length ? `${prefs.join('・')}の一覧を開けます` : ''}`
+          : ''}
       </p>
       {showList && (
         <div
@@ -184,7 +212,7 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
                   onClick={() => pick(c)}
                   className={cn(
                     'flex min-h-[44px] cursor-pointer items-center gap-2 rounded-[10px] px-2 py-1.5',
-                    i === active ? 'bg-[var(--yolk)]' : '',
+                    i === active ? 'bg-[var(--yolk)] [--ink-soft:var(--ink)]' : '',
                     out && 'cursor-not-allowed opacity-45',
                   )}
                 >
@@ -204,6 +232,32 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
           )}
         </div>
       )}
+      {/* 20件で切れたとき・見つからないとき：県の一覧へ（候補の外に置くので、入力欄を離れても消えない） */}
+      {q.trim() && onBrowse && (more || results.length === 0) && (
+        <div className="mt-2 rounded-[12px] bg-[var(--paper-2)] px-3 py-2">
+          <p className="text-[12.5px] font-bold leading-snug">
+            {more ? `ほかにもあります（上の${SEARCH_LIMIT}件を出しています）。` : '名前では見つかりませんでした。'}
+            {prefs.length ? '県の一覧なら全部見られます。' : '「地方と県からさがす」なら全部見られます。'}
+          </p>
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {(prefs.length ? prefs : [null]).map((p) => (
+              <button
+                key={p ?? 'all'}
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  onBrowse(p)
+                  setOpen(false)
+                }}
+                className="inline-flex min-h-[40px] items-center gap-1 rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--paper)] px-3 text-[13px] font-black"
+              >
+                <MapPin className="h-3.5 w-3.5" strokeWidth={3} aria-hidden />
+                {p ? `${p}の市区町村を見る` : '地方と県からさがす'}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -211,11 +265,14 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
 /* ───────── 地方 → 県 → 街 とたどる ───────── */
 
 const PAGE = 48
-export function PrefBrowser({ onPick, isOn, isOut, fromId }: { onPick: (c: City) => void; isOn: (c: City) => boolean; isOut?: (c: City) => boolean; fromId?: string }) {
+export function PrefBrowser({ onPick, isOn, isOut, fromId, startPref }: { onPick: (c: City) => void; isOn: (c: City) => boolean; isOut?: (c: City) => boolean; fromId?: string; startPref?: string | null }) {
   const reduce = useReducedMotion()
   const from = fromId ? cityById(fromId) : undefined
-  const [region, setRegion] = useState<number | null>(() => (from ? REGIONS.findIndex((r) => r.prefs.includes(from.pref)) : null))
-  const [pref, setPref] = useState<string | null>(null)
+  const [region, setRegion] = useState<number | null>(() => {
+    const p = startPref ?? from?.pref
+    return p ? REGIONS.findIndex((r) => r.prefs.includes(p)) : null
+  })
+  const [pref, setPref] = useState<string | null>(startPref ?? null)
   const [shown, setShown] = useState(PAGE)
   const list = useMemo(() => {
     if (!pref) return []
@@ -267,12 +324,20 @@ export function PrefBrowser({ onPick, isOn, isOut, fromId }: { onPick: (c: City)
       <AnimatePresence initial={false}>
         {pref && (
           <motion.div key={pref} initial={reduce ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-3 rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper-2)] p-2">
-            <p className="mb-2 px-1 text-[12.5px] font-black">
+            <p className="px-1 text-[12.5px] font-black">
               {pref}の市区町村（{list.length}）
+            </p>
+            {/* チップには札を付けず（一覧が長くならないように）、くわしさの内訳をここに書く */}
+            <p className="mb-2 px-1 text-[12px] font-bold text-[var(--ink-soft)]">
+              {LEVEL_ORDER.map((lv) => [lv, list.filter((c) => c.level === lv)] as const)
+                .filter(([, l]) => l.length)
+                .map(([, l]) => `${levelTag(l[0])} ${l.length}`)
+                .join('・')}
+              （カプセルの見た目でも分かります）
             </p>
             <div className="flex flex-wrap gap-1.5">
               {list.slice(0, shown).map((c) => (
-                <TownChip key={c.id} city={c} on={isOn(c)} disabled={isOut?.(c)} onClick={() => onPick(c)} />
+                <TownChip key={c.id} city={c} on={isOn(c)} disabled={isOut?.(c)} onClick={() => onPick(c)} showTag={false} />
               ))}
             </div>
             {list.length > shown && (
@@ -289,9 +354,14 @@ export function PrefBrowser({ onPick, isOn, isOut, fromId }: { onPick: (c: City)
 
 /* ───────── 開け閉めできる枠 ───────── */
 
-export function Drawer({ title, children, defaultOpen = false, icon }: { title: string; children: ReactNode; defaultOpen?: boolean; icon?: ReactNode }) {
+export function Drawer({ title, children, open, onOpenChange, icon, id }: { title: string; children: ReactNode; open?: boolean; onOpenChange?: (open: boolean) => void; icon?: ReactNode; id?: string }) {
   return (
-    <details className="group rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)]" open={defaultOpen}>
+    <details
+      id={id}
+      className="group scroll-mt-4 rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)]"
+      open={open}
+      onToggle={(e) => onOpenChange?.((e.currentTarget as HTMLDetailsElement).open)}
+    >
       <summary className="flex min-h-[44px] items-center gap-2 px-3 py-2 text-[14px] font-black">
         {icon}
         <span className="flex-1">{title}</span>
@@ -302,11 +372,25 @@ export function Drawer({ title, children, defaultOpen = false, icon }: { title: 
   )
 }
 
+// 「地方と県からさがす」の引き出しを、検索の案内から開けるようにする
+function useBrowse() {
+  const reduce = useReducedMotion()
+  const id = `va-browse-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
+  const [state, setState] = useState<{ open: boolean; pref: string | null; n: number }>({ open: false, pref: null, n: 0 })
+  const openAt = (pref: string | null) => {
+    setState((s) => ({ open: true, pref, n: s.n + 1 }))
+    window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }), 80)
+  }
+  const setOpen = (open: boolean) => setState((s) => (s.open === open ? s : { ...s, open }))
+  return { id, state, openAt, setOpen }
+}
+
 /* ───────── 今の街（1つえらぶ） ───────── */
 
 export function NowCityPicker({ value, onChange }: { value: string; onChange: (id: string) => void }) {
   const city = cityById(value)
   const reduce = useReducedMotion()
+  const browse = useBrowse()
   return (
     <div className="space-y-3.5">
       <AnimatePresence initial={false} mode="popLayout">
@@ -314,7 +398,7 @@ export function NowCityPicker({ value, onChange }: { value: string; onChange: (i
           key={city.id}
           initial={reduce ? false : { rotate: -4, y: -10, opacity: 0 }}
           animate={{ rotate: 0, y: 0, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 420, damping: 22 }}
+          transition={{ type: 'spring', stiffness: 420, damping: 22, opacity: { duration: 0.15 } }}
           className="relative rounded-[16px] border-[3px] border-[var(--ink)] px-3 pb-2.5 pt-3 shadow-[3px_4px_0_var(--ink)]"
           style={{ background: `color-mix(in srgb, ${lookOf(city).capsule} 22%, var(--paper))` }}
           aria-live="polite"
@@ -332,10 +416,26 @@ export function NowCityPicker({ value, onChange }: { value: string; onChange: (i
             <LevelTag city={city} />
           </div>
           <p className="mt-1.5 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">{levelText(city)}</p>
+          {/* 被災した街・その県では、配慮の文と公式の情報を出す */}
+          {city.care && (
+            <div className={cn('mt-2 rounded-[10px] border-2 px-2.5 py-1.5', city.care.level === 'hit' ? 'border-[var(--stay)] bg-[var(--stay-bg)]' : 'border-[var(--ink)]/30 bg-white/70')}>
+              <p className="text-[12.5px] font-black leading-snug">{city.care.note}</p>
+              <ul className="mt-0.5">
+                {city.care.sources.map((s) => (
+                  <li key={s.url} className="flex min-h-[36px] items-center">
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-start gap-1 text-[12.5px] font-bold text-[var(--stay)] underline underline-offset-2">
+                      <ExternalLink className="mt-[3px] h-3 w-3 shrink-0" aria-hidden />
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
 
-      <TownSearch label="名前で探す（全国1,741の市区町村）" onPick={(c) => onChange(c.id)} />
+      <TownSearch label="名前で探す（全国1,741の市区町村）" onPick={(c) => onChange(c.id)} onBrowse={browse.openAt} />
 
       <div>
         <p className="mb-1.5 text-[13px] font-black">くわしく調べた13の街</p>
@@ -346,8 +446,8 @@ export function NowCityPicker({ value, onChange }: { value: string; onChange: (i
         </div>
       </div>
 
-      <Drawer title="地方と県からさがす" icon={<MapPin className="h-4 w-4" strokeWidth={3} aria-hidden />}>
-        <PrefBrowser fromId={value} isOn={(c) => c.id === city.id} onPick={(c) => onChange(c.id)} />
+      <Drawer id={browse.id} title="地方と県からさがす" open={browse.state.open} onOpenChange={browse.setOpen} icon={<MapPin className="h-4 w-4" strokeWidth={3} aria-hidden />}>
+        <PrefBrowser key={browse.state.n} startPref={browse.state.pref} fromId={value} isOn={(c) => c.id === city.id} onPick={(c) => onChange(c.id)} />
       </Drawer>
     </div>
   )
@@ -379,7 +479,7 @@ export function PickTray({ picks, onRemove }: { picks: string[]; onRemove: (id: 
                     initial={reduce ? false : { y: -26, rotate: -24, opacity: 0 }}
                     animate={{ y: 0, rotate: 0, opacity: 1 }}
                     exit={reduce ? { opacity: 0 } : { y: 20, opacity: 0, rotate: 20, transition: { duration: 0.18 } }}
-                    transition={{ type: 'spring', stiffness: 460, damping: 20 }}
+                    transition={{ type: 'spring', stiffness: 460, damping: 20, opacity: { duration: 0.15 } }}
                   >
                     <div className="relative">
                       <TownCapsule city={c} size={46} />
@@ -392,7 +492,7 @@ export function PickTray({ picks, onRemove }: { picks: string[]; onRemove: (id: 
                       type="button"
                       onClick={() => onRemove(c.id)}
                       aria-label={`${c.name}をカプセル置き場からはずす`}
-                      className="absolute -right-1.5 -top-1.5 grid h-7 w-7 place-items-center rounded-full border-2 border-[var(--ink)] bg-[var(--paper)]"
+                      className="absolute -right-1.5 -top-1.5 grid h-7 w-7 place-items-center rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] after:absolute after:-inset-2 after:content-['']"
                     >
                       <X className="h-3.5 w-3.5" strokeWidth={3.4} aria-hidden />
                     </button>
@@ -408,8 +508,26 @@ export function PickTray({ picks, onRemove }: { picks: string[]; onRemove: (id: 
   )
 }
 
+// 置き場に入れた街のうち、くわしくない街・被災した街について、結果でどうなるかを先に言う
+function PickNotes({ picks }: { picks: string[] }) {
+  const cities = picks.map((id) => cityById(id))
+  const names = (list: City[]) => list.map((c) => c.name).join('・')
+  const hit = cities.filter((c) => c.care?.level === 'hit')
+  const basic = cities.filter((c) => c.level === 'basic' && c.care?.level !== 'hit')
+  const pref = cities.filter((c) => c.level === 'pref')
+  if (!hit.length && !basic.length && !pref.length) return null
+  return (
+    <ul className="space-y-1 rounded-[12px] bg-[var(--paper-2)] px-3 py-2 text-[12.5px] font-bold leading-snug">
+      {basic.length > 0 && <li>・{names(basic)}は準備中。保育料などは「確認中」になります。</li>}
+      {pref.length > 0 && <li>・{names(pref)}は{pref.every((c) => c.pref === '東京都') ? '都' : '県'}の制度だけ。市区町村の上乗せは、まだ調べていません。</li>}
+      {hit.length > 0 && <li>・{names(hit)}は地震で被害を受けた街。得・損は出さず、制度の中身だけ見せます。</li>}
+    </ul>
+  )
+}
+
 export function TownPicker({ picks, setPicks, fromId }: { picks: string[]; setPicks: (fn: (p: string[]) => string[]) => void; fromId: string }) {
   const from = cityById(fromId)
+  const browse = useBrowse()
   const near = useMemo(() => nearbyCities(fromId, 30, 8), [fromId])
   const has = (c: City) => picks.includes(c.id)
   const full = picks.length >= PICK_MAX
@@ -433,13 +551,17 @@ export function TownPicker({ picks, setPicks, fromId }: { picks: string[]; setPi
   }
   return (
     <div className="space-y-3.5">
-      <PickTray picks={picks} onRemove={(id) => setPicks((p) => p.filter((x) => x !== id))} />
+      <div className="space-y-2">
+        <PickTray picks={picks} onRemove={(id) => setPicks((p) => p.filter((x) => x !== id))} />
+        <LevelLegendRow className="px-1" />
+        <PickNotes picks={picks} />
+      </div>
       {note && (
         <p role="status" className="rounded-[10px] bg-[var(--stay-bg)] px-3 py-2 text-[13px] font-black text-[var(--stay)]">
           {note}
         </p>
       )}
-      <TownSearch label="行きたい街の名前を書く（全国1,741の市区町村）" fromId={fromId} exclude={[from.id, ...picks]} onPick={tryAdd} />
+      <TownSearch label="行きたい街の名前を書く（全国1,741の市区町村）" fromId={fromId} exclude={[from.id, ...picks]} onPick={tryAdd} onBrowse={browse.openAt} />
       {near.length > 0 && (
         <div>
           <p className="mb-1.5 text-[13px] font-black">{from.name}の近く（30km以内）</p>
@@ -458,8 +580,8 @@ export function TownPicker({ picks, setPicks, fromId }: { picks: string[]; setPi
           ))}
         </div>
       </div>
-      <Drawer title="地方と県からさがす" icon={<MapPin className="h-4 w-4" strokeWidth={3} aria-hidden />}>
-        <PrefBrowser fromId={fromId} isOn={has} isOut={isOut} onPick={tryAdd} />
+      <Drawer id={browse.id} title="地方と県からさがす" open={browse.state.open} onOpenChange={browse.setOpen} icon={<MapPin className="h-4 w-4" strokeWidth={3} aria-hidden />}>
+        <PrefBrowser key={browse.state.n} startPref={browse.state.pref} fromId={fromId} isOn={has} isOut={isOut} onPick={tryAdd} />
       </Drawer>
       <Drawer title="カプセルの見た目と、データのくわしさ">
         <LevelLegend />

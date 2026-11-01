@@ -529,8 +529,11 @@ export function CharmArt({ motif, glyph, color }: { motif: MotifKey | null; glyp
         </g>
       )
     case 'volcano':
+      // 火口から雲まで、太い煙の筋でつなぐ（山と雲が別々に見えないように）
       return (
         <g>
+          <path d="M57 52 C 54 47, 60 45, 58 40" fill="none" stroke={INK} strokeWidth="11" strokeLinecap="round" />
+          <path d="M57 52 C 54 47, 60 45, 58 40" fill="none" stroke="#d5dbe1" strokeWidth="5.5" strokeLinecap="round" />
           <path d="M58 40 C 50 32, 54 20, 64 22 C 66 12, 80 10, 84 18 C 92 12, 104 16, 102 26 C 110 28, 110 38, 102 40 C 94 42, 86 40, 82 38 C 76 42, 66 44, 58 40 Z" fill="#eef1f4" {...ST} strokeWidth={3} />
           <path d="M106 12 C 108 8, 115 8, 114 13 C 113 17, 107 17, 106 12 Z" fill="#eef1f4" {...ST} strokeWidth={2.4} />
           <path d="M4 92 Q16 86 26 76 Q36 64 46 60 L52 52 Q57 47 62 51 L66 56 Q72 52 78 58 Q92 68 102 80 Q110 88 116 92 Z" fill="#7a8f6e" {...ST} strokeWidth={3.4} />

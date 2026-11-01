@@ -22,7 +22,7 @@ function amountWords(c: Comparison): { main: string; sub: string } {
   if (isHit(c)) return { main: '地震で被害を受けた街なので、得・損は出していません', sub: '制度の中身は、カプセルを開けると見られます' }
   if (c.status === 'unknown') return { main: '確認中', sub: c.unknown.map((u) => u.label).join('・') }
   const thin = thinCity(c)
-  if (thin) return { main: thin.level === 'pref' ? 'まだ調べ中' : '準備中', sub: `わかる制度では差なし。${thin === c.to ? '' : `${thin.name}（今の街）の`}${thin.level === 'pref' ? '独自の給付など' : '保育料など'}はまだ` }
+  if (thin) return { main: thin.level === 'pref' ? 'まだ調べ中' : '準備中', sub: `わかる制度では差が見つからず。${thin === c.to ? '' : `${thin.name}（今の街）の`}${thin.level === 'pref' ? '独自の給付など' : '保育料など'}は準備中` }
   const t = toneOf(c.perYear)
   const part = c.status === 'partial' ? 'わかる分で ' : ''
   if (t === 'even') return { main: `${part}ほぼ同じ`, sub: '' }
@@ -83,7 +83,7 @@ function ShelfRow({ c, on, onClick, max }: { c: Comparison; on: boolean; onClick
         aria-pressed={on}
         aria-label={rowAria(c)}
         className={cn(
-          'grid w-full grid-cols-[56px_minmax(0,1fr)] items-center gap-x-2.5 rounded-[14px] px-1.5 py-1 text-left transition-colors sm:grid-cols-[60px_minmax(0,230px)_minmax(0,1fr)]',
+          'grid w-full grid-cols-[56px_minmax(0,1fr)] items-center gap-x-2.5 rounded-[14px] px-1.5 py-1 text-left transition-colors sm:grid-cols-[60px_minmax(0,280px)_minmax(0,1fr)]',
           on ? 'bg-[var(--yolk)] shadow-[0_0_0_3px_var(--ink)] [--ink-soft:var(--ink)]' : 'hover:bg-white/70',
         )}
       >

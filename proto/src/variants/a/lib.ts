@@ -212,8 +212,17 @@ export function scopeOf(c: Comparison): Scope {
 // 準備中（まだ中身を比べられない）として扱うか
 export const isPending = (c: Comparison) => c.status === 'unknown' || !!thinCity(c)
 
-// まだ調べていないことの言い方（県の制度の街は「独自の制度」、準備中の街は「保育料など」）
-const notYet = (city: City) => (city.level === 'pref' ? `${city.name}独自の給付など` : `${city.name}の保育料や${townKind(city.name)}の給付`)
+// まだ調べていないことの言い方（県の制度の街は「独自の給付など」、準備中の街は「保育料や市の給付」）
+function notYet(cities: City[]) {
+  const names = (list: City[]) => list.map((c) => c.name).join('と')
+  const basic = cities.filter((c) => c.level === 'basic')
+  const pref = cities.filter((c) => c.level === 'pref')
+  const kinds = [...new Set(basic.map((c) => townKind(c.name)))]
+  const parts: string[] = []
+  if (basic.length) parts.push(`${names(basic)}の保育料や${kinds.length === 1 ? kinds[0] : '市町村'}の給付`)
+  if (pref.length) parts.push(`${names(pref)}独自の給付など`)
+  return parts.join('、')
+}
 
 // 見出し（共有の headline を、言い切りすぎない形に置きかえる）
 export function headlineOf(c: Comparison): string {
@@ -227,6 +236,8 @@ export function headlineOf(c: Comparison): string {
   return c.headline
 }
 export function sublineOf(c: Comparison): string {
+  // 被災した街では「いちばん効いているのは…」（金額の大きさの順）も言わない
+  if (isHit(c)) return '制度の中身を、下に書いています'
   if (thinCity(c)) return 'わかっている制度では、差は見つかりませんでした'
   return c.subline
 }
@@ -234,7 +245,7 @@ export function sublineOf(c: Comparison): string {
 export function missingText(c: Comparison): string {
   const cities = [c.to, c.from].filter((x) => x.level !== 'detailed')
   if (!cities.length) return ''
-  return `${cities.map(notYet).join('、')}は、まだ${cities.every((x) => x.level === 'pref') ? '調べていません' : '準備中です'}。`
+  return `${notYet(cities)}は、まだ${cities.every((x) => x.level === 'pref') ? '調べていません' : '準備中です'}。`
 }
 // わかる差が見つからなかったときの1文（金額の箱・くらべ棚で使う）
 export function thinText(c: Comparison): string {
@@ -390,15 +401,22 @@ export const kmText = (km?: number) => (km === undefined ? '' : km < 10 ? `${Mat
 
 // 背の低い画面（iPhone SE など）か。下の帯に部品が隠れないよう、窓を細くしたり、札を小さくしたりする
 export function useShortScreen(limit = 740) {
-  const read = () => (typeof window === 'undefined' ? false : window.innerHeight < limit)
-  const [short, setShort] = useState(read)
+  return useViewportBelow(limit, 'h')
+}
+// 幅のせまい画面（360px など）か
+export function useNarrowScreen(limit = 370) {
+  return useViewportBelow(limit, 'w')
+}
+function useViewportBelow(limit: number, axis: 'w' | 'h') {
+  const read = () => (typeof window === 'undefined' ? false : (axis === 'h' ? window.innerHeight : window.innerWidth) < limit)
+  const [below, setBelow] = useState(read)
   useEffect(() => {
-    const f = () => setShort(read())
+    const f = () => setBelow(read())
     window.addEventListener('resize', f)
     return () => window.removeEventListener('resize', f)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [limit])
-  return short
+  }, [limit, axis])
+  return below
 }
 
 // 都道府県の読みがな（「ほっかいどう」「とうきょう」のように県の名前で探したときに、県の一覧を開けるように）

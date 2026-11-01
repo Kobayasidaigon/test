@@ -227,6 +227,11 @@
   display: inline-block;
 }
 
+/* 入力の画面：下の帯（すすむ・もどる）の高さぶん、スクロールで送る先を上にずらす（帯に隠れないように） */
+html:has(.va-input) {
+  scroll-padding-bottom: 92px;
+}
+
 /* 検索欄：枠は外側の札につける（入力欄の中に二重の枠を出さない） */
 .va .va-field:focus-within {
   outline: 3px solid var(--ink);

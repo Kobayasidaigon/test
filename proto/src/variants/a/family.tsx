@@ -59,7 +59,7 @@ export function FamilyStand({ input, selected, onSelect, room = 300 }: { input: 
                 initial={reduce ? false : { y: -60, opacity: 0, rotate: -12 }}
                 animate={{ y: 0, opacity: 1, rotate: 0 }}
                 exit={reduce ? { opacity: 0 } : { y: 30, opacity: 0, rotate: 20, transition: { duration: 0.25 } }}
-                transition={{ type: 'spring', stiffness: 420, damping: 22 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 22, opacity: { duration: 0.15 } }}
                 className="flex flex-col items-center"
               >
                 {p.child && onSelect ? (

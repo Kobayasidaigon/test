@@ -1,13 +1,14 @@
 // 案A「カプセルトイ」 — 入力（1画面1問）。筐体のパーツを触るように答える。
 import { animate, AnimatePresence, motion, useMotionValue, useReducedMotion } from 'motion/react'
-import { useRef, useState, type ReactNode } from 'react'
+import { ChevronDown } from 'lucide-react'
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { INCOME_BANDS, WORK_STYLES, cityById } from '@/shared'
 import type { Child, FamilyInput, IncomeBand, WorkStyle } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Coin } from './art'
 import { Dial } from './dial'
 import { FamilyStand } from './family'
-import { familySummary, yearsActual } from './lib'
+import { familySummary, useNarrowScreen, yearsActual } from './lib'
 import { Stepper } from './stepper'
 import { TagGroup } from './tags'
 import { NowCityPicker } from './towns'
@@ -31,15 +32,39 @@ type Setter = (fn: (p: FamilyInput) => FamilyInput) => void
 
 function FamilyStep({ input, set }: { input: FamilyInput; set: Setter }) {
   const reduce = useReducedMotion()
+  const narrow = useNarrowScreen(370)
+  const dialSize = narrow ? 104 : 116
   const [selId, setSelId] = useState<string | null>(input.children[0]?.id ?? null)
   const [autoNote, setAutoNote] = useState(false)
   const sel = input.children.find((c) => c.id === selId) ?? input.children[input.children.length - 1] ?? null
   const seq = useRef(0)
+  const panelRef = useRef<HTMLDivElement>(null)
+  // 年齢つまみか保育園の札が、最初の画面で下の帯に隠れるなら、えらんでいる子の答えをフィギュアのすぐ下にも出す
+  const [short, setShort] = useState(false)
+  useLayoutEffect(() => {
+    const check = () => {
+      const el = panelRef.current
+      if (!el) return
+      const navTop = document.querySelector('nav[aria-label="すすむ・もどる"]')?.getBoundingClientRect().top ?? window.innerHeight - 92
+      const bottoms = [el.querySelector('[role=slider]'), el.querySelector('[role=radiogroup]')].map((x) => x?.getBoundingClientRect().bottom ?? 0)
+      setShort((s) => s || Math.max(...bottoms) > navTop)
+    }
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [sel?.id])
+  // 年齢つまみと保育園の札の枠を、下の帯に隠れない所まで送る（帯の高さは scroll-padding-bottom で空けてある）
+  const showPanel = () => window.setTimeout(() => panelRef.current?.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }), 40)
+  const selectChild = (id: string) => {
+    setSelId(id)
+    showPanel()
+  }
   const addChild = () => {
     const id = `k${Date.now().toString(36)}${seq.current++}`
     set((p) => ({ ...p, children: [...p.children, { id, age: 3, nursery: false }] }))
     setSelId(id)
     setAutoNote(false)
+    showPanel()
   }
   const removeChild = (id: string) => {
     set((p) => ({ ...p, children: p.children.filter((c) => c.id !== id) }))
@@ -47,10 +72,26 @@ function FamilyStep({ input, set }: { input: FamilyInput; set: Setter }) {
   }
   const patchChild = (id: string, patch: Partial<Child>) => set((p) => ({ ...p, children: p.children.map((c) => (c.id === id ? { ...c, ...patch } : c)) }))
   const ordinal = sel ? input.children.findIndex((c) => c.id === sel.id) + 1 : 0
+  const ageText = (c: Child) => (c.age < 0 ? 'これから生まれる' : `${c.age}歳`)
 
   return (
     <div className="space-y-3">
-      <FamilyStand input={input} selected={sel?.id} onSelect={setSelId} room={300} />
+      <FamilyStand input={input} selected={sel?.id} onSelect={selectChild} room={300} />
+      {/* 背の低い画面では、つまみの枠が最初の画面の外に出るので、えらんでいる子の答えをフィギュアのすぐ下に出す */}
+      {short && sel && (
+        <div className="flex justify-center pt-1">
+          <button
+            type="button"
+            onClick={showPanel}
+            className="inline-flex min-h-[40px] items-center gap-1 rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--paper)] px-3 text-[13px] font-black shadow-[0_3px_0_var(--ink)]"
+          >
+            {ordinal}人目：{ageText(sel)}
+            {sel.age <= 2 && `・保育園に${sel.nursery ? '通う' : '通わない'}`}
+            <ChevronDown className="h-4 w-4" strokeWidth={3} aria-hidden />
+            <span className="va-sr">（年齢と保育園の答えへ移る）</span>
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-2 pt-2">
         <Stepper stacked label="大人" value={input.adults} min={1} max={2} onChange={(v) => set((p) => ({ ...p, adults: (v <= 1 ? 1 : 2) as 1 | 2 }))} />
         <Stepper
@@ -64,13 +105,14 @@ function FamilyStep({ input, set }: { input: FamilyInput; set: Setter }) {
       </div>
       {sel ? (
         <motion.div
+          ref={panelRef}
           key={sel.id}
           initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="rounded-[16px] border-[3px] border-dashed border-[var(--ink)]/40 bg-white/60 px-2 pb-2.5 pt-2.5"
+          className="scroll-mb-3 rounded-[16px] border-[3px] border-dashed border-[var(--ink)]/40 bg-white/60 px-1.5 pb-2.5 pt-2.5"
         >
-          <div className="grid grid-cols-[132px_minmax(0,1fr)] items-start gap-2">
+          <div className="grid items-start gap-2" style={{ gridTemplateColumns: `${dialSize}px minmax(0,1fr)` }}>
             <div className="flex justify-center">
               <Dial
                 key={sel.id}
@@ -79,7 +121,7 @@ function FamilyStep({ input, set }: { input: FamilyInput; set: Setter }) {
                 min={-1}
                 max={18}
                 value={sel.age}
-                size={130}
+                size={dialSize}
                 onValueChange={(v) => {
                   const auto = v <= 2 && sel.age > 2
                   patchChild(sel.id, { age: v, nursery: v <= 2 ? (sel.age <= 2 ? sel.nursery : true) : false })
@@ -99,6 +141,7 @@ function FamilyStep({ input, set }: { input: FamilyInput; set: Setter }) {
                     ariaLabel={`${ordinal}人目の子は保育園に通うか`}
                     compact
                     columns={2}
+                    minCol={70}
                     value={sel.nursery ? 'yes' : 'no'}
                     onChange={(v) => {
                       patchChild(sel.id, { nursery: v === 'yes' })

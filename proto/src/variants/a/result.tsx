@@ -4,9 +4,9 @@ import { AnimatePresence, motion, useAnimationControls, useInView, useReducedMot
 import { ArrowDown, ArrowLeft, ArrowRight, ChevronRight, ExternalLink, RotateCcw, Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { ALL_CITIES, DATA_AS_OF, DISCLAIMER, MUNI_SOURCE, cityById, compare, yenMan } from '@/shared'
-import type { Breakdown, Care, City, Comparison, Confidence, FamilyInput, Pride, Source } from '@/shared/types'
+import type { Breakdown, Care, City, Comparison, Confidence, FamilyInput, Mood, Pride, Source } from '@/shared/types'
 import { cn } from '@/lib/utils'
-import { Capsule, CapsuleBottom, CapsuleTop, CharmArt, ItemIcon } from './art'
+import { Capsule, CapsuleBottom, CapsuleTop, CharmArt, Coin, ItemIcon, Piggy } from './art'
 import { FamilyCheer } from './family'
 import { Marquee } from './machine'
 import { EmptyStamp, GotouchiStamp } from './stamp'
@@ -172,6 +172,35 @@ const manText = (yen: number) => `${(Math.round(yen / 1000) / 10).toFixed(1)}万
 
 /* ───────── いちばん上のカプセル ───────── */
 
+// 金額のとなりの小さな貯金箱。スマホの最初の画面でも、うれしい・しょんぼりが字を読まずに分かるように（表情は mood だけで決める）
+function BoxPiggy({ mood }: { mood: Mood }) {
+  const reduce = useReducedMotion()
+  const controls = useAnimationControls()
+  useEffect(() => {
+    if (reduce || mood === 0) return
+    const t = window.setTimeout(() => {
+      if (mood > 0) controls.start({ y: [0, -14, 0, -6, 0], rotate: [0, -6, 0, 4, 0], transition: { duration: 0.9, ease: 'easeOut' } })
+      else controls.start({ scaleY: [1, 0.92, 1, 0.94, 1], y: [0, 2, 0, 2, 0], transition: { duration: 2.2, ease: 'easeInOut' } })
+    }, 650)
+    return () => window.clearTimeout(t)
+  }, [mood, reduce, controls])
+  return (
+    <motion.div aria-hidden animate={controls} className="relative -mb-1 shrink-0" style={{ originY: 1 }}>
+      {mood > 0 && !reduce && (
+        <motion.span
+          className="absolute -top-1 left-1/2 -ml-[9px]"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: [0, 1, 1, 0], y: [6, -18, -26, -32], rotate: [0, 0, 30, 60] }}
+          transition={{ duration: 1.1, delay: 0.85, times: [0, 0.25, 0.7, 1] }}
+        >
+          <Coin size={18} />
+        </motion.span>
+      )}
+      <Piggy mood={mood} width={56} />
+    </motion.div>
+  )
+}
+
 function AmountBox({ c, input }: { c: Comparison; input: FamilyInput }) {
   const scope = scopeOf(c)
   const tone = toneOf(c.perYear)
@@ -246,11 +275,14 @@ function AmountBox({ c, input }: { c: Comparison; input: FamilyInput }) {
       ) : (
         <>
           {lead && <p className="mt-1.5 text-[13px] font-black text-[var(--ink-soft)]">{lead}</p>}
-          <p className="va-pop mt-1 text-[34px] leading-none" style={{ color: TONE_INK[tone] }}>
-            <span className="text-[16px]">年 約</span>
-            <CountUp yen={c.perYear} />
-            <span className="text-[16px]">万円</span>
-          </p>
+          <div className="mt-1 flex items-end justify-between gap-2">
+            <p className="va-pop text-[34px] leading-none" style={{ color: TONE_INK[tone] }}>
+              <span className="text-[16px]">年 約</span>
+              <CountUp yen={c.perYear} />
+              <span className="text-[16px]">万円</span>
+            </p>
+            <BoxPiggy key={`${c.to.id}-${c.mood}`} mood={c.mood} />
+          </div>
           <p className="mt-1.5 text-[13.5px] font-black">
             {c.years > 1 ? `${avgLead(c.years)}、` : ''}
             {ev.month}・{ev.day}
@@ -383,7 +415,7 @@ export function MainCapsule({ c, input, sample, note }: { c: Comparison; input: 
             className="absolute left-1/2 top-1/2 -ml-[82px] -mt-[82px]"
             initial={reduce ? false : { scale: 1.9, opacity: 0, rotate: -20 }}
             animate={{ scale: 1, opacity: 1, rotate: -7 }}
-            transition={{ type: 'spring', stiffness: 480, damping: 20, delay: 0.1 }}
+            transition={{ type: 'spring', stiffness: 480, damping: 20, delay: 0.1, opacity: { duration: 0.15, delay: 0.1 } }}
           >
             <GotouchiStamp city={c.to} size={164} />
           </motion.div>
@@ -407,7 +439,7 @@ export function MainCapsule({ c, input, sample, note }: { c: Comparison; input: 
       </h1>
       <p className="mt-1.5 text-center text-[13.5px] font-bold leading-relaxed text-[var(--ink-soft)] [overflow-wrap:anywhere] [word-break:keep-all]">{sublineOf(c)}</p>
       {note}
-      {(c.to.level !== 'detailed' || c.from.level !== 'detailed') && (
+      {scope !== 'thin' && (c.to.level !== 'detailed' || c.from.level !== 'detailed') && (
         <div className="mt-1.5 space-y-0.5 rounded-[10px] bg-[var(--paper-2)] px-2.5 py-1.5 text-center text-[12.5px] font-bold leading-snug">
           {c.to.level !== 'detailed' && <p>{c.to.name}は、{levelText(c.to)}。</p>}
           {c.from.level !== 'detailed' && (
@@ -568,7 +600,7 @@ export function Omake({ c }: { c: Comparison }) {
           <>
             <p className="text-[12px] font-black text-[var(--ink-soft)]">{city.name}のおまけ</p>
             <h3 className="text-[17px] font-black leading-snug">「{look.glyph}」の字のキーホルダー</h3>
-            {city.phrase && <p className="mt-0.5 text-[15px] font-black leading-relaxed">「{city.phrase}」</p>}
+            {city.phrase && <p className="mt-1 border-l-[4px] border-[var(--yolk-deep)] pl-2 text-[15px] font-black leading-relaxed">{city.phrase}</p>}
             <p className="mt-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">
               {city.phrase ? `${city.name}のキャッチフレーズです。` : ''}
               {city.name}だけの名物は、まだ調べていません。
