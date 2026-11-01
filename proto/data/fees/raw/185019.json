@@ -1,0 +1,61 @@
+{
+  "code": "185019",
+  "pref": "福井県",
+  "name": "若狭町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度子育て応援パンフレット」〔2026年3月23日作成、ページは2026年3月24日更新〕p.19「35 保育料」）",
+  "period_note": "令和8年度子育て応援パンフレット p.19: 「若狭町認可保育所の保育料は下表のとおりです。3歳児以上と第2子以降の保育料は無償になります」。表の題は「各月初日に在籍する教育・保育給付認定子どもの属する世帯の階層区分」と「徴収金基準額(月額) 3号認定(3歳未満児)」。4〜8月分と9〜3月分で使う市町村民税の年度は、パンフレットに書かれていない。町内の認可保育所は公立・私立合わせて9か所（公立7・私立2）。",
+  "tax_basis": "6%",
+  "tax_note": "表は「市町村民税課税世帯所得割額」で階層を分ける。所得割の定義（税額控除の扱いなど）や合算する人の範囲は、パンフレットに書かれていない。政令市ではない。",
+  "table": {
+    "title": "35 保育料（令和8年度子育て応援パンフレット p.19）徴収金基準額(月額) 3号認定(3歳未満児)",
+    "kind": "3歳未満・保育標準時間・第1子（月額）（ひとり親世帯等以外の世帯）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）", "monthly": 0, "monthly_second": 0 },
+      { "label": "第2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "第3（均等割のみ）", "lower": null, "upper": null, "condition": "均等割のみ課税（上記以外の世帯）", "monthly": 8000, "monthly_second": 0 },
+      { "label": "第3（所得割48,600円未満）", "lower": 1, "upper": 48600, "condition": "市町村民税課税世帯所得割額 48,600円未満（上記以外の世帯）", "monthly": 12000, "monthly_second": 0 },
+      { "label": "第4（その1）", "lower": 48600, "upper": 72800, "condition": "48,600円以上 72,800円未満（上記以外の世帯）", "monthly": 16000, "monthly_second": 0 },
+      { "label": "第4（その2）", "lower": 72800, "upper": 77101, "condition": "72,800円以上 77,101円未満（上記以外の世帯）", "monthly": 20000, "monthly_second": 0 },
+      { "label": "第4（その3）", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 20000, "monthly_second": 0 },
+      { "label": "第5（その1）", "lower": 97000, "upper": 109600, "condition": "97,000円以上109,600円未満", "monthly": 26000, "monthly_second": 0 },
+      { "label": "第5（その2）", "lower": 109600, "upper": 169000, "condition": "109,600円以上169,000円未満", "monthly": 28000, "monthly_second": 0 },
+      { "label": "第6", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000未満", "monthly": 32000, "monthly_second": 0 },
+      { "label": "第7", "lower": 301000, "upper": 397000, "condition": "301,000以上 397,000円未満", "monthly": 34000, "monthly_second": 0 },
+      { "label": "第8", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 34000, "monthly_second": 0 }
+    ],
+    "notes": "列は3号認定（3歳未満児）の標準時間・短時間。短時間（上記以外の世帯）: 第1・第2 0、第3（均等割のみ）7,800、第3（48,600円未満）11,700、第4（48,600〜72,800円未満）15,700、第4（72,800〜77,101円未満）19,600、第4（77,101〜97,000円未満）19,600、第5（97,000〜109,600円未満）25,500、第5（109,600〜169,000円未満）27,500、第6 31,400、第7 33,400、第8 33,400。ひとり親世帯等（標準／短時間）: 第3 均等割のみ 4,000／3,900、第3 48,600円未満 6,000／5,850、第4 48,600〜72,800円未満 8,000／7,850、第4 72,800円以上（77,100円以下）9,000／9,000。第4のその2とその3は額が同じで、ひとり親世帯等の区切り（77,101円）で分かれている。monthly_second は「第2子以降の保育料は無償」による0円。第3（所得割48,600円未満）の lower は均等割のみと分けるため1にした。給食費（副食費）: 3歳未満児は保育料に含まれる。3歳以上児は月4,500円（所得割57,700円未満〔ひとり親世帯等77,101円未満〕の世帯は免除、子どもが3人以上いる世帯の第3子以降は無償）。表は画像でも確かめた。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（標準時間で月8,000〜34,000円、生活保護・非課税世帯は0円）。",
+  "second_child": "free",
+  "second_count": "unknown",
+  "second_note": "パンフレット: 「3歳児以上と第2子以降の保育料は無償になります」。福井県の制度（第2子以降の保育料無償化、令和6年9月から所得制限なし、県1/2・市町1/2）による。何人目かの数え方（上の子が保育所等に同時に通う必要があるか、上の子の年齢の上限）は、町のパンフレット・保育所のページに書かれていない（ほかの福井県の市町〔福井市・敦賀市・鯖江市・越前市・坂井市など〕は生計が同じ兄姉を年齢や在園を問わず数えるが、若狭町の資料では確かめられなかった）。所得制限の記載はない。",
+  "third_child": "free",
+  "third_count": "unknown",
+  "third_note": "第2子以降が無償なので第3子以降も無償（数え方は不明、第2子と同じ）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和8年度子育て応援パンフレット p.20「37 学校給食費無償化 小学1年生から中学3年生の学校給食費の無償化を実施しています」（教育委員会事務局）。",
+    "source": { "label": "令和8年度子育て応援パンフレット（若狭町）", "url": "https://www.town.fukui-wakasa.lg.jp/material/files/group/24/panhuretto.pdf" }
+  },
+  "cash": [
+    { "label": "在宅育児応援手当（保育所等に預けずに在宅で育児する第2子以降の0〜2歳児）", "per_child_yearly": 120000, "max_age": 3, "note": "手当月額10,000円。対象は第2子以降の児童（生後0〜2歳児）を保育所等に預けずに在宅で育児している人で、育児休業給付金を受給していない人。申請日の翌月分から支給。保育所に通う子は対象外なので、保育料の比較とは別の制度。", "source": { "label": "令和8年度子育て応援パンフレット p.13「25 在宅育児応援手当」", "url": "https://www.town.fukui-wakasa.lg.jp/material/files/group/24/panhuretto.pdf" } }
+  ],
+  "one_time": [],
+  "sources": [
+    { "label": "子育て応援パンフレットについて（若狭町、2026年3月24日更新）", "url": "https://www.town.fukui-wakasa.lg.jp/kosodate_kyoiku/jidofukushi_hitorioyafukushi/2333.html" },
+    { "label": "令和8年度子育て応援パンフレット（PDF、p.19 保育料、p.13 在宅育児応援手当、p.20 学校給食費無償化）", "url": "https://www.town.fukui-wakasa.lg.jp/material/files/group/24/panhuretto.pdf" },
+    { "label": "保育所一覧（2026年8月20日更新）", "url": "https://www.town.fukui-wakasa.lg.jp/kosodate_kyoiku/hoikusho_kodomoen_yochien/1677.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "保育所・こども園・幼稚園の一覧（kosodate_kyoiku/hoikusho_kodomoen_yochien/index.html）: 保育所一覧と開放日のページだけで、保育料・入所申込みのページはない",
+    "子育て支援課の業務案内（soshiki/kosodateshien/）: 保育所一覧だけ",
+    "例規集（www1.g-reiki.net/fukui-wakasa/reiki_menu.html）: 403 Forbidden（15秒あけて取り直しても同じ）",
+    "WebSearch（town.fukui-wakasa.lg.jp）「若狭町 保育料 第2子以降 無償 数え方 兄姉 年齢 保育所」: 第2子の数え方を書いたページは見つからなかった"
+  ],
+  "notes": "下調べの docs は空だった。子育て応援パンフレットのPDFは pdftotext で一部の文字が出ない（Adobe-Japan1）ため、表は画像（p.20 = 冊子の19ページ）で確かめた。第2子の数え方だけが分からない。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,55 @@
+{
+  "code": "302040",
+  "pref": "和歌山県",
+  "name": "有田市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「令和8年度保育料基準額表（令和8年４月１日現在）」（新規入所の手続きのページ〔2026年9月30日更新〕のExcelと、令和9年度の利用申込案内〔2026年9月30日作成〕p.5 に同じ表）。4〜8月分の保育料は前年度の市民税、9〜3月分は当該年度の市民税で算定。年度途中で満3歳となり3号から2号に認定が変わっても、その年度末までは「2歳児」としての保育料額。保育料（利用者負担額）のページ〔更新日2024年6月24日〕の「保育料基準額表」PDF（2024hoikuryou.pdf）も全行同じ額。",
+  "tax_basis": "6%",
+  "tax_note": "市町村民税所得割合算額（父母等の合算）で階層を決める。外国税額控除、配当割額又は株式等譲渡所得割額の控除、住宅借入金等特別控除、寄附金税額控除等の適用は行わない（税額控除前の額）。政令市で課税された場合の扱いは書かれていない。",
+  "table": {
+    "title": "令和8年度保育料基準額表（令和8年４月１日現在）",
+    "kind": "3歳児未満・保育標準時間・第1子（月額）（保育短時間も同じ額）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "市町村民税所得割合算額 48,600円未満 上記以外（要保護世帯等以外）", "monthly": 15000, "monthly_second": null },
+      { "label": "第4階層（その1）", "lower": 48600, "upper": 77101, "condition": "48,600円以上77,101円未満 上記以外（要保護世帯等以外）", "monthly": 25000, "monthly_second": null },
+      { "label": "第4階層（その2）", "lower": 77101, "upper": 97000, "condition": "77,101円以上97,000円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "第5階層", "lower": 97000, "upper": 169000, "condition": "97,000円以上169,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "第6階層", "lower": 169000, "upper": 301000, "condition": "169,000円以上301,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "第7階層", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "第8階層", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 44000, "monthly_second": null }
+    ],
+    "notes": "3歳児未満の欄は「保育標準時間」「保育短時間」が1つにまとめられた欄で、どちらも同じ額（Excelのセル結合と案内PDFの画像で確かめた）。3歳児以上は0円。第3階層は「48,600円未満」なので均等割のみ（所得割0円）の世帯も入るとみて lower=0。要保護世帯等（生活保護法の要保護者、ひとり親〔配偶者のない者で現に児童を扶養している者〕、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた者、特別児童扶養手当の支給対象児童、障害基礎年金等の受給者、市長が認めた者が世帯にいる場合）: 第3階層 8,200円、第4階層のうち77,101円未満 8,200円。0〜2歳児の給食費は保育料に含まれる。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（月15,000〜44,000円、標準時間・短時間同額）。0円は生活保護世帯と市町村民税非課税世帯。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "一般: 保護者と生計を一にする小学校就学前児童が2人以上同時に施設・事業所等（認可保育所、幼稚園、認定こども園、地域型保育事業、特別支援学校幼稚部、児童発達支援等）を利用する場合、利用する児童のうち最年長から順に2人目を半額、3人目以降0円（同時に利用する子で数える）。所得割57,700円未満（第3階層・第4階層の一部）: 保護者と生計を一にする児童が2人以上いれば最年長から順に2人目を半額（上の子の年齢・在園を問わない）、さらに紀州っ子いっぱいサポートの「第2子保育料等無償化」を申請すると第2子は0円。要保護世帯等で所得割77,101円未満: 2人目以降0円。「生計を一にする児童」の算定対象者の範囲は、支給認定保護者等に監護される者（未成年）、監護されていた者（成年に達した場合）、支給認定保護者またはその配偶者の直系卑属。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "紀州っ子いっぱいサポート（紀州3人っこ施策）: 保護者と生計を一にする児童が3人以上いる場合、年齢の高い順に数えて3人目以降は0円（申請書の提出が必要。所得制限の記載なし、上の子の年齢・在園を問わない）。同時利用の3人目以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    { "label": "有田市1歳祝い金（第1子）", "amount": 100000, "note": "令和8年4月1日以降に生まれた児童（初めての住民登録が有田市）。出生日以降1年以上有田市に住民登録していること、対象児童と同一世帯、同一世帯の全員に市税等の滞納がないこと。出生順位は出生日に生計を同一とする子の人数で数え、出生日の属する年度末までに19歳に達する子は含まない。令和3年4月1日〜令和8年3月31日生まれは出産祝金の対象（額は見ていない）。", "source": { "label": "有田市1歳祝い金の支給（更新日2026年3月31日）", "url": "https://www.city.arida.lg.jp/kosodatenavi/kosodateshien/1005496.html" } },
+    { "label": "有田市1歳祝い金（第2子）", "amount": 200000, "note": "要件は第1子と同じ。", "source": { "label": "有田市1歳祝い金の支給（更新日2026年3月31日）", "url": "https://www.city.arida.lg.jp/kosodatenavi/kosodateshien/1005496.html" } },
+    { "label": "有田市1歳祝い金（第3子以降）", "amount": 500000, "note": "要件は第1子と同じ。", "source": { "label": "有田市1歳祝い金の支給（更新日2026年3月31日）", "url": "https://www.city.arida.lg.jp/kosodatenavi/kosodateshien/1005496.html" } },
+    { "label": "有田市小・中学校入学等祝い補助金（小学校入学）", "amount": 100000, "note": "入学児童・生徒1人につき10万円。入学した年の5月1日に市内に住所を有する保護者で、本人と子が有田市に住所を有してから6か月以上、世帯に市税等の滞納がないこと。", "source": { "label": "有田市小・中学校入学等祝い補助金支給事業（更新日2026年5月14日）", "url": "https://www.city.arida.lg.jp/kosodatenavi/kosodateshien/1003456.html" } },
+    { "label": "有田市小・中学校入学等祝い補助金（中学校入学）", "amount": 100000, "note": "要件は小学校入学と同じ。", "source": { "label": "有田市小・中学校入学等祝い補助金支給事業（更新日2026年5月14日）", "url": "https://www.city.arida.lg.jp/kosodatenavi/kosodateshien/1003456.html" } }
+  ],
+  "sources": [
+    { "label": "保育所・認定こども園の入所手続きについて【新規入所】（更新日2026年9月30日）", "url": "https://www.city.arida.lg.jp/kosodatenavi/kodomoazukari/1003717.html" },
+    { "label": "保育料基準額表（Excel、令和8年度保育料基準額表 令和8年４月１日現在）", "url": "https://www.city.arida.lg.jp/_res/projects/default_project/_page_/001/003/717/9kijyungaku.xlsx" },
+    { "label": "令和9年度保育所・認定こども園（保育部分2・3号）及び公立1号利用申込案内（PDF）", "url": "https://www.city.arida.lg.jp/_res/projects/default_project/_page_/001/003/717/99riyouannnai.pdf" },
+    { "label": "保育料（利用者負担額）（更新日2024年6月24日）", "url": "https://www.city.arida.lg.jp/kosodatenavi/kodomoazukari/1002666.html" },
+    { "label": "保育料基準額表（PDF、2024hoikuryou.pdf）", "url": "https://www.city.arida.lg.jp/_res/projects/default_project/_page_/001/002/666/2024hoikuryou.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べのExcel（令和8年度、令和8年4月1日現在）と保育料のページで読み、令和9年度の利用申込案内の p.5 を画像で見て列（3歳児未満は標準・短時間が1つの欄）を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。lunch_jh・cash は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

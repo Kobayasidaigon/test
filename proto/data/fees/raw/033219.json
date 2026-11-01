@@ -1,0 +1,56 @@
+{
+  "code": "033219",
+  "pref": "岩手県",
+  "name": "紫波町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度保育施設案内（2026年3月作成）の「３号認定（０～２歳児クラス）の月額保育料」。年度途中で満3歳を迎え3号認定から2号認定に移る場合も、年度末までは3号認定の負担額。4〜8月分と9〜3月分で使う町民税の年度は案内に書かれていない（申込書類は令和8年度所得課税証明書〔令和7年中の所得及び令和7年度市町村民税額〕）。",
+  "tax_basis": "6%",
+  "tax_note": "原則として入所児童の父母の税額の合計額から算定（対象児童を税申告等で扶養している人や家計の主宰者が父母以外の場合は、その人の税額で算定する場合あり）。町民税所得割額の計算には、配当控除、寄付金税額控除、外国税額控除、住宅借入金等特別税額控除、配当割額控除、株式等譲渡所得割額控除などの税額控除は適用しない。政令市の8%についての注記はない（政令市でないので6%とした）。",
+  "table": {
+    "title": "[６] 保育料 （２）３号認定（０～２歳児クラス）の月額保育料",
+    "kind": "3号認定（0〜2歳児クラス）・標準時間（月額）。第2子の別の列はない（町独自で第2子以降は無料）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "町民税所得割額非課税世帯", "monthly": 12000, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "町民税所得割額 48,600円未満", "monthly": 17000, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 57700, "condition": "町民税所得割額 57,700円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "6", "lower": 57700, "upper": 63900, "condition": "町民税所得割額 63,900円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "7", "lower": 63900, "upper": 77101, "condition": "町民税所得割額 77,101円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "8", "lower": 77101, "upper": 78100, "condition": "町民税所得割額 78,100円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "9", "lower": 78100, "upper": 97000, "condition": "町民税所得割額 97,000円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "10", "lower": 97000, "upper": 169000, "condition": "町民税所得割額 169,000円未満", "monthly": 35000, "monthly_second": null },
+      { "label": "11", "lower": 169000, "upper": 268000, "condition": "町民税所得割額 268,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "12", "lower": 268000, "upper": 301000, "condition": "町民税所得割額 301,000円未満", "monthly": 47000, "monthly_second": null },
+      { "label": "13", "lower": 301000, "upper": 397000, "condition": "町民税所得割額 397,000円未満", "monthly": 52000, "monthly_second": null },
+      { "label": "14", "lower": 397000, "upper": null, "condition": "町民税所得割額 397,000円以上", "monthly": 52000, "monthly_second": null }
+    ],
+    "notes": "表は各行の上限（未満）だけが書かれ、lower は1つ上の行の上限とした（第4階層は所得割非課税の行と分けるため1）。第3階層「町民税所得割額非課税世帯」は均等割のみ課税の世帯と読める。短時間: 第1・2階層 0円、第3階層 11,000円、第4階層 16,000円、第5・6階層 19,000円、第7・8階層 22,000円、第9階層 24,000円、第10階層 34,000円、第11階層 39,000円、第12階層 44,000円、第13・14階層 49,000円。利用者負担額の軽減（国基準）: ひとり親世帯及び障害者手帳等の交付を受けた者を有する世帯（兄姉の年齢制限なし）は第3階層 無料、第4〜7階層 第1子7,000円・第2子以降無料。3〜5歳児クラスは無料（実費負担分は園で徴収。副食費は2号認定で所得割57,700円未満・非課税・生活保護、ひとり親世帯等で77,101円未満は免除、第3子は免除）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月12,000〜52,000円）。0円は生活保護世帯と町民税非課税世帯。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "町独自（令和5年4月から）: 親の扶養に入っている兄姉（年齢制限なし）のいる世帯は第3〜14階層で第2子以降は無料。令和5年度のチラシ: 子ども（年齢制限なし）を2人以上扶養している世帯で、幼稚園・保育園・認定こども園に通園している3歳未満児が第2子以降に該当した場合に保育料を無償化（例: 20歳の大学生の兄姉も第1子として数える）。住民票や現況届の世帯状況で算定するため、町外に住民票がある扶養の子は申し出が必要。所得制限の記載なし。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無料（第2子と同じ数え方）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度保育所入所申込受付のご案内｜紫波町役場（最終更新日 2026年10月06日）", "url": "https://www.town.shiwa.iwate.jp/soshiki/5_2/4_3/175757172014381/" },
+    { "label": "令和８年度保育施設案内（PDF）", "url": "https://www.town.shiwa.iwate.jp/shiwatown/cms/soshiki/5_2/4_3/【R08】保育施設案内.pdf" },
+    { "label": "令和5年度から多子世帯の保育料軽減を拡大します｜紫波町役場", "url": "https://www.town.shiwa.iwate.jp/soshiki/5_2/4_3/9472.html/" },
+    { "label": "令和５年度多子世帯保育料減免制度について（制度チラシ）（PDF）", "url": "https://www.town.shiwa.iwate.jp/shiwatown/cms/soshiki/5/4_3/【チラシ】多子世帯の保育料軽減を拡大します（第２子無償化）.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs/05.txt は令和5年度の保育料一覧だったので使わず、令和8年度保育所入所申込受付のページから令和8年度保育施設案内を取り、4ページの月額保育料と軽減の表を画像で確かめた",
+    "下調べの docs/00.txt・06.txt（多子世帯の保育料軽減を拡大します、制度チラシ）で第2子以降無料の数え方を読んだ"
+  ],
+  "notes": "4〜8月分と9〜3月分の切り替えの書き方は案内に見当たらなかった。lunch_jh・cash・one_time は探していない。町には認可外保育施設等保育料給付金もある（開いていない）。",
+  "read_at": "2026-11-01"
+}

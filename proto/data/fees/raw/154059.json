@@ -1,0 +1,64 @@
+{
+  "code": "154059",
+  "pref": "新潟県",
+  "name": "出雲崎町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（町の「保育料・副食費」のページ〔最終更新日2026年6月1日〕。令和9年度入園のしおり〔2026年9月作成〕も同じ内容）",
+  "period_note": "保育料は全児童無料なので、所得の年度の切り替えは保育料に関係しない。3〜5歳児の副食費の免除判定は、4月から8月分は前年度、9月から3月分は今年度の課税額で算定。",
+  "tax_basis": "6%",
+  "tax_note": "0〜5歳児クラスの保育料が全員無料のため、町の保育料の階層表は示されていない。副食費の免除判定は市町村民税所得割合算額（配偶者を含む）で行う。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "「保育料・副食費」のページ: ０歳児から５歳児クラスのすべてのお子さんの保育料が無料です。令和9年度入園のしおり p.6: ０～５歳児のすべてのお子さんの保育料が無料です。町の「未来へつなぐ子育て応援宣言」でも「保育料の完全無償化」を挙げている。いつから無料かは読んだ資料に書かれていない。0〜2歳児の給食費（主食・副食）の徴収の記載はなく、給食費を施設に払うのは3〜5歳児（副食費は年収360万円未満相当の世帯と第3子以降は免除）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員の保育料が無料のため、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無料なので第3子以降も0円。3〜5歳児の副食費の第3子以降免除の数え方は、1号認定は小学校3年生修了前の同一世帯の子ども、2号認定は小学校就学前の同一世帯かつ保育園等に通う子どもを数えて第3子。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    {
+      "label": "幸せを運ぶコウノトリ祝金（出産準備金）",
+      "amount": 300000,
+      "note": "町に住所があり妊娠22週を経過した妊婦またはその配偶者で定住の意思がある方に30万円。転出した場合は期間に応じて返還（支給決定から1年未満5分の3、3年未満5分の2、5年未満5分の1）。",
+      "source": { "label": "出雲崎町 幸せを運ぶコウノトリ祝金（最終更新日2026年6月1日）", "url": "https://www.town.izumozaki.niigata.jp/kurashi/ninshin/kounotori-iwaikin.html" }
+    },
+    {
+      "label": "幸せを運ぶコウノトリ祝金（出産祝金）",
+      "amount": 200000,
+      "note": "出産した日に町に住所がある産婦またはその配偶者（1歳未満の子と転入した保護者、特別養子縁組の養親も対象）で定住の意思がある方に20万円。返還の決まりは出産準備金と同じ。",
+      "source": { "label": "出雲崎町 幸せを運ぶコウノトリ祝金（最終更新日2026年6月1日）", "url": "https://www.town.izumozaki.niigata.jp/kurashi/ninshin/kounotori-iwaikin.html" }
+    },
+    {
+      "label": "小学校入学祝金",
+      "amount": 50000,
+      "note": "小学校（特別支援学校小学部）の第1学年に入学する児童（転校してきた児童を含む）の保護者。入学祝金は令和8年度以降の方が対象。",
+      "source": { "label": "出雲崎町 入学卒業祝金支給事業", "url": "https://www.town.izumozaki.niigata.jp/kurashi/kyoiku/nyugaku-iwai.html" }
+    },
+    {
+      "label": "中学校入学祝金",
+      "amount": 60000,
+      "note": "中学校（特別支援学校中学部・中等教育学校）の第1学年に入学する生徒（転校してきた生徒を含む）の保護者。",
+      "source": { "label": "出雲崎町 入学卒業祝金支給事業", "url": "https://www.town.izumozaki.niigata.jp/kurashi/kyoiku/nyugaku-iwai.html" }
+    },
+    {
+      "label": "中学校卒業祝金",
+      "amount": 70000,
+      "note": "中学校等の全課程を修了する生徒の保護者。卒業祝金は令和7年度以降の方が対象。",
+      "source": { "label": "出雲崎町 入学卒業祝金支給事業", "url": "https://www.town.izumozaki.niigata.jp/kurashi/kyoiku/nyugaku-iwai.html" }
+    }
+  ],
+  "sources": [
+    { "label": "出雲崎町 保育料・副食費（最終更新日2026年6月1日）", "url": "https://www.town.izumozaki.niigata.jp/kurashi/kosodate/hoikuryo.html" },
+    { "label": "出雲崎町 令和９年度 保育園等入園申込みについて（2026年10月1日公開）", "url": "https://www.town.izumozaki.niigata.jp/kurashi/kosodate/R09hoiku.html" },
+    { "label": "令和９年度 出雲崎町 保育園・認定こども園等 入園のしおり（PDF、2026年9月作成）p.6 保育料・給食費について", "url": "https://www.town.izumozaki.niigata.jp/_files/00088893/9nyuuennshiori.pdf" },
+    { "label": "出雲崎町 未来へつなぐ子育て応援宣言", "url": "https://www.town.izumozaki.niigata.jp/kurashi/kosodateouen/sengen.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの docs/00（保育料・副食費のページ）と、令和9年度入園申込みのページのしおり（文字の取れるPDF）で、0〜5歳児の保育料が全員無料と確かめた。町内の認可施設は出雲崎こども園（認定こども園、定員60名）と小木之城保育園（定員60名）で、どちらも生後2か月から受け入れ。延長保育は保育標準時間認定は無料、保育短時間認定は1時間ごとに100円。保育料の表はないので table は null。lunch_jh と cash は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,54 @@
+{
+  "code": "322067",
+  "pref": "島根県",
+  "name": "安来市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度安来市保育施設入所のてびき（2025年10月作成、p.6〜7「8．保育料について」）と、市の「保育所・幼稚園・認定こども園」ページの保育料利用者負担額表（令和7年10月1日時点、R8年度入所募集のページにも同じPDF）。保育料の決定は年2回で、4〜8月分は令和7年度の市民税額（令和6年収入等）、9〜3月分は令和8年度の市民税額（令和7年収入等）。8月分以前と9月分以降で保育料が変わっても4月にさかのぼっての変更はない。年齢は当該年度4月1日時点（年度途中で3歳になっても変わらない）。月の途中の入退所は日割り（10円未満切り捨て）。税額が確認できるまでは最高階層。令和9年度のてびき（2026年10月作成）でも表と注記は同じ。",
+  "tax_basis": "6%",
+  "tax_note": "原則として父母の市民税額の合計で算定。父母の収入の合計が120万円より少ない場合は同居の祖父母等の市民税額を合算（住民票上別世帯でも同一敷地内または隣接する敷地に住む場合を含む）。利用者負担額を算定する税額は、税額控除（調整控除を除く配当控除、外国税額控除、住宅借入金特別控除、寄付金控除等）を適用しない額。安来市は政令市ではない。",
+  "table": {
+    "title": "保育所・認定こども園 ０～２歳児 保育料 利用者負担額表",
+    "kind": "0〜2歳・保育標準時間・ひとり親世帯等以外・第1子（月額）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": 0, "upper": 30000, "condition": "市町村民税所得割課税額 30,000円未満の上記以外の世帯", "monthly": 7300, "monthly_second": null },
+      { "label": "第4", "lower": 30000, "upper": 48600, "condition": "30,000円以上48,600円未満", "monthly": 10000, "monthly_second": null },
+      { "label": "第5", "lower": 48600, "upper": 72800, "condition": "48,600円以上72,800円未満", "monthly": 12600, "monthly_second": null },
+      { "label": "第6", "lower": 72800, "upper": 97000, "condition": "72,800円以上97,000円未満", "monthly": 15300, "monthly_second": null },
+      { "label": "第7", "lower": 97000, "upper": 133000, "condition": "97,000円以上133,000円未満", "monthly": 21700, "monthly_second": null },
+      { "label": "第8", "lower": 133000, "upper": 169000, "condition": "133,000円以上169,000円未満", "monthly": 24700, "monthly_second": null },
+      { "label": "第9", "lower": 169000, "upper": 235000, "condition": "169,000円以上235,000円未満", "monthly": 38000, "monthly_second": null },
+      { "label": "第10", "lower": 235000, "upper": 301000, "condition": "235,000円以上301,000円未満", "monthly": 43000, "monthly_second": null },
+      { "label": "第11", "lower": 301000, "upper": 349000, "condition": "301,000円以上349,000円未満", "monthly": 49000, "monthly_second": null },
+      { "label": "第12", "lower": 349000, "upper": null, "condition": "349,000円以上", "monthly": 52000, "monthly_second": null }
+    ],
+    "notes": "保育短時間: 第1・第2 0円、第3 7,200円、第4 9,800円、第5 12,400円、第6 15,000円、第7 21,300円、第8 24,300円、第9 37,300円、第10 42,200円、第11 48,100円、第12 51,100円。ひとり親世帯等（ひとり親世帯または障害者手帳等の交付を受けている同居家族がいる世帯）の欄: 所得割30,000円未満は第3階層3,300円（短時間3,250円）、48,600円未満（30,000円以上）は第4階層4,600円（短時間4,550円）。注記: 1.税額控除（調整控除を除く配当控除、外国税額控除、住宅借入金特別控除、寄付金控除等）を適用しない。3.養育する子どものうち第3子以降の第9〜12階層はこの表の額から1/4軽減した額。4.同一世帯から2人以上の児童が幼稚園、保育所、認定こども園等に入所している場合は最年長の児童は全額、2人目は半額、3人目以降は無料。5.前項にかかわらず所得割57,700円未満の世帯の第2子は半額・第3子以降は無料、第5階層のひとり親世帯等及び第6階層の77,101円未満のひとり親世帯等の第1子は4,600円、77,101円未満のひとり親世帯等の第2子以降は無料。6.満3歳に到達した日の属する年度中は3歳未満の額。7.月の途中の入退所は日割り（10円未満切り捨て）。表に第2子の別の列はない。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は表の額（生活保護世帯等・非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "同一世帯から2人以上の児童が幼稚園、保育所、認定こども園等に入所している場合、最年長の児童は全額、2人目の児童は半額（表の注記4、よくあるご質問の問21）。市町村民税所得割額57,700円未満の世帯は、兄弟が同時入所していなくても第2子は半額（注記5）。所得割77,101円未満のひとり親世帯等は第2子以降無料。半額・無料の基準額はその子の年齢区分の額。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "同時に幼稚園・保育所・認定こども園等に入所している3人目以降は無料。所得割57,700円未満の世帯は同時入所でなくても第3子以降は無料。別に、養育する子どものうち第3子以降で第9〜12階層（所得割169,000円以上）の場合は表の額から1/4軽減（同時入所でない第3子の数え方）。第5〜8階層（所得割57,700円以上169,000円未満）で同時入所でない第3子の扱いは表・てびき・よくあるご質問・子育て応援ガイドブック（2026年版）に書かれておらず不明（市の「定住情報」ページには「第3子以降の3歳未満児及び3歳児の保育料を軽減します」「第3子以降の4･5歳児の保育料を無料とします」という無償化前の古い書き方の案内しかない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度安来市保育施設入所のてびき（PDF、p.6〜7 保育料について・利用者負担額表）", "url": "https://www.city.yasugi.shimane.jp/kurashi/kyoiku/hoiku/r8nyuusyo.data/tebiki_.pdf" },
+    { "label": "保育所・認定こども園（３号認定）保育料利用者負担額表（令和7年10月1日時点）（PDF）", "url": "https://www.city.yasugi.shimane.jp/kurashi/kyoiku/hoiku/index.data/hoikuryouitirann.pdf" },
+    { "label": "島根県安来市：R8年度入所募集（２・３号）", "url": "https://www.city.yasugi.shimane.jp/kurashi/kyoiku/hoiku/r8nyuusyo.html" },
+    { "label": "島根県安来市：よくあるご質問【保育所・認定こども園（2号、3号認定）入所関係】（問19〜21）", "url": "https://www.city.yasugi.shimane.jp/kurashi/kyoiku/hoiku/faq-ho-nin23.html" },
+    { "label": "令和9年度安来市保育施設入所のてびき（PDF、2026年10月作成。表と注記は令和8年度と同じ）", "url": "https://www.city.yasugi.shimane.jp/kurashi/kyoiku/hoiku/r9nyuusyo.data/tebiki_2.3gou.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "第3子（同時入所でない、第5〜8階層）の扱いを確かめるため WebSearch（allowed_domains: city.yasugi.shimane.jp、「安来市 第3子以降 3歳未満 保育料 軽減 無料」）を1回使い、出てきた子育て応援ガイドブック（https://www.city.yasugi.shimane.jp/kurashi/kyoiku/shien/book.data/piccolini2026.pdf）と定住情報のページ（https://www.city.yasugi.shimane.jp/kurashi/shushoku/teiju/teiju-info.html）を開いたが、具体的な決まりは書かれていなかった。"
+  ],
+  "notes": "下調べの候補（index.data/hoikuryouitirann.pdf と r8nyuusyo.data/12_hoikuryouitirann.pdf は同じ文字）を読み、令和8年度てびきの表と同じことを確かめた。表は pdftoppm で画像にして、第3・第4階層に「ひとり親世帯等」と「それ以外」の2段があることを確かめた（rows はそれ以外の世帯の額）。区切りは切れ目・重なりなし、月額は階層の順に下がらない。所得割30,000円未満の行は均等割のみを含むと読んで下限0とした。よくあるご質問の FAQ に古い「令和3年10月1日時点」の表（R031001hoikuryou.pdf）へのリンクが残っているが使っていない。小学校給食費の実質無償化（令和8年度）のページ、子育て応援ポイント給付事業、やすぎ子育て応援商品券のページがあるが中身は開いていない（中学校給食・現金給付は未確認）。",
+  "read_at": "2026-11-01"
+}

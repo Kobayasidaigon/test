@@ -20,6 +20,10 @@
 //   - 所得の条件があるか確かめていない無償化は、年収の目安（UNSURE_CAP）より上の年収帯を「確認中」にする（どの年収でも0円とはしない）
 //   - 「予定」としか分からない制度や、0〜2歳の第1子を含むと書かれていない制度は、第1子の0円に入れない
 //   - 今年度も続いているか分からない値（例: 2024年度の給食費の無償化）は、計算に入れず「確認中」にして、メモに過去の値を書く
+//   - 県の制度は、実施している市町村のコードがあり、サイトの計算で表せて、国の基準より有利になるものだけ入れる（PREF_IMPORT）。
+//     県の今年度の一覧（市町村ごとの欄）で実施が分かるものは「確認済」まで、県が「全市町村で」と書いているだけのものは「推定」まで
+//   - 1つの街の確からしさは、計算に効いている規則で決める（ほかの規則で同じ結果になる、弱い規則は数えない）
+//   - 移住支援金の受付が今年度は終わった・止まった街は、額を出しつつ、そう書く（受付終了の値 cl）
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 
 const dataPath = (p) => new URL(`../data/${p}`, import.meta.url)
@@ -103,6 +107,7 @@ const PLAIN = [
   [/が検索結果に出たが、直接は開けなかった/g, 'があるが、中身は未確認'],
   [/。市町村ごとの一覧は見ていない。）/g, '。市町村ごとの実施は未確認）'],
   [/既存の調べ（cities20、2026-11-01）/g, '2026年11月1日の調べ'],
+  [/内閣府の一覧では「○」だが、市の全体の額としては使わない。/g, ''],
 ]
 const plainNote = (s) => PLAIN.reduce((a, [re, to]) => a.replace(re, to), s || '').replace(/。。/g, '。').trim()
 // 出典の名前のかっこ書きから、調べた作業の言葉を除く
@@ -211,8 +216,8 @@ for (const r of lunchRows) {
   if (stale) conf = '仮置き'
   const sources = splitSources(r.source_label, r.source_url)
   if (!sources.length) throw new Error(`給食の出典がない: ${r.code}`)
-  // 20市調査の行の「（この行は、…）」は、取り込みの経緯なので画面には出さない
-  const note = plainNote(r.note.replace(/（この行は、.*$/, '').trim())
+  // 頭の【確認済】【推定】（確からしさは jh_confidence で持つ）と、20市調査の行の「（この行は、…）」（取り込みの経緯）は、画面には出さない
+  const note = plainNote(r.note.replace(/^【[^】]*】/, '').replace(/（この行は、.*$/, '').trim())
   const partial = r.jh_free === '一部' ? '全員は無料ではない（第3子以降など一部の子だけ0円）。' : ''
   lunch[r.code] = [stale ? 2 : r.jh_free === '全員' ? 1 : 0, confNo(conf), t(plainNote(r.as_of)), t(partial + note), sources]
 }
@@ -241,22 +246,41 @@ for (const r of ijuRows) {
     // 単身の額（メモに書いてある街だけ。ないときは国の上限の最大60万円として計算する）
     const one = note.match(/単身(\d+)万円/)
     if (one) rec.s1 = man(one[1])
-    // 子どもの加算：「1人◯万円」ならその額、「最大100万円」は最大（市町村によって少ない）
+    // 子どもの加算：「1人◯万円」ならその額（「1人0万円」は加算なし）、
+    // 「最大◯万円（市のページ）」は街のページが「最大」と書いている額（額は分かる。もっと少ないことがある）、
+    // 「最大100万円」だけは国の上限で、この街の額は分からない
     const per = r.child_addition.match(/^1人(\d+)万円/)
+    const cityMax = r.child_addition.match(/^最大(\d+)万円（[^）]*(市|町|村)のページ）/)
     if (per) rec.c = man(per[1])
+    else if (cityMax) { rec.c = man(cityMax[1]); rec.cm = 1 }
     else if (/最大(\d+)万円/.test(r.child_addition)) { rec.c = man(r.child_addition.match(/最大(\d+)万円/)[1]); rec.cu = 1 }
     else throw new Error(`子どもの加算が読めない: ${r.code} ${r.child_addition}`)
+    // 加算の条件（例: 2026年4月1日以降の転入）。「子育て加算なし」は加算の額（0円）で分かるので、条件の文からは除く
     const cond = r.child_addition.match(/（([^）]*)）/)
-    if (cond && per) rec.cn = t(cond[1])
+    const condText = cond ? cond[1].split('。').filter((x) => x && !/加算(なし|は無い|はない)/.test(x)).join('。') : ''
+    if (condText && per) rec.cn = t(condText)
+    // 今年度の受付が、予算の上限に達して終わった・止まった街
+    const cl = closedText(r.note)
+    if (cl) rec.cl = t(cl)
   }
   iju[r.code] = rec
 }
+// メモの「…受付を終了した」「…受付を一旦停止している」から、受付の状況の短い文を作る（予算に達すると終わる「ことがある」は入れない）
+function closedText(note) {
+  const m = note.match(/受付(を|は)[^。]*?(終了した|停止している)/)
+  if (!m) return ''
+  // その文より前で、いちばん近い「◯◯のページ（YYYY年M月D日更新）」を時点にする
+  const pages = [...note.slice(0, m.index).matchAll(/([^\s。:：、（）]+?)のページ（(\d{4}年\d{1,2}月\d{1,2}日)更新）/g)]
+  const page = pages.at(-1)
+  return `令和8年度の受付は、予算の上限に達して${m[2] === '停止している' ? '停止中' : '終了'}${page ? `（${page[1]}のページ、${page[2]}更新）` : ''}`
+}
 
-// ---------- 0〜2歳の保育料（市区町村の一覧 ＋ 県の「全市町村」の制度） ----------
+// ---------- 0〜2歳の保育料（市区町村の一覧 ＋ 県の制度） ----------
 // 1つの街に、いくつかの制度がかさなることがある（例: 県の第2子の無償化と、町の2歳児の無償化）
 const rules = new Map() // code → 規則の配列
 const addRule = (code, rule) => { if (!rules.has(code)) rules.set(code, []); rules.get(code).push(rule) }
 const skipped = [] // 入れなかったもの（理由つき。coverage と README のため）
+const replaced = [] // 市区町村の一覧の行のうち、県の制度（PREF_IMPORT）で入れ直したもの
 
 // 民間のサイト（まとめ・解説）。今年度の記事でなければ根拠にしない
 const PRIVATE = /craftsman\.fun|pulmo\.jp|cckuma\.com/
@@ -265,31 +289,122 @@ const PREF_WIDE = new Set([
   'いわて子育て応援保育料無償化事業',
   'やまぐち子育て応援第2子以降保育料無償化事業',
   '大分県 3歳未満児（第2子以降）の保育料助成',
-  '栃木県 第2子保育料免除事業',
   '子だくさんふくいプロジェクト（第2子以降の保育料無償化）',
-  'やまなし子育て応援事業',
   '東京都 保育所等利用世帯負担軽減事業（保育料等第一子無償化）',
 ])
-// 2人目だけが対象の制度（3人目以降は国の基準）
-const SECOND_ONLY = new Set(['栃木県 第2子保育料免除事業'])
 // 所得の条件があるか確かめていない無償化の、年収の目安（万円）。これより下の年収帯は0円、これにかかる年収帯と上の年収帯は「確認中」にする。
-// 県の基準が分かっている制度は、その額（MAYBE_CAP・県の基準）。どれも「確かめた額」ではないので、画面では額を言わず「所得の条件は確認中」と書く
+// 県の基準が分かっている県は、その額（PREF_CAP）。どれも「確かめた額」ではないので、画面では額を言わず「所得の条件は確認中」と書く
 const UNSURE_CAP = 600
-const MAYBE_CAP = {
-  やまなし子育て応援事業: { cap: 640, note: '県の別のページに「所得割169,000円未満（国の基準の第5階層まで、年収約640万円未満）」の条件があるとされ、確かめられていないので、それより上の年収帯は確認中にしている' },
-}
 // 県の基準の額（市町村の一覧に所得の条件が書かれていないとき、目安に使う）
 const PREF_CAP = { 秋田県: 640 }
 const UNSURE_NOTE = (cap) => `（所得の条件があるかは確かめていないので、年収${cap}万円以上の年収帯は確認中にしている）`
 // 県の説明から全市町村に広げた制度に添える一言と、時点の書き直し（県のページで確かめた更新日）
 const PREF_WIDE_NOTE = '（県の説明から全市町村と推定。市町村ごとの実施は未確認）'
-const AS_OF_FIX = { いわて子育て応援保育料無償化事業: '県のページ（更新日2024年3月13日）' }
+const AS_OF_FIX = { いわて子育て応援保育料無償化事業: '県のページ（更新日2024年3月13日）・令和8年度当初予算（案）' }
 // 公式でない根拠（民間のまとめ）か、中身を開けなかった公式ページか（今年度の記事でなければ、これだけを根拠にしない）
 const weakSource = (s) => PRIVATE.test(s.url) || /検索結果の要約で確認/.test(s.label)
 const thisYear = (asOf) => /2026|令和8年/.test(asOf || '')
 
+// ---- 県の制度（pref-nursery-east.json・pref-nursery-west.json）----
+// 入れる制度。キーは east は id、west は「県/制度の名前」。
+//   basis: list      … 県の一覧（市町村ごとの欄）や交付決定の一覧で、実施している市町村が分かる。今年度の資料で、制度が確認済なら「確認済」
+//          statement … 県が「全市町村で」「市町（高松市を除く）」のように書いているだけ。市町村ごとには確かめていないので「推定」まで
+//   rule:  計算の規則（firstFree 第1子から0円 / secondFree 2人目0円〈secondFreeUnder は所得の条件の年収〉/ secondHalfHome 2人目半額を同じ世帯の子で数える /
+//          thirdFree 3人目以降0円〈thirdCount: household は同じ世帯の子で数える〉）
+//   supersedes: この制度で入れ直す、市区町村の一覧の制度の名前（県の資料で確かめ直した内容のほうを使う）
+//   note: 画面に出すメモ（県の資料の言葉を、使う人に向けて短くしたもの）
+const PREF_IMPORT = {
+  'aomori-musyoka-menu': {
+    basis: 'list', rule: { firstFree: true },
+    supersedes: ['青森県 学校給食費無償化等子育て支援市町村交付金（保育料無償化事業）'],
+    note: '青森県の一覧（令和8年9月18日時点）で、0〜2歳児の保育料を「完全無償化」している市町村（県の交付金の推奨事業）。県の一覧は「完全無償化」と「一部無償化」を分けて書いている（市町村ごとの案内では確かめていない）。',
+  },
+  'akita-sukoyaka-second': {
+    basis: 'list', rule: { secondFree: true, secondFreeUnder: 640 },
+    supersedes: ['すこやか子育て支援事業（県と市町村で1/2ずつ）'],
+    note: '秋田県の一覧（令和8年4月1日現在）で、県の基準（すこやか子育て支援事業）以上の保育料の助成をしている市町村。県の基準では、第2子以降の保育料を全額助成（保育所は世帯年収約640万円まで）。2人目の数え方は書かれていないので、国の基準どおり、同時に保育園などに通う子で数えている。',
+  },
+  'tochigi-second-free': {
+    basis: 'statement', rule: { secondFree: true, secondCount: 'household', thirdFree: true, thirdCount: 'household' },
+    supersedes: ['栃木県 第2子保育料免除事業'],
+    note: '栃木県の第2子以降保育料等免除事業（県の子育て応援サイトに「県内すべての市町で」とある。市町ごとの案内では確かめていない）：生計が同じ同一世帯の18歳未満の子のうち、2人目の0〜2歳児の保育料を免除（2024年10月から）。3人目以降も免除。上の子が卒園していても、別の園でも対象。所得制限なし。令和8年度も続いているかは、県の予算資料では確かめていない。',
+  },
+  'yamanashi-ouen': {
+    basis: 'statement', rule: { secondFree: true, secondCount: 'household', secondFreeUnder: 640 },
+    supersedes: ['やまなし子育て応援事業'],
+    note: '山梨県のやまなし子育て応援事業（県のページに「平成28年4月から県内全ての市町村で実施」とある。市町村ごとの案内では確かめていない）：生計が同じ第1子がいれば、第1子の年齢を問わず（19歳以上も含む）、第2子以降の0〜2歳児の保育料を無料。世帯の市町村民税所得割が169,000円未満（年収約640万円未満）の世帯が対象。令和8年度も続いているかは、県の予算資料では確かめていない。',
+  },
+  'nagano-tashi-third': {
+    basis: 'statement', rule: { thirdFree: true, thirdCount: 'household' },
+    note: '長野県の保育料軽減事業（県のページに「令和７年度から全市町村で支援を実施」とある。市町村ごとの案内では確かめていない）：国の「同時に通う」の条件にかかわらず、0〜2歳児の第2子は半額、第3子以降は無料（所得の区分なし）。上の子の年齢の上限は未確認。',
+  },
+  'nagano-tashi-second': {
+    basis: 'statement', rule: { secondHalfHome: true },
+    note: '長野県の保育料軽減事業（県のページに「令和７年度から全市町村で支援を実施」とある。市町村ごとの案内では確かめていない）：国の「同時に通う」の条件にかかわらず、0〜2歳児の第2子は半額、第3子以降は無料（所得の区分なし）。上の子の年齢の上限は未確認。',
+  },
+  '鳥取県/県独自の保育料軽減（第3子以降）': {
+    basis: 'list', rule: { thirdFree: true, thirdCount: 'household' }, asOf: '2026年4月時点（県の「保育料等の無償化・軽減内容一覧」）',
+    note: '鳥取県の一覧（令和8年4月時点）で、県内19市町村すべてが、同じ世帯の第3子以降の0〜2歳児の保育料を原則無償（同時に通っていなくても。県と市町村で半分ずつ負担）。上の子の年齢の上限は書かれていない。',
+  },
+  '香川県/第３子以降保育料等免除事業（多子世帯の保育料の免除）': {
+    basis: 'statement', rule: { thirdFree: true, thirdCount: 'household' }, asOf: '令和8年度主要事業の概要（2026年2月）',
+    note: '香川県の第３子以降保育料等免除事業（令和8年度予算。県の資料は実施主体を「市町（高松市除く）」としている。市町ごとの案内では確かめていない）：おおむね18歳までのいちばん上の子を第1子と数えて、第3子以降の3歳未満の保育料を免除（所得制限なし）。',
+  },
+  '三重県/みえ子ども・子育て応援総合補助金（市町の独自事業への補助）': {
+    // 令和8年度の交付決定（町の事業の計画）。町の案内と開始の月は確かめていないので「推定」まで
+    basis: 'list', maxConf: '推定', rule: { firstFree: true }, asOf: '令和8年度の交付決定（2026年5月27日発表）',
+    note: '三重県の補助金（みえ子ども・子育て応援総合補助金）の令和8年度の交付決定で、御浜町の「保育料無償化事業」：国の無償化に加えて、町独自に0〜2歳児の保育料を全世帯対象に無償化（延長保育料も）。町の案内と、始まる月は確かめていない。',
+  },
+}
+// 実施している市町村のコードはあるが、入れない制度と、その理由
+const PREF_SKIP = {
+  'akita-sukoyaka-partial': '第1子などの一部の助成（2分の1・4分の1）で、サイトの計算（0円か半額）では表せない',
+  'nagano-low-income': '年収約360万円未満の世帯だけで、サイトの年収帯（400万円未満）の途中に境目がある',
+  'saitama-tashi-musyoka': 'data.ts で県内63市町村に入れている（全63市町村での実施は、県議会での議員の発言による）',
+  'toyama-third-free': '第3子の数え方が分からず、国の基準（同時に通う3人目は0円）と同じ計算になる',
+  'fukui-second-free': '市区町村の一覧に同じ制度が入っている（17市町）',
+  'tokyo-second-free': '区市町の第1子からの無償化（市区町村の一覧。23区は data.ts）が入っていて、2人目の制度は計算に効かない',
+  'tokyo-first-free': '都の実績（令和7年度。23区26市5町3村）から、市区町村の一覧に入っている（23区は data.ts）',
+  'iwate-ouen-musyoka': '県のページの「第2子以降については年齢にかかわらず、保育料が無償化」から、市区町村の一覧に入っている（33市町村。推定）',
+  '兵庫県/ひょうご保育料軽減事業（第1子）': '保育料の一部の補助（月1万円まで等）で0円にはならず、実施している市町の範囲も分からない',
+  '兵庫県/ひょうご保育料軽減事業（第2子以降）': '保育料の一部の補助（月1万5千円まで等）で0円にはならず、実施している市町の範囲も分からない',
+  '大分県/大分にこにこ保育支援事業（3歳未満児〈第2子以降〉の保育料の助成）': '県のページの「第2子以降は保育料が無料」から、市区町村の一覧に入っている（18市町村。推定）',
+  '和歌山県/紀州っ子いっぱいサポート（第2子）': '年収約360万円未満の世帯だけで、サイトの年収帯（400万円未満）の途中に境目がある',
+  '和歌山県/紀州っ子いっぱいサポート（第3子以降）': '第3子の数え方が分からず、国の基準（同時に通う3人目は0円）と同じ計算になる',
+  '鳥取県/県独自の保育料軽減（低所得の世帯の第2子）': '年収約360万円未満の世帯だけで、サイトの年収帯（400万円未満）の途中に境目がある',
+  '鳥取県/中山間地域市町村保育料無償化等モデル事業': '町ごとの中身は市区町村の一覧に入っている（9町）',
+  '山口県/やまぐち子育て応援第2子以降保育料無償化事業': '市区町村の一覧に同じ制度が入っている（19市町）',
+  '宮崎県/第2子保育料の負担軽減（子ども・若者プロジェクト）': '2人目の保育料を国の基準の半額から4分の1にする制度で、サイトの計算（0円か半額）では表せない',
+}
+const east = json('pref-nursery-east.json').prefectures
+const west = json('pref-nursery-west.json')
+// east と west を1つの形にそろえる
+const prefPrograms = [
+  ...east.flatMap((p) => p.programs.map((pr) => ({ key: pr.id, pref: p.pref, prefCode: p.prefCode, name: pr.name, codes: pr.implementingMunicipalityCodes ?? [], conf: pr.confidence, asOf: pr.asOf, sources: pr.sources, scope: pr.scope }))),
+  ...west.flatMap((p) => (p.programs ?? []).map((pr) => ({ key: `${p.pref}/${pr.name}`, pref: p.pref, prefCode: p.prefCode, name: pr.name, codes: pr.implementingCodes ?? [], conf: pr.confidence, asOf: pr.asOf, sources: pr.sources, scope: pr.coverage }))),
+]
+for (const k of [...Object.keys(PREF_IMPORT), ...Object.keys(PREF_SKIP)]) if (!prefPrograms.some((pr) => pr.key === k)) throw new Error(`県の制度が材料にない: ${k}`)
+const prefRules = [] // [市町村コード, 規則]
+const superseded = new Map() // 市区町村の一覧の制度の名前 → 県の制度で入れ直す市町村コード
+for (const pr of prefPrograms) {
+  const imp = PREF_IMPORT[pr.key]
+  if (!imp) {
+    const why = PREF_SKIP[pr.key] ?? (pr.codes.length ? '国の基準より有利になるか分からない' : /^opt/i.test(pr.scope ?? '') ? '手挙げの制度で、実施している市町村の一覧がない' : '実施している市町村の範囲が分からない')
+    skipped.push({ code: pr.prefCode, name: pr.pref, policy: pr.name, why, pref: true })
+    continue
+  }
+  if (!pr.codes.length) throw new Error(`県の制度の市町村が空: ${pr.key}`)
+  const asOf = imp.asOf ?? pr.asOf
+  let conf = imp.basis === 'list' && pr.conf === '確認済' && isCurrent(asOf) ? '確認済' : '推定'
+  if (imp.maxConf) conf = weaker(conf, imp.maxConf)
+  for (const m of imp.supersedes ?? []) superseded.set(m, new Set([...(superseded.get(m) ?? []), ...pr.codes]))
+  for (const code of pr.codes) prefRules.push([code, { ...imp.rule, conf, asOf: plainNote(asOf), note: imp.note, src: pr.sources.map((s) => src(s.label, s.url)), via: pr.name }])
+}
+
 const muni = json('muni-nursery-policies.json')
 for (const r of muni) {
+  // 県の資料で確かめ直した県の制度で入れ直す行（青森県・秋田県の今年度の一覧、栃木県・山梨県の県のページ）
+  if (superseded.get(r.program)?.has(r.code)) { replaced.push({ code: r.code, name: `${r.pref}${r.name}`, program: r.program }); continue }
   const text = `${r.detail ?? ''} ${r.since_note ?? ''} ${r.as_of ?? ''}`
   const unsure = r.income_limit === '未確認'
   const why =
@@ -311,7 +426,7 @@ for (const r of muni) {
   let note = plainNote(r.detail)
   if (PREF_WIDE.has(r.program) && !/東京都/.test(r.program) && !/市町村ごとの実施/.test(note)) note += PREF_WIDE_NOTE
   const rule = { conf, asOf: plainNote(AS_OF_FIX[r.program] ?? r.as_of), note, src: r.sources.map((s) => src(s.label, s.url)), via: r.program || r.policy }
-  const unsureCap = MAYBE_CAP[r.program]?.cap ?? PREF_CAP[r.pref] ?? UNSURE_CAP
+  const unsureCap = PREF_CAP[r.pref] ?? UNSURE_CAP
   if (r.policy === 'first_free') {
     if (unsure) { rule.firstFreeUnder = unsureCap; rule.firstUnsure = true; rule.note += UNSURE_NOTE(unsureCap) }
     else rule.firstFree = true
@@ -329,65 +444,40 @@ for (const r of muni) {
     } else if (unsure) {
       rule.secondFreeUnder = unsureCap
       rule.secondUnsure = true
-      rule.note += MAYBE_CAP[r.program] ? `（${MAYBE_CAP[r.program].note}）` : UNSURE_NOTE(unsureCap)
+      rule.note += UNSURE_NOTE(unsureCap)
     }
-    if (SECOND_ONLY.has(r.program)) rule.secondOnly = true
     if (!count) rule.note += '（2人目の数え方が分からないので、国の基準どおり、同時に保育園などに通う子で数えている）'
   } else throw new Error(`知らない種類: ${r.policy}`)
   addRule(r.code, rule)
 }
+// 県の制度の規則は、市区町村の一覧の規則のあとに足す
+for (const [code, rule] of prefRules) addRule(code, rule)
+// 市区町村の一覧で入れなかった行のうち、県の制度で入った街（README・coverage 用）
+for (const s of skipped) if (!s.pref && rules.has(s.code)) s.coveredByPref = true
 
-// 県の制度のうち、県が「全市町村で」と書いていて、国の基準より有利になるもの
-// （栃木・山梨は市区町村の一覧にも同じ制度が入っている。埼玉は data.ts で入れている。富山は第3子の数え方が分からず、国の基準と同じになるので入れない）
-const east = json('pref-nursery-east.json').prefectures
-const west = json('pref-nursery-west.json')
-for (const p of west) {
-  for (const pr of p.programs ?? []) {
-    if (pr.coverage !== 'all' || !(pr.implementingCodes ?? []).length) continue
-    // 第3子以降を、同じ世帯の子で数えて0円（鳥取県）
-    if (pr.kind === 'thirdPlus' && pr.benefit === 'free' && pr.counting === 'household') {
-      for (const code of pr.implementingCodes) {
-        addRule(code, {
-          conf: '推定', asOf: plainNote(pr.asOf), via: pr.name,
-          note: plainNote(`${p.pref}の${pr.name}：${pr.content}${pr.coverageNote ? `（${pr.coverageNote}）` : ''}`),
-          src: pr.sources.map((s) => src(s.label, s.url)), thirdFree: true, thirdCount: 'household',
-        })
-      }
-    } else {
-      skipped.push({ code: p.prefCode, name: p.pref, policy: pr.name, why: pr.incomeLimit === 'yes' ? '年収約360万円未満の世帯だけで、サイトの年収帯（400万円未満）の途中に境目がある' : '国の基準より有利になるか分からない' })
-    }
-  }
-}
-for (const p of east) {
-  for (const pr of p.programs) {
-    if (pr.scope !== 'all') continue
-    skipped.push({ code: p.prefCode, name: p.pref, policy: pr.id, why: { 'saitama-tashi-musyoka': 'data.ts で県内63市町村に入れている', 'toyama-third-free': '第3子の数え方が分からず、国の基準（同時に通う3人目は0円）と同じ計算になる' }[pr.id] ?? '市区町村の一覧に同じ制度が入っている' })
-  }
-}
-
-// 1つの街の規則をまとめる（確からしさは、効いている規則のうちいちばん弱いもの）
+// 1つの街の規則をまとめる。
 // 所得の条件（年収の目安）は、どれかの規則で0円になれば0円なので、いちばん高い額を使う。
 // 条件があるか分からない規則が1つでもあれば、その額より上の年収帯は「確認中」（ffx・sfx・tfx）
 const capOf = (rs, key, unsureKey) => {
   if (!rs.length || !rs.every((r) => r[key])) return {}
   return { cap: Math.max(...rs.map((r) => r[key])), unsure: rs.some((r) => r[unsureKey]) }
 }
-const nursery = {}
-for (const [code, list] of rules) {
-  const o = { conf: 0, src: [], notes: [], asOf: [], via: [] }
-  const firstFree = list.some((r) => r.firstFree)
-  if (firstFree) o.ff = 1
+// 規則の組から、計算に使う形（効果）を作る
+function effectOf(list) {
+  // 第1子から0円の街は、ほかの規則（2人目・3人目）が計算に効かない
+  if (list.some((r) => r.firstFree)) return { ff: 1 }
+  const o = {}
   const fc = capOf(list.filter((r) => r.firstFreeUnder), 'firstFreeUnder', 'firstUnsure')
-  if (!firstFree && fc.cap) { o.ffu = fc.cap; if (fc.unsure) o.ffx = 1 }
+  if (fc.cap) { o.ffu = fc.cap; if (fc.unsure) o.ffx = 1 }
   const sec = list.filter((r) => r.secondFree)
   if (sec.length) {
     o.sf = 1
+    o.sc = sec.some((r) => r.secondCount === 'household') ? 'h' : 't'
     const sc = capOf(sec, 'secondFreeUnder', 'secondUnsure')
     if (sc.cap) { o.sfu = sc.cap; if (sc.unsure) o.sfx = 1 }
     if (sec.every((r) => r.secondOnly)) o.so = 1
-    o.sc = sec.some((r) => r.secondCount === 'household') ? 'h' : 't'
-  }
-  // 3人目以降：3人目の制度（鳥取県）と、2人目からの制度（2人目だけの制度は除く）。2人目の所得の条件は3人目にも付ける
+  } else if (list.some((r) => r.secondHalfHome)) o.sh = 1 // 2人目は半額のまま、同じ世帯の子で数える（2人目0円の制度があれば効かない）
+  // 3人目以降：3人目の制度と、2人目からの制度（2人目だけの制度は除く）。2人目の所得の条件は3人目にも付ける
   const third = list.filter((r) => r.thirdFree || (r.secondFree && !r.secondOnly))
   if (third.length) {
     o.tf = 1
@@ -396,26 +486,38 @@ for (const [code, list] of rules) {
     if (tc.cap) { o.tfu = tc.cap; if (tc.unsure) o.tfx = 1 }
   }
   const fa = list.filter((r) => r.freeFromAge !== undefined).map((r) => r.freeFromAge)
-  if (!firstFree && fa.length) o.fa = Math.min(...fa)
-  // 第1子から0円の街は、ほかの規則（2人目・3人目）が計算に効かないので、第1子の規則だけで確からしさ・時点・出典を決める
-  const used = firstFree ? list.filter((r) => r.firstFree) : list
+  if (fa.length) o.fa = Math.min(...fa)
+  return o
+}
+const effectKey = (list) => JSON.stringify(effectOf(list))
+const nursery = {}
+const nurseryDropped = {} // 計算に効かず、確からしさに数えなかった規則（街ごとの数。README 用）
+for (const [code, list] of rules) {
+  // 確からしさは、計算に効いている規則で決める。確かな規則から順に、効果が変わる規則だけを残す
+  // （例: 長野市の第2子以降0円〈市のページ〉があれば、県の「全市町村で」の制度〈推定〉は同じ結果なので数えない）
+  const order = list.map((r, i) => [r, i]).sort((a, b) => confNo(a[0].conf) - confNo(b[0].conf) || a[1] - b[1]).map(([r]) => r)
+  let kept = []
+  for (const r of order) if (effectKey([...kept, r]) !== effectKey(kept)) kept.push(r)
+  if (effectKey(kept) !== effectKey(list)) kept = list
+  // 残した規則と同じくらい確かな規則は、根拠として時点・メモ・出典に添える（第1子から0円の街では、第1子の規則だけ）
+  const floor = Math.max(...kept.map((r) => confNo(r.conf)))
+  const ff = list.some((r) => r.firstFree)
+  const used = list.filter((r) => kept.includes(r) || (confNo(r.conf) <= floor && (!ff || r.firstFree)))
+  if (used.length < list.length) nurseryDropped[code] = list.length - used.length
   let conf = '確認済'
+  const notes = [], asOf = [], srcs = []
   for (const r of used) {
     conf = weaker(conf, r.conf)
-    o.src.push(...r.src)
-    if (!o.notes.includes(r.note)) o.notes.push(r.note)
-    if (!o.asOf.includes(r.asOf)) o.asOf.push(r.asOf)
-    o.via.push(r.via)
+    srcs.push(...r.src)
+    if (!notes.includes(r.note)) notes.push(r.note)
+    if (!asOf.includes(r.asOf)) asOf.push(r.asOf)
   }
   // 数え方（同じ世帯の子で数える）を言っている規則の確からしさ（第1子から0円の街では使わない）
-  const hh = firstFree ? [] : list.filter((r) => r.secondCount === 'household' || r.thirdCount === 'household')
+  const hh = ff ? [] : used.filter((r) => r.secondCount === 'household' || r.thirdCount === 'household' || r.secondHalfHome)
   const cc = hh.reduce((a, r) => weaker(a, r.conf), '確認済')
   nursery[code] = {
-    ...(o.ff ? { ff: 1 } : {}), ...(o.ffu ? { ffu: o.ffu } : {}), ...(o.ffx ? { ffx: 1 } : {}),
-    ...(o.sf ? { sf: 1, sc: o.sc } : {}), ...(o.sfu ? { sfu: o.sfu } : {}), ...(o.sfx ? { sfx: 1 } : {}), ...(o.so ? { so: 1 } : {}),
-    ...(o.tf ? { tf: 1, tc: o.tc } : {}), ...(o.tfu ? { tfu: o.tfu } : {}), ...(o.tfx ? { tfx: 1 } : {}), ...(o.fa !== undefined ? { fa: o.fa } : {}),
-    conf: confNo(conf), ...(hh.length ? { cc: confNo(cc) } : {}),
-    asOf: t(o.asOf.join('／')), note: t(o.notes.join('／')), src: [...new Set(o.src)],
+    ...effectOf(list), conf: confNo(conf), ...(hh.length ? { cc: confNo(cc) } : {}),
+    asOf: t(asOf.join('／')), note: t(notes.join('／')), src: [...new Set(srcs)],
   }
 }
 
@@ -448,24 +550,28 @@ export const WAITLIST_R8: Record<string, number> = ${JSON.stringify(sorted(waiti
 export const LUNCH: Record<string, [0 | 1 | 2, 0 | 1 | 2, number, number, number[]]> = ${JSON.stringify(sorted(lunch))}
 
 // 移住支援金: s = yes 実施 / none 実施なし / part 一部の地域だけ / unknown 東京圏の条件不利地域で、実施しているか分からない（準備中）
-// f 世帯の額、c 子1人の加算、s1 単身の額（分かる街だけ）、fu は世帯の額が「最大」（国の上限。市町村で少ないことがある）、cu は子どもの加算の額が分からない（c は国の上限）
-// cn は加算の条件（例: 2026年4月1日以降の転入）。表にない街は分からない（準備中）。東京圏の条件不利地域でない街（対象外）は入れていない
-export interface NatIju { s: 'yes' | 'none' | 'part' | 'unknown'; f?: number; c?: number; s1?: number; fu?: 1; cu?: 1; cn?: number; conf: number; asOf: number; note: number; src: number[] }
+// f 世帯の額、c 子1人の加算（0 は加算なし）、s1 単身の額（分かる街だけ）、fu は世帯の額が「最大」（国の上限。市町村で少ないことがある）、cu は子どもの加算の額が分からない（c は国の上限）
+// cm は子どもの加算を街のページが「最大」の額で書いている（c はその額。もっと少ないことがある）。cn は加算の条件（例: 2026年4月1日以降の転入）
+// cl は今年度の受付が予算の上限に達して終わった・止まったこと（NAT_TEXTS。額は出すが、そう断る）
+// 表にない街は分からない（準備中）。東京圏の条件不利地域でない街（対象外）は入れていない
+export interface NatIju { s: 'yes' | 'none' | 'part' | 'unknown'; f?: number; c?: number; s1?: number; fu?: 1; cu?: 1; cm?: 1; cn?: number; cl?: number; conf: number; asOf: number; note: number; src: number[] }
 export const IJU: Record<string, NatIju> = ${JSON.stringify(sorted(iju))}
 
 // 0〜2歳の保育料の制度（国の基準より有利になる分）
 //   ff 第1子から0円 / ffu 第1子の0円に所得の条件（年収の目安・万円） / sf 2人目0円 / sfu 2人目の0円の所得の条件 / so 2人目だけ（3人目以降は国の基準）
-//   sc 2人目の数え方（h 同じ世帯の子 / t 同時に通う子） / tf 3人目以降0円 / tfu 3人目の0円の所得の条件 / tc 3人目の数え方 / fa この年齢（歳児クラス）からは第1子も0円
+//   sc 2人目の数え方（h 同じ世帯の子 / t 同時に通う子） / sh 2人目は半額のまま、同じ世帯の子で数える（長野県。国の基準は同時に通う子だけ）
+//   tf 3人目以降0円 / tfu 3人目の0円の所得の条件 / tc 3人目の数え方 / fa この年齢（歳児クラス）からは第1子も0円
+//   第1子から0円の街（ff）は、ほかの規則が計算に効かないので ff だけを持つ
 //   ffx・sfx・tfx … 所得の条件があるか確かめていない（ffu・sfu・tfu は年収の目安。その額にかかる年収帯と上の年収帯は確認中）
 //   conf 確からしさ / cc 数え方の確からしさ / asOf 時点 / note メモ / src 出典
-export interface NatNursery { ff?: 1; ffu?: number; ffx?: 1; sf?: 1; sfu?: number; sfx?: 1; so?: 1; sc?: 'h' | 't'; tf?: 1; tfu?: number; tfx?: 1; tc?: 'h' | 't'; fa?: number; conf: number; cc?: number; asOf: number; note: number; src: number[] }
+export interface NatNursery { ff?: 1; ffu?: number; ffx?: 1; sf?: 1; sfu?: number; sfx?: 1; so?: 1; sc?: 'h' | 't'; sh?: 1; tf?: 1; tfu?: number; tfx?: 1; tc?: 'h' | 't'; fa?: number; conf: number; cc?: number; asOf: number; note: number; src: number[] }
 export const NURSERY: Record<string, NatNursery> = ${JSON.stringify(sorted(nursery))}
 `
 writeFileSync(new URL('../src/shared/national.ts', import.meta.url), ts)
 
 // 入れなかったものの記録（README・coverage 用。リポジトリには入れない一時ファイル）
 const outSkip = process.argv[2]
-if (outSkip) writeFileSync(outSkip, JSON.stringify({ skipped, lunchSkip, ijuCount }, null, 1))
+if (outSkip) writeFileSync(outSkip, JSON.stringify({ skipped, replaced, nurseryDropped, lunchSkip, ijuCount }, null, 1))
 
 const cnt = (o, f) => Object.values(o).filter(f).length
 console.log([
@@ -473,9 +579,9 @@ console.log([
   `rent ${Object.keys(rent).length}`,
   `waiting ${Object.keys(waiting).length}（1人以上 ${cnt(waiting, (v) => v > 0)}）`,
   `lunch ${Object.keys(lunch).length}（無料 ${cnt(lunch, (v) => v[0] === 1)}・無料でない ${cnt(lunch, (v) => v[0] === 0)}・今年度は確認中 ${cnt(lunch, (v) => v[0] === 2)}）`,
-  `iju ${Object.keys(iju).length}（実施 ${cnt(iju, (v) => v.s === 'yes')}〈子の加算の額が分かる ${cnt(iju, (v) => v.s === 'yes' && !v.cu)}〉・実施なし ${cnt(iju, (v) => v.s === 'none')}・一部 ${cnt(iju, (v) => v.s === 'part')}・東京圏で未確認 ${cnt(iju, (v) => v.s === 'unknown')}）`,
-  `nursery ${Object.keys(nursery).length}（第1子0円 ${cnt(nursery, (v) => v.ff)}・第1子に所得の条件 ${cnt(nursery, (v) => v.ffu)}〈あるか未確認 ${cnt(nursery, (v) => v.ffx)}〉・2人目0円 ${cnt(nursery, (v) => v.sf)}〈所得の条件 ${cnt(nursery, (v) => v.sfu)}・あるか未確認 ${cnt(nursery, (v) => v.sfx)}〉・3人目0円 ${cnt(nursery, (v) => v.tf)}〈所得の条件 ${cnt(nursery, (v) => v.tfu)}〉・年齢 ${cnt(nursery, (v) => v.fa !== undefined)}）`,
-  `入れなかった保育料の行 ${skipped.length}`,
+  `iju ${Object.keys(iju).length}（実施 ${cnt(iju, (v) => v.s === 'yes')}〈子の加算の額が分かる ${cnt(iju, (v) => v.s === 'yes' && !v.cu)}・受付終了 ${cnt(iju, (v) => v.cl !== undefined)}〉・実施なし ${cnt(iju, (v) => v.s === 'none')}・一部 ${cnt(iju, (v) => v.s === 'part')}・東京圏で未確認 ${cnt(iju, (v) => v.s === 'unknown')}・確認済 ${cnt(iju, (v) => v.conf === 0)}）`,
+  `nursery ${Object.keys(nursery).length}（第1子0円 ${cnt(nursery, (v) => v.ff)}・第1子に所得の条件 ${cnt(nursery, (v) => v.ffu)}〈あるか未確認 ${cnt(nursery, (v) => v.ffx)}〉・2人目0円 ${cnt(nursery, (v) => v.sf)}〈所得の条件 ${cnt(nursery, (v) => v.sfu)}・あるか未確認 ${cnt(nursery, (v) => v.sfx)}〉・2人目半額を同じ世帯で ${cnt(nursery, (v) => v.sh)}・3人目0円 ${cnt(nursery, (v) => v.tf)}〈所得の条件 ${cnt(nursery, (v) => v.tfu)}〉・年齢 ${cnt(nursery, (v) => v.fa !== undefined)}・確認済 ${cnt(nursery, (v) => v.conf === 0)}）`,
+  `入れなかった保育料の行 ${skipped.filter((x) => !x.pref).length}（うち県の制度で入った街 ${skipped.filter((x) => x.coveredByPref).length}）・入れなかった県の制度 ${skipped.filter((x) => x.pref).length}・県の制度で入れ直した行 ${replaced.length}`,
   `sources ${SOURCES.length}, texts ${TEXTS.length}, ${(ts.length / 1024).toFixed(0)} KB`,
 ].join('\n'))
 for (const c of Object.keys(nursery)) if (!NAME[c]) throw new Error(`保育料の制度のコードが一覧にない: ${c}`)

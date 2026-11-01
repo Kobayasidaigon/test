@@ -1,0 +1,39 @@
+{
+  "code": "153427",
+  "pref": "新潟県",
+  "name": "弥彦村",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "村の「保育」のページ（更新日2026年08月05日）に「弥彦村に住所のある方が弥彦村立保育園を利用する場合は、弥彦村単独の事業として、当面の間、保育料および給食費を無料（0円）としています。」とある。令和8年度（いま）も無料。始まった時期はページに書かれていない。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が0円なので、所得割による階層の判定は額に影響しない。村の保育料表（階層表）は公開ページでは見つからなかった。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "村内に住む人が村立保育園（弥彦保育園・二松保育園・ひかり保育園の3園。受入れは6か月から）を使うと、年齢・所得・きょうだいの数を問わず保育料と給食費が0円（村単独の事業、「当面の間」）。所得制限の記載はない。村外の保育園を使う場合の扱いはページに書かれていない（村外の園の希望はこども教育課に相談とある）。村外に住む人でも、保護者が村内の事業所で働いていれば村立保育園の保育料・給食費は無料の対象になる。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "全員0円なので、きょうだいの数え方に関係なく無料（村立保育園を使う場合）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全員0円なので、きょうだいの数え方に関係なく無料（村立保育園を使う場合）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    { "label": "すこやか弥彦っ子祝金（誕生祝金）", "amount": 100000, "note": "村から出産のお祝い金10万円（弥彦村子育て応援サイトの一覧の記載）。", "source": { "label": "応援金・お祝い金 - 弥彦村子育て応援サイト", "url": "https://yahikodekosodate.com/purpose/celebration" } },
+    { "label": "すこやか弥彦っ子祝金（出産準備金）", "amount": 50000, "note": "妊娠22週以降の人に村から出産のための準備金5万円（同サイトの一覧の記載）。国の妊婦支援給付金とは別。", "source": { "label": "応援金・お祝い金 - 弥彦村子育て応援サイト", "url": "https://yahikodekosodate.com/purpose/celebration" } },
+    { "label": "入学等祝金（小学校・中学校・高校等）", "amount": 30000, "note": "小学校入学・中学校入学・高校入学等のときに、それぞれ対象の子1人あたり3万円（令和7年1月1日から。村税等の滞納がないことなどが要件）。", "source": { "label": "入学等祝金（小学・中学・高校等）｜弥彦村", "url": "https://www.vill.yahiko.niigata.jp/education/?content=821" } }
+  ],
+  "sources": [
+    { "label": "保育｜子育て・教育｜弥彦村（更新日2026年08月05日。保育料および給食費の無料化）", "url": "https://www.vill.yahiko.niigata.jp/education/?content=432" },
+    { "label": "令和9年度 保育園入園の申し込みについて｜弥彦村（更新日2026年08月05日）", "url": "https://www.vill.yahiko.niigata.jp/news/detail.html?content=1437" },
+    { "label": "令和9年度保育園入園申し込みについて（PDF。園と受入年齢）", "url": "https://www.vill.yahiko.niigata.jp/assets/images/news/news_20260805_152943.pdf" },
+    { "label": "就学前のこども - 弥彦村子育て応援サイト（保育料・給食費の無料化）", "url": "https://yahikodekosodate.com/age/preschooler" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの index.json には候補の文書がなかった（docs 0件）。令和8年度・令和9年度の入園申し込みページと、そこからリンクされた「保育」の固定ページを開いた"
+  ],
+  "notes": "村内の保育施設は村立の3園（弥彦保育園・二松保育園・ひかり保育園）。保育料の階層表は公開ページに見当たらない（無料のため）。無料化の開始時期・条例上の根拠は例規集（https://www1.g-reiki.net/vill.yahiko/reiki_menu.html）で確かめられるかもしれないが、見ていない。",
+  "read_at": "2026-11-01"
+}

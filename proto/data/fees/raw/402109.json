@@ -1,0 +1,50 @@
+{
+ "code": "402109",
+ "pref": "福岡県",
+ "name": "八女市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "「８月までの保育料は令和７年度の市町村民税額、９月以降の保育料は令和８年度の市町村民税額により決定されます。」年齢区分は4月1日時点。保育料ページ: 保護者の収入金額が200万円未満（ひとり親は100万円未満）の場合は、同居の祖父母のいずれか収入の多い方の市区町村民税額を算入。「保護者等の市町村民税の状況により、年度の途中で保育料が変更になる場合があります。」",
+ "tax_basis": "6%",
+ "tax_note": "「税額の計算には、配当控除、寄付金税額控除、外国税額控除、住宅借入金等特別税額控除、配当割額控除、株式等譲渡所得割額控除などは適用しません。」政令市ではない。",
+ "table": {
+  "title": "令和８年度 八女市 利用者負担額（保育料）【３号認定：満３歳未満（４月１日時点）】利用施設：保育所、認定こども園（保育部）／八女市の基準",
+  "kind": "3号認定（満3歳未満）・保育標準時間・第1子（月額）。表の右側「八女市の基準」。表に第2子の列はない",
+  "rows": [
+   {"label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null},
+   {"label": "2", "lower": null, "upper": null, "condition": "市区町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "3", "lower": 0, "upper": 1, "condition": "市区町村民税均等割のみ世帯", "monthly": 9500, "monthly_second": null},
+   {"label": "4", "lower": 1, "upper": 48600, "condition": "市区町村民税所得割課税額 48,600円未満", "monthly": 9700, "monthly_second": null},
+   {"label": "5", "lower": 48600, "upper": 75000, "condition": "市区町村民税所得割課税額 75,000円未満", "monthly": 15000, "monthly_second": null},
+   {"label": "6", "lower": 75000, "upper": 97000, "condition": "市区町村民税所得割課税額 97,000円未満（うち77,101円未満）", "monthly": 19000, "monthly_second": null},
+   {"label": "7", "lower": 97000, "upper": 130000, "condition": "市区町村民税所得割課税額 130,000円未満", "monthly": 27500, "monthly_second": null},
+   {"label": "8", "lower": 130000, "upper": 169000, "condition": "市区町村民税所得割課税額 169,000円未満", "monthly": 35500, "monthly_second": null},
+   {"label": "9", "lower": 169000, "upper": 235000, "condition": "市区町村民税所得割課税額 235,000円未満", "monthly": 43000, "monthly_second": null},
+   {"label": "10", "lower": 235000, "upper": 301000, "condition": "市区町村民税所得割課税額 301,000円未満", "monthly": 45000, "monthly_second": null},
+   {"label": "11", "lower": 301000, "upper": null, "condition": "市区町村民税所得割課税額 301,000円以上", "monthly": 49500, "monthly_second": null}
+  ],
+  "notes": "保育短時間（八女市の基準、月額）: 1・2 0円、3 9,300、4 9,600、5 14,700、6 18,600、7 27,000、8 34,800、9 42,200、10 44,200、11 48,600。（ ）の額はひとり親世帯等・在宅障害児（者）のいる世帯で所得割77,101円未満の場合の1人目の保育料（標準時間／短時間）: 2 （0）／（0）、3 （4,250）／（4,150）、4 （4,500）／（4,500）、5 （4,500）／（4,500）、6（うち77,101円未満）（4,500）／（4,500）、2人目以降は無料。表の左側は「国の基準（上限）」（8階層、標準時間 19,500〜104,000円）で、八女市の基準はそれより低い。均等割のみ（3）は所得割0円と読んで lower 0・upper 1 とし、4 の lower を1にした。表の右上に「令和８年４月」。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子（満3歳未満）は階層により月0〜49,500円（保育標準時間）。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "「同一世帯から２人以上の子どもが保育所、幼稚園、認定こども園、地域型保育事業所、企業主導型保育事業所、特別支援学校幼稚園部、情緒障害児短期治療施設通所部に入所、または児童発達支援及び医療型児童発達支援を利用している場合、年齢が高い者から２人目は半額、３人目以降は無料になります。」「市町村民税所得割課税額５７,７００円未満の場合及びひとり親世帯等、在宅障害児（者）のいる世帯で市町村民税所得割課税額が７７,１０１円未満の場合は年齢制限を設けません。」ひとり親世帯等で77,101円未満は2人目以降無料。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "「保護者と生計同一で、かつ、保護者に扶養されている子どもが「３人」以上いる世帯の子どものうち、年長者から数えて第３子以降は無料になります。」保育料ページ: 「令和7年9月より第3子以降の子ども（※）に係る保育料は無償化しています。」市の第3子以降保育料無償化事業: 認可保育施設は申請不要（市で把握できない生計同一のきょうだい、例えば市外に別居している子がいる場合は申し立てる）。届出保育施設・企業主導型保育事業所は償還払いの助成金（申請が必要、補助上限額あり）。所得制限の記載はない。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和8年度 八女市 利用者負担額（保育料）（PDF、令和8年4月）", "url": "https://www.city.yame.fukuoka.jp/material/files/group/11/R8_hoikuryou.pdf"},
+  {"label": "保育料(利用者負担額)について／八女市ホームページ", "url": "https://www.city.yame.fukuoka.jp/kosodate/5/1/7861.html"},
+  {"label": "第3子以降保育料無償化事業について／八女市ホームページ", "url": "https://www.city.yame.fukuoka.jp/soshiki/8/3/2/4/13359.html"},
+  {"label": "第3子以降保育料無償化助成金の申請手続きについて（PDF）", "url": "https://www.city.yame.fukuoka.jp/material/files/group/11/daisansiikouhoikuryoumusyoukatetudukinituite_202601001.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表は画像でも確認（1ページ、左が国の基準、右が八女市の基準）。",
+ "read_at": "2026-11-01"
+}

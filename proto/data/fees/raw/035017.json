@@ -1,0 +1,34 @@
+{
+  "code": "035017",
+  "pref": "岩手県",
+  "name": "軽米町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（町のページ「こども園、保育園の保育料が無料」2024年4月1日更新。令和8年度の入所申込みのページ（2025年12月2日更新）と同じ時期のサイトで、無料をやめた知らせは見つからなかった）",
+  "period_note": "国の無償化（3〜5歳）に加え、町が3歳未満の子どもの保育料も無償化。町の施設は花のまち軽米こども園・小軽米保育園・晴山保育園（3号認定は生後6か月から）。副食費などの実費の扱いはページに書かれていない。",
+  "tax_basis": "6%",
+  "tax_note": "保育料が全員無料なので、所得割による階層の判定は額に影響しない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "「軽米町では、子育て世代の経済的負担を軽減するため、3歳未満の子どもについても、保育料の無償化を実施しています。この結果、子ども園、保育園の保育料が無償化されています。」（2024年4月1日更新）。所得制限・きょうだいの条件の記載なし。いつからかは書かれていないが、「子育てサポートタウンかるまい」のページ（2018年4月2日更新）にも「こども園、保育園の保育料」を無料にしているとある。町外の施設を使う場合の扱いは書かれていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "全員無料なので、きょうだいの数え方に関係なく無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全員無料。",
+  "lunch_jh": { "free": true, "note": "令和3年度から町内小中学校の児童生徒の学校給食費を無償化（手続き不要）。中学生は1食360円、年間64,800円（180日）相当。", "source": { "label": "学校給食費の無償化について（軽米町、2021年4月1日更新）", "url": "https://www.town.karumai.iwate.jp/article/education/teatejosei/josei/entry-basename-3.html" } },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "こども園、保育園の保育料が無料（軽米町、2024年4月1日更新）", "url": "https://www.town.karumai.iwate.jp/article/education/teatejosei/entry-basename.html" },
+    { "label": "子育てサポートタウンかるまい（軽米町、2018年4月2日更新）", "url": "https://www.town.karumai.iwate.jp/article/education/kosodatesupport/kosodatesupporttown/entry-basename.html" },
+    { "label": "令和８年度認定こども園・保育園の入所申込みについて（軽米町、2025年12月2日更新）", "url": "https://www.town.karumai.iwate.jp/article/education/entry-basename-9.html" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "令和8年度の入所申込みのページには保育料の記載がない"
+  ],
+  "notes": "無料のページは2024年4月1日更新で、令和8年度の資料で「無料」と書いたものは見ていないので confidence は推定（令和8年度も同じ制度と読んだ）。",
+  "read_at": "2026-11-01"
+}

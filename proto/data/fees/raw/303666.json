@@ -1,0 +1,48 @@
+{
+  "code": "303666",
+  "pref": "和歌山県",
+  "name": "有田川町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度 保育利用料基準額表（予定）」。令和8年度こども園（保育所）等入園のご案内のページ〔更新日2026年4月27日〕に載ったまま。令和9年度の「保育利用料基準額表（予定）」〔令和9年度のページ、更新日2026年9月1日〕も全行同じ額）",
+  "period_note": "4月〜8月分の保育利用料は前年度（令和7年度）の町民税、9月〜3月分は当年度（令和8年度）の町民税で算定（前期分は4月上旬、後期分は9月上旬に通知）。令和7年1月2日以降に転入した人は転入前の住所地の課税証明書等の額で算定。年齢は令和8年4月1日時点。",
+  "tax_basis": "6%",
+  "tax_note": "住宅借入金特別控除、耐震改修特別控除、e-Tax特別控除、ふるさと納税等の税額控除等は適用しない（控除前の税額）。収入がない人や被扶養者も1月1日時点の住所地で申告が必要で、申告しない場合は最大の金額。",
+  "table": {
+    "title": "令和8年度 保育利用料基準額表（予定）",
+    "kind": "3歳児未満・保育標準時間・第1子（月額）（保育短時間も同じ額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯（幼児教育無償化により0円）", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": 0, "upper": 48600, "condition": "所得割課税額 48,600円未満", "monthly": 12000, "monthly_second": null },
+      { "label": "4", "lower": 48600, "upper": 97000, "condition": "所得割課税額 97,000円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "5", "lower": 97000, "upper": 169000, "condition": "所得割課税額 169,000円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "6", "lower": 169000, "upper": 301000, "condition": "所得割課税額 301,000円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "7", "lower": 301000, "upper": 397000, "condition": "所得割課税額 397,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "8", "lower": 397000, "upper": null, "condition": "所得割課税額 397,000円以上", "monthly": 45000, "monthly_second": null }
+    ],
+    "notes": "3歳児未満の欄は「保育標準時間」「保育短時間」が1つにまとめられた欄で、どちらも同じ額（PDFを画像で確かめた）。表の区分は上限だけが書かれているので、lower は1つ上の階層の上限にした（階層3は均等割のみ〔所得割0円〕の世帯も入るとみて lower=0）。3歳児以上は幼児教育無償化により0円。「ひとり親世帯等減免」の欄: 階層2は全額、階層3は「有」、ほかは「－」（ひとり親世帯又は在宅障害児（者）のいる世帯等で住民税所得割77,101円未満の世帯は保育利用料を軽減。軽減後の額は表に書かれていない。申請は入園決定後）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（月12,000〜45,000円、標準時間・短時間同額）。0円は生活保護世帯と市町村民税非課税世帯。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "同一世帯から2人以上の児童が入園している場合、幼稚園・認定こども園・特別支援学校幼稚部・知的障害児通園施設・肢体不自由児施設通園部・児童デイサービス等を利用している児童も加えて数え、年齢が一番高い児童は基準額、二番目に高い児童は基準額×0.5、それ以外の児童は0円（同時に通う子で数える）。紀州っ子いっぱいサポート: 住民税所得割57,700円未満の世帯の2番目のお子さんは保育利用料を免除（申請書類は入園決定後に提出、毎年必要）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "紀州っ子いっぱいサポート: きょうだいのうち3番目以降のお子さんの保育利用料は免除（所得制限の記載なし。申請書類は入園決定後に提出、毎年必要）。町の表は「きょうだいのうち３番目以降」とだけ書いており、上の子の年齢の扱いは書いていない（同じ和歌山県の紀州っ子いっぱいサポートを実施する有田市・田辺市の資料では、保護者と生計を一にする児童を年齢の高い順に数え、上の子の年齢・在園を問わない）。同時入園の3人目以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度こども園（保育所）等入園のご案内／有田川町（更新日2026年4月27日）", "url": "https://www.town.aridagawa.lg.jp/top/kosodate/hoikusho/9456.html" },
+    { "label": "保育利用料基準額表（PDF、令和8年度 保育利用料基準額表（予定））", "url": "https://www.town.aridagawa.lg.jp/material/files/group/19/hoikukijyunngakuhyou.pdf" },
+    { "label": "令和8年度認定こども園（保育所）入園のご案内（PDF）", "url": "https://www.town.aridagawa.lg.jp/material/files/group/19/nyuuennannnai.pdf" },
+    { "label": "令和9年度こども園（保育所）等入園のご案内／有田川町（更新日2026年9月1日）", "url": "https://www.town.aridagawa.lg.jp/top/kosodate/hoikusho/10155.html" },
+    { "label": "保育利用料基準額表（PDF、令和9年度 保育利用料基準額表（予定）、令和8年度と同じ額）", "url": "https://www.town.aridagawa.lg.jp/material/files/group/19/hoikuriyouryo9.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの令和8年度・令和9年度の基準額表（どちらも「予定」の表記）で読み、令和8年度の表を画像で見て列（3歳児未満は標準・短時間が1つの欄）を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。入園のご案内PDFに「ひとり親世帯や在宅障害者世帯、第三子など保育利用料等の減免制度に該当する方は、別途申請が必要（毎年）」。lunch_jh・cash・one_time は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

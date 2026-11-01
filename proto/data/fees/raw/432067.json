@@ -1,0 +1,40 @@
+{
+  "code": "432067",
+  "pref": "熊本県",
+  "name": "玉名市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "公式の文書を読めていないので不明。WebSearch の結果の要約には、令和8年度の入所案内のページに「3歳未満のクラスは非課税世帯が無償、課税世帯は就学前の最年長の子どもを第1子、その下を第2子と数え、第2子は半額、第3子以降は無料」とあると書かれていた（国の基準と同じ数え方。要約なので確かめていない）。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "",
+  "lunch_jh": {
+    "free": true,
+    "note": "WebSearch の結果に出た市のページの題名「令和8年4月から小・中学校の給食費を無償化します」だけで確かめた（ページはボット対策で開けず、本文の対象・期間・条件は読んでいない）。",
+    "source": { "label": "令和8年4月から小・中学校の給食費を無償化します｜玉名市", "url": "https://www.city.tamana.lg.jp/q/aview/265/35830.html" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度玉名市保育所保育料｜玉名市（検索結果。ボット対策で開けなかった）", "url": "https://www.city.tamana.lg.jp/q/aview/484/3994.html" },
+    { "label": "令和8年度 玉名市認可保育所等入所案内｜玉名市（検索結果。開いていない）", "url": "https://www.city.tamana.lg.jp/q/aview/258/23929.html" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べは市のサイトの一番上で失敗していた（OSError、pages_read 0）",
+    "決められた curl で https://www.city.tamana.lg.jp/ を取ると HTTP 403（Incapsula のボット対策のページ）",
+    "WebSearch（allowed_domains: city.tamana.lg.jp、「玉名市 保育料 令和8年度 3歳未満 利用者負担額 第2子」）で「令和8年度玉名市保育所保育料」のページ（q/aview/484/3994.html、PDF「令和8年度利用者負担額について」へのリンクがあるとの要約）と令和8年度の入所案内のページの URL を得た",
+    "保育料のページを決められた curl で2回（約8分あけて）取ったが、どちらも HTTP 403（Incapsula）。ヘッダーを足すなどボット対策をくぐることはしていない"
+  ],
+  "notes": "公式サイト全体がこの環境からの取得を止めている（Incapsula、HTTP 403）ため、令和8年度の保育料の表（「令和8年度玉名市保育所保育料」のページの PDF「令和8年度利用者負担額について」）もきょうだいの決まりも読めず、status は not_found。WebSearch の要約では、保育料は両親の市町村民税額で階層が決まり、保育標準時間・保育短時間の区分があり、税資料未提出の人は最高階層で仮決定するとあった（確かめていない）。人の手でブラウザから q/aview/484/3994.html を開き、PDF の表と第2子の決まりを書き写すと ok にできる。",
+  "read_at": "2026-11-01"
+}

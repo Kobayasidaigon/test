@@ -1,0 +1,54 @@
+{
+  "code": "043613",
+  "pref": "宮城県",
+  "name": "亘理町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "毎年9月が保育料の切り替え時期。4月から8月分保育料は令和7年度町民税額（令和6年中所得）、9月から3月分保育料は令和8年度町民税額（令和7年中所得）で算定。年度途中に誕生日を迎え3歳となる子は2歳児クラス在籍のため無償化の対象外（保育料あり）。月途中の入所退所は日割計算。令和9年度の保育所入所案内の料金表も同じ額。",
+  "tax_basis": "6%",
+  "tax_note": "入所児童の父母および同居（住民票上の世帯分離者を含む）の祖父母等（家計の世帯主である場合）の市町村民税額で決定。離婚調停中で別居している配偶者も算定対象。住宅借入金等特別控除などの税額控除前の税額を適用。申告がない場合は最高階層。政令市の8%についての注記はない（政令市でないので6%とした）。",
+  "table": {
+    "title": "亘理町保育料料金表（月額）",
+    "kind": "3号認定・3歳未満児・保育標準時間・「その他」の世帯（ひとり親世帯等以外）（月額）。第2子の別の列はない",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "町民税非課税世帯（ひとり親世帯等・その他とも）", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "町民税均等割のみ課税世帯 その他", "monthly": 12700, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "町民税所得割額課税世帯 48,600円未満 その他", "monthly": 16100, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 57700, "condition": "57,700円未満 その他", "monthly": 19500, "monthly_second": null },
+      { "label": "6", "lower": 57700, "upper": 77101, "condition": "77,101円未満 その他", "monthly": 22000, "monthly_second": null },
+      { "label": "7", "lower": 77101, "upper": 97000, "condition": "97,000円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "8", "lower": 97000, "upper": 135900, "condition": "135,900円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "9", "lower": 135900, "upper": 169000, "condition": "169,000円未満", "monthly": 35000, "monthly_second": null },
+      { "label": "10", "lower": 169000, "upper": 301000, "condition": "301,000円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "11", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 46000, "monthly_second": null },
+      { "label": "12", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 46000, "monthly_second": null }
+    ],
+    "notes": "表は各行の上限（未満）だけが書かれ、lower は1つ上の行の上限とした（第4階層は均等割のみの行と分けるため1）。第11・12階層は同じ額。保育短時間（その他）: 第1・2階層 0円、第3階層 12,500円、第4階層 15,900円、第5階層 19,200円、第6階層 21,700円、第7階層 25,600円、第8階層 29,500円、第9階層 34,500円、第10階層 40,400円、第11・12階層 45,300円。ひとり親世帯等（母子・父子世帯、在障世帯）の標準時間／短時間: 第2階層 0円、第3階層 5,850／5,750円、第4階層 7,550／7,450円、第5・6階層 9,000／9,000円（第7階層からは表の1行で同額）。保育料は出席日数にかかわらず在籍していれば月額（導入保育期間中も同じ）。3〜5歳児クラスは無償（副食費は月4,500円、町内公立・私立共通。年収360万円未満相当世帯は免除）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月12,700〜46,000円）。0円は生活保護世帯と町民税非課税世帯。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "料金表の多子軽減制度（同一世帯に2人以上のお子さんがいる場合）: ❸（第6階層その他〜第12階層、所得割57,700円以上）は保育所・幼稚園等に通っているお子さん（未就学児）から数えて第2子目は半額。❷（第3〜5階層のその他、所得割57,700円未満）は保護者と生計を一にしているお子さんであれば年齢問わず第2子目は半額。❶（第3〜6階層のひとり親世帯等）は年齢問わず第2子目以降無料。保護者と別の住所地に住む兄弟がいる場合は「多子軽減適用に係る届出書」を出す。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "❸（所得割57,700円以上）は保育所・幼稚園等に通っている未就学児から数えて第3子目以降は無料。❷（所得割57,700円未満のその他）は年齢問わず数えて第3子目以降は無料（household）。❶ひとり親世帯等は第2子目以降無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度保育施設入所（入園）申込受付のお知らせ | 子育て・教育 | 亘理町", "url": "https://www.town.watari.miyagi.jp/education/detail.php?content=2163" },
+    { "label": "令和８年度保育施設入所（入園）案内（PDF）", "url": "https://www.town.watari.miyagi.jp/common/img/content/content_20251016_165055.pdf" },
+    { "label": "令和９年度保育施設入所（入園）申込受付のお知らせ | 子育て・教育 | 亘理町", "url": "https://www.town.watari.miyagi.jp/education/detail.php?content=2408" },
+    { "label": "保育所入所案内（R9年度）（PDF）", "url": "https://www.town.watari.miyagi.jp/common/img/content/content_20260917_142838.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs は申込書類一覧表だけだったので、令和8年度の申込受付のページから令和8年度保育施設入所（入園）案内を取り、14ページの亘理町保育料料金表を画像で確かめた（多子軽減の❶❷❸の割り当ても）",
+    "令和9年度の保育所入所案内の料金表と比べ、額が同じことを確かめた"
+  ],
+  "notes": "lunch_jh・cash・one_time は探していない。",
+  "read_at": "2026-11-01"
+}

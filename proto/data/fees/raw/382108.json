@@ -1,0 +1,51 @@
+{
+  "code": "382108",
+  "pref": "愛媛県",
+  "name": "伊予市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "市のページ「令和8年度の入所申込みについて（途中入所を含む）」（2026年11月1日掲載）にある令和8年度入所のてびき（p.5〜6「8 保護者の自己負担」）。保育料は子どもの当該年度4月1日時点の年齢と市民税額により、毎年4月（前年度市民税額）と9月（当該年度市民税額）に決定する。令和8年度は4〜8月分が令和7年度（令和6年分所得）、9〜3月分が令和8年度（令和7年分所得）の市民税額で算定。月単位で日割計算なし。市民税額が未確定（未申告・税関係書類の未提出）の間はC10階層（最高額）で算定。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市民税額を合算して決定（父母の収入が少なく、同居の親族（祖父母等）が家計の主宰者と判断される場合はその人の市民税額を合算。住民票上は別世帯でも同一敷地内別棟や二世帯住宅等で同一生計なら同居とみなす）。市民税額は住宅借入金等特別税額控除、配当割額控除、株式等譲渡所得割税額控除、配当控除、外国税額控除、寄附金税額控除を差し引く前の税額。伊予市は政令市ではない。",
+  "table": {
+    "title": "② 保育料について（月額） 0〜2歳の子どもの場合（２号認定を受けた子どものうち２歳児の子ども及び３号認定を受けた子ども）",
+    "kind": "0〜2歳・保育標準時間・一般世帯・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税均等割のみ課税世帯", "monthly": 16000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市民税所得割 1円以上48,600円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "C3", "lower": 48600, "upper": 77101, "condition": "市民税所得割 48,600円以上77,101円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "C4", "lower": 77101, "upper": 97000, "condition": "市民税所得割 77,101円以上97,000円未満", "monthly": 27000, "monthly_second": null },
+      { "label": "C5", "lower": 97000, "upper": 133000, "condition": "市民税所得割 97,000円以上133,000円未満", "monthly": 36000, "monthly_second": null },
+      { "label": "C6", "lower": 133000, "upper": 169000, "condition": "市民税所得割 133,000円以上169,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "C7", "lower": 169000, "upper": 235000, "condition": "市民税所得割 169,000円以上235,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "C8", "lower": 235000, "upper": 301000, "condition": "市民税所得割 235,000円以上301,000円未満", "monthly": 54000, "monthly_second": null },
+      { "label": "C9", "lower": 301000, "upper": 397000, "condition": "市民税所得割 301,000円以上397,000円未満", "monthly": 57000, "monthly_second": null },
+      { "label": "C10", "lower": 397000, "upper": null, "condition": "市民税所得割 397,000円以上", "monthly": 60000, "monthly_second": null }
+    ],
+    "notes": "保育短時間: A・B 0円、C1 15,800円、C2 18,700円、C3 24,600円、C4 26,500円、C5 35,400円、C6 39,300円、C7 41,100円、C8 53,000円、C9 55,800円、C10 58,400円。C1〜C3には一般世帯と要保護世帯（ひとり親世帯・在宅障がい児（者）のいる世帯等）の欄があり、要保護世帯は標準時間7,500円・短時間7,400円（rows は一般世帯の額）。要保護世帯のC1〜C3は第2子以降が無料。0〜2歳児の給食費は保育料に含まれる。3〜5歳は無償（0円）。表に第2子の別の列はない。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は表の額（A・B階層は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "多子世帯への減免: 第2子は表の半額、第3子以降は無料（0円）。数え方（てびきp.6の表）: A・Bは第1〜3子に関わらず0円。C1〜C2（均等割のみ・所得割48,600円未満）、C3のうち所得割48,600円以上57,700円未満、C3の要保護世帯（所得割57,700円以上77,101円未満）は、年齢や利用施設に関わらず同一生計内の全ての子どもを年齢順に数える。C3の一般世帯（所得割57,700円以上77,101円未満）とC4〜C10は、小学校就学前の子どもで、幼稚園、保育所、認定こども園、小規模保育園等（伊予市の利用者負担に関する条例施行規則第三条(2)別表に掲げる施設）を利用している子どもを年齢順に数える。要保護世帯のC1〜C3は第2子以降無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は表の金額に関わらず無料（0円）。数え方は第2子と同じ（所得割57,700円未満の世帯と要保護世帯のC3は同一生計内の全ての子ども、それ以外は就学前で幼稚園・保育所等を利用している子）。3〜5歳の副食費は、2号認定の子は就学前で幼稚園・保育所等を利用している子を数えて第3子以降が無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "伊予市／令和8年度の入所申込みについて（途中入所を含む）（2026年11月1日掲載）", "url": "https://www.city.iyo.lg.jp/kosodateshien/totyuunyuusyo.html" },
+    { "label": "令和8年度入所のてびき（PDF、p.5〜6 保育料（利用者負担額）・多子世帯への減免）", "url": "https://www.city.iyo.lg.jp/kosodateshien/documents/nyuusyonotebiki.pdf" },
+    { "label": "令和8年度入所のてびき（PDF、2026年1月作成の版。保育料の部分は同じ）", "url": "https://www.city.iyo.lg.jp/kosodateshien/documents/kosodateshien_r8nyuusyotebiki.pdf" },
+    { "label": "伊予市／保育施設等の利用について（2026年9月24日掲載）", "url": "https://www.city.iyo.lg.jp/kosodateshien/hoikusyotounoriyou.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの候補文書（保育士の補助金の別表）には保育料がなく、下調べで取得に失敗していた「保育施設等の利用について」から令和8年度の入所申込みページをたどった。てびきの2つの版（2025年9月作成と2026年1月作成）の保育料・多子減免の部分は同じ文字で、pdftoppm で画像にして表の列（標準時間・短時間、一般世帯・要保護世帯）を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。「幼児教育・保育の無償化」のページに市独自の0〜2歳の無償化はなかった。令和9年度の入所申込みのページ（hoikusyotounyuusyo.html）は取得がタイムアウトして開けていない。子育て支援のメニューに「出産世帯応援補助金」「伊予市愛顔の子育て応援事業」などがあるが、中身は開いていない（cash・one_time は空＝なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

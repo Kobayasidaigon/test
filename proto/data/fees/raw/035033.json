@@ -1,0 +1,73 @@
+{
+  "code": "035033",
+  "pref": "岩手県",
+  "name": "野田村",
+  "status": "ok",
+  "fiscal_year": "令和8年度も継続とみられる（村の「保育施設の利用について」のページ〔更新日2022年6月1日〕の「野田に住所を有する全児童の保育料を無料（平成31年4月1日施行）」。令和7〜11年度の第3期子ども・子育て支援事業計画〔2025年3月〕にも主要事業として載っている。令和8年度と書かれた資料はない）",
+  "period_note": "保育料は全児童無料なので、所得の年度の切り替えは保育料に関係しない。",
+  "tax_basis": "6%",
+  "tax_note": "全児童無料のため、村の保育料の階層表は示されていない。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2019年4月",
+  "first_child_free_note": "「保育施設の利用について」: 野田村では、子育て世帯の経済的な負担を軽減するため、野田に住所を有する全児童の保育料を無料としています（平成31年4月1日施行）。子育て応援ブック（令和5年12月末時点の情報）: 野田村に住所がある児童全員の保育料が副食費も含めて無料（認可外保育所は上限あり）。第3期野田村子ども・子育て支援事業計画（2025年3月）の主要事業「安心子育て環境づくり事業」: 村民児童全員の保育料を無料とする。0〜2歳児も第1子から0円。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全児童の保育料が無料なので、第2子も無料（きょうだいの数え方は保育料に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全児童無料なので第3子以降も0円（数え方に関係なく0円）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "学校給食のページ（更新日2026年9月17日）: 令和8年度4月より、小学校児童及び中学校生徒の学校給食費を無償としています（給食費は1食あたり小学校330円、中学校375円）。",
+    "source": { "label": "野田村 学校給食", "url": "https://www.vill.noda.iwate.jp/kosodate_kyoiku/shochugakko/743.html" }
+  },
+  "cash": [
+    {
+      "label": "在宅子育て応援手当",
+      "per_child_yearly": 120000,
+      "max_age": 3,
+      "note": "村内に住み、乳幼児（生後8週〜満3歳到達まで）を保育所に預けず家庭で保育している世帯に、1か月あたり10,000円を野田村共通商品券で支給（原則5・7・9・11・1・3月に支給）。保育所等に入所したとき、村税滞納世帯、里帰り出産などの一時的な転入、生活保護受給者は対象外。現金ではなく商品券。",
+      "source": { "label": "野田村 在宅子育て応援手当（更新日2026年1月9日）", "url": "https://www.vill.noda.iwate.jp/kenko_fukushi_iryo/jidofukushi/885.html" }
+    }
+  ],
+  "one_time": [
+    {
+      "label": "エンゼル祝金（出産祝金）第1子",
+      "amount": 10000,
+      "note": "第1子1万円・第2子2万円は全額を野田村共通商品券で支給。出生した子が村に住所を有し、出産した方が出生時点で過去1年以上村に住所を有すること（1年未満は1年経過後に支給）。ほかに新生児出産祝品（木製イス）。",
+      "source": { "label": "野田村 エンゼル祝金(出産祝金)及び出産祝品（更新日2026年4月1日）", "url": "https://www.vill.noda.iwate.jp/kenko_fukushi_iryo/jidofukushi/894.html" }
+    },
+    {
+      "label": "エンゼル祝金（出産祝金）第2子",
+      "amount": 20000,
+      "note": "全額を野田村共通商品券で支給。要件は第1子と同じ。",
+      "source": { "label": "野田村 エンゼル祝金(出産祝金)及び出産祝品（更新日2026年4月1日）", "url": "https://www.vill.noda.iwate.jp/kenko_fukushi_iryo/jidofukushi/894.html" }
+    },
+    {
+      "label": "エンゼル祝金（出産祝金）第3子",
+      "amount": 80000,
+      "note": "半額を野田村共通商品券で支給。要件は第1子と同じ。",
+      "source": { "label": "野田村 エンゼル祝金(出産祝金)及び出産祝品（更新日2026年4月1日）", "url": "https://www.vill.noda.iwate.jp/kenko_fukushi_iryo/jidofukushi/894.html" }
+    },
+    {
+      "label": "エンゼル祝金（出産祝金）第4子以降",
+      "amount": 120000,
+      "note": "半額を野田村共通商品券で支給。要件は第1子と同じ。",
+      "source": { "label": "野田村 エンゼル祝金(出産祝金)及び出産祝品（更新日2026年4月1日）", "url": "https://www.vill.noda.iwate.jp/kenko_fukushi_iryo/jidofukushi/894.html" }
+    }
+  ],
+  "sources": [
+    { "label": "野田村 保育施設の利用について（更新日2022年6月1日）", "url": "https://www.vill.noda.iwate.jp/kenko_fukushi_iryo/jidofukushi/886.html" },
+    { "label": "野田村子育て応援ブック「むらひと自然 のだそだち」（令和5年12月末時点の情報、PDF）", "url": "https://www.vill.noda.iwate.jp/material/files/group/21/kosodateouennbook.pdf" },
+    { "label": "第3期野田村子ども・子育て支援事業計画（2025年3月、PDF）p.124 主要事業計画一覧", "url": "https://www.vill.noda.iwate.jp/material/files/group/9/3nodamurakodomokosodatesiennkeikaku.pdf" },
+    { "label": "野田村 村内保育所一覧（更新日2022年6月1日）", "url": "https://www.vill.noda.iwate.jp/kenko_fukushi_iryo/jidofukushi/891.html" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べ（crawl）は候補の文書なし。ページ一覧から「保育施設の利用について」「村内保育所一覧」「子育て応援ブック」「第3期子ども・子育て支援事業計画」を開いた",
+    "児童福祉・保育所の一覧ページに、令和8年度の入所案内や保育料の表のページはなかった"
+  ],
+  "notes": "村内の保育所は社会福祉法人野田村保育会が運営する私立の認可保育所3か所（野田村保育所 定員90・日向保育所 定員30・玉川保育所 定員20）。全児童無料で保育料の表はないので table は null。無料化は今も村の公式ページに載り、2025年3月の第3期計画にも主要事業として載っているが、令和8年度と書かれた資料では確かめていないので confidence は推定。子育て応援ブックの PDF は pdftotext で日本語が取れず、pypdfium2 で文字を取った。",
+  "read_at": "2026-11-01"
+}

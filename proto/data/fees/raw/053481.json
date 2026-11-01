@@ -1,0 +1,40 @@
+{
+ "code": "053481",
+ "pref": "秋田県",
+ "name": "三種町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（町の「保育園入園の申し込み」のページ〔2026年6月1日更新、令和8年度の途中入園申込を案内〕で、令和7年度から町独自施策ですべての児童の保育料が完全無料）",
+ "period_note": "「令和7年度から町の独自施策として、すこやか子育て支援事業を拡充し、すべての児童の保育料が完全無料となりました」。秋田県の助成を受けて行う「すこやか子育て支援事業」による保育料・副食費の全額助成（所得制限なし）で、助成を受けるには「すこやか助成申請書」の申請が必要（すこやか助成申請書の記入例、2025年11月作成）。町外の保育所・認定こども園・幼稚園等を利用する場合は口座への還付。",
+ "tax_basis": "6%",
+ "tax_note": "保育料・副食費は所得制限なしで全額助成のため、所得割で額は変わらない。助成前の保育料の表はサイトで見つからなかった。政令市ではないので6%。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2025年4月",
+ "first_child_free_note": "令和7年度から、すこやか子育て支援事業の拡充（町の独自施策）ですべての児童の保育料が完全無料。保育料・副食費の全額助成は所得制限なし。助成を受けるには申請が必要（入園申込のときに「すこやか助成申請書」を出す）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "すべての児童の保育料が無料なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "すべての児童の保育料が無料。",
+ "lunch_jh": {
+  "free": true,
+  "note": "町内の小中学校に在学する児童生徒は学校給食費を全額免除。町に住所があり町外の小中学校等に通う児童生徒は、町の給食1食あたりの単価（小340円・中400円）を上限に食数分を補助（国・地方公共団体から給付等を受けた分を除く）。",
+  "source": { "label": "学校給食費無償化のお知らせ／秋田県三種町【公式】（2026年4月1日更新）", "url": "https://www.town.mitane.akita.jp/soshikikarasagasu/kyoikuiinkaijimukyoku/4/564.html" }
+ },
+ "cash": [],
+ "one_time": [
+  { "label": "赤ちゃん誕生祝金（第1子）", "amount": 100000, "note": "三種町に1年以上住んでいる方・定住を予定している方で、子を出産した方またはその配偶者に支給。子が月齢3か月に達した月に申請の案内が届き、申請の翌月に支給。町税の滞納がある世帯は対象外。", "source": { "label": "赤ちゃん誕生祝金支給事業／秋田県三種町【公式】（2024年4月1日更新）", "url": "https://www.town.mitane.akita.jp/soshikikarasagasu/kenkosuishinka/3/668.html" } },
+  { "label": "赤ちゃん誕生祝金（第2子）", "amount": 200000, "note": "要件は第1子と同じ。", "source": { "label": "赤ちゃん誕生祝金支給事業／秋田県三種町【公式】（2024年4月1日更新）", "url": "https://www.town.mitane.akita.jp/soshikikarasagasu/kenkosuishinka/3/668.html" } },
+  { "label": "赤ちゃん誕生祝金（第3子以降）", "amount": 300000, "note": "要件は第1子と同じ。", "source": { "label": "赤ちゃん誕生祝金支給事業／秋田県三種町【公式】（2024年4月1日更新）", "url": "https://www.town.mitane.akita.jp/soshikikarasagasu/kenkosuishinka/3/668.html" } }
+ ],
+ "sources": [
+  { "label": "保育園入園の申し込み／秋田県三種町【公式】（2026年6月1日更新、保育料完全無料化について）", "url": "https://www.town.mitane.akita.jp/kosodate_kyoiku/hoikuen_yochien/1959.html" },
+  { "label": "すこやか子育て支援事業助成申請書（記入例）（PDF、2025年11月作成、保育料・副食費の全額助成〔所得制限なし〕）", "url": "https://www.town.mitane.akita.jp/material/files/group/6/sukoyakakinyuurei.pdf" },
+  { "label": "令和8年度保育施設等入園申込み案内（PDF、2025年11月作成）", "url": "https://www.town.mitane.akita.jp/material/files/group/6/R8nyuuenmousikomiannai.pdf" }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "町内の保育園は琴丘保育園・山本保育園（公立）、三種たつのこ保育園（私立）。令和8年度の入園申込み案内には保育料の表がなく、助成前の基準額の表は見つけていない（table は null）。",
+ "read_at": "2026-11-01"
+}

@@ -1,0 +1,56 @@
+{
+  "code": "202096",
+  "pref": "長野県",
+  "name": "伊那市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "前期（4月〜8月）は前年度、後期（9月〜翌年3月）は当年度の両親の市町村民税所得割額（合算）で階層を決める（前期は4月上旬、後期は9月上旬に決定通知）。表は「令和9年度版保育園等入園一斉申し込みのご案内（冊子）」22ページの「基本保育料（副食費）一覧（令和8年9月時点）」で読んだ。保育料のページの「伊那市基本保育料・副食費一覧表」PDF（令和7年4月時点）と額・区切りは同じ。月途中の入退園は日割軽減。",
+  "tax_basis": "6%",
+  "tax_note": "保育料等は、ご両親または家計の生計主宰者（父母に一定の収入がない場合）の市町村民税所得割額で算定。この市町村民税所得割額は税額控除（住宅借入金等特別控除、配当控除など）前の金額（冊子では「税額控除前の金額」）。政令市ではない。",
+  "table": {
+    "title": "基本保育料（副食費）一覧（令和8年9月時点）",
+    "kind": "3歳未満児クラス・標準時間認定（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯(単給世帯を含む)及び、中国残留邦人等の円滑な帰国の促進及び永住帰国後の自立の支援に関する法律による支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2*", "lower": null, "upper": null, "condition": "市町村民税非課税 非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3*", "lower": null, "upper": null, "condition": "所得割非課税 均等割のみの世帯", "monthly": 11000, "monthly_second": null },
+      { "label": "4*", "lower": 1, "upper": 48600, "condition": "市町村民税 世帯の所得割額 48,600円未満", "monthly": 13000, "monthly_second": null },
+      { "label": "5*", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "6*", "lower": 57700, "upper": 66500, "condition": "57,700円以上 66,500円未満", "monthly": 17000, "monthly_second": null },
+      { "label": "7*", "lower": 66500, "upper": 77101, "condition": "66,500円以上 77,101円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "8", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 22000, "monthly_second": null },
+      { "label": "9", "lower": 97000, "upper": 122200, "condition": "97,000円以上 122,200円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "10", "lower": 122200, "upper": 148000, "condition": "122,200円以上 148,000円未満", "monthly": 29000, "monthly_second": null },
+      { "label": "11", "lower": 148000, "upper": 169000, "condition": "148,000円以上 169,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "12", "lower": 169000, "upper": 220500, "condition": "169,000円以上 220,500円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "13", "lower": 220500, "upper": 301000, "condition": "220,500円以上 301,000円未満", "monthly": 34000, "monthly_second": null },
+      { "label": "14", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 36000, "monthly_second": null },
+      { "label": "15", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 38000, "monthly_second": null }
+    ],
+    "notes": "monthly は「標準時間認定 3歳未満児クラス」。表に第2子の列はない（monthly_second は null）。3*（均等割のみ）は所得割0円なので lower・upper を null にした。短時間認定 3歳未満児クラス: 3* 10,000、4* 12,000、5* 14,000、6* 16,000、7* 18,000、8 21,000、9 27,000、10 28,000、11 29,000、12 31,000、13 33,000、14 35,000、15 37,000。3歳以上児クラスは0円（副食費も市独自で無償、私立園の主食費等は自己負担の場合あり）。「＊」の階層は、要保護世帯等（ひとり親世帯、在宅障害児（者）のいる世帯、生活保護世帯）は〇-1、それ以外は〇-2と表示。別表（所得割77,101円未満の要保護世帯等、3-1〜7-1）は 3歳未満児クラス 標準時間4,000円・短時間3,000円。保育料のページに「平成30年度より、基本保育料を県下最低レベルに引き下げる見直しを行いました」とある。冊子21ページの「国と伊那市の保育料軽減制度」の表では、所得割57,700円未満（階層3-2・4-2・5-2）は市の軽減で第1子が半額・第2子以降が無料とされている（2025年5月更新の保育料のページにはこの第1子半額の記載がなく、始まった時期は書かれていない。rows の額は半額にする前の基本保育料）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3歳未満児クラス）は階層により月0〜38,000円（標準時間）。生活保護・非課税世帯は0円。冊子の「国と伊那市の保育料軽減制度」では所得割57,700円未満（3-2・4-2・5-2）の第1子は市の軽減で半額、所得割77,101円未満の要保護世帯等（3-1〜7-1）の第1子は3,000円または4,000円。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "所得割57,700円以上（6-2〜15-2）: 2人以上同時に保育園に通園する場合は2人目にあたる園児が半額。幼稚園、認定こども園、特別支援学校幼稚部、情緒障害児短期治療施設通所部に入所又は児童発達支援及び医療型児童発達支援を利用している就学前の兄弟姉妹がある場合も、保育園の園児が2人目なら半額（同時に通う就学前の子だけを数える）。所得割57,700円未満（3-2・4-2・5-2）: 保護者と生計を一にする子どもから数えて第2子は国の制度で半額、冊子の表では市の軽減で無料。所得割77,101円未満の要保護世帯等（3-1〜7-1）: 生計を一にする子どもから数えて第2子以降無料。非課税世帯は無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "伊那市独自: 年齢・在園等に関係なく、保護者と生計を一にする子どもから数えて第3子以降は無料（所得制限の記載なし。冊子の表でも所得割57,700円以上の市の第3子以降は「無料」で、同時在園の条件なし）。保育料のページ（2025年5月1日更新）には、みなし年少扶養の廃止に伴う多子世帯の軽減として、中学生までの子が3人以上いる場合は保育料の階層を3人で2階層、4人で3階層、5人以上で4階層下げた金額にする、ともある（冊子には書かれていない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料・副食費（保育園・認定こども園の保育認定）:伊那市公式ホームページ（更新日：2025年5月1日）", "url": "https://www.inacity.jp/kosodate_kyoiku/hoikuen_yochienhoka/tetsuzuki/hoikuryo.html" },
+    { "label": "伊那市基本保育料・副食費一覧表（PDF：107KB）（令和7年4月時点）", "url": "https://www.inacity.jp/kosodate_kyoiku/hoikuen_yochienhoka/tetsuzuki/hoikuryo.files/hoikuryou202504.pdf" },
+    { "label": "令和9年度 保育園等への入園について:伊那市公式ホームページ", "url": "https://www.inacity.jp/kosodate_kyoiku/hoikuen_yochienhoka/tetsuzuki/R9moushikomi.html" },
+    { "label": "令和9年度版保育園等入園一斉申し込みのご案内（冊子）21〜23ページ「8．保育料について」「基本保育料（副食費）一覧（令和8年9月時点）」", "url": "https://www.inacity.jp/kosodate_kyoiku/hoikuen_yochienhoka/tetsuzuki/R9moushikomi.files/R9information.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの保育料一覧表 PDF は「令和7年4月時点」だったので、保育料のページを取り直して新しい PDF がないことを確かめ、令和9年度の入園申込のページの冊子（2026年9月作成、25ページ）を pdftotext -layout と画像で読んだ（22ページ目が令和8年9月時点の表）。令和8年度版の申込ページ（R8moushikomi.html）は404。保育園等入園に関するQ&A（2026年8月26日更新）も見たが、第1子半額の始まった時期は書かれていなかった。"
+  ],
+  "notes": "lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

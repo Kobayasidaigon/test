@@ -1,0 +1,52 @@
+{
+  "code": "063240",
+  "pref": "山形県",
+  "name": "大江町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「保育料段階的無償化に向けた負担軽減」のページの大江町版チラシ〔R７.4改定、PDFは2026年10月27日作成〕の大江町保育料一覧表。令和9年度入園のご案内〔2026年9月作成〕でも「保育料は、全園児無料の予定」）",
+  "period_note": "0〜2歳児は第1〜第10階層のすべてが0円。第3〜第5階層は令和3年9月から（県の段階的負担軽減と町）、第6・第7階層は令和7年4月から対象拡大、第8〜第10階層は令和5年4月から町独自施策（のびのびこども補助金）で無償化。",
+  "tax_basis": "6%",
+  "tax_note": "表の区分は市町村民税所得割額。税額控除の扱いは資料に書かれていない。全階層0円なので階層の判定は額に影響しない。政令市ではないので6%とした。",
+  "table": {
+    "title": "大江町保育料一覧表（標準時間の場合）※短時間も本事業の対象です",
+    "kind": "3歳未満・保育標準時間・第1子（月額）（軽減後の0〜2歳児の列）",
+    "rows": [
+      { "label": "第１", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第２", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第３", "lower": 0, "upper": 48600, "condition": "市町村民税所得割 48,600円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第４", "lower": 48600, "upper": 72800, "condition": "72,800円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第５（その1）", "lower": 72800, "upper": 77101, "condition": "77,101円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第５（その2）", "lower": 77101, "upper": 97000, "condition": "97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第６", "lower": 97000, "upper": 133000, "condition": "133,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第７", "lower": 133000, "upper": 169000, "condition": "169,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第８", "lower": 169000, "upper": 235000, "condition": "235,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第９", "lower": 235000, "upper": 301000, "condition": "301,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第１０", "lower": 301000, "upper": null, "condition": "301,000円以上", "monthly": 0, "monthly_second": null }
+    ],
+    "notes": "表は「標準時間保育料（ひとり親等適用額）」の列（基準額）と「０〜２歳児」の列（軽減後）が並んでいて、0〜2歳児の列はどの階層も0円なので monthly=0 にした。基準額（標準時間）: 第１・第２ 0円、第３ 13,600円（ひとり親等 6,300円）、第４ 17,300円（8,650円）、第５ 77,101円未満 21,000円（9,000円）・97,000円未満 21,000円、第６ 26,000円、第７ 31,100円、第８ 36,900円、第９ 42,700円、第１０ 48,000円。第３の下限は書かれていないが所得割0円（均等割のみ）も含むと読み lower=0。第５は表で2段（額は同じ）なので2行にした。軽減の中身: 第3〜第5階層は県が国基準利用料の1/2、第6・第7階層は1/4を負担し、残りを町が負担して無償化（対象施設は国の幼児教育・保育の無償化の対象施設等に準じる）。第8〜第10階層は町独自施策「のびのびこども補助金（大江町保育料完全無償化補助事業）」で、国や県の事業で無償になっていない保育料を月額48,000円を限度に補助（在籍する園を通して申請し、上期〔4〜8月分〕は10月以降に概算、下期〔9〜3月分〕は4月以降に精算で交付。町民税・固定資産税・国保税・上下水道料金などを配偶者も含め滞納していないことが条件。通園送迎費・食材料費・行事費・預かり保育料などは対象外）。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年4月",
+  "first_child_free_note": "大江町版チラシ（R７.4改定）の一覧表で0〜2歳児はすべての階層が0円（第6・第7階層が令和7年4月に対象拡大され、全階層がそろった）。第8〜第10階層は令和5年4月から町独自施策で無償化（のびのびこども補助金は国や県の事業で無償になっていない保育料を補助するもので、第6・第7階層も令和7年3月以前から対象だった可能性があるが、チラシには書かれていない）。第8〜第10階層は補助金で後から戻る形で、町税等の滞納がないことが条件。令和9年度入園のご案内でも「保育料は、全園児無料の予定」。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員0円なので第2子も0円（きょうだいの数え方は額に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員0円なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料段階的無償化に向けた負担軽減 | 大江町（2025年4月1日）", "url": "https://www.town.oe.yamagata.jp/childcare-learning/kosodate/hoikuen/569" },
+    { "label": "保育料無償化事業概要（大江町版チラシ R７.4改定、PDF）", "url": "https://www.town.oe.yamagata.jp/files/original/202610271143573592bcaa84a.pdf" },
+    { "label": "のびのびこども補助金 | 大江町（2023年9月26日）", "url": "https://www.town.oe.yamagata.jp/childcare-learning/kosodate/hoikuen/1171" },
+    { "label": "のびのびこども補助金チラシ概要版（PDF）", "url": "https://www.town.oe.yamagata.jp/files/original/20230927142346453d41ca8b9.pdf" },
+    { "label": "令和9年度 保育園・幼稚園 入園案内 | 大江町", "url": "https://www.town.oe.yamagata.jp/childcare-learning/kosodate/hoikuen/1977" },
+    { "label": "令和9年度保育園・幼稚園入園のご案内（PDF、2026年9月作成）", "url": "https://www.town.oe.yamagata.jp/files/original/202609160850585441e9c3913.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの docs（負担軽減のページと事業概要PDF）を読み、PDFを画像にして表の列と注記を確かめた。のびのびこども補助金のチラシと令和9年度入園のご案内も読んだ。令和9年4月から町の保育園・幼稚園は新しい体制（あゆみこども園〔0〜5歳、認可定員50名〕と大江幼稚園）になる。大江幼稚園の満3歳に達する日までの保育料は月額25,000円で、町が補助金で全額補助する予定（町税等の滞納がない場合）。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

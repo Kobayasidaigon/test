@@ -1,0 +1,63 @@
+{
+  "code": "104647",
+  "pref": "群馬県",
+  "name": "玉村町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4～8月の保育料は前年度分、9～翌年3月の保育料は当該年度分の父母（状況により扶養義務者を含む）の所得割課税額及び均等割課税状況で決定。保育関係施設は4月1日現在の年齢でクラスと保育料が決まり、満3歳の誕生日の前日に2号認定を受けた児童もその年度は3号認定の区分。毎月1日に在籍していればその月1か月分（日割りなし）。表は「R9年度保育関係施設利用案内（新規申込用）」（2026年7月作成）p.9の「玉村町保育料基準額表（令和８年度）」。令和8年度の利用案内（2025年8月作成）p.10 には同じ額の表が「（令和７年度）」として載っている。",
+  "tax_basis": "6%",
+  "tax_note": "所得割の額は、税額控除（調整控除を除く）前の税額により決定（住宅ローン控除などを引く前）。0〜2歳児クラスの保育料は父母の市町村民税額の合計で決まり、父母が非課税で同居の扶養義務者がいる場合は扶養義務者の税額で決めることがある。市町村民税が未申告などで算定に必要な情報が取れない場合は最高額。政令市ではない。",
+  "table": {
+    "title": "玉村町保育料基準額表（令和８年度）",
+    "kind": "3号認定・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "第1階層を除き、所得割課税額が0円の世帯 町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": null, "upper": null, "condition": "第1階層を除き、所得割課税額が0円の世帯 均等割課税世帯", "monthly": 5800, "monthly_second": null },
+      { "label": "第4", "lower": 1, "upper": 12100, "condition": "第1階層を除き、所得割課税額が0円以外の世帯 12,100円未満", "monthly": 7300, "monthly_second": null },
+      { "label": "第5", "lower": 12100, "upper": 24200, "condition": "12,100円以上 24,200円未満", "monthly": 8400, "monthly_second": null },
+      { "label": "第6", "lower": 24200, "upper": 36400, "condition": "24,200円以上 36,400円未満", "monthly": 9500, "monthly_second": null },
+      { "label": "第7", "lower": 36400, "upper": 48600, "condition": "36,400円以上 48,600円未満", "monthly": 11100, "monthly_second": null },
+      { "label": "第8", "lower": 48600, "upper": 64700, "condition": "48,600円以上 64,700円未満", "monthly": 13000, "monthly_second": null },
+      { "label": "第9", "lower": 64700, "upper": 80800, "condition": "64,700円以上 80,800円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "第10", "lower": 80800, "upper": 97000, "condition": "80,800円以上 97,000円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "第11", "lower": 97000, "upper": 121000, "condition": "97,000円以上 121,000円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "第12", "lower": 121000, "upper": 145000, "condition": "121,000円以上 145,000円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "第13", "lower": 145000, "upper": 169000, "condition": "145,000円以上 169,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "第14", "lower": 169000, "upper": 202000, "condition": "169,000円以上 202,000円未満", "monthly": 38000, "monthly_second": null },
+      { "label": "第15", "lower": 202000, "upper": 235000, "condition": "202,000円以上 235,000円未満", "monthly": 39000, "monthly_second": null },
+      { "label": "第16", "lower": 235000, "upper": 268000, "condition": "235,000円以上 268,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "第17", "lower": 268000, "upper": 301000, "condition": "268,000円以上 301,000円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "第18", "lower": 301000, "upper": 349000, "condition": "301,000円以上 349,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "第19", "lower": 349000, "upper": 397000, "condition": "349,000円以上 397,000円未満", "monthly": 42500, "monthly_second": null },
+      { "label": "第20", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 43000, "monthly_second": null }
+    ],
+    "notes": "monthly は「3号認定 保育標準時間」。表に第2子の列はない（第2子以降は申請で0円）。条件の金額は「町民税所得割の額」。保育短時間: 第3 5,700、第4 7,100、第5 8,200、第6 9,300、第7 10,900、第8 12,700、第9 15,700、第10 18,600、第11 22,600、第12 27,500、第13 32,400、第14 37,300、第15 38,300、第16 39,300、第17 40,300、第18 41,200、第19 41,700、第20 42,200。ひとり親世帯等: 第3〜7階層は保育料を1,000円軽減しさらに半額、第8・第9階層（所得割77,101円未満に限る）は半額。3歳児クラスから5歳児クラスは無償化（副食費は保護者負担だが第2子以降は申請で無償）。表は pdftoppm で画像にして列（3号認定 保育標準時間・保育短時間）を確かめた。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（0〜2歳児クラス）は生活保護・非課税世帯が0円、ほかは階層により月5,800〜43,000円（標準時間）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "町の第2子以降保育料・副食費無償化: 2人以上の子どもがいる家庭の第2子以降の児童が保育所へ入所している場合、0歳児から2歳児は保育料が無償（3〜5歳児は副食費が無償）。小学校就学前の子どもに限らず数え、兄姉の年齢は問わない（申請書に保護者が扶養している子ども全員分の健康保険証の写しを添付）。所得制限なし。町外の施設を利用する町民も対象。申請が必要で、保育料算定に必要な市町村民税の申告がない場合や保育料に滞納・未納がある場合は対象外（その場合は国と同じ多子軽減: 同時に保育所・幼稚園等を利用する就学前の子の2人目半額・3人目以降0円、所得割57,700円未満は生計を一にする子で数えて第2子半額・第3子以降0円）。ページ「第2子以降の保育料および副食費が無償となります」は公開日2021年8月19日・更新日2026年2月2日。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無償化に含まれる（兄姉の年齢を問わず、所得制限なし、申請が必要）。所得割77,101円未満のひとり親世帯等は生計を一にする子どもの最年長から数えて第2子以降0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "第2子以降の保育料および副食費が無償となります | 玉村町（更新日 2026年02月02日）", "url": "https://www.town.tamamura.lg.jp/docs/2021080400014/" },
+    { "label": "令和9年度の幼稚園・保育所利用申し込み案内 | 玉村町", "url": "https://www.town.tamamura.lg.jp/docs/2026062200026/" },
+    { "label": "R9年度保育関係施設利用案内（新規申込用）[PDF：439KB] p.9 玉村町保育料基準額表（令和８年度）", "url": "https://www.town.tamamura.lg.jp/docs/2026062200026/file_contents/R9riyouannnai-shinnki.pdf" },
+    { "label": "令和8年度の幼稚園・保育所利用申し込み案内 | 玉村町", "url": "https://www.town.tamamura.lg.jp/docs/2025082700028/" },
+    { "label": "令和8年度保育関係施設利用案内[PDF：794KB] p.10", "url": "https://www.town.tamamura.lg.jp/docs/2025082700028/file_contents/R8hoikusyoriyouannai.pdf" },
+    { "label": "玉村町第2子以降保育料・副食費無償化適用申請書[PDF：77.3KB]", "url": "https://www.town.tamamura.lg.jp/docs/2021080400014/file_contents/musyouka-sinsei.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs（第2子以降無償化のページと申請書）で第2子の決まりを読み、令和8年度と令和9年度の利用申し込み案内のページから利用案内のPDFを取って表を読んだ。"
+  ],
+  "notes": "群馬県には第3子以降の3歳未満児の保育料を無料にする市町村への補助があるが、玉村町は町の制度で第2子以降が0円。第2子以降無償化が始まった月は今のページに書かれていない。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

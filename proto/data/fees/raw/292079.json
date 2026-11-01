@@ -1,0 +1,35 @@
+{
+  "code": "292079",
+  "pref": "奈良県",
+  "name": "五條市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「保育料の無償化について」のページ、2026年3月30日更新。適用日は令和8年4月1日）",
+  "period_note": "令和8年4月1日から、子どもの年齢・きょうだいの人数・保護者の所得にかかわらず、教育・保育施設に在園するすべての子どもの保育料が無償。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の所得にかかわらず0〜2歳児の保育料が無償のため、所得割による階層は保育料に関係しない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2026年4月",
+  "first_child_free_note": "市の「保育料の無償化について」: 令和6年4月から保護者と生計を一にする子どものうち第2子以降の保育料を無償化しており、令和8年4月から対象範囲を拡充し全ての子どもの保育料を無償化（子どもの年齢、きょうだいの人数、保護者の所得にかかわらない）。対象施設は認可保育施設（保育所・認定こども園等）で、認可外保育施設は対象外。対象児童は五條市内に住み、保育所・認定こども園等（市内・市外問わず）に在園する0〜2歳児。申請手続きは不要。対象は月額保育料で、延長保育料・3歳児クラス以上の給食費（副食費）・保護者会費等の諸経費は対象外。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和8年4月からは第1子から無償なので数え方は関係ない（household は「数え方に関係なく0円」の意味）。令和6年4月〜令和8年3月は、保護者と生計を一にする子どものうち第2子以降を無償化していた。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無償のため第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料の無償化について 五條市（教育委員会事務局 子ども未来推進室、2026年3月30日更新）", "url": "https://www.city.gojo.lg.jp/soshiki/kyouiku/mirai/5/19253.html" },
+    { "label": "保育所・認定こども園 五條市（子育て・保育のページ一覧）", "url": "https://www.city.gojo.lg.jp/life_stage/kosodate_hoiku/14404.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べは失敗（OSError）。https://www.city.gojo.lg.jp/ は多くの時間「このページは表示できません」（HTTP 408、JSTCDNのボット対策）を返す。15秒あけて取れることもあるが、続けて取ると何分も408が続いた。最後は8分ほどあけて1回で取れた",
+    "古いドメイン https://www.city.gojo.nara.jp/ はつながらなかった",
+    "WebSearch（allowed_domains: city.gojo.lg.jp）で「保育料の無償化について」を見つけたが、検索結果のURL（/soshiki/mirai/5/19253.html）は404で、ページは /soshiki/kyouiku/mirai/5/ の下に移っていた（トップ → 子育て・保育 → 保育所・認定こども園 のリンク一覧で新しいURLを確かめた）"
+  ],
+  "notes": "0〜2歳の保育料が無料なので表は入れていない（「保育料等について」〔/soshiki/kyouiku/mirai/5/9840.html〕の基準額表は408で読めていない）。cash・one_time・中学校給食は見ていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

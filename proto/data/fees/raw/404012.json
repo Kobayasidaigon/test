@@ -1,0 +1,51 @@
+{
+  "code": "404012",
+  "pref": "福岡県",
+  "name": "小竹町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和8年度小竹こども園募集要項〔PDF、2025年10月作成〕p.8「利用者負担額について（３号認定）」。令和9年度の募集要項〔2026年10月作成〕も同じ額）",
+  "period_note": "表の区分は「各月初日の支給認定保護者の属する世帯の階層区分」で「当該年度分の市町村民税」。4〜8月分と9〜3月分で使う税の年度の書き分けは要項にない。税額が不明の場合（確定申告等をしていない方など）は仮の保育料として最高階層で算定。",
+  "tax_basis": "6%",
+  "tax_note": "当該年度分の市町村民税の所得割課税額で区分。税額控除の扱い（住宅ローン控除などを引く前か）は要項に書かれていない。政令市ではないので6%で判定とみた。",
+  "table": {
+    "title": "利用者負担額について（３号認定） ３号認定［こども園（保育標準時間・保育短時間）］",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "第１階層を除き、当該年度分の市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": 0, "upper": 48600, "condition": "48,600円未満", "monthly": 16500, "monthly_second": null },
+      { "label": "第4A", "lower": 48600, "upper": 72800, "condition": "48,600円以上 72,800円未満", "monthly": 21000, "monthly_second": null },
+      { "label": "第4B-1", "lower": 72800, "upper": 77101, "condition": "72,800円以上 77,101円未満", "monthly": 25500, "monthly_second": null },
+      { "label": "第4B-2", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 25500, "monthly_second": null },
+      { "label": "第5A", "lower": 97000, "upper": 133000, "condition": "97,000円以上 133,000円未満", "monthly": 31600, "monthly_second": null },
+      { "label": "第5B", "lower": 133000, "upper": 169000, "condition": "133,000円以上 169,000円未満", "monthly": 37800, "monthly_second": null },
+      { "label": "第6A", "lower": 169000, "upper": 235000, "condition": "169,000円以上 235,000円未満", "monthly": 44800, "monthly_second": null },
+      { "label": "第6B", "lower": 235000, "upper": 301000, "condition": "235,000円以上 301,000円未満", "monthly": 51800, "monthly_second": null },
+      { "label": "第7", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 58000, "monthly_second": null },
+      { "label": "第8", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 62000, "monthly_second": null }
+    ],
+    "notes": "列は保育標準時間認定・保育短時間認定の順（画像で確かめた）。保育短時間: 第3 16,400／第4A 20,700／第4B-1 25,100／第4B-2 25,100／第5A 31,200／第5B 37,300／第6A 44,200／第6B 51,000／第7 57,100／第8 61,100（第1・第2は0円）。（ ）内はひとり親世帯等（母子・父子家庭や障害者（児）のいる世帯）の額で、第3・第4A・第4B-1は標準・短時間とも 7,600円。市町村民税が77,101円未満のひとり親世帯等は第2子以降0円。第3の下限は書かれていないが所得割0円（均等割のみ）も含むと読み lower=0。給食費は利用者負担額に含まれている。町内の施設は町立の幼保連携型認定こども園「小竹こども園」（0〜2歳児はりんごルーム、0歳児は概ね生後6か月から）。延長保育は1時間200円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は有料（標準時間で月16,500〜62,000円。生活保護・非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "【多子軽減について】「同一世帯の複数のお子さんがこども園、幼稚園、保育園等を利用する場合、利用者負担額の軽減措置があります。小学校３年以下の範囲において、最年長のお子さんから順に２人目は半額、３人目以降は０円」（上の子は小学3年生までを数える。上の子が小学4年生以上なら数えない）。市町村民税所得割課税額57,700円未満の世帯は年齢制限なく、生計が同一のきょうだいを最年長から数えて第2子半額。所得制限なし。household は「同時に通っていなくても数える」の意味で置いたが、上の子の年齢の上限（小学3年生）があることに注意。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "【第３子以降の保育料無償化について】令和7年9月から0〜2歳児の第3子以降の保育料を無償化（保育施設〔届出保育施設を含む〕に通う0〜2歳児）。きょうだいの年齢制限・所得制限を設けず、生計を同一にしている子のうち最年長を第1子として数える。上のきょうだいが町外へ転出しているなど世帯から外れている場合は届出が必要。福岡県の第3子以降保育料無償化事業（令和7年9月から）と同じ枠組み。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "小竹こども園 令和8年度園児を募集しています / 子育て・保育施設TOP / 小竹町（最終更新日 2026年10月16日）", "url": "https://town.kotake.lg.jp/kosodate/hpkiji/pub/detail.aspx?c_id=3&id=3911&class_set_id=8&class_id=724" },
+    { "label": "令和8年度小竹こども園募集要項（PDF、2025年10月作成）p.8", "url": "https://town.kotake.lg.jp/common/UploadFileOutput.ashx?c_id=3&id=3911&sub_id=1&flid=10697" },
+    { "label": "令和9年度小竹こども園募集要項（PDF、2026年10月作成）p.9", "url": "https://town.kotake.lg.jp/common/UploadFileOutput.ashx?c_id=3&id=4221&sub_id=1&flid=12475" },
+    { "label": "第3子以降の保育料無償化について / 子育て・保育施設TOP / 小竹町（最終更新日 2026年10月21日）", "url": "https://town.kotake.lg.jp/kosodate/hpkiji/pub/detail.aspx?c_id=3&id=3868&class_set_id=8&class_id=723" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの docs（第3子以降の保育料無償化のページ）を読み、index.json の pages にあった令和8年度・令和9年度の園児募集のページから募集要項PDFを取った。表は pdftotext と画像の両方で確かめ、令和8年度と令和9年度の表の額が同じことを確かめた（注記の言い回しだけ違う）。1号・2号認定児は無償（2号は満3歳になった年度の翌年度から）。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

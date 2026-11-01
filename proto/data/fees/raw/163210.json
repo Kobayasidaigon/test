@@ -1,0 +1,33 @@
+{
+  "code": "163210",
+  "pref": "富山県",
+  "name": "舟橋村",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "富山県は「保育料軽減事業」で県下全域の第3子以降の保育料を完全無償化（県の広報 2024年6月号、令和6年度予算。pref-nursery-east.json）。舟橋村の決まりとしては確かめられなかったので unknown のまま。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [],
+  "confidence": "仮置き",
+  "tried": [
+    "村の公式サイト（https://www.vill.funahashi.toyama.jp/）は 503 で「【重要】システムメンテナンスのお知らせ … メンテナンス中は舟橋村ホームページへのアクセスができません。2026年10月22日 舟橋村」と表示された。下調べ（crawl）も同じ理由で0ページ。",
+    "新しいドメイン https://www.vill.funahashi.lg.jp/ を1回試したが、つながらなかった（エージェントのプロキシが接続を拒否）。",
+    "WebSearch 1回（allowed_domains: vill.funahashi.toyama.jp、「舟橋村 保育料 3歳未満 保育所 第2子 無償」）: 「こどもの福祉」のページ（https://www.vill.funahashi.toyama.jp/living_guide_new/03_6.html）や例規集（/reiki/）が見つかったが、どれも同じメンテナンス画面（503）で開けなかった。15秒あけて取り直しても503。",
+    "検索結果の要約（直接は読めていない、確かめていない）: 「こどもの福祉」のページに「保育料について 市町村民税所得割課税額で算定されます」「保育料は毎年9月に改定されます」とあり、きょうだいの減免や無償化の記載は要約に出てこなかった。2023年3月の村議会会議録に「昨年10月には舟橋小中学校及び保育施設の給食費を無償とした」という答弁がある。"
+  ],
+  "notes": "村のサイトが2026年10月22日からメンテナンスで全ページ503のため、保育料の表もきょうだいの決まりも読めなかった。サイトが戻ったら「暮らし・手続き > こどもの福祉」（living_guide_new/03_6.html）と例規集（/reiki/）を読み直す。",
+  "read_at": "2026-11-01"
+}

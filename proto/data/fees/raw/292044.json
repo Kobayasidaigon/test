@@ -1,0 +1,42 @@
+{
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "confidence": "仮置き",
+ "read_at": "2026-11-01",
+ "code": "292044",
+ "pref": "奈良県",
+ "name": "天理市",
+ "sources": [
+  {
+   "label": "保育料について／天理市（WebSearch で見つけたURL。開けなかった）",
+   "url": "https://www.city.tenri.nara.jp/kakuka/kenkoukodomokateikyoku/youhokodomoennka/hoikusho_kodomoen/14637.html"
+  },
+  {
+   "label": "令和8年度の保育所（園）・認定こども園等の申請について|天理市（WebSearch で見つけたURL。開けなかった）",
+   "url": "https://www.city.tenri.nara.jp/kakuka/kenkoukodomokateikyoku/youhokodomoennka/hoikusho_kodomoen/15194.html"
+  }
+ ],
+ "tried": [
+  "下調べ（crawl）は公式サイトの一番上だけ読めて、15686.html と kosodateguide/index.html が OSError。",
+  "curl（決まった形）で公式サイトの一番上（https://www.city.tenri.nara.jp/）は200で取れたが、kosodateguide/index.html（18:11・18:12）、保育料について 14637.html（18:14・18:25）、令和8年度の申請 15194.html（18:15）は 408（「このページは表示できません。…インシデント ID」というサイト側のエラーページ）か接続リセットになった（間を数分〜10分あけても同じ）。ヘッダーを足して取り直す操作は、サイトの遮断を避けることになるので許可されず、行っていない。",
+  "WebFetch はこのセッションでは www.city.tenri.nara.jp の名前解決ができなかった。",
+  "WebSearch（allowed_domains: city.tenri.nara.jp）を2回使い、「保育料について」「令和8年度の保育所（園）・認定こども園等の申請について」のページのURLは分かったが、ページの中身（保育料徴収金基準表 PDF）は開けなかった。"
+ ],
+ "notes": "保育料の表もきょうだいの決まりも、公式サイトを開けなかったので読めていない（推測で埋めていない）。参考（検索エンジンの要約に出ていた文で、自分では読めていない・確かめていない）: 保育料は児童の父母の市町村民税所得割課税額の合計額で算定、同一地番に祖父母が同居し父母それぞれの年収が98万円未満なら祖父母の所得割額も合算、4〜8月は前年度・9〜翌3月は当年度の市町村民税額、税額控除を適用する前の税額、未申告は最高金額、同一世帯で2人以上の就学前児童が保育所等を利用している場合は第2子半額・第3子以降無料、「保育料について」のページに「保育料徴収金基準表」PDF（約62KB）がある。サイトが開けるようになったら 14637.html の基準表PDFを読むこと。"
+}

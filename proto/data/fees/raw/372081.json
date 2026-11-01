@@ -1,0 +1,47 @@
+{
+ "code": "372081",
+ "pref": "香川県",
+ "name": "三豊市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和8年度利用案内 p.8: 「令和 8 年 4 月分から 8 月分の保育料は、令和 7 年度の市民税所得割額で算定します。9 月分から令和 9 年 3 月分の保育料は、令和 8 年度の市民税所得割額で算定します。」算定時期は4月（進級による年齢変更）と9月（課税年度の変更）の年2回。公立・私立・認定こども園・小規模保育事業所で保育料に差はない。満3歳に達して2号認定を受けた年度は3号認定（2歳児）の額。税が未申告・書類未提出なら第8階層。",
+ "tax_basis": "6%",
+ "tax_note": "「市民税所得割額の計算には、寄付金控除、外国税額控除、配当控除及び住宅借入金等特別控除の適用はありません。」保護者（原則として両親）の市民税所得割額の合計で算定。両親の収入合計が103万円未満で同居親族の税扶養になっている場合は同居親族も算定対象。政令市ではない。",
+ "table": {
+  "title": "令和 8 年度 三豊市保育施設等保育料（0～2 歳児）",
+  "kind": "3号認定（3歳未満児）・標準時間認定・第1子（月額）。表に第2子の列はない",
+  "rows": [
+   {"label": "第1階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯など", "monthly": 0, "monthly_second": null},
+   {"label": "第2階層", "lower": null, "upper": null, "condition": "第 1 階層を除き、市民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "第3階層", "lower": 0, "upper": 48600, "condition": "市民税の所得割課税額の区分が次の区分に該当する世帯 48,600 円未満", "monthly": 12000, "monthly_second": null},
+   {"label": "第4階層", "lower": 48600, "upper": 97000, "condition": "97,000 円未満", "monthly": 23500, "monthly_second": null},
+   {"label": "第5階層", "lower": 97000, "upper": 169000, "condition": "169,000 円未満", "monthly": 35000, "monthly_second": null},
+   {"label": "第6階層", "lower": 169000, "upper": 301000, "condition": "301,000 円未満", "monthly": 44000, "monthly_second": null},
+   {"label": "第7階層", "lower": 301000, "upper": 397000, "condition": "397,000 円未満", "monthly": 45000, "monthly_second": null},
+   {"label": "第8階層", "lower": 397000, "upper": null, "condition": "397,000 円以上", "monthly": 45000, "monthly_second": null}
+  ],
+  "notes": "短時間認定（月額）: 第1・第2 0円、第3 11,800、第4 23,100、第5 34,400、第6 43,300、第7 44,200、第8 44,200。表に均等割のみの区分はなく、第3階層（所得割48,600円未満）の lower を0にした。「ひとり親世帯」又は「子ども本人・きょうだい・保護者で障害者手帳等をお持ちの方がいる世帯」で第3・4階層（市民税所得割額が77,101円未満）の場合（標準時間／短時間）: 第3 5,500／5,400、第4（市民税所得割額が77,101円未満の世帯）9,000／9,000、第2子以降は免除。市の保育料ページの「三豊市保育施設等保育料金額表」（2026年7月30日作成、年度の記載なし）も同じ額。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子（0〜2歳児）は階層により月0〜45,000円（標準時間）。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "「保育施設又は幼稚園等に通っている子どもが 2 人以上いる場合は、2 人目の保育料が半額になります。」「市民税所得割額が 57,700 円未満の場合は、現に扶養している子どものうち第 2 子の保育料が半額になります。」（低所得の世帯は上の子の年齢や在園を問わず数える）ひとり親・障害者手帳等の世帯で所得割77,101円未満は第2子以降免除。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "「現に扶養する子どもが 3 人以上いる世帯の第 3 子以降の子どもは、保育料が免除になります。」上の子の年齢や在園の要件、所得制限の記載はない。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和8年度三豊市保育施設・認定こども園（保育所枠）利用案内（p.8-9 保育料、「令和 8 年度 三豊市保育施設等保育料（0～2 歳児）」）", "url": "https://www.city.mitoyo.lg.jp/material/files/group/26/R8hoikushoriyouannnai.pdf"},
+  {"label": "令和8年度 保育施設・認定こども園（保育所枠）の利用申込について／三豊市", "url": "https://www.city.mitoyo.lg.jp/kakuka/kenkofukushi/yochien/3/14243.html"},
+  {"label": "保育料／三豊市（更新日2026年8月3日）", "url": "https://www.city.mitoyo.lg.jp/kakuka/kenkofukushi/yochien/3/15091.html"},
+  {"label": "三豊市保育施設等保育料金額表（PDF、2026年7月30日作成）", "url": "https://www.city.mitoyo.lg.jp/material/files/group/26/hoikuryokinngakuhyo.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "金額表のPDFは画像でも確認。公立施設の給食費は市の単独事業で無料（私立は主食費月1,000円・副食費月4,800円まで無料）。3〜5歳児の給食費（主食費・副食費）も市の単独事業で無償。",
+ "read_at": "2026-11-01"
+}

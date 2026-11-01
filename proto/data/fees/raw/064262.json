@@ -1,0 +1,53 @@
+{
+  "code": "064262",
+  "pref": "山形県",
+  "name": "三川町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度の保育料は、4月から8月分は令和7年度の市町村民税額、9月から翌年3月分は令和8年度の市町村民税額で算定（三川町基本保育料表）。年齢区分は入園（利用）年度の4月1日現在の年齢で、その年度中は誕生日が来ても変わらない。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（両親）の市町村民税所得割額の合計。「家計の主宰者」が祖父母等と判断される場合はその方の税額も合算する場合がある。所得割額は住宅借入金等特別税額控除、配当控除、寄付金税額控除、外国税額控除、配当割額・株式等譲渡所得割額控除の税額控除（調整控除を除く）等を控除する前の金額。政令市ではないので6%で判定。",
+  "table": {
+    "title": "《基本保育料表》保育園保育料（みかわ保育園・いのこ保育園・三川りっしょう子ども園（保育認定）・町外の保育園・認定こども園（保育利用） 共通） ▼市町村民税課税世帯の0歳児～2歳児向け▼",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": 0, "upper": 48600, "condition": "均等割課税世帯 又は 1円以上～48,600円未満（母子・父子・障害者世帯以外）", "monthly": 0, "monthly_second": null },
+      { "label": "4", "lower": 48600, "upper": 60600, "condition": "48,600円以上～60,600円未満（母子・父子・障害者世帯以外）", "monthly": 0, "monthly_second": null },
+      { "label": "5Ａ", "lower": 60600, "upper": 77101, "condition": "60,600円以上～77,101円未満（母子・父子・障害者世帯以外）", "monthly": 0, "monthly_second": null },
+      { "label": "5Ｂ", "lower": 77101, "upper": 78800, "condition": "77,101円以上 ～ 78,800円未満", "monthly": 0, "monthly_second": null },
+      { "label": "6", "lower": 78800, "upper": 97000, "condition": "78,800円以上 ～ 97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "7", "lower": 97000, "upper": 117000, "condition": "97,000円以上 ～ 117,000円未満", "monthly": 12000, "monthly_second": null },
+      { "label": "8", "lower": 117000, "upper": 169000, "condition": "117,000円以上 ～ 169,000円未満", "monthly": 14450, "monthly_second": null },
+      { "label": "9", "lower": 169000, "upper": 301000, "condition": "169,000円以上 ～ 301,000円未満", "monthly": 35500, "monthly_second": null },
+      { "label": "10", "lower": 301000, "upper": 397000, "condition": "301,000円以上 ～ 397,000円未満", "monthly": 42900, "monthly_second": null },
+      { "label": "11", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 54700, "monthly_second": null }
+    ],
+    "notes": "列は「3歳未満」の標準時間・短時間の順（画像で確かめた）。保育短時間: 7 11,800／8 14,200／9 35,000／10 42,200／11 53,800（1〜6は0円）。階層2〜5Ａは「母子・父子・障害者世帯」と「それ以外」の2行に分かれているが、どちらも0円。表の額は県の事業を反映した後の額とみられる: 注記②「市町村民税所得割額が97,000円未満について県の保育料無償化に向けた段階的負担軽減事業により、令和3年9月から当面の間無償」（表でも1〜6は0円）、注記③「97,000円以上169,000円未満について…令和7年4月から当面の間半額」（7・8の額 12,000円・14,450円は 24,000円・28,900円の半額にあたる。軽減前の額は表に書かれていない）。0〜2歳児の給食副食費は保育料に含まれる。公立・私立保育園（認可保育園）の保育料は同一。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子も、市町村民税所得割97,000円未満は県の段階的負担軽減事業で0円（令和3年9月から）、97,000円以上169,000円未満は半額（令和7年4月から）。169,000円以上は有料（標準時間で月35,500〜54,700円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の注記①「小学校就学前の範囲内に、保育園幼稚園等に通うこどもが2人以上いる場合、左記の年長者から数え、2人目は半額、3人目以降無料」（国の多子軽減。就学前で保育園・幼稚園等に通う子だけを数える）。所得制限の記載なし。所得割97,000円未満はもともと第1子から0円。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "町独自の「三川町あんしん子育て応援事業」: 同一の保護者によって養育されている児童のうち、出生の早い者から数えて3番目以降の児童は保育料を免除（年齢や同時入所は問わない。上の子の年齢の上限は書かれていない）。給食費（副食費）も免除または補助。申請が必要で、申請した月から当該年度末まで（毎年度申請。5月末までの申請は4月分に遡る）。町税や保育料に滞納がある場合は免除しない場合がある。就学前で同時に通う3人目以降は表の注記①でも無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    { "label": "三川町出産祝金", "amount": 100000, "note": "平成19年4月1日以降に出生し最初に町に住民登録した子に1人10万円（出生した年度に支給）。第2番目の子は20万円を加算して計30万円。第3子以降は町内に住む満1歳から満4歳までも毎年度10万円で、出生年度から5年間で計50万円。監護する方が1年以上町内に住んでいること、町税の滞納がないことが条件。ページの更新日は2022年4月1日。", "source": { "label": "三川町出産祝金：三川町公式サイト", "url": "https://www.town.mikawa.yamagata.jp/child/teate/iwaikin.html" } }
+  ],
+  "sources": [
+    { "label": "保育園保育料等：三川町公式サイト（2026年4月1日更新）", "url": "https://www.town.mikawa.yamagata.jp/child/nyuen/hoikuenhoikuryo.html" },
+    { "label": "三川町基本保育料表（PDF、令和8年度の算定方法を記載。2026年4月23日作成）", "url": "https://www.town.mikawa.yamagata.jp/child/nyuen/hoikuenhoikuryo.files/r8hoikuryou.pdf" },
+    { "label": "三川町あんしん子育て応援事業（保育料等の免除等）：三川町公式サイト（2026年4月1日更新）", "url": "https://www.town.mikawa.yamagata.jp/child/teate/ansinkosodate.html" },
+    { "label": "三川町あんしん子育て応援事業の内容について（PDF）", "url": "https://www.town.mikawa.yamagata.jp/child/teate/ansinkosodate.files/ansinkosodate.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json の保育料のページと基本保育料表PDF（pdftotext と画像の両方で確かめた）、あんしん子育て応援事業のページを読んだ。幼児教育・保育の無償化のページ（2026年4月1日更新）に町独自の追加の施策は書かれていなかった。0歳児～2歳児の住民税非課税世帯と3歳児～5歳児は無料。cash・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

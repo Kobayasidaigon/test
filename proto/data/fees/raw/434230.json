@@ -1,0 +1,59 @@
+{
+  "code": "434230",
+  "pref": "熊本県",
+  "name": "南小国町",
+  "status": "ok",
+  "fiscal_year": "表に年度の表示はない（町の「保育園」のページに「下記の利用者負担額表に基づき保育料を決定します」として今も載っている現行の表。PDFは2019年11月作成・2020年2月掲載。令和8年度と書かれた資料はない）",
+  "period_note": "表の注記①: 4月〜8月分までの利用者負担額は前年度の市町村民税、9月〜翌年3月分までは当年度の市町村民税を算定基礎とする。表の月額は年度を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "表の注記①: 利用者負担金は、児童と同一世帯に属し、生計を一にしている父母及び家計の主宰者である扶養義務者の課税額の合計で算定（家計の主宰者が祖父母などなら合算）。住宅ローン控除などの税額控除の扱いは書かれていない。政令市ではないので6%で判定とみられる。",
+  "table": {
+    "title": "【 利用者負担金 】（利用者負担額表）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": null, "upper": null, "condition": "市町村民税均等割のみ課税世帯（所得割非課税世帯）", "monthly": 8500, "monthly_second": null },
+      { "label": "第4", "lower": 1, "upper": 5000, "condition": "市町村民税所得割課税額 5,000円未満", "monthly": 10000, "monthly_second": null },
+      { "label": "第5", "lower": 5000, "upper": 26800, "condition": "市町村民税所得割課税額 26,800円未満", "monthly": 11000, "monthly_second": null },
+      { "label": "第6", "lower": 26800, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 12500, "monthly_second": null },
+      { "label": "第7", "lower": 48600, "upper": 72800, "condition": "市町村民税所得割課税額 72,800円未満", "monthly": 14000, "monthly_second": null },
+      { "label": "第8-1", "lower": 72800, "upper": 77100, "condition": "市町村民税所得割課税額 77,100円未満", "monthly": 15500, "monthly_second": null },
+      { "label": "第8-2", "lower": 77100, "upper": 97000, "condition": "市町村民税所得割課税額 97,000円未満", "monthly": 15500, "monthly_second": null },
+      { "label": "第9", "lower": 97000, "upper": 121000, "condition": "市町村民税所得割課税額 121,000円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "第10", "lower": 121000, "upper": 145000, "condition": "市町村民税所得割課税額 145,000円未満", "monthly": 22500, "monthly_second": null },
+      { "label": "第11", "lower": 145000, "upper": 169000, "condition": "市町村民税所得割課税額 169,000円未満", "monthly": 27000, "monthly_second": null },
+      { "label": "第12", "lower": 169000, "upper": 213000, "condition": "市町村民税所得割課税額 213,000円未満", "monthly": 30500, "monthly_second": null },
+      { "label": "第13", "lower": 213000, "upper": 257000, "condition": "市町村民税所得割課税額 257,000円未満", "monthly": 34500, "monthly_second": null },
+      { "label": "第14", "lower": 257000, "upper": 301000, "condition": "市町村民税所得割課税額 301,000円未満", "monthly": 35000, "monthly_second": null },
+      { "label": "第15", "lower": 301000, "upper": 349000, "condition": "市町村民税所得割課税額 349,000円未満", "monthly": 36500, "monthly_second": null },
+      { "label": "第16", "lower": 349000, "upper": 397000, "condition": "市町村民税所得割課税額 397,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "第17", "lower": 397000, "upper": null, "condition": "市町村民税所得割課税額 397,000円以上", "monthly": 40000, "monthly_second": null }
+    ],
+    "notes": "rows は「満3歳未満（3歳児クラス未満）」の「標準時間」の列。各階層の条件は表では「〜円未満」だけなので、下限は1つ上の行の額とした（第3階層を除き市町村民税の額の区分に該当する世帯）。第8-1は表のとおり「77,100円未満」（国の基準の77,101円ではない）。短時間の額: 第1・第2 0、第3 8,400、第4 9,800、第5 10,800、第6 12,300、第7 13,800、第8-1 15,200、第8-2 15,200、第9 19,200、第10 22,100、第11 26,500、第12 30,000、第13 33,900、第14 34,400、第15 35,900、第16 36,400、第17 39,300。ひとり親家庭等の列（rows には入れていない）: 第1・第2 0、第3〜第8-1 4,000（短時間 4,000）、第8-2以上は一般と同じ額。注記②: 2人以上の入園の場合は1/2になる軽減があり、3人同時入園の場合は保育料が無料（3人目）。また、18歳以下の子どもから順に第3子以降の児童が入園した場合に利用者負担額が無料となる多子世帯の軽減もある（一部対象外あり）。注記③: ②のひとり親家庭等世帯のうち第3階層から第8-1階層の第2子は無料。注記④: 満3歳以上（保育認定は3歳児クラス以上）は保育料無償だが、各施設の定めた副食費の負担がある（第3子以降や年収360万円未満相当世帯は副食費免除）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児（3歳児クラス未満）の第1子は有料（標準時間で月0〜40,000円）。0円は生活保護世帯と市町村民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の注記②: 2人以上の入園の場合は1/2になる軽減（同時に入園している子を数える）。注記③: ひとり親家庭等世帯のうち第3階層から第8-1階層の第2子は無料。上の子が入園していない場合の第2子の軽減は書かれていない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "表の注記②: 3人同時入園の場合は3人目が無料。また、18歳以下の子どもから順に数えて第3子以降の児童が入園した場合は利用者負担額が無料となる多子世帯の軽減がある（一部対象外あり。対象外の内容は書かれていない。熊本県の多子世帯子育て支援事業の補助要領では市町村民税所得割合算額301,000円以上の世帯は対象外とされる）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "南小国町 保育園（子育て支援・教育）", "url": "https://www.town.minamioguni.lg.jp/kosodate/hoikuen/hoikuen.html" },
+    { "label": "南小国町 利用者負担額表（PDF、2019年11月作成）", "url": "https://www.town.minamioguni.lg.jp/kosodate/docs/hoikuen_riyousha-futangaku.pdf" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの docs/00（利用者負担額表）と保育園のページを読んだ",
+    "例規集（d1-law の検索システム https://ops-jg.d1-law.com/opensearch/?jctcd=8A918DC6D5）は検索画面だけで、規則の別表は確かめていない",
+    "子育て支援（支援の概要・妊娠〜子育て）、学校給食のページに保育料の新しい表や第2子の無償化の記載はなかった"
+  ],
+  "notes": "町内の保育施設は公立保育園3園（市原保育園 定員90・中原保育園 定員20・黒川保育園 定員30）。表は文字の取れる1ページのPDFを pdftotext -layout で読み、pdftoppm -r 100 で画像にして列（満3歳未満の標準時間・短時間、ひとり親家庭等の標準時間・短時間）を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない（第8-1と第8-2は同額）。表は2019年作成で年度の表示がなく、令和8年度の資料で確かめていないので confidence は推定（今も町の保育園のページで保育料決定の根拠として案内されている）。延長保育・休日保育は実施していない。一時預かりは1日2,000円（半日1,000円）。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,55 @@
+{
+  "code": "382035",
+  "pref": "愛媛県",
+  "name": "宇和島市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月分から8月分までは前年度（令和7年度）分、9月分から翌年3月分までは当年度（令和8年度）分の市区町村民税の課税額で決める（毎年9月分が切り替え）。料金表は年度を通じて同じ。年齢は4月1日時点で決め、年度の途中で誕生日を迎えてもその年度中の保育料は変わらない。申告等で税額が変わった場合は対象月にさかのぼって追加徴収・還付（前年度分は対象外）。表の上に「令和６年４月１日改定」とある。",
+  "tax_basis": "6%",
+  "tax_note": "備考3: 階層区分認定の基礎となる課税額は、住宅借入金等特別税額控除、配当割額控除、株式等譲渡所得割額控除、配当控除、外国税額控除、寄附金税額控除（ふるさと納税等）を差し引く前の市区町村民税所得割額。（注）所得割は地方税法第292条第1項第2号の所得割（第328条の分離課税分を除く）で、第314条の7・第314条の8・第314条の9、附則第5条第3項・第5条の4第6項・第5条の4の2第5項・第5条の5第2項・第7条の2第4項及び第5項・第7条の3第2項・第45条は適用しない。備考1: 同一世帯で生計を一にする父母とそれ以外の扶養義務者（家計の主宰者である場合に限る）の課税額の合計で決める。政令市ではない。",
+  "table": {
+    "title": "令和８年度　利用者負担額（保育料）表（月額：円）３号認定",
+    "kind": "3歳未満（3号認定）・認定こども園・保育所・保育標準時間・一般世帯（月額）",
+    "rows": [
+      { "label": "区分1 A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "区分2 B", "lower": null, "upper": null, "condition": "市区町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "区分3 C1", "lower": null, "upper": null, "condition": "市区町村民税非課税世帯のうち均等割課税世帯", "monthly": 11700, "monthly_second": null },
+      { "label": "区分3 C2", "lower": 1, "upper": 48600, "condition": "市区町村民税所得割額 48,600円未満", "monthly": 11700, "monthly_second": null },
+      { "label": "区分4 D1", "lower": 48600, "upper": 57700, "condition": "市区町村民税所得割額 48,600円以上 57,700円未満", "monthly": 17500, "monthly_second": null },
+      { "label": "区分4 D2", "lower": 57700, "upper": 64700, "condition": "市区町村民税所得割額 57,700円以上 64,700円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "区分4 D3", "lower": 64700, "upper": 77101, "condition": "市区町村民税所得割額 64,700円以上 77,101円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "区分4 D4", "lower": 77101, "upper": 80800, "condition": "市区町村民税所得割額77,101円以上 80,800円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "区分4 D5", "lower": 80800, "upper": 97000, "condition": "〃 80,800円以上 97,000円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "区分5 D6", "lower": 97000, "upper": 121000, "condition": "〃 97,000円以上 121,000円未満", "monthly": 26700, "monthly_second": null },
+      { "label": "区分5 D7", "lower": 121000, "upper": 145000, "condition": "〃 121,000円以上 145,000円未満", "monthly": 26700, "monthly_second": null },
+      { "label": "区分5 D8", "lower": 145000, "upper": 169000, "condition": "〃 145,000円以上 169,000円未満", "monthly": 26700, "monthly_second": null },
+      { "label": "区分6 D9", "lower": 169000, "upper": 235000, "condition": "〃 169,000円以上 235,000円未満", "monthly": 36600, "monthly_second": null },
+      { "label": "区分6 D10", "lower": 235000, "upper": 301000, "condition": "〃 235,000円以上 301,000円未満", "monthly": 36600, "monthly_second": null },
+      { "label": "区分7 D11", "lower": 301000, "upper": 397000, "condition": "〃 301,000円以上 397,000円未満", "monthly": 48000, "monthly_second": null },
+      { "label": "区分8 D12", "lower": 397000, "upper": null, "condition": "〃 397,000円以上", "monthly": 50000, "monthly_second": null }
+    ],
+    "notes": "monthly は「認定こども園・保育所 標準時間」の一般世帯。表に第2子の列はない（第2子以降は無料なので monthly_second は null）。C1 は所得割非課税・均等割課税（所得割0円）の行なので lower・upper を null にした。認定こども園・保育所 短時間（一般世帯）: C1・C2 11,580、D1 17,200、D2〜D5 17,760、D6〜D8 26,340、D9・D10 36,060、D11 47,280、D12 49,100。家庭的保育所（短時間のみ）: C1・C2 8,400、D1〜D5 11,200、D6〜D8 13,200、D9 16,800、D10 21,600、D11・D12 24,100。要保護世帯（ひとり親世帯、障がい児（者）等のいる世帯、確認資料の提出が必要）は C1〜D3 が 5,000円（短時間4,900円、家庭的保育所3,200円）、D4 から上は一般世帯と同じ。（注）この表の保育料は各年4月1日時点で満3歳未満の保育認定子どもに適用され、給食費も含む。3歳以上は無償化（副食費負担額表は別）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3歳未満）は階層により月0〜50,000円（標準時間）。生活保護・市区町村民税非課税世帯は0円。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "表の備考2「軽減措置について、教育・保育給付認定保護者と生計を一にする第２子以降を無料とします。」市のページにも「利用者負担額（保育料）は、生計同一内の第2子以降無料。」とある。上の子の年齢・施設の利用・所得の制限は書かれていない（生計を一にする子で数える）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無料に含まれる（生計を一にする子で数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所等の利用者負担額（保育料）・副食費負担額 - 宇和島市ホームページ", "url": "https://www.city.uwajima.ehime.jp/site/hoikunet/riyousyafutangaku.html" },
+    { "label": "令和8年度 利用者負担額（保育料）（PDF、2ページ目が「令和８年度 利用者負担額（保育料）表」）", "url": "https://www.city.uwajima.ehime.jp/uploaded/attachment/67759.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs の「令和8年度 利用者負担額（保育料）」PDF を curl で取り、pdftotext の文字と2ページ目の画像（pdftoppm）で列（認定こども園・保育所の標準時間・短時間、家庭的保育所の短時間）と行の名前（区分1〜8、A・B・C1・C2・D1〜D12）を確かめた。"
+  ],
+  "notes": "市のページの更新日は「2025年4月1日更新」のままだが、見出し・PDF とも令和8年度（PDF の作成日は2026年5月28日）。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

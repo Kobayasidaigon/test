@@ -1,0 +1,51 @@
+{
+  "code": "023671",
+  "pref": "青森県",
+  "name": "田舎館村",
+  "status": "partial",
+  "fiscal_year": "令和8年度（令和8年4月から0〜2歳の保育料を村が無償化。村の公式ページは取れず、WebSearch の検索結果に出た村のページの文言で読んだ）",
+  "period_note": "村の「幼児教育・保育の無償化について」のページ: 「令和８年４月より０歳～２歳の保育料も無償化します」。村の新着情報に「田舎館村保育料無償化事業」（2026年4月28日、厚生課、https://www.vill.inakadate.lg.jp/docs/2026042300029/）。利用者負担額に関する規則は令和8年3月27日規則第10号で改正され、令和8年4月1日から施行（検索結果の要約による）。食材料費・通園送迎費・行事費などは無償化の対象外。",
+  "tax_basis": "unknown",
+  "tax_note": "規則の別表（所得割の区分）は読めていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2026年4月",
+  "first_child_free_note": "村の「幼児教育・保育の無償化について」（https://www.vill.inakadate.lg.jp/docs/2012022300639/）に「令和８年４月より０歳～２歳の保育料も無償化します」、「保育所・認定こども園・幼稚園の利用について」（https://www.vill.inakadate.lg.jp/docs/2012022400223/）に令和8年4月から3歳未満児の保育料無償化を実施とある（どちらも WebSearch の検索結果の要約・抜粋で読んだ。ページそのものは取れなかった）。所得制限・村外の施設・申請の要否などの条件は「田舎館村保育料無償化事業」のページ（2026年4月28日掲載）にあると思われるが、本文は読めていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和8年4月から0〜2歳の保育料が第1子から無償とされるので、きょうだいの数え方に関係なく0円（household は「数え方に関係なく0円」の意味で置いた）。無償化の条件（所得制限・村外の施設など）は未確認。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無償とされる（条件は未確認）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "幼児教育・保育の無償化について（田舎館村。WebSearch の結果で読んだ）",
+      "url": "https://www.vill.inakadate.lg.jp/docs/2012022300639/"
+    },
+    {
+      "label": "保育所・認定こども園・幼稚園の利用について（田舎館村。WebSearch の結果で読んだ）",
+      "url": "https://www.vill.inakadate.lg.jp/docs/2012022400223/"
+    },
+    {
+      "label": "田舎館村保育料無償化事業（2026年4月28日、厚生課。本文は未読）",
+      "url": "https://www.vill.inakadate.lg.jp/docs/2026042300029/"
+    },
+    {
+      "label": "田舎館村特定教育・保育施設の利用者負担額に関する規則（例規集。本文は未読）",
+      "url": "https://www.vill.inakadate.lg.jp/_common/themes/inakadate/reiki_int/reiki_honbun/c033RG00000434.html"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べは失敗（OSError: http://www.vill.inakadate.lg.jp/）",
+    "https://www.vill.inakadate.lg.jp/ を3回（時間をあけて）取ろうとしたが、TLS の接続で切れる（curl: SSL_ERROR_SYSCALL、プロキシの記録は tunnel closed mid exchange）",
+    "新しいドメインの候補 https://www.inakadate.lg.jp/（プロキシが502）と https://vill.inakadate.lg.jp/（接続で切れる）を1回ずつ試した",
+    "WebFetch でも名前解決できず取れなかった",
+    "WebSearch（allowed_domains: vill.inakadate.lg.jp）を3回: 「田舎館村 保育料 3歳未満」「田舎館村保育料無償化事業 令和8年4月 0歳から2歳 対象」「\"田舎館村保育料無償化事業\" 対象者 申請 認可外 村外」。無償化の開始時期は分かったが、事業ページ・規則の本文は検索結果に出なかった"
+  ],
+  "notes": "公式サイト（www.vill.inakadate.lg.jp）にこの環境から HTTPS で接続できない（TLS の接続の途中で切れる）。読むには、このサイトへの接続をセッションのネットワーク設定で許可するか、別の環境で取り直す必要がある。令和8年4月から0〜2歳の保育料が無償という点は村の2つのページの文言（検索結果）で一致しているが、条件と令和8年3月までの保育料表は未確認なので status は partial にした。",
+  "read_at": "2026-11-01"
+}

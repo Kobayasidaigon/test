@@ -1,0 +1,46 @@
+{
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "confidence": "仮置き",
+ "read_at": "2026-11-01",
+ "code": "292028",
+ "pref": "奈良県",
+ "name": "大和高田市",
+ "sources": [
+  {
+   "label": "保育料・給食費|大和高田市（WebSearch で見つけたURL。開けなかった）",
+   "url": "https://www.city.yamatotakada.nara.jp/soshikikarasagasu/hoikuyochienka/ikuji/1/2130.html"
+  },
+  {
+   "label": "幼児教育・保育の無償化について|大和高田市（WebSearch で見つけたURL。開けなかった）",
+   "url": "https://www.city.yamatotakada.nara.jp/soshikikarasagasu/hoikuyochienka/ikuji/1/2624.html"
+  },
+  {
+   "label": "大和高田市公報 第447号（令和8年4月10日、保育所条例施行規則などの一部改正＝給食費の額。保育料の表はない）",
+   "url": "https://www.city.yamatotakada.nara.jp/material/files/group/10/447a.pdf"
+  }
+ ],
+ "tried": [
+  "下調べ（crawl）は公式サイトの一番上で OSError（読めたページ0）。",
+  "curl（決まった形）で公式サイトの一番上は200で取れ、ライフシーンの「子育て」ページ（lifescence/kosodate/index.html）も1回は取れたが、そのあと kosodate/index.html、lifescence/kosodate/4439.html（子育て施設）、保育料・給食費 2130.html（18:16・18:25）、幼児教育・保育の無償化 2624.html（18:17）は 408（「このページは表示できません。…インシデント ID」というサイト側のエラーページ）か接続リセットになった（間を数分〜10分あけても同じ）。ヘッダーを足して取り直す操作は、サイトの遮断を避けることになるので許可されず、行っていない。PDF（/material/files/ の下）は取れた（下の公報）。",
+  "WebSearch（allowed_domains: city.yamatotakada.nara.jp）を1回使い、「保育料・給食費」のページのURLは分かったが、ページは開けなかった。検索に出た大和高田市公報 第447号（令和8年4月10日、PDF）は取れたが、保育関係の規則改正は給食費の額（4,900円→5,700円、300円→350円、令和8年4月1日施行）で、保育料の表は載っていない。",
+  "WebFetch はこの組の天理市で名前解決ができなかったので使っていない。"
+ ],
+ "notes": "保育料の表もきょうだいの決まりも、公式サイトを開けなかったので読めていない（推測で埋めていない）。参考（検索エンジンの要約に出ていた内容で、自分では読めていない・確かめていない）: 「保育料・給食費」のページに保育認定の月額表があり、0歳と1・2歳で列が分かれている（所得割397,000円以上は0歳66,500円・1・2歳60,900円、ひとり親世帯などの48,600円未満は7,650円〔短時間7,500円〕と書かれていた）、4〜8月は前年度・9〜翌3月は当年度の市町村民税、住宅借入金等特別控除などは適用しない。サイトが開けるようになったら 2130.html の表を読むこと。"
+}

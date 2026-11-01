@@ -109,8 +109,9 @@ export interface City {
   lunch: { juniorHighFree: boolean | null; confidence: Confidence; note?: string; sources: Source[] }
   // 移住支援金（23区から移る家族が対象）。familyUpTo・perChildUpTo は「最大」の額（市町村の要綱でもっと少ないことがある）
   // perChildUnknown は、子どもの加算の額が分からない（perChild は国の上限）。このときは加算を額に足さず「確認中」と出す
-  // single は単身の額（分かっている街だけ。ないときは国の上限の最大60万円で計算）
-  iju?: { family: number; perChild: number; single?: number; familyUpTo?: boolean; perChildUpTo?: boolean; perChildUnknown?: boolean; note: string; confidence: Confidence; sources: Source[] }
+  // single は単身の額（分かっている街だけ。ないときは国の上限の最大60万円で計算）。perChild が 0 の街は、子どもの加算がない
+  // closed は、今年度の受付が予算の上限に達して終わった・止まったことの説明（額は出すが、説明に添えて確からしさを1つ下げる）
+  iju?: { family: number; perChild: number; single?: number; familyUpTo?: boolean; perChildUpTo?: boolean; perChildUnknown?: boolean; closed?: string; note: string; confidence: Confidence; sources: Source[] }
   // 移住支援金を調べた結果（iju がない街だけ）。none = 調べて実施していないと分かった、part = 一部の地域だけ対象（額は合計に入れない）、
   // unknown = 東京圏の条件不利地域（移住先になりうる街）で、実施しているか分からない（画面は「準備中」）。
   // 東京圏の外の街で iju も ijuCheck もないときも「まだ調べていない」（画面は「準備中」と出す。「ない」とは言わない）。

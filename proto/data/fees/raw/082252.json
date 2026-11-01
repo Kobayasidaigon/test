@@ -1,0 +1,52 @@
+{
+  "code": "082252",
+  "pref": "茨城県",
+  "name": "常陸大宮市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「常陸大宮市 保育園・認定こども園BOOK（2026年度版）」p.28「利用者負担額について」の表。市の「利用者負担額（保育料）等」のページ〔更新日2024年12月24日〕の表も全行同じ額）",
+  "period_note": "毎年9月が保育料の切り替え時期: 4月〜8月は前年度の住民税額、9月〜3月は当年度の住民税額に基づく保育料。保育料は4月1日時点の年齢で決まり、年度途中で3歳の誕生日を迎えて2号に認定されても3号の金額。令和9年度保育所等入所案内（2026年9月作成）も同じ切り替え。",
+  "tax_basis": "6%",
+  "tax_note": "階層は市民税所得割課税額（世帯の所得〔市町村民税等〕）で決定。税額控除（住宅ローン控除など）の前か後か、合算する人の範囲は読んだ資料に書かれていない。政令市ではないので6%で判定。",
+  "table": {
+    "title": "保育所・認定こども園（3号認定）※おおむね0歳から2歳まで（利用者負担額（保育料）等のページ）／保育所、認定こども園（３号認定）満３歳未満（３号認定）（BOOK 2026年度版 p.28）",
+    "kind": "3号認定・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "（1）", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "（2）", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "（3）", "lower": 0, "upper": 48600, "condition": "市民税所得割課税額 48,600円未満", "monthly": 5800, "monthly_second": null },
+      { "label": "（4）", "lower": 48600, "upper": 97000, "condition": "市民税所得割課税額 97,000円未満", "monthly": 9000, "monthly_second": null },
+      { "label": "（5）", "lower": 97000, "upper": 169000, "condition": "市民税所得割課税額 169,000円未満", "monthly": 13300, "monthly_second": null },
+      { "label": "（6）", "lower": 169000, "upper": 235000, "condition": "市民税所得割課税額 235,000円未満", "monthly": 24400, "monthly_second": null },
+      { "label": "（7）", "lower": 235000, "upper": 301000, "condition": "市民税所得割課税額 301,000円未満", "monthly": 30500, "monthly_second": null },
+      { "label": "（8）", "lower": 301000, "upper": 397000, "condition": "市民税所得割課税額 397,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "（9）", "lower": 397000, "upper": null, "condition": "市民税所得割課税額 397,000円以上", "monthly": 52000, "monthly_second": null }
+    ],
+    "notes": "市は国の上限額の範囲内で市独自に減額している。保育短時間: （1）0円、（2）0円、（3）5,700円、（4）8,800円、（5）13,000円、（6）23,900円、（7）30,000円、（8）39,300円、（9）51,100円。（3）は「所得割課税額48,600円未満」なので均等割のみ（所得割0円）の世帯も入るとみて lower=0。家庭の状況等により減免される階層がある: BOOK「ひとり親世帯及び在宅障害児（者）のいる世帯等の子どもについては、第3階層は第1子2,500円、第2子以降は無償、また第4階層の一部は第1子4,000円、第2子以降は無償」。BOOKに「※保育料については、今後変わることがあります」。1号・2号（おおむね3〜5歳）は無償化で0円。実費負担や上乗せ利用料が生じる場合がある。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3号認定（0〜2歳）の第1子は表の額（標準時間で月5,800〜52,000円）。0円は生活保護世帯と市民税非課税世帯。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "利用者負担額（保育料）等のページ「市独自の支援策として、すべての第2子は半額、第3子以降は無料とします」。BOOK 2026年度版「多子世帯の保育料の軽減（0〜2歳）: 第2子は半額、第3子以降の児童は保育料が無料になります。※同一世帯に子が2人以上の場合に限る」（上の子が保育所等に通っているかは問わない書き方。上の子の年齢の上限や所得制限は書かれていない）。ひとり親世帯・在宅障害児（者）のいる世帯等は第3階層と第4階層の一部で第2子以降無償。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "市独自の支援策として、すべての第3子以降は保育料無料（同一世帯の子で数える。上の子の年齢の上限・所得制限の記載なし）。副食費も市独自にすべての第3子以降を免除（3〜5歳）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "利用者負担額（保育料）等 | ハッピー子育てひたちおおみや | 常陸大宮市公式ホームページ（更新日2024年12月24日）", "url": "https://www.city.hitachiomiya.lg.jp/happy_kosodate/shienseido/hoiku/page007341.html" },
+    { "label": "常陸大宮市 保育園・認定こども園BOOK（2026年度版）", "url": "https://www.city.hitachiomiya.lg.jp/happy_kosodate/shienseido/hoiku/page011572.html" },
+    { "label": "保育園・認定こども園BOOK（2026年度版）24〜35ページ（PDF、p.28 利用者負担額について・多子世帯の保育料の軽減）", "url": "https://www.city.hitachiomiya.lg.jp/data/doc/1792130306_doc_99_0.pdf" },
+    { "label": "令和9年度保育所等入所案内A3ver（PDF、画像のPDF）", "url": "https://www.city.hitachiomiya.lg.jp/data/doc/1789436056_doc_99_0.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）は公式サイトのトップで接続が切れて空だった。今回もサイトへの接続がときどき切れた（ws_closed_mid_exchange / Connection reset）ので、間をあけて1つずつ取り直した。",
+    "子育てサイト（happy_kosodate）→ 幼稚園・保育所・認定こども園 → 利用者負担額（保育料）等 の順に開いた。令和9年度保育所等入所案内（画像のPDF、2ページ）には保育料の表はなかった。",
+    "【保育所・幼稚園等】よくある質問（page006079.html）は faq_kosodate.php への転送だけなので開いていない。"
+  ],
+  "notes": "lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

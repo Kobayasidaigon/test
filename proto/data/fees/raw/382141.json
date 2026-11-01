@@ -1,0 +1,59 @@
+{
+  "code": "382141",
+  "pref": "愛媛県",
+  "name": "西予市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "階層区分は、4月から8月分の徴収金基準額（保育料）は前年度分、9月から翌年3月分は当年度分の市民税課税状況を基とする（毎年9月に切り替え）。2歳児が年度途中で3歳になっても保育料は変わらない。月途中の入所・退所は日割り計算。表は1年を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "保育料算定上の市民税所得割は、住宅取得・寄付金税額・配当・外国税額等の各控除・特別減税等をする前の所得割とする。原則として父母の市民税所得割額をもとに算定。政令市の8%についての注記はない（政令市でないので6%とした）。",
+  "table": {
+    "title": "令和８年度西予市保育料徴収金基準額表（保育標準時間）",
+    "kind": "満3歳未満・保育標準時間（月額）。第2子の別の列はない（同時入所の2番目は市の事業で無料）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）及び、中国残留邦人等の円滑な帰国の促進並びに永住帰国した中国残留邦人等及び特定配偶者の自立支援に関する法律による支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2-1", "lower": null, "upper": null, "condition": "市民税非課税世帯 母子世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "第2-2", "lower": null, "upper": null, "condition": "市民税非課税世帯 その他世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3-1", "lower": null, "upper": null, "condition": "市民税均等割課税世帯", "monthly": 12400, "monthly_second": null },
+      { "label": "第3-2", "lower": 1, "upper": 24300, "condition": "市民税所得割24,300円未満", "monthly": 14000, "monthly_second": null },
+      { "label": "第3-3", "lower": 24300, "upper": 48600, "condition": "市民税所得割48,600円未満", "monthly": 15600, "monthly_second": null },
+      { "label": "第4-1", "lower": 48600, "upper": 64700, "condition": "市民税所得割64,700円未満", "monthly": 19200, "monthly_second": null },
+      { "label": "第4-2", "lower": 64700, "upper": 80800, "condition": "市民税所得割80,800円未満", "monthly": 21600, "monthly_second": null },
+      { "label": "第4-3", "lower": 80800, "upper": 97000, "condition": "市民税所得割97,000円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "第5-1", "lower": 97000, "upper": 121000, "condition": "市民税所得割121,000円未満", "monthly": 28400, "monthly_second": null },
+      { "label": "第5-2", "lower": 121000, "upper": 145000, "condition": "市民税所得割145,000円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "第5-3", "lower": 145000, "upper": 169000, "condition": "市民税所得割169,000円未満", "monthly": 35600, "monthly_second": null },
+      { "label": "第6-1", "lower": 169000, "upper": 213000, "condition": "市民税所得割213,000円未満", "monthly": 39000, "monthly_second": null },
+      { "label": "第6-2", "lower": 213000, "upper": 257000, "condition": "市民税所得割257,000円未満", "monthly": 43900, "monthly_second": null },
+      { "label": "第6-3", "lower": 257000, "upper": 301000, "condition": "市民税所得割301,000円未満", "monthly": 48800, "monthly_second": null },
+      { "label": "第7", "lower": 301000, "upper": null, "condition": "市民税所得割301,000円以上", "monthly": 51200, "monthly_second": null }
+    ],
+    "notes": "表は各行の上限（未満）だけが書かれ、lower は1つ上の行の上限とした（第3-2は均等割課税世帯の行と分けるため1）。保育短時間（同じ年度の別の表）: 第1・第2 0円、第3-1 12,300円、第3-2 13,800円、第3-3 15,400円、第4-1 18,900円、第4-2 21,300円、第4-3 23,600円、第5-1 28,000円、第5-2 31,600円、第5-3 35,100円、第6-1 38,400円、第6-2 43,200円、第6-3 48,000円、第7 50,400円。満3歳以上はすべて0円。表の注3（国の基準の多子軽減）: 第2〜第7階層の世帯で、同一世帯から2人以上の就学前児童が保育所・幼稚園・認定こども園・特別支援学校幼稚部・情緒障害児短期治療施設通所部に入所、または児童発達支援・医療型児童発達支援を利用している場合、最年長1人は基準額、次の1人は基準額×0.5、それ以外は0円（10円未満切り捨て）。市はこれに加えて同時入所の2番目を無料にしている（second_note）。表の右に第3階層の母子等（3-1〜3-3）・一般（3-4〜3-6）の国の階層区分の対応があるが、額は同じ。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "満3歳未満の第1子は有料（標準時間で月12,400〜51,200円）。0円は生活保護世帯と市民税非課税世帯。",
+  "second_child": "free",
+  "second_count": "together",
+  "second_note": "令和5年度から、保育所等に同時入所している2番目のお子さんの保育料が無料（所得制限の記載なし、申請不要）。数え方は同一世帯で保育所・幼稚園・認定こども園などを同時に利用している就学前児童の中の順番（市の図: 2歳・1歳・0歳の3人なら国は全額・半額・無料、市は全額・無料・無料。5歳と0歳なら0歳が無料）。保育料や市税等の滞納がない場合のみ対象。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "子どもを3人以上養育している世帯で保育所等に入所している3人目以降のお子さんの保育料・副食費が無料（上のお子さんの年齢制限なし。市の図では、保護者が養育していれば大学生になっていても数える）。平成28年度からの第3子以降保育料等無料化を令和5年度から所得制限を撤廃して実施。申請不要（住民票で第3子以降が確認できない場合は申し出）。保育料や市税等の滞納がない場合のみ対象。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "同時入所の第2子および第3子以降保育料等無料／西予市（更新日2023年03月21日）", "url": "https://www.city.seiyo.ehime.jp/kakuka/fukushi_jimusho/kosodate/kosodatekanrenshisetu/hoikusyokanren/shinseiannai/dai3shi.html" },
+    { "label": "R8年度西予市保育料徴収基準額表（PDF）", "url": "https://www.city.seiyo.ehime.jp/material/files/group/18/R08hoikuryoutyoushuukijyungakuhyou.pdf" },
+    { "label": "同時入所2子無料化（PDF）", "url": "https://www.city.seiyo.ehime.jp/material/files/group/18/doujinyusyonisi.pdf" },
+    { "label": "第3子保育料無料化（PDF）", "url": "https://www.city.seiyo.ehime.jp/material/files/group/18/daisansiikoumuryouka.pdf" },
+    { "label": "令和9年度 保育所などへの入所児童募集／西予市", "url": "https://www.city.seiyo.ehime.jp/kakuka/fukushi_jimusho/kosodate/kosodatekanrenshisetu/hoikusyokanren/shinseiannai/14941.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs/04.txt（R8年度西予市保育料徴収基準額表）を読み、PDF を取って1ページ目（保育標準時間）を画像で確かめた",
+    "下調べの docs/00.txt（同時入所の第2子および第3子以降保育料等無料）と、図の PDF 2つ（docs/05・06）できょうだいの決まりを読んだ"
+  ],
+  "notes": "市のページに「西予市保育所等におけるおむつの無償化」もある（開いていない）。lunch_jh・cash・one_time は探していない。",
+  "read_at": "2026-11-01"
+}

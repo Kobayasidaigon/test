@@ -1,0 +1,39 @@
+{
+  "code": "016641",
+  "pref": "北海道",
+  "name": "標茶町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和８年度標茶町認定こども園・保育園・保育所 入園のご案内」〔PDF、2025年12月作成〕と町のページ「認定こども園・保育園・保育所について」）",
+  "period_note": "入園のご案内「８ 保育料について」: 国などによる保育料無償化（3歳児以上）と合わせ、町独自政策により町民の方は0〜2歳児の保育料も無料。国の無償化に伴う調査のため住民税の課税状況を確認する（町外からの転入者は前住所地の課税証明書等を提出）。無料になった時期・終わりの時期は書かれていない。",
+  "tax_basis": "6%",
+  "tax_note": "政令市ではないので6%とした。町民は0〜2歳児の保育料が無料なので、階層の判定は額に影響しない。保育料の表や所得割の定義は読んだ資料に載っていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "町のページ: 認定こども園・常設保育園・へき地保育所とも「保育料 標茶町民の方は標茶町の独自制度により無償化」。入園のご案内: 「町独自政策により町民の方は０～２歳児の保育料も無料」。町外に住む人が町内の園を使う場合は対象外とみられる（町民に限る）。開始時期は資料に書かれていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "町民は0〜2歳児の保育料が第1子から無料なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子と同じ（全員0円）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "認定こども園・保育園・保育所について｜くらしの情報｜標茶町ホームページ（令和8年度 新入園児募集）",
+      "url": "https://town.shibecha.hokkaido.jp/kurashi/kosodate/mishuugaku/hoikuen/kodomoen_hoikuen_hoikujo.html"
+    },
+    {
+      "label": "令和８年度標茶町認定こども園・保育所 入園のご案内（PDF、2025年12月作成）",
+      "url": "https://town.shibecha.hokkaido.jp/kurashi/kosodate/mishuugaku/hoikuen/files/R8_nyuen.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べは旧トップ（https://town.shibecha.hokkaido.jp/top/、新サイトへの案内だけ）で止まっていた。案内先 https://hokkaido.shibecha.jp/ の「行政情報」から https://town.shibecha.hokkaido.jp/index.html に入り、子育て・教育 > 子育て(未就学児) > 認定こども園・保育園・へき地保育所 の順に開いた"
+  ],
+  "notes": "町内の施設は、みどり・さくら認定こども園（保育所型）、すみれ・ひまわり・たんぽぽ保育園（常設保育園）、ひしのみ保育園（へき地保育所、給食なし・3歳児クラス以上は副食提供）。0歳から入れるのはみどり認定こども園だけで、ほかは1歳から。全員0円のため保育料の表（階層）は入れていない（読んだ資料にも載っていない）。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

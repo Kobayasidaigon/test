@@ -1,0 +1,55 @@
+{
+  "code": "192058",
+  "pref": "山梨県",
+  "name": "山梨市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和7年4月から市独自に0〜2歳児の保育料を無料化。令和8年度入園案内（2025年9月）と令和9年度入園案内（2026年9月）に「3歳未満児は、山梨市内在住児童に限り、市の独自政策保育料無償化により保育料は無料」。参考の表の決め方は、4月から8月分は前年度、9月から翌年3月分は現年度の市民税所得割額。",
+  "tax_basis": "6%",
+  "tax_note": "参考の表の決め方: 保護者（父母）の市区町村民税所得割課税額で決定（住宅借入金等特別控除、配当控除、寄付金控除など適用されないものもある）。父母の収入が少なく同居（世帯分離含む）の祖父母が生計を支えていると認められる場合（父母の収入が103万円未満の場合）は祖父母等の課税額も含めて算定。市内在住の0〜2歳児は所得にかかわらず無料。",
+  "table": {
+    "title": "＜参考＞令和８年度山梨市保育園等（３号）利用者負担額（保育料）徴収金額表",
+    "kind": "3歳未満児・標準時間（月額）の参考の表。山梨市内在住の0〜2歳児は市の独自政策で無料（この額は払わない）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": 0, "upper": 10000, "condition": "市民税所得割課税額 10,000円未満（市民税均等割課税世帯含む）", "monthly": 10000, "monthly_second": null },
+      { "label": "第4", "lower": 10000, "upper": 25000, "condition": "市民税所得割課税額 10,000円以上 25,000円未満", "monthly": 14000, "monthly_second": null },
+      { "label": "第5", "lower": 25000, "upper": 48600, "condition": "市民税所得割課税額 25,000円以上 48,600円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "第6", "lower": 48600, "upper": 77101, "condition": "市民税所得割課税額 48,600円以上 77,101円未満", "monthly": 22000, "monthly_second": null },
+      { "label": "第7", "lower": 77101, "upper": 97000, "condition": "市民税所得割課税額 77,101円以上 97,000円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "第8", "lower": 97000, "upper": 135000, "condition": "市民税所得割課税額 97,000円以上 135,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "第9", "lower": 135000, "upper": 169000, "condition": "市民税所得割課税額 135,000円以上 169,000円未満", "monthly": 36000, "monthly_second": null },
+      { "label": "第10", "lower": 169000, "upper": 301000, "condition": "市民税所得割課税額 169,000円以上 301,000円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "第11", "lower": 301000, "upper": 397000, "condition": "市民税所得割課税額 301,000円以上 397,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "第12", "lower": 397000, "upper": null, "condition": "市民税所得割課税額 397,000円以上", "monthly": 44500, "monthly_second": null }
+    ],
+    "notes": "令和9年度入園案内（2026年9月作成）8ページの＜参考＞の表。令和8年度入園案内の＜参考＞（令和7年度の表）も同じ額。短時間: 第1・第2 0円、第3 8,000円、第4 12,000円、第5 16,000円、第6 20,000円、第7 22,000円、第8 28,000円、第9 34,000円、第10 39,000円、第11 40,000円、第12 42,500円。表の下: 同一世帯で兄弟が同時に保育園等を利用する場合、2人目は半額、3人目は無料。案内の〈参考〉保育料の減免: 同時入園している最年長の子どもから順に2人目半額・3人目以降無料（収入制限なし）、所得割57,700円未満は第1子の年齢にかかわらず第2子半額・第3子以降無料、所得割169,000円未満は山梨県の「やまなし子育て応援事業」（第2子以降3歳未満児クラスまでの保育料無料化）で第1子の年齢にかかわらず第2子以降無料、ひとり親世帯等は第3〜5階層が1,000円控除後の半額・第6階層が9,000円（第2子以降無料）。未満児クラスの給食費は保育料に含まれる。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年4月",
+  "first_child_free_note": "市内在住で、保育所・認定こども園・小規模保育施設・事業所内保育施設に通園する0〜2歳児の保育料が無料（所得や兄弟の要件なし、手続き不要、市外の施設を利用している場合も対象）。指導監督基準を満たす認可外保育施設（企業主導型を含む）は保育の必要性の認定を受けた人に月42,000円を上限に補助（申請が必要）。教材費や延長保育料などは対象外。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "市内在住の0〜2歳児は第1子から無料なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料（第2子と同じ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "0歳～2歳のお子様の保育料が無料になります！ - 子育てサイト - 山梨市公式ホームページ（更新日 2025年3月24日）", "url": "https://www.city.yamanashi.yamanashi.jp/site/kosodate/14563.html" },
+    { "label": "令和８年度保育園等入園申込のご案内 - 子育てサイト - 山梨市公式ホームページ", "url": "https://www.city.yamanashi.yamanashi.jp/site/kosodate/16076.html" },
+    { "label": "令和８年度入園案内（PDF）", "url": "https://www.city.yamanashi.yamanashi.jp/uploaded/attachment/9497.pdf" },
+    { "label": "令和9年度保育園入園申し込みのご案内 - 子育てサイト - 山梨市公式ホームページ（更新日 2026年9月18日）", "url": "https://www.city.yamanashi.yamanashi.jp/site/kosodate/20793.html" },
+    { "label": "令和9年度入園案内（PDF）", "url": "https://www.city.yamanashi.yamanashi.jp/uploaded/attachment/11919.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs/02.txt（0歳～2歳のお子様の保育料が無料になります！）で令和7年4月からの無料化を読んだ。docs/04.txt は令和6年度の表なので使っていない",
+    "令和8年度・令和9年度の入園案内（PDF）の「利用者負担（保育料）について」で無料が続いていることを確かめ、令和9年度の案内8ページの参考の令和8年度の表を画像で確かめた"
+  ],
+  "notes": "市には保育園などの主食費・副食費の補助のページもある（3歳以上児向け、開いていない）。lunch_jh・cash・one_time は探していない。",
+  "read_at": "2026-11-01"
+}

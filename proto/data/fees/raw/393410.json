@@ -1,0 +1,82 @@
+{
+ "code": "393410",
+ "pref": "高知県",
+ "name": "本山町",
+ "status": "ok",
+ "fiscal_year": "令和7年度の資料（「本山町の子育て支援施策」PDF、2025年7月作成、ページ更新日2025年7月11日）。令和8年度用の資料は見つからなかったが、2026年11月時点でも同じ資料が子育て支援施策のページに載っている",
+ "period_note": "「本山町の子育て支援施策」の「９.保育料の無償化」に「本山町に居住し住民登録をしている世帯を対象に0歳児から2歳児までの保育料を無料とし、3歳児から5歳児を含む全ての子どもの保育料を無料としています」とある。開始時期は書かれていない。「１０.保育給食の無償化」で保育所内で調理する給食も無料（3〜5歳児クラスは主食の持参が必要）。",
+ "tax_basis": "6%",
+ "tax_note": "保育料は0〜2歳児も無料のため、所得割で額は変わらない。町の保育料（利用者負担額）の表は公式サイトでは見つからなかった。政令市ではないので6%。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": null,
+ "first_child_free_note": "「本山町に居住し住民登録をしている世帯を対象に0歳児から2歳児までの保育料を無料」（本山町の子育て支援施策、2025年7月）。所得制限やきょうだいの条件は書かれていない。開始時期は不明。町内の保育施設は町立本山保育所（定員100名）のみ。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "0〜2歳児も第1子から保育料無料のため、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料のため0円。",
+ "lunch_jh": {
+  "free": true,
+  "note": "「１４.学校の給食無償化（町立小中学校）」: 学校給食費を助成し無償化（町立の嶺北中学校を含む）。2025年7月の資料。",
+  "source": {
+   "label": "本山町の子育て支援施策（PDF、2025年7月）",
+   "url": "https://www.town.motoyama.kochi.jp/material/files/group/13/kosodateshiennsesaku.pdf"
+  }
+ },
+ "cash": [
+  {
+   "label": "子育て支援金（未就学児）",
+   "per_child_yearly": 48000,
+   "max_age": 6,
+   "note": "本山町に住所を置き、6歳に達する日以降の最初の3月31日までの間にある（未就学）児童を養育している方に、児童1人につき月額4,000円。",
+   "source": {
+    "label": "本山町の子育て支援施策（PDF、2025年7月）",
+    "url": "https://www.town.motoyama.kochi.jp/material/files/group/13/kosodateshiennsesaku.pdf"
+   }
+  }
+ ],
+ "one_time": [
+  {
+   "label": "出産祝金",
+   "amount": 200000,
+   "note": "出生した乳児1人につき200,000円（令和6年4月1日以降の出生児）。出産日の1年以上前から町内に住所がある、または出産後も1年以上住む意思があること、町税・保育料などの滞納がないことが条件。",
+   "source": {
+    "label": "出産祝金について／本山町（更新日：2024年06月27日）",
+    "url": "https://www.town.motoyama.kochi.jp/kosodate_kyoiku/ninshin_shussan/2232.html"
+   }
+  },
+  {
+   "label": "高等学校等入学祝金",
+   "amount": 100000,
+   "note": "嶺北中学校を卒業し高知県内の高等学校等へ入学する生徒の保護者に10万円（その他条件あり）。",
+   "source": {
+    "label": "本山町の子育て支援施策（PDF、2025年7月）",
+    "url": "https://www.town.motoyama.kochi.jp/material/files/group/13/kosodateshiennsesaku.pdf"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "本山町の子育て支援施策（PDF、2025年7月作成）",
+   "url": "https://www.town.motoyama.kochi.jp/material/files/group/13/kosodateshiennsesaku.pdf"
+  },
+  {
+   "label": "本山町の子育て支援施策／本山町（更新日：2025年07月11日）",
+   "url": "https://www.town.motoyama.kochi.jp/kosodate_kyoiku/kosodatesiensesaku/1916.html"
+  },
+  {
+   "label": "本山保育所入所案内／本山町（更新日：2023年09月13日）",
+   "url": "https://www.town.motoyama.kochi.jp/kosodate_kyoiku/hoiku/1854.html"
+  }
+ ],
+ "confidence": "推定",
+ "tried": [
+  "保育のページ（本山保育所・本山保育所入所案内・教育・保育給付認定について、いずれも2023年9月更新）には保育料の記載がなかった",
+  "本山保育所のページからリンクされた保育所のホームページ（kochinet.ed.jp/motoyama-t/hoiku-hp/）は404",
+  "令和8年度と書かれた保育料・無償化の資料は見つからなかった"
+ ],
+ "notes": "保育料無料は町の子育て支援施策の一覧（2025年7月）の記載で読んだ。令和8年度の資料ではないので confidence は推定。無料の根拠になる要綱・条例の文は読めていない（例規集へのリンクも見つからなかった）。",
+ "read_at": "2026-11-01"
+}

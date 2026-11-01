@@ -1,0 +1,33 @@
+{
+ "code": "045012",
+ "pref": "宮城県",
+ "name": "涌谷町",
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "公式サイトが開けず、所得割の定義などは読めていない。",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "公式サイトが開けなかったため不明。",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "公式サイトが開けなかったため不明。",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べ（index.json）は公式サイトの一番上で OSError になり、ページ0件だった",
+  "https://www.town.wakuya.miyagi.jp/ を 17:28〜17:41 に何度か取り直したが、毎回 502（Server Error、「Please try again in 30 seconds」）。新しいドメインの https://www.town.wakuya.lg.jp/ と https://town.wakuya.miyagi.jp/ は接続できなかった",
+  "WebSearch（allowed_domains: town.wakuya.miyagi.jp、「涌谷町 保育料 3歳未満 令和8年度」）で 保育所のページ（https://www.town.wakuya.miyagi.jp/kenko/kosodate/hoiku/hoikuen.html）、よくある質問（/kurashi/kyoiku/kyoiku/kosodate.html）、例規集の涌谷町さくらんぼこども園設置条例（/reiki/reiki_honbun/t700RG00000469.html）が見つかったが、どれも35秒あけて4回ずつ取り直して全部 502 で読めなかった",
+  "検索の抜粋では、保育利用料は「涌谷町特定教育・保育施設及び特定地域型保育事業の利用者負担に関する規則」（平成29年規則第4号とされる）で、こどもの年齢と保護者等の課税状況等により決め、こどもの数や世帯の所得状況による軽減措置があるとされていたが、ページを開いて確かめられていないので表・決まりには使っていない"
+ ],
+ "notes": "公式サイト全体が 502 を返していて（ほかの市町村のサイトは同じ時間に読めた）、保育料の表・きょうだいの決まりとも確かめられなかった。サイトが戻ったら、保育所のページ（/kenko/kosodate/hoiku/hoikuen.html）と例規集の利用者負担に関する規則の別表を読むとよい。",
+ "read_at": "2026-11-01"
+}

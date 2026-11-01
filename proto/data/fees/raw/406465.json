@@ -1,0 +1,55 @@
+{
+  "code": "406465",
+  "pref": "福岡県",
+  "name": "上毛町",
+  "status": "partial",
+  "fiscal_year": "令和7年度",
+  "period_note": "令和7年度の表（町の保育料のページ〔更新日2025年4月1日〕に今も載っている表。令和8年度の表は町のサイトに見つからなかった）。保育料は毎年4月と9月に切り替え: 4〜8月分は前年度（令和7年度表では令和6年度）、9〜3月分は当年度（令和7年度）の市町村民税額で決める。年齢は4月1日現在で、年度中に誕生日を迎えても変わらない。公立・私立とも同じ額。",
+  "tax_basis": "6%",
+  "tax_note": "市町村民税所得割課税額で判定（政令市ではない）。所得割課税額の計算では寄附金税額控除、外国税額控除、配当割額又は株式等譲渡所得割額の控除、配当所得の控除、住宅借入金等特別税額控除を適用しない。",
+  "table": {
+    "title": "令和７年度 上毛町保育料（保育認定：3号認定）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "2-2", "lower": null, "upper": null, "condition": "第1階層を除き、市町村民税非課税世帯（ひとり親世帯等以外）", "monthly": 0, "monthly_second": null },
+      { "label": "3-2", "lower": 0, "upper": 48600, "condition": "48,600円未満（ひとり親世帯等以外）", "monthly": 11300, "monthly_second": null },
+      { "label": "4-2", "lower": 48600, "upper": 77101, "condition": "48,600円以上 77,101円未満（ひとり親世帯等以外）", "monthly": 17400, "monthly_second": null },
+      { "label": "4-3", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 17400, "monthly_second": null },
+      { "label": "5", "lower": 97000, "upper": 133000, "condition": "97,000円以上 133,000円未満", "monthly": 21600, "monthly_second": null },
+      { "label": "6", "lower": 133000, "upper": 169000, "condition": "133,000円以上 169,000円未満", "monthly": 25800, "monthly_second": null },
+      { "label": "7", "lower": 169000, "upper": 235000, "condition": "169,000円以上 235,000円未満", "monthly": 30500, "monthly_second": null },
+      { "label": "8", "lower": 235000, "upper": 301000, "condition": "235,000円以上 301,000円未満", "monthly": 35300, "monthly_second": null },
+      { "label": "9", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 42400, "monthly_second": null },
+      { "label": "10", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 42600, "monthly_second": null }
+    ],
+    "notes": "階層3〜10は「第1階層及び第2階層を除き、市町村民税所得割の額が次の区分に該当する世帯」。保育短時間の月額: 1・2 0円、3-2 11,100円、4-2 17,100円、4-3 17,100円、5 21,200円、6 25,400円、7 30,100円、8 34,800円、9 41,700円、10 41,900円。ひとり親世帯等（母子世帯、父子世帯、在宅障害児（者）がいる世帯）: 2-1 0円、3-1（48,600円未満）5,200円（短時間5,200円）、4-1（48,600円以上77,101円未満）5,200円（短時間5,200円）。表の欄外: 幼児教育・保育の無償化により3〜5歳の全ての児童と0〜2歳の住民税非課税世帯の児童の保育料は無償。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は表の額（非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "保育認定の場合、幼稚園・保育所・認定こども園等を同時に利用しているきょうだいがいれば第2子は半額。市町村民税所得割が57,700円未満の場合は、支給認定保護者と生計を一にする者（年齢制限なし。同居の子、勤務・就学・療養等で別居している子など）のうち年齢が上の順に第2子を半額。ひとり親世帯等（母子・父子・在宅障害児（者）のいる世帯）は所得割77,101円未満で第2子以降無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "上毛町独自事業として、保護者と生計を同一とする戸籍上の第3子以降は保育料が無料（「上毛町第3子以降保育料無料化申請書」の提出が必要）。所得制限の記載はない。所得割57,700円未満の世帯も生計を一にする者のうち年齢が上の順に第3子以降無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料について／上毛町（更新日2025年4月1日）", "url": "https://www.town.koge.lg.jp/soshiki/chocho/5/1_2/hoikuen_youchien/3889.html" },
+    { "label": "令和7年度保育料表（PDF）", "url": "https://www.town.koge.lg.jp/material/files/group/18/R7hoikuryouhyou.pdf" },
+    { "label": "令和7年度上毛町保育料について（PDF）", "url": "https://www.town.koge.lg.jp/material/files/group/18/R7hoikuryounituite.pdf" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの index.json（保育料のページと令和7年度の表・説明のPDF）",
+    "保育料のページを取り直した（2026年11月1日も更新日2025年4月1日・令和7年度の表のまま）",
+    "令和9年度保育施設入所申込みのページ（2026年11月更新。申請書・就労証明書だけで保育料の表や案内はなし）",
+    "保育所のご案内のページ（2026年6月29日更新。保育料の表なし）",
+    "R8hoikuryouhyou.pdf・R8hoikuryounituite.pdf のURLを試した（どちらも404）"
+  ],
+  "notes": "令和8年度の表が見つからないため、町のサイトに今も載っている令和7年度の表を入れた（status は partial）。町内の認可保育所は3か所（保育所のご案内のページ。大平保育所〔公立〕、新吉富保育所〔私立〕など）。3〜5歳の副食費は国の基準で免除にならない子も町独自で月4,800円を上限に助成。",
+  "read_at": "2026-11-01"
+}

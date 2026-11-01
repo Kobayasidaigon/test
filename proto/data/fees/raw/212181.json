@@ -1,0 +1,51 @@
+{
+  "code": "212181",
+  "pref": "岐阜県",
+  "name": "本巣市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月から8月分保育料は前年度分、9月から3月分保育料は当年度分の市町村民税額で決定（4月から8月分の決定通知は4月下旬、9月から3月分は9月中旬に発送）。表の3歳未満児は年度の4月1日に3歳に達していない児童で、年度途中で3歳に達してもその年度中は3歳未満児とみなす。令和9年度版の入園のてびきの表も同じ額。",
+  "tax_basis": "6%",
+  "tax_note": "入園児童の直系血族（父母、祖父母。ただし世帯の生計が父母の収入により成り立っていると認められる場合は祖父母は加算しない）の市町村民税額で決定。市町村民税所得割額は、配当控除、寄付金税額控除、住宅借入金等特別控除、外国税額控除及び特別減税前の税額を適用。政令市の8%についての注記はない（政令市でないので6%とした）。",
+  "table": {
+    "title": "２５．保育料基準額表 本巣市の徴収金基準額（月額）",
+    "kind": "3歳未満児・保育標準時間（月額）。第2子の別の列はない",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "市町村民税課税世帯（均等割の額）", "monthly": 6800, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "市町村民税課税世帯 所得割額 48,600円未満", "monthly": 8300, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 60000, "condition": "市町村民税課税世帯 所得割額 60,000円未満", "monthly": 10600, "monthly_second": null },
+      { "label": "6", "lower": 60000, "upper": 97000, "condition": "市町村民税課税世帯 所得割額 97,000円未満", "monthly": 13500, "monthly_second": null },
+      { "label": "7", "lower": 97000, "upper": 169000, "condition": "市町村民税課税世帯 所得割額 169,000円未満", "monthly": 21500, "monthly_second": null },
+      { "label": "8", "lower": 169000, "upper": 301000, "condition": "市町村民税課税世帯 所得割額 301,000円未満", "monthly": 34000, "monthly_second": null },
+      { "label": "9", "lower": 301000, "upper": 397000, "condition": "市町村民税課税世帯 所得割額 397,000円未満", "monthly": 39900, "monthly_second": null },
+      { "label": "10", "lower": 397000, "upper": null, "condition": "市町村民税課税世帯 所得割額 397,000円以上", "monthly": 51800, "monthly_second": null }
+    ],
+    "notes": "表は各行の上限（未満）だけが書かれ、lower は1つ上の行の上限とした（第4階層は均等割の行と分けるため1）。保育短時間: 第1・2階層 0円、第3階層 5,000円、第4階層 6,500円、第5階層 8,800円、第6階層 11,700円、第7階層 19,700円、第8階層 32,200円、第9階層 38,100円、第10階層 50,000円。備考②: 同時入園する2人目の児童の通常保育料は表の額の2分の1、世帯における第3子以降の児童の通常保育料は申請により無料。備考④: 年収360万円未満相当の世帯は第1子の年齢に関係なく第2子半額・第3子以降無料、そのうちひとり親世帯・在宅障がい児（者）がいる世帯等は第1子半額・第2子より無料。備考⑥: この表は改正される場合がある。3歳未満児の主食代・副食代は通常保育料に含まれる。延長保育料は30分の延長につき月額300円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満児の第1子は有料（標準時間で月6,800〜51,800円）。0円は生活保護世帯と市町村民税非課税世帯。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "同時入園する2人目の児童の通常保育料は表の額の2分の1（表の備考②）。年収360万円未満相当の世帯は第1子の年齢に関係なく第2子は半額、そのうちひとり親世帯・在宅障がい児（者）がいる世帯等は第2子から無料（備考④）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "世帯における第3子以降の児童の通常保育料は申請により無料（表の備考②）。上の子の年齢の上限や所得制限は書かれていない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育園のことは | 本巣市（更新日 2026年8月7日）", "url": "https://www.city.motosu.lg.jp/0000000358.html" },
+    { "label": "入園のてびき 令和8年度版（PDF）", "url": "https://www.city.motosu.lg.jp/cmsfiles/contents/0000000/358/R8hoikuen.pdf" },
+    { "label": "入園のてびき 令和9年度版（PDF）", "url": "https://www.city.motosu.lg.jp/cmsfiles/contents/0000000/358/R9hoikuen.8.7.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs/01.txt（保育園のことは）から入園のてびき 令和8年度版を取り、19ページの「保育料基準額表」を画像で確かめた",
+    "令和9年度版のてびきの表と備考が同じことを確かめた"
+  ],
+  "notes": "第3子以降の「世帯における」の数え方（何歳までの子を数えるか）はてびきに書かれていない。lunch_jh・cash・one_time は探していない。",
+  "read_at": "2026-11-01"
+}

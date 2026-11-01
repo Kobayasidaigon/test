@@ -1,0 +1,47 @@
+{
+  "code": "015598",
+  "pref": "北海道",
+  "name": "湧別町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（町のページ「認定こども園・保育所・保育料」。同じページで令和8年度の新入児童を募集している。ページに更新日の表示はない）",
+  "period_note": "令和6年4月分から通常入園（所）に係る保育料は0円。保育料は、4月から8月分は前年度の町民税所得割課税額、9月から翌年3月分は当該年度の町民税所得割課税額で決定（表はどの階層も0円）。施設は湧別認定こども園（保育所型）、認定こども園みのり（公私連携幼保連携型）、芭露保育所。延長保育（標準保育時間の外の朝夕）は無料、一時保育・認定こども園の土曜・長期休業日の一時預かりは有料。",
+  "tax_basis": "6%",
+  "tax_note": "町民税所得割課税額で階層を決める（政令市ではない）。どの階層も0円なので判定は額に影響しない。所得割の定義の注記はページにない。",
+  "table": {
+    "title": "保育料（認定こども園利用料）",
+    "kind": "保育料（月額）。年齢・標準時間/短時間の区別のない表で、どの階層も0円",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯(単給世帯を含む)", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "町民税課税世帯所得割額48,600円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第4階層", "lower": 48600, "upper": 60700, "condition": "町民税課税世帯で、所得割額48,600円以上60,700円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第5階層", "lower": 60700, "upper": 72800, "condition": "町民税課税世帯で、所得割額60,700円以上72,800円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第6階層", "lower": 72800, "upper": 84900, "condition": "町民税課税世帯で、所得割額72,800円以上84,900円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第7階層", "lower": 84900, "upper": 97000, "condition": "町民税課税世帯で、所得割額84,900円以上97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第8階層", "lower": 97000, "upper": 133000, "condition": "町民税課税世帯で、所得割額97,000円以上133,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第9階層", "lower": 133000, "upper": 169000, "condition": "町民税課税世帯で、所得割額133,000円以上169,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第10階層", "lower": 169000, "upper": 301000, "condition": "町民税課税世帯で、所得割額169,000円以上301,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第11階層", "lower": 301000, "upper": null, "condition": "町民税課税世帯で、所得割額301,000円以上", "monthly": 0, "monthly_second": null }
+    ],
+    "notes": "「令和6年4月分から通常入園（所）に係る保育料は0円となります。」表の全階層が0円（年齢・保育時間の区別なし）。一時保育などは有料。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "令和6年4月分から、町内の認定こども園・保育所の通常入園（所）の保育料は所得の階層にかかわらず0円（0〜2歳児も第1子から）。ページに所得制限・きょうだいの条件の記載はない。町外の施設を使う場合の扱いは書かれていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "全員0円なので、きょうだいの数え方に関係なく無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全員0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "認定こども園・保育所・保育料（湧別町）", "url": "https://www.town.yubetsu.lg.jp/administration/education/detail.html?content=56" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの文書（町のページ本文）と、取り直した同じページで確かめた。副食費・主食費の扱いはページに書かれていない。中学校給食・現金給付・祝い金は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

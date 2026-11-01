@@ -1,0 +1,39 @@
+{
+  "code": "015849",
+  "pref": "北海道",
+  "name": "洞爺湖町",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "町のサイトを直接開けなかったため、町のドメインに絞った検索の要約で読んだ: 令和5年4月1日から、町内保育施設の利用料に係る料金（保育料・副食費・一時預かり保育にかかる全ての料金）を0円にする条例改正（令和4年の教育委員会臨時会で審議）。広報とうやこ2023年10月号に「4月から町内にお住まいで保育所を利用する子どもは、保育料や副食費など保育所の利用について無償化」とあるとされる。2025年度の町の資料にも「保育料を完全無償化することで保護者の経済的負担の軽減を図る」事業（3,800千円）があるとされる。令和8年度も続いているかは文書で確かめていない（広報とうやこ2025年11月号に令和8年度の保育所の入所受付の案内があり、本町保育所は満1歳以上、桜ヶ丘保育所は生後6か月以上とされる）。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が0円なら所得割による階層の判定は額に影響しない。無償化の前は3歳未満児の保育料を規則で定めていた（検索の要約）。規則の表は見ていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2023年4月",
+  "first_child_free_note": "検索の要約（令和4年洞爺湖町教育委員会第4回臨時会会議録）: 「洞爺湖町特定教育保育施設及び特定地域型保育事業の利用者負担に関する条例」の一部改正で、令和5年4月1日から町内保育施設の保育料・副食費・一時預かり保育の料金をすべて0円に。3歳未満児の保育料は従来は規則で定める額だったが、この改正で0円とされた。対象は町内に住み町内の保育所を使う子ども（広報2023年10月号の要約）。所得制限・きょうだいの条件は要約には出てこない。町の文書そのものは開けておらず、令和8年度に続いているかも未確認。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "全員0円とされるので、きょうだいの数え方に関係なく無料（検索の要約による。文書では未確認）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全員0円とされる（検索の要約による）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和４年洞爺湖町教育委員会第４回臨時会会議録（PDF。検索結果の要約で読んだ。https では開けない）", "url": "http://www.town.toyako.hokkaido.jp/file/contents/2812/22427/kaigiroku1222.pdf" },
+    { "label": "広報とうやこ 2023年10月号（PDF。検索結果の要約で読んだ）", "url": "http://www.town.toyako.hokkaido.jp/file/contents/3418/26623/10gatsu.pdf" },
+    { "label": "広報とうやこ 2025年11月号（令和8年度 保育所の入所受付。検索結果の要約で読んだ）", "url": "http://www.town.toyako.hokkaido.jp/file/contents/edit/4210/31883/webcolor_2511yoko.pdf" },
+    { "label": "洞爺湖町 財政のページ（2025年度の資料。検索結果の要約で読んだ）", "url": "http://www.town.toyako.hokkaido.jp/town_administration/finance/zaisei001/" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べは失敗（OSError、0ページ）",
+    "https://www.town.toyako.hokkaido.jp/ は TLS エラー（tlsv1 unrecognized name）で接続できない。15秒あけて取り直しても同じ",
+    "https://www.town.toyako.lg.jp/ も同じ TLS エラー。https://town.toyako.hokkaido.jp/ と https://www.town.toyako.hokkaido.lg.jp/ はプロキシで502（ドメインがない）",
+    "WebFetch も名前解決できず失敗",
+    "WebSearch（town.toyako.hokkaido.jp に限定）2回: 「洞爺湖町 保育料 3歳未満 令和8年度 保育所 利用者負担額」「洞爺湖町 保育料 無料 副食費 一時預かり 令和8年度 保育所入所」"
+  ],
+  "notes": "町のサイトは http だけで動いているようで、https に直すと接続できないため、文書を直接は読めなかった。内容は町のドメインに絞った検索結果の要約（教育委員会の会議録・広報誌・財政の資料）によるので status は partial、confidence は推定。町の施設は本町保育所と桜ヶ丘保育所（検索の要約）。サイトに https で接続できるようになれば、上の文書と保育所の入所案内のページで確かめ直すとよい。",
+  "read_at": "2026-11-01"
+}

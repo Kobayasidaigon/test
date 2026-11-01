@@ -1,0 +1,55 @@
+{
+  "code": "123471",
+  "pref": "千葉県",
+  "name": "多古町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和8年度入園のしおり【R8.1調整】〔2026年1月作成〕の「多古こども園の保育料一覧表」。町の保育料のページ〔更新日2022年8月23日〕も同じ額）",
+  "period_note": "0〜2歳児の保育料は、4月〜8月は前年度、9月〜3月は本年度の町民税所得割額で決める。表は「各月初日の在籍児童の属する世帯の階層区分」。税書類の提出がない・未申告の場合は暫定で第8階層。",
+  "tax_basis": "6%",
+  "tax_note": "父母の町民税所得割額を合算したもので決める。調整控除以外の税額控除（寄付金税額控除・外国税額控除・配当所得控除・住宅借入金等特別税額控除等）は適用しない（しおり）。政令市ではない。",
+  "table": {
+    "title": "多古こども園の保育料一覧表（３号認定保育料）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "町民税所得割課税額非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3A", "lower": 0, "upper": 24300, "condition": "24,300 円未満", "monthly": 11500, "monthly_second": null },
+      { "label": "第3B", "lower": 24300, "upper": 48600, "condition": "24,300 円以上 48,600 円未満", "monthly": 13500, "monthly_second": null },
+      { "label": "第4A", "lower": 48600, "upper": 57700, "condition": "48,600 円以上 57,700 円未満", "monthly": 16500, "monthly_second": null },
+      { "label": "第4B", "lower": 57700, "upper": 72800, "condition": "57,700 円以上 72,800 円未満", "monthly": 16500, "monthly_second": null },
+      { "label": "第4C", "lower": 72800, "upper": 77101, "condition": "72,800 円以上 77,101 円未満", "monthly": 18500, "monthly_second": null },
+      { "label": "第4D", "lower": 77101, "upper": 97000, "condition": "77,101 円以上 97,000 円未満", "monthly": 18500, "monthly_second": null },
+      { "label": "第5A", "lower": 97000, "upper": 133000, "condition": "97,000 円以上 133,000 円未満", "monthly": 25500, "monthly_second": null },
+      { "label": "第5B", "lower": 133000, "upper": 169000, "condition": "133,000 円以上 169,000 円未満", "monthly": 28500, "monthly_second": null },
+      { "label": "第6A", "lower": 169000, "upper": 235000, "condition": "169,000 円以上 235,000 円未満", "monthly": 36500, "monthly_second": null },
+      { "label": "第6B", "lower": 235000, "upper": 301000, "condition": "235,000 円以上 301,000 円未満", "monthly": 39500, "monthly_second": null },
+      { "label": "第7", "lower": 301000, "upper": 397000, "condition": "301,000 円以上 397,000 円未満", "monthly": 45500, "monthly_second": null },
+      { "label": "第8", "lower": 397000, "upper": null, "condition": "397,000 円以上", "monthly": 53500, "monthly_second": null }
+    ],
+    "notes": "表は標準時間・中間時間・短時間の3列。中間時間: 第3A 11,000／第3B 13,000／第4A・4B 16,000／第4C・4D 18,000／第5A 25,000／第5B 28,000／第6A 36,000／第6B 39,000／第7 45,000／第8 53,000円。短時間: 第3A 10,000／第3B 12,000／第4A・4B 15,000／第4C・4D 17,000／第5A 24,000／第5B 27,000／第6A 35,000／第6B 38,000／第7 44,000／第8 52,000円。（ ）内はひとり親等の世帯（母子・父子・寡婦・障害者手帳・療育手帳・特別児童扶養手当・障害基礎年金等）の第1子の額（半額相当）: 標準時間 第3A 2,350／第3B 2,950／第4A・4B 4,150／第4C 4,750円。3歳以上（1号・2号認定）は0円。給食費は多古町在住の園児は無償。生活保護世帯やひとり親世帯等で町民税非課税なら第1子から無料。町外から入園する方の保育料はお住まいの市町村が決める。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は表の額（生活保護・非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "「兄弟・姉妹がいる場合、保育料は年齢の高い順から２人目は半額」「０歳児から５歳児までのお子さんが対象」（しおり・町のページ）。就学前（0〜5歳）の子を年齢の高い順に数える。上の子が保育施設に通っていることが条件かは書かれていない（国の基準どおり同時に利用する就学前の子と読んで together にした）。年収約360万円未満相当（第3A〜第4A、所得割57,700円未満）の二人親世帯は、生計が同じ子ども全てを数えて第2子半額。第3A〜第4C のひとり親世帯等は第2子以降無料。町独自の第2子無償化は見つからなかった。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "就学前（0〜5歳）の範囲で年齢の高い順から3人目以降は無料。第3A〜第4A（所得割57,700円未満）の二人親世帯は生計が同じ子ども全てを数えて第3子以降無料。千葉県の独自の制度はない（県の制度の調べ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度入園のしおり【R8.1調整】（PDF、多古こども園、2026年1月）", "url": "https://www.town.tako.chiba.jp/docs/2018011800166/file_contents/R08shiori.pdf" },
+    { "label": "多古こども園 利用者負担額（保育料） | 多古町ウェブサイト（更新日2022年8月23日）", "url": "https://www.town.tako.chiba.jp/docs/2018011800159/" },
+    { "label": "多古こども園 | 多古町ウェブサイト（更新日2026年10月16日）", "url": "https://www.town.tako.chiba.jp/docs/2017122000083/" },
+    { "label": "多古こども園に関する書類のダウンロード一覧（更新日2026年6月15日）", "url": "https://www.town.tako.chiba.jp/docs/2018011800166/" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）は index.json がなく、docs に多古こども園の保育料のページ（2022年8月更新）と多古こども園のページの文字だけがあった。多古こども園のページから書類のダウンロード一覧を開き、令和8年度入園のしおりで今年度の表を確かめた（ページの表と同じ額）。"
+  ],
+  "notes": "町内の認可保育施設は町立の多古こども園（0歳児は生後6か月以降）。表に「中間時間」の列がある（標準時間と短時間の間）。乳児等通園支援（こども誰でも通園制度）を令和8年度から開始予定。中学校給食・現金給付・祝い金は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

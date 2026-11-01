@@ -1,0 +1,55 @@
+{
+  "code": "085464",
+  "pref": "茨城県",
+  "name": "境町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「R8入園案内」〔令和8年度 保育園及び認定こども園（保育認定）入園申し込みのご案内のPDF、2026年6月3日作成〕p.10「境町保育認定における保育料」。表自体に年度の表示はない）",
+  "period_note": "4〜8月は前年度の市町村民税額（令和8年度は令和6年1〜12月の収入から算定された住民税）、9〜3月は当該年度の市町村民税額（令和7年1〜12月の収入から算定された住民税）に基づく。年齢は当該年度4月初日時点で決定（年度途中の入所も同様）。保育料について のページの「２・３号認定」PDF（2020年6月掲載）も全行同じ額。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（父・母）の市町村民税所得割額の合計で決定（同居の祖父母等が家計の主宰者と認定された場合はその税額も合算）。住宅借入（取得）金等特別控除、配当控除、外国税額控除、寄附金控除（ふるさと納税等）前の税額で計算。未申告等で課税状況が不明な場合は認定区分の最高額。",
+  "table": {
+    "title": "境町保育認定における保育料",
+    "kind": "3号認定（0,1,2歳児）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": null, "upper": null, "condition": "市町村民税所得割非課税世帯（その他）", "monthly": 13000, "monthly_second": null },
+      { "label": "第4", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満（その他）", "monthly": 16000, "monthly_second": null },
+      { "label": "第5", "lower": 48600, "upper": 60000, "condition": "48,600円以上 60,000円未満（その他）", "monthly": 24000, "monthly_second": null },
+      { "label": "第6", "lower": 60000, "upper": 97000, "condition": "60,000円以上 97,000円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "第7", "lower": 97000, "upper": 133000, "condition": "97,000円以上 133,000円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "第8", "lower": 133000, "upper": 169000, "condition": "133,000円以上 169,000円未満", "monthly": 29000, "monthly_second": null },
+      { "label": "第9", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "第10", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 31000, "monthly_second": null },
+      { "label": "第11", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 32000, "monthly_second": null }
+    ],
+    "notes": "列は「保育標準時間」「保育短時間」の順（画像で確かめた）。保育短時間: 第3 12,800、第4 15,800、第5 23,600、第6 25,600、第7 27,600、第8 28,600、第9 29,600、第10 30,600、第11 31,600（第1・第2は0）。第3は所得割0円（均等割のみ課税）の世帯なので lower・upper を null にし、第4の lower を1にした。ひとり親家庭等（ひとり親世帯、在宅障害児（者）のいる世帯、生活保護法による要保護者等特に困窮していると町長が認めた世帯）: 第2 0円、第3・第4・第5と第6のうち所得割60,000円以上77,101円未満は標準6,000円・短時間5,900円。この保育料のほかに施設によって行事代・バス利用代などの実費徴収がある。3〜5歳は無償。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（標準時間で月13,000〜32,000円。町の子育て支援制度一覧では「最高額でも32,000円」）。0円は生活保護世帯等と市町村民税非課税世帯。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "【境町独自制度】多子世帯保育料軽減事業: 認定こども園・保育所等に入所している第2子以降の子どもの保育料を無償化。対象は「同一世帯の最年長の子どもから数えて2人目以降の3号認定子ども」で、所得制限・年齢制限なし（上の子が小学生以上でも第1子に数える例が入園案内に載っている）。手続きが必要な人には町から別途案内。補助の対象にならない施設もある（詳細は子ども未来課）。ページの掲載日は2022年1月4日、令和8年度入園案内（p.9）にも同じ内容。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無料（多子世帯保育料軽減事業）なので第3子以降も0円。所得制限・年齢制限なし。",
+  "lunch_jh": { "free": true, "note": "小学校・中学校に在学する児童・生徒の給食費を全額補助（令和5年度から、ふるさと納税の還元事業として実施中。所得制限なし）。", "source": { "label": "子育て支援制度一覧｜境町公式ホームページ（2026年9月1日）", "url": "https://www.town.ibaraki-sakai.lg.jp/page/page001179.html" } },
+  "cash": [],
+  "one_time": [
+    { "label": "子育て出産奨励金（第3子以降の出産）", "amount": 500000, "note": "境町に住民登録されている方で3人目以降のお子さんを出産された方に、1人につき最大で総額50万円を3回に分けて支給（0歳時20万円、3歳時10万円、6歳時20万円）。詳細な要件あり。", "source": { "label": "子育て支援制度一覧｜境町公式ホームページ（2026年9月1日）", "url": "https://www.town.ibaraki-sakai.lg.jp/page/page001179.html" } },
+    { "label": "赤ちゃん紙おむつ等購入クーポン（境町にこにこ赤ちゃんクーポン券）", "amount": 30000, "note": "1歳未満の乳児が対象。紙おむつや粉ミルク等を町が登録した取扱店で買えるクーポン券で、最大30,000円分（1か月あたり2,500円分）。現金ではない。", "source": { "label": "子育て支援制度一覧｜境町公式ホームページ（2026年9月1日）", "url": "https://www.town.ibaraki-sakai.lg.jp/page/page001179.html" } }
+  ],
+  "sources": [
+    { "label": "令和8年度 保育園及び認定こども園（保育認定）入園申し込みのご案内｜境町公式ホームページ", "url": "https://www.town.ibaraki-sakai.lg.jp/page/page003851.html" },
+    { "label": "1.R8入園案内（PDF、p.9 境町独自の子育て応援施策、p.10 境町保育認定における保育料）", "url": "https://www.town.ibaraki-sakai.lg.jp/data/doc/1754444164_doc_57_0.pdf" },
+    { "label": "保育料について｜境町公式ホームページ", "url": "https://www.town.ibaraki-sakai.lg.jp/page/page000706.html" },
+    { "label": "２・３号認定（PDF、境町保育認定における保育料）", "url": "https://www.town.ibaraki-sakai.lg.jp/data/doc/1592442398_doc_57_0.pdf" },
+    { "label": "【境町独自制度】多子世帯保育料軽減事業｜境町公式ホームページ", "url": "https://www.town.ibaraki-sakai.lg.jp/page/page002795.html" },
+    { "label": "子育て支援制度一覧｜境町公式ホームページ", "url": "https://www.town.ibaraki-sakai.lg.jp/page/page001179.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの保育料のページ・多子世帯保育料軽減事業のページ・表のPDFに加え、令和8年度入園申し込みのページから R8入園案内を取り、p.10 の表を画像で見て列（標準・短時間）とひとり親家庭等の行の分かれ方を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。令和9年度入園案内（6.03MB）は開いていない。妊婦支援給付金・子育て支援給付金（各5万円）は国の妊婦のための支援給付なので one_time に入れていない。",
+  "read_at": "2026-11-01"
+}

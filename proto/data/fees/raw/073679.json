@@ -1,0 +1,37 @@
+{
+ "code": "073679",
+ "pref": "福島県",
+ "name": "只見町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和8年度只見町入園・入所のご案内（2025年12月作成）「２．保育料について」: 令和2年10月から全ての児童の保育料が無料。延長保育料（1回100円、区分ごとに月上限1,000円、最大月4,000円）・一時預かり保育料（1日1,600円）・保育に関わる道具など実費徴収のものは無償化の対象外。副食費は町独自に全ての児童で無償、令和7年度から主食費（ご飯）も無償。2号・3号は満1歳から。",
+ "tax_basis": "6%",
+ "tax_note": "全ての児童の保育料が無料のため、所得割で額は変わらない（利用者負担額決定通知書は送付される）。政令市ではないので6%。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2020年10月",
+ "first_child_free_note": "「只見町では、令和２年10月より全ての児童の保育料が無料になりました。」（令和8年度只見町入園・入所のご案内 p.6）。所得制限やきょうだいの条件は書かれていない。副食費・主食費も無償。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "全ての児童の保育料が無料なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "全ての児童の保育料が無料。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和8年度 入園・入所のご案内（PDF、只見町教育委員会、2025年12月作成）",
+   "url": "https://www.town.tadami.lg.jp/lifeguide/2025/12/15/db3a6305a61e87cd92b660f6e3799f36.pdf"
+  },
+  {
+   "label": "入園・入所（通園支援等）｜只見町公式ホームページ",
+   "url": "https://www.town.tadami.lg.jp/lifeguide/cat108/cat2/index.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "町内の施設は只見町認定こども園と町立保育所（令和8年度一斉募集の対象）。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

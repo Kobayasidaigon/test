@@ -1,0 +1,58 @@
+{
+  "code": "233625",
+  "pref": "愛知県",
+  "name": "扶桑町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度保育園入園のご案内」のページの「保育料徴収月額表」〔2025年9月4日作成〕。表に年度の表示はない。「令和9年度保育園入園のご案内」のページも同じPDF）",
+  "period_note": "表は「当該年度分」の市町村民税で区分し、4月から8月までの間に階層を認定する場合は「前年度分」（備考1）。令和9年度の案内では4月中旬に4月～8月分の保育料を通知し、9月分以降は8月下旬頃に通知。保育料は0～2歳児クラスだけが対象。クラスの年齢区分はその年度の4月2日現在の年齢で決まる。",
+  "tax_basis": "6%",
+  "tax_note": "所得割の額は、地方税法第314条の7（寄附金税額控除）、第314条の8（外国税額控除）、第314条の9（配当割額等の控除）、附則第5条第3項（住宅借入金等特別税額控除）、第5条の4第6項、第5条の4の2第6項、第5条の5第2項及び第45条の規定を適用しないで計算（備考4、税額控除前）。教育・保育給付認定保護者以外の扶養義務者（主としてその収入により生計を維持するものに限る）があるときはその市町村民税を合計（備考2。ページでは「父母及び生計主宰者たる祖父又は祖母等」）。政令市ではない。",
+  "table": {
+    "title": "利用者負担額徴収金月額表（ページでの名前は「保育料徴収月額表」）",
+    "kind": "3歳未満児・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む。）又は中国残留邦人等支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": null, "upper": null, "condition": "市町村民税均等割額のみ世帯", "monthly": 11000, "monthly_second": null },
+      { "label": "D1", "lower": 1, "upper": 5000, "condition": "A階層及びC階層を除き市町村民税課税世帯のうち所得割の額が 5,000円未満", "monthly": 12000, "monthly_second": null },
+      { "label": "D2", "lower": 5000, "upper": 48600, "condition": "5,000円以上 48,600円未満", "monthly": 13300, "monthly_second": null },
+      { "label": "D3", "lower": 48600, "upper": 54000, "condition": "48,600円以上 54,000円未満", "monthly": 16200, "monthly_second": null },
+      { "label": "D4", "lower": 54000, "upper": 63600, "condition": "54,000円以上 63,600円未満", "monthly": 19100, "monthly_second": null },
+      { "label": "D5", "lower": 63600, "upper": 75600, "condition": "63,600円以上 75,600円未満", "monthly": 22000, "monthly_second": null },
+      { "label": "D6", "lower": 75600, "upper": 81600, "condition": "75,600円以上 81,600円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "D7", "lower": 81600, "upper": 97000, "condition": "81,600円以上 97,000円未満", "monthly": 28900, "monthly_second": null },
+      { "label": "D8", "lower": 97000, "upper": 117600, "condition": "97,000円以上 117,600円未満", "monthly": 32700, "monthly_second": null },
+      { "label": "D9", "lower": 117600, "upper": 135600, "condition": "117,600円以上 135,600円未満", "monthly": 36600, "monthly_second": null },
+      { "label": "D10", "lower": 135600, "upper": 169000, "condition": "135,600円以上 169,000円未満", "monthly": 40500, "monthly_second": null },
+      { "label": "D11", "lower": 169000, "upper": 173100, "condition": "169,000円以上 173,100円未満", "monthly": 44300, "monthly_second": null },
+      { "label": "D12", "lower": 173100, "upper": 188100, "condition": "173,100円以上 188,100円未満", "monthly": 48200, "monthly_second": null },
+      { "label": "D13", "lower": 188100, "upper": 301000, "condition": "188,100円以上 301,000円未満", "monthly": 50900, "monthly_second": null },
+      { "label": "D14", "lower": 301000, "upper": null, "condition": "301,000円以上", "monthly": 53700, "monthly_second": null }
+    ],
+    "notes": "monthly は「3歳未満児 保育標準時間」。表に第2子の列はない。保育短時間: C 7,500、D1 8,500、D2 9,800、D3 12,700、D4 15,600、D5 18,500、D6 21,500、D7 25,400、D8 29,200、D9 33,100、D10 37,000、D11 40,800、D12 44,700、D13 47,400、D14 50,200。備考7: 里親はA階層の額（0円）。備考8: 特定世帯（要保護者等のいる世帯、B階層を除く）で所得割の合計額が77,101円未満のときは5,600円（保育短時間は2,100円）。3～5歳児クラスは保育料0円で給食費（主食費・副食費）を徴収するが、令和8年度保育園のしおりでは令和8年度の4月から翌年3月までは給食費を徴収しない。表は pdftoppm で画像にして列（3歳未満児 保育標準時間・保育短時間）を確かめた。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3歳未満児）は生活保護・非課税世帯が0円、ほかは階層により月11,000〜53,700円（標準時間）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "備考9: 負担額算定基準子ども（就学前で保育所・幼稚園等を利用する子）が複数いる場合、2番目の年長者である満3歳未満保育認定子どもは表の額の100分の50（所得制限なし）。備考10: 所得割の合計額が57,700円未満の世帯は特定被監護者等（年齢を問わない子）で数え、小学校就学前子ども以外の者が1人のみのときの最年長の入所児やすべて就学前のときの2番目の年長者は半額、小学校就学前子ども以外の者が2人以上いるときの最年長の入所児などは0円。備考11: 特定世帯で所得割77,101円未満は備考10の半額を0円と読み替える。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "備考12: 満18歳未満の児童を3人以上養育、監護している場合の第3子以降は、(1) B階層からD7階層（所得割97,000円未満）はその子どもが満3歳に達する年度末まで無料（上の子が通園していなくても数える）、(2) D8階層からD13階層（所得割97,000円以上301,000円未満）は「入所子どもの第１子については、その子どもが満３歳に達する年度末までこの表に規定する利用者負担額（月額）の該当階層金額の半額とする」。D14階層（301,000円以上）は備考9の国と同じ決まりだけで、就学前で同時に利用する子の3番目以降が0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度保育園入園のご案内｜扶桑町公式ホームページ", "url": "https://www.town.fuso.lg.jp/kosodate/1001850/1001886/1003776.html" },
+    { "label": "保育料徴収月額表 （PDF 105.5KB）（利用者負担額徴収金月額表）", "url": "https://www.town.fuso.lg.jp/_res/projects/default_project/_page_/001/003/776/riyousyahutangakugetugakuhyou.pdf" },
+    { "label": "令和9年度保育園入園のご案内｜扶桑町公式ホームページ", "url": "https://www.town.fuso.lg.jp/kosodate/1001850/1001886/1004735.html" },
+    { "label": "令和8年度 保育園のしおり （PDF 2.5MB）", "url": "https://www.town.fuso.lg.jp/_res/projects/default_project/_page_/001/003/776/2026hoikuennnosiori.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs（令和8年度・令和9年度の入園のご案内のページと保育料徴収月額表）で読み、両方のページのPDFを取って同じファイルであることを確かめた（作成日2025年9月4日）。保育園のしおり（令和8年度）には保育料の表はなかった。"
+  ],
+  "notes": "表そのものに年度の表示はないが、令和8年度の入園のご案内のページに保育料の月額表として載っているので令和8年度の表とした。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

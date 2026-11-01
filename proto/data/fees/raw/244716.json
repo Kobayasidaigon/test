@@ -1,0 +1,59 @@
+{
+  "code": "244716",
+  "pref": "三重県",
+  "name": "大紀町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度版～保育園のご案内～」〔2025年11月作成〕の「11.保育料(利用者負担額)について」と、保育園についてのページ〔更新日2025年11月10日〕）",
+  "period_note": "平成30年4月から、世帯の所得などに関係なく、町に住所がある人の保育園の利用料（保育料）は0円。給食費も徴収しない。途中入園はすべて毎月1日からで、月途中の入園・日割り計算はしない。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が所得に関係なく0円のため、所得割の判定の記載はない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2018年4月",
+  "first_child_free_note": "保育園のご案内（令和8年度版）11: 「平成30年4月から子育て支援の一環として世帯の所得などに関係なく、本町に住所を有する方の保育園の利用料(保育料)を完全無償(0円)としております。給食費についても徴収しておりません。」 保育園についてのページも同じ（「本町に住所を有する方の保育園の利用料が無償（0円）」）。町内の保育園はななほ保育園・大宮保育園・錦あおぞら保育園・大紀保育園（いずれも6か月から5歳）。一時保育も町に住所がある場合は無料。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から0円なので、きょうだいの数え方に関係なく無料（household は「数え方に関係なく0円」の意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "児童生徒給食費補助補助金（エンゼル2）: 大紀町立小中学校に通学する児童生徒の給食費のうち、保護者が負担する額の全額を助成（町が各学校の給食会計に支出し、保護者への請求はない）。",
+    "source": { "label": "児童生徒給食費補助補助金について（エンゼル2）（大紀町、更新日2026年4月7日）", "url": "https://www.town.taiki.mie.jp/kosodate_kyoiku/school/833.html" }
+  },
+  "cash": [
+    {
+      "label": "エンゼル手当（1歳児〜15歳児）",
+      "per_child_yearly": 20000,
+      "max_age": 15,
+      "note": "6か月以上引き続き町に住み住民登録がある1歳児〜15歳児の保護者に、1人につき20,000円を誕生月に支給（健康福祉課から送られる申請書で申請）。",
+      "source": { "label": "エンゼル手当について（大紀町、更新日2026年3月26日）", "url": "https://www.town.taiki.mie.jp/kosodate_kyoiku/jidofukushi/824.html" }
+    }
+  ],
+  "one_time": [
+    {
+      "label": "エンゼル手当（新生児）",
+      "amount": 100000,
+      "note": "新生児第1子・第2子は100,000円、第3子は300,000円、第4子以降は500,000円（子の人数は18歳未満で6か月以上町に住み住民登録がある子で数える）。6か月以上引き続き町に住む保護者が対象。",
+      "source": { "label": "エンゼル手当について（大紀町、更新日2026年3月26日）", "url": "https://www.town.taiki.mie.jp/kosodate_kyoiku/jidofukushi/824.html" }
+    },
+    {
+      "label": "エンゼル手当（中学校卒業児）",
+      "amount": 50000,
+      "note": "中学校卒業児1人につき50,000円（中学校卒業月）。",
+      "source": { "label": "エンゼル手当について（大紀町、更新日2026年3月26日）", "url": "https://www.town.taiki.mie.jp/kosodate_kyoiku/jidofukushi/824.html" }
+    }
+  ],
+  "sources": [
+    { "label": "保育園について／大紀町ホームページ（更新日2025年11月10日）", "url": "https://www.town.taiki.mie.jp/kosodate_kyoiku/hoiku/827.html" },
+    { "label": "令和8年度版～保育園のご案内～（PDF、5ページ「11.保育料(利用者負担額)について」）", "url": "https://www.town.taiki.mie.jp/material/files/group/7/kek_kosodate_hoiku_R8.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの index.json（候補の文書なし。保育園についてのページの題名から開いた）",
+    "保育園のご案内（令和8年度版）のPDF: 1回目は途中で切れたので content-length と比べて -C - で続きを取った。文字が取れない（フォントの文字の対応がない）ので pdftoppm で画像にして読んだ"
+  ],
+  "notes": "町に住所がある人の保育料は0〜5歳とも0円（平成30年4月から、所得制限なし）。保育所の給食費も徴収しない。",
+  "read_at": "2026-11-01"
+}

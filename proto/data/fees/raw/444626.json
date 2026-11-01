@@ -1,0 +1,50 @@
+{
+  "code": "444626",
+  "pref": "大分県",
+  "name": "玖珠町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度保育施設等の利用案内「８．保育料について」: 4月分から8月分までは父母の令和7年度（令和6年分収入）の町民税所得割額を合算した額、9月分から3月分までは父母の令和8年度（令和7年分収入）の町民税所得割額を合算した額に応じて決定（9月からの利用料は変更がある方のみ通知）。年度の途中で2歳（3号）から3歳（2号）になっても、4月1日時点の年齢で保育料を算定するので無償の対象にならない。",
+  "tax_basis": "6%",
+  "tax_note": "父母の町民税所得割額の合算（父母の収入の合計額が103万円未満の場合は、同居の祖父母等の町民税所得割額で決定する場合もある）。※保育料の算定には、住宅取得控除、配当控除等 控除できないものがあります（＝税額控除前の所得割額）。政令市ではない。",
+  "table": {
+    "title": "新制度における認定こども園、幼稚園、保育所の利用者負担額 2号・3号：保育認定（月額）",
+    "kind": "3号（3歳未満）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "①", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "②", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "③", "lower": 0, "upper": 48600, "condition": "町民税所得割課税額 48,600円未満", "monthly": 12000, "monthly_second": null },
+      { "label": "④-1", "lower": 48600, "upper": 57700, "condition": "④-1町民税所得割課税額 57,700円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "④-2", "lower": 57700, "upper": 97000, "condition": "④-2町民税所得割課税額 97,000円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "⑤", "lower": 97000, "upper": 169000, "condition": "⑤町民税所得割課税額 169,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "⑥", "lower": 169000, "upper": 301000, "condition": "⑥町民税所得割課税額 301,000円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "⑦", "lower": 301000, "upper": 397000, "condition": "⑦町民税所得割課税額 397,000円未満", "monthly": 58000, "monthly_second": null },
+      { "label": "⑧", "lower": 397000, "upper": null, "condition": "⑧町民税所得割課税額 397,000円以上", "monthly": 76000, "monthly_second": null }
+    ],
+    "notes": "④-1と④-2は表で1つの額（19,000円）にまとめてある。保育短時間: ① 0、② 0、③ 11,700、④-1・④-2 18,600、⑤ 29,400、⑥ 43,200、⑦ 57,000、⑧ 74,700。表の注記（3号認定）: ※年齢によらず上から数えて2人目以降の保育料は無償になります。※3号認定の主食費・副食費は保育料に含まれています。※保育料とは別に施設設置者が定める実費負担や上乗せ負担が必要となる場合があります。利用案内: ※玖珠町では、「特定防衛施設周辺整備調整交付金」を活用して保育料を軽減しています。ひとり親世帯等の別の額は書かれていない。③は均等割のみ（所得割0円）を含むと読んで lower を0にした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3号）は階層により月0〜76,000円（標準時間）。生活保護・町民税非課税世帯は0円。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "「大分にこにこ保育支援事業」による減免: 3号認定（0〜2歳）で、戸籍上第2子以降の児童については保育料が無償（申請には戸籍謄本の提出が必要）。表の注記でも「年齢によらず上から数えて2人目以降の保育料は無償」。上の子の年齢や保育園等の利用を問わない。所得制限の記載はない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "戸籍上第2子以降は無償に含まれる（年齢によらず上から数える、申請に戸籍謄本が必要）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "玖珠町 令和8年度保育施設等利用のご案内", "url": "https://www.town.kusu.oita.jp/kosodate_kyoiku/kodomoen_yochien/2/5958.html" },
+    { "label": "保育施設等の利用案内（令和8年度、PDF、2026年3月作成）「８．保育料について」", "url": "https://www.town.kusu.oita.jp/material/files/group/19/R8riyouannni.pdf" },
+    { "label": "施設一覧及び利用者負担額一覧表（PDF、R8年度時点、2026年3月作成）", "url": "https://www.town.kusu.oita.jp/material/files/group/19/sisetuiitirannriyousyafutanngaku.pdf" },
+    { "label": "子ども・子育て支援新制度における利用者負担額について（更新日2026年4月1日）", "url": "https://www.town.kusu.oita.jp/kosodate_kyoiku/kodomoen_yochien/2/2396.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）は公式サイトに接続できず失敗（OSError）。トップページは取れたが、こども園・幼稚園の一覧で1回接続が切れたので15秒あけて取り直した。トップ → 子育て・教育 → こども園・幼稚園 → 利用案内 の順に開いた。"
+  ],
+  "notes": "表は pdftotext で読み、画像で④-1・④-2が1つの額にまとまっていることと、列の並び（保育標準時間→保育短時間）を確かめた。町内は私立の認定こども園6園・私立保育所1園（町立森幼稚園は休園）。cash・one_time・lunch_jh は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

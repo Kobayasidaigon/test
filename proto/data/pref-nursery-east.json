@@ -1,2570 +1,3091 @@
 {
-  "title": "都道府県の0〜2歳の保育料の制度（北海道・東北・関東・中部の23都道県）",
-  "fiscalYear": "令和8年度（2026年度）",
-  "checkedOn": "2026-11-01",
-  "method": "都道県ごとに WebSearch（全部で35回）を行い、検索結果の要約に出た県の公式ページ・予算資料・知事の説明などの記載を整理した。県のサイト（*.lg.jp など）はこの環境から開けないため、本文やPDFを直接は読めていない。そのため確からしさは「推定」が上限で、「確認済」の値はない。見つからなかったことは「未確認」とし、推測で埋めていない。市町村コードは data/localgovjp-utf8.csv（政令市の区を除く1,741市区町村）で名前から引いた。",
-  "confidenceLegend": {
-    "確認済": "公式の資料を直接開いて確かめた（このファイルにはない）",
-    "推定": "検索結果の要約に出た公式ページの記載や、公式以外の資料による",
-    "仮置き": "調べたが見つからなかった、または中身が分からず置いているだけ",
-    "未確認": "分からなかった項目（値は null）"
-  },
-  "kindLegend": {
-    "first_free": "第1子の無償化",
-    "first_partial": "第1子などの保育料の一部助成",
-    "second_free": "第2子（以降）の無償化",
-    "second_half": "第2子の半額",
-    "second_partial": "第2子の無料化又は軽減（市町村・所得による）",
-    "third_free": "第3子以降の無償化",
-    "third_reduced": "第3子以降の軽減（中身は市町村ごと・未確認）",
-    "low_income": "低所得世帯の軽減",
-    "income_tier": "所得階層ごとの段階的な軽減",
-    "menu_grant": "市町村が選ぶ無償化施策のメニュー"
-  },
-  "effectLegend": {
-    "free": "0円",
-    "half": "半額",
-    "partial": "一部軽減（額や割合は所得・市町村による）",
-    "none": "この制度の対象外",
-    "null": "未確認（null）"
-  },
-  "fieldNotes": {
-    "effect": "この制度で0〜2歳の保育料がどうなるか（first=第1子、second=第2子、third=第3子以降）。国の基準（同時に通う子で数えて2人目半額・3人目0円）への上乗せとして読む。",
-    "effect.secondCount/thirdCount": "サイトの SiblingCount と同じ語。household=生計が同じ子を年齢や在園を問わず数える、together=同時に通う子だけで数える、null=未確認。",
-    "counting.olderSiblingAgeLimit": "数える上の子の年齢の上限（例: 18歳未満）。「問わない」は上限なし。null は未確認。",
-    "scope": "all=県内の全市町村で実施、opt_in=手を挙げた市町村だけ（県が補助・支援）、unknown=未確認。",
-    "implementingMunicipalityCodes": "実施している市町村のコード。公式の一覧が取れたものはなく、「全市町村で実施」と県が書いているものだけ県内の全市町村を展開した（implementingListBasis に根拠）。手挙げ・未確認は null。",
-    "excludedMunicipalityCodes": "県の補助の対象外と書かれている市（政令市・中核市など）。",
-    "coverage": "市町村ごとに県の制度が当てはまるかの内訳。allMunicipalities=全市町村の制度が当たる、excluded=補助の対象外、optInOrUnknown=手挙げ・範囲未確認で分からない、noneFound=県の制度が見つからなかった県の市町村。",
-    "municipalExamples": "参考。分かった市町村の例。relation に県の制度の実施例か・市町村独自か・関係未確認かを、via に今回の検索か既存の調べ（cities20/research.json・data.ts）からの転記かを書いた。県の制度の実施一覧ではない（implementingMunicipalityCodes には入れていない）。"
-  },
-  "totals": {
-    "prefectures": 23,
-    "prefecturesWithProgram": 17,
-    "prefecturesNoneFound": [
-      "宮城県",
-      "千葉県",
-      "神奈川県",
-      "新潟県",
-      "石川県",
-      "静岡県"
-    ],
-    "programs": 25,
-    "municipalitiesInScope": 1038,
-    "municipalitiesNationwide": 1741,
-    "municipalitiesAllProgram": 130,
-    "municipalitiesExcluded": 9,
-    "municipalitiesOptInOrUnknown": 693,
-    "municipalitiesNoneFound": 206,
-    "webSearches": 35
-  },
-  "prefectures": [
+ "title": "都道府県の0〜2歳の保育料の制度（北海道・東北・関東・中部の23都道県）",
+ "fiscalYear": "令和8年度（2026年度）",
+ "checkedOn": "2026-11-01",
+ "method": "前回（WebSearch 35回、検索結果の要約だけ）の値を、2026年11月1日に公式のページで確かめ直した。前回の sources と、県のサイトの中で見つけた子育て支援・予算・要綱・県の一覧のページやPDFを curl で開いて本文を読み（PDFは pdftotext、図は画像で）、WebSearch は19回（公式の資料の場所を探すため）だけ使った。公式の本文で中身を確かめた制度は confidence を「確認済」にし、asOf をその資料の時点にした（令和8年度の資料でない制度は end.text と unverified に、令和8年度の継続を確かめていないことを書いた）。県の独自の制度が見つからなかった県は、県の子育て支援のページ・予算資料を開いて確かめた（ないことの確認なので「推定」）。市町村コードは data/localgovjp-utf8.csv（政令市の区を除く1,741市区町村）で名前から引いた。推測では埋めていない。",
+ "confidenceLegend": {
+  "確認済": "公式の資料（県のページ・要綱・予算資料・県の一覧など）を直接開いて本文を読み、中身を確かめた。asOf がその資料の時点（令和8年度の資料でないものは、令和8年度の継続を確かめていない）",
+  "推定": "公式の本文で確かめられなかったものや、市町村・民間の資料によるもの。県の制度が「見つからなかった」ことを県のページで確かめた県も「推定」",
+  "仮置き": "調べたが見つからなかった、または中身が分からず置いているだけ（このファイルにはない）",
+  "未確認": "分からなかった項目（値は null）"
+ },
+ "kindLegend": {
+  "first_free": "第1子の無償化",
+  "first_partial": "第1子などの保育料の一部助成",
+  "second_free": "第2子（以降）の無償化",
+  "second_half": "第2子の半額",
+  "second_partial": "第2子の無料化又は軽減（市町村・所得による）",
+  "third_free": "第3子以降の無償化",
+  "third_reduced": "第3子以降の軽減（中身は市町村ごと・未確認）",
+  "low_income": "低所得世帯の軽減",
+  "income_tier": "所得階層ごとの段階的な軽減",
+  "menu_grant": "市町村が選ぶ無償化施策のメニュー"
+ },
+ "effectLegend": {
+  "free": "0円",
+  "half": "半額",
+  "partial": "一部軽減（額や割合は所得・市町村による）",
+  "none": "この制度の対象外",
+  "null": "未確認（null）"
+ },
+ "fieldNotes": {
+  "effect": "この制度で0〜2歳の保育料がどうなるか（first=第1子、second=第2子、third=第3子以降）。国の基準（同時に通う子で数えて2人目半額・3人目0円）への上乗せとして読む。",
+  "effect.secondCount/thirdCount": "サイトの SiblingCount と同じ語。household=生計が同じ子を年齢や在園を問わず数える、together=同時に通う子だけで数える、null=未確認。",
+  "counting.olderSiblingAgeLimit": "数える上の子の年齢の上限（例: 18歳未満）。「問わない」は上限なし。null は未確認。",
+  "scope": "all=県内の全市町村で実施、opt_in=手を挙げた市町村だけ（県が補助・支援）、unknown=未確認。",
+  "implementingMunicipalityCodes": "実施している市町村のコード。県の一覧（青森県〈令和8年9月18日時点〉・秋田県〈R8.4.1現在〉）、都の実績（東京都の第2子〈23区26市5町。3村は名前が分からず入れていない〉）、県が「全市町村で」と書いている説明（栃木・山梨・長野・富山・福井・埼玉）から入れた。根拠と時点は implementingListBasis。手挙げで一覧が取れない制度は null。",
+  "excludedMunicipalityCodes": "県の補助の対象外と書かれている市（政令市・中核市など）。",
+  "coverage": "市町村ごとの内訳。allMunicipalities=県の制度が当たると県の資料で分かる市町村（全市町村で実施の制度、または県の一覧・実績で実施が分かる市町村。青森県は一部無償化の3市町も含む）、excluded=補助の対象外、optInOrUnknown=手挙げ・範囲未確認で分からない、noneFound=県の制度が見つからなかった県の市町村。",
+  "municipalExamples": "参考。分かった市町村の例。relation に県の制度の実施例か・市町村独自か・関係未確認かを、via にどの調べ（前回の検索・既存の調べ・今回の確かめ直し）からかを書いた。県の制度の実施一覧ではない（implementingMunicipalityCodes には入れていない）。"
+ },
+ "totals": {
+  "prefectures": 23,
+  "prefecturesWithProgram": 17,
+  "prefecturesNoneFound": [
+   "宮城県",
+   "千葉県",
+   "神奈川県",
+   "新潟県",
+   "石川県",
+   "静岡県"
+  ],
+  "programs": 25,
+  "municipalitiesInScope": 1038,
+  "municipalitiesNationwide": 1741,
+  "municipalitiesAllProgram": 343,
+  "municipalitiesExcluded": 9,
+  "municipalitiesOptInOrUnknown": 480,
+  "municipalitiesNoneFound": 206,
+  "webSearches": 19
+ },
+ "prefectures": [
+  {
+   "pref": "北海道",
+   "prefCode": "010006",
+   "municipalities": 179,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "道が、第2子以降の3歳未満児の保育料を無償化する市町村（札幌市を除く）に1/2以内を補助（平成29年度から。令和8年度の交付要綱あり）。道の補助は市町村民税所得割169,000円未満の世帯が対象で、それより上まで広げるかは市町村ごと。道のまとめ（令和7年度）では179市町村のうち178が第2子以降を無償化（所得制限あり61・なし60・完全無償化57）。市町村名の一覧はない。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 1,
+    "optInOrUnknown": 178,
+    "noneFound": 0
+   },
+   "programs": [
     {
-      "pref": "北海道",
-      "prefCode": "010006",
-      "municipalities": 179,
-      "status": "県の制度あり（推定）",
-      "summary": "道が、第2子以降の3歳未満児の保育料を無償化する市町村（札幌市を除く）に補助している。所得制限・きょうだいの数え方・実施市町村は未確認。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 1,
-        "optInOrUnknown": 178,
-        "noneFound": 0
+     "id": "hokkaido-tashi-hoikuryo",
+     "name": "多子世帯の保育料軽減支援事業",
+     "kind": "second_free",
+     "kindLabel": "第2子以降の無償化（市町村への補助）",
+     "content": "各市町村（指定都市を除く）が行う、保育所等を利用する第2子以降の3歳未満児の保育料を無償化する事業に、道が予算の範囲内で補助金を交付する（令和8年度の交付要綱、令和8年4月1日施行）。補助の基準になる保育料（基準保育料）は、市町村民税所得割合算額48,600円未満〜169,000円未満の階層（生活保護・非課税世帯を除く）について定められ、国の多子軽減が当たる子はその後の額（半額）が対象。事業は平成29年4月3日付けの道の通知「多子世帯の保育料軽減支援事業実施要綱」に基づく。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "free",
+      "third": "free",
+      "secondCount": "household",
+      "thirdCount": "household"
+     },
+     "effectNote": "0円になるのは実施する市町村で、道の補助の対象の所得（所得割169,000円未満）の世帯の子。所得割169,000円以上の世帯まで無償化するかは市町村ごと（道のまとめでは令和7年度に60市町村が所得制限なし、57市町村が完全無償化）。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": "問わない（扶養している子なら年齢制限なし）",
+      "text": "幕別町の資料（平成29年5月11日）が説明する道独自軽減の多子条件は「扶養している子（年齢制限なし）のうち年長者から数えて第2子以降」。道の実施要綱そのもの（平成29年4月3日付け通知の別紙）は読めていない。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "道の補助は市町村民税所得割合算額169,000円未満の世帯（令和8年度の交付要綱の別表。幕別町の資料では「世帯収入640万円を想定」）。生活保護・非課税世帯は国の制度で0円。所得制限をなくしている市町村は、その上の世帯の分を市町村が負担している。"
+     },
+     "start": {
+      "date": "2017-04",
+      "text": "平成29年度から（道の平成29年度の重点施策資料「第2子以降(3歳未満児)の保育料を所得に応じ無償化」、平成29年4月3日付けの道の通知）"
+     },
+     "end": {
+      "date": null,
+      "text": "終わりの定めは見つからなかった。令和8年度の交付要綱（令和8年4月1日施行）がある。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "市町村が行う無償化事業に道が補助するしくみ。指定都市（札幌市）は補助の対象外。道のまとめ（令和7年度）では、国の基準どおり（第2子半額）の町村が1つだけで、ほかの市町村は第2子以降を無償化している（札幌市は市の制度）。",
+     "excludedMunicipalityCodes": [
+      "011002"
+     ],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "道のまとめ（令和7年度）は件数だけで、市町村名の一覧はない。道内市町村の取組一覧（令和7年4月1日現在）は主な取組だけを載せたもので、全部ではない。",
+     "funding": "道が予算の範囲内で補助（補助率1/2以内。基準保育料×利用月数と市町村の負担額の少ない方の1/2）",
+     "budgetR8": null,
+     "asOf": "令和8年度（交付要綱 令和8年4月1日施行）・道のまとめ（令和7年度）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "北海道「令和8年度 補助事業等の公表ページ（子ども政策企画課関係）」項目4 多子世帯の保育料軽減支援事業",
+       "url": "https://www.pref.hokkaido.lg.jp/hf/kms/253631.html"
       },
-      "programs": [
-        {
-          "id": "hokkaido-tashi-hoikuryo",
-          "name": "多子世帯の保育料軽減支援事業",
-          "kind": "second_free",
-          "kindLabel": "第2子以降の無償化（市町村への補助）",
-          "content": "市町村（指定都市を除く）が行う、保育所等を利用する第2子以降の3歳未満児の保育料を無償化する事業に、道が予算の範囲内で補助金を交付する。令和7年度分の補助事業表にも同じ事業が載っている。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "free",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "無償化するのは補助を受けて実施する市町村だけ。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認（道の資料に第2子の数え方の記載が見つからなかった。道の無償化ページにある「利用する最年長の子を第1子と数える」は国の制度の説明）"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認（道の計画資料に「第2子以降(3歳未満児)の保育料を所得に応じ無償化」とあるが、作成時期が分からず現行に当てはまるか不明。検索結果の要約では函館市は所得制限なしで第2子以降を無償化とされた〔記載元のページは特定できず〕）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認（令和7年度の補助事業表には載っている）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "市町村が行う無償化事業に道が補助するしくみ。指定都市（札幌市）は補助の対象外。",
-          "excludedMunicipalityCodes": [
-            "011002"
-          ],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "道が予算の範囲内で補助（補助率は未確認）",
-          "budgetR8": null,
-          "asOf": "令和8年度（補助事業等の公表ページ）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "北海道 令和8年度 補助事業等の公表ページ（子ども政策企画課関係）項目4「多子世帯の保育料軽減支援事業」",
-              "url": "https://www.pref.hokkaido.lg.jp/hf/kms/253631.html"
-            },
-            {
-              "label": "北海道 計画資料（「第2子以降(3歳未満児)の保育料を所得に応じ無償化」の記載。作成時期未確認）",
-              "url": "https://www.pref.hokkaido.lg.jp/fs/5/1/2/3/0/4/7/_/04-02-20-23.pdf"
-            }
-          ],
-          "unverified": [
-            "所得制限の有無と額",
-            "第2子の数え方（同時に通う子だけか、上の子の年齢を問わないか）",
-            "開始年度",
-            "実施している市町村の一覧（道の「道内市町村における子ども・子育て等への支援状況」https://www.pref.hokkaido.lg.jp/hf/kms/178410.html に載っている可能性があるが、開けなかった）",
-            "補助率"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "北海道 第2子 保育料 無償化 3歳未満 道 市町村 補助 令和8年度",
-        "北海道 多子世帯の保育料軽減支援事業 第2子以降 3歳未満 無償化 所得制限 兄姉 年齢 開始（pref.hokkaido.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "青森県",
-      "prefCode": "020001",
-      "municipalities": 40,
-      "status": "県の制度あり（推定）",
-      "summary": "令和8年2月の知事説明で、県が後押しする市町村の新たな無償化施策のうち「保育料無償化」を推奨メニューにすると表明。対象の子・所得制限・実施市町村は未確認。以前の計画期間（令和2〜6年度）には「第3子以降の保育料の軽減」があった。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 40,
-        "noneFound": 0
+      {
+       "label": "北海道「令和8年度(2026年度)多子世帯の保育料軽減支援事業費補助金交付要綱」（令和8年4月1日施行。補助率1/2以内、基準保育料の表）",
+       "url": "https://www.pref.hokkaido.lg.jp/fs/1/3/1/1/0/6/8/2/_/%E4%BB%A4%E5%92%8C8%E5%B9%B4%E5%BA%A6(2026%E5%B9%B4%E5%BA%A6)%E5%A4%9A%E5%AD%90%E4%B8%96%E5%B8%AF%E3%81%AE%E4%BF%9D%E8%82%B2%E6%96%99%E8%BB%BD%E6%B8%9B%E6%94%AF%E6%8F%B4%E4%BA%8B%E6%A5%AD%E8%B2%BB%E8%A3%9C%E5%8A%A9%E9%87%91%E4%BA%A4%E4%BB%98%E8%A6%81%E7%B6%B1.pdf"
       },
-      "programs": [
-        {
-          "id": "aomori-musyoka-menu",
-          "name": "市町村の新たな無償化施策（保育料無償化を推奨メニュー）",
-          "kind": "menu_grant",
-          "kindLabel": "市町村が選ぶ無償化施策のメニュー（保育料無償化を推奨）",
-          "content": "知事説明要旨（令和8年2月）に「新たな無償化施策としては、保育料無償化を推奨メニューとし、今後、各市町村の実情に応じて更なる無償化施策が全県で展開されることとなります」とある。実施主体は市町村で、中身は市町村ごとに決まるとみられる。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": null,
-            "second": null,
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "どの子（第1子からか、第2子以降か）を無償にするか、県の支援の額や割合は未確認。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認（令和8年度から展開するとみられるが、時期は確認できなかった）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "市町村が実情に応じて選ぶメニュー。どの市町村が保育料無償化を選んだかは未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "令和8年2月（県議会の知事説明要旨）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "青森県 第325回定例会提出議案知事説明要旨（令和8年2月）",
-              "url": "https://www.pref.aomori.lg.jp/message/policy/policy202602.html"
-            },
-            {
-              "label": "青森県 こども・子育て「青森モデル」について",
-              "url": "https://www.pref.aomori.lg.jp/soshiki/kodomo/kodomo/R6_aomori-model.html"
-            }
-          ],
-          "unverified": [
-            "対象の子（第1子・第2子・第3子以降）",
-            "所得制限",
-            "県の支援のしくみ（交付金か補助率か）",
-            "保育料無償化を選んだ市町村の一覧",
-            "開始時期"
-          ]
-        },
-        {
-          "id": "aomori-third-keigen",
-          "name": "第3子以降の保育料の軽減",
-          "kind": "third_reduced",
-          "kindLabel": "第3子以降の軽減",
-          "content": "こどもみらい課の事業概要に、以前の計画期間（令和2〜6年度）の施策として「第3子以降の保育料の軽減」が挙がっている。中身（無料か一部か）は未確認。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": null,
-            "second": null,
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "軽減の中身が分からないため、第3子の扱いは未確認。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": null,
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "令和2〜6年度の計画期間の施策（令和8年度も続いているかは未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "青森県 こどもみらい課 事業概要（第7章）",
-              "url": "https://www.pref.aomori.lg.jp/soshiki/kenko/kkenkofu/files/gdai7.pdf"
-            }
-          ],
-          "unverified": [
-            "令和8年度も続いているか",
-            "無料か一部軽減か",
-            "きょうだいの数え方と所得制限",
-            "実施市町村"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "青森県 保育料 無償化 0歳から2歳 第1子 県 市町村 補助 所得制限 令和8年度",
-        "青森県 保育料 無償化 第2子以降 0〜2歳 県 市町村 補助 所得制限なし（pref.aomori.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "岩手県",
-      "prefCode": "030007",
-      "municipalities": 33,
-      "status": "県の制度あり（推定）",
-      "summary": "令和5年度から、市町村と連携して第2子以降の3歳未満児の保育料を無償化（県が市町村の経費の1/2を補助）。令和8年度予算案にも計上。きょうだいの数え方と所得制限は未確認。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 33,
-        "noneFound": 0
+      {
+       "label": "北海道「道内市町村における子ども・子育て等への支援状況」保育料（令和7年度）の図",
+       "url": "https://www.pref.hokkaido.lg.jp/fs/1/3/1/4/0/4/8/0/_/%E6%8E%B2%E8%BC%89%E3%82%B0%E3%83%A9%E3%83%95(%E4%BF%9D%E8%82%B2%E6%96%99).jpg"
       },
-      "programs": [
-        {
-          "id": "iwate-ouen-musyoka",
-          "name": "いわて子育て応援保育料無償化事業",
-          "kind": "second_free",
-          "kindLabel": "第2子以降の無償化",
-          "content": "市町村と連携して、第2子以降の3歳未満児の保育料を無償化する。県は市町村の経費の1/2を補助する。令和8年度当初予算（案）に「いわて子育て応援保育料無償化事業費補助」603百万円。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "free",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認"
-          },
-          "start": {
-            "date": "2023-04",
-            "text": "令和5年度から"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "市町村が実施し、県が1/2を補助。県内全市町村で実施かは未確認（県のページは県全体の制度として案内している）。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2",
-          "budgetR8": "603百万円（令和8年度当初予算案）",
-          "asOf": "令和8年度当初予算案（令和8年2月）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "岩手県 いわて子育て応援保育料無償化事業",
-              "url": "https://www.pref.iwate.jp/kurashikankyou/kosodate/shien/kosodate/1065057.html"
-            },
-            {
-              "label": "岩手県 令和8年度一般会計当初予算（案）のポイント（令和8年2月）",
-              "url": "https://www.pref.iwate.jp/_res/projects/default_project/_page_/001/097/563/hp_pdf_080325/15_080325_shiryou5_2.pdf"
-            },
-            {
-              "label": "岩手県 令和8年2月県議会定例会知事演述",
-              "url": "https://www.pref.iwate.jp/kensei/seisaku/suishin/chiji/1095125.html"
-            }
-          ],
-          "unverified": [
-            "第2子の数え方（同時に通う子だけか、上の子の年齢を問わないか）",
-            "所得制限",
-            "全市町村で実施か（実施市町村の一覧）"
-          ]
-        }
-      ],
-      "notes": [
-        "同じ予算案に、保育所等を利用しない生後2か月〜3歳未満の第2子以降の家庭への「在宅育児支援金」84百万円（市町村への1/2補助）がある（保育料の制度ではない）。"
-      ],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "岩手県 第2子以降 3歳未満児 保育料 無償化 県補助 市町村 所得制限",
-        "岩手県 保育料 無償化 第2子 3歳未満 県 市町村 補助 子ども・子育て支援 令和8年度（pref.iwate.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "宮城県",
-      "prefCode": "040002",
-      "municipalities": 35,
-      "status": "県の独自の制度は見つからなかった（未確認）",
-      "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は見つからなかった（未確認）。令和8年度は「少子化対策支援市町村交付金」を拡充するが、保育料に使えるかは未確認。市町村が独自に第2子以降を無償化する動きがある。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 35
+      {
+       "label": "北海道 平成29年度の重点施策資料（「第2子以降(3歳未満児)の保育料を所得に応じ無償化」）",
+       "url": "https://www.pref.hokkaido.lg.jp/fs/5/1/2/3/0/4/7/_/04-02-20-23.pdf"
       },
-      "programs": [],
-      "notes": [
-        "令和8年度、県は少子化対策支援市町村交付金を拡充し、地域の実情に応じた取組を後押しする（知事説明要旨）。保育料の無償化に使えるか、使っている市町村があるかは未確認。"
-      ],
-      "sources": [
-        {
-          "label": "宮城県 第399回宮城県議会知事説明要旨（令和8年2月17日）",
-          "url": "https://www.pref.miyagi.jp/soshiki/kohou/260217.html"
-        },
-        {
-          "label": "宮城県 幼児教育・保育の無償化について",
-          "url": "https://www.pref.miyagi.jp/site/kosodate/stage-nyuyouji05.html"
-        }
-      ],
-      "municipalExamples": [
-        {
-          "code": "042161",
-          "name": "富谷市",
-          "content": "2026年8月から第2子以降の保育料を無償化。多子の数え方の年齢制限と所得制限を撤廃（同時に通う未就学児で数えていた）。",
-          "relation": "市町村独自",
-          "asOf": "2026年6月（市の記者会見資料）",
-          "confidence": "推定",
-          "via": "今回の検索（2026-11-01）",
-          "sources": [
-            {
-              "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
-              "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
-            }
-          ]
-        },
-        {
-          "code": "042111",
-          "name": "岩沼市",
-          "content": "第2子以降の保育料を無償化（県の調査、2026年1月時点）",
-          "relation": "市町村独自",
-          "asOf": "2026年1月時点（富谷市の資料が引く県の調査）",
-          "confidence": "推定",
-          "via": "今回の検索（2026-11-01）",
-          "sources": [
-            {
-              "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
-              "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
-            }
-          ]
-        },
-        {
-          "code": "042137",
-          "name": "栗原市",
-          "content": "第2子以降の保育料を無償化（県の調査、2026年1月時点）",
-          "relation": "市町村独自",
-          "asOf": "2026年1月時点（富谷市の資料が引く県の調査）",
-          "confidence": "推定",
-          "via": "今回の検索（2026-11-01）",
-          "sources": [
-            {
-              "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
-              "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
-            }
-          ]
-        },
-        {
-          "code": "042056",
-          "name": "気仙沼市",
-          "content": "第2子以降の保育料を無償化（県の調査、2026年1月時点）",
-          "relation": "市町村独自",
-          "asOf": "2026年1月時点（富谷市の資料が引く県の調査）",
-          "confidence": "推定",
-          "via": "今回の検索（2026-11-01）",
-          "sources": [
-            {
-              "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
-              "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
-            }
-          ]
-        },
-        {
-          "code": "041009",
-          "name": "仙台市",
-          "content": "2026年9月からの（第2子以降の）保育料無償化を公表（富谷市の資料の記載。中身は未確認）",
-          "relation": "市町村独自",
-          "asOf": "2026年6月（富谷市の記者会見資料）",
-          "confidence": "推定",
-          "via": "今回の検索（2026-11-01）",
-          "sources": [
-            {
-              "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
-              "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
-            }
-          ]
-        }
-      ],
-      "searches": [
-        "宮城県 多子世帯 保育料 軽減 第3子 第2子 3歳未満 県 補助事業 令和8年度",
-        "宮城県 保育料 第2子以降 無償化 市町村 支援 県 補助 令和8年度 知事（pref.miyagi.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "仮置き"
-    },
-    {
-      "pref": "秋田県",
-      "prefCode": "050008",
-      "municipalities": 25,
-      "status": "県の制度あり（推定）",
-      "summary": "「すこやか子育て支援事業」で、県と市町村が保育料を助成する。第2子以降は全額（保育所は世帯年収約640万円まで）、第3子以降が生まれた世帯は年収約930万円まで第2子以降が半額、それ以外（第1子など）は所得に応じて1/2か1/4。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 25,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "akita-sukoyaka-second",
-          "name": "すこやか子育て支援事業（第2子以降の全額助成）",
-          "kind": "second_free",
-          "kindLabel": "第2子以降の無償化（所得制限あり）",
-          "content": "県は市町村と協力し、新たに生まれた第2子以降の保育料等を全額助成する。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "free",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "所得制限の範囲内の世帯だけ。「新たに生まれた」の意味（いつ以降に生まれた子か）は未確認。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": true,
-            "text": "保育所は世帯年収約640万円まで（幼稚園は約680万円まで）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "県と市町村が経費を1/2ずつ負担する補助事業。令和7年4月1日現在の市町村一覧に県の基準として載っており、全市町村で実施とみられるが未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2",
-          "budgetR8": "すこやか子育て支援事業 約8億2,434万円（令和8年度当初予算案。保育料・副食費の助成全体）",
-          "asOf": "令和8年度当初予算案／制度の中身は県のページ（掲載時期未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "秋田県 子育て応援サイト「保育料等の助成（すこやか子育て支援事業）」",
-              "url": "https://common3.pref.akita.lg.jp/kosodate/kosodate-info/help/subsidy/ko7"
-            },
-            {
-              "label": "秋田県 保育料等の助成（すこやか子育て支援事業）について",
-              "url": "https://www.pref.akita.lg.jp/pages/archive/28393"
-            },
-            {
-              "label": "秋田県 市町村の子育て支援施策等一覧（令和7年4月1日現在）",
-              "url": "https://common3.pref.akita.lg.jp/kosodate/uploads/contents/pages_0000000014_00/%EF%BC%9C%E3%81%84%E3%81%A3%E3%81%97%E3%82%87%E3%81%AB%E3%81%AD%E3%81%A3%E3%81%A8%E3%80%82%EF%BC%9E%E5%B8%82%E7%94%BA%E6%9D%91%E3%81%AE%E5%AD%90%E8%82%B2%E3%81%A6%E6%94%AF%E6%8F%B4%E6%96%BD%E7%AD%96%E7%AD%89%E4%B8%80%E8%A6%A7(R7.4.1)_(1).pdf"
-            },
-            {
-              "label": "秋田県 令和8年度当初予算案の概要（すこやか子育て支援事業）",
-              "url": "https://www.pref.akita.lg.jp/uploads/public/archive_0000093875_00/%E4%BB%A4%E5%92%8C%EF%BC%98%E5%B9%B4%E5%BA%A6%E5%BD%93%E5%88%9D%E4%BA%88%E7%AE%97(%E6%A1%88)%E6%A6%82%E8%A6%81.pdf"
-            }
-          ],
-          "unverified": [
-            "「新たに生まれた第2子以降」がいつ以降に生まれた子か",
-            "第2子の数え方（上の子の年齢上限）",
-            "令和8年度に所得制限額が変わったか"
-          ]
-        },
-        {
-          "id": "akita-sukoyaka-tashi",
-          "name": "すこやか子育て支援事業（第3子以降が生まれた世帯の所得制限の緩和）",
-          "kind": "second_half",
-          "kindLabel": "多子世帯の第2子以降の半額（所得制限を緩和）",
-          "content": "第3子以降が生まれた場合は所得制限を緩和し、世帯年収約930万円までの世帯は第2子以降の保育料を半額助成する。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": null,
-            "second": "half",
-            "third": "half",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "子が3人以上で、世帯年収約640万円を超え約930万円までの世帯が対象とみられる（約640万円までは全額助成）。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": true,
-            "text": "世帯年収約930万円まで"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "県と市町村が経費を1/2ずつ負担する補助事業。令和7年4月1日現在の市町村一覧に県の基準として載っており、全市町村で実施とみられるが未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2",
-          "budgetR8": "すこやか子育て支援事業 約8億2,434万円（令和8年度当初予算案。保育料・副食費の助成全体）",
-          "asOf": "令和8年度当初予算案／制度の中身は県のページ（掲載時期未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "秋田県 子育て応援サイト「保育料等の助成（すこやか子育て支援事業）」",
-              "url": "https://common3.pref.akita.lg.jp/kosodate/kosodate-info/help/subsidy/ko7"
-            },
-            {
-              "label": "秋田県 保育料等の助成（すこやか子育て支援事業）について",
-              "url": "https://www.pref.akita.lg.jp/pages/archive/28393"
-            }
-          ],
-          "unverified": [
-            "子の数え方（上の子の年齢上限）",
-            "令和8年度も同じ額か"
-          ]
-        },
-        {
-          "id": "akita-sukoyaka-partial",
-          "name": "すこやか子育て支援事業（保育料の1/2・1/4助成）",
-          "kind": "first_partial",
-          "kindLabel": "保育料の一部助成（第1子など、所得制限あり）",
-          "content": "市町村民税所得割課税額に応じて保育料（と副食費）の1/2または1/4を助成する。ひとり親家庭は一律1/2。秋田市についての民間のまとめページに「保育料および副食費の1/4又は1/2を助成。また、第2子以降保育料を全額助成」とあり、全額助成にならない子（第1子など）が対象とみられる。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "partial",
-            "second": null,
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "1/2と1/4の境目の所得割額は未確認。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": true,
-            "text": "保育所は世帯年収約640万円まで（1/2か1/4かは市町村民税所得割課税額による。境目は未確認）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "県と市町村が経費を1/2ずつ負担する補助事業。令和7年4月1日現在の市町村一覧に県の基準として載っており、全市町村で実施とみられるが未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2",
-          "budgetR8": "すこやか子育て支援事業 約8億2,434万円（令和8年度当初予算案。保育料・副食費の助成全体）",
-          "asOf": "令和8年度当初予算案／制度の中身は県のページ（掲載時期未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "秋田県 子育て応援サイト「保育料等の助成（すこやか子育て支援事業）」",
-              "url": "https://common3.pref.akita.lg.jp/kosodate/kosodate-info/help/subsidy/ko7"
-            },
-            {
-              "label": "秋田県 保育料等の助成（すこやか子育て支援事業）について",
-              "url": "https://www.pref.akita.lg.jp/pages/archive/28393"
-            },
-            {
-              "label": "秋田市 よくある質問（すこやか子育て支援事業を県の補助を受けて実施）",
-              "url": "https://www.city.akita.lg.jp/faq/kosodate/1012937/1012941.html"
-            },
-            {
-              "label": "生活ガイド.com 秋田市の子育て支援のまとめ（民間サイト・更新日不明。「保育料および副食費の1/4又は1/2を助成。また、第2子以降保育料を全額助成」「第1子保育料無償化事業」の記載）",
-              "url": "https://www.seikatsu-guide.com/keyword/500/5/5201/"
-            }
-          ],
-          "unverified": [
-            "1/2と1/4を分ける所得割額",
-            "対象が第1子だけか"
-          ]
-        }
-      ],
-      "notes": [
-        "秋田市についての民間のまとめページ（生活ガイド.com、更新日不明）に「第1子保育料無償化事業（所得制限あり）」が載っているが、県の制度か市の制度か、いまも続いているかは未確認。 https://www.seikatsu-guide.com/keyword/500/5/5201/"
-      ],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "秋田県 すこやか子育て支援事業 保育料 助成 第1子 第2子 所得制限 令和8年度",
-        "秋田県 保育料 第1子 第2子 無償化 すこやか子育て支援事業 所得制限 令和7年度 令和8年度 拡充（pref.akita.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "山形県",
-      "prefCode": "060003",
-      "municipalities": 35,
-      "status": "県の制度あり（推定）",
-      "summary": "「保育料無償化に向けた段階的負担軽減」で、0〜2歳児の保育料を所得の低い順に軽くしている。国の階層の第3・第4階層（所得割97,000円未満）は国基準利用料の1/2、第5階層（169,000円未満）は1/4を県が市町村に交付（第5階層は令和7年4月から）。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 35,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "yamagata-dankai-keigen",
-          "name": "保育料無償化に向けた段階的負担軽減事業",
-          "kind": "income_tier",
-          "kindLabel": "所得階層ごとの段階的な軽減",
-          "content": "国の利用者負担の階層のうち、まだ無償化されていない階層の0〜2歳児の保育料を軽くする。県は第3・第4階層について国基準利用料の1/2、第5階層について1/4を交付金として市町村に交付し、市町村を通じて保育料が軽減される。令和8年度当初予算に945,351千円。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "partial",
-            "second": null,
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "第1子も対象とみられる（県の資料は0〜2歳児全般の軽減として説明）。保護者の負担が最終的にいくらになるか（無償か半額か）は市町村の負担分との合計で決まり、確認できなかった。生まれ順での扱いの違いは未確認。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "生まれ順で分ける制度ではないとみられる（未確認）"
-          },
-          "incomeLimit": {
-            "exists": true,
-            "text": "第3・第4階層＝市町村民税所得割97,000円未満（推定年収 第3階層330万円未満・第4階層470万円未満）、第5階層＝169,000円未満（推定年収640万円未満）"
-          },
-          "start": {
-            "date": null,
-            "text": "第5階層の軽減は令和7年4月から。事業そのものの開始時期は未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "県が市町村に交付し、市町村を通じて軽減する。全市町村で実施かは未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県が国基準利用料の1/2（第3・第4階層）・1/4（第5階層）を市町村に交付",
-          "budgetR8": "945,351千円（令和8年度当初予算）",
-          "asOf": "令和8年度当初予算主要事業の概要（令和8年3月）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "山形県 保育料無償化に向けた段階的負担軽減について",
-              "url": "https://www.pref.yamagata.jp/010001/kenfuku/kosodate/hoiku/futankeigen.html"
-            },
-            {
-              "label": "山形県 令和8年度当初予算主要事業の概要（令和8年3月）",
-              "url": "https://www.pref.yamagata.jp/documents/50798/r8_shuyojigyo.pdf"
-            },
-            {
-              "label": "やまがた子育て応援サイト 保育料の負担軽減",
-              "url": "https://kosodate.pref.yamagata.jp/support/hoikuryo-futan-keigen"
-            },
-            {
-              "label": "山形県 資料（保育料の段階的無償化）",
-              "url": "https://www.pref.yamagata.jp/documents/23254/07hoikumusyouka.pdf"
-            }
-          ],
-          "unverified": [
-            "保護者の最終的な負担（無償か半額か）",
-            "第1子から対象か（生まれ順の扱い）",
-            "全市町村で実施か",
-            "第6階層以上への拡大の予定"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "山形県 保育料 第2子 無償化 0歳から2歳 県 市町村 支援 所得制限 令和8年度",
-        "山形県 保育料 段階的 無償化 令和8年度 拡充 0歳から2歳 第6区分 市町村 交付金 所得割（pref.yamagata.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "福島県",
-      "prefCode": "070009",
-      "municipalities": 59,
-      "status": "県の制度あり（推定）",
-      "summary": "県は、多子世帯の保育料を軽くする市町村（中核市を除く）を支援している。令和6年度は41市町村・1,344人で、第3子以降の3歳未満児の保育料の減免額の一部を補助。条件は市町村が決める。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 3,
-        "optInOrUnknown": 56,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "fukushima-tashi-keigen",
-          "name": "多子世帯の保育料軽減への補助",
-          "kind": "third_reduced",
-          "kindLabel": "第3子以降の軽減（市町村の減免に補助）",
-          "content": "保育所等に入所する第3子以降の3歳未満児の保育料について、市町村が行う減免額の一部を県が補助する。令和6年度は41市町村・1,344人が対象。軽減の条件は各市町村が定める。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": null,
-            "second": null,
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "無料か一部軽減かは市町村ごと。福島市は2019年12月の発表で「同一世帯の2人目（18歳未満）以降の負担を軽減（所得制限有）、3歳未満の第2子半額・第3子以降無料」としていたが、県の制度との関係と現在の内容は未確認。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "市町村が定める（県の基準は未確認）。県のサイトに絞った検索の要約では、会津若松市は第1子とする範囲を小学3年生まで広げている、喜多方市は県の制度に上乗せ、郡山市（中核市）は18歳未満の兄姉が2人以上いる3歳未満児の区分がある、とされた（記載元のページは特定できず）"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認（市町村が定める）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "中核市（福島市・郡山市・いわき市）を除く市町村の取組を県が支援。令和6年度は41市町村（どの市町村かは未確認）。",
-          "excludedMunicipalityCodes": [
-            "072010",
-            "072036",
-            "072044"
-          ],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "相馬市の資料では国1/3・県1/3・市町村1/3",
-          "budgetR8": null,
-          "asOf": "令和6年度の実績（令和7年9月の年次報告）・令和7年度の県民提案への回答",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "福島県 令和7年度 県民提案・回答（保健福祉に関すること）",
-              "url": "https://www.pref.fukushima.lg.jp/sec/01010e/koucho7-r7-03.html"
-            },
-            {
-              "label": "福島県 子育て支援に関する施策の年次報告（令和6年度分、令和7年9月）",
-              "url": "https://www.pref.fukushima.lg.jp/uploaded/attachment/710461.pdf"
-            },
-            {
-              "label": "福島県 相双保健福祉事務所 業務概況 令和7年度版（「相馬市の資料」として補助率 国1/3・県1/3・市町村1/3。令和3年度版との取り違えの可能性あり）",
-              "url": "https://www.pref.fukushima.lg.jp/uploaded/attachment/705289.pdf"
-            }
-          ],
-          "unverified": [
-            "令和8年度も同じか",
-            "県の補助の対象になる子の条件（兄姉の年齢上限・所得制限）",
-            "41市町村の名前",
-            "保護者の負担が0円になるか"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "福島県 多子世帯保育料軽減事業 第2子 第3子 3歳未満 保育料 県 市町村 補助 所得制限",
-        "福島県 保育料 多子世帯 第3子 第2子 3歳未満 軽減 市町村 補助 こども未来局（pref.fukushima.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "茨城県",
-      "prefCode": "080004",
-      "municipalities": 44,
-      "status": "県の制度あり（推定）",
-      "summary": "「多子世帯保育料軽減事業費補助」で、多子世帯の3歳未満児の保育料を軽くする市町村に補助（令和8年度も掲載）。資料では、第3子以降は所得制限なし、第2子は一定の所得の範囲で半額。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 44,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "ibaraki-tashi-third",
-          "name": "多子世帯保育料軽減事業費補助（第3子以降）",
-          "kind": "third_free",
-          "kindLabel": "第3子以降の無償化",
-          "content": "多子世帯で保育所等に入所する3歳未満児の保育料の軽減事業に県が補助する。資料では、第3子以降の3歳未満児の保育料は所得制限を撤廃している。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": null,
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "「無償」と明記されているかは要約では未確認（所得制限の撤廃は確認）。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": false,
-            "text": "なし（所得制限を撤廃。撤廃の時期は未確認）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "県から市町村への補助（対象団体：市町村）。全市町村で実施か、手を挙げた市町村だけかは未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2",
-          "budgetR8": null,
-          "asOf": "令和8年度市町村等に対する助成制度の概要（制度の中身は年度未確認の資料）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "茨城県 令和8年度市町村等に対する助成制度の概要（多子世帯保育料軽減事業費補助）",
-              "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/r8.html"
-            },
-            {
-              "label": "茨城県 市町村に対する助成制度の資料（多子世帯保育料軽減事業費補助。年度未確認）",
-              "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/documents/35hukushi.pdf"
-            },
-            {
-              "label": "いばらき結婚・子育てポータルサイト（多子世帯保育料軽減事業）",
-              "url": "https://www.kids.pref.ibaraki.jp/kids/nursing/"
-            }
-          ],
-          "unverified": [
-            "第3子の数え方（上の子の年齢上限、同時入所が要るか）",
-            "開始時期・所得制限を撤廃した時期",
-            "実施市町村"
-          ]
-        },
-        {
-          "id": "ibaraki-tashi-second",
-          "name": "多子世帯保育料軽減事業費補助（第2子）",
-          "kind": "second_half",
-          "kindLabel": "第2子の半額（所得制限あり）",
-          "content": "資料では、第2子は世帯年収が一定の範囲の世帯に限って半額に軽減する。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": null,
-            "second": "half",
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": true,
-            "text": "世帯年収が一定の範囲の世帯だけ（範囲は未確認）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "県から市町村への補助（対象団体：市町村）。全市町村で実施か、手を挙げた市町村だけかは未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2",
-          "budgetR8": null,
-          "asOf": "令和8年度市町村等に対する助成制度の概要（制度の中身は年度未確認の資料）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "茨城県 令和8年度市町村等に対する助成制度の概要（多子世帯保育料軽減事業費補助）",
-              "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/r8.html"
-            },
-            {
-              "label": "茨城県 市町村に対する助成制度の資料（多子世帯保育料軽減事業費補助。年度未確認）",
-              "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/documents/35hukushi.pdf"
-            }
-          ],
-          "unverified": [
-            "対象になる世帯年収の範囲",
-            "第2子の数え方",
-            "令和8年度も同じか"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "茨城県 多子世帯保育料軽減事業 第2子 第3子 3歳未満 保育料 所得制限 令和8年度（pref.ibaraki.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "栃木県",
-      "prefCode": "090000",
-      "municipalities": 25,
-      "status": "県の制度あり（推定）",
-      "summary": "令和6年10月から、同じ世帯の2人目の0〜2歳児（3号認定）の保育料を免除。所得制限なし、上の子が卒園していても18歳未満なら2人目と数える。県内すべての市町で実施。",
-      "coverage": {
-        "allMunicipalities": 25,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "tochigi-second-free",
-          "name": "第2子の保育料免除（とちぎの第2子の保育料無償化）",
-          "kind": "second_free",
-          "kindLabel": "第2子の無償化",
-          "content": "生計を一にする同一世帯で2人以上の子がいる家庭は、保育所・認定こども園等に通う2人目の子（0〜2歳、3号認定）の保育料が免除になる。保育料に含まれる副食費も免除。3歳の誕生日を迎えた後も、0〜2歳児クラスの間は無料。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "free",
-            "third": null,
-            "secondCount": "household",
-            "thirdCount": null
-          },
-          "effectNote": "3人目以降の扱い（上の子が通っていない3人目も無料になるか）は記事の要約では未確認。",
-          "counting": {
-            "rule": "household",
-            "olderSiblingAgeLimit": "18歳未満",
-            "text": "同一世帯（生計が同じ）の2人目。上の子が卒園しても18歳未満なら対象"
-          },
-          "incomeLimit": {
-            "exists": false,
-            "text": "なし（世帯年収にかかわらず、すべての世帯が対象）"
-          },
-          "start": {
-            "date": "2024-10",
-            "text": "令和6年10月から"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "all",
-          "scopeLabel": "全市町村",
-          "scopeNote": "県のポータルの記事に「栃木県内すべての市町で、第２子の保育料が無料になります」。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": [
-            "092011",
-            "092029",
-            "092037",
-            "092045",
-            "092053",
-            "092061",
-            "092088",
-            "092096",
-            "092100",
-            "092118",
-            "092134",
-            "092142",
-            "092151",
-            "092169",
-            "093017",
-            "093424",
-            "093432",
-            "093441",
-            "093459",
-            "093611",
-            "093645",
-            "093840",
-            "093866",
-            "094072",
-            "094111"
-          ],
-          "implementingListBasis": "県の子育て支援ポータルの「県内すべての市町で」から、県内の全25市町のコードを展開した",
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "令和6年10月の開始時の県の記事（令和8年度の変更の有無は未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "栃木県 子育て支援ポータル「とこぽ」特集：とちぎの「第２子の保育料無償化」",
-              "url": "https://tocopo.pref.tochigi.lg.jp/topics/feature-11/"
-            },
-            {
-              "label": "栃木県 経済的な支援制度",
-              "url": "https://www.pref.tochigi.lg.jp/e06/welfare/kodomo/kosodatesoudan/shiennseido.html"
-            },
-            {
-              "label": "とこぽ 教育・保育施設について",
-              "url": "https://tocopo.pref.tochigi.lg.jp/search/search-18/"
-            }
-          ],
-          "unverified": [
-            "令和8年度に変わったか",
-            "3人目以降の扱い",
-            "県と市町の費用負担の割合"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "栃木県 保育料 第2子 無償化 3歳未満 県 市町村 補助 所得制限 令和8年度（pref.tochigi.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "群馬県",
-      "prefCode": "100005",
-      "municipalities": 35,
-      "status": "県の制度あり（推定）",
-      "summary": "第3子以降の3歳未満児の保育料を無料にしている市町村に、県が1/2を補助。兄姉の年齢制限と所得制限は県では定めない（市町村が独自に設けることはある）。第2子の県の制度は見つからなかった。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 35,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "gunma-third-free",
-          "name": "第3子以降3歳未満児保育料免除事業費補助金",
-          "kind": "third_free",
-          "kindLabel": "第3子以降の無償化（市町村への補助）",
-          "content": "認可保育所・認定こども園・認可外保育施設（月極利用）を利用する第3子以降の3歳未満児の保育料を無料化している市町村に、県が補助する（県1/2・市町村1/2）。認可外は施設の利用料が対象で、補助基準額の上限は24,000円。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "none",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": "household"
-          },
-          "effectNote": "県の基準では兄姉の年齢を問わないが、市町村が独自に年齢制限や所得制限を設けている場合がある。",
-          "counting": {
-            "rule": "household",
-            "olderSiblingAgeLimit": "県では定めない（市町村が独自に設ける場合あり）",
-            "text": "扶養している児童が3人以上いる世帯の3人目以降。兄姉の年齢制限は県では定めない"
-          },
-          "incomeLimit": {
-            "exists": false,
-            "text": "県では定めない（市町村が独自に設ける場合あり）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "無料化している市町村に県が補助するしくみ。実施市町村の一覧は未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2",
-          "budgetR8": null,
-          "asOf": "県のページ（掲載時期未確認。令和8年度も同じかは未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "群馬県 第3子以降3歳未満児保育料免除事業費補助金",
-              "url": "https://www.pref.gunma.jp/page/3682.html"
-            },
-            {
-              "label": "群馬県 第3子以降の保育料無料化への補助（扶養している児童が3人以上の世帯。旧ページとみられ、掲載時期未確認）",
-              "url": "https://www.pref.gunma.jp/03/bv01_00072.html"
-            }
-          ],
-          "unverified": [
-            "開始時期",
-            "令和8年度も続いているか",
-            "実施市町村の一覧と、市町村ごとの年齢制限・所得制限"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "群馬県 保育料 第2子 第3子 無償化 3歳未満 県 市町村 補助 所得制限（pref.gunma.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "埼玉県",
-      "prefCode": "110001",
-      "municipalities": 63,
-      "status": "県の制度あり（推定）",
-      "summary": "「多子世帯保育料無償化支援事業」で、満3歳未満の第3子以降の保育料を、最年長の子の年齢にかかわらず無償化（市町村と共同、県が費用の半額を補助）。平成27年4月に同時入所の要件をなくした。",
-      "coverage": {
-        "allMunicipalities": 63,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "saitama-tashi-musyoka",
-          "name": "多子世帯保育料無償化支援事業",
-          "kind": "third_free",
-          "kindLabel": "第3子以降の無償化",
-          "content": "保育所等に入所する満3歳未満の第3子以降の保育料を、最年長のこどもの年齢にかかわらず無償化する事業を、県が市町村と共同で実施する（県が市町村に費用の半額を補助）。国の多子軽減は兄弟姉妹の同時入所が要件だが、県の事業は同時入所に関わらない。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "none",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": "household"
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": "household",
-            "olderSiblingAgeLimit": "問わない（最年長のこどもの年齢にかかわらない）",
-            "text": "原則として3人以上のこどもが同居している世帯の第3子以降。対象は、保育が行われた年度の初日の前日に満3歳に達していない子（0〜2歳児クラス）"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認（検索結果の要約に記載がなかった。既存の調べでは所沢市が「世帯収入を問わず」と案内）"
-          },
-          "start": {
-            "date": "2015-04",
-            "text": "平成27年4月から同時入所の要件を撤廃（無償化になった時期は未確認）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "all",
-          "scopeLabel": "全市町村",
-          "scopeNote": "県は「市町村と共同で実施」と説明。既存の調べ（src/shared/data.ts）では県議会の資料を出典に63市町村すべてで実施としている（今回は63市町村の記載を自分で確かめていない）。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": [
-            "111007",
-            "112011",
-            "112020",
-            "112038",
-            "112062",
-            "112071",
-            "112089",
-            "112097",
-            "112101",
-            "112119",
-            "112127",
-            "112143",
-            "112151",
-            "112160",
-            "112178",
-            "112186",
-            "112194",
-            "112216",
-            "112224",
-            "112232",
-            "112241",
-            "112259",
-            "112275",
-            "112283",
-            "112291",
-            "112305",
-            "112313",
-            "112321",
-            "112330",
-            "112348",
-            "112356",
-            "112372",
-            "112381",
-            "112399",
-            "112402",
-            "112411",
-            "112429",
-            "112437",
-            "112453",
-            "112461",
-            "113018",
-            "113247",
-            "113263",
-            "113271",
-            "113417",
-            "113425",
-            "113433",
-            "113468",
-            "113476",
-            "113484",
-            "113492",
-            "113611",
-            "113620",
-            "113638",
-            "113654",
-            "113697",
-            "113816",
-            "113832",
-            "113859",
-            "114081",
-            "114421",
-            "114642",
-            "114651"
-          ],
-          "implementingListBasis": "既存の調べの「63市町村すべて」（県議会の資料）から、県内の全63市町村のコードを展開した（今回は再確認していない）",
-          "funding": "県が無償化を行う市町村に費用の半額を補助（令和7・8年度の予算資料の検索要約）",
-          "budgetR8": null,
-          "asOf": "県のページと実施要綱（掲載時期未確認）・令和8年度予算資料",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "埼玉県 多子世帯への保育料支援について",
-              "url": "https://www.pref.saitama.lg.jp/b0616/hoiku-jinzai/tashisetai.html"
-            },
-            {
-              "label": "埼玉県多子世帯保育料無償化支援事業費補助金実施要綱",
-              "url": "https://www.pref.saitama.lg.jp/documents/256770/tashijisshi.pdf"
-            },
-            {
-              "label": "埼玉県 令和8年度予算資料（多子世帯保育料無償化支援事業）",
-              "url": "https://www.pref.saitama.lg.jp/yosan-info/ST2026-10/pdf/021599.pdf"
-            },
-            {
-              "label": "埼玉県 令和7年度予算資料（多子世帯保育料無償化支援事業）",
-              "url": "https://www.pref.saitama.lg.jp/yosan-info/ST2025-10/pdf/021599.pdf"
-            },
-            {
-              "label": "埼玉県議会 第3子以降の保育料無償化（63市町村）（既存の調べ src/shared/data.ts の出典。今回は開いていない）",
-              "url": "https://www.pref.saitama.lg.jp/e1601/gikai-gaiyou/r0509/4/k0210.html"
-            }
-          ],
-          "unverified": [
-            "所得制限の有無",
-            "63市町村すべてで実施していること（今回は再確認していない）",
-            "第2子の県の制度（見つからなかった）"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [
-        {
-          "code": "111007",
-          "name": "さいたま市",
-          "content": "第3子以降の3歳未満児の保育料を、兄弟姉妹の年齢に関係なく免除（県の多子世帯保育料無償化支援事業を活用）",
-          "relation": "県の制度の実施例",
-          "asOf": "令和8年度（既存の調べ）",
-          "confidence": "推定",
-          "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
-          "sources": [
-            {
-              "label": "さいたま市 保育施設等の利用案内（第3子以降3歳未満の保育料免除、県の多子世帯保育料無償化支援事業を活用）",
-              "url": "https://www.city.saitama.lg.jp/003/001/015/001/index.html"
-            },
-            {
-              "label": "さいたま市 多子世帯の保育料免除に関する要綱（PDF）",
-              "url": "https://www.city.saitama.lg.jp/003/001/015/001/p045608_d/fil/youkou.pdf"
-            }
-          ]
-        },
-        {
-          "code": "112089",
-          "name": "所沢市",
-          "content": "0〜2歳児は兄姉の年齢に関係なく、最年長の子から数えて第3子以降なら世帯収入を問わず無料（市は「市独自の取組」として案内）",
-          "relation": "県の制度と同じ内容（県の補助を使っているかは市の案内では未確認）",
-          "asOf": "令和8年度（既存の調べ）",
-          "confidence": "推定",
-          "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
-          "sources": [
-            {
-              "label": "所沢市 保育料について",
-              "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/hoikuryounituite.html"
-            },
-            {
-              "label": "所沢市 令和8年度 入園のしおり（令和8年4月発行版）",
-              "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/R8_hoiku.files/R8shiori3.pdf"
-            }
-          ]
-        },
-        {
-          "code": "112241",
-          "name": "戸田市",
-          "content": "埼玉県の多子世帯軽減により、第3子以降の0〜2歳児は上の子の年齢に関係なく無料",
-          "relation": "県の制度の実施例",
-          "asOf": "令和6年度の市の資料（既存の調べ）",
-          "confidence": "推定",
-          "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
-          "sources": [
-            {
-              "label": "戸田市 保育料関連資料（PDF）",
-              "url": "https://www.city.toda.saitama.jp/uploaded/attachment/66878.pdf"
-            }
-          ]
-        }
-      ],
-      "searches": [
-        "埼玉県 多子世帯保育料無償化支援事業 第3子以降 3歳未満 所得制限 兄姉 年齢 市町村 第2子（pref.saitama.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "千葉県",
-      "prefCode": "120006",
-      "municipalities": 54,
-      "status": "県の独自の制度は見つからなかった（未確認）",
-      "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は、県のサイトに絞った検索でも見つからなかった（未確認）。民間の解説サイトには「県内一律で同じ上乗せがあるわけではない」とある。千葉市・船橋市・市川市などは市独自に多子軽減を広げている（既存の調べ）。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 54
-      },
-      "programs": [],
-      "notes": [
-        "県が第3子以降の学校給食費を市町村と連携して無償化（令和5年1月から）しているが、保育料ではない。",
-        "民間サイト（公式ではない）https://kids.shopper-shopping.shop/contents/chiba-nursery-kindergarten-subsidy/ に「県内一律で同じ上乗せがあるわけではない」。"
-      ],
-      "sources": [
-        {
-          "label": "千葉県こども・若者みらいプラン（令和8年3月改定）（検索で保育料の県の制度は出てこなかった）",
-          "url": "https://www.pref.chiba.lg.jp/kosodate/kodomokeikaku/documents/zentai.pdf"
-        }
-      ],
-      "municipalExamples": [],
-      "searches": [
-        "千葉県 多子世帯 保育料 軽減 第3子以降 第2子 0歳から2歳 県 補助 市町村 所得制限 令和8年度（pref.chiba.lg.jp）",
-        "千葉県 子育て支援 第3子以降 保育料 減免 市町村 補助金 所得制限 撤廃 0歳から2歳",
-        "（5県まとめて・extended）県が市町村に補助 0〜2歳 保育料 第2子 第3子 無償化 石川県 静岡県 新潟県 千葉県 富山県 2026年度 県独自"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "仮置き"
-    },
-    {
-      "pref": "東京都",
-      "prefCode": "130001",
-      "municipalities": 62,
-      "status": "県の制度あり（推定）",
-      "summary": "2025年9月から、0〜2歳の第1子の保育料を無償にする区市町村を都が支援（所得・年齢にかかわらず）。2023年10月からは0〜2歳の第2子以降も無料。どちらも実施は区市町村で、全62区市町村で実施かは未確認。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 62,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "tokyo-first-free",
-          "name": "0〜2歳の第1子の保育料の無償化（八王子市などの案内では「保育所等利用世帯負担軽減事業」）",
-          "kind": "first_free",
-          "kindLabel": "第1子の無償化（区市町村への支援）",
-          "content": "2025年9月1日から、認可保育所等を利用する0〜2歳の第1子の保育料を無償化する区市町村を都が支援する。年齢や所得にかかわらない。2023年10月からの第2子以降の無料化とあわせ、0〜2歳はすべての子が無料になる。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "free",
-            "second": "free",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "実施する区市町村だけ。延長保育料などは別。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "第1子から無料なので数え方は関係しない"
-          },
-          "incomeLimit": {
-            "exists": false,
-            "text": "なし（報道・解説記事による）"
-          },
-          "start": {
-            "date": "2025-09",
-            "text": "2025年9月1日から（検索結果の要約では、台東区は2025年4月から区独自に先行、江東区は第1子は年齢や課税状況にかかわらず無償と案内。記載元の記事は特定できず）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "区市町村が実施し、都が支援する。全区市町村での実施を示す都の一覧は見つからなかった。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "2025年9月開始（報道・解説記事）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "東京都福祉局 保育料等の無償化について（第1子の無償化を実施する区市町村を都が令和7年9月から支援）（既存の調べの出典。今回は開いていない）",
-              "url": "https://www.fukushi.metro.tokyo.lg.jp/kodomo/hoiku/mushouka"
-            },
-            {
-              "label": "BCN（2025年9月4日）東京都の第1子保育料無償化（報道）",
-              "url": "https://www.bcnretail.com/market/detail/20250904_554110.html"
-            },
-            {
-              "label": "ファイナンシャルフィールド 東京都では2025年9月以降 第1子から「保育料無償化」に?（解説記事）",
-              "url": "https://financial-field.com/living/entry-403726"
-            }
-          ],
-          "unverified": [
-            "都内62区市町村のうちどこが実施しているか（都の一覧は見つからなかった）",
-            "都の補助率",
-            "令和8年度も同じ内容か（報道は2025年時点）"
-          ]
-        },
-        {
-          "id": "tokyo-second-free",
-          "name": "第2子以降の保育料の無償化",
-          "kind": "second_free",
-          "kindLabel": "第2子以降の無償化（区市町村への支援）",
-          "content": "2023年10月から、0〜2歳の第2子以降の保育料を無料にしている（報道）。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "free",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "2025年9月からは第1子の無償化と合わせて0〜2歳はすべて無料になるため、実施している区市町村では数え方の違いは出ない。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認（保育所の第2子について、第1子の年齢を問うかは都の資料で確かめられなかった。児童発達支援の無償化では「第1子の年齢や世帯収入にかかわらず」とある）"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認"
-          },
-          "start": {
-            "date": "2023-10",
-            "text": "2023年10月から"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "区市町村が実施し、都が支援する。既存の調べ（src/shared/data.ts）のメモでは都の資料に55区市町村という数が出ている（今回は確かめていない）。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "2023年10月開始（報道）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "BCN（2025年9月4日）東京都の第1子保育料無償化（報道）",
-              "url": "https://www.bcnretail.com/market/detail/20250904_554110.html"
-            },
-            {
-              "label": "東京都福祉局 保育料等の無償化について（第1子の無償化を実施する区市町村を都が令和7年9月から支援）（既存の調べの出典。今回は開いていない）",
-              "url": "https://www.fukushi.metro.tokyo.lg.jp/kodomo/hoiku/mushouka"
-            }
-          ],
-          "unverified": [
-            "数え方と所得制限",
-            "実施区市町村の一覧"
-          ]
-        }
-      ],
-      "notes": [
-        "既存の調べ（src/shared/data.ts）では、杉並区の案内をもとに23区は0〜2歳の第1子から0円（2025年9月から、都の補助で区が実施）としている（推定。区ごとには未確認）。",
-        "2019年10月からは、年収約360万円以上の世帯で第1子が小学生以上の場合に、第2子を半額・第3子を無償にする経費を区市町村に補助していた（都福祉局の資料）。上の2つの制度で置き換わったとみられるが、現在の扱いは未確認。 出典: https://www.fukushi.metro.tokyo.lg.jp/documents/d/fukushi/tashisetaihenosien"
-      ],
-      "sources": [],
-      "municipalExamples": [
-        {
-          "code": "132098",
-          "name": "町田市",
-          "content": "2025年9月から0〜2歳児クラスの保育料は所得にかかわらず0円（第1子を含む）。市は2025年6月補正予算で第1子を無償化の対象に加えた",
-          "relation": "都の制度の実施例",
-          "asOf": "令和8年度（既存の調べ）",
-          "confidence": "推定",
-          "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
-          "sources": [
-            {
-              "label": "まちだ子育てサイト「利用者負担額等(保育料)について」",
-              "url": "https://kosodate-machida.tokyo.jp/soshiki/4/3/4/315.html"
-            },
-            {
-              "label": "町田市「令和7年度（2025年度）6月補正予算」",
-              "url": "https://www.city.machida.tokyo.jp/shisei/gyouzaisei/siyosan/hosei_25/hosei202506.html"
-            }
-          ]
-        },
-        {
-          "code": "132012",
-          "name": "八王子市",
-          "content": "2025年9月から、東京都の保育所等利用世帯負担軽減事業で0〜2歳児クラスは年齢・人数・所得にかかわらず0円",
-          "relation": "都の制度の実施例",
-          "asOf": "令和8年度（既存の調べ）",
-          "confidence": "推定",
-          "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
-          "sources": [
-            {
-              "label": "八王子市子育て応援サイト「幼児教育・保育の無償化について（令和7年9月から）」",
-              "url": "https://kosodate.city.hachioji.tokyo.jp/soshiki/hoikuyochienka/hoikuyochienka_kyufutanto/3670.html"
-            }
-          ]
-        },
-        {
-          "code": "132080",
-          "name": "調布市",
-          "content": "東京都の負担軽減事業の拡大で、2025年9月分から0〜2歳児クラスの第1子も無償（年齢・所得に関係なく）",
-          "relation": "都の制度の実施例",
-          "asOf": "令和8年度（既存の調べ）",
-          "confidence": "推定",
-          "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
-          "sources": [
-            {
-              "label": "調布市 利用者負担額(保育料)",
-              "url": "https://www.city.chofu.lg.jp/050020/p028008.html"
-            }
-          ]
-        },
-        {
-          "code": "132152",
-          "name": "国立市",
-          "content": "0〜2歳クラスは第1子から0円（2025年9月から、都の補助で市が実施）",
-          "relation": "都の制度の実施例",
-          "asOf": "2025年9月〜（既存の調べ）",
-          "confidence": "推定",
-          "via": "既存の調べ（src/shared/data.ts）から転記。今回は再確認していない",
-          "sources": [
-            {
-              "label": "国立市 認可保育所等における利用者負担額（保育料）の第1子無償化について",
-              "url": "https://www.city.kunitachi.tokyo.jp/soshiki/Dept04/Div03/Sec01/gyomu/0276/0277/0279/12840.html"
-            }
-          ]
-        }
-      ],
-      "searches": [
-        "東京都 保育所等利用世帯負担軽減事業 第1子 0歳から2歳 保育料 無償化 区市町村 令和8年度 補助（metro.tokyo.lg.jp）",
-        "東京都 保育料 第1子 無償化 2025年9月 区市町村 実施 一覧 都内全 第2子 第1子の年齢 所得制限なし"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "神奈川県",
-      "prefCode": "140007",
-      "municipalities": 33,
-      "status": "県の独自の制度は見つからなかった（未確認）",
-      "summary": "県独自の0〜2歳の保育料の無償化・軽減は見つからなかった（未確認）。県は意見募集への回答で、3歳未満児を含む保育料の完全無償化を国に要望していると答えている。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 33
-      },
-      "programs": [],
-      "notes": [
-        "県の幼児教育・保育の無償化のページは国の制度（多子軽減を含む）の説明。"
-      ],
-      "sources": [
-        {
-          "label": "神奈川県 意見募集への回答（東京都のような0〜2歳の無償化を求める意見に、国への要望で答えている）",
-          "url": "https://www.pref.kanagawa.jp/documents/114427/daichou.pdf"
-        },
-        {
-          "label": "神奈川県 幼児教育・保育の無償化",
-          "url": "https://www.pref.kanagawa.jp/docs/sy8/musyouka/2019musyouka.html"
-        }
-      ],
-      "municipalExamples": [],
-      "searches": [
-        "神奈川県 保育料 第2子 無償化 0歳から2歳 県 独自 市町村 補助 多子世帯（pref.kanagawa.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "仮置き"
-    },
-    {
-      "pref": "新潟県",
-      "prefCode": "150002",
-      "municipalities": 30,
-      "status": "県の独自の制度は見つからなかった（未確認）",
-      "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は見つからなかった（未確認）。県のサイトに絞った検索と、絞らない検索の2回とも出てこなかった。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 30
-      },
-      "programs": [],
-      "notes": [],
-      "sources": [
-        {
-          "label": "新潟県 令和8年度当初予算案の概要（福祉保健部）（検索で保育料の項目は出てこなかった）",
-          "url": "https://www.pref.niigata.lg.jp/sec/fukushihoken/r08tousho.html"
-        }
-      ],
-      "municipalExamples": [],
-      "searches": [
-        "新潟県 保育料 第2子 第3子 無償化 軽減 3歳未満 県 市町村 補助 所得制限 令和8年度（pref.niigata.lg.jp）",
-        "新潟県 多子世帯 保育料 軽減 県補助 第2子 第3子 3歳未満 市町村 18歳未満 所得",
-        "（5県まとめて・extended）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "仮置き"
-    },
-    {
-      "pref": "富山県",
-      "prefCode": "160008",
-      "municipalities": 15,
-      "status": "県の制度あり（推定）",
-      "summary": "県の広報（2024年6月号）に「県下全域で第3子以降の保育料を完全無償化」。県は第3子以降の保育料を無料化する市町村に費用の一部を助成している。数え方・所得制限・第2子の県の制度は未確認。",
-      "coverage": {
-        "allMunicipalities": 15,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "toyama-third-free",
-          "name": "第3子以降の保育料の無償化（市町村への助成）",
-          "kind": "third_free",
-          "kindLabel": "第3子以降の無償化",
-          "content": "県の広報（2024年6月号「8つの重点政策」）に「県下全域で第3子以降の保育料を完全無償化」とある。2016年の県の広報では、保育所等に入所する第3子以降の保育料を無料化している市町村に、県が費用の一部を助成している。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": null,
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "「完全無償化」が所得制限・年齢制限なしを指すかは未確認。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認（2016年には市町村への助成があり、2024年6月の広報で県下全域の完全無償化）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "all",
-          "scopeLabel": "全市町村",
-          "scopeNote": "県の広報に「県下全域で」とある。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": [
-            "162019",
-            "162027",
-            "162043",
-            "162051",
-            "162060",
-            "162078",
-            "162086",
-            "162094",
-            "162108",
-            "162116",
-            "163210",
-            "163228",
-            "163236",
-            "163422",
-            "163431"
-          ],
-          "implementingListBasis": "県の広報の「県下全域で」から、県内の全15市町村のコードを展開した",
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "県広報とやま 2024年6月号（令和8年度も同じかは未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "県広報とやま 2024年6月号「8つの重点政策」（県下全域で第3子以降の保育料を完全無償化）",
-              "url": "https://www.pref.toyama.jp/1021/kensei/kouhou/kouhoushi/kj00016456/2024/kouhou0604-3.html"
-            },
-            {
-              "label": "県広報とやま 2016年6月号（第3子以降の保育料を無料化している市町村に費用の一部を助成）",
-              "url": "https://www.pref.toyama.jp/1118/kensei/kouhou/kouhoushi/kj00016456/2016/kj00016456-026-01/kj00016456-026-04.html"
-            }
-          ],
-          "unverified": [
-            "第3子の数え方（上の子の年齢上限）",
-            "所得制限",
-            "県の助成の割合",
-            "令和8年度も同じか",
-            "第2子の県の制度（見つからなかった）"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "富山県 保育料 第2子 無償化 3歳未満 多子世帯 県 市町村 補助 所得制限 令和8年度（pref.toyama.jp）",
-        "（5県まとめて・extended）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "石川県",
-      "prefCode": "170003",
-      "municipalities": 19,
-      "status": "県の独自の制度は見つからなかった（未確認）",
-      "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は見つからなかった（未確認）。県のひとり親支援のページは「市町によって所得制限の額や保育料などが異なる」と案内している。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 19
-      },
-      "programs": [],
-      "notes": [],
-      "sources": [
-        {
-          "label": "石川県 令和8年度当初予算 記者発表（令和8年1月20日）（検索で保育料の項目は出てこなかった）",
-          "url": "https://www.pref.ishikawa.lg.jp/chiji/kisya/r8_1_20/documents/20260120.pdf"
-        }
-      ],
-      "municipalExamples": [],
-      "searches": [
-        "石川県 多子世帯 保育料 無償化 第3子 第2子 3歳未満 県 市町 補助 所得制限 令和8年度（pref.ishikawa.lg.jp）",
-        "（5県まとめて・extended）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "仮置き"
-    },
-    {
-      "pref": "福井県",
-      "prefCode": "180009",
-      "municipalities": 17,
-      "status": "県の制度あり（推定）",
-      "summary": "第2子以降の保育料を無償化（県と市町で負担）。令和6年9月から所得制限を撤廃し、令和8年度予算でも「第2子の保育料を無償化」。きょうだいの数え方は未確認。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 17,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "fukui-second-free",
-          "name": "第2子以降の保育料無償化",
-          "kind": "second_free",
-          "kindLabel": "第2子以降の無償化",
-          "content": "第2子以降の保育料を無償化する。県と市町が費用を分担する（市町が実施し、県が半分を補助するしくみとみられる）。令和8年度当初予算の主要事業に「第2子の保育料を無償化」。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "free",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": false,
-            "text": "なし（令和6年9月から撤廃。それまでは第2子は年収640万円まで〔令和4年度〜〕、さらに前は世帯所得約360万円未満から始めた）"
-          },
-          "start": {
-            "date": "2024-09",
-            "text": "所得制限の撤廃は令和6年9月から。第2子の無償化そのものは所得制限つきで先に始まっていた（開始年は未確認）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "市町が実施し県が費用の一部を負担するとみられる。全市町で実施かは未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県と市町で分担（県1/2とみられる。未確認）",
-          "budgetR8": null,
-          "asOf": "令和8年度当初予算 主要事業・福井県こども・子育て応援計画",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "福井県こども・子育て応援計画 本文（令和6年9月から第2子以降の保育料無償化の所得制限を撤廃）",
-              "url": "https://www.pref.fukui.lg.jp/doc/kodomo/fukui_kodomo_plan_d/fil/honbun_rr.pdf"
-            },
-            {
-              "label": "福井県 令和8年度当初予算 主要事業（第2子の保育料を無償化）",
-              "url": "https://www.pref.fukui.lg.jp/doc/zaisei/fukuikenyosan/r7_2gatuhosei_d/fil/syuyoujigyou.pdf"
-            },
-            {
-              "label": "第2期ふくい創生・人口減少対策戦略 進捗と対策強化（令和5年8月）（第2子は年収640万円まで、令和4年度から）",
-              "url": "https://www.pref.fukui.lg.jp/doc/seiki/fukui-sousei-senryaku_d/fil/18.pdf"
-            },
-            {
-              "label": "福井県 事務事業カルテ（こども家庭課。旧制度の記録）",
-              "url": "https://www.pref.fukui.lg.jp/doc/zaisei/1jimujigyoukarute_d/fil/31_kodomokateika.pdf"
-            }
-          ],
-          "unverified": [
-            "第2子の数え方（同時に通う子だけか、上の子の年齢を問わないか）",
-            "全市町で実施か",
-            "県の負担割合"
-          ]
-        }
-      ],
-      "notes": [
-        "同じ予算に多胎児・一時預かり・病児デイケアの利用料の無償化もある（保育所の保育料とは別）。令和6年9月には在宅育児応援手当の所得制限も撤廃。"
-      ],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "福井県 保育料 無償化 0歳から2歳 第2子 第1子 県 市町 補助 所得制限 令和8年度（pref.fukui.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "山梨県",
-      "prefCode": "190004",
-      "municipalities": 27,
-      "status": "県の制度あり（推定）",
-      "summary": "「やまなし子育て応援事業」で、第2子以降の0〜2歳児（3号認定）の保育料を満3歳後の最初の3月31日まで無料にする市町村に県が助成。第1子の年齢は問わない（第1子が15歳でも2人目と数える）。平成28年4月から県内全市町村で実施。",
-      "coverage": {
-        "allMunicipalities": 27,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "yamanashi-ouen",
-          "name": "やまなし子育て応援事業",
-          "kind": "second_free",
-          "kindLabel": "第2子以降の無償化",
-          "content": "第1子の年齢に関わらず、第2子以降の3歳未満児の保育料（または障害児通所支援の利用者負担額）を、満3歳の誕生日以後の最初の3月31日まで無料化する市町村に、県が助成する。対象は保育が必要な3号認定の0〜2歳児で、生計を同一にする第1子がいること。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "free",
-            "third": "free",
-            "secondCount": "household",
-            "thirdCount": "household"
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": "household",
-            "olderSiblingAgeLimit": "問わない（県のQ&Aで第1子が15歳でも第2子と数える例）",
-            "text": "生計を同一にする第1子がいれば、第1子の年齢に関わらず第2子以降と数える"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認（県の別ページに「世帯の市町村民税所得割課税額が169,000円未満」の記載があるが、掲載日が分からず令和8年度に当てはまるか不明）"
-          },
-          "start": {
-            "date": "2016-04",
-            "text": "平成28年4月から県内全ての市町村で実施"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "all",
-          "scopeLabel": "全市町村",
-          "scopeNote": "県のページに「平成28年4月から、県内全ての市町村で実施」。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": [
-            "192015",
-            "192023",
-            "192040",
-            "192058",
-            "192066",
-            "192074",
-            "192082",
-            "192091",
-            "192104",
-            "192112",
-            "192121",
-            "192139",
-            "192147",
-            "193461",
-            "193640",
-            "193658",
-            "193666",
-            "193682",
-            "193844",
-            "194221",
-            "194239",
-            "194247",
-            "194255",
-            "194298",
-            "194301",
-            "194425",
-            "194433"
-          ],
-          "implementingListBasis": "県のページの「県内全ての市町村で実施」から、県内の全27市町村のコードを展開した",
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "県のページ（掲載時期未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "山梨県 やまなし子育て応援事業について",
-              "url": "https://www.pref.yamanashi.jp/kosodate/hoikushisetsuyouchien/kosodateouenjigyou.html"
-            },
-            {
-              "label": "山梨県 日本一健やかに子どもを育むやまなし",
-              "url": "https://www.pref.yamanashi.jp/miryoku/kurashi/kosodate/index.html"
-            }
-          ],
-          "unverified": [
-            "所得制限の有無（所得割169,000円未満の記載が現行か）",
-            "令和8年度も同じか",
-            "県の助成割合"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "やまなし子育て応援事業 保育料 第2子以降 無償化 第1子 所得制限 年齢 市町村 令和8年度（pref.yamanashi.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "長野県",
-      "prefCode": "200000",
-      "municipalities": 77,
-      "status": "県の制度あり（推定）",
-      "summary": "令和8年度予算案で、3歳未満児の保育料について、国の同時入所の要件にかかわらず第3子以降を無償化・第2子を半額にする市町村を支援。あわせて低所得世帯（年収360万円未満相当）の第2子無償化・第1子半額にも取り組む市町村を支援。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 77,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "nagano-tashi-third",
-          "name": "3歳未満児の保育料の多子世帯軽減（第3子以降）",
-          "kind": "third_free",
-          "kindLabel": "第3子以降の無償化（同時入所の要件なし）",
-          "content": "3歳未満児の保育料について、国の同時入所の要件にかかわらず第3子以降を無償化する市町村を県が支援する（令和8年度当初予算案）。以前の県の資料では、同時入所でない第3子以降は所得制限なしで6千円の軽減だった（月額かどうかは未確認）。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": null,
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": "household"
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": "household",
-            "olderSiblingAgeLimit": null,
-            "text": "国の同時入所の要件にかかわらず数える。数える上の子の年齢上限は未確認"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認"
-          },
-          "start": {
-            "date": null,
-            "text": "令和8年度当初予算案で拡充（始まる月は未確認）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "取り組む市町村を県が支援するしくみ。実施市町村の一覧は未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "令和8年度当初予算案（長野県総合経済対策、令和8年1〜2月）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "長野県総合経済対策（令和8年1月9日策定・2月5日更新）（令和8年度当初予算案：3歳未満児の第3子以降を無償化、第2子を半額）",
-              "url": "https://www.pref.nagano.lg.jp/sansei/keizaitaisaku/documents/r70205keizaitaisaku_honpen.pdf"
-            },
-            {
-              "label": "第443回長野県議会（定例会）会議録（令和8年2〜3月）",
-              "url": "https://www.pref.nagano.lg.jp/gikai/giji/kaigiroku/documents/443-all.pdf"
-            }
-          ],
-          "unverified": [
-            "上の子の年齢上限",
-            "所得制限",
-            "実施市町村"
-          ]
-        },
-        {
-          "id": "nagano-tashi-second",
-          "name": "3歳未満児の保育料の多子世帯軽減（第2子）",
-          "kind": "second_half",
-          "kindLabel": "第2子の半額（同時入所の要件なし）",
-          "content": "3歳未満児の保育料について、国の同時入所の要件にかかわらず第2子を半額にする市町村を県が支援する（令和8年度当初予算案）。以前の県の資料では、同時入所でない第2子は年収約360万円未満相当まで無料、それ以外は所得制限なしで半額。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "half",
-            "third": null,
-            "secondCount": "household",
-            "thirdCount": null
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": "household",
-            "olderSiblingAgeLimit": null,
-            "text": "国の同時入所の要件にかかわらず数える。数える上の子の年齢上限は未確認"
-          },
-          "incomeLimit": {
-            "exists": false,
-            "text": "以前の県の資料では半額は所得制限なし（令和8年度も同じかは未確認）"
-          },
-          "start": {
-            "date": null,
-            "text": "令和8年度当初予算案で拡充（始まる月は未確認）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "取り組む市町村を県が支援するしくみ。実施市町村の一覧は未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "令和8年度当初予算案（長野県総合経済対策、令和8年1〜2月）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "長野県総合経済対策（令和8年1月9日策定・2月5日更新）（令和8年度当初予算案：3歳未満児の第3子以降を無償化、第2子を半額）",
-              "url": "https://www.pref.nagano.lg.jp/sansei/keizaitaisaku/documents/r70205keizaitaisaku_honpen.pdf"
-            },
-            {
-              "label": "第443回長野県議会（定例会）会議録（令和8年2〜3月）",
-              "url": "https://www.pref.nagano.lg.jp/gikai/giji/kaigiroku/documents/443-all.pdf"
-            }
-          ],
-          "unverified": [
-            "上の子の年齢上限",
-            "令和8年度の所得制限",
-            "実施市町村"
-          ]
-        },
-        {
-          "id": "nagano-low-income",
-          "name": "3歳未満児の保育料の低所得世帯の軽減",
-          "kind": "low_income",
-          "kindLabel": "低所得世帯の軽減",
-          "content": "低所得世帯への保育料の軽減に取り組む市町村を県が支援する（令和8年度当初予算案）。令和6〜8年度の「若者・子育て世代応援プロジェクト」では、低所得世帯（年収360万円未満相当）の第2子無償化・第1子半額。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "half",
-            "second": "free",
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "年収360万円未満相当の世帯だけ。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": true,
-            "text": "年収360万円未満相当"
-          },
-          "start": {
-            "date": null,
-            "text": "令和8年度当初予算案で拡充（始まる月は未確認）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "取り組む市町村を県が支援するしくみ。実施市町村の一覧は未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": null,
-          "asOf": "令和8年度当初予算案（長野県総合経済対策、令和8年1〜2月）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "長野県総合経済対策（令和8年1月9日策定・2月5日更新）（令和8年度当初予算案：3歳未満児の第3子以降を無償化、第2子を半額）",
-              "url": "https://www.pref.nagano.lg.jp/sansei/keizaitaisaku/documents/r70205keizaitaisaku_honpen.pdf"
-            },
-            {
-              "label": "長野県「若者・子育て世代応援プロジェクト（改訂版）」（令和6〜8年度。低所得世帯の第2子無償化・第1子半額）",
-              "url": "https://www.pref.nagano.lg.jp/jisedai/documents/240325project.html"
-            }
-          ],
-          "unverified": [
-            "令和8年度の内容が「第2子無償化・第1子半額」のままか",
-            "実施市町村"
-          ]
-        }
-      ],
-      "notes": [
-        "別に「信州型自然保育保育料軽減事業」（認定を受けた自然保育の園の保育料の軽減）がある https://www.pref.nagano.lg.jp/kodomo-katei/yamahoiku/yamahoiku-hoikuryo.html"
-      ],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "長野県 多子世帯 保育料 軽減事業 第3子 第2子 3歳未満 県 市町村 補助 所得制限 令和8年度（pref.nagano.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "岐阜県",
-      "prefCode": "210005",
-      "municipalities": 42,
-      "status": "県の制度あり（推定）",
-      "summary": "18歳までの子を3人以上育てる、市町村民税所得割97,000円未満（年収約470万円未満）の世帯の第3子以降で、国の無償化の対象外の子の保育料と副食費を、市町村と県が1/2ずつ補助（令和7年度）。第2子以降の県独自の無償化は「考えていない」（令和5年9月の回答）。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 42,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "gifu-third-free",
-          "name": "第3子以降保育料等無償化事業費補助金",
-          "kind": "third_free",
-          "kindLabel": "第3子以降の無償化（所得制限あり）",
-          "content": "多子世帯の第3子以降で国の無償化の対象外となる子の保育料と副食費を補助する。対象は18歳までの児童を3人以上扶養し、市町村民税所得割額が97,000円未満の世帯。認可施設は保育料の補助上限なし、認可外は月額の上限あり。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "none",
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": "household"
-          },
-          "effectNote": "所得割97,000円未満（年収約470万円未満）の世帯だけ。",
-          "counting": {
-            "rule": "household",
-            "olderSiblingAgeLimit": "18歳まで",
-            "text": "18歳までの児童を3人以上扶養している世帯の第3子以降"
-          },
-          "incomeLimit": {
-            "exists": true,
-            "text": "市町村民税所得割額97,000円未満（年収約470万円未満）"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "unknown",
-          "scopeLabel": "未確認",
-          "scopeNote": "市町村が実施し県が1/2を補助。手続きは市町村ごとに異なる。全市町村で実施かは未確認。",
-          "excludedMunicipalityCodes": [],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": "県1/2・市町村1/2（令和4年度予算資料）",
-          "budgetR8": null,
-          "asOf": "令和7年度の県のページ（令和8年度は未確認）",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "岐阜県 令和7年度 第2子以降出産祝金・高等学校就学準備等支援金・第3子以降保育料等無償化事業費補助金",
-              "url": "https://www.pref.gifu.lg.jp/page/303230.html"
-            },
-            {
-              "label": "岐阜県 令和4年度当初予算 予算要求資料（県1/2・市町村1/2）",
-              "url": "https://www.pref.gifu.lg.jp/pref/s11105/yosan-hensei/R4koukai-3/06/57276.pdf"
-            },
-            {
-              "label": "岐阜県 県民の意見への回答（令和5年9月1日受付「第２子以降の保育料完全無償化について」）",
-              "url": "https://www.pref.gifu.lg.jp/uploaded/attachment/372871.pdf"
-            }
-          ],
-          "unverified": [
-            "令和8年度も同じか",
-            "開始時期",
-            "全市町村で実施か"
-          ]
-        }
-      ],
-      "notes": [
-        "県は第2子以降の保育料の完全無償化について「県独自で実施することは、現段階で考えておりません」と回答（令和5年9月）。",
-        "県のサイトに絞った検索の要約では、令和元〜5年ごろの県内市町村の取組一覧で、大垣市・高山市・飛騨市・下呂市・海津市が第3子以降の3歳未満児の保育料を無償化、揖斐川町が2人目以降の保育料を無料化とされた（市町村独自。記載元の資料は特定できず、いまも続いているかは未確認）。"
-      ],
-      "sources": [],
-      "municipalExamples": [],
-      "searches": [
-        "岐阜県 第2子 第3子 保育料 無償化 3歳未満 県 市町村 補助 多子世帯 所得制限 令和8年度（pref.gifu.lg.jp）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
-    },
-    {
-      "pref": "静岡県",
-      "prefCode": "220001",
-      "municipalities": 35,
-      "status": "県の独自の制度は見つからなかった（未確認）",
-      "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は見つからなかった（未確認）。静岡市は令和5年4月から市の制度で0〜2歳の第2子を無償にしている。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 0,
-        "optInOrUnknown": 0,
-        "noneFound": 35
-      },
-      "programs": [],
-      "notes": [
-        "県の「子育てに優しいまちづくり事業費補助金」（市町の子育て支援への補助）https://www.pref.shizuoka.jp/kodomokyoiku/kodomokosodate/shoshika/1082581.html の中身（保育料に使えるか）は未確認。"
-      ],
-      "sources": [
-        {
-          "label": "静岡県 令和8年度当初予算案 資料編（検索で保育料の軽減は出てこなかった）",
-          "url": "https://www.pref.shizuoka.jp/_res/projects/default_project/_page_/001/077/823/05_r8siryou.pdf"
-        }
-      ],
-      "municipalExamples": [
-        {
-          "code": "221007",
-          "name": "静岡市",
-          "content": "令和5年4月から、0〜2歳（クラス年齢）の第2子を無償にし、世帯の所得やきょうだいの年齢に関係なく第何子かを決める",
-          "relation": "市町村独自",
-          "asOf": "令和5年4月〜（検索結果の要約）",
-          "confidence": "推定",
-          "via": "今回の検索（2026-11-01）",
-          "sources": [
-            {
-              "label": "静岡県オープンデータ 静岡市利用者負担額表（保育料）",
-              "url": "https://opendata.pref.shizuoka.jp/dataset/12470.html"
-            }
-          ]
-        }
-      ],
-      "searches": [
-        "静岡県 第3子以降 保育料 軽減 3歳未満 県 市町 補助 多子世帯 第2子 所得制限 令和8年度（pref.shizuoka.jp）",
-        "（5県まとめて・extended）"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "仮置き"
-    },
-    {
-      "pref": "愛知県",
-      "prefCode": "230006",
-      "municipalities": 54,
-      "status": "県の制度あり（推定）",
-      "summary": "3歳未満児（満3歳到達年度末まで）の第3子以降の保育料を無料にする市町村への補助を、2025年10月から第2子以降にも広げた（第二子保育料無料化等事業費補助金、令和8年度予算4億6,818万1千円）。名古屋市と中核市は対象外。所得制限・数え方は未確認。",
-      "coverage": {
-        "allMunicipalities": 0,
-        "excluded": 5,
-        "optInOrUnknown": 49,
-        "noneFound": 0
-      },
-      "programs": [
-        {
-          "id": "aichi-second",
-          "name": "第二子保育料無料化等事業費補助金（第2子）",
-          "kind": "second_partial",
-          "kindLabel": "第2子の無料化又は軽減（市町村への補助）",
-          "content": "第二子以降の3歳未満児の保育料を無料化又は軽減する市町村の経費を県が助成する。2025年10月から、対象を第三子以降から第二子以降に広げた。令和8年度予算 468,181千円。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": "partial",
-            "third": null,
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": "「無料化又は軽減」で、市町村や所得によって無料か半額などに分かれるとみられる。阿久比町（2025年10月から）は、18歳までの子が2人以上いる世帯の第二子（0〜2歳）を、町民税所得割の合算97,000円未満なら無償、97,000円以上301,000円未満なら半額にしている（県の補助の要件と同じかは未確認）。",
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認（阿久比町は「18歳までの子が2人以上いる世帯の第二子」）"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認（阿久比町は所得割301,000円未満まで。97,000円未満は無償、それ以上は半額）"
-          },
-          "start": {
-            "date": "2025-10",
-            "text": "2025年10月から（第2子への拡大）"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "無料化又は軽減する市町村の経費を助成。政令市（名古屋市）・中核市（豊橋市・岡崎市・一宮市・豊田市）は補助の対象外。実施市町村の一覧は未確認。",
-          "excludedMunicipalityCodes": [
-            "231002",
-            "232017",
-            "232025",
-            "232033",
-            "232114"
-          ],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": "468,181千円（令和8年度予算。第3子以降の分を含む事業全体）",
-          "asOf": "令和8年度予算の概要（参考資料）・子育て支援課の業務内容",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "愛知県 令和8年度 予算の概要 参考資料（第二子保育料無料化等事業費補助金）",
-              "url": "https://www.pref.aichi.jp/uploaded/attachment/598192.pdf"
-            },
-            {
-              "label": "愛知県 福祉局子育て支援課の業務内容（対象を第三子以降から第二子以降に拡大、2025年10月から）",
-              "url": "https://www.pref.aichi.jp/soshiki/kosodate/0000005497.html"
-            },
-            {
-              "label": "阿久比町 広報（2025年10月1日号）第二子の3歳未満児の保育料の無償化・軽減",
-              "url": "https://www.town.agui.lg.jp/category2/kouhou/pdf/251001/kouhou251001p02.pdf"
-            }
-          ],
-          "unverified": [
-            "県の補助の所得制限と数え方",
-            "無料化か軽減か（市町村ごと）",
-            "実施市町村の一覧"
-          ]
-        },
-        {
-          "id": "aichi-third",
-          "name": "第二子保育料無料化等事業費補助金（第3子以降。旧 第3子保育料無料化）",
-          "kind": "third_free",
-          "kindLabel": "第3子以降の無償化（市町村への補助）",
-          "content": "第3子以降の子どもの満3歳到達年度末までの保育料を無料化する市町村を県が補助する（2025年10月に第2子以降へ広げた事業のもとの部分）。",
-          "ageRange": "0〜2歳（3歳未満児）",
-          "effect": {
-            "first": "none",
-            "second": null,
-            "third": "free",
-            "secondCount": null,
-            "thirdCount": null
-          },
-          "effectNote": null,
-          "counting": {
-            "rule": null,
-            "olderSiblingAgeLimit": null,
-            "text": "未確認"
-          },
-          "incomeLimit": {
-            "exists": null,
-            "text": "未確認"
-          },
-          "start": {
-            "date": null,
-            "text": "未確認"
-          },
-          "end": {
-            "date": null,
-            "text": "未確認（終わる予定の記載は見つからなかった）"
-          },
-          "scope": "opt_in",
-          "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
-          "scopeNote": "政令市・中核市を除く市町村が対象。実施市町村の一覧は未確認。",
-          "excludedMunicipalityCodes": [
-            "231002",
-            "232017",
-            "232025",
-            "232033",
-            "232114"
-          ],
-          "implementingMunicipalityCodes": null,
-          "implementingListBasis": null,
-          "funding": null,
-          "budgetR8": "468,181千円（第2子の分と合わせた事業全体）",
-          "asOf": "県の取組一覧（掲載時期未確認）・令和8年度予算の概要",
-          "confidence": "推定",
-          "sources": [
-            {
-              "label": "愛知県の取組（子ども・子育て）（第3子以降の満3歳到達年度末までの保育料の無料化）",
-              "url": "https://www.pref.aichi.jp/soshiki/tabunka/kodomo.html"
-            },
-            {
-              "label": "愛知県 令和8年度 予算の概要 参考資料（第二子保育料無料化等事業費補助金）",
-              "url": "https://www.pref.aichi.jp/uploaded/attachment/598192.pdf"
-            },
-            {
-              "label": "愛知県 福祉局子育て支援課の業務内容（対象を第三子以降から第二子以降に拡大、2025年10月から）",
-              "url": "https://www.pref.aichi.jp/soshiki/kosodate/0000005497.html"
-            }
-          ],
-          "unverified": [
-            "数え方（上の子の年齢上限）",
-            "所得制限",
-            "開始時期",
-            "実施市町村"
-          ]
-        }
-      ],
-      "notes": [],
-      "sources": [],
-      "municipalExamples": [
-        {
-          "code": "234419",
-          "name": "阿久比町",
-          "content": "2025年10月から、18歳までの子が2人以上いる世帯の第二子（0〜2歳）の保育料を、所得割合算97,000円未満は無償、97,000円以上301,000円未満は半額",
-          "relation": "関係未確認（県の拡充と同じ時期に開始）",
-          "asOf": "2025年10月（町の広報）",
-          "confidence": "推定",
-          "via": "今回の検索（2026-11-01）",
-          "sources": [
-            {
-              "label": "阿久比町 広報（2025年10月1日号）第二子の3歳未満児の保育料の無償化・軽減",
-              "url": "https://www.town.agui.lg.jp/category2/kouhou/pdf/251001/kouhou251001p02.pdf"
-            }
-          ]
-        }
-      ],
-      "searches": [
-        "愛知県 第3子保育料無料化事業 3歳未満 18歳未満 市町村 補助 第2子 保育料 令和8年度（pref.aichi.jp）",
-        "愛知県 第2子 保育料 無料化 2025年10月 3歳未満 市町村 県補助 第1子の年齢 所得制限 町"
-      ],
-      "checkedOn": "2026-11-01",
-      "confidence": "推定"
+      {
+       "label": "幕別町 次世代育成支援対策地域協議会 資料1「保育料の改正について」（平成29年5月11日。道独自軽減の所得条件・年齢条件・多子条件・補助率）",
+       "url": "https://www.town.makubetsu.lg.jp/kenko/kosodate/files/290511shiryo1-hoikuryokaisei.pdf"
+      }
+     ],
+     "unverified": [
+      "道の実施要綱（平成29年4月3日付け通知の別紙）の本文（数え方は町の平成29年の資料による）",
+      "実施している市町村の名前（道のまとめは件数だけ。国の基準どおりの1町村も名前が分からない）",
+      "令和8年度の予算額"
+     ]
     }
-  ]
+   ],
+   "notes": [
+    "道のまとめ「子ども医療費・保育料に係る支援状況（概要）」の保育料（令和7年度）の図：第2子以降1/2補助（国基準）0市・1町村、第2子以降無償化（所得制限あり）11市・50町村、同（所得制限なし）22市・38町村、完全無償化2市・55町村（計35市・144町村。札幌市を含む）。「117市町村（約6.5割）が所得制限廃止や完全無償化等に拡大」とある。「完全無償化」が第1子も含むのかは図に説明がない。市町村名は図にない。",
+    "札幌市は道の補助の対象外だが、市の制度で第2子以降の保育料を収入・上のきょうだいの年齢・同時利用の制限なしで無償にしている（市区町村の一覧 muni-nursery-policies.json の調べ）。"
+   ],
+   "sources": [
+    {
+     "label": "北海道「道内市町村における子ども・子育て等への支援状況」（保育料〈令和7年度〉の図、各市町村の主な取組〈令和7年4月1日現在〉）",
+     "url": "https://www.pref.hokkaido.lg.jp/hf/kms/178410.html"
+    }
+   ],
+   "municipalExamples": [],
+   "searches": [
+    "北海道 第2子 保育料 無償化 3歳未満 道 市町村 補助 令和8年度",
+    "北海道 多子世帯の保育料軽減支援事業 第2子以降 3歳未満 無償化 所得制限 兄姉 年齢 開始（pref.hokkaido.lg.jp）",
+    "北海道 多子世帯の保育料軽減支援事業 第2子 3歳未満 無償化 兄姉 年齢 生計を一にする 所得割 169,000円（2026-11-01 確かめ直し）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "青森県",
+   "prefCode": "020001",
+   "municipalities": 40,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "県の「学校給食費無償化等子育て支援市町村交付金」（令和6年度創設）で市町村の無償化を支援し、令和8年度は0〜2歳児保育料の無償化を推奨メニューにした。県の一覧（令和8年9月18日時点）では40市町村のうち37が0〜2歳児保育料を完全無償化、青森市・八戸市・田子町は一部無償化。別に、第3子以降の3歳未満児の保育料を軽減する市町村への補助（保育料軽減事業、令和7年度27市町村）もある。",
+   "coverage": {
+    "allMunicipalities": 40,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "aomori-musyoka-menu",
+     "name": "青森県学校給食費無償化等子育て支援市町村交付金（0〜2歳児保育料の無償化は県推奨事業）",
+     "kind": "menu_grant",
+     "kindLabel": "市町村が選ぶ無償化施策への交付金（0〜2歳児保育料は県推奨事業）",
+     "content": "県が市町村の子育て費用の無償化を支援する交付金（令和6年度創設）。市町村別の実施状況では「県推奨3事業」に小中学校給食費・こども医療費（0〜18歳）・0〜2歳児保育料が並び、令和8年2月の知事説明では「新たな無償化施策としては、保育料無償化を推奨メニュー」とした。県の一覧（令和8年9月18日時点）では、0〜2歳児保育料は37市町村が完全無償化、3市町が一部無償化。",
+     "ageRange": "0〜2歳",
+     "effect": {
+      "first": "free",
+      "second": "free",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "0円になるのは「完全無償化」の37市町村（implementingMunicipalityCodes）。一部無償化の青森市（2歳児クラス全額・0〜1歳児クラス半額又は全額）、八戸市・田子町（第2子以降）は入れていない。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "完全無償化の市町村は第1子から0円なので数え方は関係しない。八戸市・田子町の第2子の数え方は未確認。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "県の一覧は「完全無償化」と「一部無償化」を分けて書き、完全無償化の市町村に所得の条件は書かれていない（市町村ごとの案内は開いていない）。"
+     },
+     "start": {
+      "date": null,
+      "text": "交付金は令和6年度創設。保育料無償化を県の推奨メニューにしたのは令和8年度（知事説明、令和8年2月）。市町村ごとの開始は違う（西目屋村は平成26年4月、今別町は令和元年度、東通村は令和2年度から。15市町村は令和8年4月から完全無償化）。"
+     },
+     "end": {
+      "date": null,
+      "text": "終わりの定めは見つからなかった。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "交付金の使い道は市町村が選ぶ。令和8年度は40市町村すべてが0〜2歳児保育料で何らかの無償化をしている（県の一覧の合計は完全無償化の37）。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "022021",
+      "022047",
+      "022055",
+      "022063",
+      "022071",
+      "022080",
+      "022098",
+      "022101",
+      "023019",
+      "023035",
+      "023043",
+      "023078",
+      "023213",
+      "023230",
+      "023434",
+      "023612",
+      "023621",
+      "023671",
+      "023817",
+      "023841",
+      "023876",
+      "024015",
+      "024023",
+      "024058",
+      "024066",
+      "024082",
+      "024112",
+      "024121",
+      "024236",
+      "024244",
+      "024252",
+      "024261",
+      "024414",
+      "024422",
+      "024457",
+      "024465",
+      "024503"
+     ],
+     "implementingListBasis": "県の一覧「各市町村における無償化及び独自の子育て支援事業の状況（令和8年度）」（令和8年9月18日時点）と「市町村別の実施状況」（0〜2歳児保育料の事業内容）で「完全無償化」の37市町村。交付金を保育料に充てていない10町村も含む。一部無償化の青森市・八戸市・田子町は入れていない。",
+     "funding": "県の交付金（市町村ごとの交付金充当額は県の資料にある）",
+     "budgetR8": null,
+     "asOf": "令和8年9月18日時点（県の一覧。ページ更新日2026年10月29日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "青森県「各市町村における無償化及び独自の子育て支援事業の状況（令和8年度）」（令和8年9月18日時点）",
+       "url": "https://www.pref.aomori.lg.jp/soshiki/kodomo/kodomo/files/R8_ichirannhyou.pdf"
+      },
+      {
+       "label": "青森県「『青森県学校給食費無償化等子育て支援市町村交付金』の活用等による子育て支援事業の実施状況（市町村別）」（令和7年度実績・令和8年度見込みと事業内容）",
+       "url": "https://www.pref.aomori.lg.jp/soshiki/kodomo/kodomo/files/R8_kohyou.pdf"
+      },
+      {
+       "label": "青森県「交付金の活用等による子育て支援事業の実施状況について」（更新日2026年10月29日）",
+       "url": "https://www.pref.aomori.lg.jp/soshiki/kodomo/kodomo/R8gakkoukyuushokuhi.html"
+      },
+      {
+       "label": "青森県 第325回定例会提出議案知事説明要旨（令和8年2月。保育料無償化を推奨メニューに）",
+       "url": "https://www.pref.aomori.lg.jp/message/policy/policy202602.html"
+      }
+     ],
+     "unverified": [
+      "完全無償化の各市町村で、所得の条件や対象施設の細かい扱いがないか（市町村ごとの案内は開いていない）",
+      "八戸市・田子町の第2子の数え方",
+      "令和8年度の交付金の総額"
+     ]
+    },
+    {
+     "id": "aomori-third-keigen",
+     "name": "保育料軽減事業（第3子以降の3歳未満児）",
+     "kind": "third_reduced",
+     "kindLabel": "第3子以降の軽減（中身は市町村ごと・未確認）",
+     "content": "第3子以降（平成19年度からは3歳未満児に限る）の保育料を、保護者等の課税状況に応じて軽減する市町村に県が補助する。平成10年度からへき地保育所、平成12年度から認可外保育施設に入所する第3子以降も対象。令和7年度は27市町村・1,306人、県補助額55,311,841円（令和8年度のこども家庭部事業概要）。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "none",
+      "third": "partial",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "軽減の額・割合は課税状況と市町村による（未確認）。0〜2歳児保育料を完全無償化している37市町村では、この制度がなくても0円。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "第3子の数え方（同時に通う子だけか、上の子の年齢を問わないか）は未確認。"
+     },
+     "incomeLimit": {
+      "exists": null,
+      "text": "保護者等の課税状況に応じて軽減（所得の区分と額は未確認）。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認（平成19年度から3歳未満児に限定）。"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度のこども家庭部事業概要に載っている。終わりの定めは見つからなかった。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "令和7年度は27市町村が実施（令和3年度30、令和4年度27、令和5年度30、令和6年度27）。市町村名は事業概要に載っていない。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "実施市町村の名前の一覧は見つからなかった。",
+     "funding": "県の補助（補助率は未確認）",
+     "budgetR8": null,
+     "asOf": "令和7年度実績（令和8年度のこども家庭部事業概要）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "青森県「こども家庭部事業概要（令和8年度）」第2章 こどもみらい課 (3) 保育料軽減事業",
+       "url": "https://www.pref.aomori.lg.jp/soshiki/kodomo/kodomo/R8_kodomokatei_jigyougaiyou_2.pdf"
+      }
+     ],
+     "unverified": [
+      "軽減の額・割合と所得の区分",
+      "実施している27市町村の名前",
+      "補助率"
+     ]
+    }
+   ],
+   "notes": [
+    "県の一覧の保育料の欄は、令和7年度（令和7年7月8日時点）は22市町村、令和8年度（令和8年9月18日時点）は37市町村（完全無償化）。令和8年4月から完全無償化にしたのは弘前市・黒石市・五所川原市・十和田市・三沢市・むつ市・鰺ヶ沢町・深浦町・藤崎町・大鰐町・田舎館村・板柳町・六戸町・おいらせ町・新郷村の15市町村（市町村別の実施状況の「［拡充］R8.4月から：完全無償化」）。",
+    "平内町・今別町・外ヶ浜町・西目屋村・鶴田町・横浜町・六ヶ所村・東通村・風間浦村・佐井村は、令和8年度の保育料無償化に交付金を充てていない（市町村別の実施状況の「うち交付金充当額」が0。六ヶ所村は条例により無償化）。県の一覧は交付金の「活用等」による実施状況で、これらも完全無償化に数えている。",
+    "一部無償化の内容：青森市は「R8.4月から：2歳児クラスの全額及び0歳児・1歳児クラスの半額又は全額」、八戸市と田子町は「R8.4月から：一部無償化（第２子以降）」（市町村別の実施状況）。"
+   ],
+   "sources": [
+    {
+     "label": "青森県「『青森県学校給食費無償化等子育て支援市町村交付金』の活用等による子育て支援事業の実施状況について」（更新日2026年10月29日）",
+     "url": "https://www.pref.aomori.lg.jp/soshiki/kodomo/kodomo/R8gakkoukyuushokuhi.html"
+    }
+   ],
+   "municipalExamples": [],
+   "searches": [
+    "青森県 保育料 無償化 0歳から2歳 第1子 県 市町村 補助 所得制限 令和8年度",
+    "青森県 保育料 無償化 第2子以降 0〜2歳 県 市町村 補助 所得制限なし（pref.aomori.lg.jp）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "岩手県",
+   "prefCode": "030007",
+   "municipalities": 33,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "令和5年度から、第2子以降の3歳未満児の保育料を無償化する市町村に県が経費の1/2を補助（令和8年度当初予算案603百万円）。県のページは「第2子以降については年齢にかかわらず、保育料が無償化されています」と書くが、きょうだいの数え方・所得制限・実施市町村の一覧は県の資料に見つからなかった。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 33,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "iwate-ouen-musyoka",
+     "name": "いわて子育て応援保育料無償化事業",
+     "kind": "second_free",
+     "kindLabel": "第2子以降の無償化（市町村への補助）",
+     "content": "市町村が、幼児教育・保育の無償化の対象とならない第2子以降の3歳未満児の保育料を無償化する場合に要する経費を県が補助する（補助率1/2、補助対象：市町村）。令和5年度の新規事業。県のページは「令和5年度から第2子以降の3歳未満の子どもについて、市町村と連携して、保育料の無償化を実施しています。この結果、第2子以降については年齢にかかわらず、保育料が無償化されています」と書く。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "free",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "「年齢にかかわらず」は無償になる子（第2子以降）の年齢のことで、0〜2歳は県の制度、3〜5歳は国の制度で無償という意味。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（県のページ・予算資料に、第2子を同時に通う子だけで数えるか、上の子の年齢を問うかの記載はない）。"
+     },
+     "incomeLimit": {
+      "exists": null,
+      "text": "未確認（県のページ・予算資料に所得の条件の記載はない）。"
+     },
+     "start": {
+      "date": "2023-04",
+      "text": "令和5年度から（令和5年度当初予算で新規、464百万円）"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度当初予算案に603百万円（令和8年2月の知事演述でも継続）。終わりの定めは見つからなかった。"
+     },
+     "scope": "unknown",
+     "scopeLabel": "未確認",
+     "scopeNote": "市町村が無償化する場合に県が補助するしくみ。県のページは県全体で第2子以降が無償化されていると読める書き方だが、全市町村で実施とは書いていない。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "実施市町村の一覧は見つからなかった。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": "603百万円（令和8年度当初予算案）",
+     "asOf": "令和8年度当初予算案（令和8年2月）・県のページ（更新日2024年3月13日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "岩手県「いわて子育て応援保育料無償化事業」（更新日 令和6年3月13日）",
+       "url": "https://www.pref.iwate.jp/kurashikankyou/kosodate/shien/kosodate/1065057.html"
+      },
+      {
+       "label": "岩手県「令和8年度 岩手県一般会計当初予算（案）のポイント」（令和8年2月。603百万円、補助率1/2、補助対象：市町村）",
+       "url": "https://www.pref.iwate.jp/_res/projects/default_project/_page_/001/097/563/hp_pdf_080325/15_080325_shiryou5_2.pdf"
+      },
+      {
+       "label": "岩手県 令和8年2月県議会定例会 知事演述（第2子以降の3歳未満児に係る保育料の無償化）",
+       "url": "https://www.pref.iwate.jp/kensei/seisaku/suishin/chiji/1095125.html"
+      },
+      {
+       "label": "岩手県「令和5年度 岩手県一般会計当初予算（案）のポイント」（新規、464百万円）",
+       "url": "https://www.pref.iwate.jp/_res/projects/default_project/_page_/001/059/460/01_r5point.pdf"
+      }
+     ],
+     "unverified": [
+      "第2子の数え方（同時に通う子だけか、上の子の年齢を問わないか）",
+      "所得制限の有無と額",
+      "実施している市町村の一覧"
+     ]
+    }
+   ],
+   "notes": [
+    "同じ予算案に、保育所等を利用しない生後2か月〜3歳未満の第2子以降の子を在宅で育てる世帯への「いわて子育て応援在宅育児支援金」83百万円（市町村への1/2補助）がある（保育料の制度ではない）。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "岩手県 第2子以降 3歳未満児 保育料 無償化 県補助 市町村 所得制限",
+    "岩手県 保育料 無償化 第2子 3歳未満 県 市町村 補助 子ども・子育て支援 令和8年度（pref.iwate.jp）",
+    "いわて子育て応援保育料無償化事業 第2子 3歳未満 所得制限 生計を一にする 兄姉 年齢 市町村 全33市町村（2026-11-01）",
+    "いわて子育て応援保育料無償化事業費補助 第2子以降 3歳未満 所得 市町村（pref.iwate.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "宮城県",
+   "prefCode": "040002",
+   "municipalities": 35,
+   "status": "県の独自の制度は見つからなかった（県のページで確認）",
+   "summary": "県の子育て支援のページ（子育て社会推進課・みやぎっこ広場の「助成・手当」・幼児教育・保育の無償化）に、0〜2歳の保育料を県が軽減・無償化する制度は載っていない。令和8年度は「少子化対策支援市町村交付金」を拡充（知事説明）するが、保育料に使えるかは書かれていない。仙台市（令和8年9月から）・富谷市（同8月から）・岩沼市・栗原市・気仙沼市が市の制度で第2子以降を無償化。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 35
+   },
+   "programs": [],
+   "notes": [
+    "令和8年度、県は少子化対策支援市町村交付金を拡充し、地域の実情に応じた取組を後押しする（知事説明要旨）。保育料の無償化に使えるか、使っている市町村があるかは未確認。",
+    "県の「みやぎの子育て支援情報」に並ぶ県の経済的な支援は、子育て支援パスポート・パパママ応援ポイント・小学校入学準備支援（第三子以降）・みやぎっこ応援ローンなどで、保育料の制度はない。"
+   ],
+   "sources": [
+    {
+     "label": "宮城県 子育て社会推進課（「みやぎの子育て支援情報」の一覧。令和8年度の事業を掲載）",
+     "url": "https://www.pref.miyagi.jp/soshiki/kosodate/index.html"
+    },
+    {
+     "label": "宮城県 みやぎっこ広場「助成・手当」",
+     "url": "https://www.pref.miyagi.jp/site/kosodate/mokuteki-teate01.html"
+    },
+    {
+     "label": "宮城県「幼児教育・保育の無償化について」（国の制度の説明）",
+     "url": "https://www.pref.miyagi.jp/soshiki/kosodate/youhomushouka.html"
+    },
+    {
+     "label": "宮城県 第399回宮城県議会知事説明要旨（令和8年2月17日）",
+     "url": "https://www.pref.miyagi.jp/soshiki/kohou/260217.html"
+    }
+   ],
+   "municipalExamples": [
+    {
+     "code": "042161",
+     "name": "富谷市",
+     "content": "2026年8月から第2子以降の保育料を無償化。これまであった年齢や所得の制限を撤廃（市の記者会見資料）。",
+     "relation": "市町村独自",
+     "asOf": "2026年6月（市の記者会見資料）",
+     "confidence": "確認済",
+     "via": "今回の確かめ直し（2026-11-01）。市の記者会見資料の本文を読んだ",
+     "sources": [
+      {
+       "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
+       "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
+      }
+     ]
+    },
+    {
+     "code": "042111",
+     "name": "岩沼市",
+     "content": "第2子以降の保育料を無償化（県の調査、2026年1月時点）",
+     "relation": "市町村独自",
+     "asOf": "2026年1月時点（富谷市の資料が引く県の調査）",
+     "confidence": "推定",
+     "via": "富谷市の記者会見資料（2026-11-01 に本文を読んだ。県の調査〈令和8年1月現在〉の紹介で、市のページは開いていない）",
+     "sources": [
+      {
+       "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
+       "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
+      }
+     ]
+    },
+    {
+     "code": "042137",
+     "name": "栗原市",
+     "content": "第2子以降の保育料を無償化（県の調査、2026年1月時点）",
+     "relation": "市町村独自",
+     "asOf": "2026年1月時点（富谷市の資料が引く県の調査）",
+     "confidence": "推定",
+     "via": "富谷市の記者会見資料（2026-11-01 に本文を読んだ。県の調査〈令和8年1月現在〉の紹介で、市のページは開いていない）",
+     "sources": [
+      {
+       "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
+       "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
+      }
+     ]
+    },
+    {
+     "code": "042056",
+     "name": "気仙沼市",
+     "content": "第2子以降の保育料を無償化（県の調査、2026年1月時点）",
+     "relation": "市町村独自",
+     "asOf": "2026年1月時点（富谷市の資料が引く県の調査）",
+     "confidence": "推定",
+     "via": "富谷市の記者会見資料（2026-11-01 に本文を読んだ。県の調査〈令和8年1月現在〉の紹介で、市のページは開いていない）",
+     "sources": [
+      {
+       "label": "富谷市 記者会見資料（2026年6月。第2子以降の保育料無償化、県の調査〔2026年1月時点〕の紹介）",
+       "url": "https://www.tomiya-city.miyagi.jp/uploads/pdf/957a516195bff7893ca3db816c45599ffff2d051.pdf"
+      }
+     ]
+    },
+    {
+     "code": "041009",
+     "name": "仙台市",
+     "content": "令和8年9月から、市の独自の制度で0〜2歳児の第2子以降の保育料等を無償化。所得や世帯の状況に関わらず、保護者と生計が同一の子等（年齢に関わらず。成年に達した子も含む）を上から順に数える。",
+     "relation": "市町村独自",
+     "asOf": "市のページ（更新日2026年10月27日）",
+     "confidence": "確認済",
+     "via": "今回の確かめ直し（2026-11-01）",
+     "sources": [
+      {
+       "label": "仙台市「第2子以降の保育料無償化について」（更新日2026年10月27日）",
+       "url": "https://www.city.sendai.jp/nintechosa/kurashi/kenkotofukushi/kosodate/hoikuryo_r08.html"
+      }
+     ]
+    }
+   ],
+   "searches": [
+    "宮城県 多子世帯 保育料 軽減 第3子 第2子 3歳未満 県 補助事業 令和8年度",
+    "宮城県 保育料 第2子以降 無償化 市町村 支援 県 補助 令和8年度 知事（pref.miyagi.jp）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "推定"
+  },
+  {
+   "pref": "秋田県",
+   "prefCode": "050008",
+   "municipalities": 25,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「すこやか子育て支援事業」で、県と市町村が1/2ずつ負担して保育料を助成。県基準（R8.4.1）は、世帯年収約330万円まで1/2・約640万円まで1/4、第2子以降は無料（世帯年収約640万円まで）。第3子以降が生まれた世帯は年収約930万円未満まで第2子以降を半額（令和8年度予算）。県の一覧では25市町村すべてが県基準以上で、20市町村は所得制限なしの全額助成など県基準より広い。",
+   "coverage": {
+    "allMunicipalities": 25,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "akita-sukoyaka-second",
+     "name": "すこやか子育て支援事業（第2子以降の全額助成）",
+     "kind": "second_free",
+     "kindLabel": "第2子以降の無償化（県と市町村が1/2ずつ負担）",
+     "content": "県と市町村が共同で保育料を助成する「すこやか子育て支援事業」のうち、第2子以降の保育料を全額助成（一定基準内所得の世帯。保育所は世帯年収約640万円まで）。県の一覧（R8.4.1）の県基準は「第2子以降無料（世帯年収約640万円まで）」。",
+     "ageRange": "0〜2歳（国の無償化の対象とならない未就学児の保育料）",
+     "effect": {
+      "first": "none",
+      "second": "free",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "県基準では世帯年収約640万円までの世帯の第2子以降が0円。所得制限なしで全額助成している市町村が多い（scopeNote）。子育て応援サイトには「新たに生まれた第2子以降の保育料等を全額助成する制度」とあり、いつ以降に生まれた子かは未確認。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（県のページは対象を「第1子から（出生順位に関わらず助成）」、多子対策を「第2子以降の保育料を全額助成」とだけ書き、第2子の数え方は書いていない）。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "保育所は世帯年収約640万円まで（幼稚園は約680万円まで）。令和8年度予算の書き方は「一定基準内所得の世帯」。所得制限なしで全額助成している市町村もある。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度当初予算案に保育料助成事業594,773千円。終わりの定めは見つからなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県の一覧（R8.4.1現在）は25市町村すべての保育料等助成を載せ、「保育料助成と医療費助成、副食費助成の空欄又は特記がない部分は県基準による」と書く。空欄（県基準）は秋田市・大館市・由利本荘市・潟上市・藤里町。ほかの20市町村は「全額助成（所得制限なし）」など県基準より広い（井川町は井川こどもセンターを利用する子どもに限る、東成瀬村は「所得制限なし第一子から」）。秋田市は「その他」の欄に「第1子無料（所得制限あり）」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "052019",
+      "052027",
+      "052035",
+      "052043",
+      "052060",
+      "052078",
+      "052094",
+      "052108",
+      "052116",
+      "052124",
+      "052132",
+      "052141",
+      "052159",
+      "053031",
+      "053279",
+      "053465",
+      "053481",
+      "053490",
+      "053619",
+      "053635",
+      "053660",
+      "053686",
+      "054348",
+      "054631",
+      "054640"
+     ],
+     "implementingListBasis": "県の一覧「市町村の子育て支援施策等一覧（R8.4.1現在）」の保育料等助成の欄（空欄は県基準）から、25市町村すべて。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": "すこやか子育て支援事業 824,346千円（うち保育料助成事業 594,773千円。令和8年度当初予算案）",
+     "asOf": "令和8年4月1日現在（県の一覧）・令和8年度当初予算案",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "秋田県「保育料等の助成（すこやか子育て支援事業）について」（更新日2024年3月26日）",
+       "url": "https://www.pref.akita.lg.jp/pages/archive/28393"
+      },
+      {
+       "label": "あきたの結婚・子育て応援サイト いっしょにねっと。「保育料等の助成（すこやか子育て支援事業）」",
+       "url": "https://common3.pref.akita.lg.jp/kosodate/kosodate-info/help/subsidy/ko7"
+      },
+      {
+       "label": "いっしょにねっと。「市町村の子育て支援施策等一覧（R8.4.1現在）」（県基準と25市町村の保育料等助成。空欄は県基準）",
+       "url": "https://common3.pref.akita.lg.jp/kosodate/uploads/contents/pages_0000000014_00/%E2%91%A0%E3%80%90%E7%A2%BA%E5%AE%9A%E3%80%91%EF%BC%9C%E3%81%84%E3%81%A3%E3%81%97%E3%82%87%E3%81%AB%E3%81%AD%E3%81%A3%E3%81%A8%E3%80%82%EF%BC%9E%E5%B8%82%E7%94%BA%E6%9D%91%E3%81%AE%E5%AD%90%E8%82%B2%E3%81%A6%E6%94%AF%E6%8F%B4%E6%96%BD%E7%AD%96%E7%AD%89%E4%B8%80%E8%A6%A7%28R8.4.1%29_1.pdf"
+      },
+      {
+       "label": "秋田県「令和8年度当初予算（案）概要」（すこやか子育て支援事業 824,346千円、うち保育料助成事業 594,773千円）",
+       "url": "https://www.pref.akita.lg.jp/uploads/public/archive_0000093875_00/%E4%BB%A4%E5%92%8C%EF%BC%98%E5%B9%B4%E5%BA%A6%E5%BD%93%E5%88%9D%E4%BA%88%E7%AE%97(%E6%A1%88)%E6%A6%82%E8%A6%81.pdf"
+      }
+     ],
+     "unverified": [
+      "第2子の数え方（同時に通う子だけか、上の子の年齢を問わないか）",
+      "「新たに生まれた」の意味（いつ以降に生まれた子か）"
+     ]
+    },
+    {
+     "id": "akita-sukoyaka-tashi",
+     "name": "すこやか子育て支援事業（第3子以降が生まれた世帯の所得制限の緩和）",
+     "kind": "second_half",
+     "kindLabel": "第2子以降の半額（第3子以降が生まれた世帯）",
+     "content": "第3子以降が生まれた世帯は所得制限を緩め、世帯年収約930万円未満までの世帯の第2子以降の保育料を半額助成（令和8年度予算の書き方は「第３子以降が生まれた世帯の第２子以降 1/2（一定基準を超え年収約930万円未満の世帯）」）。",
+     "ageRange": "0〜2歳（国の無償化の対象とならない未就学児の保育料）",
+     "effect": {
+      "first": "none",
+      "second": "half",
+      "third": "half",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "世帯年収約640万円を超え約930万円未満で、第3子以降が生まれた世帯の第2子以降が半額（約640万円までは全額助成）。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（「第3子以降が生まれた世帯」の数え方は書かれていない）。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "世帯年収約640万円を超え約930万円未満（令和8年度予算「一定基準を超え年収約930万円未満の世帯」）。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度当初予算案に載っている。終わりの定めは見つからなかった。"
+     },
+     "scope": "unknown",
+     "scopeLabel": "未確認",
+     "scopeNote": "県の一覧（R8.4.1）の県基準の欄にはこの緩和が書かれておらず、市町村ごとの扱いは分からない（所得制限なしで全額助成している市町村では関係しない）。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "市町村ごとの扱いが書かれた一覧は見つからなかった。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": "すこやか子育て支援事業 824,346千円（令和8年度当初予算案。保育料・副食費の助成全体）",
+     "asOf": "令和8年度当初予算案・県のページ（更新日2024年3月26日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "秋田県「保育料等の助成（すこやか子育て支援事業）について」（更新日2024年3月26日）",
+       "url": "https://www.pref.akita.lg.jp/pages/archive/28393"
+      },
+      {
+       "label": "あきたの結婚・子育て応援サイト いっしょにねっと。「保育料等の助成（すこやか子育て支援事業）」",
+       "url": "https://common3.pref.akita.lg.jp/kosodate/kosodate-info/help/subsidy/ko7"
+      },
+      {
+       "label": "いっしょにねっと。「市町村の子育て支援施策等一覧（R8.4.1現在）」（県基準と25市町村の保育料等助成。空欄は県基準）",
+       "url": "https://common3.pref.akita.lg.jp/kosodate/uploads/contents/pages_0000000014_00/%E2%91%A0%E3%80%90%E7%A2%BA%E5%AE%9A%E3%80%91%EF%BC%9C%E3%81%84%E3%81%A3%E3%81%97%E3%82%87%E3%81%AB%E3%81%AD%E3%81%A3%E3%81%A8%E3%80%82%EF%BC%9E%E5%B8%82%E7%94%BA%E6%9D%91%E3%81%AE%E5%AD%90%E8%82%B2%E3%81%A6%E6%94%AF%E6%8F%B4%E6%96%BD%E7%AD%96%E7%AD%89%E4%B8%80%E8%A6%A7%28R8.4.1%29_1.pdf"
+      },
+      {
+       "label": "秋田県「令和8年度当初予算（案）概要」（すこやか子育て支援事業 824,346千円、うち保育料助成事業 594,773千円）",
+       "url": "https://www.pref.akita.lg.jp/uploads/public/archive_0000093875_00/%E4%BB%A4%E5%92%8C%EF%BC%98%E5%B9%B4%E5%BA%A6%E5%BD%93%E5%88%9D%E4%BA%88%E7%AE%97(%E6%A1%88)%E6%A6%82%E8%A6%81.pdf"
+      }
+     ],
+     "unverified": [
+      "県基準どおりの市町村（秋田市・大館市・由利本荘市・潟上市・藤里町）でこの緩和をしているか",
+      "第3子の数え方"
+     ]
+    },
+    {
+     "id": "akita-sukoyaka-partial",
+     "name": "すこやか子育て支援事業（保育料の1/2・1/4助成）",
+     "kind": "first_partial",
+     "kindLabel": "第1子などの保育料の一部助成",
+     "content": "出生順位を問わず（第1子から）、市町村民税所得割課税額に応じて保育料の1/2または1/4を助成（ひとり親家庭は一律1/2）。県の一覧（R8.4.1）の県基準は「世帯年収約330万円まで1/2、世帯年収約640万円まで1/4」。",
+     "ageRange": "0〜2歳（国の無償化の対象とならない未就学児の保育料）",
+     "effect": {
+      "first": "partial",
+      "second": null,
+      "third": null,
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "第1子は世帯年収約330万円まで1/2助成、約640万円まで1/4助成（県基準）。20市町村は所得制限なしの全額助成などに広げている（scopeNote）。第2子以降は別の項目（全額助成）。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "第1子から対象（出生順位に関わらず）。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "世帯年収約330万円まで1/2、約640万円まで1/4（県の一覧の県基準）。境目の所得割額は未確認。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度当初予算案に載っている。終わりの定めは見つからなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県の一覧（R8.4.1現在）は25市町村すべての保育料等助成を載せ、「保育料助成と医療費助成、副食費助成の空欄又は特記がない部分は県基準による」と書く。空欄（県基準）は秋田市・大館市・由利本荘市・潟上市・藤里町。ほかの20市町村は「全額助成（所得制限なし）」など県基準より広い（井川町は井川こどもセンターを利用する子どもに限る、東成瀬村は「所得制限なし第一子から」）。秋田市は「その他」の欄に「第1子無料（所得制限あり）」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "052019",
+      "052027",
+      "052035",
+      "052043",
+      "052060",
+      "052078",
+      "052094",
+      "052108",
+      "052116",
+      "052124",
+      "052132",
+      "052141",
+      "052159",
+      "053031",
+      "053279",
+      "053465",
+      "053481",
+      "053490",
+      "053619",
+      "053635",
+      "053660",
+      "053686",
+      "054348",
+      "054631",
+      "054640"
+     ],
+     "implementingListBasis": "県の一覧「市町村の子育て支援施策等一覧（R8.4.1現在）」の保育料等助成の欄（空欄は県基準）から、25市町村すべて。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": "すこやか子育て支援事業 824,346千円（令和8年度当初予算案。保育料・副食費の助成全体）",
+     "asOf": "令和8年4月1日現在（県の一覧）・令和8年度当初予算案",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "秋田県「保育料等の助成（すこやか子育て支援事業）について」（更新日2024年3月26日）",
+       "url": "https://www.pref.akita.lg.jp/pages/archive/28393"
+      },
+      {
+       "label": "あきたの結婚・子育て応援サイト いっしょにねっと。「保育料等の助成（すこやか子育て支援事業）」",
+       "url": "https://common3.pref.akita.lg.jp/kosodate/kosodate-info/help/subsidy/ko7"
+      },
+      {
+       "label": "いっしょにねっと。「市町村の子育て支援施策等一覧（R8.4.1現在）」（県基準と25市町村の保育料等助成。空欄は県基準）",
+       "url": "https://common3.pref.akita.lg.jp/kosodate/uploads/contents/pages_0000000014_00/%E2%91%A0%E3%80%90%E7%A2%BA%E5%AE%9A%E3%80%91%EF%BC%9C%E3%81%84%E3%81%A3%E3%81%97%E3%82%87%E3%81%AB%E3%81%AD%E3%81%A3%E3%81%A8%E3%80%82%EF%BC%9E%E5%B8%82%E7%94%BA%E6%9D%91%E3%81%AE%E5%AD%90%E8%82%B2%E3%81%A6%E6%94%AF%E6%8F%B4%E6%96%BD%E7%AD%96%E7%AD%89%E4%B8%80%E8%A6%A7%28R8.4.1%29_1.pdf"
+      },
+      {
+       "label": "秋田県「令和8年度当初予算（案）概要」（すこやか子育て支援事業 824,346千円、うち保育料助成事業 594,773千円）",
+       "url": "https://www.pref.akita.lg.jp/uploads/public/archive_0000093875_00/%E4%BB%A4%E5%92%8C%EF%BC%98%E5%B9%B4%E5%BA%A6%E5%BD%93%E5%88%9D%E4%BA%88%E7%AE%97(%E6%A1%88)%E6%A6%82%E8%A6%81.pdf"
+      }
+     ],
+     "unverified": [
+      "1/2と1/4の境目の所得割額"
+     ]
+    }
+   ],
+   "notes": [
+    "秋田市は県基準に加えて、市の制度で第1子も無料（所得制限あり）（県の一覧 R8.4.1）。所得の額は一覧にない。",
+    "副食費（3歳以上）も同じ事業で助成（世帯年収約640万円まで1/2・それ以上1/4、第2子以降は全額）。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "秋田県 すこやか子育て支援事業 保育料 助成 第1子 第2子 所得制限 令和8年度",
+    "秋田県 保育料 第1子 第2子 無償化 すこやか子育て支援事業 所得制限 令和7年度 令和8年度 拡充（pref.akita.lg.jp）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "山形県",
+   "prefCode": "060003",
+   "municipalities": 35,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「保育料無償化に向けた段階的負担軽減」で、0〜2歳児の保育料について、国の所得階層の第3・第4区分（市町村民税所得割97,000円未満）は国基準利用料の1/2、第5区分（169,000円未満）は1/4を県が交付金として市町村に交付し、市町村を通じて利用料を軽くする（第3・4区分は令和3年9月、第5区分は令和7年4月から）。令和8年度当初予算945,351千円。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 35,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "yamagata-dankai-keigen",
+     "name": "保育料無償化に向けた段階的負担軽減事業",
+     "kind": "income_tier",
+     "kindLabel": "所得階層ごとの段階的な軽減",
+     "content": "0〜2歳児の保育料について、国基準の所得階層8区分のうち第3・第4区分（市町村民税所得割97,000円未満、推定年収470万円未満）は国基準利用料の1/2、第5区分（同169,000円未満、推定年収640万円未満）は1/4を、県が交付金として市町村に交付し、市町村を通じて利用料が軽減される。対象施設は国の幼児教育・保育の無償化（3〜5歳児）の対象に準じる。",
+     "ageRange": "0〜2歳",
+     "effect": {
+      "first": "partial",
+      "second": null,
+      "third": null,
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "第3区分（推定年収330万円未満）は月額19,500円の1/2、第4区分（470万円未満）は30,000円の1/2、第5区分（640万円未満）は44,500円の1/4（令和8年度予算の書き方）。保護者の負担が最終的にいくらになるかは市町村の保育料の決め方による。第2子以降との関係（国の多子軽減との重なり）は未確認。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "生まれ順を問わない所得階層ごとの軽減（第1子も対象）。第2子以降の扱いは未確認。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "市町村民税所得割169,000円未満（第3〜第5区分）。第6区分（推定年収930万円未満）以上は「政府の動向等を踏まえて検討」。"
+     },
+     "start": {
+      "date": "2021-09",
+      "text": "令和3年9月から第3・第4区分、令和7年4月から第5区分（拡充）"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度当初予算に945,351千円。終わりの定めは見つからなかった。"
+     },
+     "scope": "unknown",
+     "scopeLabel": "未確認",
+     "scopeNote": "県が交付金を市町村に交付し「市町村を通じて利用料が軽減されます」と書くが、全市町村で実施とは書いていない。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "市町村ごとの実施の一覧は見つからなかった。",
+     "funding": "県の交付金（第3・4区分は国基準利用料の1/2、第5区分は1/4）",
+     "budgetR8": "945,351千円（令和8年度当初予算。うち交付金935,834千円）",
+     "asOf": "令和8年度当初予算（令和8年3月）・県のページ（更新日2025年4月21日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "山形県「保育料無償化に向けた段階的負担軽減について」（更新日2025年4月21日）",
+       "url": "https://www.pref.yamagata.jp/010001/kenfuku/kosodate/hoiku/futankeigen.html"
+      },
+      {
+       "label": "山形県 説明資料「保育料無償化に向けた段階的負担軽減(拡充)について」",
+       "url": "https://www.pref.yamagata.jp/documents/23254/07hoikumusyouka.pdf"
+      },
+      {
+       "label": "山形県「令和8年度当初予算主要事業の概要」（保育料無償化に向けた段階的負担軽減事業費 945,351千円）",
+       "url": "https://www.pref.yamagata.jp/documents/50798/r8_shuyojigyo.pdf"
+      },
+      {
+       "label": "やまがた子育て応援サイト「保育料の負担軽減」",
+       "url": "https://kosodate.pref.yamagata.jp/support/hoikuryo-futan-keigen"
+      }
+     ],
+     "unverified": [
+      "市町村ごとの実施（全市町村か）",
+      "第2子以降（国の多子軽減）との重なりの扱い"
+     ]
+    }
+   ],
+   "notes": [
+    "県の子育て応援サイトは「市町村によっては、上記に加えて独自の軽減を実施しているところや、第３階層・第４階層については利用料ゼロ（無償化）としているところもあります」と書く。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "山形県 保育料 第2子 無償化 0歳から2歳 県 市町村 支援 所得制限 令和8年度",
+    "山形県 保育料 段階的 無償化 令和8年度 拡充 0歳から2歳 第6区分 市町村 交付金 所得割（pref.yamagata.jp）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "福島県",
+   "prefCode": "070009",
+   "municipalities": 59,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「ふくしま保育料支援事業」で、保育所等に入所する第3子以降の3歳未満児の保育料を市町村が減免する額の一部を県が支援（中核市を除く。令和8年度当初予算99,659千円、継続）。令和6年度は41市町村・1,344人。所得などの条件は市町村が決める。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 3,
+    "optInOrUnknown": 56,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "fukushima-tashi-keigen",
+     "name": "ふくしま保育料支援事業（多子世帯の保育料軽減への補助）",
+     "kind": "third_reduced",
+     "kindLabel": "第3子以降の軽減（中身は市町村ごと・未確認）",
+     "content": "保育所等に入所する第3子以降の3歳未満児にかかる保育料について、市町村が減免する額の一部を県が支援する（令和8年度当初予算の主要事業、継続、99,659千円）。県は「多子世帯の保育料負担を軽減する市町村（中核市を除く）の取組を支援」しており、「保護者の所得など、軽減するにあたっての具体的な条件は、市町村が定めて」いる（令和7年6月の県の回答）。令和6年度は41市町村・1,344人に補助（88,865千円）。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "none",
+      "third": "partial",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "減免の額・条件は市町村が決める（無償の市町村も一部減額の市町村もありうる）。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（市町村が定める）。"
+     },
+     "incomeLimit": {
+      "exists": null,
+      "text": "市町村が定める（県の回答）。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度当初予算の主要事業に「継続」で載っている。終わりの定めは見つからなかった。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "多子世帯の保育料を軽くする市町村（中核市の福島市・郡山市・いわき市を除く）への補助。令和6年度は41市町村。",
+     "excludedMunicipalityCodes": [
+      "072010",
+      "072036",
+      "072044"
+     ],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "補助先41市町村（令和6年度）の名前は県の年次報告に載っていない。",
+     "funding": "県が市町村の減免額の一部を補助（補助率は未確認）",
+     "budgetR8": "99,659千円（令和8年度当初予算）",
+     "asOf": "令和8年度当初予算（主要事業）・令和6年度実績（令和7年9月の年次報告）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "福島県「令和8年度当初予算の主要事業」（資料2。ふくしま保育料支援事業 継続 99,659千円）",
+       "url": "https://www.pref.fukushima.lg.jp/uploaded/attachment/725511.pdf"
+      },
+      {
+       "label": "福島県 令和7年度 県民提案・回答（令和7年6月3日「保育料完全無償化について」）",
+       "url": "https://www.pref.fukushima.lg.jp/sec/01010e/koucho7-r7-03.html"
+      },
+      {
+       "label": "福島県「子育て支援に関する施策の年次報告（令和6年度分）」（令和7年9月。ふくしま保育料支援事業 補助先41市町村・1,344人）",
+       "url": "https://www.pref.fukushima.lg.jp/uploaded/attachment/710461.pdf"
+      }
+     ],
+     "unverified": [
+      "実施している市町村の名前",
+      "補助率",
+      "市町村ごとの減免の中身（無償か一部か、所得の条件、数え方）"
+     ]
+    }
+   ],
+   "notes": [],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "福島県 多子世帯保育料軽減事業 第2子 第3子 3歳未満 保育料 県 市町村 補助 所得制限",
+    "福島県 保育料 多子世帯 第3子 第2子 3歳未満 軽減 市町村 補助 こども未来局（pref.fukushima.lg.jp）",
+    "ふくしま保育料支援事業 令和8年度 第3子以降 3歳未満 保育料 市町村 補助 福島県（2026-11-01）",
+    "\"保育料支援事業\" 福島県 令和8年度 当初予算 多子世帯（pref.fukushima.lg.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "茨城県",
+   "prefCode": "080004",
+   "municipalities": 44,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「多子世帯保育料軽減事業費補助」で、3歳未満児の第3子以降の保育料を無償化（所得制限なし）、第2子の保育料を半額に軽減（国の第4〜5階層、世帯年収約360万〜640万円）する市町村に県が1/2を補助（令和8年度当初予算543,079千円）。補助対象団体は毎年9月ごろ決まり、一覧は公表資料にない。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 44,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "ibaraki-tashi-third",
+     "name": "多子世帯保育料軽減事業費補助（第3子以降）",
+     "kind": "third_free",
+     "kindLabel": "第3子以降の無償化（市町村への補助）",
+     "content": "第3子以降で3歳未満の子（所得制限無し）の、公立・私立認可保育所・認定こども園・地域型保育事業の保育料を無償化する市町村に県が助成する（県1/2・市町村1/2）。第3子以降の所得制限は平成31年度に撤廃。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "none",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "0円になるのは補助を受けて実施する市町村だけ。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認。県の資料は国の制度（世帯年収約360万円以上は同時入所の場合に限り第2子半額・第3子以降無償）と並べて示すが、県の制度での第2子・第3子の数え方（同時入所を問わないか、上の子の年齢）は書いていない。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "第3子以降は所得制限なし（平成31年度から）。"
+     },
+     "start": {
+      "date": "2019-04",
+      "text": "第3子以降の所得制限の撤廃は平成31年度から（事業の開始年度は未確認）"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度の助成制度の概要に載っている（当初予算額543,079千円）。終わりの定めは見つからなかった。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "市町村が無償化する場合の助成。令和8年度の補助対象団体は「令和8年9月頃決定予定」とされている。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "補助対象団体の一覧は公表資料にない（令和7年度・令和8年度とも「9月頃決定予定」）。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": "543,079千円（令和8年度当初予算額。第2子の分と合わせた事業全体）",
+     "asOf": "令和8年度（助成制度の概要、更新日2026年4月1日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "茨城県「令和8年度市町村等に対する助成制度の概要」（更新日2026年4月1日。No.40 多子世帯保育料軽減事業費補助）",
+       "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/r8.html"
+      },
+      {
+       "label": "茨城県 同 詳細「多子世帯保育料軽減事業費補助」（令和8年度当初予算額543,079千円。令和8年度補助対象団体は令和8年9月頃決定予定）",
+       "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/documents/0840_hukushi.pdf"
+      },
+      {
+       "label": "茨城県 平成31年度当初予算の発表資料「多子世帯保育料軽減事業」（第3子以降の3歳未満児の所得制限を撤廃）",
+       "url": "https://www.pref.ibaraki.jp/bugai/koho/hodo/press/19press/documents/hoikuryoumushou.pdf"
+      }
+     ],
+     "unverified": [
+      "第3子の数え方（同時入所を問わないか、上の子の年齢）",
+      "実施している市町村の一覧"
+     ]
+    },
+    {
+     "id": "ibaraki-tashi-second",
+     "name": "多子世帯保育料軽減事業費補助（第2子）",
+     "kind": "second_half",
+     "kindLabel": "第2子の半額（市町村への補助）",
+     "content": "第2子で3歳未満の子のうち、国の利用者負担上限額基準の第4〜5階層の世帯（世帯年収約360万〜640万円）の保育料を全額負担から半額に軽減する市町村に県が助成する（県1/2・市町村1/2）。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "half",
+      "third": "none",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "半額になるのは補助を受けて実施する市町村の、第4〜5階層の世帯の第2子。世帯年収約360万円未満は国の制度で第2子半額。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認。県の資料は国の制度（世帯年収約360万円以上は同時入所の場合に限り第2子半額・第3子以降無償）と並べて示すが、県の制度での第2子・第3子の数え方（同時入所を問わないか、上の子の年齢）は書いていない。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "国の第4〜5階層（世帯年収約360万〜640万円）。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度の助成制度の概要に載っている。終わりの定めは見つからなかった。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "市町村が軽減する場合の助成。令和8年度の補助対象団体は「令和8年9月頃決定予定」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "補助対象団体の一覧は公表資料にない。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": "543,079千円（令和8年度当初予算額。第3子以降の分と合わせた事業全体）",
+     "asOf": "令和8年度（助成制度の概要、更新日2026年4月1日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "茨城県「令和8年度市町村等に対する助成制度の概要」（更新日2026年4月1日。No.40 多子世帯保育料軽減事業費補助）",
+       "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/r8.html"
+      },
+      {
+       "label": "茨城県 同 詳細「多子世帯保育料軽減事業費補助」（令和8年度当初予算額543,079千円。令和8年度補助対象団体は令和8年9月頃決定予定）",
+       "url": "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/joseiseido/documents/0840_hukushi.pdf"
+      },
+      {
+       "label": "茨城県 平成31年度当初予算の発表資料「多子世帯保育料軽減事業」（第3子以降の3歳未満児の所得制限を撤廃）",
+       "url": "https://www.pref.ibaraki.jp/bugai/koho/hodo/press/19press/documents/hoikuryoumushou.pdf"
+      }
+     ],
+     "unverified": [
+      "第2子の数え方",
+      "実施している市町村の一覧"
+     ]
+    }
+   ],
+   "notes": [
+    "いばらき結婚・子育てポータルサイト（kids.pref.ibaraki.jp）は2026年11月1日に接続が切れて開けなかった。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "茨城県 多子世帯保育料軽減事業 第2子 第3子 3歳未満 保育料 所得制限 令和8年度（pref.ibaraki.jp）",
+    "茨城県 多子世帯保育料軽減事業 実施市町村 第3子以降 3歳未満 無料 第2子 半額 市町村一覧（2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "栃木県",
+   "prefCode": "090000",
+   "municipalities": 25,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「第2子以降保育料等免除事業」で、令和6年10月から2人目の0〜2歳児（3号認定）の保育料を免除（始期は市町で違った）。所得制限なし。生計を一にする住民票上の同一世帯で保護者が育てている18歳未満（18歳の年度末まで）の子のうち2番目なら、上の子が卒園していても対象。3人目以降は保育料（0〜2歳）と副食費（3〜5歳）を免除。県内すべての市町で実施。令和8年度の予算資料では継続を確かめていない。",
+   "coverage": {
+    "allMunicipalities": 25,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "tochigi-second-free",
+     "name": "第2子以降保育料等免除事業（とちぎの「第2子の保育料無償化」）",
+     "kind": "second_free",
+     "kindLabel": "第2子以降の無償化（全市町）",
+     "content": "原則として生計を一にする同一世帯で2人以上の子がいる家庭は、保育所・認定こども園等に通う2人目の子の保育料（0〜2歳児）を免除。3人目以降は保育料（0〜2歳児）と副食費（3〜5歳児）を免除。市町と連携して実施（令和6年10月から2人目に拡大）。",
+     "ageRange": "0〜2歳（3号認定。3歳となった以後の最初の3月31日まで）",
+     "effect": {
+      "first": "none",
+      "second": "free",
+      "third": "free",
+      "secondCount": "household",
+      "thirdCount": "household"
+     },
+     "effectNote": "2人目は副食費も無償（とこぽ）。令和6年度は2人目の免除の始期が市町によって違った。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": "18歳未満（18歳となった以降の最初の3月31日まで）",
+      "text": "「原則として、生計を一にする住民票上の同一世帯であって、保護者等が現に育てている18歳未満（18歳となった以降の最初に迎える３月31日まで）のこどものうち、２番目のこども」（とこぽ）。上の子が卒園していても、別の園に通っていても対象。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "所得制限はなく、すべての世帯が対象（とこぽ）。"
+     },
+     "start": {
+      "date": "2024-10",
+      "text": "2人目は令和6年10月から（始期は市町によって違った）"
+     },
+     "end": {
+      "date": null,
+      "text": "県のページ（更新日2025年4月1日）は事業を現在形で案内。令和8年度の予算資料では継続を確かめていない。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "とこぽ「栃木県内すべての市町で、第２子の保育料が無料になります」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "092011",
+      "092029",
+      "092037",
+      "092045",
+      "092053",
+      "092061",
+      "092088",
+      "092096",
+      "092100",
+      "092118",
+      "092134",
+      "092142",
+      "092151",
+      "092169",
+      "093017",
+      "093424",
+      "093432",
+      "093441",
+      "093459",
+      "093611",
+      "093645",
+      "093840",
+      "093866",
+      "094072",
+      "094111"
+     ],
+     "implementingListBasis": "とこぽの「栃木県内すべての市町で」から、県内の全25市町のコードを入れた（市町ごとの案内は確かめていない）。",
+     "funding": "県と市町の負担（割合は未確認）",
+     "budgetR8": null,
+     "asOf": "県のページ（更新日2025年4月1日）・とこぽ（2024年10月1日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "栃木県 子育て支援ポータル「とこぽ」特集：とちぎの「第２子の保育料無償化」（更新日2024年10月1日）",
+       "url": "https://tocopo.pref.tochigi.lg.jp/topics/feature-11/"
+      },
+      {
+       "label": "栃木県「経済的な支援制度」第2子以降保育料等免除事業（更新日2025年4月1日）",
+       "url": "https://www.pref.tochigi.lg.jp/e06/welfare/kodomo/kosodatesoudan/shiennseido.html"
+      },
+      {
+       "label": "とこぽ「経済的な支援制度」第２子以降保育料等免除事業",
+       "url": "https://tocopo.pref.tochigi.lg.jp/search/search-01/"
+      }
+     ],
+     "unverified": [
+      "令和8年度の継続（予算資料）",
+      "県と市町の負担割合"
+     ]
+    }
+   ],
+   "notes": [
+    "3人目以降の免除（第3子以降保育料等免除事業）は令和6年10月より前からある（同じ数え方）。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "栃木県 保育料 第2子 無償化 3歳未満 県 市町村 補助 所得制限 令和8年度（pref.tochigi.lg.jp）",
+    "栃木県 令和8年度 当初予算 第2子以降保育料等免除事業 保育料（pref.tochigi.lg.jp、2026-11-01）",
+    "\"第2子以降保育料等免除\" 令和8年度（2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "群馬県",
+   "prefCode": "100005",
+   "municipalities": 35,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "第3子以降の3歳未満児の保育料を無料にしている市町村に、県が1/2を補助。扶養している児童等が3人以上いる世帯の3人目以降が対象で、兄姉の年齢制限と所得制限は県では定めない（市町村が定めることはある）。第2子の県の制度は見つからなかった。県のページは2021年9月の更新で、令和8年度の予算資料（主要事業一覧・予算の概要）にはこの事業は出てこなかった。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 35,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "gunma-third-free",
+     "name": "第3子以降3歳未満児保育料免除事業費補助金",
+     "kind": "third_free",
+     "kindLabel": "第3子以降の無償化（市町村への補助）",
+     "content": "認可保育所・認定こども園・認可外保育施設等を利用する第3子以降の3歳未満児の保育料を無料化している市町村に県が補助（市町村が条例等で徴収する保育料の全額免除を県と市町村が1/2ずつ負担。認可外は利用料の上限24,000円）。",
+     "ageRange": "0〜2歳（各年度の初日の前日に満3歳未満）",
+     "effect": {
+      "first": "none",
+      "second": "none",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": "household"
+     },
+     "effectNote": "0円になるのは補助を受けて無料化している市町村だけ。市町村が兄姉の年齢や所得の要件を定めている場合はその範囲。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": "県では定めない（市町村が独自に設ける場合あり）",
+      "text": "「保護者等の扶養している児童等が3人以上いる世帯で3人目以降の児童」。兄姉の年齢制限、世帯の所得制限は県では定めない。市町村が定めることは妨げず、その場合は市町村の範囲で県が補助。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "県では定めない（市町村が独自に設ける場合あり）。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認"
+     },
+     "end": {
+      "date": null,
+      "text": "終わりの定めは見つからなかった。令和8年度の継続は予算資料で確かめられなかった（主要事業一覧・当初予算の概要には出てこない）。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "第3子以降の3歳未満児の保育料を無料化している市町村に県が補助。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "補助を受けている市町村の一覧は見つからなかった。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": null,
+     "asOf": "県のページ（更新日2021年9月3日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "群馬県「第3子以降3歳未満児保育料免除事業費補助金」（更新日2021年9月3日）",
+       "url": "https://www.pref.gunma.jp/page/3682.html"
+      }
+     ],
+     "unverified": [
+      "令和8年度の継続（予算額）",
+      "実施している市町村の一覧"
+     ]
+    }
+   ],
+   "notes": [],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "群馬県 保育料 第2子 第3子 無償化 3歳未満 県 市町村 補助 所得制限（pref.gunma.jp）",
+    "群馬県 令和8年度 第3子以降3歳未満児保育料免除事業費補助金 予算 市町村（pref.gunma.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "埼玉県",
+   "prefCode": "110001",
+   "municipalities": 63,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「多子世帯保育料無償化支援事業」で、保育所等に入所する満3歳未満の第3子以降の保育料を、最年長の子の年齢にかかわらず無償化（市町村と共同、県が費用の1/2を補助）。同居する子が3人以上の世帯が対象で、所得の条件はない。令和8年度予算1,134,521千円（6,872人分）。",
+   "coverage": {
+    "allMunicipalities": 63,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "saitama-tashi-musyoka",
+     "name": "多子世帯保育料無償化支援事業",
+     "kind": "third_free",
+     "kindLabel": "第3子以降の無償化（市町村と共同）",
+     "content": "保育所等に入所する満3歳未満で第3子以降の児童の保育料について、最年長のこどもの年齢にかかわらず無償化する事業を市町村と共同で実施。国の多子軽減の同時入所の要件にかかわらず、同一世帯でこどもが3人以上かつ第3子以降が認可保育所等を利用している世帯の保育料を無償化する市町村に、県が経費の半額を補助（令和8年度予算見積調書）。",
+     "ageRange": "0〜2歳（保育が行われた年度の初日の前日に満3歳未満）",
+     "effect": {
+      "first": "none",
+      "second": "none",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": "household"
+     },
+     "effectNote": "第2子は国の基準のまま。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": "問わない（最年長のこどもの年齢にかかわらない）",
+      "text": "実施要綱で「多子世帯」は「原則として、３人以上のこどもが同居している世帯」、対象児童は「多子世帯のこどものうち、第３子以降に該当するこども」。県のページは「最年長のこどもの年齢にかかわらず」と書く。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "県の実施要綱・ページに所得の条件はない。"
+     },
+     "start": {
+      "date": "2015-04",
+      "text": "平成27年度から（実施要綱は平成27年4月1日から適用。同時入所の要件をなくした）"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度予算に1,134,521千円。終わりの定めは見つからなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県のページは「市町村と共同で実施」と書く。全63市町村で実施という記載は、令和5年9月の県議会の一般質問で議員が「今年度からは63市町村全てにおいて、第3子以降は全員無償になったとお聞きしております」と述べたもの（県の答弁ではない）。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "111007",
+      "112011",
+      "112020",
+      "112038",
+      "112062",
+      "112071",
+      "112089",
+      "112097",
+      "112101",
+      "112119",
+      "112127",
+      "112143",
+      "112151",
+      "112160",
+      "112178",
+      "112186",
+      "112194",
+      "112216",
+      "112224",
+      "112232",
+      "112241",
+      "112259",
+      "112275",
+      "112283",
+      "112291",
+      "112305",
+      "112313",
+      "112321",
+      "112330",
+      "112348",
+      "112356",
+      "112372",
+      "112381",
+      "112399",
+      "112402",
+      "112411",
+      "112429",
+      "112437",
+      "112453",
+      "112461",
+      "113018",
+      "113247",
+      "113263",
+      "113271",
+      "113417",
+      "113425",
+      "113433",
+      "113468",
+      "113476",
+      "113484",
+      "113492",
+      "113611",
+      "113620",
+      "113638",
+      "113654",
+      "113697",
+      "113816",
+      "113832",
+      "113859",
+      "114081",
+      "114421",
+      "114642",
+      "114651"
+     ],
+     "implementingListBasis": "令和5年9月の県議会の一般質問（議員の発言）の「63市町村全て」から、県内の全63市町村のコードを入れた。県の資料で市町村ごとには確かめていない。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": "1,134,521千円（令和8年度予算。対象児童6,872人分）",
+     "asOf": "令和8年度予算（見積調書）・県のページ（掲載日2025年5月12日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "埼玉県「多子世帯への保育料支援について」（掲載日2025年5月12日）",
+       "url": "https://www.pref.saitama.lg.jp/b0616/hoiku-jinzai/tashisetai.html"
+      },
+      {
+       "label": "埼玉県多子世帯保育料無償化支援事業費補助金実施要綱（令和6年4月1日適用の改正まで）",
+       "url": "https://www.pref.saitama.lg.jp/documents/256770/tashijisshi.pdf"
+      },
+      {
+       "label": "埼玉県 令和8年度予算見積調書「多子世帯保育料無償化支援事業」（1,134,521千円、6,872人分）",
+       "url": "https://www.pref.saitama.lg.jp/yosan-info/ST2026-10/pdf/021599.pdf"
+      },
+      {
+       "label": "埼玉県議会 令和5年9月定例会 一般質問（議員の質問「今年度からは63市町村全てにおいて、第3子以降は全員無償になったとお聞きしております」）",
+       "url": "https://www.pref.saitama.lg.jp/e1601/gikai-gaiyou/r0509/4/k0210.html"
+      }
+     ],
+     "unverified": [
+      "全63市町村での実施を県の資料で確かめること（議員の発言だけ）"
+     ]
+    }
+   ],
+   "notes": [],
+   "sources": [],
+   "municipalExamples": [
+    {
+     "code": "111007",
+     "name": "さいたま市",
+     "content": "第3子以降の3歳未満児の保育料を、兄弟姉妹の年齢に関係なく免除（県の多子世帯保育料無償化支援事業を活用）",
+     "relation": "県の制度の実施例",
+     "asOf": "令和8年度（既存の調べ）",
+     "confidence": "推定",
+     "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
+     "sources": [
+      {
+       "label": "さいたま市 保育施設等の利用案内（第3子以降3歳未満の保育料免除、県の多子世帯保育料無償化支援事業を活用）",
+       "url": "https://www.city.saitama.lg.jp/003/001/015/001/index.html"
+      },
+      {
+       "label": "さいたま市 多子世帯の保育料免除に関する要綱（PDF）",
+       "url": "https://www.city.saitama.lg.jp/003/001/015/001/p045608_d/fil/youkou.pdf"
+      }
+     ]
+    },
+    {
+     "code": "112089",
+     "name": "所沢市",
+     "content": "0〜2歳児は兄姉の年齢に関係なく、最年長の子から数えて第3子以降なら世帯収入を問わず無料（市は「市独自の取組」として案内）",
+     "relation": "県の制度と同じ内容（県の補助を使っているかは市の案内では未確認）",
+     "asOf": "令和8年度（既存の調べ）",
+     "confidence": "推定",
+     "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
+     "sources": [
+      {
+       "label": "所沢市 保育料について",
+       "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/hoikuryounituite.html"
+      },
+      {
+       "label": "所沢市 令和8年度 入園のしおり（令和8年4月発行版）",
+       "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/R8_hoiku.files/R8shiori3.pdf"
+      }
+     ]
+    },
+    {
+     "code": "112241",
+     "name": "戸田市",
+     "content": "埼玉県の多子世帯軽減により、第3子以降の0〜2歳児は上の子の年齢に関係なく無料",
+     "relation": "県の制度の実施例",
+     "asOf": "令和6年度の市の資料（既存の調べ）",
+     "confidence": "推定",
+     "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
+     "sources": [
+      {
+       "label": "戸田市 保育料関連資料（PDF）",
+       "url": "https://www.city.toda.saitama.jp/uploaded/attachment/66878.pdf"
+      }
+     ]
+    }
+   ],
+   "searches": [
+    "埼玉県 多子世帯保育料無償化支援事業 第3子以降 3歳未満 所得制限 兄姉 年齢 市町村 第2子（pref.saitama.lg.jp）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "千葉県",
+   "prefCode": "120006",
+   "municipalities": 54,
+   "status": "県の独自の制度は見つからなかった（県のページで確認）",
+   "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は、県の子育て支援課のページ（更新日2026年7月21日）と千葉県こども・若者みらいプラン（令和8年3月改定）に見つからなかった（プランの保育料の記載は国の無償化と、保育士の子の保育料の貸付だけ）。千葉市・船橋市・市川市などは市独自に多子軽減を広げている（既存の調べ）。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 54
+   },
+   "programs": [],
+   "notes": [
+    "県が第3子以降の学校給食費を市町村と連携して無償化している（令和5年1月から）とされるが、保育料ではない（今回は確かめていない）。"
+   ],
+   "sources": [
+    {
+     "label": "千葉県こども・若者みらいプラン（令和8年3月改定）（保育料の記載は国の無償化と保育士向けの貸付だけ）",
+     "url": "https://www.pref.chiba.lg.jp/kosodate/kodomokeikaku/documents/zentai.pdf"
+    },
+    {
+     "label": "千葉県 子育て支援課（更新日2026年7月21日。保育料の県の制度は載っていない）",
+     "url": "https://www.pref.chiba.lg.jp/kosodate/index.html"
+    }
+   ],
+   "municipalExamples": [],
+   "searches": [
+    "千葉県 多子世帯 保育料 軽減 第3子以降 第2子 0歳から2歳 県 補助 市町村 所得制限 令和8年度（pref.chiba.lg.jp）",
+    "千葉県 子育て支援 第3子以降 保育料 減免 市町村 補助金 所得制限 撤廃 0歳から2歳",
+    "（5県まとめて・extended）県が市町村に補助 0〜2歳 保育料 第2子 第3子 無償化 石川県 静岡県 新潟県 千葉県 富山県 2026年度 県独自"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "推定"
+  },
+  {
+   "pref": "東京都",
+   "prefCode": "130001",
+   "municipalities": 62,
+   "status": "都の制度あり（公式の資料で確認）",
+   "summary": "2025年9月1日から、0〜2歳の第1子の保育料等を無償にする区市町村を都が支援（年齢や所得にかかわらず、認可保育所等を利用する全ての世帯）。0〜2歳の第2子の無償化は令和5年度から（第2子の数え方は都の文で確かめていない）。どちらも「保育所等利用世帯負担軽減事業」で、令和7年度は23区26市5町3村（8村のうち3村は名前が分からない）、令和6年度は23区26市5町1村で実施。",
+   "coverage": {
+    "allMunicipalities": 54,
+    "excluded": 0,
+    "optInOrUnknown": 8,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "tokyo-first-free",
+     "name": "保育料等第一子無償化（保育所等利用世帯負担軽減事業）",
+     "kind": "first_free",
+     "kindLabel": "第1子からの無償化（区市町村への支援）",
+     "content": "都は、国が実施するまでの間、独自の取組として、令和7年9月1日から保育料等第一子無償化を実施する区市町村を支援する。年齢や所得にかかわらず、認可保育所等を利用する全ての世帯が対象（3〜5歳は国の制度で無償）。",
+     "ageRange": "0〜2歳",
+     "effect": {
+      "first": "free",
+      "second": "free",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "実施する区市町村だけ。延長保育料などは別。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "第1子から0円なので数え方は関係しない。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "年齢や所得にかかわらず（都のページ）。"
+     },
+     "start": {
+      "date": "2025-09",
+      "text": "令和7年9月1日から"
+     },
+     "end": {
+      "date": null,
+      "text": "「国が実施するまでの間」（都のページ）。令和8年度の予算資料では額を確かめていない。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "実施主体は区市町村で、都が支援。事業全体（第1子・第2子）の実施は令和7年度23区26市5町3村（都の実績）。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "第1子の無償化を区市町村ごとに示した都の一覧は見つからなかった（都の実績は事業全体の数だけ）。",
+     "funding": "都が区市町村を支援（補助率は未確認）",
+     "budgetR8": null,
+     "asOf": "都のページ（更新日2025年6月18日）・事業実績（令和7年度末、2026年8月公表）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "東京都福祉局「保育料等の無償化について」（更新日2025年6月18日）",
+       "url": "https://www.fukushi.metro.tokyo.lg.jp/kodomo/hoiku/mushouka"
+      },
+      {
+       "label": "東京都「東京都子供・子育て支援総合計画（第3期）の事業の概要と実績（令和7年度末）」資料11 事業107 保育所等利用世帯負担軽減事業（令和7年度23区26市5町3村、令和6年度23区26市5町1村で実施）",
+       "url": "https://www.fukushi.metro.tokyo.lg.jp/documents/d/fukushi/2026-08-13-105207-846"
+      },
+      {
+       "label": "東京都「東京都の少子化対策2025」p.29（第2子無償化・第1子無償化〈令和7年9月以降〉の図）",
+       "url": "https://www.spt.metro.tokyo.lg.jp/kodomoseisaku/book/2025-02_tokyo_syoshika2025/pageindices/index30.html"
+      }
+     ],
+     "unverified": [
+      "第1子の無償化をしている区市町村の一覧",
+      "令和8年度の予算額"
+     ]
+    },
+    {
+     "id": "tokyo-second-free",
+     "name": "0〜2歳の第2子の保育料等の無償化（保育所等利用世帯負担軽減事業）",
+     "kind": "second_free",
+     "kindLabel": "第2子以降の無償化（区市町村への支援）",
+     "content": "0〜2歳の第2子の保育料等を無償化する区市町村を都が支援（令和5年度から。都の資料「東京都の少子化対策2025」の年表に「0-2歳の第２子保育料等無償化」）。同じ資料の認可保育所のイメージ図の文字には、第1子が就学前の場合と小学生以上の場合の両方に第2子の「無償化」が出てくる（図そのものは見られず、文字だけで読んだ）。第3子以降も無償。",
+     "ageRange": "0〜2歳",
+     "effect": {
+      "first": "none",
+      "second": "free",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "2025年9月からは第1子の無償化と合わせて0〜2歳はすべて無料になるため、両方を実施している区市町村では数え方の違いは出ない。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認。都の資料の図の文字からは、第1子が小学生以上（保育所等に通っていない）でも第2子と数えると読めるが、都の文で確かめていない。上の子の年齢の上限も未確認。"
+     },
+     "incomeLimit": {
+      "exists": null,
+      "text": "都の資料の図に所得の区分はない（所得の条件がないと書いた都の文は確かめていない）。"
+     },
+     "start": {
+      "date": null,
+      "text": "令和5年度から（都の資料。開始月は都の資料で確かめていない。既存の調べ〈報道〉では2023年10月）"
+     },
+     "end": {
+      "date": null,
+      "text": "終わりの定めは見つからなかった。令和8年度の予算資料では額を確かめていない。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "実施主体は区市町村で、都が支援。令和6年度（第1子の無償化の前）は23区26市5町1村、令和7年度は23区26市5町3村で実施（都の実績）。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "131016",
+      "131024",
+      "131032",
+      "131041",
+      "131059",
+      "131067",
+      "131075",
+      "131083",
+      "131091",
+      "131105",
+      "131113",
+      "131121",
+      "131130",
+      "131148",
+      "131156",
+      "131164",
+      "131172",
+      "131181",
+      "131199",
+      "131202",
+      "131211",
+      "131229",
+      "131237",
+      "132012",
+      "132021",
+      "132039",
+      "132047",
+      "132055",
+      "132063",
+      "132071",
+      "132080",
+      "132098",
+      "132101",
+      "132110",
+      "132128",
+      "132136",
+      "132144",
+      "132152",
+      "132187",
+      "132195",
+      "132209",
+      "132217",
+      "132225",
+      "132233",
+      "132241",
+      "132250",
+      "132276",
+      "132284",
+      "132292",
+      "133035",
+      "133051",
+      "133086",
+      "133612",
+      "134015"
+     ],
+     "implementingListBasis": "都の実績（令和6年度23区26市5町1村、令和7年度23区26市5町3村）から、全23区・26市・5町のコードを入れた。8村のうち実施している3村（令和6年度は1村）は名前が分からず入れていない。",
+     "funding": "都が区市町村を支援（補助率は未確認）",
+     "budgetR8": null,
+     "asOf": "事業実績（令和7年度末、2026年8月公表）・都の資料（東京都の少子化対策2025、令和7年2月）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "東京都「東京都子供・子育て支援総合計画（第3期）の事業の概要と実績（令和7年度末）」資料11 事業107 保育所等利用世帯負担軽減事業（令和7年度23区26市5町3村、令和6年度23区26市5町1村で実施）",
+       "url": "https://www.fukushi.metro.tokyo.lg.jp/documents/d/fukushi/2026-08-13-105207-846"
+      },
+      {
+       "label": "東京都「東京都の少子化対策2025」p.29（第2子無償化・第1子無償化〈令和7年9月以降〉の図）",
+       "url": "https://www.spt.metro.tokyo.lg.jp/kodomoseisaku/book/2025-02_tokyo_syoshika2025/pageindices/index30.html"
+      },
+      {
+       "label": "東京都「東京都の少子化対策2025」p.18（0〜2歳の第2子保育料等無償化〈R5年度〉・第1子〈R7.9月～〉）",
+       "url": "https://www.spt.metro.tokyo.lg.jp/kodomoseisaku/book/2025-02_tokyo_syoshika2025/pageindices/index19.html"
+      },
+      {
+       "label": "東京都福祉局「保育料等の無償化について」（更新日2025年6月18日）",
+       "url": "https://www.fukushi.metro.tokyo.lg.jp/kodomo/hoiku/mushouka"
+      }
+     ],
+     "unverified": [
+      "実施している3村の名前",
+      "第2子の数え方（第1子が小学生以上でも数えるか、上の子の年齢の上限）",
+      "所得の条件がないこと（都の文で）",
+      "開始月"
+     ]
+    }
+   ],
+   "notes": [
+    "既存の調べ（src/shared/data.ts）では、杉並区の案内をもとに23区は0〜2歳の第1子から0円（2025年9月から、都の補助で区が実施）としている（推定。区ごとには未確認）。",
+    "2019年10月からは、年収約360万円以上の世帯で第1子が小学生以上の場合に第2子を半額・第3子を無償にする経費を区市町村に補助していた（都福祉局の資料「認可保育所等を利用する多子世帯への支援について」https://www.fukushi.metro.tokyo.lg.jp/documents/d/fukushi/tashisetaihenosien ）。いまの2つの制度との関係（置き換わったか）は都の資料で確かめていない。",
+    "令和8年度の都の予算資料（福祉局・広報東京都の8年度予算案）では、この事業の額を確かめられなかった。都のページは「国が実施するまでの間」支援すると書く。"
+   ],
+   "sources": [],
+   "municipalExamples": [
+    {
+     "code": "132098",
+     "name": "町田市",
+     "content": "2025年9月から0〜2歳児クラスの保育料は所得にかかわらず0円（第1子を含む）。市は2025年6月補正予算で第1子を無償化の対象に加えた",
+     "relation": "都の制度の実施例",
+     "asOf": "令和8年度（既存の調べ）",
+     "confidence": "推定",
+     "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
+     "sources": [
+      {
+       "label": "まちだ子育てサイト「利用者負担額等(保育料)について」",
+       "url": "https://kosodate-machida.tokyo.jp/soshiki/4/3/4/315.html"
+      },
+      {
+       "label": "町田市「令和7年度（2025年度）6月補正予算」",
+       "url": "https://www.city.machida.tokyo.jp/shisei/gyouzaisei/siyosan/hosei_25/hosei202506.html"
+      }
+     ]
+    },
+    {
+     "code": "132012",
+     "name": "八王子市",
+     "content": "2025年9月から、東京都の保育所等利用世帯負担軽減事業で0〜2歳児クラスは年齢・人数・所得にかかわらず0円",
+     "relation": "都の制度の実施例",
+     "asOf": "令和8年度（既存の調べ）",
+     "confidence": "推定",
+     "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
+     "sources": [
+      {
+       "label": "八王子市子育て応援サイト「幼児教育・保育の無償化について（令和7年9月から）」",
+       "url": "https://kosodate.city.hachioji.tokyo.jp/soshiki/hoikuyochienka/hoikuyochienka_kyufutanto/3670.html"
+      }
+     ]
+    },
+    {
+     "code": "132080",
+     "name": "調布市",
+     "content": "東京都の負担軽減事業の拡大で、2025年9月分から0〜2歳児クラスの第1子も無償（年齢・所得に関係なく）",
+     "relation": "都の制度の実施例",
+     "asOf": "令和8年度（既存の調べ）",
+     "confidence": "推定",
+     "via": "既存の調べ（data/cities20/research.json）から転記。今回は再確認していない",
+     "sources": [
+      {
+       "label": "調布市 利用者負担額(保育料)",
+       "url": "https://www.city.chofu.lg.jp/050020/p028008.html"
+      }
+     ]
+    },
+    {
+     "code": "132152",
+     "name": "国立市",
+     "content": "0〜2歳クラスは第1子から0円（2025年9月から、都の補助で市が実施）",
+     "relation": "都の制度の実施例",
+     "asOf": "2025年9月〜（既存の調べ）",
+     "confidence": "推定",
+     "via": "既存の調べ（src/shared/data.ts）から転記。今回は再確認していない",
+     "sources": [
+      {
+       "label": "国立市 認可保育所等における利用者負担額（保育料）の第1子無償化について",
+       "url": "https://www.city.kunitachi.tokyo.jp/soshiki/Dept04/Div03/Sec01/gyomu/0276/0277/0279/12840.html"
+      }
+     ]
+    }
+   ],
+   "searches": [
+    "東京都 保育所等利用世帯負担軽減事業 第1子 0歳から2歳 保育料 無償化 区市町村 令和8年度 補助（metro.tokyo.lg.jp）",
+    "東京都 保育料 第1子 無償化 2025年9月 区市町村 実施 一覧 都内全 第2子 第1子の年齢 所得制限なし",
+    "東京都 保育料等第一子無償化 実施 区市町村 一覧 令和7年9月 福祉局 第二子 無償化 令和5年10月（metro.tokyo.lg.jp、2026-11-01）",
+    "令和8年度 東京都予算 保育料等 第一子 無償化 第二子 区市町村 支援 保育所等利用世帯負担軽減事業（metro.tokyo.lg.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "神奈川県",
+   "prefCode": "140007",
+   "municipalities": 33,
+   "status": "県の独自の制度は見つからなかった（県のページで確認）",
+   "summary": "県独自の0〜2歳の保育料の無償化・軽減は見つからなかった。県の「幼児教育・保育の無償化」のページ（更新日2026年8月28日）は国の制度（多子軽減を含む）だけを説明し、意見募集への回答（2025年3月）では東京都のような0〜2歳の無償化を求める意見に「国に対し、３歳未満児を含む保育料の完全無償化を早期に実現するよう要望しています」と答えている。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 33
+   },
+   "programs": [],
+   "notes": [
+    "県の幼児教育・保育の無償化のページは国の制度（最年長の子を第1子と数え、0〜2歳の第2子半額・第3子以降無料）の説明。"
+   ],
+   "sources": [
+    {
+     "label": "神奈川県「幼児教育・保育の無償化」（更新日2026年8月28日。国の制度の説明だけ）",
+     "url": "https://www.pref.kanagawa.jp/docs/sy8/musyouka/2019musyouka.html"
+    },
+    {
+     "label": "神奈川県 意見募集への回答（2025年3月。0〜2歳の無償化を求める意見に国への要望で答えている）",
+     "url": "https://www.pref.kanagawa.jp/documents/114427/daichou.pdf"
+    }
+   ],
+   "municipalExamples": [],
+   "searches": [
+    "神奈川県 保育料 第2子 無償化 0歳から2歳 県 独自 市町村 補助 多子世帯（pref.kanagawa.jp）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "推定"
+  },
+  {
+   "pref": "新潟県",
+   "prefCode": "150002",
+   "municipalities": 30,
+   "status": "県の独自の制度は見つからなかった（県のページで確認）",
+   "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は見つからなかった。県のこども家庭課のページ（2026年10月の更新）の経済的支援は「新潟県こむすび定期」で、保育の項目は保育施設・保育士・こども誰でも通園制度・病児保育など。令和8年度当初予算の概要（福祉保健部）は図が中心のPDFで文字を読めなかった。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 30
+   },
+   "programs": [],
+   "notes": [],
+   "sources": [
+    {
+     "label": "新潟県 福祉保健部 こども家庭課（経済的支援の取組は「新潟県こむすび定期」。保育料の県の制度は載っていない）",
+     "url": "https://www.pref.niigata.lg.jp/sec/kodomokatei/"
+    },
+    {
+     "label": "新潟県「子育て・青少年」（くらしのページ）",
+     "url": "https://www.pref.niigata.lg.jp/life/2/7/"
+    },
+    {
+     "label": "新潟県 令和8年度当初予算の概要（福祉保健部）（PDFは図が中心で文字を読めなかった）",
+     "url": "https://www.pref.niigata.lg.jp/sec/fukushihoken/r08tousho.html"
+    }
+   ],
+   "municipalExamples": [],
+   "searches": [
+    "新潟県 保育料 第2子 第3子 無償化 軽減 3歳未満 県 市町村 補助 所得制限 令和8年度（pref.niigata.lg.jp）",
+    "新潟県 多子世帯 保育料 軽減 県補助 第2子 第3子 3歳未満 市町村 18歳未満 所得",
+    "（5県まとめて・extended）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "推定"
+  },
+  {
+   "pref": "富山県",
+   "prefCode": "160008",
+   "municipalities": 15,
+   "status": "県の制度あり（公式の資料で確認。令和6年度の時点）",
+   "summary": "県は第3子以降の保育料を無料化する市町村に費用の一部を助成している（保育料軽減事業）。県の広報（2024年6月号、令和6年度予算）に「保育料軽減事業 1億9,300万円 県下全域で第３子以降の保育料を完全無償化」。数え方・所得制限・令和8年度の継続は県の資料で確かめられなかった（令和8年度当初予算の資料・県の広報の予算特集に出てこない）。",
+   "coverage": {
+    "allMunicipalities": 15,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "toyama-third-free",
+     "name": "保育料軽減事業（第3子以降の保育料の無償化）",
+     "kind": "third_free",
+     "kindLabel": "第3子以降の無償化（市町村への助成）",
+     "content": "県は保育所等に入所する第3子以降の児童の保育料を無料化している市町村に、その費用の一部を助成（県の広報 2016年6月号）。令和6年度予算の「保育料軽減事業 1億9,300万円」で「県下全域で第３子以降の保育料を完全無償化」（県の広報 2024年6月号）。",
+     "ageRange": "0〜2歳（3歳以上は国の無償化）",
+     "effect": {
+      "first": "none",
+      "second": null,
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "「完全無償化」が所得制限・兄姉の年齢制限なしを指すかは未確認。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（第3子の数え方は県の資料に見つからなかった）。"
+     },
+     "incomeLimit": {
+      "exists": null,
+      "text": "未確認（「完全無償化」とあるが所得の条件の有無は書かれていない）。"
+     },
+     "start": {
+      "date": null,
+      "text": "「完全無償化」は令和6年度予算（県の広報 2024年6月号）。第3子以降の無料化への助成はそれより前から（2016年の広報）。"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度の継続は県の資料で確かめられなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県の広報（2024年6月号）「県下全域で第３子以降の保育料を完全無償化」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "162019",
+      "162027",
+      "162043",
+      "162051",
+      "162060",
+      "162078",
+      "162086",
+      "162094",
+      "162108",
+      "162116",
+      "163210",
+      "163228",
+      "163236",
+      "163422",
+      "163431"
+     ],
+     "implementingListBasis": "県の広報（2024年6月号）の「県下全域で」から、県内の全15市町村のコードを入れた（市町村ごとには確かめていない。令和6年度の時点）。",
+     "funding": "県が市町村に費用の一部を助成（割合は未確認）",
+     "budgetR8": null,
+     "asOf": "令和6年度（県の広報 2024年6月号）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "県広報とやま 2024年6月号「8つの重点政策」（保育料軽減事業 1億9,300万円、県下全域で第３子以降の保育料を完全無償化）",
+       "url": "https://www.pref.toyama.jp/1021/kensei/kouhou/kouhoushi/kj00016456/2024/kouhou0604-3.html"
+      },
+      {
+       "label": "県広報とやま 2016年6月号（第3子以降の保育料を無料化している市町村に費用の一部を助成）",
+       "url": "https://www.pref.toyama.jp/1118/kensei/kouhou/kouhoushi/kj00016456/2016/kj00016456-026-01/kj00016456-026-04.html"
+      }
+     ],
+     "unverified": [
+      "令和8年度の継続と予算額",
+      "第3子の数え方",
+      "所得制限の有無",
+      "県の助成の割合"
+     ]
+    }
+   ],
+   "notes": [
+    "2021年3月の福井県の事務事業カルテは、富山県を「第３子以降就学前までの保育料を無料化(所得制限あり)」と紹介していた（2024年の「完全無償化」より前の時点）。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "富山県 保育料 第2子 無償化 3歳未満 多子世帯 県 市町村 補助 所得制限 令和8年度（pref.toyama.jp）",
+    "（5県まとめて・extended）",
+    "富山県 保育料軽減事業 第3子以降 保育料 完全無償化 所得制限 撤廃 3歳未満 市町村 県補助 令和6年度から（2026-11-01）",
+    "\"保育料軽減事業\" 令和8年度 予算 富山県 第3子（pref.toyama.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "石川県",
+   "prefCode": "170003",
+   "municipalities": 19,
+   "status": "県の独自の制度は見つからなかった（県のページで確認）",
+   "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は見つからなかった。県の子育て支援課（少子化対策監室）のページ（更新日2026年10月13日）・子ども政策課のページ・令和8年度当初予算の記者発表・少子化対策監室の令和8年度の記者発表資料に、保育料の県の制度は出てこない（県の子育て世帯向けの制度はプレミアム・パスポートなど）。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 19
+   },
+   "programs": [],
+   "notes": [],
+   "sources": [
+    {
+     "label": "石川県 健康福祉部少子化対策監室（子育て支援課）（更新日2026年10月13日）",
+     "url": "https://www.pref.ishikawa.lg.jp/kosodate/index.html"
+    },
+    {
+     "label": "石川県 健康福祉部少子化対策監室（子ども政策課）",
+     "url": "https://www.pref.ishikawa.lg.jp/kodomoseisaku/index.html"
+    },
+    {
+     "label": "石川県 令和8年度当初予算 記者発表（令和8年1月20日）",
+     "url": "https://www.pref.ishikawa.lg.jp/chiji/kisya/r8_1_20/documents/20260120.pdf"
+    },
+    {
+     "label": "石川県 令和8年度 少子化対策監室の記者発表資料",
+     "url": "https://www.pref.ishikawa.lg.jp/kisya/r8/syoushika.html"
+    }
+   ],
+   "municipalExamples": [],
+   "searches": [
+    "石川県 多子世帯 保育料 無償化 第3子 第2子 3歳未満 県 市町 補助 所得制限 令和8年度（pref.ishikawa.lg.jp）",
+    "（5県まとめて・extended）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "推定"
+  },
+  {
+   "pref": "福井県",
+   "prefCode": "180009",
+   "municipalities": 17,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "市町が行う第2子以降の保育料の無償化を県が1/2補助（ふく育応援プロジェクト。令和8年度当初予算「第２子の保育料を無償化」）。令和2年度から第3子以降→第2子以降に広げ、令和6年9月から所得制限を撤廃。2021年の県の資料では「全市町が実施」。きょうだいの数え方は県の資料に見つからなかった。",
+   "coverage": {
+    "allMunicipalities": 17,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "fukui-second-free",
+     "name": "第2子以降の保育料無償化（ふく育応援プロジェクト）",
+     "kind": "second_free",
+     "kindLabel": "第2子以降の無償化（県と市町）",
+     "content": "市町が実施主体で、第2子以降の保育料を無償化する市町に県が補助（県1/2・市町1/2）。令和8年度当初予算の「ふく育応援プロジェクト」（1,047,563千円）の事業内容に「第２子の保育料を無償化」。令和2年度から保育料の無償化の対象を第3子以降から第2子以降へ広げ（令和2年9月は年収約360万円未満世帯の第2子）、令和6年9月から第2子以降の保育料無償化の所得制限を撤廃した（福井県こども・子育て応援計画）。",
+     "ageRange": "0〜2歳（3〜5歳は国の無償化）",
+     "effect": {
+      "first": "none",
+      "second": "free",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": null,
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（県の計画・予算資料・事務事業カルテに第2子の数え方〔同時に通う子だけか、上の子の年齢〕の記載はない）。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "令和6年9月から所得制限を撤廃（福井県こども・子育て応援計画）。それまでは所得制限があった（2021年の事務事業カルテでは第2子は年収約360万円未満世帯）。"
+     },
+     "start": {
+      "date": "2020-09",
+      "text": "第2子は令和2年9月から（年収約360万円未満世帯）。令和6年9月から所得制限なし。"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度当初予算の主要事業に載っている。終わりの定めは見つからなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県の事務事業カルテ（2021年3月作成、すくすく保育支援事業〈保育料軽減事業〉）に「市町が実施主体である。（負担割合：県１/２、市町１/２）また、全市町が実施。」。令和8年度の資料では市町ごとの実施を確かめていない。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "182010",
+      "182028",
+      "182044",
+      "182052",
+      "182061",
+      "182079",
+      "182087",
+      "182095",
+      "182109",
+      "183229",
+      "183822",
+      "184047",
+      "184233",
+      "184420",
+      "184811",
+      "184837",
+      "185019"
+     ],
+     "implementingListBasis": "県の事務事業カルテ（2021年3月）の「全市町が実施」から、県内の全17市町のコードを入れた（令和8年度の市町ごとの実施は確かめていない）。",
+     "funding": "県1/2・市町1/2（ふく育応援プロジェクトの補助率は県1/2〜10/10）",
+     "budgetR8": "ふく育応援プロジェクト 1,047,563千円（令和8年度当初予算。在宅育児応援手当・一時預かり・病児デイケアなどを含む全体）",
+     "asOf": "令和8年度当初予算（令和8年2月）・福井県こども・子育て応援計画（2025年）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "福井県 令和8年度当初予算 主要事業（ふく育応援プロジェクト：第２子の保育料を無償化）",
+       "url": "https://www.pref.fukui.lg.jp/doc/zaisei/fukuikenyosan/r7_2gatuhosei_d/fil/syuyoujigyou.pdf"
+      },
+      {
+       "label": "福井県こども・子育て応援計画 本文（令和２年度から第2子以降へ拡充、令和６年９月から所得制限を撤廃）",
+       "url": "https://www.pref.fukui.lg.jp/doc/kodomo/fukui_kodomo_plan_d/fil/honbun_rr.pdf"
+      },
+      {
+       "label": "福井県 事務事業カルテ（2021年3月。すくすく保育支援事業〈保育料軽減事業〉、県1/2・市町1/2、全市町が実施）",
+       "url": "https://www.pref.fukui.lg.jp/doc/zaisei/2jimujigyoukarute_d/fil/05_05.pdf"
+      }
+     ],
+     "unverified": [
+      "第2子の数え方（同時に通う子だけか、上の子の年齢を問わないか）",
+      "令和8年度の市町ごとの実施"
+     ]
+    }
+   ],
+   "notes": [
+    "同じ予算に、第2子以降を在宅で育てる世帯への在宅育児応援手当、一時預かり・病児デイケアの利用料の無償化（多胎児を含む）もある（保育所の保育料とは別）。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "福井県 保育料 無償化 0歳から2歳 第2子 第1子 県 市町 補助 所得制限 令和8年度（pref.fukui.lg.jp）",
+    "福井県 第2子 保育料 無償化 年齢制限 第1子 年齢 数え方 生計 所得制限撤廃 令和6年9月 ふく育 全市町（2026-11-01）",
+    "福井県 第2子以降 保育料 無償化 0～2歳 第1子 年齢 対象 市町（pref.fukui.lg.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "山梨県",
+   "prefCode": "190004",
+   "municipalities": 27,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「やまなし子育て応援事業」で、第2子以降の0〜2歳児（3号認定）の保育料を3歳の誕生日以後の最初の3月31日まで無償化（平成28年4月から県内全ての市町村で実施）。世帯の市町村民税所得割課税額169,000円未満（国基準の第5階層まで、年収約640万円未満相当）が条件。第1子は生計を同一にする世帯の子どもの最年長者で、年齢を問わない（19歳以上や仕送りを受ける大学生も含む）。",
+   "coverage": {
+    "allMunicipalities": 27,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "yamanashi-ouen",
+     "name": "やまなし子育て応援事業",
+     "kind": "second_free",
+     "kindLabel": "第2子以降の無償化（全市町村）",
+     "content": "第2子以降の保育料について、3歳の誕生日以後の最初の3月31日まで無償化。対象児童は(1)0・1・2歳児のうち保育が必要な3号認定の子ども、(2)世帯の第2子以降の子ども（生計を同一にする第1子がいること）、(3)国基準の第5階層までの世帯の子ども（世帯の市町村民税所得割課税額が169,000円未満。世帯の年収約640万円未満相当）。",
+     "ageRange": "0〜2歳（3号認定。3歳の誕生日以後の最初の3月31日まで）",
+     "effect": {
+      "first": "none",
+      "second": "free",
+      "third": "free",
+      "secondCount": "household",
+      "thirdCount": "household"
+     },
+     "effectNote": "所得割169,000円以上の世帯は対象外（国の制度のまま）。県のQ&Aの例：15歳・1歳・0歳のきょうだいで、1歳（第2子）は44,500円→0円、0歳（第3子）は国の減免で22,250円→県の事業で0円。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": "問わない（生計が同一の子・孫等なら年齢に関わらない。19歳以上も含む）",
+      "text": "第1子は「生計を同一にしている世帯の子どもの最年長者」（県のQ&A）。チラシ（令和7年度）は「支給認定保護者と生計が同一の子や孫等であれば、年齢に関わらず、対象」「保護者が監護していた子どもが成長し、19歳以上になった場合も含みます」。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "世帯の市町村民税所得割課税額が169,000円未満（国基準の第5階層まで。世帯の年収約640万円未満相当）。"
+     },
+     "start": {
+      "date": "2016-04",
+      "text": "平成28年4月から県内全ての市町村で実施"
+     },
+     "end": {
+      "date": null,
+      "text": "県のページ（更新日2025年10月16日）は事業を現在形で案内。令和8年度の予算資料（当初予算の概要）にはこの事業の記載が見つからず、令和8年度の継続は予算資料では確かめていない。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県のページ「平成28年4月から、県内全ての市町村で実施しています」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "192015",
+      "192023",
+      "192040",
+      "192058",
+      "192066",
+      "192074",
+      "192082",
+      "192091",
+      "192104",
+      "192112",
+      "192121",
+      "192139",
+      "192147",
+      "193461",
+      "193640",
+      "193658",
+      "193666",
+      "193682",
+      "193844",
+      "194221",
+      "194239",
+      "194247",
+      "194255",
+      "194298",
+      "194301",
+      "194425",
+      "194433"
+     ],
+     "implementingListBasis": "県のページの「県内全ての市町村で実施」から、県内の全27市町村のコードを入れた（市町村ごとの案内は確かめていない）。",
+     "funding": "県が市町村に助成（割合は未確認）",
+     "budgetR8": null,
+     "asOf": "県のページ（更新日2025年10月16日）・チラシ（令和7年度）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "山梨県「やまなし子育て応援事業について」（更新日2025年10月16日。対象児童の要件とQ&A）",
+       "url": "https://www.pref.yamanashi.jp/kosodate/hoikushisetsuyouchien/kosodateouenjigyou.html"
+      },
+      {
+       "label": "山梨県 やまなし子育て応援事業 チラシ（令和7年度。生計を同一にする世帯の第1子の例）",
+       "url": "https://www.pref.yamanashi.jp/documents/71510/yamanasikosodateouentirasir7_2.pdf"
+      },
+      {
+       "label": "山梨県「日本一健やかに子どもを育むやまなし」（平成28年4月から県内全ての市町村で実施、所得割169,000円未満）",
+       "url": "https://www.pref.yamanashi.jp/miryoku/kurashi/kosodate/index.html"
+      }
+     ],
+     "unverified": [
+      "令和8年度の予算額（継続の予算資料での確認）",
+      "県の助成の割合"
+     ]
+    }
+   ],
+   "notes": [
+    "この所得の条件（所得割169,000円未満）は、市区町村の一覧（muni-nursery-policies.json）と gen-national.mjs の MAYBE_CAP で「確かめられていない」としていたもの。県の制度のページ（更新日2025年10月16日）と県の「日本一健やかに子どもを育むやまなし」のページで本文を確かめた。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "やまなし子育て応援事業 保育料 第2子以降 無償化 第1子 所得制限 年齢 市町村 令和8年度（pref.yamanashi.jp）",
+    "やまなし子育て応援事業 令和8年度 第2子以降 保育料 無料化 予算（pref.yamanashi.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "長野県",
+   "prefCode": "200000",
+   "municipalities": 77,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "「保育料軽減事業」で、3歳未満児の保育料について、国の同時入園の要件にかかわらず第3子以降を無償化・第2子を半額にし、低所得世帯（年収360万円未満相当）は第2子を無償化・第1子を半額にする市町村を県が支援。平成27年度からの県単独の多子世帯保育料減免事業を令和6年度に拡充し、令和7年度から全市町村で支援を実施。令和8年度予算636,326千円。",
+   "coverage": {
+    "allMunicipalities": 77,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "nagano-tashi-third",
+     "name": "保育料軽減事業（多子世帯・第3子以降）",
+     "kind": "third_free",
+     "kindLabel": "第3子以降の無償化（全市町村）",
+     "content": "国の多子世帯の保育料負担軽減の要件である同時入園にかかわらず、3歳未満児の第3子以降の保育料を無償化する市町村を県が支援（令和6年度から。令和7年度から全市町村で支援を実施）。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "none",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": "household"
+     },
+     "effectNote": "同時入園なら国の制度で無償、同時入園でない場合は県の補助で無償（県のページの図）。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": null,
+      "text": "国の多子軽減の「同時入園」の要件にかかわらず数える（県のページ）。上の子の年齢の上限は未確認。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "所得の区分なし（県のページの図では年収360万円以上・未満とも第3子は無償化）。"
+     },
+     "start": {
+      "date": "2024-04",
+      "text": "令和6年度から（平成27年度からの多子世帯保育料減免事業の上限を撤廃して無償化）。令和7年度から全市町村。"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度予算に計上。終わりの定めは見つからなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県のページ（更新日2026年4月6日）「令和７年度から全市町村で支援を実施」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "202011",
+      "202029",
+      "202037",
+      "202045",
+      "202053",
+      "202061",
+      "202070",
+      "202088",
+      "202096",
+      "202100",
+      "202118",
+      "202126",
+      "202134",
+      "202142",
+      "202151",
+      "202177",
+      "202185",
+      "202193",
+      "202207",
+      "203033",
+      "203041",
+      "203050",
+      "203068",
+      "203076",
+      "203092",
+      "203211",
+      "203238",
+      "203246",
+      "203491",
+      "203505",
+      "203611",
+      "203629",
+      "203637",
+      "203823",
+      "203831",
+      "203840",
+      "203858",
+      "203866",
+      "203882",
+      "204021",
+      "204030",
+      "204048",
+      "204072",
+      "204099",
+      "204102",
+      "204111",
+      "204129",
+      "204137",
+      "204145",
+      "204153",
+      "204161",
+      "204170",
+      "204226",
+      "204234",
+      "204251",
+      "204293",
+      "204307",
+      "204323",
+      "204463",
+      "204480",
+      "204501",
+      "204510",
+      "204528",
+      "204811",
+      "204820",
+      "204854",
+      "204862",
+      "205214",
+      "205419",
+      "205435",
+      "205613",
+      "205621",
+      "205630",
+      "205834",
+      "205885",
+      "205907",
+      "206024"
+     ],
+     "implementingListBasis": "県のページの「令和７年度から全市町村で支援を実施」から、県内の全77市町村のコードを入れた（市町村ごとの案内は確かめていない）。",
+     "funding": "県が市町村を支援（補助率は未確認）",
+     "budgetR8": "636,326千円（令和8年度予算。保育料軽減事業全体。県の経済対策の資料の当初予算案の額は5億6477万4千円）",
+     "asOf": "県のページ（更新日2026年4月6日。令和8年度予算）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "長野県「保育料軽減事業について」（更新日2026年4月6日。事業概要の図：令和7年度から全市町村で支援、令和8年度予算636,326千円）",
+       "url": "https://www.pref.nagano.lg.jp/kodomo-katei/hoiku/hoikuryo.html"
+      },
+      {
+       "label": "長野県「保育料軽減事業の概要」の図（イメージ図：年収360万円以上・未満、同時入園・非同時入園ごとの国と県の分担）",
+       "url": "https://www.pref.nagano.lg.jp/kodomo-katei/hoiku/images/hoikuryo.png"
+      },
+      {
+       "label": "長野県総合経済対策（令和8年1月9日策定・2月5日更新）（多子世帯等への保育料軽減、R8当初5億6477万4千円）",
+       "url": "https://www.pref.nagano.lg.jp/sansei/keizaitaisaku/documents/r70205keizaitaisaku_honpen.pdf"
+      },
+      {
+       "label": "長野県「若者・子育て世代応援プロジェクト（改訂版）」（更新日2024年3月22日）",
+       "url": "https://www.pref.nagano.lg.jp/jisedai/documents/240325project.html"
+      }
+     ],
+     "unverified": [
+      "上の子の年齢の上限",
+      "補助率"
+     ]
+    },
+    {
+     "id": "nagano-tashi-second",
+     "name": "保育料軽減事業（多子世帯・第2子）",
+     "kind": "second_half",
+     "kindLabel": "第2子の半額（全市町村）",
+     "content": "国の同時入園の要件にかかわらず、3歳未満児の第2子の保育料を半額にする市町村を県が支援（令和6年度から。令和7年度から全市町村で支援を実施）。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "none",
+      "second": "half",
+      "third": "none",
+      "secondCount": "household",
+      "thirdCount": null
+     },
+     "effectNote": "年収360万円以上の世帯で同時入園でない第2子を県の補助で1/2軽減（同時入園なら国の制度で半額）。年収360万円未満の世帯の第2子は低所得世帯の制度で無償。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": null,
+      "text": "国の多子軽減の「同時入園」の要件にかかわらず数える（県のページ）。上の子の年齢の上限は未確認。"
+     },
+     "incomeLimit": {
+      "exists": false,
+      "text": "所得の区分なし（年収360万円未満は別の制度で無償）。"
+     },
+     "start": {
+      "date": "2024-04",
+      "text": "令和6年度から。令和7年度から全市町村。"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度予算に計上。終わりの定めは見つからなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県のページ（更新日2026年4月6日）「令和７年度から全市町村で支援を実施」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "202011",
+      "202029",
+      "202037",
+      "202045",
+      "202053",
+      "202061",
+      "202070",
+      "202088",
+      "202096",
+      "202100",
+      "202118",
+      "202126",
+      "202134",
+      "202142",
+      "202151",
+      "202177",
+      "202185",
+      "202193",
+      "202207",
+      "203033",
+      "203041",
+      "203050",
+      "203068",
+      "203076",
+      "203092",
+      "203211",
+      "203238",
+      "203246",
+      "203491",
+      "203505",
+      "203611",
+      "203629",
+      "203637",
+      "203823",
+      "203831",
+      "203840",
+      "203858",
+      "203866",
+      "203882",
+      "204021",
+      "204030",
+      "204048",
+      "204072",
+      "204099",
+      "204102",
+      "204111",
+      "204129",
+      "204137",
+      "204145",
+      "204153",
+      "204161",
+      "204170",
+      "204226",
+      "204234",
+      "204251",
+      "204293",
+      "204307",
+      "204323",
+      "204463",
+      "204480",
+      "204501",
+      "204510",
+      "204528",
+      "204811",
+      "204820",
+      "204854",
+      "204862",
+      "205214",
+      "205419",
+      "205435",
+      "205613",
+      "205621",
+      "205630",
+      "205834",
+      "205885",
+      "205907",
+      "206024"
+     ],
+     "implementingListBasis": "県のページの「令和７年度から全市町村で支援を実施」から、県内の全77市町村のコードを入れた（市町村ごとの案内は確かめていない）。",
+     "funding": "県が市町村を支援（補助率は未確認）",
+     "budgetR8": "636,326千円（令和8年度予算。保育料軽減事業全体。県の経済対策の資料の当初予算案の額は5億6477万4千円）",
+     "asOf": "県のページ（更新日2026年4月6日。令和8年度予算）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "長野県「保育料軽減事業について」（更新日2026年4月6日。事業概要の図：令和7年度から全市町村で支援、令和8年度予算636,326千円）",
+       "url": "https://www.pref.nagano.lg.jp/kodomo-katei/hoiku/hoikuryo.html"
+      },
+      {
+       "label": "長野県「保育料軽減事業の概要」の図（イメージ図：年収360万円以上・未満、同時入園・非同時入園ごとの国と県の分担）",
+       "url": "https://www.pref.nagano.lg.jp/kodomo-katei/hoiku/images/hoikuryo.png"
+      },
+      {
+       "label": "長野県総合経済対策（令和8年1月9日策定・2月5日更新）（多子世帯等への保育料軽減、R8当初5億6477万4千円）",
+       "url": "https://www.pref.nagano.lg.jp/sansei/keizaitaisaku/documents/r70205keizaitaisaku_honpen.pdf"
+      },
+      {
+       "label": "長野県「若者・子育て世代応援プロジェクト（改訂版）」（更新日2024年3月22日）",
+       "url": "https://www.pref.nagano.lg.jp/jisedai/documents/240325project.html"
+      }
+     ],
+     "unverified": [
+      "上の子の年齢の上限",
+      "補助率"
+     ]
+    },
+    {
+     "id": "nagano-low-income",
+     "name": "保育料軽減事業（低所得世帯）",
+     "kind": "low_income",
+     "kindLabel": "低所得世帯の軽減（全市町村）",
+     "content": "低所得世帯（年収360万円未満相当）の3歳未満児の保育料を軽減（第2子無償化、第1子半額）する市町村を県が支援（令和6年度に新設。令和7年度から全市町村で支援を実施）。",
+     "ageRange": "0〜2歳（3歳未満児）",
+     "effect": {
+      "first": "half",
+      "second": "free",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "年収360万円未満相当の世帯だけ。第1子は1/2軽減（県）、第2子は国の半額に県の補助で無償（同時入園でなくても無償）、第3子は国の制度で無償。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（県の資料に記載はない。国の制度では年収約360万円未満相当の世帯は上の子の年齢を問わず数える）。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "年収360万円未満相当（国の基準の年収約360万円未満相当世帯）。"
+     },
+     "start": {
+      "date": "2024-04",
+      "text": "令和6年度に新設。令和7年度から全市町村。"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度予算に計上。終わりの定めは見つからなかった。"
+     },
+     "scope": "all",
+     "scopeLabel": "全市町村",
+     "scopeNote": "県のページ（更新日2026年4月6日）「令和７年度から全市町村で支援を実施」。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": [
+      "202011",
+      "202029",
+      "202037",
+      "202045",
+      "202053",
+      "202061",
+      "202070",
+      "202088",
+      "202096",
+      "202100",
+      "202118",
+      "202126",
+      "202134",
+      "202142",
+      "202151",
+      "202177",
+      "202185",
+      "202193",
+      "202207",
+      "203033",
+      "203041",
+      "203050",
+      "203068",
+      "203076",
+      "203092",
+      "203211",
+      "203238",
+      "203246",
+      "203491",
+      "203505",
+      "203611",
+      "203629",
+      "203637",
+      "203823",
+      "203831",
+      "203840",
+      "203858",
+      "203866",
+      "203882",
+      "204021",
+      "204030",
+      "204048",
+      "204072",
+      "204099",
+      "204102",
+      "204111",
+      "204129",
+      "204137",
+      "204145",
+      "204153",
+      "204161",
+      "204170",
+      "204226",
+      "204234",
+      "204251",
+      "204293",
+      "204307",
+      "204323",
+      "204463",
+      "204480",
+      "204501",
+      "204510",
+      "204528",
+      "204811",
+      "204820",
+      "204854",
+      "204862",
+      "205214",
+      "205419",
+      "205435",
+      "205613",
+      "205621",
+      "205630",
+      "205834",
+      "205885",
+      "205907",
+      "206024"
+     ],
+     "implementingListBasis": "県のページの「令和７年度から全市町村で支援を実施」から、県内の全77市町村のコードを入れた（市町村ごとの案内は確かめていない）。",
+     "funding": "県が市町村を支援（補助率は未確認）",
+     "budgetR8": "636,326千円（令和8年度予算。保育料軽減事業全体。県の経済対策の資料の当初予算案の額は5億6477万4千円）",
+     "asOf": "県のページ（更新日2026年4月6日。令和8年度予算）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "長野県「保育料軽減事業について」（更新日2026年4月6日。事業概要の図：令和7年度から全市町村で支援、令和8年度予算636,326千円）",
+       "url": "https://www.pref.nagano.lg.jp/kodomo-katei/hoiku/hoikuryo.html"
+      },
+      {
+       "label": "長野県「保育料軽減事業の概要」の図（イメージ図：年収360万円以上・未満、同時入園・非同時入園ごとの国と県の分担）",
+       "url": "https://www.pref.nagano.lg.jp/kodomo-katei/hoiku/images/hoikuryo.png"
+      },
+      {
+       "label": "長野県総合経済対策（令和8年1月9日策定・2月5日更新）（多子世帯等への保育料軽減、R8当初5億6477万4千円）",
+       "url": "https://www.pref.nagano.lg.jp/sansei/keizaitaisaku/documents/r70205keizaitaisaku_honpen.pdf"
+      },
+      {
+       "label": "長野県「若者・子育て世代応援プロジェクト（改訂版）」（更新日2024年3月22日）",
+       "url": "https://www.pref.nagano.lg.jp/jisedai/documents/240325project.html"
+      }
+     ],
+     "unverified": [
+      "「年収360万円未満相当」の所得割額の線",
+      "補助率"
+     ]
+    }
+   ],
+   "notes": [
+    "平成27年度から令和5年度までは、同時入所を要件とせず第3子以降の保育料を軽減する事業（補助率1/2以内、月額6,000円×1/2が上限）だった（県のページ）。",
+    "別に「信州型自然保育保育料軽減事業」（認定を受けた自然保育の園の保育料の軽減）がある https://www.pref.nagano.lg.jp/kodomo-katei/yamahoiku/yamahoiku-hoikuryo.html （今回は開いていない）"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "長野県 多子世帯 保育料 軽減事業 第3子 第2子 3歳未満 県 市町村 補助 所得制限 令和8年度（pref.nagano.lg.jp）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "岐阜県",
+   "prefCode": "210005",
+   "municipalities": 42,
+   "status": "県の制度あり（公式の資料で確認。令和7年度の時点）",
+   "summary": "「第3子以降保育料等無償化事業費補助金」で、県が定める所得要件（市町村民税所得割課税額97,000円未満、年収約470万円未満）の範囲で、3人以上の児童を現に扶養する多子世帯の第3子以降の3歳未満児の保育料（3号認定）と3歳以上の副食費（2号認定）を無償化する市町村に、県と市町村が1/2ずつ補助（令和7年度予算41,428千円、終期は令和11年度）。令和5年度は42市町村のうち36市町村が実施。第2子以降の県独自の完全無償化は「考えていない」（令和5年9月の回答）。令和8年度の予算資料は見つからなかった。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 42,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "gifu-third-free",
+     "name": "第3子以降保育料等無償化事業費補助金",
+     "kind": "third_free",
+     "kindLabel": "第3子以降の無償化（市町村への補助）",
+     "content": "県が定める所得要件（市町村住民税所得割課税額97,000円未満）の範囲内において、市町村が3人以上の児童を現に扶養する多子世帯に対し、保育所・認定こども園・地域型保育事業所の3号認定子どもの保育料と2号認定子どもの副食費（いずれも第3子以降）を無償化する場合に、県が市町村に費用を補助（県1/2・市町村1/2）。令和2年度から認可外保育施設を利用する児童も対象（3歳未満児の保育料は上限4.2万円/月）。",
+     "ageRange": "0〜2歳（3号認定）",
+     "effect": {
+      "first": "none",
+      "second": "none",
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": "household"
+     },
+     "effectNote": "0円になるのは補助を受けて実施する市町村で、所得割97,000円未満の世帯（年収約470万円未満）の第3子以降。それより上の世帯は国の制度のまま（同時入所の第3子なら0円）。",
+     "counting": {
+      "rule": "household",
+      "olderSiblingAgeLimit": null,
+      "text": "「3人以上の児童を現に扶養する多子世帯」の第3子以降（令和7年度の予算要求資料）。扶養する児童の年齢の上限は、今回開いた資料では確かめていない。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "市町村民税所得割課税額97,000円未満（県の回答では「年収約４７０万円未満のご家庭」）。"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認（目標の指標の「事業開始前」はH27）"
+     },
+     "end": {
+      "date": null,
+      "text": "終期は令和11年度（令和7年度の予算要求資料）。令和8年度の予算資料は見つからず、令和8年度の継続は確かめていない。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "市町村が無償化する場合の補助。実施市町村は令和3〜5年度とも36（目標42）。名前の一覧は見つからなかった。",
+     "excludedMunicipalityCodes": [],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "実施36市町村（令和5年度）の名前は予算資料に載っていない。",
+     "funding": "県1/2・市町村1/2",
+     "budgetR8": null,
+     "asOf": "令和7年度当初予算（決定額41,428千円）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "岐阜県 令和7年度当初予算 予算要求資料「第３子以降保育料等無償化事業費補助金」（決定額41,428千円、終期令和11年度、実施市町村数36）",
+       "url": "https://www.pref.gifu.lg.jp/pref/s11105/yosan-hensei/R7koukai-3/06/57276.pdf"
+      },
+      {
+       "label": "岐阜県 県民の意見への回答（令和5年9月1日受付「第２子以降の保育料完全無償化について」）",
+       "url": "https://www.pref.gifu.lg.jp/uploaded/attachment/372871.pdf"
+      },
+      {
+       "label": "岐阜県「【事業終了】第2子以降出産祝金・高等学校就学準備等支援金」（いまのページには保育料の補助金の記載がない）",
+       "url": "https://www.pref.gifu.lg.jp/page/303230.html"
+      }
+     ],
+     "unverified": [
+      "令和8年度の継続と予算額",
+      "扶養する児童の年齢の上限",
+      "実施している市町村の名前"
+     ]
+    }
+   ],
+   "notes": [
+    "県は第2子以降の保育料の完全無償化について「県独自で第２子以降の保育料完全無償化を実施することは、現段階で考えておりません」と回答（令和5年9月）。",
+    "県のページ「第2子以降出産祝金・高等学校就学準備等支援金」は、この2つを令和7年度で終えると案内している。検索結果に出た以前の題名には「第3子以降保育料等無償化事業費補助金」も入っていたが、いまのページには保育料の記載がない（終わったとも書いていない）。"
+   ],
+   "sources": [],
+   "municipalExamples": [],
+   "searches": [
+    "岐阜県 第2子 第3子 保育料 無償化 3歳未満 県 市町村 補助 多子世帯 所得制限 令和8年度（pref.gifu.lg.jp）",
+    "岐阜県 第3子以降保育料等無償化事業費補助金 令和8年度 多子世帯 保育料 副食費 市町村（pref.gifu.lg.jp、2026-11-01）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  },
+  {
+   "pref": "静岡県",
+   "prefCode": "220001",
+   "municipalities": 35,
+   "status": "県の独自の制度は見つからなかった（県の資料で確認）",
+   "summary": "県が0〜2歳の保育料を軽減・無償化する独自の制度は見つからなかった。令和8年度当初予算案の資料編に保育料の軽減はなく、前回「保育料に使えるか未確認」とした「子育てに優しいまちづくり事業費補助金」は、法人・団体の子育て応援の設備（子連れ優先レーン・駐車スペース・おむつ交換台など）への補助で、保育料の制度ではなかった。静岡市は令和5年4月から市の制度で0〜2歳の第2子を無償にしている（既存の調べ）。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 0,
+    "optInOrUnknown": 0,
+    "noneFound": 35
+   },
+   "programs": [],
+   "notes": [],
+   "sources": [
+    {
+     "label": "静岡県 令和8年度当初予算案 資料編（保育料の軽減の記載はない）",
+     "url": "https://www.pref.shizuoka.jp/_res/projects/default_project/_page_/001/077/823/05_r8siryou.pdf"
+    },
+    {
+     "label": "静岡県「令和8年度子育てに優しいまちづくり事業費補助金」（更新日2026年10月14日。法人・団体の設備への補助で、保育料の制度ではない）",
+     "url": "https://www.pref.shizuoka.jp/kodomokyoiku/kodomokosodate/shoshika/1082581.html"
+    }
+   ],
+   "municipalExamples": [
+    {
+     "code": "221007",
+     "name": "静岡市",
+     "content": "令和5年4月から、0〜2歳（クラス年齢）の第2子を無償にし、世帯の所得やきょうだいの年齢に関係なく第何子かを決める",
+     "relation": "市町村独自",
+     "asOf": "令和5年4月〜（検索結果の要約）",
+     "confidence": "推定",
+     "via": "今回の検索（2026-11-01）",
+     "sources": [
+      {
+       "label": "静岡県オープンデータ 静岡市利用者負担額表（保育料）",
+       "url": "https://opendata.pref.shizuoka.jp/dataset/12470.html"
+      }
+     ]
+    }
+   ],
+   "searches": [
+    "静岡県 第3子以降 保育料 軽減 3歳未満 県 市町 補助 多子世帯 第2子 所得制限 令和8年度（pref.shizuoka.jp）",
+    "（5県まとめて・extended）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "推定"
+  },
+  {
+   "pref": "愛知県",
+   "prefCode": "230006",
+   "municipalities": 54,
+   "status": "県の制度あり（公式の資料で確認）",
+   "summary": "3歳未満児（満3歳到達年度末まで）の第3子以降の保育料を無料化する市町村への補助を、2025年10月から第2子以降に広げた（第二子保育料無料化等事業費補助金、令和8年度予算468,181千円）。名古屋市と中核市は対象外。第2子は「無料化又は軽減」で、県の補助には所得の上限がある（豊明市の議会報告では「県の補助対象はＤ８まで」、無償化は県1/2補助・半額は県1/4補助）。数え方と所得の額は県の資料に見つからなかった。",
+   "coverage": {
+    "allMunicipalities": 0,
+    "excluded": 5,
+    "optInOrUnknown": 49,
+    "noneFound": 0
+   },
+   "programs": [
+    {
+     "id": "aichi-second",
+     "name": "第二子保育料無料化等事業費補助金（第2子）",
+     "kind": "second_partial",
+     "kindLabel": "第2子の無料化又は軽減（市町村・所得による）",
+     "content": "3歳未満児のうち第二子以降児の保育料を3歳到達年度末まで無料化または軽減する市町村（政令市・中核市を除く）に、県が経費を補助（2025年10月から対象を第三子以降から第二子以降に拡大）。令和8年度予算468,181千円（第3子以降の分を含む事業全体）。",
+     "ageRange": "0〜2歳（満3歳到達年度末まで）",
+     "effect": {
+      "first": "none",
+      "second": "partial",
+      "third": null,
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "無料か半額かは市町村と所得による。豊明市の議会報告の図では「保育料無償化（県1/2補助）」「保育料 半額（県1/4補助）」、答弁では「愛知県の補助対象はＤ８まで」（Ｄ８は豊明市の保育料の階層）。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（県の資料に第2子の数え方の記載はない）。"
+     },
+     "incomeLimit": {
+      "exists": true,
+      "text": "県の補助に所得の上限がある（豊明市の答弁「補助対象はＤ８まで」）。県の基準の額は未確認。"
+     },
+     "start": {
+      "date": "2025-10",
+      "text": "第2子は2025年10月から"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度予算に計上。終わりの定めは見つからなかった。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "第2子以降の保育料を無料化・軽減する市町村への補助。名古屋市と中核市（豊橋市・岡崎市・一宮市・豊田市）は対象外。",
+     "excludedMunicipalityCodes": [
+      "231002",
+      "232017",
+      "232025",
+      "232033",
+      "232114"
+     ],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "実施市町村の一覧は見つからなかった。",
+     "funding": "県が市町村に補助（豊明市の議会報告の図では無償化は1/2、半額は1/4）",
+     "budgetR8": "468,181千円（令和8年度予算。第3子以降の分を含む事業全体）",
+     "asOf": "令和8年度予算（予算の概要 参考資料、令和8年2月）・県のページ（掲載日2025年9月23日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "愛知県 令和8年度 予算の概要 参考資料（第二子保育料無料化等事業費補助金 468,181千円）",
+       "url": "https://www.pref.aichi.jp/uploaded/attachment/598192.pdf"
+      },
+      {
+       "label": "愛知県 福祉局子育て支援課の業務内容（掲載日2025年9月23日。第二子以降児の保育料の無料化：対象を第三子以降から第二子以降に拡大、2025年10月から）",
+       "url": "https://www.pref.aichi.jp/soshiki/kosodate/0000005497.html"
+      },
+      {
+       "label": "豊明市議会 議会報告（2026年1月。県の補助対象はＤ８まで、無償化は県1/2補助・半額は県1/4補助、県内で第2子以降完全無償化は9市町）",
+       "url": "https://www.city.toyoake.lg.jp/secure/31631/2026houkoku.pdf"
+      }
+     ],
+     "unverified": [
+      "所得の上限（県の基準の額）",
+      "第2子の数え方",
+      "実施している市町村の一覧"
+     ]
+    },
+    {
+     "id": "aichi-third",
+     "name": "第二子保育料無料化等事業費補助金（第3子以降。旧 第3子保育料無料化）",
+     "kind": "third_free",
+     "kindLabel": "第3子以降の無償化（市町村への補助）",
+     "content": "3歳未満児の第3子以降の保育料を満3歳到達年度末まで無料化する市町村（政令市・中核市を除く）に県が補助（2025年10月に第2子以降へ拡大した事業の元の部分）。",
+     "ageRange": "0〜2歳（満3歳到達年度末まで）",
+     "effect": {
+      "first": "none",
+      "second": null,
+      "third": "free",
+      "secondCount": null,
+      "thirdCount": null
+     },
+     "effectNote": "0円になるのは補助を受けて実施する市町村だけ。",
+     "counting": {
+      "rule": null,
+      "olderSiblingAgeLimit": null,
+      "text": "未確認（県の資料に第3子の数え方の記載はない）。"
+     },
+     "incomeLimit": {
+      "exists": null,
+      "text": "未確認"
+     },
+     "start": {
+      "date": null,
+      "text": "開始年度は未確認"
+     },
+     "end": {
+      "date": null,
+      "text": "令和8年度予算に計上（第2子の分と合わせた事業）。終わりの定めは見つからなかった。"
+     },
+     "scope": "opt_in",
+     "scopeLabel": "手挙げ（実施する市町村に県が補助・支援）",
+     "scopeNote": "名古屋市と中核市は対象外。",
+     "excludedMunicipalityCodes": [
+      "231002",
+      "232017",
+      "232025",
+      "232033",
+      "232114"
+     ],
+     "implementingMunicipalityCodes": null,
+     "implementingListBasis": "実施市町村の一覧は見つからなかった。",
+     "funding": "県が市町村に補助（補助率は未確認）",
+     "budgetR8": "468,181千円（第2子の分と合わせた事業全体）",
+     "asOf": "令和8年度予算（予算の概要 参考資料）・県のページ（掲載日2025年9月23日）",
+     "confidence": "確認済",
+     "sources": [
+      {
+       "label": "愛知県の取組（子ども・子育て）（掲載日2024年2月5日。第3子以降の子どもの満3歳到達年度末までの保育料の無料化）",
+       "url": "https://www.pref.aichi.jp/soshiki/tabunka/kodomo.html"
+      },
+      {
+       "label": "愛知県 福祉局子育て支援課の業務内容（掲載日2025年9月23日。第二子以降児の保育料の無料化：対象を第三子以降から第二子以降に拡大、2025年10月から）",
+       "url": "https://www.pref.aichi.jp/soshiki/kosodate/0000005497.html"
+      },
+      {
+       "label": "愛知県 令和8年度 予算の概要 参考資料（第二子保育料無料化等事業費補助金 468,181千円）",
+       "url": "https://www.pref.aichi.jp/uploaded/attachment/598192.pdf"
+      }
+     ],
+     "unverified": [
+      "所得制限の有無",
+      "第3子の数え方",
+      "実施している市町村の一覧"
+     ]
+    }
+   ],
+   "notes": [
+    "豊明市の議会報告（令和7年6月定例月議会の答弁）では、県内で第2子以降の完全無償化をしている自治体は9市町。"
+   ],
+   "sources": [],
+   "municipalExamples": [
+    {
+     "code": "234419",
+     "name": "阿久比町",
+     "content": "2025年10月から、18歳までの子が2人以上いる世帯の第二子（0〜2歳）の保育料を、所得割合算97,000円未満は無償、97,000円以上301,000円未満は半額",
+     "relation": "関係未確認（県の拡充と同じ時期に開始）",
+     "asOf": "2025年10月（町の広報）",
+     "confidence": "推定",
+     "via": "今回の検索（2026-11-01）／2026-11-01：町の広報のPDFは404で、中身を確かめ直せなかった",
+     "sources": [
+      {
+       "label": "阿久比町 広報（2025年10月1日号）第二子の3歳未満児の保育料の無償化・軽減（2026年11月1日には404で開けなかった）",
+       "url": "https://www.town.agui.lg.jp/category2/kouhou/pdf/251001/kouhou251001p02.pdf"
+      }
+     ]
+    }
+   ],
+   "searches": [
+    "愛知県 第3子保育料無料化事業 3歳未満 18歳未満 市町村 補助 第2子 保育料 令和8年度（pref.aichi.jp）",
+    "愛知県 第2子 保育料 無料化 2025年10月 3歳未満 市町村 県補助 第1子の年齢 所得制限 町",
+    "愛知県 第二子保育料無料化等事業費補助金 2025年10月 第2子 3歳未満 保育料 無料 第1子の年齢 所得制限 市町村 実施（2026-11-01）",
+    "愛知県 中核市 一覧 2026年 春日井市 中核市移行（2026-11-01。e-Stat の廃置分合の記録で春日井市は特例市のまま）"
+   ],
+   "checkedOn": "2026-11-01",
+   "confidence": "確認済"
+  }
+ ]
 }

@@ -1,0 +1,52 @@
+{
+  "code": "312045",
+  "pref": "鳥取県",
+  "name": "境港市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度 境港市利用者負担額(月額)」PDF〔リンク名「令和８年保育料月額」、PDFの作成日2026年4月7日〕）",
+  "period_note": "「◎保育料 ４月～８月分 ⇒令和7年度市町村民税所得割額により決定 ◎保育料 ９月～３月分 ⇒令和8年度市町村民税所得割額により決定」。「児童が年度の途中で満3歳になった場合 誕生日の前日から2号認定に切り替わります。ただし、当該年度中の保育料は3歳未満児の額で、変わりません。」4月1日時点で3歳以上の子は保育料無料。",
+  "tax_basis": "6%",
+  "tax_note": "「階層区分の判定における市町村民税課税額は、扶養義務者（父母など）の税額控除（住宅ローン控除など）前の市町村民税課税額（納税通知書の課税額とは異なります。）で決定します。」家計の主宰者が同居の祖父母などの場合は、その主宰者の所得割課税額を父母の額に合算（保育料のページ）。政令市ではない。",
+  "table": {
+    "title": "令和8年度 境港市利用者負担額(月額)",
+    "kind": "3号認定（3歳未満児）・標準時間・第1子（月額）。ひとり親世帯等ではない一般の世帯の額",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税所得割 非課税", "monthly": 10000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市民税所得割 48,600円未満", "monthly": 13000, "monthly_second": null },
+      { "label": "C3", "lower": 48600, "upper": 72800, "condition": "市民税所得割 72,800円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "C4", "lower": 72800, "upper": 97000, "condition": "市民税所得割 97,000円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "C5", "lower": 97000, "upper": 133000, "condition": "市民税所得割 133,000円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "C6", "lower": 133000, "upper": 169000, "condition": "市民税所得割 169,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "C7", "lower": 169000, "upper": 235000, "condition": "市民税所得割 235,000円未満", "monthly": 38000, "monthly_second": null },
+      { "label": "C8", "lower": 235000, "upper": 301000, "condition": "市民税所得割 301,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "C9", "lower": 301000, "upper": 397000, "condition": "市民税所得割 397,000円未満", "monthly": 46000, "monthly_second": null },
+      { "label": "C10", "lower": 397000, "upper": null, "condition": "市民税所得割 397,000円以上", "monthly": 50000, "monthly_second": null }
+    ],
+    "notes": "短時間: A・B 0円、C1 9,800円、C2 12,700円、C3 17,600円、C4 22,500円、C5 27,500円、C6 32,400円、C7 37,300円、C8 41,200円、C9 45,200円、C10 49,100円。C1〜C4の（ ）内の額 5,000円（短時間4,900円）は「市民税所得割77,101円未満の世帯のうち、ひとり親世帯、在宅障がい者のいる世帯等」の額。多子軽減措置（保護者と生計を一にする子どもの人数による）: 所得割57,700円未満の世帯は世帯第2子半額（同時在園の場合無料）・世帯第3子無料。ひとり親世帯・在宅障がい者のいる世帯等で所得割77,101円未満は世帯第2子・第3子とも無料。上記以外の世帯は世帯第2子は利用者負担額のとおり（同時在園の場合半額）、世帯第3子無料。*1 同時在園とは、幼稚園・保育所・認定こども園・特別支援学校幼稚部に入所又は児童心理治療施設・地域型保育事業を利用している就学前児童が2人以上在園している場合で、在園している児童のうち年齢が2番目に高い児童。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月10,000〜50,000円）。0円は生活保護世帯と市民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "所得割57,700円以上の一般の世帯は、就学前児童が2人以上同時に在園している場合に年齢が2番目に高い児童が半額（上の子が小学生以上なら世帯第2子でも全額）。所得割57,700円未満の世帯は、保護者と生計を一にする子で数えた世帯第2子が半額、同時在園なら無料。ひとり親世帯・在宅障がい者のいる世帯等で所得割77,101円未満は世帯第2子無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "「保護者と生計を一にする子どもの人数」で数えた世帯第3子は、所得に関係なく無料（上の子の年齢の上限は書かれていない）。世帯第3子は3歳以上の副食費もかからない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "利用者負担額（保育料）について：境港市", "url": "https://www.city.sakaiminato.lg.jp/index.php?view=9363" },
+    { "label": "令和8年度 境港市利用者負担額(月額)（PDF「令和８年保育料月額」）", "url": "https://www.city.sakaiminato.lg.jp/upload/user/00005359-jXCZ0a.pdf" },
+    { "label": "保育園・認定こども園・幼稚園：境港市", "url": "https://www.city.sakaiminato.lg.jp/index.php?view=9676" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べは robots.txt（User-agent: * は Disallow: /、Crawl-delay: 5）で止まっていたので、トップ → 子育て（life_events.php?life=kosodate）→ 保育園・認定こども園・幼稚園（view=9676）→ 利用者負担額（保育料）について（view=9363）の順に、5秒以上あけて必要なページだけを開いた"
+  ],
+  "notes": "表は文字の取れるPDF（Excelから作成）。月額は階層の順に上がっている。3歳以上の副食費は所得割57,700円（ひとり親等世帯は77,101円）未満の世帯と世帯第3子はかからない。認可外保育施設を使う第3子以降の保育料補助のページ（view=108820）もある。",
+  "read_at": "2026-11-01"
+}

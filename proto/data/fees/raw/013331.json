@@ -1,0 +1,56 @@
+{
+  "code": "013331",
+  "pref": "北海道",
+  "name": "知内町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度 知内町 認定こども園利用のご案内」〔令和8年1月20日発行〕）",
+  "period_note": "0〜2歳児の保育料が全世帯無償なので、所得の年度の切り替えは保育料に関係しない。延長保育・一時預かりの利用料は別にかかる（施設が徴収）。",
+  "tax_basis": "6%",
+  "tax_note": "0〜2歳児の保育料は世帯の所得などに関係なく無償のため、町の保育料の階層表は示されていない。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2023年4月",
+  "first_child_free_note": "令和8年度 認定こども園利用のご案内「9．保育料について」: 知内町では子育てに係る保護者の経済的な負担を緩和し、安心して子育てができるまちづくりを実現するため、令和5年4月より、世帯の所得などに関係なく、国の無償化の対象とならない子ども（0～2歳までの全ての世帯）の保育料を無償としています。「10．給食費（副食費）について」: 給食費（副食費）も全額助成、保護者からの負担等はなし。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全世帯の0〜2歳児の保育料が無償のため、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無償なので第3子以降も0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "知内町教育費無償化事業の「知内町学校給食無償化事業」: 小学校、中学校における児童・生徒の学校給食費について町が負担。",
+    "source": { "label": "知内町 知内町教育費無償化事業について", "url": "https://www.town.shiriuchi.hokkaido.jp/kyoiku/gakko/musyoka.html" }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "知内町子育て支援交付金（出生児）",
+      "amount": 200000,
+      "note": "出生児1人につき200,000円。出生児と保護者が町の住民基本台帳に記録され、出産時に保護者が引き続き3か月以上居住していること。出生から6か月以内に申請。",
+      "source": { "label": "知内町 知内町子育て支援交付金", "url": "https://www.town.shiriuchi.hokkaido.jp/kurashi/hoken_fukushi/seido/kosodateshien.html" }
+    },
+    {
+      "label": "知内町立小学校入学準備金",
+      "amount": 50000,
+      "note": "新入学にあたり児童1人あたり5万円を助成（知内町教育費無償化事業）。同じ事業で、小・中学校の教材費・宿泊研修・修学旅行の費用を町が負担、知内中学校の制服等購入費を助成。",
+      "source": { "label": "知内町 知内町教育費無償化事業について", "url": "https://www.town.shiriuchi.hokkaido.jp/kyoiku/gakko/musyoka.html" }
+    },
+    {
+      "label": "知内町高等学校等進学応援給付金",
+      "amount": 80000,
+      "note": "知内中学校を卒業し高等学校等に進学する生徒、及び知内高等学校に進学する生徒の保護者へ生徒1人あたり8万円。",
+      "source": { "label": "知内町 知内町教育費無償化事業について", "url": "https://www.town.shiriuchi.hokkaido.jp/kyoiku/gakko/musyoka.html" }
+    }
+  ],
+  "sources": [
+    { "label": "令和8年度 知内町 認定こども園利用のご案内（PDF、令和8年1月20日発行）", "url": "https://www.town.shiriuchi.hokkaido.jp/files/00005900/00005938/20260202154938.pdf" },
+    { "label": "知内町 しりうち認定こども園の入園申込等について", "url": "https://www.town.shiriuchi.hokkaido.jp/kurashi/hoken_fukushi/hoiku/kodomoen_entry.html" },
+    { "label": "知内町 知内町教育費無償化事業について", "url": "https://www.town.shiriuchi.hokkaido.jp/kyoiku/gakko/musyoka.html" },
+    { "label": "知内町 知内町子育て支援交付金", "url": "https://www.town.shiriuchi.hokkaido.jp/kurashi/hoken_fukushi/seido/kosodateshien.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べは候補の文書なし（ページ一覧のみ）。保育のページ → しりうち認定こども園の入園申込等について → 令和8年度 認定こども園利用のご案内（文字の取れるPDF）で、0〜2歳児の保育料が令和5年4月から全世帯無償と確かめた。町内の施設はしりうち認定こども園（0歳は生後6か月以降）。保育料の表はないので table は null。",
+  "read_at": "2026-11-01"
+}

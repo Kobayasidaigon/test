@@ -1,0 +1,68 @@
+{
+  "code": "063673",
+  "pref": "山形県",
+  "name": "戸沢村",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「戸沢保育園の利用にあたって」のページ: ０，１，２歳児保育料は令和８年度より無償化。「保育園入園の手続き」のページの保育料の表も全階層0円）",
+  "period_note": "令和8年度（2026年4月）から0・1・2歳児の保育料を無償化しているので、所得の年度の切り替えは保育料に関係しない。表の見出しは「各月初日の入所児童の属する世帯の階層区分」で、当該年度分の市町村民税で階層を分ける。",
+  "tax_basis": "6%",
+  "tax_note": "表の階層は当該年度分の市町村民税（非課税・均等割のみ・所得割の額）で分けるが、全階層0円なので保育料には関係しない。所得割の定義の注記はない。政令市ではない。",
+  "table": {
+    "title": "保育料（各月初日の入所児童の属する世帯の階層区分／利用者負担の額（円））",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "1階層を除き、当該年度分の市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "1階層を除き、当該年度分の市町村民税課税世帯のうち、均等割のみ課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 97000, "condition": "1階層及び2階層を除き、当該年度分の市町村民税課税世帯であって、その所得割の額が 97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "5", "lower": 97000, "upper": 210000, "condition": "所得割の額 97,000円以上 210,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "6", "lower": 210000, "upper": 341000, "condition": "所得割の額 210,000円以上 341,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "7", "lower": 341000, "upper": null, "condition": "所得割の額 341,000円以上", "monthly": 0, "monthly_second": null }
+    ],
+    "notes": "村の「保育園入園の手続き」のページのHTMLの表。3歳未満児・3歳以上児とも、保育標準時間・保育短時間の全階層が0円。表の下に以前の決まりとみられる注記が残っている: ※（ ）内は、母子・父子家庭、障がい者世帯などの場合の利用者負担額（今の表に（ ）の額はない）。※「山形県保育料段階的無償化事業」の対象期間中は、階層区分3及び4については無償。18歳以下の子どもが3人以上いる世帯のうち、第3子以降の子どもの保育料は無料。同一世帯から2人以上入園される場合、2人目は半額。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2026年4月",
+  "first_child_free_note": "「戸沢保育園の利用にあたって」のページ「０，１，２歳児保育料について」: 令和８年度より、子育て支援の一環として保育料の無償化を実施しています。所得制限やきょうだいの条件の記載はなく、表も全階層0円。給食は0〜5歳とも完全給食（副食の費用の記載なし）。保険（児童安全互助会）1,100円と保護者会費 一世帯2,000円は別。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和8年度から0〜2歳児の保育料が第1子から無料なので、第2子も無料（きょうだいの数え方や所得制限は保育料に関係しない。household は「数え方に関係なく0円」という意味で置いた）。表の下の注記には以前の決まり（同一世帯から2人以上入園の場合2人目は半額）が残っている。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので第3子以降も0円。以前の決まりは「18歳以下の子どもが3人以上いる世帯のうち、第3子以降の子どもの保育料は無料」（表の下の注記）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和6年4月1日から学校給食費を無償化。戸沢村に住所を有し戸沢学園（村の義務教育学校）に通う児童生徒の保護者が対象。村外の学校に通う児童生徒の保護者へは補助金を交付。",
+    "source": { "label": "戸沢村 戸沢学園学校給食費の無償化について", "url": "https://www.vill.tozawa.yamagata.jp/pages/199/" }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "出生祝金（第1子）",
+      "amount": 100000,
+      "note": "戸沢村に住民登録をし、現に村に居住している保護者。出生日から14日以内に申請。第2子200,000円、第3子以降300,000円。",
+      "source": { "label": "戸沢村 出産・子育てに関する祝金・補助金", "url": "https://www.vill.tozawa.yamagata.jp/life/kosodate/iwaikinjoseikin/" }
+    },
+    {
+      "label": "出生祝金（第2子）",
+      "amount": 200000,
+      "note": "要件は第1子と同じ。",
+      "source": { "label": "戸沢村 出産・子育てに関する祝金・補助金", "url": "https://www.vill.tozawa.yamagata.jp/life/kosodate/iwaikinjoseikin/" }
+    },
+    {
+      "label": "出生祝金（第3子以降）",
+      "amount": 300000,
+      "note": "要件は第1子と同じ。",
+      "source": { "label": "戸沢村 出産・子育てに関する祝金・補助金", "url": "https://www.vill.tozawa.yamagata.jp/life/kosodate/iwaikinjoseikin/" }
+    }
+  ],
+  "sources": [
+    { "label": "戸沢村 戸沢保育園の利用にあたって（０，１，２歳児保育料について）", "url": "https://www.vill.tozawa.yamagata.jp/life/kosodate/hoikusho/riyo/" },
+    { "label": "戸沢村 保育園入園の手続き（保育料の表）", "url": "https://www.vill.tozawa.yamagata.jp/life/kosodate/nyusho_tetsuzuki/" },
+    { "label": "令和８年度戸沢村立戸沢保育園入園児募集要項（PDF）", "url": "https://www.vill.tozawa.yamagata.jp/files/libs/4869/202605181421236059.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "村内の保育施設は村立の戸沢保育園（定員160名、0歳児は生後8か月以降入園可）。下調べの docs/00（保育園入園の手続き）の表が全階層0円だったので、「戸沢保育園の利用にあたって」のページで令和8年度からの0〜2歳児の保育料無償化を確かめた。区切り（97,000・210,000・341,000円）は国の基準と違う村独自のもの。山形県の段階的無償化事業（所得の低い階層の0〜2歳児の保育料を軽減）は、村の無償化で保育料には関係しなくなった。",
+  "read_at": "2026-11-01"
+}

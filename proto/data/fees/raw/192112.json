@@ -1,0 +1,51 @@
+{
+  "code": "192112",
+  "pref": "山梨県",
+  "name": "笛吹市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月から笛吹市民（住民基本台帳に記録され市内に居住）の保育料（3歳未満児）と給食費を無償化（笛吹市独自）。表の保育料は、市内に居住するが住民基本台帳に記録されていない人を市が保育給付認定する場合に賦課する額。表の算定: 4月から8月分は前年度、9月から翌年3月分は現年度の市民税所得割額。保育料の算定は4月1日時点の児童の年齢。",
+  "tax_basis": "6%",
+  "tax_note": "（表を使う場合）保護者（父母）の市民税所得割額を基準に算定（寄附金税額控除、外国税額控除、配当控除、住宅借入金等特別控除等は適用されない＝税額控除前の額）。保護者の収入が少ない場合は同居している祖父母等の税額を含めることがある（「同居」は実態として同一敷地内に住んでいることで、世帯分離していても同居とみなす）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "保育料（利用者負担額）表",
+    "kind": "3歳未満児・保育標準時間・第1子（月額）。市民は令和8年4月から無償化で0円（この表は無償化の対象外になる、住民基本台帳に記録されていない居住者に賦課する額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯および中国残留邦人支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3A", "lower": null, "upper": null, "condition": "市民税均等割額のみの世帯", "monthly": 10000, "monthly_second": null },
+      { "label": "3B", "lower": 1, "upper": 48600, "condition": "市民税所得割額 48,600円未満", "monthly": 13000, "monthly_second": null },
+      { "label": "4A", "lower": 48600, "upper": 74300, "condition": "48,600円以上 74,300円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "4B", "lower": 74300, "upper": 97000, "condition": "74,300円以上 97,000円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "5A", "lower": 97000, "upper": 134900, "condition": "97,000円以上 134,900円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "5B", "lower": 134900, "upper": 169000, "condition": "134,900円以上 169,000円未満", "monthly": 34000, "monthly_second": null },
+      { "label": "6A", "lower": 169000, "upper": 214000, "condition": "169,000円以上 214,000円未満", "monthly": 39000, "monthly_second": null },
+      { "label": "6B", "lower": 214000, "upper": 270000, "condition": "214,000円以上 270,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "6C", "lower": 270000, "upper": 301000, "condition": "270,000円以上 301,000円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "7", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 43000, "monthly_second": null },
+      { "label": "8", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 45000, "monthly_second": null }
+    ],
+    "notes": "階層区分は国の区分（1〜8）と市の区分（3A・3B・4A・4B・5A・5B・6A・6B・6C）の2列。保育短時間: 1 0、2 0、3A 9,800、3B 12,800、4A 19,700、4B 23,700、5A 31,600、5B 33,600、6A 38,500、6B 39,500、6C 40,500、7 42,400、8 44,400。母子等減額（母子・父子世帯、在宅障がい児（者）のいる世帯で所得割77,101円未満）: 3A 4,000（短時間3,900）、3B 5,500（5,400）、4A 9,000（9,000）、4Bのうち74,300円以上77,100円以下 9,000（9,000）。3歳以上児は0円。市の無償化のページ: これまでは生活保護世帯や市民税非課税世帯などを除き月額3,900円から45,000円を負担していたが、令和8年4月以降は無償化し徴収しない。表は保育料のページ（HTMLの表）を下調べの文字で読んだ。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2026年4月",
+  "first_child_free_note": "令和8年4月から、笛吹市独自の子育て支援策として、認可保育所・認定こども園・小規模保育事業所等に通う3歳未満児の保育料を無償化（第1子から、所得制限の記載なし）。対象は市の住民基本台帳に記録され市内に居住している人（DV被害で避難している人、市内の里親に養育されている子は住民票がなくても対象）。市外者を市が認定する場合は対象外で表の保育料を払う。認可外保育施設（確認を受けた施設・企業主導型）を使う3歳未満児（課税世帯）には保育料を月額42,000円まで補助。延長保育料や教材費などの実費は別。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "市民は第1子から0円なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。表を使う場合（市民でない居住者）の軽減: 2人以上の児童が同時に保育所等に入所している世帯は収入制限なしで最年長から2人目半額・3人目以降無料。兄または姉がいて入所児童が3歳未満児で、市民税所得割額が169,000円未満の世帯は、生計を一にする第1子の年齢に関わらず第2子以降の3歳未満児は無料。母子・父子世帯、在宅障がい児（者）のいる世帯で所得割77,101円未満は第1子の年齢に関わらず第2子以降無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "市民は第1子から0円。表を使う場合も同時入所の3人目以降は無料（所得割169,000円未満は生計を一にする子で数えて第2子以降無料）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "笛吹市／市民の保育料と給食費を無償化します（更新日2026年6月12日）", "url": "https://www.city.fuefuki.yamanashi.jp/hoiku/hoiku-musyouka.html" },
+    { "label": "笛吹市／保育料（更新日2026年4月9日）", "url": "https://www.city.fuefuki.yamanashi.jp/kosodateshien/kosodate/kosadatehoiku/hoikujo/hoikuryou.html" },
+    { "label": "笛吹市特定教育・保育施設及び特定地域型保育事業の利用者負担額等に関する条例（PDF）", "url": "https://www.city.fuefuki.yamanashi.jp/documents/11825/musyouka-jyourei.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「保育料」「市民の保育料と給食費を無償化します」のページの文字で読んだ。給食費の無償化は保育所等の3歳以上児の給食費（主食費・副食費）のことで、小中学校の給食（lunch_jh）ではない。cash・one_time・lunch_jh は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,57 @@
+{
+  "code": "273015",
+  "pref": "大阪府",
+  "name": "島本町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「令和８年度 保育所等の紹介 第２版」（2026年4月作成）の「保育所保育料表（令和８年度） 保育料基準額（月額）」。保育料は公立・民間を問わず、保育所・認定こども園（保育部分）・小規模保育事業所で共通。4〜8月分と9〜3月分でどの年度の税額を使うかは、読んだページ（保育料の決め方の部分）には書かれていない。",
+  "tax_basis": "6%",
+  "tax_note": "児童の属する世帯の市町村民税所得割額の合計額等で15階層に区分（原則、児童の保護者の所得割額の合計）。所得割額は寄附金税額控除、外国税額控除、配当割額又は株式等譲渡所得割額の控除、配当控除及び住宅借入金（取得）等特別税額控除を適用する前の税額。政令市ではない（政令市から転入した場合の換算は読んだ部分に書かれていない）。",
+  "table": {
+    "title": "保育所保育料表（令和８年度） 保育料基準額（月額）",
+    "kind": "3歳未満児・標準時間認定・第1子（月額）。表は短時間認定・標準時間認定の順の列",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": 0, "upper": 48600, "condition": "市町村民税所得割額が 48,600円未満", "monthly": 10000, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 57000, "condition": "市町村民税所得割額が 57,000円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "D2", "lower": 57000, "upper": 66600, "condition": "市町村民税所得割額が 66,600円未満", "monthly": 17500, "monthly_second": null },
+      { "label": "D3", "lower": 66600, "upper": 97000, "condition": "市町村民税所得割額が 97,000円未満", "monthly": 25500, "monthly_second": null },
+      { "label": "D4", "lower": 97000, "upper": 102600, "condition": "102,600円未満", "monthly": 33400, "monthly_second": null },
+      { "label": "D5", "lower": 102600, "upper": 140100, "condition": "140,100円未満", "monthly": 36600, "monthly_second": null },
+      { "label": "D6", "lower": 140100, "upper": 169000, "condition": "169,000円未満", "monthly": 37800, "monthly_second": null },
+      { "label": "D7", "lower": 169000, "upper": 213000, "condition": "213,000円未満", "monthly": 51800, "monthly_second": null },
+      { "label": "D8", "lower": 213000, "upper": 257000, "condition": "257,000円未満", "monthly": 54100, "monthly_second": null },
+      { "label": "D9", "lower": 257000, "upper": 301000, "condition": "301,000円未満", "monthly": 55900, "monthly_second": null },
+      { "label": "D10", "lower": 301000, "upper": 335100, "condition": "335,100円未満", "monthly": 60000, "monthly_second": null },
+      { "label": "D11", "lower": 335100, "upper": 397000, "condition": "397,000円未満", "monthly": 68000, "monthly_second": null },
+      { "label": "D12", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 78300, "monthly_second": null }
+    ],
+    "notes": "短時間認定: C 9,800、D1 15,700、D2 17,200、D3 25,000、D4 32,800、D5 35,900、D6 37,100、D7 50,900、D8 53,100、D9 54,900、D10 58,900、D11 66,800、D12 76,900（A・Bは0）。ひとり親世帯等（ひとり親世帯、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の被交付者、特別児童扶養手当支給対象児童又は障害基礎年金受給者がいる世帯）は、C（48,600円未満）・D1（57,000円未満）・D2（66,600円未満）・D3のうち77,101円未満で0円（第1子から無料）。表の階層の文言は「○円未満」だけなので、一つ前の階層の上限を下限にした（Cは均等割のみを含むと読んで0）。3歳未満児の給食費（主食費・副食費）は保育料に含まれる。延長保育料は別。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満児の第1子は有料（標準時間で月10,000〜78,300円）。0円は生活保護世帯・市町村民税非課税世帯と、所得割77,101円未満のひとり親世帯等。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "【多子世帯に対する軽減措置】保育所・小規模保育事業所・幼稚園・認定こども園・特別支援学校幼稚部・児童心理治療施設通所部・児童発達支援・企業主導型保育事業所（児童育成協会の助成を受けている施設に限る）に通っている就学前児童が2人以上いる世帯で、最も年齢の高い児童が第1子（全額）、次が第2子（半額）、それ以外が第3子（無料）。同じ年齢が2人以上ならいずれか1人。★低所得世帯に係る多子軽減: 市町村民税所得割額57,700円未満の世帯は、保護者と生計が同一の子や孫等であれば年齢にかかわらず数える（例: 小学3年生が第1子、保育所2歳が第2子で半額〔B階層なら無料〕、保育所1歳が第3子で無料）。ひとり親世帯等で所得割77,101円未満は第1子から無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "就学前で保育所等に通っている児童の3人目以降は無料。所得割57,700円未満の世帯は、生計が同一の子や孫等を年齢にかかわらず数えて第3子以降無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度保育所等入所申し込みについて - 島本町ホームページ（更新日2026年10月15日）", "url": "https://www.town.shimamoto.lg.jp/site/kosodate/32740.html" },
+    { "label": "令和８年度 保育所等の紹介 第２版（PDF、8〜10ページ「保育料等」「保育所保育料表（令和８年度）」）", "url": "https://www.town.shimamoto.lg.jp/uploaded/attachment/15676.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl/273015）はトップページで止まっていて、文書の候補がなかった",
+    "トップページと保育所等の紹介PDFを決まった形の curl で取ると、最初は 408（「このページは表示できません」というエラーページ）が返った",
+    "WebSearch（allowed_domains: town.shimamoto.lg.jp）2回で、令和8年度保育所等入所申し込みのページと「令和８年度 保育所等の紹介 第２版」のPDF（8〜9ページに保育料表）を見つけた。検索の要約には金額がなかった",
+    "しばらくして同じ形の curl で入所申し込みのページとPDFを取り直したら取れたので、PDFの文字と画像（pdftoppm）で表の列の順（短時間・標準時間）を確かめた"
+  ],
+  "notes": "町のサイトは時々 408 のエラーページを返す（時間をおいて同じ形で取ると取れた）。lunch_jh・cash・one_time は探していない。",
+  "read_at": "2026-11-01"
+}

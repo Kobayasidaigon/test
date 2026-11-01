@@ -1,0 +1,64 @@
+{
+  "code": "263435",
+  "pref": "京都府",
+  "name": "井手町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和8年度 保育所入所募集〔PDF、2025年9月作成〕と令和9年度 保育所入所募集〔PDF、2026年9月作成〕に同じ表の画像。「下記の表は、令和元年10月1日以降の保育料に適用されています。なお、令和８年度以降については、今後改定される場合があります。」）",
+  "period_note": "毎年9月が保育料の切り替え時期で、4月から8月までは前年度の市町村民税額、9月から3月までは当年度の市町村民税額に基づく保育料。階層は各月初日の満3歳未満保育認定子どもの属する世帯で判定。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の市町村民税額をもとに算定（表の区分は市町村民税所得割課税額）。税額控除の扱い（住宅ローン控除などを引く前か）は資料に書かれていない。政令市ではないので6%で判定とみた。",
+  "table": {
+    "title": "各月初日の満３歳未満保育認定子どもの属する世帯の階層区分（短時間認定・標準時間認定）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C2", "lower": null, "upper": null, "condition": "市町村民税均等割のみ課税世帯（ひとり親世帯等以外の世帯）", "monthly": 14600, "monthly_second": null },
+      { "label": "D2", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額４８，６００円未満の世帯（ひとり親世帯等以外の世帯）", "monthly": 14600, "monthly_second": null },
+      { "label": "D4", "lower": 48600, "upper": 53000, "condition": "市町村民税所得割課税額４８，６００円～５３，０００円未満の世帯（ひとり親世帯等以外の世帯）", "monthly": 22500, "monthly_second": null },
+      { "label": "D6", "lower": 53000, "upper": 67000, "condition": "市町村民税所得割課税額５３，０００円～６７，０００円未満の世帯（ひとり親世帯等以外の世帯）", "monthly": 22500, "monthly_second": null },
+      { "label": "D8", "lower": 67000, "upper": 85000, "condition": "市町村民税所得割課税額６７，０００円～８５，０００円未満の世帯", "monthly": 22500, "monthly_second": null },
+      { "label": "D9", "lower": 85000, "upper": 97000, "condition": "市町村民税所得割課税額８５，０００円～９７，０００円未満の世帯", "monthly": 24000, "monthly_second": null },
+      { "label": "D10", "lower": 97000, "upper": 121000, "condition": "市町村民税所得割課税額９７，０００円～１２１，０００円未満の世帯", "monthly": 27000, "monthly_second": null },
+      { "label": "D11", "lower": 121000, "upper": 139000, "condition": "市町村民税所得割課税額１２１，０００円～１３９，０００円未満の世帯", "monthly": 28500, "monthly_second": null },
+      { "label": "D12", "lower": 139000, "upper": 157000, "condition": "市町村民税所得割課税額１３９，０００円～１５７，０００円未満の世帯", "monthly": 30300, "monthly_second": null },
+      { "label": "D13", "lower": 157000, "upper": 169000, "condition": "市町村民税所得割課税額１５７，０００円～１６９，０００円未満の世帯", "monthly": 33300, "monthly_second": null },
+      { "label": "D14", "lower": 169000, "upper": 186000, "condition": "市町村民税所得割課税額１６９，０００円～１８６，０００円未満の世帯", "monthly": 33300, "monthly_second": null },
+      { "label": "D15", "lower": 186000, "upper": 198000, "condition": "市町村民税所得割課税額１８６，０００円～１９８，０００円未満の世帯", "monthly": 36700, "monthly_second": null },
+      { "label": "D16", "lower": 198000, "upper": 210000, "condition": "市町村民税所得割課税額１９８，０００円～２１０，０００円未満の世帯", "monthly": 41000, "monthly_second": null },
+      { "label": "D17", "lower": 210000, "upper": 228000, "condition": "市町村民税所得割課税額２１０，０００円～２２８，０００円未満の世帯", "monthly": 43000, "monthly_second": null },
+      { "label": "D18", "lower": 228000, "upper": 301000, "condition": "市町村民税所得割課税額２２８，０００円～３０１，０００円未満の世帯", "monthly": 45700, "monthly_second": null },
+      { "label": "D19", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割課税額３０１，０００円～３９７，０００円未満の世帯", "monthly": 60000, "monthly_second": null },
+      { "label": "D20", "lower": 397000, "upper": null, "condition": "市町村民税所得割課税額３９７，０００円以上の世帯", "monthly": 60000, "monthly_second": null }
+    ],
+    "notes": "表は画像で、列は「短時間認定」「標準時間認定」の順（短時間が先。画像で確かめた）。rows は標準時間認定で、ひとり親世帯等以外の世帯の行。保育短時間: C2 14,300／D2 14,300／D4 22,100／D6 22,100／D8 22,100／D9 23,500／D10 26,500／D11 28,000／D12 29,700／D13 32,700／D14 32,700／D15 36,000／D16 40,300／D17 42,200／D18 44,900／D19 58,900／D20 58,900（A・Bは0円）。ひとり親世帯等: C1（均等割のみ）・D1（所得割48,600円未満）は短時間 7,150円・標準時間 7,300円、D3（48,600〜53,000円未満）・D5（53,000〜67,000円未満）・D7（67,000〜77,101円未満）は短時間・標準時間とも 9,000円（77,101円以上はD8以降の共通の行）。C2 は均等割のみ（所得割0円）なので lower・upper を null にし、D2 は lower=1 とした。表の下の注１: 未成年者（20歳に達する日以降の最初の3月31日の間にある者を含む）が2人以上いる世帯は、2人目以降の児童の保育料は0円。町の「幼児教育・保育の無償化について」のページ: 町立保育園に通う3〜5歳児の副食費は町が負担し、さらに町独自で0〜2歳児の給食費相当分（5,000円）も町が負担（申請不要）。表の額にこの5,000円の負担が入っているか（表の額から引かれるのか）は資料からは分からないので、rows は表の額のままにした。延長保育料は第1子の園児が保育必要量以上を利用する場合に子ども1人につき日額100円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は有料（標準時間で月14,600〜60,000円。生活保護・非課税世帯は0円）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "町独自施策として令和5年4月から第2子以降の保育料を無償化。表の注１: 「未成年者(２０歳に達する日以降の最初の３月３１日の間にある者を含みます)が２人以上いる世帯は、２人目以降の児童の保育料は０円」。上の子が保育所に通っているかは問わず、世帯の未成年の子（20歳到達後の最初の3月31日まで）で数える。所得制限の記載はない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降が0円なので第3子以降も0円（数え方は第2子と同じ）。",
+  "lunch_jh": { "free": true, "note": "「井手町の子育て施策の独自拡充事業」のページの小中学校期: 「学校給食費無償化 ※ 学校給食は無償です。」（小中学校）", "source": { "label": "井手町の子育て施策の独自拡充事業／井手町", "url": "https://www.town.ide.kyoto.jp/soshiki/kosodate/4329.html" } },
+  "cash": [],
+  "one_time": [
+    { "label": "出産された保護者への支給（井手町出産応援給付金）", "amount": 100000, "note": "「出産された保護者に、児童1人につき10万円を支給します（用件有）。」要件の中身は「井手町出産応援給付金について」のページ（未読）。", "source": { "label": "井手町の子育て施策の独自拡充事業／井手町", "url": "https://www.town.ide.kyoto.jp/soshiki/kosodate/4329.html" } }
+  ],
+  "sources": [
+    { "label": "令和8年4月からの保育所の入所申込みについて／井手町", "url": "https://www.town.ide.kyoto.jp/kyouiku_fukushi/kosodate/6135.html" },
+    { "label": "令和8年度 保育所入所募集（PDF、2025年9月作成）2ページ目「保育料について」の表", "url": "https://www.town.ide.kyoto.jp/material/files/group/19/R8nyusyomoushikomi.pdf" },
+    { "label": "令和9年4月からの保育所の入所申込みについて／井手町", "url": "https://www.town.ide.kyoto.jp/kyouiku_fukushi/kosodate/6409.html" },
+    { "label": "令和9年度 保育所入所募集（PDF、2026年9月作成）2ページ目「保育料について」の表（令和8年度と同じ画像）", "url": "https://www.town.ide.kyoto.jp/material/files/group/35/R9nyusyomoushikomi.pdf" },
+    { "label": "幼児教育・保育の無償化について／井手町", "url": "https://www.town.ide.kyoto.jp/kyouiku_fukushi/kosodate/6163.html" },
+    { "label": "井手町の子育て施策の独自拡充事業／井手町", "url": "https://www.town.ide.kyoto.jp/soshiki/kosodate/4329.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べはトップページで失敗していた（pages 0）が、https://www.town.ide.kyoto.jp/ は取れたので、教育・福祉 → 子育て の一覧から入所申込みのページを開いた"
+  ],
+  "notes": "保育料の表は入所募集PDFの中の画像だけ（文字の層なし）なので pdfimages で取り出して読んだ。令和8年度と令和9年度の入所募集PDFの表の画像は同じファイル（バイト単位で一致）。町内の保育所は町立の玉川保育園（0〜5歳）・いづみ保育園（1〜3歳）・多賀保育園（3〜5歳）。保育園での給食費（主食・副食）は町が負担。京都府の多子世帯の保育料軽減は、町の第2子以降無償化の方が広いので額に影響しない。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,38 @@
+{
+ "code": "172065",
+ "pref": "石川県",
+ "name": "加賀市",
+ "status": "ok",
+ "fiscal_year": "令和8年度（令和6年4月からの加賀市独自の「保育料 完全無償化」が続いている。無償化のページの更新日2026年6月17日、令和9年度の入園案内〔2026年8月作成〕にも「独自で利用者負担額（保育料）を無償化」）",
+ "period_note": "「令和6年4月から「保育料 完全無償化」をスタート 加賀市独自」「対象者 保育園・認定こども園を利用しているすべての児童」。令和9年度入園手続きのご案内: 「加賀市では、独自で利用者負担額（保育料）を無償化しています。しかし、無償化前の保育料を計算する必要があるため、市民税額に基づく算定が行われます。」（8月までの入園は前年の収入、9月以降は当年の収入の書類）。3〜5歳児クラスの副食費（おかず代）も市独自に無料。終わりの時期は書かれていない。",
+ "tax_basis": "6%",
+ "tax_note": "保育料は無償なので所得割で払う額は変わらない（無償化前の保育料は市民税額で計算し、利用者負担額決定通知書に階層などが書かれる）。無償化前の基準額の表は今のサイトでは見つからなかった。政令市ではない。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2024年4月",
+ "first_child_free_note": "加賀市独自の「保育料 完全無償化」（令和6年4月から）。チラシ: 「加賀市独自に、第１子以降の保育料を無償化」「対象者は？ 保育園・認定こども園を利用しているすべての児童」。所得制限の記載はない。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "保育園・認定こども園を利用するすべての児童の保育料が無償なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "すべての児童が無償。",
+ "lunch_jh": {
+  "free": true,
+  "note": "保育料の完全無償化チラシの「加賀市のその他の子育て政策」に「小中学校の給食費 無料」とある（令和9年度入園案内に入っているチラシにも同じ記載）。くわしい条件は読んでいない。",
+  "source": { "label": "保育料の完全無償化チラシ（加賀市）", "url": "https://www.city.kaga.ishikawa.jp/material/files/group/37/musyouka.pdf" }
+ },
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  { "label": "幼児教育・保育の無償化について／加賀市（更新日2026年06月17日）", "url": "https://www.city.kaga.ishikawa.jp/kosodate_kyoiku/hoikusho/3377.html" },
+  { "label": "保育料の完全無償化チラシ（加賀市）", "url": "https://www.city.kaga.ishikawa.jp/material/files/group/37/musyouka.pdf" },
+  { "label": "令和9年度保育園・認定こども園への入園手続き／加賀市（更新日2026年09月17日）", "url": "https://www.city.kaga.ishikawa.jp/kosodate_kyoiku/hoikusho/7635.html" },
+  { "label": "保育園・認定こども園入園手続きのご案内（令和9年度、利用者負担額（保育料）の説明とチラシ）", "url": "https://www.city.kaga.ishikawa.jp/material/files/group/37/R9shiori3.pdf" },
+  { "label": "保育料軽減・利用者負担額一覧表／加賀市（更新日2024年03月28日、今は一時保育などの料金だけ）", "url": "https://www.city.kaga.ishikawa.jp/kosodate_kyoiku/hoikusho/2592.html" }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "チラシの「その他の子育て政策」: 副食費（おかず代）無料（R9案内のチラシでは5100円）、18歳までの医療費無料、1歳までのおむつ定期便無料、小中学校の給食費無料、第3子以降と第2子（小3まで）の放課後児童クラブ保育料無料など。令和6年版のチラシにあった「第3子以降の出産にお祝い金を支給」は令和9年度案内のチラシには載っていない（金額も未確認なので one_time には入れていない）。",
+ "read_at": "2026-11-01"
+}

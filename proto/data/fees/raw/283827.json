@@ -1,0 +1,52 @@
+{
+  "code": "283827",
+  "pref": "兵庫県",
+  "name": "播磨町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月～8月分は令和7年度、9月～3月分は令和8年度の町民税額（所得割額）で決定（令和8年度の保育施設入所案内）。令和8年度の保育料は令和8年4月1日の満年齢で決まり、誕生日を迎えても変わらない。入退所は月単位で、保育料も月額。表は「保育施設入所案内（令和8年度）」（2025年9月作成）p.13〜14 の基準額表（見出しに〔参考〕とある）。保育施設案内のページの「保育所等をご利用の方（3歳未満児）」PDF（2021年7月作成）と「保育施設入所案内（令和9年度）」（2026年9月作成）も同じ額。",
+  "tax_basis": "6%",
+  "tax_note": "児童と同一世帯に属して生計を一にする父母及びそれ以外の扶養義務者（家計の主宰者である場合に限る）の町民税額（所得割額）で決定。寄附金控除、配当控除、外国税額控除及び住宅ローン控除等を受けている人は控除前の額。祖父母等と同居する世帯（住民票が別でも同一住所なら同一世帯とみなす）で父母が町民税非課税かつ収入が一定基準額以下の場合は、祖父母等を家計の主宰者とみなして算定。保育施設案内のページ: 令和6年の町民税額で算定する保育料は定額減税後の額で算定。政令市ではない。",
+  "table": {
+    "title": "播磨町保育施設利用者負担額基準額表（３号認定、保育標準時間）",
+    "kind": "3号認定（3歳未満児）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "被保護世帯及び里親", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "第1階層を除く市町村民税非課税世帯（当該所得割賦課期日において地方税法の施行地に住所を有しない者を除く。）", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "第1階層を除く均等割課税世帯（所得割非課税世帯）", "monthly": 14000, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "第1階層を除く所得割課税世帯であってその課税額が次の区分に該当する世帯 48,600円未満", "monthly": 16300, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 72000, "condition": "48,600円以上 72,000円未満", "monthly": 21000, "monthly_second": null },
+      { "label": "6", "lower": 72000, "upper": 97000, "condition": "72,000円以上 97,000円未満", "monthly": 28500, "monthly_second": null },
+      { "label": "7", "lower": 97000, "upper": 133000, "condition": "97,000円以上 133,000円未満", "monthly": 36300, "monthly_second": null },
+      { "label": "8", "lower": 133000, "upper": 169000, "condition": "133,000円以上 169,000円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "9", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 52500, "monthly_second": null },
+      { "label": "10", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 59200, "monthly_second": null },
+      { "label": "11", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 63000, "monthly_second": null }
+    ],
+    "notes": "monthly は保育標準時間の表の「３歳未満児」。表に第2子の列はない。保育短時間の表（播磨町保育施設利用者負担額基準額表（３号認定、保育短時間））: 3 13,700、4 16,000、5 20,600、6 28,000、7 35,600、8 43,200、9 51,600、10 58,100、11 61,900。注3: 利用者負担額算定年度の4月1日時点で3歳児以上の児童は0円（1号認定は満3歳から0円）。母子等の世帯（児童扶養手当の認定を受けている世帯）・障がい児（者）等を有する世帯は、均等割課税世帯と所得割48,600円未満が1人目「基準額表の該当する階層から−1,000円した金額の半額」、所得割77,101円未満が1人目9,000円（いずれも2人目以降0円）。兵庫県の「ひょうご保育料軽減事業」（0〜2歳の保育料の一部を県が補助）は、町の令和8年度・令和9年度の入所案内と保育施設案内のページには書かれていなかった。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3歳未満児）は生活保護（被保護）・非課税世帯と里親が0円、ほかは階層により月14,000〜63,000円（標準時間）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "多子世帯保育料減免のフローチャート（3号認定用）: 母子等でなく所得割57,700円以上の世帯（母子等は77,101円以上）は保育施設等を利用している児童を年長者からカウントし、同時利用2人目は基準額表の額の半額（所得制限なし）。母子等でなく所得割57,700円未満の世帯は年齢・施設利用状況を問わず年長者からカウントして2人目は半額。母子等（児童扶養手当の認定を受けている世帯）・障がい児（者）等を有する世帯で所得割77,101円未満は2人目以降0円。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "所得割57,700円以上（母子等は77,101円以上）は保育施設等を同時に利用する児童のうち3人目以降0円。所得割57,700円未満は年齢・施設利用状況を問わず年長者から数えて3人目以降0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "播磨町 保育施設案内（更新日：2026年10月1日）", "url": "https://www.town.harima.lg.jp/kodomo/kyoiku/kosodate/hoikuen/hoikujo/index.html" },
+    { "label": "保育施設入所案内（令和8年度）（PDF：2,180KB）p.12〜15", "url": "https://www.town.harima.lg.jp/kodomo/kyoiku/kosodate/hoikuen/hoikujo/documents/annnai.pdf" },
+    { "label": "保育所等をご利用の方（3歳未満児）（PDF：102KB）（播磨町保育所等利用者負担額基準額表）", "url": "https://www.town.harima.lg.jp/kodomo/kyoiku/kosodate/hoikuen/hoikujo/documents/kijyunngaku.pdf" },
+    { "label": "保育施設入所案内（令和9年度）（PDF：4,028KB）", "url": "https://www.town.harima.lg.jp/kodomo/kyoiku/kosodate/hoikuen/hoikujo/documents/r9hoikusisetunyuusyoannai.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs は幼稚園保育料や無償化の申請の資料だけだったので、教育・保育施設（保育園・認定こども園）→ 保育所入所申込書 → 保育施設案内のページの順に開き、令和8年度・令和9年度の保育施設入所案内と3歳未満児の基準額表のPDFを読んだ（保育施設入所申請の手引きには表はなかった）。"
+  ],
+  "notes": "入所案内の基準額表には〔参考〕と書かれているが、令和8年度の入所案内の「保育料について」の章の表なので令和8年度の額とした。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

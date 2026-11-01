@@ -1,0 +1,46 @@
+{
+ "code": "012211",
+ "pref": "北海道",
+ "name": "名寄市",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "公式サイトを開けず、今の表を読めていない。検索結果の要約（原文未確認）では、3歳未満の保育標準時間で所得割48,600円未満の世帯が19,500円とあり、第1子は有料と読めるが、令和8年度の表で確かめていない。",
+ "second_child": "other",
+ "second_count": "household",
+ "second_note": "検索結果の要約（「市内保育所・認定こども園の利用者負担額（保育料）」のページ）による・原文未確認: 令和3年4月から、多子世帯の負担軽減のため0〜2歳児（4月1日時点で3号認定）の第2子以降の保育料を無償化。同一生計の最年長者から数えて第2子以降で、世帯の市町村民税所得割課税額が169,000円未満であることが条件（北海道の多子世帯の保育料軽減支援事業の補助の範囲と同じ）。対象外の場合は国の軽減（就学前の最年長の子から数えて2人目半額、3人目以降無料。所得割57,700円未満は年齢制限なし）。令和8年度も同じかは確かめていない。",
+ "third_child": "other",
+ "third_count": "household",
+ "third_note": "検索結果の要約による・原文未確認: 所得割169,000円未満なら同一生計の最年長者から数えて第2子以降が無償（第3子も無償）。169,000円以上は国の軽減（就学前で同時に利用する子の3人目以降が無料）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "北海道名寄市｜市内保育所・認定こども園の利用者負担額（保育料）（検索結果に出たURL。https では開けなかった）",
+   "url": "http://www.city.nayoro.lg.jp/section/kodomo/vdh2d100000044wf.html"
+  },
+  {
+   "label": "同ページの添付PDF（保育料の表とみられる。検索結果に出たURL、未読）",
+   "url": "http://www.city.nayoro.lg.jp/section/kodomo/vdh2d100000044wf-att/prkeql000000a82e.pdf"
+  },
+  {
+   "label": "北海道名寄市｜幼児教育・保育の無償化について（検索結果に出たURL、未読）",
+   "url": "http://www.city.nayoro.lg.jp/section/kodomo/prkeql0000021gh4.html"
+  }
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べ（crawl/012211）は公式サイトの一番上で OSError（読めたページ0）",
+  "https://www.city.nayoro.lg.jp/ と保育料のPDF（https://www.city.nayoro.lg.jp/section/kodomo/vdh2d100000044wf-att/prkeql000000a82e.pdf）は TLS エラー（tlsv1 unrecognized name）。15秒あけて取り直しても同じ。サイトは http だけで公開しているとみられ、決まりどおり https に直すと開けない",
+  "https://www.city.nayoro.hokkaido.jp/ も同じ TLS エラー、https://city.nayoro.lg.jp/ はプロキシで 502",
+  "WebSearch（allowed_domains: city.nayoro.lg.jp、「名寄市 保育料 3歳未満 利用者負担額 第2子 無償化」）で保育料のページとPDFのURL、無償化の要約を得た（原文は読めていない）"
+ ],
+ "notes": "公式サイト（http のみ）をこの環境から開けないため、保育料の表は読めていない（推測で埋めていない）。きょうだいの決まりは検索エンジンの要約（公式ページの抜粋）によるもので未確認。http で開ける環境で「市内保育所・認定こども園の利用者負担額（保育料）」のページ（vdh2d100000044wf.html）と添付PDF（prkeql000000a82e.pdf）を読み直すこと。",
+ "read_at": "2026-11-01"
+}

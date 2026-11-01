@@ -1,0 +1,53 @@
+{
+  "code": "272264",
+  "pref": "大阪府",
+  "name": "藤井寺市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度 藤井寺市保育所等利用者負担額（保育料）徴収額表（「保育料徴収基準額表（令和8年4月）」PDF、R6.4改正の表）と、保育所等の利用者負担額（保育料）についてのページ（2026年8月1日更新）。4月分〜8月分は前年度、9月分〜翌年3月分は当該年度の市民税額で決める（毎年9月に切り替え）。年齢は当該年度の初日の前日（4月1日時点）の満年齢で、年度途中で3歳になっても無償になるのは次年度の4月から。月の途中の入所・退所は日割り。過去に決定した保育料は遡及しない。",
+  "tax_basis": "6%",
+  "tax_note": "市町村民税所得割額は、住宅借入金等特別税額控除、配当控除、外国税額控除及び寄附金税額控除等の税額控除（調整控除を除く）を適用する前の額（ページでは配当割額及び株式等譲渡所得割額の税額を控除する前の額とも書いている）。別居中で離婚が成立していない場合や、離婚・未婚で同居している方の課税状況も確認して算定。未申告などで税額が確認できない場合は最高額（仮算定）。藤井寺市は政令市ではない。",
+  "table": {
+    "title": "令和8年度 藤井寺市保育所等利用者負担額（保育料）徴収額表",
+    "kind": "3歳未満児・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": null, "upper": null, "condition": "市町村民税均等割のみの世帯", "monthly": 8500, "monthly_second": null },
+      { "label": "第4", "lower": 1, "upper": 25000, "condition": "市町村民税所得割額 25,000円未満", "monthly": 9500, "monthly_second": null },
+      { "label": "第5", "lower": 25000, "upper": 55000, "condition": "市町村民税所得割額 25,000円 ～ 55,000円未満", "monthly": 15500, "monthly_second": null },
+      { "label": "第6", "lower": 55000, "upper": 65000, "condition": "市町村民税所得割額 55,000円 ～ 65,000円未満", "monthly": 16500, "monthly_second": null },
+      { "label": "第7", "lower": 65000, "upper": 85000, "condition": "市町村民税所得割額 65,000円 ～ 85,000円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "第8", "lower": 85000, "upper": 97000, "condition": "市町村民税所得割額 85,000円 ～ 97,000円未満", "monthly": 25500, "monthly_second": null },
+      { "label": "第9", "lower": 97000, "upper": 145000, "condition": "市町村民税所得割額 97,000円 ～ 145,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "第10", "lower": 145000, "upper": 169000, "condition": "市町村民税所得割額 145,000円 ～ 169,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "第11", "lower": 169000, "upper": 301000, "condition": "市町村民税所得割額 169,000円 ～ 301,000円未満", "monthly": 51000, "monthly_second": null },
+      { "label": "第12", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割額 301,000円 ～ 397,000円未満", "monthly": 53000, "monthly_second": null },
+      { "label": "第13", "lower": 397000, "upper": null, "condition": "市町村民税所得割額 397,000円以上", "monthly": 55000, "monthly_second": null }
+    ],
+    "notes": "保育短時間: 第1・第2 0円、第3 8,300円、第4 9,300円、第5 15,200円、第6 16,200円、第7 19,600円、第8 25,000円、第9 36,300円、第10 39,300円、第11 50,100円、第12 52,000円、第13 54,000円。ひとり親世帯等の軽減措置（要保護者の世帯、ひとり親世帯、在宅障害児（者）のいる世帯で所得割77,100円以下＝第3〜第6階層と第7階層の一部）の1人目の標準/短時間: 第2 0/0、第3 4,250/4,150、第4 4,750/4,650、第5 7,750/7,600、第6 8,250/8,100、第7（77,100円以下）9,000/8,800、2人目以降は無償。3歳児以上は無償（給食費やその他雑費は別）。表に第2子の別の列はない（2人目は半額）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満児の第1子は表の額（生活保護・市町村民税非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "多子世帯の軽減措置: 保護者と生計を一にする子どものうち、最年長の子どもから数えて2人目の利用者負担額は半額、3人目以降は無償。上の子が無償化の対象（3〜5歳）でも数える。令和6年度から所得要件や年齢制限を撤廃して拡充（例: 小学生・半額・無償、大学生など（保護者と生計を一にしている）・高校生・無償・無償）。上の子が保育所などに通っているかは問わない。別世帯や市外に住民票がある生計同一の兄姉は申し出が必要、生計が別になったら（就職や結婚等）申し出る。所得割77,100円以下のひとり親世帯等は2人目以降無償。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "保護者と生計を一にする子どものうち、最年長から数えて3人目以降は無償（所得要件・年齢制限なし、令和6年度から）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所等の利用者負担額（保育料）について|藤井寺市（2026年8月1日更新）", "url": "https://www.city.fujiidera.lg.jp/soshiki/kodomo_mirai/hoikuyouchien/kyouiku-hoikusisetunoriyou/18780.html" },
+    { "label": "保育料徴収基準額表（令和8年4月）（PDF、令和8年度 藤井寺市保育所等利用者負担額（保育料）徴収額表）", "url": "https://www.city.fujiidera.lg.jp/material/files/group/14/r8hoikuryoutyousyuugakuhyou.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べは21ページしか読めておらず候補の文書がなかった。index.json の「保育所・認定こども園」のページ（https://www.city.fujiidera.lg.jp/raifuibento/nyuennyugaku/youtien_hoikuen_ninnteikodomoen/243.html）は決められた curl で2回ともサイトのエラーページ（このページは表示できません）になった",
+    "WebSearch（allowed_domains: city.fujiidera.lg.jp、「藤井寺市 保育料 利用者負担額 令和8年度 3歳未満 第2子」）で保育料のページの URL を見つけ、そのページは決められた curl で普通に取れた"
+  ],
+  "notes": "表は文字の取れるPDF（全角数字）を pdftotext -layout で読み、画像でも左右2段の並び（左が第1〜第7、右が第8〜第13、各段に3歳未満児の保育標準時間・保育短時間）を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。中学校給食・現金給付・祝い金は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

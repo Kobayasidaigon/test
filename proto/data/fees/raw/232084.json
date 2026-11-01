@@ -1,0 +1,52 @@
+{
+ "code": "232084",
+ "pref": "愛知県",
+ "name": "津島市",
+ "status": "ok",
+ "fiscal_year": "令和8年度（表に年度の記載なし。保育料ページ〔最終更新日2026年4月28日〕に載る「保育料のご案内」〔2025年11月作成〕。令和9年度入所の案内〔2026年9月作成〕にも同じ表）",
+ "period_note": "保育料ページ: 「0歳児クラスから2歳児クラスのこどもの保育料は市町村民税額により算定されます。（4月から8月まで）前年度市町村民税課税額により算定（9月から翌年3月まで）今年度市町村民税課税額により算定」。3歳未満児が年度の途中に3歳に達しても、その年度内は3歳未満児とみなす。0〜2歳児クラスの保育料には給食費が含まれる（アレルギー等で給食を受けなくても減額なし）。私立認定こども園は施設へ直接支払い。",
+ "tax_basis": "6%",
+ "tax_note": "表の区分は「市町村民税所得割額」。税額控除（住宅ローン控除など）の扱いの注記は読んだ資料には見当たらない。政令市ではない。",
+ "table": {
+  "title": "利用者負担額表／保育園のお子さま（保育所及び認定こども園等の2号・３号認定子ども）",
+  "kind": "0〜2歳児クラス・保育標準時間・第1子（月額）。表に第2子の列はない（2人目以降は0円）",
+  "rows": [
+   {"label": "第１階層", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null},
+   {"label": "第２階層", "lower": null, "upper": null, "condition": "市町村民税非課税", "monthly": 0, "monthly_second": null},
+   {"label": "第３階層", "lower": 0, "upper": 48600, "condition": "市町村民税所得割額 48,600円未満", "monthly": 9000, "monthly_second": null},
+   {"label": "第４階層（57,700円未満）", "lower": 48600, "upper": 57700, "condition": "57,700円未満", "monthly": 12000, "monthly_second": null},
+   {"label": "第４階層（63,000円未満）", "lower": 57700, "upper": 63000, "condition": "63,000円未満", "monthly": 12000, "monthly_second": null},
+   {"label": "第５階層", "lower": 63000, "upper": 78000, "condition": "78,000円未満", "monthly": 15500, "monthly_second": null},
+   {"label": "第６階層", "lower": 78000, "upper": 97000, "condition": "97,000円未満", "monthly": 19000, "monthly_second": null},
+   {"label": "第７階層", "lower": 97000, "upper": 115000, "condition": "115,000円未満", "monthly": 24500, "monthly_second": null},
+   {"label": "第８階層", "lower": 115000, "upper": 139000, "condition": "139,000円未満", "monthly": 30000, "monthly_second": null},
+   {"label": "第９階層", "lower": 139000, "upper": 169000, "condition": "169,000円未満", "monthly": 35500, "monthly_second": null},
+   {"label": "第10階層", "lower": 169000, "upper": 215000, "condition": "215,000円未満", "monthly": 41000, "monthly_second": null},
+   {"label": "第11階層", "lower": 215000, "upper": 301000, "condition": "301,000円未満", "monthly": 46500, "monthly_second": null},
+   {"label": "第12階層", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 49000, "monthly_second": null},
+   {"label": "第13階層", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 52000, "monthly_second": null}
+  ],
+  "notes": "保育短時間（月額）: 第1・第2 0、第3 8,000、第4（57,700円未満・63,000円未満とも）11,000、第5 14,500、第6 18,000、第7 23,500、第8 29,000、第9 34,500、第10 40,000、第11 45,500、第12 48,000、第13 51,000。第4階層は57,700円で2行に分かれている（額は同じ、副食費免除の区切り）。表に均等割のみの区分はなく、第3階層の lower を0にした。保育園のひとり親世帯等のお子さま（市民税所得割額77,101円未満の世帯で、保護者が児童扶養手当を受給、もしくは在宅障がい児（者）のいる世帯、標準時間／短時間）: 第1・第2 0、第3（48,600円未満）4,500／4,000、第4（63,000円未満）6,000／5,500、第5（77,101円未満）7,750／7,250、第5（78,000円未満）一般世帯と同額。表の下: 「※保護者が扶養する子どもの上子から数えて2人目以降の保育料については0円となります。」「※満３歳児の１号認定子どもの保育料については、０円となります。」"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子（0〜2歳児クラス）は階層により月0〜52,000円（保育標準時間）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "「保護者が扶養するこどもの上子から数えて2人目以降の保育料は0円です。」（保育料ページ・利用者負担額表・令和9年度入所の案内）。上の子の年齢や在園の要件、所得制限は書かれていない（保護者が扶養する子の上から数える）。いつからの制度かは読んだ資料に書かれていない。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "2人目以降0円に含まれる（数え方も同じ）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "保育料について 津島市公式ホームページ（最終更新日2026年4月28日）", "url": "https://www.city.tsushima.lg.jp/kosodate/hoikushisetsu/hoikuryou/hoikuryou.html"},
+  {"label": "保育料のご案内（利用者負担額表、PDF、2025年11月作成）", "url": "https://www.city.tsushima.lg.jp/kosodate/hoikushisetsu/hoikuryou/hoikuryou.files/riyouhutan.pdf"},
+  {"label": "保育所等の申込みについて（令和9年度、p.6-7 保育料について（利用者負担額表）・補足）", "url": "https://www.city.tsushima.lg.jp/kosodate/hoikushisetsu/nyuusyoannai.files/R9nyusho.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "利用者負担額表は画像でも確認（1ページ）。所得割57,700円未満（第1〜4階層）の3歳以上児と、同一世帯で3人以上が同時に保育所等に入所している場合の第3子以降は副食費免除（ひとり親世帯等は77,101円未満）。",
+ "read_at": "2026-11-01"
+}

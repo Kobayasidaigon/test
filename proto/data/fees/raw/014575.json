@@ -1,0 +1,48 @@
+{
+  "code": "014575",
+  "pref": "北海道",
+  "name": "上川町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（町のページ「上川町認定こども園 ここふれ」〔2026年3月26日更新〕の「利用者負担額」）",
+  "period_note": "町に住民票がある子どもが上川町認定こども園を利用する場合、保育料と給食費は一切かからない（所得による階層はない）。延長保育（短時間認定の15時30分〜18時30分）も無料、町民の一時預かりも無料。",
+  "tax_basis": "6%",
+  "tax_note": "保育料が所得に関係なく無料のため、町の保育料の階層表は示されていない（所得割の定義の記載もない）。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "「上川町に住民票がある方で、上川町認定こども園を利用する子どもの保育料及び給食費は一切かかりません。」（上川町認定こども園 ここふれ のページ、2026年3月26日更新）。0〜2歳児（3号認定、定員36名・0歳は9名）も対象。上川町認定こども園は町立保育所と私立幼稚園2園を統合して令和7年4月に開園した町内唯一の園（幼保連携型）。無料がいつからかは確かめていない。町外の施設を使う場合の保育料はページに書かれていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から保育料が無料のため、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので第3子以降も0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "「町内の小・中学生の給食費を無料化」: 上川町立学校に在籍し町内に住所がある児童・生徒の給食費相当額を補助（生活保護世帯・要保護者は除く、別の扶助）。ページの最終更新は2022年12月12日。移住・定住のページ（2023年2月更新）にも「小・中学生給食費が全額無料」。",
+    "source": { "label": "町内の小・中学生の給食費を無料化（上川町 教育委員会 給食係）", "url": "https://www.town.hokkaido-kamikawa.lg.jp/section/kyouiku/d57c9r0000006eco.html" }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "上川町出産祝金（第3子以降の出産児1人につき10万円）",
+      "amount": 100000,
+      "note": "出産児の保護者が町に1年以上住所があり、かつ2人以上の子どもを養育している場合に、第3子以降の出産児から支給（町独自）。別に出産祝品制度もある（品の内容は未確認）。ページの最終更新は2026年1月7日。",
+      "source": { "label": "上川町出産祝金制度", "url": "https://www.town.hokkaido-kamikawa.lg.jp/section/chs8120000001b3e.html" }
+    }
+  ],
+  "sources": [
+    { "label": "上川町認定こども園 ここふれ（利用者負担額: 保育料・給食費は一切かからない、2026年3月26日更新）", "url": "https://www.town.hokkaido-kamikawa.lg.jp/section/hoikusyo/o3i3l80000000etq.html" },
+    { "label": "上川町認定こども園 入園のしおり（PDF。保育料の記載はない）", "url": "https://www.town.hokkaido-kamikawa.lg.jp/section/hoikusyo/o3i3l80000000etq-att/ci1oq500000007r8.pdf" },
+    { "label": "町内の小・中学生の給食費を無料化", "url": "https://www.town.hokkaido-kamikawa.lg.jp/section/kyouiku/d57c9r0000006eco.html" },
+    { "label": "上川町出産祝金制度", "url": "https://www.town.hokkaido-kamikawa.lg.jp/section/chs8120000001b3e.html" },
+    { "label": "移住・定住 子育て・教育支援情報（2023年2月1日更新）", "url": "https://www.town.hokkaido-kamikawa.lg.jp/section/chiikimiryoku/ijukosodate.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs は社会福祉法人等利用者負担額軽減事業・離島等地域利用者負担軽減事業のページだけで、保育料の表はなかった",
+    "上川町認定こども園 ここふれ のページの「利用者負担額」で保育料・給食費が無料と確かめた。入園のしおり（PDF）には保育料の記載なし"
+  ],
+  "notes": "町内の保育施設は上川町認定こども園「ここふれ」（令和7年4月開園、幼保連携型、定員90名）のみ。町民が利用する場合は保育料・給食費ともに無料なので table は null。北海道の多子世帯の保育料軽減支援事業（第2子以降）も関係しない。",
+  "read_at": "2026-11-01"
+}

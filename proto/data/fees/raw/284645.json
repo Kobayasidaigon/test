@@ -1,0 +1,56 @@
+{
+  "code": "284645",
+  "pref": "兵庫県",
+  "name": "太子町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「令和8年度利用の案内」（2025年9月作成）の表は「3歳未満（令和8年4月1日現在の年齢）」。町の「保育料」のページ（更新日2026年4月1日）の保育料（3号認定）PDF（hoikuryou08.pdf）も同じ額。案内の注記は「4～8月分は令和6年度市町村民税額、9～3月分は令和7年度の市町村民税額により決定」と書いてあるが、令和8年度の利用なら前年度（令和7年度）・当年度（令和8年度）の税額の書き誤りとみられる（ひょうご保育料軽減制度のページは「4月～8月は前年度、9月～3月は当該年度」）。",
+  "tax_basis": "6%",
+  "tax_note": "階層区分の2〜8階層の金額は、全て市町村民税所得割課税額（保護者合算）。住宅借入金等特別税額控除・寄附金税額控除・配当控除・外国税額控除等の適用はない。入所児童と生計を一にしている父母の税額で決め、祖父母と同居し家計の主宰者と思われる場合や同居のパートナーがいる場合は合算。政令指定都市で課税されている場合は6％で再計算した額で算出（1月1日に政令市に住所があった人は市町村民税額に6/8を掛けた額で表を見る）。",
+  "table": {
+    "title": "◆3歳未満児の保育料階層（太子町利用者負担額）",
+    "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯／支給認定保護者が養育里親等である世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": 0, "upper": 48600, "condition": "48,600円 未満", "monthly": 15600, "monthly_second": null },
+      { "label": "4-1", "lower": 48600, "upper": 59000, "condition": "48,600円 ～ 59,000円 未満", "monthly": 23000, "monthly_second": null },
+      { "label": "4-2", "lower": 59000, "upper": 79000, "condition": "59,000円 ～ 79,000円 未満", "monthly": 24000, "monthly_second": null },
+      { "label": "4-3", "lower": 79000, "upper": 97000, "condition": "79,000円 ～ 97,000円 未満", "monthly": 26000, "monthly_second": null },
+      { "label": "5-1", "lower": 97000, "upper": 121000, "condition": "97,000円 ～ 121,000円 未満", "monthly": 34200, "monthly_second": null },
+      { "label": "5-2", "lower": 121000, "upper": 145000, "condition": "121,000円 ～ 145,000円 未満", "monthly": 36200, "monthly_second": null },
+      { "label": "5-3", "lower": 145000, "upper": 169000, "condition": "145,000円 ～ 169,000円 未満", "monthly": 38200, "monthly_second": null },
+      { "label": "6-1", "lower": 169000, "upper": 230000, "condition": "169,000円 ～ 230,000円 未満", "monthly": 46700, "monthly_second": null },
+      { "label": "6-2", "lower": 230000, "upper": 301000, "condition": "230,000円 ～ 301,000円 未満", "monthly": 48700, "monthly_second": null },
+      { "label": "7", "lower": 301000, "upper": 397000, "condition": "301,000円 ～ 397,000円 未満", "monthly": 53000, "monthly_second": null },
+      { "label": "8", "lower": 397000, "upper": null, "condition": "397,000円 以上", "monthly": 63700, "monthly_second": null }
+    ],
+    "notes": "保育短時間: 3階層 15,200、4-1 22,500、4-2 23,500、4-3 25,400、5-1 33,500、5-2 35,400、5-3 37,400、6-1 45,700、6-2 47,700、7 51,900、8 62,400（1・2階層は0）。第3階層は市町村民税課税世帯で所得割48,600円未満（均等割のみを含むと読んで lower を0にした）。ひとり親家庭（児童扶養手当の受給資格あり）や障害者手帳所持者等のいる世帯で所得割77,101円未満は減免（申請が必要、額は案内に書いていない）。延長保育料は別。斑鳩保育所の一時預かりは3歳未満児1日2,500円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月15,600〜63,700円）。0円は生活保護世帯と市町村民税非課税世帯（養育里親等を含む）。ひょうご保育料軽減制度で、第1子は所得割57,700円未満の世帯に月10,000円（保育料の1/2まで）を上限に助成（保育料が月5,000円を超える場合、申請は毎年3月）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "2人以上の子どもが同時に保育所・幼稚園・認定こども園等を利用する場合、2人目が半額、3人目以降が無償。所得割57,700円未満（保護者合算、第4-1階層の途中まで）の世帯は、年齢制限なく保護者が監護する全ての子どもを多子軽減の算定対象にする。ひょうご保育料軽減制度（兵庫県の制度、町が助成）: 国の多子の優遇（半額・無料）を受けていない第2子以降の3号認定の子は、所得割155,500円未満（ひとり親世帯・在宅障がい児（者）のいる世帯は169,000円未満）なら、月5,000円を超える保育料に対し月15,000円（保育料の1/2）を限度に助成（同じページのチェックリストでは「155,000円未満」と書いてあり、どちらが正しいかは確かめていない）。100円未満切り捨て。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "同時に保育所等を利用する3人目以降は無償（所得割57,700円未満は年齢制限なく監護する全ての子で数える）。上の子が通っていない第3子は、ひょうご保育料軽減制度の第2子以降の助成（所得割155,500円未満で月15,000円・保育料の1/2まで）の対象。",
+  "lunch_jh": { "free": true, "note": "令和8年度は町立小・中学校の学校給食費を無償化（中学校は改定後1食390円・月5,800円）。小学校は国の給食費負担軽減交付金を活用。令和9年度以降も続くかはページに書いていない。", "source": { "label": "学校給食費の改定および保護者負担額について／兵庫県太子町（更新日2026年4月1日）", "url": "https://www.town.hyogo-taishi.lg.jp/soshikikarasagasu/kyushoku/1424936285539.html" } },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料／兵庫県太子町（更新日2026年4月1日）", "url": "https://www.town.hyogo-taishi.lg.jp/soshikikarasagasu/kodomoegao/hoikusyo/6361.html" },
+    { "label": "保育料（3号認定）（PDF）", "url": "https://www.town.hyogo-taishi.lg.jp/material/files/group/43/hoikuryou08.pdf" },
+    { "label": "保育所・認定こども園への入所（令和8年度）／兵庫県太子町", "url": "https://www.town.hyogo-taishi.lg.jp/soshikikarasagasu/kodomoegao/hoikusyo/6364.html" },
+    { "label": "令和8年度利用の案内（PDF）", "url": "https://www.town.hyogo-taishi.lg.jp/material/files/group/43/R8riyouannnai.pdf" },
+    { "label": "ひょうご保育料軽減制度のご案内／兵庫県太子町（更新日2026年4月1日）", "url": "https://www.town.hyogo-taishi.lg.jp/soshikikarasagasu/kodomoegao/hoikusyo/6355.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの index.json の docs で保育料のPDF・保育料のページ・ひょうご保育料軽減制度のページを読んだ",
+    "令和8年度の入所のページから令和8年度利用の案内（PDF）を取り、表が「令和8年4月1日現在の年齢」で同じ額なことと多子軽減の文を確かめた"
+  ],
+  "notes": "ひょうご保育料軽減制度の所得の上限はページ内で155,500円と155,000円の2つの書き方がある。cash・one_time は探していない。",
+  "read_at": "2026-11-01"
+}

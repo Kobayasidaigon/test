@@ -1,0 +1,48 @@
+{
+ "code": "015121",
+ "pref": "北海道",
+ "name": "浜頓別町",
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "保育料の規則・表を読めていない。政令市ではないので、ふつうなら6%で判定する。",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "保育料の表・無償化の有無を確かめられなかった。",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "きょうだいの決まりを確かめられなかった。北海道には第2子以降の3歳未満児の保育料を無償化する市町村に道が補助する事業（多子世帯の保育料軽減支援事業）があり、道のまとめでは道内のほとんどの市町村が第2子以降を無償化しているが、浜頓別町の内容（所得制限・数え方）は未確認。",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "浜頓別町認定こども園「入園申込み手続き」について（http のみ。開けず、検索結果の題名で存在だけ確認）",
+   "url": "http://www.town.hamatonbetsu.hokkaido.jp/education/detail.php?content=358"
+  },
+  {
+   "label": "浜頓別町こども園概要（http のみ。開けず）",
+   "url": "http://www.town.hamatonbetsu.hokkaido.jp/education/detail.php?content=504"
+  },
+  {
+   "label": "令和５年第１回定例会（http のみ。開けず。検索結果の要約では「浜頓別町就学前の子どものための教育・保育に関する利用者負担額を定める条例」の一部改正を可決）",
+   "url": "http://www.town.hamatonbetsu.hokkaido.jp/town/detail.php?content=794"
+  }
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べは町のサイトの一番上で失敗（OSError、0ページ。munis_by_pop.json の URL は http://www.town.hamatonbetsu.hokkaido.jp/）",
+  "https://www.town.hamatonbetsu.hokkaido.jp/ は TLS エラー（tlsv1 unrecognized name。サーバーがこのホスト名の HTTPS に対応していないとみられる）。15秒あけて取り直しても同じ。この環境のプロキシは HTTPS だけなので http では取れない（WebFetch も http を https に直すので同じ）",
+  "新しいドメインの候補 https://www.town.hamatonbetsu.lg.jp/ と https://town.hamatonbetsu.hokkaido.jp/ はプロキシの CONNECT が 502（ドメインがないか接続できない）",
+  "北海道町村会の例規集データベースの一覧から、浜頓別町の例規集（https://www1.g-reiki.net/hamatonbetsu/reiki_menu.html、ぎょうせいの g-reiki）にたどったが、403 Forbidden（15秒あけても同じ。ヘッダーを偽ってすり抜けることはしていない）",
+  "web.archive.org の保存コピーはプロキシで接続がリセットされて取れなかった",
+  "WebSearch（allowed_domains: town.hamatonbetsu.hokkaido.jp）を3回使った: 「浜頓別町 保育所 保育料 3歳未満 無償化」「浜頓別町 こども園 利用者負担額 保育料 月額 第2子 無料 入園申込み」「浜頓別町 子育て支援 保育料 給食費 無料 移住 定住」。こども園の入園申込み・概要・子育て支援事業のページと、利用者負担額を定める条例の改正（令和元年第3回・令和5年第1回定例会）があることは分かったが、保育料の額や無償化・きょうだいの決まりは要約に出なかった"
+ ],
+ "notes": "公式サイト（http://www.town.hamatonbetsu.hokkaido.jp/）が HTTPS で開けず、例規集（g-reiki）も 403 なので、保育料の表もきょうだいの決まりも原文を読めていない。町内の施設は浜頓別町認定こども園（検索結果の題名による）。保育料は「浜頓別町就学前の子どものための教育・保育に関する利用者負担額を定める条例」で決まっているとみられる（令和5年第1回定例会で一部改正、検索結果の要約）。学童保育所は月額4,000円・2子目以降2,000円（検索結果の要約、保育所の保育料ではない）。HTTPS で開ける環境か人の手で、こども園の入園申込み手続きのページと条例の別表を確かめる必要がある。",
+ "read_at": "2026-11-01"
+}

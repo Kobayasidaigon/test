@@ -1,0 +1,33 @@
+{
+  "code": "462101",
+  "pref": "鹿児島県",
+  "name": "指宿市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "公式サイトが停止中で読めず不明。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "公式サイトが停止中で読めず不明。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [],
+  "confidence": "仮置き",
+  "tried": [
+    "https://www.city.ibusuki.lg.jp/ （トップ）: HTTP 503「サービス一時停止のお知らせ」。10月21日から、利用しているソフトウェアに重大な脆弱性が確認されたための予防的な措置として全サービスを順次停止、再開時刻は未定、と表示（2026-11-01に3回試した）",
+    "下調べ（crawl/462101）も接続エラーで0ページ",
+    "WebSearch（allowed_domains: city.ibusuki.lg.jp、「指宿市 保育料 3歳未満 利用者負担額 第2子」）で「保育所等について」（/main/kenko/kosodate/shisetsu/page013367.html）、「指宿市児童福祉法に基づく負担金徴収規則」（/reiki_int/reiki_honbun/q711RG00000229.html）、「幼児教育・保育の無償化」（/main/kenko/kosodate/page017854.html）が見つかったが、どれも同じ503で開けなかった",
+    "Wayback Machine: archive.org の確認APIではトップページの記録（2026年8月31日）があったが、web.archive.org への接続がプロキシで切れて（connection reset）読めなかった"
+  ],
+  "notes": "市の公式サイト全体が2026年10月21日から停止中のため、保育料の表もきょうだいの決まりも読めなかった。参考（未確認・値には使っていない）: 検索結果の要約では、負担金徴収規則に3号認定は同一世帯の未就学児を上から数えて2人目半額・3人目以降無料とあり、無償化の案内（2019年の資料）に保育所等を利用する最年長の子を第1子と数えて0〜2歳の第2子半額・第3子以降無償、保育料は住民税額で決まり9月に切り替わる、とあるとのこと。サイトの再開後に読み直すこと。",
+  "read_at": "2026-11-01"
+}

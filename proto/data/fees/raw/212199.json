@@ -42,7 +42,8 @@
   "confidence": "推定",
   "tried": [
     "令和9年度 入園申込のご案内（https://www.city.gujo.gifu.jp/life/detail/5-14.html、2026年9月1日更新）には保育料の表や年度つきの案内はなかった。",
-    "例規集は外部サイト（ops-jg.d1-law.com）の検索なので開いていない。"
+    "例規集は外部サイト（ops-jg.d1-law.com）の検索なので開いていない。",
+    "WebSearch（allowed_domains: city.gujo.gifu.jp、「郡上市 保育料 未満児 利用者負担額 令和8年度」）でも、令和8年度と書かれた保育料の表や案内は出なかった（FAQ・令和3年9月発行の保育園案内など）。"
   ],
   "notes": "表のPDFに年度の表示がなく、令和8年度の表と書かれた資料は見つけていないので confidence は推定。ページに今も現行の表として載っている。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
   "read_at": "2026-11-01"

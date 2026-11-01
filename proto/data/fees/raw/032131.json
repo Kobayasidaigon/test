@@ -1,0 +1,194 @@
+{
+ "code": "032131",
+ "pref": "岩手県",
+ "name": "二戸市",
+ "status": "ok",
+ "fiscal_year": "令和7年度（保育所保育料について のページ〔2024年10月29日更新〕と保育所等の入所案内のページの「保育所保育料」PDF。ファイル名 R7hoikuryou.pdf〔2024年10月作成〕、表に年度の表示はない。令和8年度の表は見つからず、令和8年度もこの表がそのまま載っている）",
+ "period_note": "備考（1）「上記所得階層区分は、４月から８月分までは、前年度の市民税によることとなります。９月分から翌年３月分までは本年度の市民税による区分となります。」毎月1日現在に保育施設へ在籍している方は、利用日数に関わらず1か月分の保育料。年度途中で3歳になっても2歳児クラスの年度は保育料がかかる（令和8年度 保育所入所案内）。",
+ "tax_basis": "6%",
+ "tax_note": "令和8年度 保育所入所案内: 「保育料の算定に用いる市町村民税課税額は、控除等の適用を受ける前の「均等割額・所得割額」です。」基本的に保護者（父母）の市町村民税所得割額の合計額で決める。公立・私立、市内・市外の施設を問わず同じ算定方法。政令市ではない。",
+ "table": {
+  "title": "二戸市特定教育・保育等利用者負担額表（２号認定、３号認定）",
+  "kind": "3号（0歳〜2歳）・標準時間・第1子（月額）。monthly_second は備考（3）の軽減（世帯の2人目以降は0円）から入れた",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法による被保護世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "C1",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税所得割非課税世帯",
+    "monthly": 8900,
+    "monthly_second": 0
+   },
+   {
+    "label": "C2",
+    "lower": 1,
+    "upper": 5000,
+    "condition": "市民税所得割5,000円未満",
+    "monthly": 11200,
+    "monthly_second": 0
+   },
+   {
+    "label": "C3",
+    "lower": 5000,
+    "upper": 48600,
+    "condition": "市民税所得割5,000円以上（上限は書かれていないが、次の D1 が48,600円以上）",
+    "monthly": 12000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D1",
+    "lower": 48600,
+    "upper": 60700,
+    "condition": "所得割48,600円以上60,700円未満",
+    "monthly": 15000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D2",
+    "lower": 60700,
+    "upper": 72800,
+    "condition": "所得割60,700円以上72,800円未満",
+    "monthly": 16900,
+    "monthly_second": 0
+   },
+   {
+    "label": "D3",
+    "lower": 72800,
+    "upper": 84900,
+    "condition": "所得割72,800円以上84,900円未満",
+    "monthly": 18900,
+    "monthly_second": 0
+   },
+   {
+    "label": "D4",
+    "lower": 84900,
+    "upper": 97000,
+    "condition": "所得割84,900円以上97,000円未満",
+    "monthly": 21000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D5",
+    "lower": 97000,
+    "upper": 115000,
+    "condition": "所得割97,000円以上115,000円未満",
+    "monthly": 25000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D6",
+    "lower": 115000,
+    "upper": 133000,
+    "condition": "所得割115,000円以上133,000円未満",
+    "monthly": 29000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D7",
+    "lower": 133000,
+    "upper": 151000,
+    "condition": "所得割133,000円以上151,000円未満",
+    "monthly": 33500,
+    "monthly_second": 0
+   },
+   {
+    "label": "D8",
+    "lower": 151000,
+    "upper": 169000,
+    "condition": "所得割151,000円以上169,000円未満",
+    "monthly": 35500,
+    "monthly_second": 0
+   },
+   {
+    "label": "D9",
+    "lower": 169000,
+    "upper": 213000,
+    "condition": "所得割169,000円以上213,000円未満",
+    "monthly": 41000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D10",
+    "lower": 213000,
+    "upper": 257000,
+    "condition": "所得割213,000円以上257,000円未満",
+    "monthly": 44000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D11",
+    "lower": 257000,
+    "upper": 301000,
+    "condition": "所得割257,000円以上301,000円未満",
+    "monthly": 46000,
+    "monthly_second": 0
+   },
+   {
+    "label": "D12",
+    "lower": 301000,
+    "upper": null,
+    "condition": "所得割301,000円以上",
+    "monthly": 55000,
+    "monthly_second": 0
+   }
+  ],
+  "notes": "短時間: A・B・特B 0、C1 8,800、C2 11,000、C3 11,800、D1 14,800、D2 16,600、D3 18,600、D4 20,700、D5 24,600、D6 28,600、D7 33,000、D8 35,000、D9 40,300、D10 43,300、D11 45,300、D12 54,100。母子世帯等: 特B（市民税非課税世帯〔母子世帯等〕）0、特C（市民税所得割77,101円未満〔母子世帯等〕）2,300（短時間も2,300）。備考（3）「利用者負担額は、以下のとおり軽減措置があります。・世帯に２人以上の子ども（年齢にかかわらず世帯が看護するものをいう。）がいる場合、年長の子どもから順に２人目以降の利用者負担額は０円」。2号（3歳〜5歳）は全階層0円。C3「5,000円以上」は表に上限がないが、D1 が48,600円以上なので upper=48600 にした。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月8,900〜55,000円）。0円は生活保護世帯・市民税非課税世帯。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "「【令和５年度スタート】第２子以降の保育料無償化について」: 令和5年4月1日から、認定こども園（保育利用）・保育所・小規模保育事業を利用する3号認定の0〜2歳児のうち第2子以降の保育料を無償化。「年齢にかかわらず、世帯が監護する子どもの第２子以降が対象」、無償化を受けるための手続きはない（無償化期間は0歳〜満3歳になった日から次の3月31日まで）。所得制限の記載はない（岩手県のいわて子育て応援保育料無償化事業と同じ形）。令和8年度の入所案内のページにも「入所児童の第２子である申立書」の様式がある。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第2子以降が無償なので第3子以降も無償（年齢にかかわらず世帯が監護する子で数える）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "岩手県二戸市保育所保育料について（更新日2024年10月29日）",
+   "url": "https://www.city.ninohe.lg.jp/info/1303"
+  },
+  {
+   "label": "保育所保育料（PDF、R7hoikuryou.pdf）",
+   "url": "https://www.city.ninohe.lg.jp/div/kosodatesien/pdf/kosodatesien/hoikusyo/R7hoikuryou.pdf"
+  },
+  {
+   "label": "岩手県二戸市【令和５年度スタート】第２子以降の保育料無償化について（更新日2023年3月31日）",
+   "url": "https://www.city.ninohe.lg.jp/info/3370"
+  },
+  {
+   "label": "岩手県二戸市保育所等の入所案内（更新日2026年1月5日）",
+   "url": "https://www.city.ninohe.lg.jp/info/1302"
+  },
+  {
+   "label": "保育所入所案内（PDF、R8hoikusyoannai.pdf、2026年1月作成。保育料の算定方法。額の表はない）",
+   "url": "https://www.city.ninohe.lg.jp/div/kosodatesien/pdf/kosodatesien/hoikusyo/R8hoikusyoannai.pdf"
+  }
+ ],
+ "confidence": "推定",
+ "tried": [
+  "令和8年度の保育料の表を探した: 保育料のページ（2024年10月29日更新）と入所案内のページ（2026年1月5日更新）の PDF は R7hoikuryou.pdf と R8hoikusyoannai.pdf（額の表なし）だけ",
+  "例規集は市のサイトの /menu/24 から先のURLが見つからず、条例・規則の別表は確かめていない"
+ ],
+ "notes": "表は画像で確かめた（3号 0歳〜2歳の列は 標準時間・短時間 の順）。PDF のリンクは /Link/Pdf/1234 が JavaScript で /div/kosodatesien/pdf/kosodatesien/hoikusyo/R7hoikuryou.pdf へ移る形。3歳以上児は無償。",
+ "read_at": "2026-11-01"
+}

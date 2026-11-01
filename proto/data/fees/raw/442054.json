@@ -1,0 +1,48 @@
+{
+  "code": "442054",
+  "pref": "大分県",
+  "name": "佐伯市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度保育施設入所申込みの手引き（PDF、2025年10月作成）p.10「（4）保育料」: 令和元年10月から3歳児以上は国の施策で無償、令和6年4月からは佐伯市独自の取り組みとして、佐伯市に住民票のあるすべてのお子さんの保育料が無償。階層区分の判定は続けており、4〜8月分は令和7年度、9〜3月分は令和8年度の市町村民税で判定する（手引き p.11 の給食費の項）。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は所得に関わらず0円。階層区分は市町村民税所得割課税額（住宅借入金等特別税額控除、配当控除等を含まない）で判定する（手引き p.10）。佐伯市は政令市ではない。",
+  "table": {
+    "title": "（4）保育料（令和8年度保育施設入所申込みの手引き p.10）",
+    "kind": "保育料（月額）・全年齢（0〜2歳児も同じ）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "48,600円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第4階層（多子範囲）", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第4階層", "lower": 57700, "upper": 97000, "condition": "57,700円以上 97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第5階層", "lower": 97000, "upper": 169000, "condition": "97,000円以上 169,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第6階層", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第7階層", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第8階層", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 0, "monthly_second": null }
+    ],
+    "notes": "表の保育料（月額）の欄は全階層をまたいで「0円」の1つの欄。このほか「第3階層 要保護世帯（48,600円未満）」「第4階層 要保護世帯（48,600円以上77,101円未満）」の行も0円（要保護世帯＝ひとり親世帯、障がい者の同居する世帯）。給食費・帽子代・行事に係る費用等は保護者負担、施設によっては入園料等が別にかかる。0〜2歳児（満3歳児を含む）の給食費は保育料に含まれる。第3階層の下限は表に書かれていない（均等割のみの世帯を含むと読んで lower を0にした）。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "「令和６年４月からは佐伯市独自の取り組みとして、佐伯市に住民票のあるすべてのお子さんの保育料が無償となっています。」「保育料は世帯の所得に関わらず無償となりますが、今後も保育料の階層区分については判定する必要がありますので、必ず税の申告及びマイナンバーの提出をお願いします。」（令和8年度の手引き p.10）。所得制限・出生順位の条件はない。0〜2歳児の給食費も保育料に含まれる。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から保育料が無償のため、きょうだいの数え方で額は変わらない。household は「数え方に関係なく0円」という意味で置いた。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無償のため第3子以降も0円。3〜5歳児の公立保育施設の給食費（月5,000円）は、年収360万円相当未満の世帯は免除、それ以上の世帯は保育所・幼稚園・認定こども園等に入所している子を年齢の高い順に数えて第3子以降が免除（小学生以上や入所していない子は数えない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所、認定こども園 / 子育て / 佐伯市（2025年11月5日更新）", "url": "https://www.city.saiki.oita.jp/kosodate/kiji0032301/index.html" },
+    { "label": "令和8年度 保育施設入所申込みの手引き（PDF、p.10 保育料・p.11 給食費）", "url": "https://www.city.saiki.oita.jp/kosodate/kiji0032301/3_2301_47291_up_j0mb5ztm.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの候補「利用者負担 / 佐伯市」（https://www.city.saiki.oita.jp/kiji0032472/index.html）は障がい福祉サービスの利用者負担のページで、保育料ではなかった"
+  ],
+  "notes": "保育所・認定こども園のページから令和8年度の手引き（文字の取れるPDF）を取り、p.10 を画像でも見て、0円の欄が全階層にまたがることを確かめた。表は全階層0円なので参考として写した（要保護世帯の2行は notes に回した）。中学校給食・現金給付・祝い金は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

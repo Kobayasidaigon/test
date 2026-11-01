@@ -1,0 +1,52 @@
+{
+  "code": "042099",
+  "pref": "宮城県",
+  "name": "多賀城市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "市のページ「保育所等利用料及び副食費について」（2026年4月27日更新）の多賀城市利用者負担額徴収基準額表と、令和8年度保育所等入所案内（一斉受付版、2025年9月作成）p.13 の多賀城市利用者負担額基準額表（額は同じ）。上期分（4〜8月分）は令和7年度（令和6年分）、下期分（9〜3月分）は令和8年度（令和7年分）の市町村民税所得割額で算定し、算定は4月と9月の2回。年齢は令和8年3月31日時点の年齢で決める。課税状況が確認できないときは最高階層（D9）。",
+  "tax_basis": "6%",
+  "tax_note": "児童の父母（事実婚を含む）の市町村民税所得割額の合計。保護者が非課税の場合は同居の祖父母を算入（生活費が別と証明できれば除く）。住宅借入金等特別控除・配当控除・寄付金税額控除・外国税額控除等の税額控除は適用せずに計算（調整控除及び税額調整措置は適用）。政令指定都市に住む方の所得割額は8%ではなく6%（旧税率相当）で計算する。多賀城市は政令市ではない。",
+  "table": {
+    "title": "多賀城市利用者負担額基準額表 ■保育利用（2号・3号認定）＜認可保育所、認定こども園の保育部分、小規模保育事業所、事業所内保育事業所＞",
+    "kind": "0〜2歳児クラス・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": 0, "upper": 48600, "condition": "市町村民税所得割額48,600円未満", "monthly": 15500, "monthly_second": null },
+      { "label": "D1の1", "lower": 48600, "upper": 57700, "condition": "市町村民税所得割額57,700円未満", "monthly": 17500, "monthly_second": null },
+      { "label": "D1の2", "lower": 57700, "upper": 61000, "condition": "市町村民税所得割額61,000円未満", "monthly": 17500, "monthly_second": null },
+      { "label": "D2の1", "lower": 61000, "upper": 77101, "condition": "市町村民税所得割額77,101円未満", "monthly": 21000, "monthly_second": null },
+      { "label": "D2の2", "lower": 77101, "upper": 79000, "condition": "市町村民税所得割額79,000円未満", "monthly": 21000, "monthly_second": null },
+      { "label": "D3", "lower": 79000, "upper": 97000, "condition": "市町村民税所得割額97,000円未満", "monthly": 27000, "monthly_second": null },
+      { "label": "D4", "lower": 97000, "upper": 121000, "condition": "市町村民税所得割額121,000円未満", "monthly": 27000, "monthly_second": null },
+      { "label": "D5", "lower": 121000, "upper": 144000, "condition": "市町村民税所得割額144,000円未満", "monthly": 38000, "monthly_second": null },
+      { "label": "D6", "lower": 144000, "upper": 169000, "condition": "市町村民税所得割額169,000円未満", "monthly": 38000, "monthly_second": null },
+      { "label": "D7", "lower": 169000, "upper": 255000, "condition": "市町村民税所得割額255,000円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "D8", "lower": 255000, "upper": 397000, "condition": "市町村民税所得割額397,000円未満", "monthly": 55000, "monthly_second": null },
+      { "label": "D9", "lower": 397000, "upper": null, "condition": "市町村民税所得割額397,000円以上", "monthly": 60000, "monthly_second": null }
+    ],
+    "notes": "表は各階層の上限（未満）だけを書く形なので、下限は1つ上の行の上限とした（Cは均等割のみの世帯を含むと読んで下限0）。保育短時間: A・B 0円、C 15,200円、D1の1・D1の2 17,200円、D2の1・D2の2 20,600円、D3・D4 26,500円、D5・D6 37,300円、D7 43,200円、D8 54,000円、D9 58,900円。ひとり親世帯や在宅障害者（児）世帯（各障害手帳交付者、特別児童扶養手当対象児、障害基礎年金等の受給者がいる世帯）でC、D1の1、D1の2、D2の1の場合は第1子が非課税世帯相当額（B階層相当＝0円）、第2子以降無料。このほか施設によって教材費や実費負担が必要な場合がある。表に第2子の別の列はない。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は表の額（A・B階層は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "同一世帯に2人以上の児童がいる場合、第2子は半額、第3子以降は無料（表の注）。階層区分がD1の2以上（所得割57,700円以上）の保育利用では、未就学児で認可保育所、認定こども園、小規模保育事業所、事業所内保育事業所、幼稚園、児童発達支援センター又は企業主導型保育事業所を利用している子を兄姉として数える（例: D6で8歳・2歳・0歳なら8歳は数えず、2歳が第1子、0歳が第2子で半額）。階層区分がB、C、D1の1（所得割57,700円未満）の場合は市町村民税非課税の子（別居の子を含む）すべてを兄姉として数える（例: Cで8歳・2歳・0歳なら2歳が第2子で半額、0歳が第3子で0円）。ひとり親世帯等でC〜D2の1は第2子以降無料。必要書類の提出がない場合は軽減を受けられないことがある。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は無料。数え方は第2子と同じ（D1の2以上は未就学児で保育所・幼稚園等を利用している子、B〜D1の1は市町村民税非課税の子すべて）。3〜5歳児クラスの副食費は、年収360万円未満相当世帯と未就学児の兄姉から数えて第3子以降が免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "多賀城市／保育所等利用料及び副食費について（2026年4月27日更新）", "url": "https://www.city.tagajo.miyagi.jp/hoiku/kosodate/hoikujo/hoikuryou.html" },
+    { "label": "令和8年度保育所等入所案内（一斉受付版、PDF、p.12〜13 保育所等利用料及び副食費・多賀城市利用者負担額基準額表）", "url": "https://www.city.tagajo.miyagi.jp/hoiku/kosodate/hoikujo/documents/nyuushoannai.pdf" },
+    { "label": "多賀城市／保育所の入所申し込み（2026年10月27日更新）", "url": "https://www.city.tagajo.miyagi.jp/hoiku/kosodate/hoikujo/hoikujoshinsei.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの候補ページ（保育所等利用料及び副食費について）のHTMLの表を写し、令和8年度入所案内の基準額表（画像で文字が取れない部分）を pdftoppm で画像にして額と欄外の注記が同じことを確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。令和9年度の入所案内は開いていない。中学校給食・現金給付・祝い金は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

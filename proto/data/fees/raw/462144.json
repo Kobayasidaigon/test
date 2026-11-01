@@ -1,0 +1,41 @@
+{
+  "code": "462144",
+  "pref": "鹿児島県",
+  "name": "垂水市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "市のページ「保育所・認定こども園への入所」（更新日：2026年10月1日）: 「本市では令和6年4月より、0～2歳児の保育料無料化（市独自）を実施しております」。令和9年度垂水市認定こども園・保育所等利用申込みのご案内（PDF、2026年9月作成）でも同じ文で、「次の支給認定をうけた垂水市にお住まいの児童の保育料は無料」。所得・きょうだいの数による違いの記載はない。",
+  "tax_basis": "6%",
+  "tax_note": "政令市ではないので6%とした。0〜5歳児の保育料が所得に関係なく無料なので、階層の判定は額に影響しない。市の保育料表（無料化前の基準額）や所得割の定義は今回読んだ資料に載っていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "0～5歳児までの保育料無料化リーフレット: 「令和６年４月１日から、垂水市独自の子育て支援策として、新たに国の無料化の対象とならない０～２歳児（住民税課税世帯）の保育料を無料化としました」「垂水市にお住いの０～５歳児までの支給認定を受けた児童の保育料がすべて無料化となりました」。3〜5歳児の副食費・通園送迎費・行事費等は実費（副食費は1号・2号で月4,500円まで助成、3号は副食費の実費徴収なし）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員の保育料が無料なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無料のため、第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "鹿児島県垂水市／保育所・認定こども園への入所（更新日：2026年10月1日）",
+      "url": "https://www.city.tarumizu.lg.jp/kosodateshien/kurashi/kosodate/kodomo/hoikuen/nyusho.html"
+    },
+    {
+      "label": "0～5歳児までの保育料無料化（令和6年4月1日以降）リーフレット（PDF）",
+      "url": "https://www.city.tarumizu.lg.jp/kosodateshien/kurashi/kosodate/kodomo/hoikuen/documents/20240808_hoikuryoumuryouka.pdf"
+    },
+    {
+      "label": "令和9年度垂水市認定こども園・保育所等利用申込みのご案内（PDF）1・7",
+      "url": "https://www.city.tarumizu.lg.jp/kosodateshien/kurashi/kosodate/kodomo/hoikuen/documents/20261001~_hoikusho_tou_nyuusho_annnai.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べ（index.json）の「保育所・認定こども園への入所」のページと無料化リーフレット、令和9年度の利用申込みのご案内（文字の取れるPDF）で読めた。保育料の階層表は公開資料に見当たらない（無料化のため）。cash・one_time・中学校給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,36 @@
+{
+  "code": "104485",
+  "pref": "群馬県",
+  "name": "昭和村",
+  "status": "ok",
+  "fiscal_year": "令和8年度（【令和８年度版】昭和村子育て応援ガイド〔2026年8月作成〕p.10「保育料無料化」: 令和6年度から全て無料化）",
+  "period_note": "令和6年度から保育料を全て無料化（年度途中の切り替えの記載はない）。",
+  "tax_basis": "unknown",
+  "tax_note": "全員無料のため、保育料の階層表・所得割の定義は村のサイトと子育て応援ガイドに載っていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "子育て応援ガイド（令和8年度版）p.10「（６）保育料無料化（対象：村内園児）保育料については、令和６年度から全て無料化しています。」。子育て応援netの「保育関係の支援」のページ: 「昭和村では、令和６年度より村内在住の方を対象に、保育料の無償化を行っています。※施設から実費として徴収される費用については無償化の対象外となります。」所得制限の記載はない。ガイドは対象を「村内園児」、ページは「村内在住の方」と書いており、村外の保育園・認定こども園に通う場合も対象かは書かれていない（村外の園への入園は健康福祉課に申し込む）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無料なので第2子も0円（きょうだいの数え方は額に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無料なので第3子以降も0円。",
+  "lunch_jh": { "free": true, "note": "子育て応援ガイド（令和8年度版）p.17「（17）学校給食費無償化事業（対象：保護者）本村では、令和６年度より学校給食費を全額村負担としています。」村内の中学校は昭和村立昭和中学校1校。", "source": { "label": "【令和８年度版】昭和村子育て応援ガイド（PDF）p.17", "url": "https://kosodate.vill.showa.gunma.jp/shien/files/01/R8_kosodateguide.pdf" } },
+  "cash": [],
+  "one_time": [
+    { "label": "あかちゃん誕生祝い金", "amount": 100000, "note": "誕生したあかちゃんを養育する保護者に1人につき10万円（申請が必要）。", "source": { "label": "【令和８年度版】昭和村子育て応援ガイド（PDF）p.2", "url": "https://kosodate.vill.showa.gunma.jp/shien/files/01/R8_kosodateguide.pdf" } },
+    { "label": "入学祝金（小学校）", "amount": 30000, "note": "令和7年度から、村内に在住する子どもが小学校に入学した際に3万円。中学校入学は5万円。", "source": { "label": "【令和８年度版】昭和村子育て応援ガイド（PDF）p.13", "url": "https://kosodate.vill.showa.gunma.jp/shien/files/01/R8_kosodateguide.pdf" } },
+    { "label": "入学祝金（中学校）", "amount": 50000, "note": "令和7年度から、村内に在住する子どもが中学校に入学した際に5万円。", "source": { "label": "【令和８年度版】昭和村子育て応援ガイド（PDF）p.13", "url": "https://kosodate.vill.showa.gunma.jp/shien/files/01/R8_kosodateguide.pdf" } }
+  ],
+  "sources": [
+    { "label": "【令和８年度版】昭和村子育て応援ガイド（PDF、2026年8月作成）p.10「保育料無料化」", "url": "https://kosodate.vill.showa.gunma.jp/shien/files/01/R8_kosodateguide.pdf" },
+    { "label": "保育関係の支援｜子育て支援｜群馬県昭和村 子育て応援net", "url": "https://kosodate.vill.showa.gunma.jp/shien/hoikushien/2017-0313-1600-12.html" },
+    { "label": "昭和村子育て応援ガイド｜子育て支援｜群馬県昭和村 子育て応援net", "url": "https://kosodate.vill.showa.gunma.jp/shien/2026-0910-0853-12.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "子育てのサイトは別のドメイン（kosodate.vill.showa.gunma.jp）。下調べの docs は空だったが、index.json の pages にある「保育関係の支援」と「昭和村子育て応援ガイド」のページを開いた。ガイドのPDFは文字がアウトライン化されていて pdftotext・pypdfium2 では読めないので、pdftoppm で画像にして読んだ。村内の保育園は3か所（公立 昭和村第一保育園〔0歳6か月から〕・昭和村第二保育園〔2歳から〕、私立 子育保育園〔0歳6か月から〕）。保育園の副食費（約5,000円）も村が全額負担、主食も令和4年10月から完全給食化。延長保育料・一時預かり（3歳未満2,000円／日）などは別。",
+  "read_at": "2026-11-01"
+}

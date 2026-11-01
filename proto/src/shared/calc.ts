@@ -247,9 +247,12 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
       total += kids.length * JUNIOR_HIGH_LUNCH_MONTHLY * 11 * ((b ? 1 : 0) - (a ? 1 : 0))
     }
     if (touched) {
+      // どちらの街も中学校の給食費が無料と公式で確かめてあれば、差は0円で確かめた値（確認済）。
+      // ほかは、無料でない街の給食費を全国平均の月額で計算するので「推定」
+      const bothFreeSure = [from, to].every((c) => c.lunch.juniorHighFree === true && c.lunch.confidence === '確認済')
       items.push({
         key: 'lunch', label: '中学校の給食費', icon: 'lunch', perYear: unknown ? null : total / years, total: unknown ? null : total, oneTime: false,
-        confidence: '推定', who: whoInRange(input, years, 12, 14, '中学生'),
+        confidence: !unknown && bothFreeSure ? '確認済' : '推定', who: whoInRange(input, years, 12, 14, '中学生'),
         plain: unknown
           ? `${to.lunch.juniorHighFree === null ? to.name : from.name}の中学校の給食費が無料かどうかは、まだ確かめられていません。`
           : total === 0 ? '中学校の給食費の差はありません。' : `中学校の給食費（月 約${(Math.round(JUNIOR_HIGH_LUNCH_MONTHLY / 100) * 100).toLocaleString('ja-JP')}円）が${total > 0 ? `${to.name}では無料` : `${from.name}では無料`}です。1人で年 約${yenMan(JUNIOR_HIGH_LUNCH_MONTHLY * 11)}。`,
@@ -282,7 +285,8 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
   }
 
   // --- 移住支援金（一度きり。23区から地方へ移る家族） ---
-  // 世帯の額や子どもの加算が「最大」（市町村の要綱でもっと少ないことがある）なら、額は最大の見込みとして書き、確からしさを1つ下げる
+  // 世帯の額や子どもの加算が「最大」（市町村の要綱でもっと少ないことがある）なら、額は最大の見込みとして書き、確からしさを1つ下げる。
+  // 今年度の受付が予算の上限に達して終わった・止まった街（closed）も、額は出しつつ説明でそう断り、確からしさを1つ下げる（下げるのは1つまで）
   if (to.iju && from.region === 'tokyo23' && input.work !== 'part') {
     const iju = to.iju
     const kids = firstYearKids.filter((k) => k.age < 18).length
@@ -290,19 +294,22 @@ export function compare(input: FamilyInput, from: City, to: City): Comparison {
     const family = single ? iju.single ?? Math.min(iju.family, IJU_SINGLE_MAX) : iju.family
     // 子どもの加算の額が分からない街は、加算を額に足さない（国の上限を掛けた大きな額を出さない）
     const childPending = kids > 0 && !!iju.perChildUnknown
+    // 子どもの加算がない街（三田市など。perChild が 0）は、「×0万円」と書かず、加算がないと書く
+    const noChildAdd = kids > 0 && !childPending && iju.perChild === 0
     const amount = family + (childPending ? 0 : iju.perChild * kids)
-    const childUpTo = kids > 0 && !childPending && !!iju.perChildUpTo
+    const childUpTo = kids > 0 && !childPending && !noChildAdd && !!iju.perChildUpTo
     const familyUpTo = single ? iju.single === undefined : !!iju.familyUpTo
     const upTo = familyUpTo || childUpTo
     const head = `${single ? '単身' : '世帯'}${familyUpTo ? 'で最大' : 'で'}${yenMan(family, 0)}`
+    const closed = iju.closed ? `ただし、${iju.closed}。来年度も受け付けるかは確認中です。` : ''
     items.push({
       key: 'iju', label: '移住支援金（一度きり）', icon: 'iju', perYear: null, total: amount, oneTime: true, upTo,
       ...(childPending ? { pendingPart: '子どもの加算' } : {}),
-      confidence: upTo || childPending ? weaker(iju.confidence) : iju.confidence, who: '家族みんな',
+      confidence: upTo || childPending || iju.closed ? weaker(iju.confidence) : iju.confidence, who: '家族みんな',
       plain: childPending
-        ? `23区から${to.name}へ移って条件を満たすと、一度だけ${head}。ほかに18歳未満の子どもの加算がありますが、${to.name}の額はまだ確かめていません（国の上限は1人${yenMan(iju.perChild, 0)}）。5年以内に転出すると返す決まりがあります。毎年の差には入れていません。`
-        : `23区から${to.name}へ移って条件を満たすと、一度だけ${upTo ? '最大' : ''}${yenMan(amount, 0)}。${childUpTo ? '子どもの加算は市町村が決めていて、もっと少ないことがあります。' : ''}5年以内に転出すると返す決まりがあります。毎年の差には入れていません。`,
-      detail: `${head}${kids && !childPending ? `＋18歳未満の子${kids}人×${childUpTo ? '最大' : ''}${yenMan(iju.perChild, 0)}` : ''}で計算。${childPending ? `子ども${kids}人の加算は額が分からないので、足していません。` : ''}${iju.note}`,
+        ? `23区から${to.name}へ移って条件を満たすと、一度だけ${head}。ほかに18歳未満の子どもの加算がありますが、${to.name}の額はまだ確かめていません（国の上限は1人${yenMan(iju.perChild, 0)}）。${closed}5年以内に転出すると返す決まりがあります。毎年の差には入れていません。`
+        : `23区から${to.name}へ移って条件を満たすと、一度だけ${upTo ? '最大' : ''}${yenMan(amount, 0)}。${childUpTo ? '子どもの加算は市町村が決めていて、もっと少ないことがあります。' : ''}${noChildAdd ? `${to.name}は、子どもの加算がありません。` : ''}${closed}5年以内に転出すると返す決まりがあります。毎年の差には入れていません。`,
+      detail: `${head}${kids && !childPending ? (noChildAdd ? '（子どもの加算はなし）' : `＋18歳未満の子${kids}人×${childUpTo ? '最大' : ''}${yenMan(iju.perChild, 0)}`) : ''}で計算。${childPending ? `子ども${kids}人の加算は額が分からないので、足していません。` : ''}${iju.note}`,
       sources: iju.sources,
     })
   }
@@ -474,7 +481,12 @@ export function knownFacts(c: City): string[] {
     if (n.firstFreeUnder !== undefined) parts.push(n.firstFreeUnsure ? '0〜2歳は第1子から0円' : `年収約${n.firstFreeUnder}万円未満は第1子から0円`)
     if (n.freeFromAge !== undefined) parts.push(`${n.freeFromAge}歳児クラスは0円`)
     if (n.secondChild === 'free') parts.push(`${n.secondFreeUnder !== undefined && !n.secondFreeUnsure ? `年収約${n.secondFreeUnder}万円未満なら` : ''}${n.secondOnly ? '2人目は0円' : '2人目から0円'}`)
-    if (n.thirdChild === 'free' && n.thirdCount === 'household' && n.secondChild !== 'free') parts.push('上の子の年齢を問わず3人目から0円')
+    // 2人目は半額のまま、同じ世帯の子で数える街（長野県）と、3人目から0円を同じ世帯の子で数える街
+    const homeHalf = n.secondChild === 'half' && n.secondCount === 'household'
+    const homeThird = n.thirdChild === 'free' && n.thirdCount === 'household' && n.secondChild !== 'free'
+    if (homeHalf && homeThird) parts.push('上の子の年齢を問わず、2人目は半額・3人目から0円')
+    else if (homeHalf) parts.push('上の子の年齢を問わず2人目は半額')
+    else if (homeThird) parts.push('上の子の年齢を問わず3人目から0円')
     if (parts.length) out.push(`保育料（${parts.join('・')}${incomeUnsure(n) ? '。所得の条件は確認中' : ''}）`)
   }
   if (Object.keys(n.monthly).length) out.push('保育料の月額の表')

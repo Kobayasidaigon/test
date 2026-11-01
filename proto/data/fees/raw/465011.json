@@ -1,0 +1,54 @@
+{
+  "code": "465011",
+  "pref": "鹿児島県",
+  "name": "中種子町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和８年度入所申請について」〔2025年12月12日作成〕の中の「令和８年度 子ども・子育て支援制度」の保育料表。表の注記の税年度は「４月から８月が令和６年度分、９月から翌年３月が令和７年度分」と前年度の文言のまま。令和6年度の「保育料について」〔ワード〕も同じ金額）",
+  "period_note": "注記: 対象となる市町村民税額は、4月から8月が前年度分、9月から翌年3月が当年度分（R8の資料の文言は「４月から８月が令和６年度分（令和５年分所得）、９月から翌年３月が令和７年度分（令和６年分所得）」のままで、令和8年度に当てはめると4〜8月は令和7年度分、9〜3月は令和8年度分と読める）。保育料は養育者（保護者）の市町村民税所得割額の合算で決定（生計の中心が祖父母などの場合は祖父母などの税額で決めることがある）。",
+  "tax_basis": "6%",
+  "tax_note": "市町村民税所得割額（保護者の合算）で判定（政令市ではない）。税額控除の扱いの注記は見当たらない。",
+  "table": {
+    "title": "○保育料について 中種子町基準（3歳未満（3号認定））",
+    "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "市町村民税均等割課税世帯", "monthly": 14200, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 72800, "condition": "72,800円未満", "monthly": 24700, "monthly_second": null },
+      { "label": "6", "lower": 72800, "upper": 97000, "condition": "97,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "7", "lower": 97000, "upper": 133000, "condition": "133,000円未満", "monthly": 37200, "monthly_second": null },
+      { "label": "8", "lower": 133000, "upper": 169000, "condition": "169,000円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "9", "lower": 169000, "upper": 235000, "condition": "235,000円未満", "monthly": 52700, "monthly_second": null },
+      { "label": "10", "lower": 235000, "upper": 301000, "condition": "301,000円未満", "monthly": 61000, "monthly_second": null },
+      { "label": "11", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 80000, "monthly_second": null },
+      { "label": "12", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 81190, "monthly_second": null }
+    ],
+    "notes": "表は各階層の上限だけを「未満」で書いているので、lower は一つ上の行の上限にした（4は所得割1円以上）。3歳未満・短時間: 1・2 0円、3 13,000円、4 19,300円、5 24,400円、6 29,600円、7 36,700円、8 43,900円、9 51,900円、10 60,100円、11 78,160円、12 78,160円。ひとり親世帯等（かっこ書き）: 2 0円、3 9,000円（短時間9,000円）、4 9,000円（短時間9,000円）。3歳・4歳以上（2号認定）は0円。注記「保育料については，令和６年３月末頃に確定し，確定後利用料決定通知書を送付します」も前年度以前の文言のまま。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は表の額（非課税世帯は0円）。町独自の0〜2歳無償化の記載は見つからなかった。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の注記: 2・3号認定は小学校就学前の範囲において、施設を同時に利用する第2子は半額。年収約360万円未満相当（所得割57,700円未満）の世帯は多子のカウントに年齢制限なし。年収約360万円未満相当（所得割77,100円以下）のひとり親世帯等は第2子以降無料（年齢制限なし）。無償化のページにも「保育所などを利用する最年長の子供を第1子とカウントして、0歳から2歳までの第2子は半額、第3子以降は無償」とある。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "小学校就学前の範囲で施設を同時に利用する第3子以降は無料（所得割57,700円未満は年齢制限なしで数える）。鹿児島県の多子世帯の保育料軽減（ほかの市町の案内では、18歳未満の児童の3人目以降で所得割97,000円未満の世帯の軽減）は、町の資料には書かれていない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "中央保育所・野間幼稚園・チャイルドハウスの入所（中種子町、更新日2025年12月12日）", "url": "https://town.nakatane.kagoshima.jp/fukushi/kenko-fukushi/kosodate/hoikuen/nyusho.html" },
+    { "label": "令和８年度申込希望の方はご確認ください（令和８年度入所申請について、PDF。6ページ目に保育料表）", "url": "https://town.nakatane.kagoshima.jp/fukushi/kenko-fukushi/kosodate/hoikuen/documents/mousikominituite.pdf" },
+    { "label": "保育料について（令和6年度 子ども・子育て支援制度、ワード）", "url": "https://town.nakatane.kagoshima.jp/fukushi/kenko-fukushi/kosodate/hoikuen/documents/r6hoikuryou.docx" },
+    { "label": "子供たちの利用料が無償化（中種子町、更新日2025年11月20日）", "url": "https://town.nakatane.kagoshima.jp/fukushi/kenko-fukushi/kosodate/riyouryou/musyouka.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの index.json（保育料の候補文書なし）",
+    "トップ → 健康・福祉・子育て → 子育て → 保育所・幼稚園・認定こども園 → 入所のページから令和8年度入所申請のPDFと保育料のワードを取った"
+  ],
+  "notes": "令和8年度の入所申請のPDFの表で読んだ（画像で列の並び〔3歳未満 標準時間・短時間〕を確かめた）。表の注記の税年度・確定時期の文言が前年度以前のままなので、金額は令和8年度の資料に載っているものだが、注記の年は読み替えた。町内の対象施設は中央保育所、認定こども園野間幼稚園、チャイルドハウス。",
+  "read_at": "2026-11-01"
+}

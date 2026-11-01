@@ -1,0 +1,57 @@
+{
+  "code": "245615",
+  "pref": "三重県",
+  "name": "御浜町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「子ども・子育て支援利用案内」2026年10月29日掲載版の表「（令和8年10月現在）」。0〜2歳児の保育料は町独自の無償化で全階層0円）",
+  "period_note": "利用者負担の切り替え時期は9月（8月以前は前年度、9月以降は当年度の市町村民税で算定）。満3歳を迎えると3号から2号認定に切り替わるが、満3歳を迎えた年度中は3号認定の利用者負担額を適用（利用案内）。町の無償化は「県の補助金制度を活用した町独自の子育て支援として、少なくとも令和10年度まで保育料の無償化を実施しています」（利用案内 令和8年10月現在）。",
+  "tax_basis": "6%",
+  "tax_note": "利用者負担（保育料）の算定基準は市町村民税額。課税額は、住宅借入金控除、配当控除等による税額控除（調整控除を除く。）を適用する前の額（利用案内）。",
+  "table": {
+    "title": "①利用者負担（保育料）（令和8年10月現在） 3号認定（満3歳未満・保育認定）にかかる利用者負担（保育料）",
+    "kind": "3歳未満・保育標準時間・第1子・一般世帯（※2）（月額）。町独自の無償化の前の基準額で、実際の保育料は全階層0円",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B2", "lower": null, "upper": null, "condition": "市町村民税非課税 ※2", "monthly": 0, "monthly_second": null },
+      { "label": "C2", "lower": null, "upper": null, "condition": "市町村民税所得割非課税(均等割のみ) ※2", "monthly": 14000, "monthly_second": null },
+      { "label": "C4", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満 ※2", "monthly": 19000, "monthly_second": null },
+      { "label": "D1a2", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満 ※2", "monthly": 22500, "monthly_second": null },
+      { "label": "D1b2", "lower": 57700, "upper": 64700, "condition": "57,700円以上 64,700円未満 ※2", "monthly": 22500, "monthly_second": null },
+      { "label": "D2a2", "lower": 64700, "upper": 77100, "condition": "64,700円以上 77,100円未満 ※2", "monthly": 26000, "monthly_second": null },
+      { "label": "D2b", "lower": 77100, "upper": 80800, "condition": "80,800円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "D3", "lower": 80800, "upper": 97000, "condition": "97,000円未満", "monthly": 29500, "monthly_second": null },
+      { "label": "E1", "lower": 97000, "upper": 121000, "condition": "121,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "E2", "lower": 121000, "upper": 145000, "condition": "145,000円未満", "monthly": 36500, "monthly_second": null },
+      { "label": "E3", "lower": 145000, "upper": 169000, "condition": "169,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "F", "lower": 169000, "upper": 301000, "condition": "301,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "G", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "H", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 40000, "monthly_second": null }
+    ],
+    "notes": "注意: 御浜町は0〜2歳児クラスの保育料を町独自の子育て支援（県の補助金を活用）で無償にしているので、実際に払う保育料は全階層0円（延長保育料・一時延長保育料は別）。表の額は無償化の前の基準額。列は「保育短時間」「保育標準時間」の順で、monthly は標準時間。表の D2b〜H の区分は「○○円未満」だけで、lower は前の行の上限を置いた。保育短時間の月額（一般世帯※2）: A 0／B2 0／C2 13,000／C4 17,500／D1a2 21,000／D1b2 21,000／D2a2 24,000／D2b 24,000／D3 27,000／E1 30,500／E2 34,000／E3〜H 37,000。※1（ひとり親世帯・在宅障害児(者)のいる世帯等: ひとり親、身体・療育・精神の手帳、特別児童扶養手当、障害基礎年金等の受給者がいる世帯、町長が認めた要保護者等）の標準時間/短時間: B1 0/0、C1 6,500/6,000、C3 9,000/8,750、D1a1 9,000/9,000、D1b1 9,000/9,000、D2a1 9,000/9,000。表に第2子の列はなく、きょうだいの軽減は注記で定める（second_note）。3号認定の給食費は保育料に含まれる。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "認定こども園・保育所等のページ（2026年1月26日更新）: 「国が実施する無償化、及び御浜町独自の子育て支援による保育料無償化により、町内に住所を有し、認可保育施設等を利用する0歳児～5歳児クラスの全児童の保育料は無料です。（延長保育料を除く）また、副食費についても、町独自の子育て支援により無料です」。利用案内（令和8年10月現在）: 「県の補助金制度を活用した町独自の子育て支援として、少なくとも令和10年度まで保育料の無償化を実施しています」。所得制限の記載なし。開始時期は書かれていない（令和7年10月現在の利用案内＝令和8年度入園用でも、階層C1以降も保育料を無料としているとあった）。町外の施設を使う場合の副食費は、いったん施設に払い、後で役場に請求。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "0〜2歳児クラスは第1子から保育料0円なので、第2子も0円（household は「数え方に関係なく0円」という意味で置いた）。無償化の前の基準のきょうだいの決まり（利用案内）: 階層D1a2以下は、子どもの年齢に関わらず最年長の子どもから順に2人目は半額、3人目以降は無料（D2a2以下のひとり親世帯・在宅障害児(者)のいる世帯等は2人目以降無料）。階層D1b1〜Hは、小学校就学前の範囲で最年長の子どもから順に2人目は半額、3人目以降は無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円なので第3子以降も0円（数え方は関係ない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    { "label": "子育て家庭支援出生祝金", "amount": 100000, "note": "新たに出生した子どもの保護者に10万円相当（現金5万円＋KiiCardポイント5万円分）。問い合わせは企画課。国の出産応援ギフト・子育て応援ギフト（各5万円）とは別。", "source": { "label": "御浜町子育て支援ガイド（第9版）", "url": "https://www.town.mihama.mie.jp/material/files/group/6/kosodateshien_gide.pdf" } }
+  ],
+  "sources": [
+    { "label": "認定こども園・保育所等について（御浜町、2026年1月26日更新）", "url": "https://www.town.mihama.mie.jp/kosodate_kyoiku/hoikujo_ninteikodomoen/462.html" },
+    { "label": "令和9年度認定こども園・保育所等の園児募集について（2026年10月29日更新）", "url": "https://www.town.mihama.mie.jp/kosodate_kyoiku/hoikujo_ninteikodomoen/1191.html" },
+    { "label": "子ども子育て支援利用案内（2026年10月作成、8ページ「①利用者負担（保育料）（令和8年10月現在）」）", "url": "https://www.town.mihama.mie.jp/material/files/group/6/riyou-annai-2026.pdf" },
+    { "label": "子ども子育て支援利用案内（令和8年度入園用、令和7年10月現在）", "url": "https://www.town.mihama.mie.jp/material/files/group/6/r8kodomokosodate2025.pdf" },
+    { "label": "御浜町子育て支援ガイド（第9版）", "url": "https://www.town.mihama.mie.jp/material/files/group/6/kosodateshien_gide.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの docs は保育料の口座振替依頼書だけだったが、下調べのページ一覧の「認定こども園・保育所等について」と「令和9年度…園児募集について」から利用案内PDF（文字が取れる）を読んだ。表は画像（100dpi）で列（保育短時間・保育標準時間）と※1/※2の行を確かめた。区切りは切れ目・重なりなし、一般世帯の月額は階層の順に下がらない。町内の施設は認定こども園阿田和保育園（1〜5歳）と認定こども園志原保育所（0〜5歳、生後5か月から）。子育て支援ガイドには育児用品お届け事業「おひさま定期便」（紙おむつ等の無償お届け）もある。中学校給食は探す途中で目に入らなかった。",
+  "read_at": "2026-11-01"
+}

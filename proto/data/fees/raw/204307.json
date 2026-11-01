@@ -1,0 +1,88 @@
+{
+ "code": "204307",
+ "pref": "長野県",
+ "name": "大桑村",
+ "status": "ok",
+ "fiscal_year": "令和8年度（村の移住案内ページ「大桑村に住んでみませんか？」更新日2026年4月16日、人口は令和8年4月1日現在の記載）",
+ "period_note": "村の移住案内ページの「保育園・小学校・中学校 保育料・給食費」の表に「保育園：保育料・給食費無償（未満児含む）」とある。いつから無償かは書かれていない。村立の大桑保育園が村内の唯一の保育施設で、未満児保育は「1歳になった月からの幼児、1・2歳児」が対象（おおくわ子育てガイドブック p.10）。",
+ "tax_basis": "6%",
+ "tax_note": "保育料は未満児も含めて無償のため、所得割で額は変わらない。政令市ではないので6%。村の保育料（利用者負担額）の表は公式サイトでは見つからなかった。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": null,
+ "first_child_free_note": "「保育園 保育料・給食費無償（未満児含む）」（大桑村に住んでみませんか？ 更新日2026年4月16日）。所得制限やきょうだいの条件は書かれていない。開始時期は不明。0歳児は1歳になった月から入園（ガイドブック）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "未満児も第1子から保育料無償のため、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無償のため0円。",
+ "lunch_jh": {
+  "free": true,
+  "note": "移住案内ページの表で「中学校 給食費 無償」「小学校 給食費 無償」。",
+  "source": {
+   "label": "大桑村に住んでみませんか？ | 大桑村公式サイト（更新日：2026年04月16日）",
+   "url": "https://www.vill.okuwa.lg.jp/okuwa/iju-teiju/information_on_okuwa_village.html"
+  }
+ },
+ "cash": [],
+ "one_time": [
+  {
+   "label": "大桑村すこやか子育て応援事業 出産祝金",
+   "amount": 50000,
+   "note": "村内に住民登録があり児童を養育している人に1児につき50,000円。",
+   "source": {
+    "label": "大桑村すこやか子育て応援事業 | 大桑村公式サイト（更新日：2022年02月22日）",
+    "url": "https://www.vill.okuwa.lg.jp/kurashi/joseikin/sukoyakakosodate.html"
+   }
+  },
+  {
+   "label": "大桑村すこやか子育て応援事業 小学校入学祝金",
+   "amount": 50000,
+   "note": "1児につき50,000円（移住案内ページでは「入学祝い（条件あり）」）。",
+   "source": {
+    "label": "大桑村すこやか子育て応援事業 | 大桑村公式サイト",
+    "url": "https://www.vill.okuwa.lg.jp/kurashi/joseikin/sukoyakakosodate.html"
+   }
+  },
+  {
+   "label": "大桑村すこやか子育て応援事業 中学校入学祝金",
+   "amount": 50000,
+   "note": "1児につき50,000円。「※対象に条件があります」。",
+   "source": {
+    "label": "大桑村すこやか子育て応援事業 | 大桑村公式サイト",
+    "url": "https://www.vill.okuwa.lg.jp/kurashi/joseikin/sukoyakakosodate.html"
+   }
+  },
+  {
+   "label": "中学校卒業祝い",
+   "amount": 50000,
+   "note": "移住案内ページの「大桑村すこやか子育て応援事業」の表に「卒業祝い 中学校 5万円」（すこやか子育て応援事業のページ〔2022年更新〕には載っていない）。",
+   "source": {
+    "label": "大桑村に住んでみませんか？ | 大桑村公式サイト（更新日：2026年04月16日）",
+    "url": "https://www.vill.okuwa.lg.jp/okuwa/iju-teiju/information_on_okuwa_village.html"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "大桑村に住んでみませんか？ | 大桑村公式サイト（更新日：2026年04月16日）",
+   "url": "https://www.vill.okuwa.lg.jp/okuwa/iju-teiju/information_on_okuwa_village.html"
+  },
+  {
+   "label": "おおくわ子育てガイドブック（PDF、ページ更新日2025年7月2日）p.10 保育園",
+   "url": "https://www.vill.okuwa.lg.jp/kosodate-kyoiku/nyuyoji/kosodateshiencenter/documents/kosodate_guidebook/kosodate-guidebook.pdf"
+  },
+  {
+   "label": "大桑保育園 | 大桑村公式サイト",
+   "url": "https://www.vill.okuwa.lg.jp/kosodate-kyoiku/hoikuen/ookuwahoikuen.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べ（26ページ）は保育のページに届いていなかった（サイトのジャンル一覧がJavaScriptで読み込まれるため）。/template/genre_article_list.html を1回取ってジャンル「保育園」の記事（大桑保育園・入園申込について・保育施設等の現況届）を開いたが、保育料の表はなかった",
+  "例規集（www1.g-reiki.net/vill.okuwa/）は403で開けなかった"
+ ],
+ "notes": "村内の保育施設は村立の大桑保育園のみ（標準保育7:30〜18:30、短時間保育8:30〜16:30。短時間認定の延長は1回100円）。保育料無償の根拠になる要綱・条例の文は読めていない（移住案内ページの一文で読んだ）。",
+ "read_at": "2026-11-01"
+}
