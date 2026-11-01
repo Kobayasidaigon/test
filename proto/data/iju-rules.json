@@ -1,0 +1,850 @@
+{
+ "topic": "移住支援金（地方創生移住支援事業）",
+ "checkedOn": "2026-11-01",
+ "fiscalYear": "令和8年度（2026年度）",
+ "confidenceNote": "すべて「推定」。内閣府（www.chisou.go.jp）の公式ページ・一覧PDFは、この環境の curl ではどのURLも404で読めず、WebFetch も名前解決できなかったため、検索結果の要約（公式ページの要約を含む）で確かめた。公式の資料を直接読んで確かめた「確認済」の値は無い。",
+ "officialList": {
+  "title": "令和８年度「地方創生移住支援事業」実施都道府県・連携市町村一覧",
+  "asOf": "令和8年4月1日時点",
+  "url": "https://www.chisou.go.jp/sousei/pdf/ichiran_iju.pdf",
+  "columnsSeenInTitle": "№ / 市区町村 / 移住 / 学生（検索結果の題名に出た見出し。加算額の欄は無いとみられるが未確認）",
+  "status": "題名と時点だけ検索で確認。curl では HTTP 404（CloudFront のエラーページ）で中身は未読。この一覧が読めれば、全国の「実施／実施なし」を埋められる。",
+  "olderLists": [
+   {
+    "label": "令和5年度 実施都道府県・連携市町村一覧（「○」で実施を示す表）",
+    "url": "https://www.chisou.go.jp/sousei/pdf/r5-4_shichouson.pdf"
+   },
+   {
+    "label": "令和4年度 実施都道府県・連携市町村一覧",
+    "url": "https://www.chisou.go.jp/sousei/pdf/r4-2_shichouson.pdf"
+   }
+  ],
+  "confidence": "推定"
+ },
+ "amounts": [
+  {
+   "item": "世帯（2人以上）",
+   "value": "最大100万円",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "note": "都道府県・市町村が決める上限の範囲。国の上限より少ない市町村もある（例: 札幌市は世帯60万円。以前の調べ）。",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    },
+    {
+     "label": "札幌市 移住支援金（令和8年度）",
+     "url": "https://www.city.sapporo.jp/keizai/koyo/ijyu_shienkin/iju_shienkin0804.html"
+    }
+   ]
+  },
+  {
+   "item": "単身",
+   "value": "最大60万円",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    }
+   ]
+  },
+  {
+   "item": "子育て加算（18歳未満の世帯員1人につき）",
+   "value": "最大100万円",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "note": "額は市町村が要綱で決める。令和8年度は1人30万円（新発田市、安曇野市は2026年4月1日以降の転入、兵庫県西宮市の北部）や1人10万円（札幌市）の市町村もある。1人100万円の例は仙台市・おいらせ町。兵庫県は市町と転入日で30万円か100万円。令和4年1月の内閣府資料では加算は1人30万円だった（その後に最大100万円）。",
+   "sources": [
+    {
+     "label": "内閣府 いいかも地方暮らし「移住支援金」を解説（検索の要約）",
+     "url": "https://www.chisou.go.jp/iikamo/shienkinkaisetsu/index.html"
+    },
+    {
+     "label": "内閣府 地方創生移住支援事業の拡充概要（令和4年1月20日の説明会資料。当時の子育て世帯加算は1人30万円）",
+     "url": "https://www.chisou.go.jp/sousei/meeting/digiden_chisou_setsumeikai/pdf/r04-01-20-shiryou9.pdf"
+    },
+    {
+     "label": "新発田市 令和8年度移住支援金",
+     "url": "https://www.city.shibata.lg.jp/kurashi/iju/uiturn/1018454.html"
+    },
+    {
+     "label": "安曇野市 令和8年度 安曇野市UIJターン就業・創業移住支援事業補助金",
+     "url": "https://www.city.azumino.nagano.jp/soshiki/1008/58030.html"
+    },
+    {
+     "label": "兵庫県 兵庫県移住支援事業・マッチング支援事業について（対象市町と加算額）",
+     "url": "https://web.pref.hyogo.lg.jp/sr05/hyogo-matching/overview.html"
+    },
+    {
+     "label": "札幌市 移住支援金（令和8年度）",
+     "url": "https://www.city.sapporo.jp/keizai/koyo/ijyu_shienkin/iju_shienkin0804.html"
+    },
+    {
+     "label": "仙台市 【令和8年度の交付申請の受付を開始します】仙台市の移住支援事業（移住支援金）",
+     "url": "https://www.city.sendai.jp/koyotaisaku/kurashi/machi/kezaikoyo/kyujin/ijuushien/ijuushaboshuu.html"
+    },
+    {
+     "label": "おいらせ町 令和８年度 おいらせ町移住支援金",
+     "url": "https://www.town.oirase.aomori.jp/soshiki/1232/ijushienkin.html"
+    }
+   ]
+  },
+  {
+   "item": "起業支援金と合わせたとき",
+   "value": "最大300万円（単身は最大260万円）",
+   "asOf": "未確認（内閣府ページの要約）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    }
+   ]
+  }
+ ],
+ "requirements": [
+  {
+   "key": "moveFrom",
+   "title": "移る前（移住元）",
+   "text": "移住する直前の10年間で通算5年以上、かつ直近1年以上、東京23区に住んでいた、または東京圏（条件不利地域を除く）に住んで東京23区へ通勤していた。雇用者としての通勤は、雇用保険の被保険者としての通勤に限る。",
+   "extra": "23区内の大学などへの通学期間を加えられる場合がある（細かい条件は未確認）。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    }
+   ]
+  },
+  {
+   "key": "moveTo",
+   "title": "移る先（移住先）",
+   "text": "東京圏以外の道府県、または東京圏の条件不利地域で、移住支援事業を実施している都道府県・市町村へ移る。事業は都道府県と市町村が共同で行うので、県が実施していても市町村が実施していなければ対象にならない。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    },
+    {
+     "label": "沖縄県 【東京圏から移住をお考えの皆様へ】移住支援金制度のご案内",
+     "url": "https://www.pref.okinawa.jp/kurashikankyo/iju/1023708.html"
+    },
+    {
+     "label": "兵庫県 兵庫県移住支援事業・マッチング支援事業について（対象市町と加算額）",
+     "url": "https://web.pref.hyogo.lg.jp/sr05/hyogo-matching/overview.html"
+    }
+   ]
+  },
+  {
+   "key": "applyTiming",
+   "title": "申請の時期",
+   "text": "移住先に転入してから1年以内に申請する。",
+   "extra": "「転入後3か月以上たってから」という下限は、今回の要約には出ず未確認。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    }
+   ]
+  },
+  {
+   "key": "stay",
+   "title": "住み続ける意思",
+   "text": "申請してから5年以上、移住先の市町村に続けて住む意思がある。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    }
+   ]
+  },
+  {
+   "key": "work",
+   "title": "就業などの条件（どれか一つ）",
+   "items": [
+    {
+     "text": "道府県のマッチングサイト（ふるさと求人）に移住支援金の対象として載っている、地域の中小企業などの求人に就業する。",
+     "unverified": "週の労働時間・雇用の形・在職期間などの細かい条件は未確認。"
+    },
+    {
+     "text": "テレワークで移住前の業務を続ける。",
+     "unverified": "細かい条件は未確認。札幌市は令和8年度にテレワークの要件を廃止（以前の調べ）なので、市町村によっては対象にならない。"
+    },
+    {
+     "text": "市町村が「関係人口」（地域や地域の人々と関わりがある人）として認める要件を満たす。要件は市町村ごとに違う。"
+    },
+    {
+     "text": "地域で社会的な事業を起業する（起業支援金）。"
+    }
+   ],
+   "unverified": "「専門人材」の就業の扱いは今回の要約に出ず未確認。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    },
+    {
+     "label": "内閣府 起業支援金・移住支援金 ふるさと求人を探す（都道府県のマッチングサイトへの入口）",
+     "url": "https://www.chisou.go.jp/sousei/shienkin_map.html"
+    },
+    {
+     "label": "札幌市 移住支援金（令和8年度）",
+     "url": "https://www.city.sapporo.jp/keizai/koyo/ijyu_shienkin/iju_shienkin0804.html"
+    }
+   ]
+  },
+  {
+   "key": "repay",
+   "title": "返す決まり",
+   "text": "申請から5年以内に移住先から転出した場合や、うその申請をした場合などは返還の対象。",
+   "extra": "返す割合（全額か半額か）や、就業先を早く辞めた場合の扱いは未確認。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "内閣府 地方創生「移住支援金」（検索の要約。www.chisou.go.jp は404で直接は読めず）",
+     "url": "https://www.chisou.go.jp/sousei/ijyu_shienkin.html"
+    }
+   ]
+  },
+  {
+   "key": "budget",
+   "title": "予算と受付",
+   "text": "予算の上限に達すると、年度の途中で受付が終わることがある。令和8年度は姫路市が受付終了（予算の上限）、十日町市が募集停止と案内。兵庫県は令和8年度の受付期間を「未定」と掲載していた。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "姫路市 東京圏からの移住支援（移住支援金）【令和8年度の受付は終了しました】",
+     "url": "https://www.city.himeji.lg.jp/shisei/0000009951.html"
+    },
+    {
+     "label": "十日町市 【募集停止】令和8年度東京23区からの移住支援金",
+     "url": "https://www.city.tokamachi.lg.jp/soshiki/somubu/kikakuseisakuka/1/bosyu/10939.html"
+    },
+    {
+     "label": "兵庫県 兵庫県移住支援事業・マッチング支援事業について（対象市町と加算額）",
+     "url": "https://web.pref.hyogo.lg.jp/sr05/hyogo-matching/overview.html"
+    }
+   ]
+  },
+  {
+   "key": "funding",
+   "title": "国の交付金",
+   "text": "令和8年度は国の「新しい地方経済・生活環境創生交付金」を使って実施（千歳市の案内）。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "千歳市 令和８年度千歳市移住支援金（UIJターン新規就業支援事業）",
+     "url": "https://www.city.chitose.lg.jp/c60/1002728/1002729/1004531.html"
+    }
+   ]
+  }
+ ],
+ "tokyoArea": {
+  "definition": "東京圏 = 東京都・埼玉県・千葉県・神奈川県。条件不利地域でない市区町村は移住先にならない（CSV では「対象外」）。",
+  "conditionallyDisadvantaged": {
+   "list": {
+    "東京都": [
+     "檜原村",
+     "奥多摩町",
+     "大島町",
+     "利島村",
+     "新島村",
+     "神津島村",
+     "三宅村",
+     "御蔵島村",
+     "八丈町",
+     "青ヶ島村",
+     "小笠原村"
+    ],
+    "埼玉県": [
+     "秩父市",
+     "飯能市",
+     "本庄市",
+     "越生町",
+     "小川町",
+     "川島町",
+     "吉見町",
+     "鳩山町",
+     "ときがわ町",
+     "横瀬町",
+     "皆野町",
+     "長瀞町",
+     "小鹿野町",
+     "東秩父村",
+     "神川町"
+    ],
+    "千葉県": [
+     "銚子市",
+     "館山市",
+     "旭市",
+     "勝浦市",
+     "鴨川市",
+     "富津市",
+     "南房総市",
+     "匝瑳市",
+     "香取市",
+     "山武市",
+     "栄町",
+     "多古町",
+     "いすみ市",
+     "東庄町",
+     "九十九里町",
+     "芝山町",
+     "横芝光町",
+     "白子町",
+     "長柄町",
+     "長南町",
+     "大多喜町",
+     "御宿町",
+     "鋸南町"
+    ],
+    "神奈川県": [
+     "三浦市",
+     "山北町",
+     "箱根町",
+     "真鶴町",
+     "湯河原町",
+     "清川村"
+    ]
+   },
+   "count": 55,
+   "note": "他県の市町村が「移住元から除く条件不利地域」として載せている一覧の要約（令和8年度）。内閣府の一覧そのものではない。青ヶ島村は「青ケ島村」と書く案内もある。",
+   "asOf": "令和8年度（2026年度）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "水戸市 令和8年度 水戸市移住支援事業について",
+     "url": "https://www.city.mito.lg.jp/page/2093.html"
+    },
+    {
+     "label": "おいらせ町 令和８年度 おいらせ町移住支援金",
+     "url": "https://www.town.oirase.aomori.jp/soshiki/1232/ijushienkin.html"
+    },
+    {
+     "label": "三重県 美し国みえ移住ポータル「移住支援金について徹底解説（令和８年度版）」",
+     "url": "https://www.ijyu.pref.mie.lg.jp/news/feature/12924/"
+    },
+    {
+     "label": "岡山県 おかやま晴れの国ぐらし「令和８年度移住支援金制度について」",
+     "url": "https://www.okayama-iju.jp/info/post-148.html"
+    },
+    {
+     "label": "福井市 【東京圏型】移住支援金のお知らせ",
+     "url": "https://www.city.fukui.lg.jp/sisei/plan/connect/ijyusienkin.html"
+    }
+   ]
+  },
+  "implementing": {
+   "千葉県": {
+    "value": [
+     "銚子市",
+     "館山市",
+     "旭市",
+     "勝浦市",
+     "鴨川市",
+     "富津市",
+     "南房総市",
+     "匝瑳市",
+     "香取市",
+     "山武市",
+     "多古町",
+     "いすみ市",
+     "東庄町",
+     "九十九里町",
+     "白子町",
+     "長柄町",
+     "長南町",
+     "大多喜町",
+     "御宿町",
+     "鋸南町"
+    ],
+    "note": "令和8年度に移住支援事業を実施する20市町。条件不利地域のうち栄町・芝山町・横芝光町は入っていない。",
+    "asOf": "令和8年度（2026年度）",
+    "confidence": "推定",
+    "sources": [
+     {
+      "label": "千葉県 地域しごとNAVI「移住支援金などの補助」（令和8年度に移住支援事業を実施する市町）",
+      "url": "https://www.chiba-chiikishigoto.jp/useful/"
+     }
+    ]
+   },
+   "東京都": {
+    "value": "未確認",
+    "note": "檜原村・奥多摩町・島しょの町村が実施しているかは検索で見つからなかった。"
+   },
+   "埼玉県": {
+    "value": "未確認",
+    "note": "秩父市など15市町村が実施しているかは検索で見つからなかった。"
+   },
+   "神奈川県": {
+    "value": "未確認",
+    "note": "山北町など6市町村が実施しているかは検索で見つからなかった。"
+   }
+  }
+ },
+ "prefectureFindings": [
+  {
+   "pref": "北海道",
+   "finding": "札幌市・石狩市・千歳市が令和8年度に実施。道内の実施市町村の一覧は未確認（道の特設ページは古い）。",
+   "sources": [
+    {
+     "label": "札幌市 移住支援金（令和8年度）",
+     "url": "https://www.city.sapporo.jp/keizai/koyo/ijyu_shienkin/iju_shienkin0804.html"
+    },
+    {
+     "label": "石狩市 UIJターン新規就業支援事業（移住支援金）について",
+     "url": "https://www.city.ishikari.hokkaido.jp/iju/josei/1002860.html"
+    },
+    {
+     "label": "千歳市 令和８年度千歳市移住支援金（UIJターン新規就業支援事業）",
+     "url": "https://www.city.chitose.lg.jp/c60/1002728/1002729/1004531.html"
+    },
+    {
+     "label": "北海道 移住支援金特設ページ（移住者向け）",
+     "url": "https://www.pref.hokkaido.lg.jp/kz/jzi/ui-turn/H31wakuwaku-iju-page.html"
+    }
+   ]
+  },
+  {
+   "pref": "青森県",
+   "finding": "おいらせ町が令和8年度に実施（子1人100万円）。ほかは未確認。",
+   "sources": [
+    {
+     "label": "おいらせ町 令和８年度 おいらせ町移住支援金",
+     "url": "https://www.town.oirase.aomori.jp/soshiki/1232/ijushienkin.html"
+    }
+   ]
+  },
+  {
+   "pref": "宮城県",
+   "finding": "仙台市が令和8年度に実施（子1人100万円）。ほかは未確認。",
+   "sources": [
+    {
+     "label": "仙台市 【令和8年度の交付申請の受付を開始します】仙台市の移住支援事業（移住支援金）",
+     "url": "https://www.city.sendai.jp/koyotaisaku/kurashi/machi/kezaikoyo/kyujin/ijuushien/ijuushaboshuu.html"
+    }
+   ]
+  },
+  {
+   "pref": "福島県",
+   "finding": "「福島県12市町村移住支援金」（全国からの移住者も対象）は別の制度なので、この表には入れていない。地方創生の移住支援金の実施市町村は未確認。",
+   "sources": []
+  },
+  {
+   "pref": "茨城県",
+   "finding": "水戸市が令和8年度に実施。ほかは未確認。",
+   "sources": [
+    {
+     "label": "水戸市 令和8年度 水戸市移住支援事業について",
+     "url": "https://www.city.mito.lg.jp/page/2093.html"
+    }
+   ]
+  },
+  {
+   "pref": "栃木県",
+   "finding": "足利市が令和8年度に実施。ほかは未確認。",
+   "sources": [
+    {
+     "label": "足利市 【令和８年度受付開始】移住支援金のお知らせ",
+     "url": "https://www.city.ashikaga.tochigi.jp/living/000025/001064/001069/p004666.html"
+    }
+   ]
+  },
+  {
+   "pref": "千葉県",
+   "finding": "令和8年度は条件不利地域の20市町が実施。ほかは対象外または実施なし。",
+   "sources": [
+    {
+     "label": "千葉県 地域しごとNAVI「移住支援金などの補助」（令和8年度に移住支援事業を実施する市町）",
+     "url": "https://www.chiba-chiikishigoto.jp/useful/"
+    }
+   ]
+  },
+  {
+   "pref": "東京都・埼玉県・神奈川県",
+   "finding": "条件不利地域（東京都11・埼玉県15・神奈川県6）の実施は未確認。ほかは対象外。",
+   "sources": [
+    {
+     "label": "水戸市 令和8年度 水戸市移住支援事業について",
+     "url": "https://www.city.mito.lg.jp/page/2093.html"
+    },
+    {
+     "label": "おいらせ町 令和８年度 おいらせ町移住支援金",
+     "url": "https://www.town.oirase.aomori.jp/soshiki/1232/ijushienkin.html"
+    }
+   ]
+  },
+  {
+   "pref": "新潟県",
+   "finding": "十日町市（令和8年度は募集停止）・新発田市（子1人30万円）が実施。ほかは未確認。",
+   "sources": [
+    {
+     "label": "十日町市 【募集停止】令和8年度東京23区からの移住支援金",
+     "url": "https://www.city.tokamachi.lg.jp/soshiki/somubu/kikakuseisakuka/1/bosyu/10939.html"
+    },
+    {
+     "label": "新発田市 令和8年度移住支援金",
+     "url": "https://www.city.shibata.lg.jp/kurashi/iju/uiturn/1018454.html"
+    }
+   ]
+  },
+  {
+   "pref": "福井県",
+   "finding": "福井市が実施（年度は未確認）。ほかは未確認。",
+   "sources": [
+    {
+     "label": "福井市 【東京圏型】移住支援金のお知らせ",
+     "url": "https://www.city.fukui.lg.jp/sisei/plan/connect/ijyusienkin.html"
+    }
+   ]
+  },
+  {
+   "pref": "長野県",
+   "finding": "安曇野市が令和8年度に実施（2026年4月1日以降の転入は子1人30万円）。ほかは未確認。",
+   "sources": [
+    {
+     "label": "安曇野市 令和8年度 安曇野市UIJターン就業・創業移住支援事業補助金",
+     "url": "https://www.city.azumino.nagano.jp/soshiki/1008/58030.html"
+    }
+   ]
+  },
+  {
+   "pref": "三重県",
+   "finding": "県の移住ポータルに令和8年度版の解説がある。市町ごとは未確認。",
+   "sources": [
+    {
+     "label": "三重県 美し国みえ移住ポータル「移住支援金について徹底解説（令和８年度版）」",
+     "url": "https://www.ijyu.pref.mie.lg.jp/news/feature/12924/"
+    }
+   ]
+  },
+  {
+   "pref": "兵庫県",
+   "finding": "令和8年度は県内34市町が対象。神戸市・尼崎市・明石市・芦屋市・伊丹市・宝塚市・加東市は対象外、西宮市は北部の一部だけ。姫路市は令和8年度の受付を終了。",
+   "sources": [
+    {
+     "label": "兵庫県 兵庫県移住支援事業・マッチング支援事業について（対象市町と加算額）",
+     "url": "https://web.pref.hyogo.lg.jp/sr05/hyogo-matching/overview.html"
+    },
+    {
+     "label": "姫路市 東京圏からの移住支援（移住支援金）【令和8年度の受付は終了しました】",
+     "url": "https://www.city.himeji.lg.jp/shisei/0000009951.html"
+    },
+    {
+     "label": "多可町 多可町移住支援金事業（兵庫県との協働事業）",
+     "url": "https://www.town.taka.lg.jp/category_guide/detail/id=34718"
+    }
+   ]
+  },
+  {
+   "pref": "和歌山県",
+   "finding": "県内30市町村（全部）が実施（年度は未確認）。",
+   "sources": [
+    {
+     "label": "和歌山県 移住支援金のページ（検索の要約）",
+     "url": "https://www.pref.wakayama.lg.jp/prefg/022200/d00216634.html"
+    }
+   ]
+  },
+  {
+   "pref": "鳥取県",
+   "finding": "県内全市町村が共同で実施（令和7年4月改正の要領の資料。令和8年度も同じかは未確認）。",
+   "sources": [
+    {
+     "label": "鳥取県 移住支援事業の要領（令和7年4月改正の資料）",
+     "url": "https://www.pref.tottori.lg.jp/secure/1356467/R7.4kaisei.pdf"
+    },
+    {
+     "label": "鳥取県 移住支援事業の要領（Word）",
+     "url": "https://www.pref.tottori.lg.jp/secure/1175101/youryou.docx"
+    },
+    {
+     "label": "八頭町 【東京圏からの移住者対象】移住支援金を交付します",
+     "url": "https://www.town.yazu.tottori.jp/soshiki/11/1272.html"
+    }
+   ]
+  },
+  {
+   "pref": "島根県",
+   "finding": "令和8年度は海士町を除く18市町村（令和7年度は益田市と海士町を除く）。",
+   "sources": [
+    {
+     "label": "島根県 わくわく島根生活実現支援事業 Q&A（2026年4月1日版）",
+     "url": "https://www.pref.shimane.lg.jp/admin/region/chiiki/UI_turn/wakuwaku.data/20260401wakuwakuqa.pdf"
+    },
+    {
+     "label": "島根県 わくわく島根生活実現支援事業 Q&A（2025年11月1日版）",
+     "url": "https://www.pref.shimane.lg.jp/admin/region/chiiki/UI_turn/wakuwaku.data/20251101wakuwakuqa.pdf"
+    }
+   ]
+  },
+  {
+   "pref": "岡山県",
+   "finding": "県は令和8年度も実施（単身60万円・世帯100万円＋子ども加算）。市町村ごとは未確認。",
+   "sources": [
+    {
+     "label": "岡山県 おかやま晴れの国ぐらし「令和８年度移住支援金制度について」",
+     "url": "https://www.okayama-iju.jp/info/post-148.html"
+    }
+   ]
+  },
+  {
+   "pref": "広島県",
+   "finding": "県は令和8年度も実施。広島市は令和8年度のページあり（掲載時は受付開始前）。ほかの市町は未確認。",
+   "sources": [
+    {
+     "label": "広島県 【東京圏から移住をお考えの皆様へ】令和８年度移住支援金制度について",
+     "url": "https://www.pref.hiroshima.lg.jp/soshiki/246/202304ijyushiennkinn.html"
+    },
+    {
+     "label": "広島市 【令和8年度は受付開始前です】東京圏から広島市に移住して要件を満たした方に「移住支援金」を交付します",
+     "url": "https://www.city.hiroshima.lg.jp/business/koyo_rodo/1021504/1032052/1017449.html"
+    }
+   ]
+  },
+  {
+   "pref": "福岡県",
+   "finding": "県の移住支援金のページがある（中身は未確認）。",
+   "sources": [
+    {
+     "label": "福岡県 福岡県へ移住を考えている方へ！移住支援金を活用し、福岡県で暮らしませんか？",
+     "url": "https://www.pref.fukuoka.lg.jp/contents/ijushienkin.html"
+    }
+   ]
+  },
+  {
+   "pref": "鹿児島県",
+   "finding": "鹿児島市が実施（子1人最大100万円、以前の調べ）。ほかは未確認。",
+   "sources": [
+    {
+     "label": "鹿児島市 移住支援金の確認表",
+     "url": "https://www.city.kagoshima.lg.jp/koyosuishin/sangyo/koyo/kohoshi/documents/2025checkhyou.pdf"
+    }
+   ]
+  },
+  {
+   "pref": "沖縄県",
+   "finding": "令和8年度（令和8年4月1日時点）は石垣市・国頭村・東村・本部町・伊江村の5市町村だけ。",
+   "sources": [
+    {
+     "label": "沖縄県 【東京圏から移住をお考えの皆様へ】移住支援金制度のご案内",
+     "url": "https://www.pref.okinawa.jp/kurashikankyo/iju/1023708.html"
+    }
+   ]
+  }
+ ],
+ "csvFile": {
+  "path": "data/iju-list.csv",
+  "rows": 1741,
+  "columns": {
+   "code": "地方公共団体コード6けた（localgovjp の lgcode）",
+   "pref": "都道府県",
+   "name": "市区町村",
+   "implements": "実施＝移住支援事業を実施／一部地域＝市の一部だけ対象（市の全体の額としては使わない）／実施なし＝移住先になりうるが実施していない（県の案内で対象外を含む）／対象外＝東京圏の条件不利地域でない市区町村（23区を含む）で、決まりの上で移住先にならない／未確認＝分からない",
+   "child_addition": "18歳未満の子1人あたりの加算。市町村の額が分かったものだけ額を書く。実施は分かったが額が分からないものは「最大100万円。市町村によって少ないことがある」。実施なし・対象外は空。未確認は「未確認」。",
+   "as_of": "その行の情報の時点",
+   "source_label / source_url": "出典。いくつかあるときは「 | 」で区切り、ラベルとURLは同じ順番。未確認の行は「確かめる先」（内閣府の令和8年度一覧、中身は未読）",
+   "note": "先頭の【推定】【未確認】が確からしさ（確認済の行は無い）。そのあとに理由・注意。"
+  },
+  "counts": {
+   "実施": 138,
+   "未確認": 1398,
+   "対象外": 157,
+   "実施なし": 47,
+   "一部地域": 1
+  },
+  "knownMunicipalities": 343,
+  "countsByPref": {
+   "北海道": {
+    "実施": 3,
+    "未確認": 176
+   },
+   "青森県": {
+    "未確認": 39,
+    "実施": 1
+   },
+   "岩手県": {
+    "未確認": 33
+   },
+   "宮城県": {
+    "実施": 1,
+    "未確認": 34
+   },
+   "秋田県": {
+    "未確認": 25
+   },
+   "山形県": {
+    "未確認": 35
+   },
+   "福島県": {
+    "未確認": 59
+   },
+   "茨城県": {
+    "実施": 1,
+    "未確認": 43
+   },
+   "栃木県": {
+    "未確認": 24,
+    "実施": 1
+   },
+   "群馬県": {
+    "未確認": 35
+   },
+   "埼玉県": {
+    "対象外": 48,
+    "未確認": 15
+   },
+   "千葉県": {
+    "対象外": 31,
+    "実施": 20,
+    "実施なし": 3
+   },
+   "東京都": {
+    "対象外": 51,
+    "未確認": 11
+   },
+   "神奈川県": {
+    "対象外": 27,
+    "未確認": 6
+   },
+   "新潟県": {
+    "未確認": 28,
+    "実施": 2
+   },
+   "富山県": {
+    "未確認": 15
+   },
+   "石川県": {
+    "未確認": 19
+   },
+   "福井県": {
+    "実施": 1,
+    "未確認": 16
+   },
+   "山梨県": {
+    "未確認": 27
+   },
+   "長野県": {
+    "未確認": 76,
+    "実施": 1
+   },
+   "岐阜県": {
+    "未確認": 42
+   },
+   "静岡県": {
+    "未確認": 35
+   },
+   "愛知県": {
+    "未確認": 54
+   },
+   "三重県": {
+    "未確認": 29
+   },
+   "滋賀県": {
+    "未確認": 19
+   },
+   "京都府": {
+    "未確認": 26
+   },
+   "大阪府": {
+    "未確認": 43
+   },
+   "兵庫県": {
+    "実施なし": 7,
+    "実施": 33,
+    "一部地域": 1
+   },
+   "奈良県": {
+    "未確認": 39
+   },
+   "和歌山県": {
+    "実施": 30
+   },
+   "鳥取県": {
+    "実施": 19
+   },
+   "島根県": {
+    "実施": 18,
+    "実施なし": 1
+   },
+   "岡山県": {
+    "未確認": 27
+   },
+   "広島県": {
+    "実施": 1,
+    "未確認": 22
+   },
+   "山口県": {
+    "未確認": 19
+   },
+   "徳島県": {
+    "未確認": 24
+   },
+   "香川県": {
+    "未確認": 17
+   },
+   "愛媛県": {
+    "未確認": 20
+   },
+   "高知県": {
+    "未確認": 34
+   },
+   "福岡県": {
+    "未確認": 60
+   },
+   "佐賀県": {
+    "未確認": 20
+   },
+   "長崎県": {
+    "未確認": 21
+   },
+   "熊本県": {
+    "未確認": 45
+   },
+   "大分県": {
+    "未確認": 18
+   },
+   "宮崎県": {
+    "未確認": 26
+   },
+   "鹿児島県": {
+    "実施": 1,
+    "未確認": 42
+   },
+   "沖縄県": {
+    "実施なし": 36,
+    "実施": 5
+   }
+  }
+ },
+ "fetchStatus": [
+  "www.chisou.go.jp: 接続はできるが、トップページ・ロゴ画像・robots.txt を含めどのURLも同じ404のエラーページ（2,508バイト、x-cache: Error from cloudfront）。ijyu_shienkin.html、ichiran_iju.pdf、r5-4_shichouson.pdf、iikamo のページもすべて404。海外からの接続を断っている可能性がある。WebFetch は www.chisou.go.jp を名前解決できなかった。",
+  "県・市町村のサイト（*.lg.jp）: www.pref.shimane.lg.jp を1回試して接続できず（curl の終了コード56）。",
+  "GitHub: 移住支援金の実施市町村をまとめたデータは見つからなかった（検索10）。"
+ ],
+ "unresolved": [
+  "1398市区町村は実施しているか未確認（北海道176、長野県76、福島県59など。県ごとの数は csvFile.countsByPref）。内閣府の令和8年度一覧（ichiran_iju.pdf）が読めれば埋められる。",
+  "東京都・埼玉県・神奈川県の条件不利地域（32市町村）が移住支援事業を実施しているか。",
+  "市町村ごとの子育て加算額（分かったのは仙台市・おいらせ町・新発田市・安曇野市・札幌市・鹿児島市・西宮市だけ）。内閣府の一覧には加算額の欄が無いとみられ、県・市町村の資料が要る。",
+  "和歌山県・鳥取県の「全市町村で実施」が令和8年度もそうか（年度が要約に出なかった）。",
+  "申請の下限（転入後3か月以上か）、就業の細かい条件（週20時間・無期雇用など）、専門人材の扱い、返す割合。",
+  "令和8年度の途中で受付を終えた市町村（姫路市・十日町市のほかは未確認）。"
+ ],
+ "searchesUsed": 12,
+ "searchLog": "/tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/iju/notes/searchlog.md"
+}

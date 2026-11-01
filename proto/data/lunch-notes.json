@@ -1,0 +1,821 @@
+{
+ "title": "学校給食費の無償化（全国の市区町村ごと）— 調べたことのまとめ",
+ "researched_at": "2026-11-01",
+ "conclusion": "文部科学省は、市区町村ごとの給食費無償化の一覧を公表していない（令和5年9月1日現在の調査は集計だけ）。2026年4月から国が公立小学校の給食費を支援する（児童1人月5,200円×11か月が基準、国と都道府県が半分ずつ）。中学校は国の対象外で、市区町村ごとに違う。中学校の2026年度の状況が分かったのは、東京都（全62）・大阪府（全43）・20市調査の街などに限られ、全国の大半は「不明」。",
+ "csv": {
+  "path": "data/lunch-mext.csv",
+  "rows": 1741,
+  "columns": {
+   "code": "地方公共団体コード（6けた）",
+   "pref": "都道府県",
+   "name": "市区町村（政令市の区は含めない）",
+   "jh_free": "公立中学校の給食費：全員（全員0円）／一部（第3子以降など一部の子だけ0円）／なし（全員の無償化はない。一部無償があるかは行の note を見る）／不明",
+   "elem_free": "公立小学校の給食費が全員0円か：全員／一部／なし／不明。2026年4月からは国の負担軽減（月5,200円×11か月が基準）が全国の公立小学校にあるので、「不明」でも国の分は受けられる",
+   "as_of": "その行の値の時点（いつの情報か）。2026年度より前の情報のときは、そう書いた",
+   "source_label": "出典の名前。複数のときは「 | 」で区切る（source_url と同じ順）",
+   "source_url": "出典のURL。複数のときは「 | 」で区切る",
+   "note": "補足（分かったこと・分からなかったこと）",
+   "jh_confidence": "中学校の値の確からしさ：確認済（公式の資料で確かめた）／推定（検索結果の要約や公式以外の資料）／仮置き（分からないので置いた）",
+   "elem_confidence": "小学校の値の確からしさ（同上）"
+  },
+  "coverage": {
+   "municipalities": 1741,
+   "jh_free_known": 189,
+   "jh_free_known_as_fy2026": 120,
+   "jh_free_counts": {
+    "不明": 1552,
+    "全員": 164,
+    "なし": 20,
+    "一部": 5
+   },
+   "elem_free_counts": {
+    "不明": 1554,
+    "全員": 187
+   },
+   "jh_value_and_confidence": {
+    "なし／推定": 15,
+    "なし／確認済": 5,
+    "一部／推定": 2,
+    "一部／確認済": 3,
+    "不明／仮置き": 1552,
+    "全員／推定": 161,
+    "全員／確認済": 3
+   },
+   "jh_known_by_pref": {
+    "青森県": 40,
+    "埼玉県": 4,
+    "千葉県": 5,
+    "東京都": 62,
+    "神奈川県": 2,
+    "大阪府": 43,
+    "兵庫県": 2,
+    "和歌山県": 30,
+    "愛媛県": 1
+   },
+   "basis_counts": {
+    "none": 1425,
+    "pref_program": 69,
+    "pref_hint": 125,
+    "cities20": 20,
+    "pref_list": 98,
+    "muni": 4
+   },
+   "basis_meaning": {
+    "none": "材料なし",
+    "pref_hint": "県の補助などの手がかりだけ（値は不明）",
+    "pref_list": "都府県単位のまとめ（東京都・大阪府）",
+    "pref_program": "県の制度で県内全市町村が無償（青森県・和歌山県、2024年度の情報）",
+    "muni": "市町村の資料（検索結果の要約）",
+    "cities20": "プロジェクトの20市調査"
+   }
+  }
+ },
+ "mext_municipal_list": {
+  "published": false,
+  "detail": "令和5年度の「学校給食費の無償化を実施する各教育委員会等における取組の実態調査」（令和5年9月1日現在）は、5ページのPDFで集計だけを公表している。市区町村名の一覧はない。そのあと（令和6〜8年度）に文部科学省が無償化の実施状況を市区町村ごとに公表した資料は、文部科学省の学校給食のページ・統計のページからは見つからなかった。令和7年度の学校給食実施状況等調査（2026年7月30日公表）は、実施率と都道府県別の給食費の平均月額で、無償化の項目はない。平成29年度の「学校給食費の無償化等の実施状況」の調査は国立国会図書館のアーカイブにリンクがあるが、開いていない（古い）。",
+  "as_of": "2026-11-01に文部科学省のサイトで確認",
+  "confidence": "確認済",
+  "sources": [
+   {
+    "label": "文部科学省 給食費無償化の実態調査（令和5年9月1日現在、集計のみ）",
+    "url": "https://www.mext.go.jp/b_menu/toukei/chousa05/kyuushoku/mext_02774.html"
+   },
+   {
+    "label": "文部科学省 同調査の結果（PDF 5ページ）",
+    "url": "https://www.mext.go.jp/content/20240612-mxt-kenshoku-000036402-1.pdf"
+   },
+   {
+    "label": "文部科学省「学校給食実施状況等調査」令和7年度（令和7年5月1日現在。2026年7月30日公表）",
+    "url": "https://www.mext.go.jp/content/20260730-mxt-kenshoku-000051287_03.pdf"
+   },
+   {
+    "label": "文部科学省 平成29年度「学校給食費の無償化等の実施状況」（国立国会図書館のアーカイブへのリンク。中身は未確認）",
+    "url": "http://warp.ndl.go.jp/info:ndljp/pid/11373293/www.mext.go.jp/b_menu/houdou/30/07/1407564.htm"
+   }
+  ]
+ },
+ "mext_r5_survey": {
+  "as_of": "2023-09-01",
+  "respondents": "775教育委員会（事務組合を含む）／1,794教育委員会",
+  "implementing": 722,
+  "breakdown_of_722": {
+   "小・中とも全員を対象に無償": 547,
+   "小・中とも支援要件を設けて無償（多子世帯など）": 145,
+   "小は全員、中は未実施": 9,
+   "小は要件つき、中は未実施": 1,
+   "小は未実施、中は全員": 13,
+   "小は未実施、中は要件つき": 2,
+   "小は要件つき、中は全員": 5,
+   "小は全員、中は要件つき": 0
+  },
+  "support_conditions_of_153": {
+   "多子世帯": 135,
+   "一部の学年に限定": 7,
+   "所得の条件": 2,
+   "その他（組み合わせ）": 9
+  },
+  "note": "547には、小学校か中学校のどちらかを置いていない自治体で全員を無償にしているものも含む。小学校段階には義務教育学校前期課程・特別支援学校小学部、中学校段階には義務教育学校後期課程・中等教育学校前期課程・特別支援学校中学部を含む。",
+  "confidence": "確認済",
+  "sources": [
+   {
+    "label": "文部科学省 同調査の結果（PDF 5ページ）",
+    "url": "https://www.mext.go.jp/content/20240612-mxt-kenshoku-000036402-1.pdf"
+   },
+   {
+    "label": "文部科学省「『給食無償化』に関する課題の整理について」（令和6年12月27日）",
+    "url": "https://www.mext.go.jp/a_menu/sports/syokuiku/mext_00001.html"
+   }
+  ]
+ },
+ "national_program_2026": {
+  "name": "学校給食費の抜本的な負担軽減（いわゆる給食無償化）／給食費負担軽減交付金",
+  "start": "2026年4月（令和8年4月）",
+  "target": "公立の小学校・義務教育学校前期課程・特別支援学校小学部（給食を実施する学校）。私立・国立・中学校は対象外",
+  "base_amount_per_child_month_yen": {
+   "小学校・義務教育学校前期課程": {
+    "完全給食": 5200,
+    "補食給食": 4800,
+    "ミルク給食": 1200
+   },
+   "特別支援学校小学部": {
+    "完全給食": 6200,
+    "補食給食": 5800,
+    "ミルク給食": 1200
+   }
+  },
+  "months_per_year": 11,
+  "burden": "国1/2・都道府県1/2（都道府県の分は地方財政措置）。交付先は都道府県、実施主体は都道府県で、市町村に配る",
+  "parents": "手続きは原則不要。所得制限なし。基準額を超える分は、学校給食法にもとづき保護者から徴収できる（自治体しだいで保護者負担が残る）",
+  "excluded": "生活保護の教育扶助・要保護児童生徒援助費の対象の児童は交付金の算定から除く（現行制度を優先）",
+  "budget": "令和8年度予算 1,649億円（新規）",
+  "base_amount_reason": "令和5年度の学校給食費調査の全国平均（小学校の完全給食で4,688円）に、物価の動きを加えて設定",
+  "junior_high": "交付金は中学校の給食費に充てられない（市町村向けQ&A 問2-1-3-2）。三党合意（2025年2月25日）は「中学校への拡大についても、できる限り速やかに実現する」とし、2025年12月19日の三省の文書は「中学校給食についても、小中学校の給食実施状況の違い等も含めた課題の整理を行った上で検討」とした。始まる時期は決まっていない（2026年11月1日に文部科学省のサイトで見た範囲）",
+  "as_of": "2026-11-01に確認（交付要綱 2026-03-24、実施要領 2026-05-29改正、Q&A 2026-07-23更新）",
+  "confidence": "確認済",
+  "sources": [
+   {
+    "label": "文部科学省「学校給食費の抜本的な負担軽減」",
+    "url": "https://www.mext.go.jp/a_menu/sports/syokuiku/kyu-lighten.html"
+   },
+   {
+    "label": "文部科学省 給食費負担軽減交付金交付要綱（令和8年3月24日 文部科学大臣決定）",
+    "url": "https://www.mext.go.jp/content/20260325-mxt_kenshoku-000048546_1.pdf"
+   },
+   {
+    "label": "文部科学省 給食費負担軽減交付金実施要領（令和8年3月24日決定、5月29日一部改正）",
+    "url": "https://www.mext.go.jp/content/20260325-mxt_kenshoku-000048546_2.pdf"
+   },
+   {
+    "label": "文部科学省・総務省・財務省「三党合意に基づくいわゆる教育無償化に向けた対応について」（令和7年12月19日）",
+    "url": "https://www.mext.go.jp/content/20251224-mxt_soseisk01-000046460_1.pdf"
+   },
+   {
+    "label": "自民・公明・維新「学校給食費の抜本的な負担軽減（いわゆる給食無償化）について」（令和7年12月18日、文科省掲載）",
+    "url": "https://www.mext.go.jp/content/20251219-mxt_soseisk01-000046461_12.pdf"
+   },
+   {
+    "label": "文部科学省【資料2】三党合意に基づく学校給食費の抜本的な負担軽減について（2026年1月。令和7年2月25日の三党合意の抜粋を含む）",
+    "url": "https://www.mext.go.jp/content/20260126-mxt_syoto02-000046862_03.pdf"
+   },
+   {
+    "label": "文部科学省「学校給食の充実と学校における食育の推進」（令和8年5月。令和8年度予算1,649億円）",
+    "url": "https://www.mext.go.jp/content/20260909-mxt_kenshoku-000018564_0105.pdf"
+   },
+   {
+    "label": "文部科学省（市町村向け）「学校給食費の抜本的な負担軽減」に関するQ&A（令和8年7月23日更新。問2-1-3-2：交付金は中学校に充てられない）",
+    "url": "https://www.mext.go.jp/content/20260724-mxt-kenshoku-000047726_4.pdf"
+   }
+  ]
+ },
+ "prefecture_programs": [
+  {
+   "pref": "東京都",
+   "summary": "「東京都公立学校給食費負担軽減事業」で、給食費の保護者負担を軽くする区市町村に都が費用を補助（2024年度は2分の1。実施要綱は2024年3月29日。多摩地域の市の資料の検索結果の要約）。都の資料では2025年1月から都内全ての区市町村で無償化。2026年度は国の交付金に合わせて都の支援のしくみを変更（中身は未確認）。2026年度に私立小中学校向けの区市町村補助も新設（区市町村の公立小中学校の給食費支援との均衡のため）。まとめサイトは2026年8月30日時点で全62区市町村の公立小中学校が0円とする。",
+   "jh_effect": "全62区市町村で中学校も0円とされる（推定）",
+   "as_of": "2026年8月30日（まとめサイト）、2025年1月（都の資料）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "東京都教育委員会 令和6年度 東京都公立学校給食費負担軽減事業（費用の2分の1を補助。前の調べ（data.ts）の出典）",
+     "url": "https://www.kyoiku.metro.tokyo.lg.jp/information/press/2024/07/2024071602"
+    },
+    {
+     "label": "東京都「東京都の少子化対策2025」p.19（都内全ての区市町村で学校給食費を無償化、2025年1月から。前の調べ（data.ts）の出典。今回は開けていない）",
+     "url": "https://www.spt.metro.tokyo.lg.jp/kodomoseisaku/book/2025-02_tokyo_syoshika2025/pageindices/index19.html"
+    },
+    {
+     "label": "東京都「『叶えたい』を支えたいアクションプラン2026」p.42（国の交付金の創設を踏まえ、都の給食費負担軽減の支援スキームを変更。検索結果の要約）",
+     "url": "https://www.spt.metro.tokyo.lg.jp/kodomoseisaku/book/202602-kanasasa-actionplan/pageindices/index42.html"
+    },
+    {
+     "label": "港区議会の資料（東京都が令和8年度予算で「私立小中学校等給食費等負担軽減区市町村補助事業」を新設。検索結果の要約）",
+     "url": "https://gikai2.city.minato.tokyo.jp/voices/GikaiDoc/attach/Nittei/Nt5171_4.pdf"
+    },
+    {
+     "label": "まとめサイト art-pi「東京都の給食費は全自治体で無償【2026】」（2026年8月30日確認とある。検索結果の要約）",
+     "url": "https://art-pi.com/tokyo-kyushokuhi-mushouka-major/"
+    }
+   ]
+  },
+  {
+   "pref": "青森県",
+   "summary": "「学校給食費無償化等子育て支援市町村交付金」（2024年度〜）。2024年10月から県内全40市町村で小中学校の給食費が無償（都道府県単位で全国初とされる）。2025年度も交付金は続いた（県の発表の題名）。",
+   "jh_effect": "2024年10月から全40市町村で中学校も無償（2026年度は未確認）",
+   "as_of": "2024年10月〜2025年7月",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "しんぶん赤旗「学校給食費無償 青森全県実施へ／県が『市町村交付金』を創設」（2024年2月21日）",
+     "url": "https://www.jcp.or.jp/akahata/aik23/2024-02-21/2024022101_02_0.html"
+    },
+    {
+     "label": "報道（YouTube）「全県レベルでは全国初！青森県内の『全小中学校で給食費無償化』」（2024年10月1日から全40市町村と知事が発表。検索結果の要約）",
+     "url": "https://www.youtube.com/watch?v=mhxeOTOJylA"
+    },
+    {
+     "label": "琉球新報 社説「県の給食無償化支援 全額公費負担へ国も動け」（青森県が10月から全国初で全県一律の無償化を始めると記載。検索結果の要約）",
+     "url": "https://ryukyushimpo.jp/editorial/entry-3124295.html"
+    },
+    {
+     "label": "青森県 プレスリリース（2025年7月）「令和7年度学校給食費無償化等子育て支援市町村交付金の交付決定状況」「市町村の無償化事業の実施状況」（題名だけ確認。県のサイトはつながらず中身は未確認）",
+     "url": "https://www.pref.aomori.lg.jp/release/2025/78534.html"
+    }
+   ]
+  },
+  {
+   "pref": "和歌山県",
+   "summary": "県と市町村が半額ずつ負担し、県内全市町村で小中学校の給食費を無償化（知事メッセージ 2024年12月2日。全ての中学校で給食を実施しているわけではない和歌山市の中学校は除く）。和歌山市は2026年度予算で中学校給食費の無償化を計上。",
+   "jh_effect": "2024年度から全市町村で中学校も無償（2026年度の県の制度は未確認）",
+   "as_of": "2024年12月2日",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "和歌山県「知事からのメッセージ」令和6年12月2日（県と市町村が半額ずつ負担し、県内全市町村で小中学校の給食費無償化。和歌山市の中学校を除く。検索結果の要約）",
+     "url": "https://www.pref.wakayama.lg.jp/chiji/message/20241202.html"
+    },
+    {
+     "label": "和歌山市の資料（令和8年度当初予算に「中学校給食費の無償化」518,566千円。西浜中学校は2026年4月20日に給食開始。検索結果の要約）",
+     "url": "https://www.city.wakayama.wakayama.jp/_res/projects/default_project/_page_/001/067/300/R0804_02-05.pdf"
+    }
+   ]
+  },
+  {
+   "pref": "沖縄県",
+   "summary": "全41市町村の中学生の給食費の半額を県が補助（2025年度から。当初は全面無償化する市町村に限る案だったが、全市町村一律に見直し。就学援助の対象者を除く）。",
+   "jh_effect": "中学校は少なくとも半額。全額無償かは市町村しだい（未確認）",
+   "as_of": "2025年度〜（報道）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "琉球新報「給食費無償化、全市町村に支援へ デニー知事が方針見直し 沖縄県が一律で2分の1負担」",
+     "url": "https://ryukyushimpo.jp/news/entry-3189261.html"
+    }
+   ]
+  },
+  {
+   "pref": "栃木県",
+   "summary": "2026年度、県が独自に中学校の給食費の一部を補助（小山市の案内）。補助の額・割合は未確認。",
+   "jh_effect": "中学校の一部を補助。全額無償かは市町村しだい（未確認）",
+   "as_of": "2026年度",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "小山市「令和8年度 学校給食費保護者負担軽減（いわゆる給食無償化）について」（栃木県が独自に中学校の給食費の一部を補助。検索結果の要約）",
+     "url": "https://www.city.oyama.tochigi.jp/kosodate-nicomaru/gakko-kyoiku/schoollunch/page010645.html"
+    }
+   ]
+  },
+  {
+   "pref": "埼玉県",
+   "summary": "2025年6月の県議会で、県による中学校の給食費の財政支援を求める質問があり、県は明確な方向性を示していないとされる。",
+   "jh_effect": "県の支援は確認できない",
+   "as_of": "2025年6月",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "埼玉県議会（令和7年6月定例会の質疑。県は中学校の給食費支援の方向性を示していない。検索結果の要約）",
+     "url": "https://www.pref.saitama.lg.jp/e1601/gikai-gaiyou/r0706/2/c/04.html"
+    }
+   ]
+  }
+ ],
+ "prefecture_lists": [
+  {
+   "pref": "大阪府",
+   "summary": "43市町村のうち、2026年度を通して小中とも0円は30市町村。中学校に保護者負担が残るのは13市町村（豊中・吹田・泉大津・守口・枚方・富田林・河内長野・和泉・羽曳野・摂津・藤井寺・泉南・阪南）。河内長野市は2027年1〜3月、摂津市は2027年1月から中学校も0円。堺・岸和田・八尾などは2026年度限りの施策による部分があり、大阪・高槻・大東・東大阪などは恒久的。小学校は全市町村で0円。",
+   "as_of": "2026年8月30日（まとめサイトの確認日）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "まとめサイト art-pi「大阪府43市町村の給食費｜中学校まで無償は30市町村【2026】」（2026年8月30日確認とある。検索結果の要約）",
+     "url": "https://art-pi.com/osaka-kyushokuhi-mushouka-43/"
+    },
+    {
+     "label": "高槻市「学校給食費無償化のご案内」（児童・生徒の給食費を恒久的に無償。検索結果の要約）",
+     "url": "https://www.city.takatsuki.osaka.jp/soshiki/65/32426.html"
+    },
+    {
+     "label": "門真市「小・中学校給食」（令和7年度に引き続き給食の無償提供を実施。検索結果の要約）",
+     "url": "https://www.city.kadoma.osaka.jp/soshiki/kyoiku/3/hokenkyushoku/kosodate/gakko_kyoiku/3/14005.html"
+    }
+   ]
+  },
+  {
+   "pref": "兵庫県",
+   "summary": "41市町のうち中学校まで0円は18市町（まとめ記事の題名）。どの市町かは未確認。",
+   "as_of": "2026年（記事の時点は未確認）",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "まとめサイト art-pi「兵庫の給食費無償化を41市町調査｜中学まで0円は18市町」（記事の題名だけ。市町名は未確認）",
+     "url": "https://art-pi.com/hyogo-kyushokuhi-mushouka-41/"
+    }
+   ]
+  },
+  {
+   "pref": "長崎県",
+   "summary": "2026年度、およそ半数の市町が小中学校とも無償（長崎市のページ）。どの市町かは未確認。",
+   "as_of": "2026年度",
+   "confidence": "推定",
+   "sources": [
+    {
+     "label": "長崎市「市民の声（提案）」ページ（長崎県では令和8年度、およそ半数の市町が小中学校とも無償化。検索結果の要約）",
+     "url": "https://www.city.nagasaki.lg.jp/teian/81832.html"
+    }
+   ]
+  }
+ ],
+ "pref_average_fee_r7": {
+  "what": "公立学校（完全給食）の学校給食費の平均月額（年間の食材費相当額を11か月で割った額）と年間の給食回数。都道府県別",
+  "as_of": "2025-05-01（令和7年5月1日現在）",
+  "national": {
+   "elem_monthly_yen": 5196,
+   "elem_times_per_year": 191,
+   "jh_monthly_yen": 6013,
+   "jh_times_per_year": 187
+  },
+  "national_r5_reference": {
+   "elem_monthly_yen": 4655,
+   "jh_monthly_yen": 5380,
+   "note": "令和7年度調査から全国平均を学校数の加重平均に変えたため、令和5年度を見直し後の方法で計算した値。従来の方法の令和5年度は小学校4,688円・中学校5,367円（いまの計算 src/shared/calc.ts の中学校の月額5,367円はこの従来の値）。都道府県別の平均の算出方法は変わっていない"
+  },
+  "method_change_source": {
+   "label": "文部科学省「学校給食費調査における学校給食費平均月額及び給食回数の全国平均の算出方法の変更について」（2026年7月30日）",
+   "url": "https://www.mext.go.jp/content/20260730-mxt-kenshoku-000051287_02.pdf"
+  },
+  "use": "中学校の給食費が無償でない街の年額の目安（例：都道府県の中学校平均月額×11か月）。市区町村の実額ではない。都道府県ごとの差は、給食の内容や回数の違いによるもので単純に比べられない（調査の注記）",
+  "rows": [
+   {
+    "pref": "北海道",
+    "elem_monthly_yen": 5358,
+    "elem_times_per_year": 195,
+    "jh_monthly_yen": 6238,
+    "jh_times_per_year": 192
+   },
+   {
+    "pref": "青森県",
+    "elem_monthly_yen": 5718,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 6455,
+    "jh_times_per_year": 193
+   },
+   {
+    "pref": "岩手県",
+    "elem_monthly_yen": 5065,
+    "elem_times_per_year": 173,
+    "jh_monthly_yen": 5777,
+    "jh_times_per_year": 171
+   },
+   {
+    "pref": "宮城県",
+    "elem_monthly_yen": 5518,
+    "elem_times_per_year": 182,
+    "jh_monthly_yen": 6324,
+    "jh_times_per_year": 175
+   },
+   {
+    "pref": "秋田県",
+    "elem_monthly_yen": 5768,
+    "elem_times_per_year": 193,
+    "jh_monthly_yen": 6519,
+    "jh_times_per_year": 192
+   },
+   {
+    "pref": "山形県",
+    "elem_monthly_yen": 5758,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 6473,
+    "jh_times_per_year": 189
+   },
+   {
+    "pref": "福島県",
+    "elem_monthly_yen": 5959,
+    "elem_times_per_year": 183,
+    "jh_monthly_yen": 6618,
+    "jh_times_per_year": 179
+   },
+   {
+    "pref": "茨城県",
+    "elem_monthly_yen": 4874,
+    "elem_times_per_year": 195,
+    "jh_monthly_yen": 5386,
+    "jh_times_per_year": 194
+   },
+   {
+    "pref": "栃木県",
+    "elem_monthly_yen": 5317,
+    "elem_times_per_year": 197,
+    "jh_monthly_yen": 6184,
+    "jh_times_per_year": 196
+   },
+   {
+    "pref": "群馬県",
+    "elem_monthly_yen": 4815,
+    "elem_times_per_year": 196,
+    "jh_monthly_yen": 5672,
+    "jh_times_per_year": 196
+   },
+   {
+    "pref": "埼玉県",
+    "elem_monthly_yen": 4884,
+    "elem_times_per_year": 185,
+    "jh_monthly_yen": 5765,
+    "jh_times_per_year": 183
+   },
+   {
+    "pref": "千葉県",
+    "elem_monthly_yen": 5059,
+    "elem_times_per_year": 188,
+    "jh_monthly_yen": 5990,
+    "jh_times_per_year": 186
+   },
+   {
+    "pref": "東京都",
+    "elem_monthly_yen": 5643,
+    "elem_times_per_year": 191,
+    "jh_monthly_yen": 6724,
+    "jh_times_per_year": 186
+   },
+   {
+    "pref": "神奈川県",
+    "elem_monthly_yen": 4682,
+    "elem_times_per_year": 187,
+    "jh_monthly_yen": 5414,
+    "jh_times_per_year": 178
+   },
+   {
+    "pref": "新潟県",
+    "elem_monthly_yen": 6069,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 7118,
+    "jh_times_per_year": 195
+   },
+   {
+    "pref": "富山県",
+    "elem_monthly_yen": 5862,
+    "elem_times_per_year": 196,
+    "jh_monthly_yen": 6852,
+    "jh_times_per_year": 197
+   },
+   {
+    "pref": "石川県",
+    "elem_monthly_yen": 5643,
+    "elem_times_per_year": 196,
+    "jh_monthly_yen": 6661,
+    "jh_times_per_year": 196
+   },
+   {
+    "pref": "福井県",
+    "elem_monthly_yen": 5426,
+    "elem_times_per_year": 192,
+    "jh_monthly_yen": 6242,
+    "jh_times_per_year": 191
+   },
+   {
+    "pref": "山梨県",
+    "elem_monthly_yen": 5426,
+    "elem_times_per_year": 193,
+    "jh_monthly_yen": 6280,
+    "jh_times_per_year": 191
+   },
+   {
+    "pref": "長野県",
+    "elem_monthly_yen": 5686,
+    "elem_times_per_year": 199,
+    "jh_monthly_yen": 6613,
+    "jh_times_per_year": 199
+   },
+   {
+    "pref": "岐阜県",
+    "elem_monthly_yen": 5155,
+    "elem_times_per_year": 199,
+    "jh_monthly_yen": 5938,
+    "jh_times_per_year": 199
+   },
+   {
+    "pref": "静岡県",
+    "elem_monthly_yen": 4828,
+    "elem_times_per_year": 182,
+    "jh_monthly_yen": 5761,
+    "jh_times_per_year": 182
+   },
+   {
+    "pref": "愛知県",
+    "elem_monthly_yen": 4931,
+    "elem_times_per_year": 187,
+    "jh_monthly_yen": 5786,
+    "jh_times_per_year": 182
+   },
+   {
+    "pref": "三重県",
+    "elem_monthly_yen": 4767,
+    "elem_times_per_year": 187,
+    "jh_monthly_yen": 5231,
+    "jh_times_per_year": 185
+   },
+   {
+    "pref": "滋賀県",
+    "elem_monthly_yen": 4697,
+    "elem_times_per_year": 188,
+    "jh_monthly_yen": 5267,
+    "jh_times_per_year": 185
+   },
+   {
+    "pref": "京都府",
+    "elem_monthly_yen": 5026,
+    "elem_times_per_year": 192,
+    "jh_monthly_yen": 5525,
+    "jh_times_per_year": 180
+   },
+   {
+    "pref": "大阪府",
+    "elem_monthly_yen": 4893,
+    "elem_times_per_year": 193,
+    "jh_monthly_yen": 5751,
+    "jh_times_per_year": 183
+   },
+   {
+    "pref": "兵庫県",
+    "elem_monthly_yen": 5082,
+    "elem_times_per_year": 187,
+    "jh_monthly_yen": 5801,
+    "jh_times_per_year": 182
+   },
+   {
+    "pref": "奈良県",
+    "elem_monthly_yen": 5136,
+    "elem_times_per_year": 185,
+    "jh_monthly_yen": 5583,
+    "jh_times_per_year": 177
+   },
+   {
+    "pref": "和歌山県",
+    "elem_monthly_yen": 5151,
+    "elem_times_per_year": 192,
+    "jh_monthly_yen": 5646,
+    "jh_times_per_year": 187
+   },
+   {
+    "pref": "鳥取県",
+    "elem_monthly_yen": 5400,
+    "elem_times_per_year": 192,
+    "jh_monthly_yen": 6095,
+    "jh_times_per_year": 187
+   },
+   {
+    "pref": "島根県",
+    "elem_monthly_yen": 5375,
+    "elem_times_per_year": 195,
+    "jh_monthly_yen": 6238,
+    "jh_times_per_year": 196
+   },
+   {
+    "pref": "岡山県",
+    "elem_monthly_yen": 5675,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 6514,
+    "jh_times_per_year": 191
+   },
+   {
+    "pref": "広島県",
+    "elem_monthly_yen": 5427,
+    "elem_times_per_year": 198,
+    "jh_monthly_yen": 6188,
+    "jh_times_per_year": 192
+   },
+   {
+    "pref": "山口県",
+    "elem_monthly_yen": 5263,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 5925,
+    "jh_times_per_year": 190
+   },
+   {
+    "pref": "徳島県",
+    "elem_monthly_yen": 5568,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 6153,
+    "jh_times_per_year": 192
+   },
+   {
+    "pref": "香川県",
+    "elem_monthly_yen": 4983,
+    "elem_times_per_year": 192,
+    "jh_monthly_yen": 5491,
+    "jh_times_per_year": 181
+   },
+   {
+    "pref": "愛媛県",
+    "elem_monthly_yen": 4678,
+    "elem_times_per_year": 189,
+    "jh_monthly_yen": 5362,
+    "jh_times_per_year": 183
+   },
+   {
+    "pref": "高知県",
+    "elem_monthly_yen": 5297,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 5801,
+    "jh_times_per_year": 191
+   },
+   {
+    "pref": "福岡県",
+    "elem_monthly_yen": 4738,
+    "elem_times_per_year": 190,
+    "jh_monthly_yen": 5626,
+    "jh_times_per_year": 190
+   },
+   {
+    "pref": "佐賀県",
+    "elem_monthly_yen": 4933,
+    "elem_times_per_year": 190,
+    "jh_monthly_yen": 5632,
+    "jh_times_per_year": 190
+   },
+   {
+    "pref": "長崎県",
+    "elem_monthly_yen": 4939,
+    "elem_times_per_year": 190,
+    "jh_monthly_yen": 5891,
+    "jh_times_per_year": 187
+   },
+   {
+    "pref": "熊本県",
+    "elem_monthly_yen": 5218,
+    "elem_times_per_year": 192,
+    "jh_monthly_yen": 6037,
+    "jh_times_per_year": 190
+   },
+   {
+    "pref": "大分県",
+    "elem_monthly_yen": 5001,
+    "elem_times_per_year": 197,
+    "jh_monthly_yen": 5547,
+    "jh_times_per_year": 196
+   },
+   {
+    "pref": "宮崎県",
+    "elem_monthly_yen": 5400,
+    "elem_times_per_year": 198,
+    "jh_monthly_yen": 6248,
+    "jh_times_per_year": 197
+   },
+   {
+    "pref": "鹿児島県",
+    "elem_monthly_yen": 5400,
+    "elem_times_per_year": 194,
+    "jh_monthly_yen": 6279,
+    "jh_times_per_year": 193
+   },
+   {
+    "pref": "沖縄県",
+    "elem_monthly_yen": 5160,
+    "elem_times_per_year": 196,
+    "jh_monthly_yen": 5807,
+    "jh_times_per_year": 197
+   }
+  ],
+  "confidence": "確認済",
+  "sources": [
+   {
+    "label": "文部科学省「学校給食実施状況等調査」令和7年度（令和7年5月1日現在。2026年7月30日公表）",
+    "url": "https://www.mext.go.jp/content/20260730-mxt-kenshoku-000051287_03.pdf"
+   }
+  ]
+ },
+ "unresolved": [
+  "全国の大半（中学校が「不明」の市区町村）について、2026年度に中学校の給食費が全員0円かどうか。文部科学省の一覧はなく、市区町村・都道府県のサイトにつながらず、検索は15回までのため。",
+  "青森県・和歌山県で、2026年度も県の制度で中学校が無償のままか（2024〜2025年度の情報まで）。",
+  "東京都の2026年度の支援のしくみの中身（アクションプラン2026 p.42 の本文）と、区市町村ごとの公式の確認（多摩市・北区・町田市・八王子市のほかは、まとめサイトの情報）。",
+  "大阪府・東京都の値の多くは、まとめサイト（art-pi）の検索結果の要約によるもので、市町村の公式ページでは確かめていない。",
+  "兵庫県で中学校まで0円の18市町、長崎県で小中とも無償の約半数の市町が、どこか。",
+  "沖縄県（中学校の半額補助）・栃木県（中学校の一部補助）の市町村で、全額が無償になっているところ。",
+  "「なし」とした市町村で、第3子以降などの一部無償があるか。",
+  "小学校で、国の基準額（月5,200円）を超える分を保護者が払う市町村がどこか（多くの行で「不明」）。",
+  "文部科学省が令和6年度以降に無償化の実施状況を市区町村ごとに調べて公表する予定があるか。"
+ ],
+ "search_log": [
+  {
+   "n": 1,
+   "query": "中学校 給食費 無償化 県が支援 県内全市町村 令和8年度",
+   "found": "沖縄県（全41市町村に中学生の給食費の半額）、柏市（中学校は半額）、長崎県（約半数の市町が小中無償）、埼玉県議会"
+  },
+  {
+   "n": 2,
+   "query": "東京都 学校給食費 負担軽減事業 区市町村 補助 令和8年度 中学校 metro.tokyo.lg.jp",
+   "found": "東京都が2026年度に私立小中学校向けの区市町村補助を新設（港区の資料）、西東京市・東大和市の資料"
+  },
+  {
+   "n": 3,
+   "query": "2026年度 中学校給食 無償化 継続 自治体 一覧 都道府県別 全国 調査",
+   "found": "まとめサイト（まちくらべ、joseikin-insight、art-pi の大阪府43市町村など）。全国の一覧の公式資料はなし"
+  },
+  {
+   "n": 4,
+   "query": "給食費無償化 都道府県 独自支援 一覧 青森県 和歌山県 東京都 沖縄県 県が半額 中学校 2026年度",
+   "found": "沖縄県（2分の1、2025年4月）など。青森・和歌山は出ず"
+  },
+  {
+   "n": 5,
+   "query": "青森県 学校給食費 無償化 全市町村 県が半額 令和8年度 中学校 継続 pref.aomori",
+   "found": "青森県「学校給食費無償化等子育て支援市町村交付金」、2025年7月の県の発表"
+  },
+  {
+   "n": 6,
+   "query": "github 給食費 無償化 市区町村 csv データ 全国 中学校",
+   "found": "市区町村別の無償化のオープンデータは見つからず"
+  },
+  {
+   "n": 7,
+   "query": "東京都 公立小中学校 給食費 区市町村に2分の1補助 令和7年1月から 都内全区市町村 無償化 報道発表",
+   "found": "東京都公立学校給食費負担軽減事業（2分の1、要綱2024年3月29日）"
+  },
+  {
+   "n": 8,
+   "query": "東京都 令和8年度 学校給食費 負担軽減 中学校 都が補助 区市町村 国の交付金 小学校 アクションプラン2026",
+   "found": "都の支援スキームの変更（アクションプラン2026 p.42）、北区立学校給食費無償化制度"
+  },
+  {
+   "n": 9,
+   "query": "和歌山県 学校給食費 無償化 県内全市町村 県が2分の1 令和7年度 令和8年度 中学校 pref.wakayama",
+   "found": "知事メッセージ（2024年12月2日）、和歌山市の令和8年度予算"
+  },
+  {
+   "n": 10,
+   "query": "令和8年度 中学校 給食費 県が市町村に補助 新設 無償化 知事 定例会見 2026年",
+   "found": "栃木県（中学校の一部を補助、小山市）、今治市（中学校は据え置き）"
+  },
+  {
+   "n": 11,
+   "query": "多摩26市 中学校 給食費 無償化 令和8年度 継続 東京都 補助 市立中学校 八王子 町田 府中",
+   "found": "多摩市（2026年度も無償）"
+  },
+  {
+   "n": 12,
+   "query": "青森県 40市町村 小中学校 給食費 無償化 実施状況 令和8年度 中学校 学校給食費無償化等子育て支援市町村交付金",
+   "found": "2024年10月から全40市町村（報道）。2026年度の公式資料はなし"
+  },
+  {
+   "n": 13,
+   "query": "大阪府 43市町村 給食費 中学校 無償 2026年度 一覧 市町村別 豊中市 吹田市 保護者負担",
+   "found": "大阪府は30/43が小中0円（まとめサイト）、門真市・高槻市の公式ページ"
+  },
+  {
+   "n": 14,
+   "query": "東京都 区市町村 中学校 給食費 無償化 令和8年度 継続 一覧 23区 多摩 島しょ 都の補助 2026年度",
+   "found": "まとめサイト（全62区市町村で0円、2026年8月30日確認）"
+  },
+  {
+   "n": 15,
+   "query": "大阪府 43市町村 給食費 中学校まで無償 30市町村 一覧 中学校に負担が残る市町村（art-pi.com に限定）",
+   "found": "中学校に負担が残る13市町村の名前、兵庫県（18/41）"
+  }
+ ],
+ "fetch_log": [
+  {
+   "url": "https://www.mext.go.jp/（学校給食・統計のページ、PDF 15点）",
+   "result": "取得できた"
+  },
+  {
+   "url": "https://www.pref.aomori.lg.jp/release/files/2025/78534.pdf",
+   "result": "つながらない（1回だけ試した）"
+  },
+  {
+   "url": "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/028/844/240524.pdf",
+   "result": "つながらない（1回だけ試した）"
+  },
+  {
+   "url": "https://art-pi.com/hyogo-kyushokuhi-mushouka-41/",
+   "result": "つながらない（1回だけ試した）"
+  },
+  {
+   "url": "https://policy.imaisota.com/policies/school-lunch/",
+   "result": "つながらない（1回だけ試した）"
+  },
+  {
+   "url": "https://www.chisou.go.jp/tiiki/rinjikoufukin/（臨時交付金の実施計画を探した）",
+   "result": "404"
+  }
+ ],
+ "searches_used": 15
+}
