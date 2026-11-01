@@ -170,3 +170,68 @@
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.62) 0 3.5px, transparent 4.5px);
   background-size: 26px 26px;
 }
+
+/* 説明書：上に墨の帯がついた、ルーズリーフのような紙（左に穴） */
+.va-manual {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 3px 4px 0 var(--ink);
+}
+
+/* 棚板：となりの板とつながって1枚の棚に見える */
+.va-plank {
+  position: relative;
+}
+.va-plank::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 13px;
+  background: #e8c48a;
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  box-shadow: 0 4px 0 rgba(31, 36, 48, 0.18);
+  pointer-events: none;
+}
+.va-plank > * {
+  position: relative;
+  z-index: 1;
+}
+.va-shelf > .va-plank:first-child::after {
+  border-left: 3px solid var(--ink);
+  border-radius: 6px 0 0 6px;
+}
+.va-shelf > .va-plank:last-child::after {
+  border-right: 3px solid var(--ink);
+  border-radius: 0 6px 6px 0;
+}
+
+/* くらべ棚の壁（有孔ボード） */
+.va-wall {
+  background-color: #f6ead0;
+  background-image: radial-gradient(circle, rgba(31, 36, 48, 0.16) 0 1.6px, transparent 2.3px);
+  background-size: 18px 18px;
+}
+.va-wall .va-plank::after {
+  left: -8px;
+  right: -8px;
+  border-left: 0;
+  border-right: 0;
+}
+
+/* 表の開け閉め（›が回る） */
+.va details[open] > summary .va-caret {
+  display: inline-block;
+}
+
+/* 検索欄：枠は外側の札につける（入力欄の中に二重の枠を出さない） */
+.va .va-field:focus-within {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+.va .va-field input:focus-visible {
+  outline: none;
+}

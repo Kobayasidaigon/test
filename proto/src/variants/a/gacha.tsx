@@ -1,112 +1,190 @@
-// 案A「カプセルトイ」 — カプセルが落ちて、はずんで、ぱかっと開いて、はんこがポン。約2.9秒。とばせる。
+// 案A「カプセルトイ」 — 演出。筐体の絵の中で起きる：ハンドルが回る → 窓のカプセルが1個落ちる →
+// 取り出し口のふたの後ろから転がり出る（はずむのは口の中だけ）→ 取り出して、ぱかっと開く → はんこがポン。約3.5秒。とばせる。
+// えらんでくらべるでは、入れたカプセルが順に出てきて、下の「くらべ棚」に並ぶ。
 // 動きを減らす設定の人には出さない（index.tsx で切り替える）。
 import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import type { Comparison } from '@/shared/types'
-import { CapsuleBottom, CapsuleTop } from './art'
+import { Capsule, CapsuleBottom, CapsuleTop } from './art'
 import { CapsuleConfetti } from './confetti'
-import { lookOf } from './lib'
+import { isHit, lookOf } from './lib'
+import { DOME_W, Dome, Marquee, NamedCapsuleG, Outlet, frontSpots, type Mix } from './machine'
 import { GotouchiStamp } from './stamp'
 
-type Phase = 'drop' | 'land' | 'open' | 'stamp'
-const ORDER: Phase[] = ['drop', 'land', 'open', 'stamp']
-const T = { land: 900, open: 1300, stamp: 1650, done: 2900 }
+const SW = 360 // 舞台の幅
+const SH = 680 // 舞台の高さ
+const DOME = { left: 20, top: 92, h: 196 }
+const OUT = { left: 80, top: 458, w: 200, h: 100 }
+const HANDLE = { cx: 268, cy: 382, size: 104 }
 
-export function GachaShow({ c, onDone }: { c: Comparison; onDone: () => void }) {
-  const [phase, setPhase] = useState<Phase>('drop')
-  const skipRef = useRef<HTMLButtonElement>(null)
-  const done = useRef(false)
-  const finish = () => {
-    if (done.current) return
-    done.current = true
-    onDone()
-  }
+function useStageScale() {
+  const [k, setK] = useState(1)
+  useLayoutEffect(() => {
+    const f = () => setK(Math.max(0.6, Math.min((window.innerWidth - 16) / SW, (window.innerHeight - 20) / SH, 1.4)))
+    f()
+    window.addEventListener('resize', f)
+    return () => window.removeEventListener('resize', f)
+  }, [])
+  return k
+}
+
+function NamedCap({ c, size = 56 }: { c: Comparison; size?: number }) {
+  const look = lookOf(c.to)
+  return (
+    <svg viewBox="-30 -30 60 60" width={size} height={size} aria-hidden overflow="visible">
+      <NamedCapsuleG cap={{ id: c.to.id, color: look.capsule, level: c.to.level, name: c.to.name.replace(/(市|区|町|村)$/, '') }} />
+    </svg>
+  )
+}
+
+/* 筐体（窓・ハンドル・コイン口・取り出し口）。動く部品は外から重ねる */
+function MachineBody({ turning, mix, children, outlet, dim, plate }: { turning: boolean; mix?: Mix; children?: ReactNode; outlet?: ReactNode; dim?: boolean; plate?: boolean }) {
+  return (
+    <>
+      <div className="va-body absolute inset-x-0 bottom-0 rounded-t-[40px] border-[3px] border-[var(--ink)]" style={{ top: 70 }} />
+      <div className="absolute inset-x-0 top-0 flex justify-center">
+        <Marquee />
+      </div>
+      <div className="absolute" style={{ left: DOME.left, top: DOME.top, width: DOME_W }}>
+        <Dome height={DOME.h} shaking={turning} mix={mix} dim={dim} />
+      </div>
+      {/* 窓の中の、動くカプセル（窓のふちで切る） */}
+      <div className="absolute overflow-hidden rounded-[28px]" style={{ left: DOME.left + 14, top: DOME.top + 10, width: DOME_W - 28, height: DOME.h - 20 }}>
+        <div className="absolute" style={{ left: -14, top: -10, width: DOME_W, height: DOME.h }}>
+          {children}
+        </div>
+      </div>
+      {/* コイン口 */}
+      <div className="absolute flex flex-col items-center" style={{ left: 30, top: 340 }}>
+        <span className="grid h-[58px] w-[70px] place-items-center rounded-[12px] border-[3px] border-[var(--ink)] bg-[var(--metal)]">
+          <span className="h-[32px] w-[11px] rounded-full bg-[var(--ink)]" />
+        </span>
+        <span className="mt-1 text-[12px] font-black text-white">コイン口（0円）</span>
+      </div>
+      <div className="absolute flex flex-col items-center" style={{ left: 120, top: 352, width: 92 }}>
+        <span className="rounded-[8px] border-[3px] border-[var(--ink)] bg-[var(--yolk)] px-2 py-0.5 text-[13px] font-black">1回 0円</span>
+      </div>
+      {plate && (
+        <div className="absolute inset-x-0 flex justify-center" style={{ top: 590 }}>
+          <span className="rounded-[10px] border-[3px] border-[var(--ink)] bg-[var(--paper)] px-3 py-1 text-[13px] font-black">計算で決まります。くじではありません</span>
+        </div>
+      )}
+      {/* ハンドル（影は回らない台に） */}
+      <div className="absolute" style={{ left: HANDLE.cx - HANDLE.size / 2, top: HANDLE.cy - HANDLE.size / 2, width: HANDLE.size, height: HANDLE.size }}>
+        <span className="absolute inset-0 rounded-full border-[3px] border-[var(--ink)] bg-[var(--metal)]" />
+        <span className="absolute inset-[13px] translate-x-[3px] translate-y-[4px] rounded-full bg-[var(--ink)]" />
+        <motion.span
+          className="absolute inset-[13px] rounded-full border-[3px] border-[var(--ink)] bg-[var(--yolk)]"
+          initial={{ rotate: 0 }}
+          animate={turning ? { rotate: 360 } : { rotate: 0 }}
+          transition={turning ? { duration: 0.7, ease: [0.5, 0, 0.35, 1] } : { duration: 0 }}
+        >
+          <span className="absolute left-1/2 top-1/2 h-[18px] w-[70px] -translate-x-1/2 -translate-y-1/2 -rotate-[28deg] rounded-full border-[3px] border-[var(--ink)] bg-[var(--red)]" />
+          <span className="absolute left-1/2 top-1/2 h-[14px] w-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-[var(--ink)] bg-[var(--paper)]" />
+        </motion.span>
+      </div>
+      {/* 取り出し口 */}
+      <div className="absolute" style={{ left: OUT.left, top: OUT.top }}>
+        <Outlet width={OUT.w} height={OUT.h}>
+          {outlet}
+        </Outlet>
+      </div>
+    </>
+  )
+}
+
+/* ───────── 1個（おまかせ） ───────── */
+
+type One = 'turn' | 'fall' | 'roll' | 'lift' | 'open' | 'stamp'
+const ONE: One[] = ['turn', 'fall', 'roll', 'lift', 'open', 'stamp']
+const T1 = { fall: 720, roll: 1020, lift: 1580, open: 2030, stamp: 2380, done: 3550 }
+
+function ShowOne({ c, finish }: { c: Comparison; finish: () => void }) {
+  const [phase, setPhase] = useState<One>('turn')
   useEffect(() => {
-    skipRef.current?.focus({ preventScroll: true })
     const t = [
-      window.setTimeout(() => setPhase('land'), T.land),
-      window.setTimeout(() => setPhase('open'), T.open),
-      window.setTimeout(() => setPhase('stamp'), T.stamp),
-      window.setTimeout(finish, T.done),
+      window.setTimeout(() => setPhase('fall'), T1.fall),
+      window.setTimeout(() => setPhase('roll'), T1.roll),
+      window.setTimeout(() => setPhase('lift'), T1.lift),
+      window.setTimeout(() => setPhase('open'), T1.open),
+      window.setTimeout(() => setPhase('stamp'), T1.stamp),
+      window.setTimeout(finish, T1.done),
     ]
     return () => t.forEach((x) => window.clearTimeout(x))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const at = (p: Phase) => ORDER.indexOf(phase) >= ORDER.indexOf(p)
+  const at = (p: One) => ONE.indexOf(phase) >= ONE.indexOf(p)
   const look = lookOf(c.to)
-  const S = 150
-  const caption = phase === 'drop' ? 'ガチャ ガチャ…' : phase === 'land' ? 'ゴロン！' : phase === 'open' ? 'ぱかっ！' : `${c.to.name}のカプセル！`
-
+  const spot = frontSpots(1, DOME.h)[0]
+  const caption = phase === 'turn' ? 'ガチャ ガチャ…' : phase === 'fall' ? 'コロン…' : phase === 'roll' ? 'ゴロン！' : phase === 'stamp' ? `${c.to.name}のカプセル！` : 'ぱかっ！'
+  const CAP = 64
+  const outletCenter = { x: OUT.left + OUT.w / 2, y: OUT.top + OUT.h - CAP / 2 - 6 }
+  const center = { x: SW / 2, y: 250 }
   return (
-    <motion.div
-      className="va-dots fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
-      role="dialog"
-      aria-modal="true"
-      aria-label="カプセルが出てくるところ"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.15 }}
-    >
+    <>
       <p className="va-sr" aria-live="polite">
         {at('stamp') ? `${c.to.pref}${c.to.name}のカプセルが開きました` : 'カプセルが出てきます'}
       </p>
-      <div className="relative h-[460px] w-[340px] max-w-[94vw]">
-        {/* いまの場面のひとこと */}
-        <div aria-hidden className="absolute inset-x-0 -top-[64px] flex justify-center">
-          <AnimatePresence mode="popLayout">
-            <motion.p
-              key={caption}
-              className="va-pop whitespace-nowrap text-[30px] leading-none text-[var(--ink)]"
-              initial={{ y: 14, opacity: 0, scale: 0.8 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: -10, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 520, damping: 24 }}
+      <MachineBody
+        turning={phase === 'turn'}
+        plate={!at('lift')}
+        mix={{ [c.to.level]: 1 }}
+        outlet={
+          phase === 'roll' && (
+            <motion.div
+              className="absolute"
+              style={{ left: OUT.w / 2 - CAP / 2, top: OUT.h - CAP - 6, width: CAP, height: CAP }}
+              initial={{ x: -150, rotate: -300, y: 0 }}
+              animate={{ x: 0, rotate: 0, y: [0, 0, -12, 0, -5, 0] }}
+              transition={{ x: { duration: 0.32, ease: 'easeOut' }, rotate: { duration: 0.32, ease: 'easeOut' }, y: { duration: 0.55, times: [0, 0.55, 0.7, 0.82, 0.92, 1] } }}
             >
-              {caption}
-            </motion.p>
-          </AnimatePresence>
-        </div>
+              <Capsule color={look.capsule} level={c.to.level} size={CAP} />
+            </motion.div>
+          )
+        }
+      >
+        {(phase === 'turn' || phase === 'fall') && (
+          <motion.div
+            className="absolute"
+            style={{ left: spot.x - 30, top: spot.y - 30, width: 60, height: 60 }}
+            animate={phase === 'fall' ? { y: 110, rotate: 40 } : { y: [0, -6, 0], rotate: [0, -10, 0] }}
+            transition={phase === 'fall' ? { duration: 0.28, ease: 'easeIn' } : { duration: 0.35, repeat: 1 }}
+          >
+            <Capsule color={look.capsule} level={c.to.level} size={60} />
+          </motion.div>
+        )}
+      </MachineBody>
 
-        {/* 筐体の下半分と、取り出し口 */}
-        <div aria-hidden className="va-body absolute -inset-x-6 top-[318px] h-[100vh] rounded-t-[32px] border-[3px] border-[var(--ink)]" />
-        <div aria-hidden className="absolute left-1/2 top-[340px] h-[104px] w-[250px] -translate-x-1/2 rounded-[24px] border-[3px] border-[var(--ink)] bg-[#2c3240]">
-          <div className="absolute inset-x-4 top-3 h-2.5 rounded-full bg-[#4a5266]" />
-        </div>
-
-        {/* カプセル */}
+      {/* 取り出したあと：手前に出して、開ける */}
+      <AnimatePresence>
+        {at('lift') && (
+          <motion.div key="veil" className="absolute inset-x-0 bottom-0 top-[70px] z-20 rounded-t-[40px]" style={{ background: 'radial-gradient(circle at 50% 30%, rgba(31,36,48,0.18), rgba(31,36,48,0.6))' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} />
+        )}
+      </AnimatePresence>
+      {at('lift') && (
         <motion.div
-          aria-hidden
-          className="absolute left-1/2 top-[284px] z-10 -ml-[75px]"
-          style={{ width: S, height: 146 }}
-          initial={{ y: -620, rotate: -40 }}
-          animate={
-            at('land')
-              ? { y: 0, rotate: at('open') ? 0 : [0, -10, 9, -5, 0] }
-              : { y: [-620, 0, -80, 0, -24, 0], rotate: [-40, 0, 12, 0, -4, 0] }
-          }
-          transition={
-            at('land')
-              ? { duration: 0.4, ease: 'easeInOut' }
-              : { duration: 0.9, times: [0, 0.38, 0.58, 0.74, 0.88, 1], ease: ['easeIn', 'easeOut', 'easeIn', 'easeOut', 'easeIn'] }
-          }
+          className="absolute z-30"
+          style={{ left: 0, top: 0, width: 150, height: 150, marginLeft: -75, marginTop: -75 }}
+          initial={{ x: outletCenter.x, y: outletCenter.y, scale: CAP / 150 }}
+          animate={{ x: center.x, y: center.y, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 22 }}
         >
           <motion.div
-            className="absolute left-0 top-0"
-            animate={at('open') ? { x: -112, y: -54, rotate: -52 } : { x: 0, y: 0, rotate: 0 }}
+            className="absolute left-0 top-[4px]"
+            animate={at('open') ? { x: -100, y: -60, rotate: -52 } : { x: 0, y: 0, rotate: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 16 }}
           >
-            <CapsuleTop size={S} />
+            <CapsuleTop size={150} />
           </motion.div>
-          {/* 中から出てくる紙とはんこ */}
           <AnimatePresence>
             {at('open') && (
               <motion.div
-                className="absolute left-1/2 top-[70px] -ml-[95px] grid h-[214px] w-[190px] place-items-center rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)] shadow-[4px_5px_0_var(--ink)]"
+                className="absolute left-1/2 top-[70px] -ml-[100px] grid h-[226px] w-[200px] place-items-center rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)] shadow-[4px_5px_0_var(--ink)]"
                 initial={{ y: 40, scale: 0.4, opacity: 0 }}
-                animate={{ y: -236, scale: 1, opacity: 1 }}
+                animate={{ y: -200, scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 280, damping: 21 }}
               >
-                <div className="relative grid h-[160px] w-[160px] place-items-center">
+                <div className="relative grid h-[164px] w-[164px] place-items-center">
                   {!at('stamp') && <span className="absolute inset-[6px] rounded-full border-[3px] border-dashed border-[var(--ink-soft)]/50" />}
                   {at('stamp') && (
                     <>
@@ -118,9 +196,9 @@ export function GachaShow({ c, onDone }: { c: Comparison; onDone: () => void }) 
                         transition={{ duration: 0.6, ease: 'easeOut' }}
                       />
                       <motion.div initial={{ scale: 2.3, opacity: 0, rotate: -22 }} animate={{ scale: 1, opacity: 1, rotate: -7 }} transition={{ type: 'spring', stiffness: 540, damping: 19 }}>
-                        <GotouchiStamp city={c.to} size={150} />
+                        <GotouchiStamp city={c.to} size={156} />
                       </motion.div>
-                      <CapsuleConfetti fireKey={c.mood >= 1 ? 1 : 0} />
+                      <CapsuleConfetti fireKey={c.mood >= 1 && !isHit(c) ? 1 : 0} />
                     </>
                   )}
                 </div>
@@ -130,38 +208,181 @@ export function GachaShow({ c, onDone }: { c: Comparison; onDone: () => void }) 
               </motion.div>
             )}
           </AnimatePresence>
-          <div className="absolute left-0 top-[68px]">
-            <CapsuleBottom size={S} color={look.capsule} />
+          <div className="absolute left-0 top-[74px]">
+            <CapsuleBottom size={150} color={look.capsule} level={c.to.level} />
           </div>
         </motion.div>
+      )}
+      <AnimatePresence>
+        {at('stamp') && (
+          <motion.p
+            aria-hidden
+            className="va-pop absolute right-2 top-[118px] z-40 rotate-[10deg] text-[40px] leading-none text-[var(--red)]"
+            style={{ WebkitTextStroke: '2px var(--ink)', paintOrder: 'stroke' }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: [0, 1.25, 1], opacity: 1 }}
+            transition={{ duration: 0.4, times: [0, 0.6, 1] }}
+          >
+            ポン！
+          </motion.p>
+        )}
+      </AnimatePresence>
+      <Caption text={caption} top={at('lift') ? 590 : 296} />
+    </>
+  )
+}
 
-        {/* 取り出し口のふた（カプセルの下側をかくす） */}
-        <div aria-hidden className="absolute left-1/2 top-[402px] z-20 h-[50px] w-[266px] -translate-x-1/2 rounded-[16px] border-[3px] border-[var(--ink)] bg-[var(--metal)]">
-          <div className="absolute inset-x-5 top-2 h-2 rounded-full bg-white/80" />
-          <p className="absolute inset-x-0 bottom-1.5 text-center text-[11px] font-black text-[var(--ink-soft)]">とりだしぐち</p>
-        </div>
+/* ───────── いくつも（えらんでくらべる） ───────── */
 
-        {/* ポン！ */}
-        <AnimatePresence>
-          {at('stamp') && (
-            <motion.p
-              aria-hidden
-              className="va-pop absolute -right-1 top-[86px] z-30 rotate-[10deg] text-[38px] leading-none text-[var(--red)]"
-              style={{ WebkitTextStroke: '2px var(--ink)', paintOrder: 'stroke' }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: [0, 1.25, 1], opacity: 1 }}
-              transition={{ duration: 0.4, times: [0, 0.6, 1] }}
+const STEP_MS = 450
+
+function ShowMany({ list, finish }: { list: Comparison[]; finish: () => void }) {
+  const n = list.length
+  const [phase, setPhase] = useState<number[]>(() => list.map(() => 0)) // 0 窓の中 / 1 落ちる / 2 取り出し口 / 3 棚
+  const [turning, setTurning] = useState(true)
+  const [done, setDone] = useState(false)
+  useEffect(() => {
+    const t: number[] = [window.setTimeout(() => setTurning(false), 650)]
+    const set = (i: number, v: number) => setPhase((p) => p.map((x, j) => (j === i ? v : x)))
+    list.forEach((_, i) => {
+      const t0 = 700 + i * STEP_MS
+      t.push(window.setTimeout(() => set(i, 1), t0))
+      t.push(window.setTimeout(() => set(i, 2), t0 + 240))
+      t.push(window.setTimeout(() => set(i, 3), t0 + 520))
+    })
+    const end = 700 + (n - 1) * STEP_MS + 880
+    t.push(window.setTimeout(() => setDone(true), end))
+    t.push(window.setTimeout(finish, end + 700))
+    return () => t.forEach((x) => window.clearTimeout(x))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const spots = frontSpots(n, DOME.h)
+  const shelfY = 600
+  const slotX = (i: number) => SW / 2 + (i - (n - 1) / 2) * 66
+  const latest = phase.reduce((a, p, i) => (p >= 1 ? i : a), -1)
+  const caption = done ? 'そろった！ くらべ棚へ' : turning ? 'ガチャ ガチャ…' : latest >= 0 ? `${list[latest].to.name}！` : 'ガチャ…'
+  const CAP = 56
+  return (
+    <>
+      <p className="va-sr" aria-live="polite">
+        {done ? `${n}個のカプセルが、くらべ棚にそろいました` : '入れたカプセルが、順に出てきます'}
+      </p>
+      <MachineBody
+        turning={turning}
+        dim
+        mix={{ detailed: 1, pref: 1, basic: 1 }}
+        outlet={list.map((c, i) =>
+          phase[i] === 2 ? (
+            <motion.div
+              key={c.to.id}
+              className="absolute"
+              style={{ left: OUT.w / 2 - CAP / 2, top: OUT.h - CAP - 6, width: CAP, height: CAP }}
+              initial={{ x: -140, rotate: -280 }}
+              animate={{ x: 0, rotate: 0, y: [0, -8, 0] }}
+              transition={{ duration: 0.26, ease: 'easeOut' }}
             >
-              ポン！
-            </motion.p>
-          )}
-        </AnimatePresence>
+              <NamedCap c={c} size={CAP} />
+            </motion.div>
+          ) : null,
+        )}
+      >
+        {list.map((c, i) =>
+          phase[i] <= 1 ? (
+            <motion.div
+              key={c.to.id}
+              className="absolute"
+              style={{ left: spots[i].x - 30, top: spots[i].y - 30, width: 60, height: 60 }}
+              animate={phase[i] === 1 ? { y: 110, rotate: 30 } : turning ? { y: [0, -5, 0], rotate: [0, (i % 2 ? 1 : -1) * 10, 0] } : { y: 0 }}
+              transition={phase[i] === 1 ? { duration: 0.24, ease: 'easeIn' } : { duration: 0.32, repeat: turning ? 1 : 0 }}
+            >
+              <NamedCap c={c} size={60} />
+            </motion.div>
+          ) : null,
+        )}
+      </MachineBody>
+
+      {/* くらべ棚 */}
+      <div className="absolute inset-x-[10px] z-10" style={{ top: shelfY + 26 }}>
+        <div className="h-[16px] rounded-[6px] border-[3px] border-[var(--ink)] bg-[#e8c48a]" />
+        <div className="mx-3 h-[10px] rounded-b-[6px] border-[3px] border-t-0 border-[var(--ink)] bg-[#c9a46a]" />
+        <p className="absolute left-2 top-[30px] rounded-[6px] border-2 border-[var(--ink)] bg-[var(--paper)] px-1.5 text-[12px] font-black">くらべ棚</p>
+      </div>
+      {list.map((c, i) =>
+        phase[i] === 3 ? (
+          <motion.div
+            key={c.to.id}
+            className="absolute z-30"
+            style={{ left: 0, top: 0, width: CAP, height: CAP, marginLeft: -CAP / 2, marginTop: -CAP / 2 }}
+            initial={{ x: OUT.left + OUT.w / 2, y: OUT.top + OUT.h - CAP / 2 - 6 }}
+            animate={{ x: slotX(i), y: [OUT.top + OUT.h - CAP / 2 - 6, OUT.top - 20, shelfY] }}
+            transition={{ x: { duration: 0.36, ease: 'easeOut' }, y: { duration: 0.36, times: [0, 0.45, 1], ease: ['easeOut', 'easeIn'] } }}
+          >
+            <NamedCap c={c} size={CAP} />
+          </motion.div>
+        ) : null,
+      )}
+      <Caption text={caption} />
+    </>
+  )
+}
+
+function Caption({ text, top = 296 }: { text: string; top?: number }) {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 z-40 flex justify-center" style={{ top }}>
+      <AnimatePresence mode="popLayout">
+        <motion.p
+          key={text}
+          className="va-pop whitespace-nowrap rounded-[14px] border-[3px] border-[var(--ink)] bg-[var(--paper)] px-3 py-1.5 text-[20px] leading-none text-[var(--ink)] shadow-[3px_4px_0_var(--ink)]"
+          initial={{ y: 12, opacity: 0, scale: 0.8 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          exit={{ y: -8, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 520, damping: 24 }}
+        >
+          {text}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  )
+}
+
+/* ───────── 外枠（とばす・読み上げ・大きさ合わせ） ───────── */
+
+export function GachaShow({ list, many = false, onDone }: { list: Comparison[]; many?: boolean; onDone: () => void }) {
+  const k = useStageScale()
+  const skipRef = useRef<HTMLButtonElement>(null)
+  const done = useRef(false)
+  const finish = () => {
+    if (done.current) return
+    done.current = true
+    onDone()
+  }
+  useEffect(() => {
+    skipRef.current?.focus({ preventScroll: true })
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && finish()
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  return (
+    <motion.div
+      className="va-dots fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label={many ? '入れたカプセルが出てくるところ' : 'カプセルが出てくるところ'}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15 }}
+    >
+      <div style={{ width: SW * k, height: SH * k }} className="relative">
+        <div className="absolute left-0 top-0 origin-top-left" style={{ width: SW, height: SH, transform: `scale(${k})` }}>
+          {many ? <ShowMany list={list} finish={finish} /> : <ShowOne c={list[0]} finish={finish} />}
+        </div>
       </div>
       <button
         ref={skipRef}
         type="button"
         onClick={finish}
-        className="va-push fixed bottom-[max(20px,env(safe-area-inset-bottom))] right-4 z-40 px-5 py-2 text-[15px] font-black"
+        className="va-push fixed bottom-[max(20px,env(safe-area-inset-bottom))] right-4 z-[60] px-5 py-2 text-[15px] font-black"
         style={{ background: 'var(--paper)' }}
       >
         とばす

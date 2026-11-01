@@ -64,7 +64,7 @@ function pile(width: number, height: number, seed: string, mix: Mix) {
   const out: { x: number; y: number; s: number; rot: number; color: string; level: DataLevel }[] = []
   const rad = 19
   let row = 0
-  for (let y = height - 14 - rad; y > 26; y -= rad * 1.62) {
+  for (let y = height - 14 - rad; y > Math.min(26, height / 2 - 6); y -= rad * 1.62) {
     const offset = row % 2 ? rad : 0
     for (let x = 22 + rad + offset; x < width - 22 - rad * 0.6; x += rad * 2.05) {
       out.push({ x: x + (r() - 0.5) * 6, y: y + (r() - 0.5) * 6, s: 0.92 + r() * 0.16, rot: (r() - 0.5) * 70, color: PALETTE[Math.floor(r() * PALETTE.length)], level: pickLevel() })
@@ -91,7 +91,7 @@ function CapsuleG({ color, level = 'detailed', r = 19 }: { color: string; level?
 // 手前に並べる「名前を書いたカプセル」の位置（窓の座標）
 export const DOME_W = 320
 export function frontSpots(n: number, height: number) {
-  const gap = n <= 3 ? 74 : n === 4 ? 66 : 58
+  const gap = n <= 3 ? 74 : n === 4 ? 64 : 54
   return Array.from({ length: n }, (_, i) => ({ x: DOME_W / 2 + (i - (n - 1) / 2) * gap, y: height - 40 }))
 }
 
@@ -109,7 +109,8 @@ export function NamedCapsuleG({ cap, r = 25 }: { cap: FrontCap; r?: number }) {
   )
 }
 
-export function Dome({ height = 150, jiggle = 0, shaking = false, mix = { detailed: 1 }, front, hideFront, className }: {
+export function Dome({ height = 150, jiggle = 0, shaking = false, mix = { detailed: 1 }, front, hideFront, dim = false, className }: {
+  dim?: boolean
   height?: number
   jiggle?: number
   shaking?: boolean
@@ -151,7 +152,7 @@ export function Dome({ height = 150, jiggle = 0, shaking = false, mix = { detail
       <rect x="12" y="8" width={W - 24} height={height - 16} rx="30" fill="#e9f7f2" />
       <g clipPath={`url(#${clip})`}>
         {caps.map((c, i) => (
-          <g key={i} transform={`translate(${c.x} ${c.y}) rotate(${c.rot}) scale(${c.s})`} opacity={front?.length ? 0.55 : 1}>
+          <g key={i} transform={`translate(${c.x} ${c.y}) rotate(${c.rot}) scale(${c.s})`} opacity={front?.length || dim ? 0.5 : 1}>
             <motion.g custom={i} animate={controls}>
               <CapsuleG color={c.color} level={c.level} />
             </motion.g>
@@ -239,7 +240,7 @@ export function MachineFront({ className, onHandle }: { className?: string; onHa
           }}
           className="relative grid h-[104px] w-[104px] place-items-center rounded-full border-[3px] border-[var(--ink)] bg-[var(--metal)]"
         >
-          <span className="absolute left-1/2 top-1/2 h-[78px] w-[78px] -translate-x-1/2 -translate-y-1/2 translate-y-[4px] rounded-full bg-[var(--ink)]" aria-hidden />
+          <span className="absolute left-[13px] top-[14px] h-[78px] w-[78px] rounded-full bg-[var(--ink)]" aria-hidden />
           <motion.span
             aria-hidden
             key={poke}

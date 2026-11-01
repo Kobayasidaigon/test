@@ -179,15 +179,14 @@ export const manNumber = (yen: number) => {
 }
 export const isHit = (c: Comparison) => c.care?.level === 'hit'
 
-// 項目ごとの金額の言い方（期間が2年以上なら「◯年でならすと」を付ける）
+// 項目ごとの金額の言い方（期間が2年以上のときは、カードの上に「◯年でならすと」を小さく添える）
 export function itemAmount(i: Breakdown, c: Comparison): { tone: Tone | 'unknown' | 'once'; text: string } {
   if (i.oneTime) return { tone: 'once', text: `一度だけ 約${yenMan(i.total ?? 0, 0)}` }
   if (i.perYear === null) return { tone: 'unknown', text: '確認中' }
   if (Math.abs(i.perYear) < 1000) return { tone: 'even', text: '差はなし' }
-  const lead = c.years > 1 ? `${c.years}年でならすと ` : ''
   return i.perYear > 0
-    ? { tone: 'plus', text: `${lead}${c.to.name}だと 年 約${yenMan(i.perYear)} 得` }
-    : { tone: 'stay', text: `${lead}${c.from.name}のままが 年 約${yenMan(-i.perYear)} お得` }
+    ? { tone: 'plus', text: `${c.to.name}だと 年 約${yenMan(i.perYear)} 得` }
+    : { tone: 'stay', text: `${c.from.name}のままが 年 約${yenMan(-i.perYear)} お得` }
 }
 
 // 棚のカプセルにそえる短い一言（確認中・配慮も見る）

@@ -125,7 +125,7 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
       <label htmlFor={`${uid}-input`} className="mb-1 block text-[13px] font-black">
         {label}
       </label>
-      <div className="flex items-center gap-2 rounded-[14px] border-[3px] border-[var(--ink)] bg-white px-2.5 shadow-[3px_4px_0_var(--ink)] focus-within:bg-[#fffbe6]">
+      <div className="va-field flex items-center gap-2 rounded-[14px] border-[3px] border-[var(--ink)] bg-white px-2.5 shadow-[3px_4px_0_var(--ink)] focus-within:bg-[#fffbe6]">
         <Pencil className="h-4 w-4 shrink-0" strokeWidth={3} aria-hidden />
         <input
           id={`${uid}-input`}
@@ -386,7 +386,7 @@ export function PickTray({ picks, onRemove }: { picks: string[]; onRemove: (id: 
                         {c.name.replace(/(市|区|町|村)$/, '')}
                       </span>
                     </div>
-                    <span className="mt-0.5 w-full truncate px-0.5 text-center text-[12px] font-black leading-tight">{c.name}</span>
+                    <span className="mt-0.5 w-full px-0.5 text-center text-[12px] font-black leading-tight [overflow-wrap:anywhere]">{c.name}</span>
                     <button
                       type="button"
                       onClick={() => onRemove(c.id)}
