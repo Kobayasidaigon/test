@@ -2,12 +2,13 @@
 // 取り出し口のふたの後ろから転がり出る（はずむのは口の中だけ）→ 取り出して、ぱかっと開く → はんこがポン。約3.5秒。とばせる。
 // えらんでくらべるでは、入れたカプセルが順に出てきて、下の「くらべ棚」に並ぶ。
 // 動きを減らす設定の人には出さない（index.tsx で切り替える）。
+// 舞台は 360×680。はんこの台紙は看板（上から約69px）の下で止め、「ポン！」は台紙の右の、暗くした窓の上に縦に出す。
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import type { Comparison } from '@/shared/types'
 import { Capsule, CapsuleBottom, CapsuleTop } from './art'
 import { CapsuleConfetti } from './confetti'
-import { isHit, lookOf } from './lib'
+import { isHit, isPending, lookOf } from './lib'
 import { DOME_W, Dome, Marquee, NamedCapsuleG, Outlet, frontSpots, type Mix } from './machine'
 import { GotouchiStamp } from './stamp'
 
@@ -99,7 +100,7 @@ type One = 'turn' | 'fall' | 'roll' | 'lift' | 'open' | 'stamp'
 const ONE: One[] = ['turn', 'fall', 'roll', 'lift', 'open', 'stamp']
 const T1 = { fall: 720, roll: 1020, lift: 1580, open: 2030, stamp: 2380, done: 3550 }
 
-function ShowOne({ c, finish }: { c: Comparison; finish: () => void }) {
+function ShowOne({ c, finish, note }: { c: Comparison; finish: () => void; note?: string }) {
   const [phase, setPhase] = useState<One>('turn')
   useEffect(() => {
     const t = [
@@ -116,10 +117,15 @@ function ShowOne({ c, finish }: { c: Comparison; finish: () => void }) {
   const at = (p: One) => ONE.indexOf(phase) >= ONE.indexOf(p)
   const look = lookOf(c.to)
   const spot = frontSpots(1, DOME.h)[0]
-  const caption = phase === 'turn' ? 'ガチャ ガチャ…' : phase === 'fall' ? 'コロン…' : phase === 'roll' ? 'ゴロン！' : phase === 'stamp' ? `${c.to.name}のカプセル！` : 'ぱかっ！'
+  const pending = isPending(c)
+  const caption =
+    phase === 'turn' ? 'ガチャ ガチャ…' : phase === 'fall' ? 'コロン…' : phase === 'roll' ? 'ゴロン！' : phase === 'stamp' ? (pending ? `${c.to.name}のカプセル` : `${c.to.name}のカプセル！`) : 'ぱかっ！'
+  // はんこを押したあとの小さな一言：中身が準備中のときは先に言う。同じ額の街がほかにもあるときは、なぜこの街かを言う
+  const sub = phase === 'stamp' ? (pending ? '中身は、まだ準備中' : note) : undefined
   const CAP = 64
   const outletCenter = { x: OUT.left + OUT.w / 2, y: OUT.top + OUT.h - CAP / 2 - 6 }
-  const center = { x: SW / 2, y: 250 }
+  // カプセルを開ける位置。台紙（高さ226）は中心から −205 まで上がるので、上端は 286−75+70−200 = 81px（看板の下）
+  const center = { x: SW / 2, y: 286 }
   return (
     <>
       <p className="va-sr" aria-live="polite">
@@ -215,19 +221,20 @@ function ShowOne({ c, finish }: { c: Comparison; finish: () => void }) {
       )}
       <AnimatePresence>
         {at('stamp') && (
+          // 台紙（x 80〜280）の右、暗くした窓の上に縦書きで。台紙・はんこ・器には重ならない
           <motion.p
             aria-hidden
-            className="va-pop absolute right-2 top-[118px] z-40 rotate-[10deg] text-[40px] leading-none text-[var(--red)]"
-            style={{ WebkitTextStroke: '2px var(--ink)', paintOrder: 'stroke' }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: [0, 1.25, 1], opacity: 1 }}
+            className="va-pop absolute z-40 text-[36px] leading-none text-[var(--yolk)]"
+            style={{ left: 293, top: 112, writingMode: 'vertical-rl', WebkitTextStroke: '7px var(--ink)', paintOrder: 'stroke', letterSpacing: '-0.04em' }}
+            initial={{ scale: 0, opacity: 0, rotate: 0 }}
+            animate={{ scale: [0, 1.3, 1], opacity: 1, rotate: [0, 6, 4] }}
             transition={{ duration: 0.4, times: [0, 0.6, 1] }}
           >
             ポン！
           </motion.p>
         )}
       </AnimatePresence>
-      <Caption text={caption} top={at('lift') ? 590 : 296} />
+      <Caption text={caption} sub={sub} top={at('lift') ? 584 : 296} />
     </>
   )
 }

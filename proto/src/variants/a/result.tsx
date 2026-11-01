@@ -1,17 +1,20 @@
 // 案A「カプセルトイ」 — 結果：カプセルの中身（はんこ・金額・家賃の目安・家族の顔・説明書・確認中・一度きり・おまけ・棚・スタンプ帳・次の一歩）
 import NumberFlow from '@number-flow/react'
 import { AnimatePresence, motion, useAnimationControls, useInView, useReducedMotion } from 'motion/react'
-import { ArrowDown, ArrowLeft, ChevronRight, ExternalLink, RotateCcw, Trash2 } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { ALL_CITIES, DATA_AS_OF, DISCLAIMER, MUNI_SOURCE, cityById, compare, everyday, moodText, yenMan } from '@/shared'
-import type { Breakdown, City, Comparison, Confidence, FamilyInput, Pride, Source } from '@/shared/types'
+import { ArrowDown, ArrowLeft, ArrowRight, ChevronRight, ExternalLink, RotateCcw, Trash2 } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react'
+import { ALL_CITIES, DATA_AS_OF, DISCLAIMER, MUNI_SOURCE, cityById, compare, yenMan } from '@/shared'
+import type { Breakdown, Care, City, Comparison, Confidence, FamilyInput, Pride, Source } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Capsule, CapsuleBottom, CapsuleTop, CharmArt, ItemIcon } from './art'
 import { FamilyCheer } from './family'
 import { Marquee } from './machine'
 import { EmptyStamp, GotouchiStamp } from './stamp'
 import { LevelTag } from './towns'
-import { TONE_BG, TONE_INK, avgLead, isHit, isSharedPride, itemAmount, levelTag, levelText, lookOf, manNumber, nextSteps, prideMotif, shelfLine, tiesAtTop, toneOf } from './lib'
+import {
+  TONE_BG, TONE_INK, avgLead, everydayText, fromHit, headlineOf, ijuPending, isHit, isPending, isSharedPride, itemAmount, levelTag, levelText, lookOf, manNumber,
+  missingText, moodLine, nextSteps, perYearChip, prefKind, prideIsPref, prideMotif, scopeOf, shelfLine, sublineOf, thinText, tiesAtTop, toneOf,
+} from './lib'
 
 /* ───────── 小さな部品 ───────── */
 
@@ -24,6 +27,25 @@ export function Conf({ c }: { c: Confidence }) {
   return <span className={cn('inline-flex shrink-0 items-center rounded-full border-2 px-1.5 py-px text-[12px] font-black leading-tight', CONF_STYLE[c])}>{c}</span>
 }
 
+// 確からしさの札の凡例（長い説明文のかわりに、3つの札をならべる）
+function ConfLegend() {
+  const rows: [Confidence, string][] = [
+    ['確認済', '公式で確かめた'],
+    ['推定', '根拠つきの見込み'],
+    ['仮置き', 'まだ確かめていない'],
+  ]
+  return (
+    <ul aria-label="数字の確からしさの札" className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+      {rows.map(([c, t]) => (
+        <li key={c} className="inline-flex items-center gap-1 text-[12.5px] font-bold text-[var(--ink-soft)]">
+          <Conf c={c} />
+          {t}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export function SectionTitle({ children, color = 'var(--yolk)', sub, id }: { children: ReactNode; color?: string; sub?: ReactNode; id?: string }) {
   return (
     <div className="mb-3">
@@ -31,7 +53,7 @@ export function SectionTitle({ children, color = 'var(--yolk)', sub, id }: { chi
         <Capsule color={color} size={26} />
         {children}
       </h2>
-      {sub && <p className="mt-1 text-[13px] font-bold leading-relaxed text-[var(--ink-soft)]">{sub}</p>}
+      {sub && <div className="mt-1 text-[13px] font-bold leading-relaxed text-[var(--ink-soft)]">{sub}</div>}
     </div>
   )
 }
@@ -151,16 +173,28 @@ const manText = (yen: number) => `${(Math.round(yen / 1000) / 10).toFixed(1)}万
 /* ───────── いちばん上のカプセル ───────── */
 
 function AmountBox({ c, input }: { c: Comparison; input: FamilyInput }) {
+  const scope = scopeOf(c)
   const tone = toneOf(c.perYear)
-  const ev = everyday(c.perYear)
-  const hit = isHit(c)
+  const ev = everydayText(c.perYear)
   const first = useMemo(() => (c.years > 1 ? compare({ ...input, years: 1 }, c.from, c.to) : null), [c, input])
   const showFirst = first && first.status !== 'unknown' && Math.abs(first.perYear - c.perYear) >= 10000
   const estimated = c.items.some((i) => !i.oneTime && i.total !== null && i.confidence !== '確認済')
   const unknownLabel = c.unknown.map((u) => u.label).join('・')
   const jump = () => document.getElementById('va-unknown')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-  if (c.status === 'unknown') {
+  // 被災した街：金額を大きく出さず、向き（得・損）も書かない
+  if (scope === 'care') {
+    return (
+      <div className="mt-3.5 rounded-[14px] border-[3px] border-[var(--stay)] bg-[var(--paper-2)] px-3 py-3">
+        <p className="text-[12.5px] font-black text-[var(--ink-soft)]">金額でのくらべ</p>
+        <p className="mt-0.5 text-[15px] font-black leading-relaxed">
+          {c.to.name}は地震のあと、くらしの状況が変わっています。金額でくらべるのは控えて、制度の中身だけを下に書いています。
+        </p>
+      </div>
+    )
+  }
+
+  if (scope === 'unknown') {
     return (
       <div className="mt-3.5 rounded-[14px] border-[3px] border-dashed border-[var(--ink)] bg-[var(--paper-2)] px-3 py-3 text-center">
         <p className="text-[12.5px] font-black text-[var(--ink-soft)]">毎年の差</p>
@@ -176,25 +210,43 @@ function AmountBox({ c, input }: { c: Comparison; input: FamilyInput }) {
     )
   }
 
-  const lead = c.status === 'partial' ? 'わかっている項目では ' : ''
+  // くわしくない街で、わかる差が1万円未満：「ほぼ0円」とは言わない
+  if (scope === 'thin') {
+    return (
+      <div className="mt-3.5 rounded-[14px] border-[3px] border-dashed border-[var(--ink)] bg-[var(--paper-2)] px-3 py-3 text-center">
+        <p className="text-[12.5px] font-black text-[var(--ink-soft)]">毎年の差</p>
+        <p className="va-pop text-[26px] leading-tight">まだ分かりません</p>
+        <p className="mt-1.5 text-left text-[13.5px] font-bold leading-relaxed">{thinText(c)}</p>
+        <p className="mt-1.5 border-t-2 border-dashed border-[var(--ink)]/30 pt-1.5 text-left text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{c.excluded}</p>
+      </div>
+    )
+  }
+
+  const lead = c.status === 'partial' ? 'わかっている項目では' : scope === 'known' ? 'わかっている制度では' : ''
   return (
-    <div className="mt-3.5 rounded-[14px] border-[3px] border-[var(--ink)] px-3 pb-3 pt-2.5" style={{ background: hit ? 'var(--paper-2)' : TONE_BG[tone] }}>
+    <div className="mt-3.5 rounded-[14px] border-[3px] border-[var(--ink)] px-3 pb-3 pt-2.5" style={{ background: TONE_BG[tone] }}>
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-2 py-0.5 text-[12px] font-black leading-tight">{c.perYearLabel}</span>
-        {!hit && tone !== 'even' && (
+        <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-2 py-0.5 text-[12px] font-black leading-tight">{perYearChip(c)}</span>
+        {tone !== 'even' && (
           <span className="rounded-full bg-[var(--ink)] px-2 py-0.5 text-[12px] font-black leading-tight text-white">{tone === 'plus' ? `${c.to.name}だと得` : `${c.from.name}のままがお得`}</span>
         )}
       </div>
       {tone === 'even' ? (
         <div className="mt-1.5">
-          <p className="text-[13px] font-black text-[var(--ink-soft)]">{lead}毎年の差は</p>
-          <p className="va-pop text-[30px] leading-tight">ほぼ 0円</p>
-          {c.status === 'ok' && <p className="text-[12.5px] font-bold text-[var(--ink-soft)]">1年で1万円もちがいません</p>}
+          <p className="text-[13px] font-black text-[var(--ink-soft)]">{lead ? `${lead}、` : ''}毎年の差は</p>
+          {c.status === 'partial' ? (
+            <p className="va-pop text-[26px] leading-tight">年1万円未満</p>
+          ) : (
+            <>
+              <p className="va-pop text-[30px] leading-tight">ほぼ 0円</p>
+              <p className="text-[12.5px] font-bold text-[var(--ink-soft)]">1年で1万円もちがいません</p>
+            </>
+          )}
         </div>
       ) : (
         <>
-          {lead && <p className="mt-1.5 text-[13px] font-black text-[var(--ink-soft)]">{lead.trim()}</p>}
-          <p className="va-pop mt-1 text-[34px] leading-none" style={{ color: hit ? 'var(--ink)' : TONE_INK[tone] }}>
+          {lead && <p className="mt-1.5 text-[13px] font-black text-[var(--ink-soft)]">{lead}</p>}
+          <p className="va-pop mt-1 text-[34px] leading-none" style={{ color: TONE_INK[tone] }}>
             <span className="text-[16px]">年 約</span>
             <CountUp yen={c.perYear} />
             <span className="text-[16px]">万円</span>
@@ -231,7 +283,10 @@ function AmountBox({ c, input }: { c: Comparison; input: FamilyInput }) {
           <Conf c="推定" /> の数字をふくみます
         </p>
       )}
-      <p className="mt-1.5 border-t-2 border-dashed border-[var(--ink)]/30 pt-1.5 text-[12.5px] font-bold leading-snug">{c.excluded}</p>
+      <p className="mt-1.5 border-t-2 border-dashed border-[var(--ink)]/30 pt-1.5 text-[12.5px] font-bold leading-snug">
+        {scope === 'known' && missingText(c)}
+        {c.excluded}
+      </p>
       {c.status === 'partial' && (
         <button type="button" onClick={jump} className="inline-flex min-h-[40px] items-center gap-1 text-left text-[13px] font-black underline decoration-2 underline-offset-4">
           確認中の項目を見る <ArrowDown className="h-3.5 w-3.5 shrink-0" strokeWidth={3} aria-hidden />
@@ -242,15 +297,15 @@ function AmountBox({ c, input }: { c: Comparison; input: FamilyInput }) {
 }
 
 // 家賃の目安：毎年の差とは別の札
-export function RentTag({ c, compact = false }: { c: Comparison; compact?: boolean }) {
+export function RentTag({ c, compact = false, className }: { c: Comparison; compact?: boolean; className?: string }) {
   const r = rentOf(c)
   if (!r) return null
   return (
-    <div className={cn('relative rounded-[12px] border-[3px] border-[var(--ink)] bg-[#fff7e0] pl-7 pr-3 py-2.5', compact ? 'mt-2' : 'mt-3')}>
+    <div className={cn('relative rounded-[12px] border-[3px] border-[var(--ink)] bg-[#fff7e0] py-2.5 pl-7 pr-3 shadow-[3px_4px_0_var(--ink)]', className)}>
       <span aria-hidden className="absolute left-2.5 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--bg)]" />
       <p className="flex flex-wrap items-center gap-x-1.5 text-[13px] font-black">
         家賃の目安
-        <span className="rounded-full border-2 border-[var(--ink)]/60 px-1.5 text-[12px] font-bold leading-tight text-[var(--ink-soft)]">上の金額とは別</span>
+        <span className="rounded-full border-2 border-[var(--ink)]/60 px-1.5 text-[12px] font-bold leading-tight text-[var(--ink-soft)]">子育ての差とは別</span>
       </p>
       <p className="mt-0.5 text-[14px] font-black leading-snug">
         {c.from.name} {r.from !== null ? `月${manText(r.from)}` : 'データなし'}
@@ -270,18 +325,20 @@ export function RentTag({ c, compact = false }: { c: Comparison; compact?: boole
   )
 }
 
-export function CareNote({ c }: { c: Comparison }) {
-  if (!c.care) return null
-  const hit = c.care.level === 'hit'
+// 災害への配慮。候補の街（c.care）にも、今の街（c.from.care）にも使う
+export function CareNote({ care, town }: { care?: Care; town?: string }) {
+  if (!care) return null
+  const hit = care.level === 'hit'
   return (
-    <aside aria-label="災害への配慮" className={cn('rounded-[14px] border-[3px] px-3 py-2.5', hit ? 'border-[var(--stay)] bg-[var(--stay-bg)]' : 'border-[var(--ink)]/40 bg-[var(--paper-2)]')}>
+    <aside aria-label={`災害への配慮${town ? `（${town}）` : ''}`} className={cn('rounded-[14px] border-[3px] px-3 py-2.5', hit ? 'border-[var(--stay)] bg-[var(--stay-bg)]' : 'border-[var(--ink)]/40 bg-[var(--paper-2)]')}>
       <div className="flex items-start gap-2">
         <ItemIcon name="care" size={30} />
         <div className="min-w-0">
-          <p className="text-[13.5px] font-black leading-relaxed">{c.care.note}</p>
+          {town && <p className="text-[12.5px] font-black text-[var(--ink-soft)]">{town}</p>}
+          <p className="text-[13.5px] font-black leading-relaxed">{care.note}</p>
           <ul className="mt-1 space-y-0.5 text-[12.5px] leading-snug">
-            {c.care.sources.map((s) => (
-              <li key={s.url}>
+            {care.sources.map((s) => (
+              <li key={s.url} className="flex min-h-[40px] items-center">
                 <SourceLink s={s} />
               </li>
             ))}
@@ -292,13 +349,14 @@ export function CareNote({ c }: { c: Comparison }) {
   )
 }
 
-export function MainCapsule({ c, input, sample }: { c: Comparison; input: FamilyInput; sample: SampleMark }) {
+export function MainCapsule({ c, input, sample, note }: { c: Comparison; input: FamilyInput; sample: SampleMark; note?: ReactNode }) {
   const reduce = useReducedMotion()
+  const scope = scopeOf(c)
   const tone = toneOf(c.perYear)
   const look = lookOf(c.to)
   const hit = isHit(c)
-  const headline = hit ? `${c.to.name}の子育ての制度` : c.headline
-  const color = hit || c.status === 'unknown' || tone === 'even' ? 'var(--ink)' : TONE_INK[tone]
+  const headline = headlineOf(c)
+  const color = scope === 'care' || scope === 'unknown' || scope === 'thin' || tone === 'even' ? 'var(--ink)' : TONE_INK[tone]
   return (
     <section aria-labelledby="va-headline" className="va-paper relative overflow-hidden px-4 pb-4 pt-3.5">
       <div className="flex flex-wrap items-center gap-1.5">
@@ -338,18 +396,38 @@ export function MainCapsule({ c, input, sample }: { c: Comparison; input: Family
         </p>
         <LevelTag city={c.to} />
       </div>
+      {/* 確認中の項目があるときは、見出しの金額が「わかる分だけ」の額だと先に言う */}
+      {c.status === 'partial' && !hit && (
+        <p className="mt-1.5 flex justify-center">
+          <span className="rounded-full border-[2.5px] border-dashed border-[var(--ink)] bg-[var(--paper-2)] px-2.5 py-0.5 text-[12.5px] font-black leading-tight">わかっている項目だけで</span>
+        </p>
+      )}
       <h1 id="va-headline" tabIndex={-1} className={cn('va-pop mt-1 text-center leading-snug outline-none [overflow-wrap:anywhere] [word-break:keep-all] focus-visible:outline-[3px] focus-visible:outline-[var(--ink)]', [...headline].length > 18 ? 'text-[21px]' : 'text-[24px]')} style={{ color }}>
         <Headline text={headline} />
       </h1>
-      <p className="mt-1.5 text-center text-[13.5px] font-bold leading-relaxed text-[var(--ink-soft)] [overflow-wrap:anywhere] [word-break:keep-all]">{c.subline}</p>
-      {c.to.level !== 'detailed' && <p className="mt-1.5 rounded-[10px] bg-[var(--paper-2)] px-2.5 py-1.5 text-center text-[12.5px] font-bold leading-snug">{c.to.name}は、{levelText(c.to)}。</p>}
+      <p className="mt-1.5 text-center text-[13.5px] font-bold leading-relaxed text-[var(--ink-soft)] [overflow-wrap:anywhere] [word-break:keep-all]">{sublineOf(c)}</p>
+      {note}
+      {(c.to.level !== 'detailed' || c.from.level !== 'detailed') && (
+        <div className="mt-1.5 space-y-0.5 rounded-[10px] bg-[var(--paper-2)] px-2.5 py-1.5 text-center text-[12.5px] font-bold leading-snug">
+          {c.to.level !== 'detailed' && <p>{c.to.name}は、{levelText(c.to)}。</p>}
+          {c.from.level !== 'detailed' && (
+            <p>
+              {c.from.name}（今の街）は、{levelText(c.from)}。
+            </p>
+          )}
+        </div>
+      )}
       {hit && (
         <div className="mt-2.5">
-          <CareNote c={c} />
+          <CareNote care={c.care} />
+        </div>
+      )}
+      {fromHit(c) && (
+        <div className="mt-2.5">
+          <CareNote care={c.from.care} town={`今の街（${c.from.name}）について`} />
         </div>
       )}
       <AmountBox c={c} input={input} />
-      <RentTag c={c} />
     </section>
   )
 }
@@ -360,7 +438,7 @@ export function FamilyFaces({ c, input }: { c: Comparison; input: FamilyInput })
   const hit = isHit(c)
   const mood = hit && c.mood < 0 ? 0 : c.mood
   // ほぼ同じ（mood 0）でも1万円以上の差があるときは、金額の言いかえを前に置く（見出しと食いちがわないように）
-  const lead = c.status !== 'unknown' && !hit && mood === 0 && toneOf(c.perYear) !== 'even' ? `${everyday(c.perYear).month}の差。` : ''
+  const lead = c.status !== 'unknown' && !hit && mood === 0 && toneOf(c.perYear) !== 'even' ? `${everydayText(c.perYear).month}の差。` : ''
   return (
     <section aria-label="家族の顔" className="va-paper px-3 pb-4 pt-3">
       <h2 className="text-[15px] font-black">家族の顔</h2>
@@ -372,7 +450,7 @@ export function FamilyFaces({ c, input }: { c: Comparison; input: FamilyInput })
         <span aria-hidden className="absolute -top-[7px] right-[44px] h-0 w-0 border-x-[8px] border-b-[9px] border-x-transparent border-b-[var(--paper-2)]" />
         <p className="rounded-[12px] border-[3px] border-[var(--ink)] bg-[var(--paper-2)] px-3 py-2 text-[14px] font-black leading-relaxed">
           {lead}
-          {moodText(c)}
+          {moodLine(c)}
         </p>
       </div>
     </section>
@@ -383,7 +461,7 @@ export function FamilyFaces({ c, input }: { c: Comparison; input: FamilyInput })
 
 function ManualCard({ i, c, n, total }: { i: Breakdown; c: Comparison; n: number; total: number }) {
   const a = itemAmount(i, c)
-  const color = isHit(c) ? 'var(--ink)' : a.tone === 'plus' || a.tone === 'stay' || a.tone === 'even' ? TONE_INK[a.tone] : 'var(--ink)'
+  const color = a.tone === 'plus' || a.tone === 'stay' || a.tone === 'even' ? TONE_INK[a.tone] : 'var(--ink)'
   return (
     <article className="va-manual relative">
       <div className="flex items-center justify-between gap-2 rounded-t-[12px] bg-[var(--ink)] px-3 py-1 text-[12px] font-black text-white">
@@ -398,7 +476,7 @@ function ManualCard({ i, c, n, total }: { i: Breakdown; c: Comparison; n: number
               <h3 className="text-[16px] font-black leading-snug">{i.label}</h3>
               <Conf c={i.confidence} />
             </div>
-            {c.years > 1 && i.perYear !== null && Math.abs(i.perYear) >= 1000 && <p className="mt-0.5 text-[12px] font-bold text-[var(--ink-soft)]">{c.years}年でならすと</p>}
+            {c.years > 1 && a.tone !== 'care' && i.perYear !== null && Math.abs(i.perYear) >= 1000 && <p className="mt-0.5 text-[12px] font-bold text-[var(--ink-soft)]">{c.years}年でならすと</p>}
             <p className="text-[16px] font-black leading-snug" style={{ color }}>
               {a.text}
             </p>
@@ -462,45 +540,57 @@ function KeyChain({ art, glyph, color, label, children }: { art: Parameters<type
 export function Omake({ c }: { c: Comparison }) {
   const city = c.to
   const look = lookOf(city)
-  const main: Pride | undefined = look.pride ?? city.pride[0]
-  const rest = city.pride.filter((p) => p !== main)
-  const title = (p: Pride) => (isSharedPride(p) ? `${city.pref}の自慢` : p.kind === 'food' || p.kind === 'craft' ? `${city.name}の名物` : `${city.name}の自慢`)
+  // キーホルダーにするのは、その街だけの名物。県全体で同じ名物（東京都の「求人の多さ」など）しかない街は、街の字のキーホルダーにする
+  const own: Pride | null = look.pride
+  const shared = city.pride.filter((p) => p !== own)
+  const title = (p: Pride) => (prideIsPref(p, city) ? `${city.pref}の自慢` : p.kind === 'food' || p.kind === 'craft' ? `${city.name}の名物` : `${city.name}の自慢`)
   return (
     <section aria-labelledby="va-omake">
       <SectionTitle id="va-omake" color={look.capsule} sub={`カプセルに入っていた、${city.name}のおまけ。押すとゆれます。`}>
         おまけ
       </SectionTitle>
-      <KeyChain art={main ? prideMotif(main) : null} glyph={look.glyph} color={look.capsule} label={main ? main.label : city.name}>
-        {main ? (
+      <KeyChain art={own ? prideMotif(own) : null} glyph={look.glyph} color={look.capsule} label={own ? own.label : `${look.glyph}の字`}>
+        {own ? (
           <>
-            <p className="text-[12px] font-black text-[var(--ink-soft)]">{title(main)}</p>
+            <p className="text-[12px] font-black text-[var(--ink-soft)]">{title(own)}</p>
             <div className="flex flex-wrap items-center gap-1.5">
-              <h3 className="text-[17px] font-black leading-snug">{main.label}</h3>
-              <Conf c={main.confidence} />
+              <h3 className="text-[17px] font-black leading-snug">{own.label}</h3>
+              <Conf c={own.confidence} />
             </div>
-            <p className="mt-0.5 text-[14px] leading-relaxed">{main.fact}</p>
-            {main.source && (
+            <p className="mt-0.5 text-[14px] leading-relaxed">{own.fact}</p>
+            {own.source && (
               <p className="mt-1 text-[12.5px] leading-snug">
-                <SourceLink s={main.source} />
+                <SourceLink s={own.source} />
               </p>
             )}
           </>
         ) : (
           <>
-            <p className="text-[12px] font-black text-[var(--ink-soft)]">{city.name}のことば</p>
-            <p className="mt-0.5 text-[15px] font-black leading-relaxed">「{city.phrase || city.name}」</p>
-            <p className="mt-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">名物はまだ調べていません。街のキャッチフレーズを入れました。</p>
+            <p className="text-[12px] font-black text-[var(--ink-soft)]">{city.name}のおまけ</p>
+            <h3 className="text-[17px] font-black leading-snug">「{look.glyph}」の字のキーホルダー</h3>
+            {city.phrase && <p className="mt-0.5 text-[15px] font-black leading-relaxed">「{city.phrase}」</p>}
+            <p className="mt-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">
+              {city.phrase ? `${city.name}のキャッチフレーズです。` : ''}
+              {city.name}だけの名物は、まだ調べていません。
+            </p>
           </>
         )}
-        {rest.map((p) => (
-          <p key={p.label} className="mt-2 rounded-[10px] bg-[var(--paper-2)] px-2.5 py-1.5 text-[13px] leading-relaxed">
-            <span className="font-black">
-              {title(p)}：{p.label}
-            </span>{' '}
-            {p.fact}
-          </p>
+        {shared.map((p) => (
+          <div key={p.label} className="mt-2 rounded-[10px] bg-[var(--paper-2)] px-2.5 py-1.5 text-[13px] leading-relaxed">
+            <p>
+              <span className="font-black">
+                {title(p)}：{p.label}
+              </span>
+              {isSharedPride(p) && <span className="text-[var(--ink-soft)]">（{prefKind(city.pref)}全体のこと）</span>} {p.fact}
+            </p>
+            {p.source && (
+              <p className="mt-0.5 text-[12.5px] leading-snug">
+                <SourceLink s={p.source} />
+              </p>
+            )}
+          </div>
         ))}
-        {main && city.phrase && (
+        {own && city.phrase && (
           <p className="mt-2 text-[12.5px] font-bold leading-relaxed text-[var(--ink-soft)]">
             街のことば「{city.phrase}」
           </p>
@@ -512,16 +602,23 @@ export function Omake({ c }: { c: Comparison }) {
 
 /* ───────── 中身（説明書・確認中・一度きり・おまけ） ───────── */
 
-export function CapsuleContents({ c }: { c: Comparison }) {
+export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInput }) {
   const known = c.items.filter((i) => !i.oneTime && i.total !== null)
   const once = c.items.filter((i) => i.oneTime)
+  const ijuWait = ijuPending(c, input)
+  const hit = isHit(c)
   return (
     <div className="space-y-8">
-      {c.care && !isHit(c) && <CareNote c={c} />}
+      {c.care && !hit && <CareNote care={c.care} />}
       <section aria-labelledby="va-manuals">
         <SectionTitle
           id="va-manuals"
-          sub={`項目ごとに、どちらの街がいくら得かを分けました。${c.years > 1 ? `金額は${c.years}年でならした1年あたりです。` : ''}小さな札は数字の確からしさです（確認済＝公式で確かめた／推定＝根拠つきの見込み／仮置き＝まだ確かめていない）。`}
+          sub={
+            <>
+              {hit ? '制度の中身を、項目ごとに書きました。' : `項目ごとに、どちらの街がいくら得かを分けました。${c.years > 1 ? `金額は${c.years}年でならした1年あたり。` : ''}`}
+              <ConfLegend />
+            </>
+          }
         >
           カプセルの中身
         </SectionTitle>
@@ -531,7 +628,11 @@ export function CapsuleContents({ c }: { c: Comparison }) {
           ))}
           {!known.length && (
             <p className="va-paper px-4 py-3 text-[14px] font-bold leading-relaxed">
-              {c.unknown.length ? 'わかっている項目がまだありません。下の「確認中」を見てください。' : 'この家族では、毎年の差になる制度が見つかりませんでした。'}
+              {c.unknown.length
+                ? 'わかっている項目がまだありません。下の「確認中」を見てください。'
+                : missingText(c)
+                  ? `この家族に当てはまる、わかっている制度では、差は見つかりませんでした。${missingText(c)}`
+                  : 'この家族では、毎年の差になる制度が見つかりませんでした。'}
             </p>
           )}
         </div>
@@ -566,12 +667,34 @@ export function CapsuleContents({ c }: { c: Comparison }) {
         </section>
       )}
 
-      {once.length > 0 && (
+      {(once.length > 0 || ijuWait) && (
         <section aria-labelledby="va-once">
           <SectionTitle id="va-once" color="var(--yolk)" sub="引っ越したときに一度だけもらえるお金です。毎年の差とは別に数えていて、家族の顔にも、並び順にも入れていません。">
             一度きりのお金
           </SectionTitle>
           <div className="space-y-3">
+            {ijuWait && (
+              <article className="rounded-[18px] border-[3px] border-dashed border-[var(--ink)] bg-[var(--paper-2)] px-3.5 pb-3 pt-3">
+                <div className="flex items-start gap-3">
+                  <ItemIcon name="iju" size={44} />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <h3 className="text-[16px] font-black leading-snug">移住支援金（一度きり）</h3>
+                      <span className="rounded-full border-2 border-dashed border-[var(--ink)] px-1.5 text-[12px] font-black">準備中</span>
+                    </div>
+                    <p className="text-[12.5px] font-bold text-[var(--ink-soft)]">かかわる人：家族みんな</p>
+                  </div>
+                </div>
+                <p className="mt-2 text-[14px] leading-relaxed">
+                  23区から{c.to.name}へ移るとき、移住支援金の対象になるかは、まだ調べていません。「ない」という意味ではありません。{c.to.name}のページで確かめてください。
+                </p>
+                {c.to.url && (
+                  <p className="mt-1 flex min-h-[40px] items-center text-[12.5px] leading-snug">
+                    <SourceLink s={{ label: `${c.to.name}の公式サイト`, url: c.to.url }} />
+                  </p>
+                )}
+              </article>
+            )}
             {once.map((i) => (
               <article key={i.key} className="rounded-[18px] border-[3px] border-[var(--ink)] bg-[var(--paper)] px-3.5 pb-2 pt-3 shadow-[3px_4px_0_var(--ink)]" style={{ outline: '3px dashed var(--yolk-deep)', outlineOffset: -9 }}>
                 <div className="flex items-start gap-3">
@@ -603,56 +726,120 @@ export function CapsuleContents({ c }: { c: Comparison }) {
 
 /* ───────── 棚とスタンプ帳 ───────── */
 
+// 棚のカプセルの読み上げ（くわしさ・確認中の項目・一度きりも言う）
+export function shelfAria(r: Comparison, tag?: string | null) {
+  const body = isHit(r) ? '地震で被害を受けた街なので、得・損は出していません' : `${r.status === 'partial' ? 'わかっている項目だけで、' : ''}${headlineOf(r)}`
+  const miss = r.unknown.length && !isHit(r) ? `。確認中の${r.unknown.map((u) => u.label).join('・')}は入っていません` : ''
+  return `${r.to.pref}${r.to.name}（${levelTag(r.to)}）：${body}${miss}${r.oneTime ? `。一度きり 最大 約${yenMan(r.oneTime, 0)}` : ''}${tag ? `。${tag}` : ''}`
+}
+
+// 値札（「わかる分で」の小さな前置きつき）
+function PriceTag({ r, className }: { r: Comparison; className?: string }) {
+  const line = shelfLine(r)
+  const color = line.tone === 'plus' || line.tone === 'stay' ? TONE_INK[line.tone] : 'var(--ink-soft)'
+  const dashed = line.tone === 'unknown' || line.tone === 'care'
+  return (
+    <span
+      className={cn('relative inline-block -rotate-2 rounded-[6px] border-2 bg-white px-1.5 pb-0.5 pt-1 text-center text-[12px] font-black leading-tight', dashed ? 'border-dashed border-[var(--ink)]' : 'border-[var(--ink)]', className)}
+      style={{ color }}
+    >
+      <span aria-hidden className="absolute -top-[5px] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border-2 border-[var(--ink)] bg-[var(--paper)]" />
+      {line.part && <span className="block text-[12px] text-[var(--ink-soft)]">わかる分で</span>}
+      {line.l1}
+      {line.l2 && <br />}
+      {line.l2}
+    </span>
+  )
+}
+
 export function Shelf({ ranked, sel, onSelect, limit = 12 }: { ranked: Comparison[]; sel: number; onSelect: (i: number) => void; limit?: number }) {
   const [all, setAll] = useState(false)
+  const [groupAll, setGroupAll] = useState(false)
   const ties = tiesAtTop(ranked)
-  const list = all ? ranked : ranked.slice(0, limit)
+  // 同じ額が3個以上続くときは、1枚の棚板にまとめて、値札も1枚にする
+  const group = ties >= 3 ? ties : 0
+  const GROUP_SHOWN = 8
+  const groupList = ranked.slice(0, group)
+  const groupShown = groupAll || sel >= GROUP_SHOWN ? groupList : groupList.slice(0, GROUP_SHOWN)
+  const rest = ranked.slice(group)
+  const restLimit = Math.max(4, limit - Math.min(group, GROUP_SHOWN))
+  const restShown = all ? rest : rest.slice(0, restLimit)
+  const top = ranked[0]
   return (
-    <div>
-      <ul className="va-shelf -mx-1 flex overflow-x-auto px-1 pb-1 pt-3 lg:grid lg:grid-cols-[repeat(auto-fill,minmax(112px,1fr))] lg:overflow-visible">
-        {list.map((r, i) => {
-          const on = i === sel
-          const line = shelfLine(r)
-          const tag = i === 0 && ties === 1 ? 'いちばん上' : ties > 1 && i < ties && r.status !== 'unknown' ? '同じ額' : null
-          const labelColor = line.tone === 'plus' || line.tone === 'stay' ? TONE_INK[line.tone] : 'var(--ink-soft)'
-          return (
-            <li key={r.to.id} className="va-plank flex w-[124px] shrink-0 snap-start flex-col items-center px-1 pb-3 pt-1 lg:w-auto">
-              <button
-                type="button"
-                onClick={() => onSelect(i)}
-                aria-pressed={on}
-                aria-label={`${r.to.pref}${r.to.name}（${levelTag(r.to)}）：${isHit(r) ? '損得の演出は出していません' : r.headline}${r.oneTime ? `。一度きり 最大 約${yenMan(r.oneTime, 0)}` : ''}${r.unknown.length ? '。確認中の項目あり' : ''}${tag ? `。${tag}` : ''}`}
-                className={cn('relative flex w-full flex-col items-center rounded-[14px] px-1 pb-1.5 pt-2.5 text-center transition-colors', on ? 'bg-[var(--yolk)] shadow-[0_0_0_3px_var(--ink)]' : 'hover:bg-white/70')}
-              >
-                {tag && (
-                  <span className={cn('absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-[var(--ink)] px-1.5 text-[12px] font-black', tag === 'いちばん上' ? 'bg-[var(--red)] text-white' : 'bg-[var(--paper)]')}>
-                    {tag}
-                  </span>
-                )}
-                <Capsule color={lookOf(r.to).capsule} level={r.to.level} size={50} />
-                <span className="mt-0.5 text-[12px] font-bold leading-none text-[var(--ink-soft)]">{r.to.pref}</span>
-                <span className="text-[15px] font-black leading-tight">{r.to.name}</span>
-                {/* 値札 */}
-                <span className="relative mt-1.5 inline-block -rotate-2 rounded-[6px] border-2 border-[var(--ink)] bg-white px-1.5 pb-0.5 pt-1 text-[12px] font-black leading-tight" style={{ color: labelColor }}>
-                  <span aria-hidden className="absolute -top-[5px] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border-2 border-[var(--ink)] bg-[var(--paper)]" />
-                  {line.l1}
-                  {line.l2 && <br />}
-                  {line.l2}
-                </span>
-                {(r.oneTime > 0 || r.unknown.length > 0) && (
-                  <span className="mt-1 flex flex-wrap justify-center gap-1">
-                    {r.oneTime > 0 && <span className="rounded-full bg-[var(--ink)] px-1.5 text-[12px] font-black text-[var(--yolk)]">一度きりあり</span>}
-                    {r.unknown.length > 0 && r.status !== 'unknown' && <span className="rounded-full border border-dashed border-[var(--ink-soft)] px-1.5 text-[12px] font-black text-[var(--ink-soft)]">確認中あり</span>}
-                  </span>
-                )}
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-      {ranked.length > limit && (
-        <button type="button" onClick={() => setAll((a) => !a)} className="mt-2 min-h-[40px] w-full rounded-[10px] border-[2.5px] border-dashed border-[var(--ink)] bg-white/60 text-[13px] font-black">
-          {all ? '棚をたたむ' : `ほかの${ranked.length - limit}個も棚に出す`}
+    <div className="space-y-4">
+      {group > 0 && top && (
+        <div className="relative rounded-[16px] border-[3px] border-[var(--ink)] bg-[var(--paper)]/70 px-2 pb-2 pt-3">
+          <div className="flex flex-wrap items-center gap-2 px-1">
+            <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-2 text-[12px] font-black">同じ額 ×{group}</span>
+            <PriceTag r={top} className="rotate-0" />
+          </div>
+          <p className="mt-1.5 px-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">くわしい街から、今の街に近い順。押すと開けます。</p>
+          <ul className="va-shelf -mx-1 mt-1 flex flex-wrap px-1 pt-1">
+            {groupShown.map((r, i) => {
+              const on = i === sel
+              return (
+                <li key={r.to.id} className="va-plank flex w-1/4 min-w-[76px] flex-col items-center px-0.5 pb-3 pt-0.5 sm:w-1/5 lg:w-1/3 xl:w-1/4">
+                  <button
+                    type="button"
+                    onClick={() => onSelect(i)}
+                    aria-pressed={on}
+                    aria-label={shelfAria(r, '同じ額')}
+                    className={cn('flex w-full flex-col items-center rounded-[12px] px-0.5 pb-1 pt-1.5 text-center transition-colors', on ? 'bg-[var(--yolk)] shadow-[0_0_0_3px_var(--ink)] [--ink-soft:var(--ink)]' : 'hover:bg-white/70')}
+                  >
+                    <Capsule color={lookOf(r.to).capsule} level={r.to.level} size={40} />
+                    <span className="mt-0.5 w-full truncate text-[13.5px] font-black leading-tight">{r.to.name}</span>
+                    <span className="text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{levelTag(r.to)}</span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+          {groupList.length > groupShown.length && (
+            <button type="button" onClick={() => setGroupAll(true)} className="mt-1 min-h-[40px] w-full rounded-[10px] border-[2.5px] border-dashed border-[var(--ink)] bg-white/60 text-[13px] font-black">
+              同じ額の街を、あと{groupList.length - groupShown.length}個見る
+            </button>
+          )}
+        </div>
+      )}
+      {restShown.length > 0 && (
+        <ul className="va-shelf -mx-1 flex overflow-x-auto px-1 pb-1 pt-3 lg:grid lg:grid-cols-[repeat(auto-fill,minmax(112px,1fr))] lg:overflow-visible">
+          {restShown.map((r, k) => {
+            const i = k + group
+            const on = i === sel
+            const tag = i === 0 && ties === 1 ? 'いちばん上' : ties === 2 && i < 2 ? '同じ額' : null
+            return (
+              <li key={r.to.id} className="va-plank flex w-[124px] shrink-0 snap-start flex-col items-center px-1 pb-3 pt-1 lg:w-auto">
+                <button
+                  type="button"
+                  onClick={() => onSelect(i)}
+                  aria-pressed={on}
+                  aria-label={shelfAria(r, tag)}
+                  className={cn('relative flex w-full flex-col items-center rounded-[14px] px-1 pb-1.5 pt-2.5 text-center transition-colors', on ? 'bg-[var(--yolk)] shadow-[0_0_0_3px_var(--ink)] [--ink-soft:var(--ink)]' : 'hover:bg-white/70')}
+                >
+                  {tag && (
+                    <span className={cn('absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-[var(--ink)] px-1.5 text-[12px] font-black', tag === 'いちばん上' ? 'bg-[var(--red)] text-white' : 'bg-[var(--paper)]')}>
+                      {tag}
+                    </span>
+                  )}
+                  <Capsule color={lookOf(r.to).capsule} level={r.to.level} size={50} />
+                  <span className="mt-0.5 text-[12px] font-bold leading-none text-[var(--ink-soft)]">{r.to.pref}</span>
+                  <span className="text-[15px] font-black leading-tight">{r.to.name}</span>
+                  <PriceTag r={r} className="mt-1.5" />
+                  {(r.oneTime > 0 || (r.unknown.length > 0 && r.status !== 'unknown')) && (
+                    <span className="mt-1 flex flex-wrap justify-center gap-1">
+                      {r.oneTime > 0 && <span className="rounded-full bg-[var(--ink)] px-1.5 text-[12px] font-black text-[var(--yolk)]">一度きりあり</span>}
+                      {r.unknown.length > 0 && r.status !== 'unknown' && <span className="rounded-full border border-dashed border-[var(--ink-soft)] px-1.5 text-[12px] font-black text-[var(--ink-soft)]">確認中あり</span>}
+                    </span>
+                  )}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      )}
+      {rest.length > restLimit && (
+        <button type="button" onClick={() => setAll((a) => !a)} className="min-h-[40px] w-full rounded-[10px] border-[2.5px] border-dashed border-[var(--ink)] bg-white/60 text-[13px] font-black">
+          {all ? '棚をたたむ' : `ほかの${rest.length - restLimit}個も棚に出す`}
         </button>
       )}
     </div>
@@ -720,8 +907,8 @@ export function StampBook({ ids, waiting = [], onClear }: { ids: string[]; waiti
 
 /* ───────── 次の一歩・PR・ご注意 ───────── */
 
-export function NextStepsBox({ c, others }: { c: Comparison; others: number }) {
-  const steps = nextSteps(c, others)
+export function NextStepsBox({ c, others, input }: { c: Comparison; others: number; input?: FamilyInput }) {
+  const steps = nextSteps(c, others, input)
   return (
     <section aria-labelledby="va-next">
       <SectionTitle id="va-next" color="var(--mint)">
@@ -765,17 +952,17 @@ export function Notice() {
       <p className="mt-1">データは{DATA_AS_OF}時点。上の金額は子育ての制度の差だけで、家賃・通勤費・税金は入っていません（家賃は目安として別に出しています）。</p>
       <p className="mt-1">入力した家族のことは、この端末の中だけで使い、どこにも送りません。出てくる街は計算で決まり、くじではありません。</p>
       <p className="mt-2 font-black">出典</p>
-      <ul className="mt-0.5 space-y-0.5">
-        <li>
+      <ul className="mt-0.5">
+        <li className="flex min-h-[40px] items-center py-1">
           <SourceLink s={MUNI_SOURCE} />
         </li>
         {CFA && (
-          <li>
+          <li className="flex min-h-[40px] items-center py-1">
             <SourceLink s={{ ...CFA, label: `${CFA.label}を加工して作成` }} />
           </li>
         )}
         {ESTAT && (
-          <li>
+          <li className="flex min-h-[40px] items-center py-1">
             <SourceLink s={{ ...ESTAT, label: ESTAT.label.includes('加工') ? ESTAT.label : `${ESTAT.label}を加工して作成` }} />
           </li>
         )}
@@ -812,32 +999,78 @@ export function ResultHeader({ onBack, backLabel = '条件を変える' }: { onB
 
 /* ───────── 結果の画面（おまかせ） ───────── */
 
-export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, sample, book, onClearBook }: {
+export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoPick, sample, book, onClearBook }: {
   input: FamilyInput
   ranked: Comparison[]
   sel: number
   onSelect: (i: number) => void
   onRetry: () => void
   onRestart: () => void
+  onGoPick?: () => void
   sample: SampleMark
   book: string[]
   onClearBook: () => void
 }) {
   const c = ranked[sel]
   const ties = tiesAtTop(ranked)
+  const allPending = ranked.every(isPending)
+  const jumpShelf = () => document.getElementById('va-shelf')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  // 同じ額の街がほかにもあるときは、なぜこの街が出たのかを見出しの下に書く
+  const tieNote =
+    ties > 1 && sel < ties ? (
+      <p className="mt-1.5 text-center text-[12.5px] font-bold leading-snug">
+        同じ額の街が、ほかに{ties - 1}個あります。
+        <button type="button" onClick={jumpShelf} className="inline-flex min-h-[32px] items-center font-black underline decoration-2 underline-offset-4">
+          棚で見る
+        </button>
+      </p>
+    ) : undefined
   return (
     <div className="mx-auto w-full max-w-[1280px] px-3 pb-10 pt-3 sm:px-4">
       <ResultHeader onBack={onRetry} />
+      {allPending && onGoPick && (
+        <div className="mx-auto mb-4 flex max-w-[520px] flex-col gap-2 rounded-[16px] border-[3px] border-dashed border-[var(--ink)] bg-[var(--paper)] px-3.5 py-3 lg:max-w-none lg:flex-row lg:items-center lg:justify-between">
+          <p className="text-[14px] font-bold leading-relaxed">
+            この台の街は、どれも保育料などが<span className="font-black">まだ準備中</span>でした。はんこと、家賃・医療費の目安は見られます。
+          </p>
+          <button type="button" onClick={onGoPick} className="va-push inline-flex min-h-[44px] shrink-0 items-center justify-center gap-1.5 px-4 py-2 text-[15px] font-black">
+            くわしい街とくらべる
+            <ArrowRight className="h-4 w-4" strokeWidth={3} aria-hidden />
+          </button>
+        </div>
+      )}
       <DetailGrid
         c={c}
         input={input}
         sample={sample}
+        note={tieNote}
         side={
-          <section aria-labelledby="va-shelf">
+          <section aria-labelledby="va-shelf" className="scroll-mt-4">
             <SectionTitle
               id="va-shelf"
               color="var(--sky)"
-              sub={`ほかの候補も棚にならんでいます。押すと、そのカプセルを開けます。並び順は、毎年の差が大きい順（確認中だけの街は後ろ）。一度きりのお金は並びに入れていません。${ties > 1 ? `上の${ties}つは同じ額です。` : ''}`}
+              sub={
+                allPending ? (
+                  `${ranked.length}個とも、まだ確認中です。押すと、そのカプセルを開けます。`
+                ) : (
+                  <>
+                    押すと、そのカプセルを開けます。並びは、毎年の差が大きい順。
+                    <details className="mt-0.5">
+                      <summary className="inline-flex min-h-[36px] items-center gap-1 text-[12.5px] font-black text-[var(--ink)] underline decoration-2 underline-offset-4">
+                        <ChevronRight className="va-caret h-3.5 w-3.5 transition-transform" strokeWidth={3} aria-hidden />
+                        並び方のきまり
+                      </summary>
+                      <ul className="mt-1 space-y-0.5 rounded-[10px] bg-white/70 px-2.5 py-2 text-[12.5px] leading-relaxed text-[var(--ink)]">
+                        <li>・毎年の差（{perYearChip(c)}）が大きい順。</li>
+                        <li>・確認中だけの街と、まだ準備中の街は後ろ。</li>
+                        <li>・同じ額の街は、くわしい街から、今の街に近い順。</li>
+                        <li>・一度きりのお金（移住支援金など）は、並びに入れていません。</li>
+                        <li>・地震で大きな被害を受けた街は、並べていません。</li>
+                      </ul>
+                    </details>
+                  </>
+                )
+              }
             >
               ほかのカプセル
             </SectionTitle>
@@ -847,7 +1080,7 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, sampl
         book={<StampBook ids={book} waiting={ranked.slice(0, 6).map((r) => r.to)} onClear={onClearBook} />}
         bottom={
           <>
-            <NextStepsBox c={c} others={ranked.length - 1} />
+            <NextStepsBox c={c} others={ranked.length - 1} input={input} />
             <RetryButtons onRetry={onRetry} onRestart={onRestart} />
             <Notice />
           </>
@@ -857,16 +1090,41 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, sampl
   )
 }
 
-// 1440px では3列：左にカプセル（固定）、真ん中に説明書、右に棚とスタンプ帳。スマホでは1列。
-export function DetailGrid({ c, input, sample, side, book, bottom }: { c: Comparison; input: FamilyInput; sample: SampleMark; side?: ReactNode; book?: ReactNode; bottom: ReactNode }) {
+// 左の列が画面の高さに収まるときだけ、スクロールしても止まって見えるようにする（収まらないと下が切れたままになるため）
+function useFits(ref: RefObject<HTMLElement>, margin = 24) {
+  const [fits, setFits] = useState(true)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const check = () => setFits(el.offsetHeight <= window.innerHeight - margin)
+    check()
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(check) : null
+    ro?.observe(el)
+    window.addEventListener('resize', check)
+    return () => {
+      ro?.disconnect()
+      window.removeEventListener('resize', check)
+    }
+  }, [ref, margin])
+  return fits
+}
+
+// 1440px では3列：左にカプセル（収まるときだけ固定）、真ん中に家族・家賃・説明書、右に棚とスタンプ帳。スマホでは1列。
+// 家賃の目安はカプセルの外（家族の顔の下）に置く。スマホでは家族の顔が金額の箱のすぐ後に来る。
+export function DetailGrid({ c, input, sample, note, side, book, bottom }: { c: Comparison; input: FamilyInput; sample: SampleMark; note?: ReactNode; side?: ReactNode; book?: ReactNode; bottom: ReactNode }) {
+  const leftRef = useRef<HTMLDivElement>(null)
+  const fits = useFits(leftRef)
   return (
     <div className="mx-auto flex max-w-[520px] flex-col gap-6 lg:grid lg:max-w-none lg:grid-cols-[360px_minmax(0,1fr)] lg:items-start lg:gap-x-7 xl:grid-cols-[380px_minmax(0,580px)_minmax(0,1fr)]">
-      <div className="order-1 lg:sticky lg:top-3 lg:col-start-1 lg:row-span-4 lg:row-start-1">
-        <MainCapsule c={c} input={input} sample={sample} />
+      <div ref={leftRef} className={cn('order-1 lg:col-start-1 lg:row-span-4 lg:row-start-1', fits && 'lg:sticky lg:top-3')}>
+        <MainCapsule c={c} input={input} sample={sample} note={note} />
       </div>
       <div className="order-2 space-y-8 lg:col-start-2 xl:row-start-1">
-        <FamilyFaces c={c} input={input} />
-        <CapsuleContents c={c} />
+        <div className="space-y-3">
+          <FamilyFaces c={c} input={input} />
+          <RentTag c={c} />
+        </div>
+        <CapsuleContents c={c} input={input} />
       </div>
       {(side || book) && (
         <div className="order-3 space-y-8 lg:col-start-2 xl:col-start-3 xl:row-span-2 xl:row-start-1">

@@ -1,6 +1,7 @@
 // 案A「カプセルトイ」 — 見た目のための小さな道具。計算は @/shared の rank / compare / compareMany をそのまま使う。
-import { useCallback, useState } from 'react'
-import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, periodYears, yenMan } from '@/shared'
+// ここでは数字は変えない。くわしくない街（県の制度だけ／準備中）や被災した街で、言い切りすぎないための言い方だけを決める。
+import { useCallback, useEffect, useState } from 'react'
+import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, everyday, moodText, periodYears, yenMan } from '@/shared'
 import type { Breakdown, Child, City, Comparison, DataLevel, FamilyInput, Pride } from '@/shared/types'
 
 export type MotifKey = 'job' | 'kettle' | 'senbei' | 'factory' | 'rocket' | 'takoyaki' | 'corn' | 'volcano' | 'drop' | 'house' | 'pear' | 'knife'
@@ -117,9 +118,14 @@ export function lookOf(city: City): Look {
   return look
 }
 
+// 名物の説明が、街ではなく都道府県のこと（例: 北海道は農業産出額が全国1位）なら、見出しは「北海道の自慢」にする
+export const prideIsPref = (p: Pride, city: City) => isSharedPride(p) || p.fact.startsWith(city.pref)
+
 /* ───────── データの細かさ ───────── */
 
-const prefKind = (pref: string) => (pref.endsWith('都') ? '都' : pref.endsWith('道') ? '道' : pref.endsWith('府') ? '府' : '県')
+export const prefKind = (pref: string) => (pref.endsWith('都') ? '都' : pref.endsWith('道') ? '道' : pref.endsWith('府') ? '府' : '県')
+// 街の種類の字（市・区・町・村）
+export const townKind = (name: string) => (name.endsWith('区') ? '区' : name.endsWith('町') ? '町' : name.endsWith('村') ? '村' : '市')
 // 札に書く短い言葉
 export function levelTag(city: City) {
   if (city.level === 'detailed') return 'くわしい'
@@ -179,34 +185,154 @@ export const manNumber = (yen: number) => {
   return v >= 100 ? Math.round(v) : Math.round(v * 10) / 10
 }
 export const isHit = (c: Comparison) => c.care?.level === 'hit'
+// 今の街が被災した街か
+export const fromHit = (c: Comparison) => c.from.care?.level === 'hit'
+
+/* ───────── どこまで言い切れるか ─────────
+   共有の計算は、当てはまる項目が0件だと status を 'ok' にする。
+   くわしくない街（県の制度だけ／準備中）では、市の給付や保育料をまだ調べていないので、
+   差が1万円未満でも「ほぼ同じ」とは言わない（画面側で判定する）。 */
+
+// くわしくない街がからむ比べで、わかる差が1万円未満のときの、その街（候補を先に見る）
+export function thinCity(c: Comparison): City | null {
+  if (isHit(c) || c.status === 'unknown' || toneOf(c.perYear) !== 'even') return null
+  if (c.to.level !== 'detailed') return c.to
+  if (c.from.level !== 'detailed') return c.from
+  return null
+}
+// full = 両方くわしく全部わかる / known = わかる分だけの額（確認中あり、または くわしくない街） / thin / unknown / care
+export type Scope = 'full' | 'known' | 'thin' | 'unknown' | 'care'
+export function scopeOf(c: Comparison): Scope {
+  if (isHit(c)) return 'care'
+  if (c.status === 'unknown') return 'unknown'
+  if (thinCity(c)) return 'thin'
+  if (c.status === 'partial' || c.to.level !== 'detailed' || c.from.level !== 'detailed') return 'known'
+  return 'full'
+}
+// 準備中（まだ中身を比べられない）として扱うか
+export const isPending = (c: Comparison) => c.status === 'unknown' || !!thinCity(c)
+
+// まだ調べていないことの言い方（県の制度の街は「独自の制度」、準備中の街は「保育料など」）
+const notYet = (city: City) => (city.level === 'pref' ? `${city.name}独自の給付など` : `${city.name}の保育料や${townKind(city.name)}の給付`)
+
+// 見出し（共有の headline を、言い切りすぎない形に置きかえる）
+export function headlineOf(c: Comparison): string {
+  if (isHit(c)) return `${c.to.name}の子育ての制度`
+  const thin = thinCity(c)
+  if (thin) {
+    const who = thin === c.to ? thin.name : `${thin.name}（今の街）`
+    return thin.level === 'pref' ? `${who}独自の制度は、まだ調べていません` : `${who}の制度は、まだ準備中`
+  }
+  if (c.status === 'partial' && toneOf(c.perYear) === 'even') return `${c.to.name}は、わかる分では差が小さい`
+  return c.headline
+}
+export function sublineOf(c: Comparison): string {
+  if (thinCity(c)) return 'わかっている制度では、差は見つかりませんでした'
+  return c.subline
+}
+// まだ調べていないものを1文で（くわしくない街がからむとき。なければ空）
+export function missingText(c: Comparison): string {
+  const cities = [c.to, c.from].filter((x) => x.level !== 'detailed')
+  if (!cities.length) return ''
+  return `${cities.map(notYet).join('、')}は、まだ${cities.every((x) => x.level === 'pref') ? '調べていません' : '準備中です'}。`
+}
+// わかる差が見つからなかったときの1文（金額の箱・くらべ棚で使う）
+export function thinText(c: Comparison): string {
+  const cities = [c.to, c.from].filter((x) => x.level !== 'detailed')
+  const pref = cities.find((x) => x.level === 'pref')
+  const known = pref ? `国・${prefKind(pref.pref)}` : '国'
+  return `わかっている${known}の制度では、差は見つかりませんでした。${missingText(c)}`
+}
+// 家族の吹き出し（moodText をもとに、くわしくない街・被災した街・わかる分だけの比べを言いかえる）
+export function moodLine(c: Comparison): string {
+  if (isHit(c)) return '地震で被害を受けた街なので、得・損は出していません'
+  const thin = thinCity(c)
+  if (thin) return thin === c.to ? 'まだ分からないことが多い街。公式サイトで確かめよう' : '今の街のことが、まだ分かっていません。公式サイトで確かめよう'
+  if (c.status === 'partial' && c.mood === 0) return 'わかる分では、あまり変わらない。確認中の項目しだい'
+  return moodText(c)
+}
+// 読み上げ用の一文（確認中の項目も言う）
+export function spoken(c: Comparison): string {
+  if (isHit(c)) return `${c.to.name}のカプセル。${c.care?.note ?? ''}`
+  if (c.status === 'unknown') return `${c.headline}。まだ比べられません`
+  if (thinCity(c)) return `${headlineOf(c)}。${thinText(c)}`
+  const miss = c.unknown.length ? `。確認中の${c.unknown.map((u) => u.label).join('・')}は入っていません` : ''
+  const part = c.status === 'partial' ? 'わかっている項目だけで、' : ''
+  return `${part}${headlineOf(c)}。${perYearChip(c)}の金額です${miss}`
+}
+
+// 上の金額にそえる札（期間が1年なら「1年ぶん」）
+export const perYearChip = (c: Comparison) => (c.years <= 1 ? '1年ぶん' : c.perYearLabel)
+
+// 月・1日の言いかえ（共有の everyday を使い、4けた以上には区切りを入れる）
+export function everydayText(yearly: number) {
+  const e = everyday(yearly)
+  const comma = (s: string) => s.replace(/\d{4,}/g, (n) => Number(n).toLocaleString('ja-JP'))
+  return { month: comma(e.month), day: comma(e.day) }
+}
 
 // 項目ごとの金額の言い方（期間が2年以上のときは、カードの上に「◯年でならすと」を小さく添える）
-export function itemAmount(i: Breakdown, c: Comparison): { tone: Tone | 'unknown' | 'once'; text: string } {
+export function itemAmount(i: Breakdown, c: Comparison): { tone: Tone | 'unknown' | 'once' | 'care'; text: string } {
   if (i.oneTime) return { tone: 'once', text: `一度だけ 約${yenMan(i.total ?? 0, 0)}` }
   if (i.perYear === null) return { tone: 'unknown', text: '確認中' }
   if (Math.abs(i.perYear) < 1000) return { tone: 'even', text: '差はなし' }
+  // 被災した街では、得・損の向きの言葉を使わず、どちらの制度の中身かだけを書く
+  if (isHit(c)) return { tone: 'care', text: `${(i.perYear > 0 ? c.to : c.from).name}の制度のほうが手厚い` }
   return i.perYear > 0
     ? { tone: 'plus', text: `${c.to.name}だと 年 約${yenMan(i.perYear)} 得` }
     : { tone: 'stay', text: `${c.from.name}のままが 年 約${yenMan(-i.perYear)} お得` }
 }
 
-// 棚のカプセルにそえる短い一言（確認中・配慮も見る）
-export function shelfLine(c: Comparison): { l1: string; l2: string; tone: Tone | 'unknown' | 'care' } {
-  if (isHit(c)) return { l1: '損得の演出は', l2: '出していません', tone: 'care' }
+// 棚のカプセルにそえる短い一言（確認中・準備中・配慮も見る）。part は「わかる分で」の小さな前置き
+export function shelfLine(c: Comparison): { l1: string; l2: string; tone: Tone | 'unknown' | 'care'; part?: boolean } {
+  if (isHit(c)) return { l1: '地震の配慮で', l2: '得・損は出さない', tone: 'care' }
   if (c.status === 'unknown') return { l1: 'まだ', l2: '確認中', tone: 'unknown' }
+  const thin = thinCity(c)
+  if (thin) return { l1: 'まだ', l2: thin.level === 'pref' ? '調べ中' : '準備中', tone: 'unknown' }
   const t = toneOf(c.perYear)
-  if (t === 'even') return { l1: 'ほぼ同じ', l2: c.status === 'partial' ? '（わかる分で）' : '', tone: t }
-  if (t === 'plus') return { l1: 'この街だと', l2: `年${yenMan(c.perYear)}得`, tone: t }
-  return { l1: 'いまの街が', l2: `年${yenMan(-c.perYear)}お得`, tone: t }
+  const part = c.status === 'partial'
+  if (t === 'even') return { l1: part ? 'わかる分は' : 'ほぼ同じ', l2: part ? '差が小さい' : '', tone: t }
+  if (t === 'plus') return { l1: 'この街だと', l2: `年${yenMan(c.perYear)}得`, tone: t, part }
+  return { l1: 'いまの街が', l2: `年${yenMan(-c.perYear)}お得`, tone: t, part }
 }
 
-// 同じ額の街がいくつ並んでいるか（「いちばん上」を付けるかどうか）
+// 上から同じ額の街がいくつ続くか（確認中・準備中・配慮の街は数えない）
 export function tiesAtTop(ranked: Comparison[]) {
   if (!ranked.length) return 0
   const top = ranked[0]
-  if (top.status === 'unknown') return ranked.length
-  return ranked.filter((r) => r.status !== 'unknown' && Math.abs(r.perYear - top.perYear) < 1000).length
+  if (isPending(top) || isHit(top)) return 0
+  let n = 0
+  for (const r of ranked) {
+    if (isPending(r) || Math.abs(r.perYear - top.perYear) >= 1000) break
+    n++
+  }
+  return n
 }
+
+// 同じ額の街の並べ方：共有の並び（毎年の差が大きい順）はそのまま。同じ額のなかだけ、
+// 一度きりのお金がある街 → くわしい街 → 県の制度 → 準備中、そのなかは今の街から近い順にする
+const LEVEL_RANK: Record<DataLevel, number> = { detailed: 0, pref: 1, basic: 2 }
+export function settleTies(list: Comparison[]): Comparison[] {
+  const out = [...list]
+  const cls = (c: Comparison) => (c.status === 'unknown' ? 1 : 0)
+  let i = 0
+  while (i < out.length) {
+    let j = i + 1
+    while (j < out.length && cls(out[j]) === cls(out[i]) && Math.abs(out[j].perYear - out[i].perYear) < 1000) j++
+    if (j - i > 1) {
+      const seg = out
+        .slice(i, j)
+        .sort((a, b) => b.oneTime - a.oneTime || LEVEL_RANK[a.to.level] - LEVEL_RANK[b.to.level] || (a.distanceKm ?? 1e9) - (b.distanceKm ?? 1e9))
+      out.splice(i, j - i, ...seg)
+    }
+    i = j
+  }
+  return out
+}
+
+// 移住支援金：23区から東京圏の外へ移る家族で、まだ調べていない街（くわしい街以外）は「準備中」
+export const ijuPending = (c: Comparison, input: FamilyInput) =>
+  c.from.region === 'tokyo23' && c.to.level !== 'detailed' && c.to.metro !== 'shutoken' && input.work !== 'part' && !c.items.some((i) => i.key === 'iju')
 
 /* ───────── 次の一歩（結果に合わせて、最大3つ） ───────── */
 
@@ -215,23 +341,35 @@ export interface NextStep {
   href?: string
   link?: string
 }
-export function nextSteps(c: Comparison, others = 0): NextStep[] {
+export function nextSteps(c: Comparison, others = 0, input?: FamilyInput): NextStep[] {
   const s: NextStep[] = []
   const tone = toneOf(c.perYear)
+  const thin = thinCity(c)
   if (isHit(c) && c.care) s.push({ text: `${c.to.name}の最新の状況を、公式の発表で確かめる`, href: c.care.sources[0]?.url, link: c.care.sources[0]?.label })
+  // 今の街が被災した街なら、まず公式の発表。窓口への問い合わせは勧めない
+  if (fromHit(c) && c.from.care) s.push({ text: `${c.from.name}の最新の状況を、公式の発表で確かめる`, href: c.from.care.sources[0]?.url, link: c.from.care.sources[0]?.label })
   if (c.unknown.length) {
     // どちらの街の数字が分からないかは、説明の書き出しで分かる（例: 「草加市の、この年収帯の…」）
-    const whose = [...new Set(c.unknown.map((u) => (u.plain.startsWith(c.from.name) ? c.from.name : c.to.name)))].join('と')
-    s.push({ text: `確認中の「${c.unknown.map((u) => u.label).join('・')}」を、${whose}の窓口で聞いてみる` })
+    const cities = [...new Set(c.unknown.map((u) => (u.plain.startsWith(c.from.name) ? c.from : c.to)))]
+    const ask = cities.filter((x) => x.care?.level !== 'hit')
+    const labels = c.unknown.map((u) => u.label).join('・')
+    if (ask.length) s.push({ text: `確認中の「${labels}」を、${ask.map((x) => x.name).join('と')}の窓口で聞いてみる` })
+    else s.push({ text: `確認中の「${labels}」は、${cities.map((x) => x.name).join('と')}の公式サイトの案内で確かめる`, href: cities[0]?.url, link: `${cities[0]?.name}の公式サイト` })
   }
-  if (c.to.level === 'basic' && c.to.url) s.push({ text: `${c.to.name}の子育ての制度を、公式サイトで見る`, href: c.to.url, link: `${c.to.name}の公式サイト` })
-  if (!c.unknown.length && tone === 'even') s.push({ text: '子育ての制度の差はほとんどないので、家賃・通勤・住みごこちで比べてみる' })
+  for (const x of [c.to, c.from]) {
+    if (x.level === 'basic' && x.url && x.care?.level !== 'hit' && (x === c.to || thin === x)) s.push({ text: `${x.name}の子育ての制度を、公式サイトで見る`, href: x.url, link: `${x.name}の公式サイト` })
+  }
+  if (thin && thin.level === 'pref' && thin.url) s.push({ text: `${thin.name}独自の子育ての制度を、公式サイトで見る`, href: thin.url, link: `${thin.name}の公式サイト` })
+  if (input && ijuPending(c, input)) s.push({ text: `移住支援金の対象になるかを、${c.to.name}のページで確かめる（まだ調べていません）`, href: c.to.url, link: `${c.to.name}の公式サイト` })
+  if (c.status === 'ok' && !thin && tone === 'even') s.push({ text: '子育ての制度の差はほとんどないので、家賃・通勤・住みごこちで比べてみる' })
   if (c.oneTime > 0) s.push({ text: '移住支援金の条件（対象になる人・申し込みの時期）を、市のページで確かめる' })
-  if (tone === 'stay' && c.status !== 'unknown') s.push({ text: `${c.from.name}の子育ての制度を、もれなく使えているか見直す` })
+  if (tone === 'stay' && c.status !== 'unknown' && !isHit(c)) s.push({ text: `${c.from.name}の子育ての制度を、もれなく使えているか見直す` })
   if (c.items.some((i) => i.key === 'nursery' && i.perYear !== null && Math.abs(i.perYear) >= 1000)) s.push({ text: `${c.to.name}の保育園の空きぐあいを調べる` })
   if (others > 0 && s.length < 3) s.push({ text: '棚にある、ほかのカプセルも開けてみる' })
   if (tone !== 'even' && !isHit(c)) s.push({ text: '家賃や通勤時間も、あわせて比べてみる' })
-  return s.slice(0, 3)
+  // 同じ文はひとつに
+  const seen = new Set<string>()
+  return s.filter((x) => (seen.has(x.text) ? false : (seen.add(x.text), true))).slice(0, 3)
 }
 
 /* ───────── そのほか ───────── */
@@ -249,6 +387,41 @@ export function seeded(seed: string) {
 }
 
 export const kmText = (km?: number) => (km === undefined ? '' : km < 10 ? `${Math.round(km * 10) / 10}km` : `${Math.round(km).toLocaleString('ja-JP')}km`)
+
+// 背の低い画面（iPhone SE など）か。下の帯に部品が隠れないよう、窓を細くしたり、札を小さくしたりする
+export function useShortScreen(limit = 740) {
+  const read = () => (typeof window === 'undefined' ? false : window.innerHeight < limit)
+  const [short, setShort] = useState(read)
+  useEffect(() => {
+    const f = () => setShort(read())
+    window.addEventListener('resize', f)
+    return () => window.removeEventListener('resize', f)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [limit])
+  return short
+}
+
+// 都道府県の読みがな（「ほっかいどう」「とうきょう」のように県の名前で探したときに、県の一覧を開けるように）
+const PREF_KANA: Record<string, string> = {
+  北海道: 'ほっかいどう', 青森県: 'あおもり', 岩手県: 'いわて', 宮城県: 'みやぎ', 秋田県: 'あきた', 山形県: 'やまがた', 福島県: 'ふくしま',
+  茨城県: 'いばらき', 栃木県: 'とちぎ', 群馬県: 'ぐんま', 埼玉県: 'さいたま', 千葉県: 'ちば', 東京都: 'とうきょう', 神奈川県: 'かながわ',
+  新潟県: 'にいがた', 富山県: 'とやま', 石川県: 'いしかわ', 福井県: 'ふくい', 山梨県: 'やまなし', 長野県: 'ながの', 岐阜県: 'ぎふ',
+  静岡県: 'しずおか', 愛知県: 'あいち', 三重県: 'みえ', 滋賀県: 'しが', 京都府: 'きょうと', 大阪府: 'おおさか', 兵庫県: 'ひょうご',
+  奈良県: 'なら', 和歌山県: 'わかやま', 鳥取県: 'とっとり', 島根県: 'しまね', 岡山県: 'おかやま', 広島県: 'ひろしま', 山口県: 'やまぐち',
+  徳島県: 'とくしま', 香川県: 'かがわ', 愛媛県: 'えひめ', 高知県: 'こうち', 福岡県: 'ふくおか', 佐賀県: 'さが', 長崎県: 'ながさき',
+  熊本県: 'くまもと', 大分県: 'おおいた', 宮崎県: 'みやざき', 鹿児島県: 'かごしま', 沖縄県: 'おきなわ',
+}
+const toHira = (s: string) => s.normalize('NFKC').replace(/[ァ-ヶ]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60)).replace(/\s+/g, '')
+// 書いた文字が都道府県の名前・読みに当たるなら、その都道府県（2文字以上から）
+export function prefsFor(query: string): string[] {
+  const q = toHira(query)
+  if ([...q].length < 2) return []
+  return PREFS.filter((p) => {
+    const bare = p.replace(/(都|道|府|県)$/, '')
+    const kana = PREF_KANA[p] ?? ''
+    return p.startsWith(q) || bare.startsWith(q) || q.startsWith(bare) || kana.startsWith(q) || (q.length >= 3 && q.startsWith(kana))
+  }).slice(0, 3)
+}
 
 // スタンプ帳：開けた街の id だけを、この端末に残す（家族の入力は残さない）
 const BOOK_KEY = 'sumumachi-gacha-a:stamps'
