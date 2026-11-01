@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-11-01",
+  "fixedAssetTaxRate": 0.014,
+  "cityPlanningTaxMaxRate": 0.003,
+  "small": { "fixed": 0.16666666666666666, "city": 0.3333333333333333 },
+  "general": { "fixed": 0.3333333333333333, "city": 0.6666666666666666 },
+  "smallResidentialSqm": 200,
+  "residentialFloorMultiple": 10,
+  "vacantLandBurdenCap": 0.7,
+  "demolition": {
+    "wood": { "min": 30000, "max": 50000 },
+    "steel": { "min": 40000, "max": 60000 },
+    "rc": { "min": 60000, "max": 80000 },
+    "note": "PROVISIONAL"
+  },
+  "sources": []
+}

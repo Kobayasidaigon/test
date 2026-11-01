@@ -1,0 +1,6 @@
+{
+  "nagano": { "slug": "nagano", "name": "長野県", "note": "" },
+  "hyogo": { "slug": "hyogo", "name": "兵庫県", "note": "" },
+  "shizuoka": { "slug": "shizuoka", "name": "静岡県", "note": "" },
+  "tokushima": { "slug": "tokushima", "name": "徳島県", "note": "" }
+}

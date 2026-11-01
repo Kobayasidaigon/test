@@ -1,0 +1,13 @@
+{
+  "name": "akiya-sandan",
+  "private": true,
+  "type": "module",
+  "description": "空き家の算段 — 市町村の補助金と固定資産税の数字で、空き家の4つの選択肢を比べる静的サイト",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:preview": "node build.mjs --preview",
+    "serve": "node serve.mjs",
+    "check": "node check.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
