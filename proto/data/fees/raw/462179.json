@@ -1,0 +1,58 @@
+{
+  "code": "462179",
+  "pref": "鹿児島県",
+  "name": "曽於市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和7年4月分から0〜2歳児の保育料を市独自に無償化。令和9年度の【保育】利用案内〔2026年10月作成〕にも「令和７年４月から、全ての年齢で保育園、認定こども園の保育料が無償になりました」とあり、令和8年度も続いている）",
+  "period_note": "保育料は0〜5歳児すべて0円なので、所得の年度の切り替えは保育料に関係しない。0〜2歳児クラスの副食費は保育料に含まれていて、無償化により市が負担。3歳児クラス以上の副食費は施設に支払い（4月〜8月は前年度、9月〜3月は当年度の市町村民税の課税状況で免除を判定）。延長保育料などその他の費用は施設に支払う。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は全階層0円のため所得割の定義の注記はない。基準額表の階層は市町村民税所得割の額（48,600円・57,700円・77,101円・97,000円・169,000円で区切る）。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2025年4月",
+  "first_child_free_note": "「令和7年4月分から、曽於市にお住まいの0～5歳児までのすべての年齢で、保育園、認定こども園の保育料を無償化します。これまで3～5歳児までの保育料は国の政策で無償化されていましたが、0～2歳児までの保育料無償化は、曽於市独自の子育て支援策です。」（保育料・副食費のページ）。所得制限・第何子の条件はない。「0～2歳児の保育料無償化について」の表で、それまで負担のあった階層（3号 標準時間: ひとり親世帯等 5,400円、48,600円未満 11,700円、48,600〜77,101円未満 18,000円、77,101〜97,000円未満 18,000円、97,000〜169,000円未満 26,700円、169,000円以上〔6・7・8階層〕 30,500円。短時間は 5,400／11,500／17,700／17,700／26,300／30,000円）を全部0円にした。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から0〜2歳児の保育料が全員0円なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。副食費（3歳児クラス以上）の第3子免除は、2・3号では小学校就学前の子の人数で数える。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "「0～2歳児の保育料無償化について」に「①子ども医療費（18歳まで）、②学校給食費、③保育料の３つが無償化され」とある（学校給食費の対象学年・開始時期はこの資料には書かれていない。小中学校とみられるが学校給食のページは見ていない）。",
+    "source": {
+      "label": "0～2歳児の保育料無償化について（曽於市 PDF）",
+      "url": "https://www.city.soo.kagoshima.jp/kurashi/kosodatekyouiku/hoikuenn/files/hoikuryoumusyouka.pdf"
+    }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "曽於市の保育料・副食費について｜くらしの情報｜曽於市",
+      "url": "https://www.city.soo.kagoshima.jp/kurashi/kosodatekyouiku/hoikuenn/hoikuryou.html"
+    },
+    {
+      "label": "0～2歳児の保育料無償化について（PDF 198KB）",
+      "url": "https://www.city.soo.kagoshima.jp/kurashi/kosodatekyouiku/hoikuenn/files/hoikuryoumusyouka.pdf"
+    },
+    {
+      "label": "曽於市保育料・副食費基準表（PDF 60KB、保育認定〔2・3号〕の保育料は全階層0円）",
+      "url": "https://www.city.soo.kagoshima.jp/kurashi/kosodatekyouiku/hoikuenn/files/hoikuryoukizyunhyou.pdf"
+    },
+    {
+      "label": "保育所等(保育園・こども園)入所申込｜くらしの情報｜曽於市",
+      "url": "https://www.city.soo.kagoshima.jp/kurashi/kosodatekyouiku/hoikuenn/nyuusyo.html"
+    },
+    {
+      "label": "【保育】利用案内（令和９〔2027〕年度 支給認定申請・利用申込、「６ 保育料について」）",
+      "url": "https://www.city.soo.kagoshima.jp/kurashi/kosodatekyouiku/hoikuenn/files/hoiku_riyouannai.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs/00・02・03 を読み、入所申込のページの【保育】利用案内（2026年10月作成）で令和8年度も無償化が続いていることを確かめた"
+  ],
+  "notes": "0〜2歳児の保育料は市独自の無償化で全世帯0円のため table は null（無償化前の額は first_child_free_note に書いた）。",
+  "read_at": "2026-11-01"
+}

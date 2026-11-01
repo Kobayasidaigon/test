@@ -1,0 +1,50 @@
+{
+  "code": "134015",
+  "pref": "東京都",
+  "name": "八丈町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和８年度 保育園のしおり」〔PDF、2025年10月作成〕17ページ「9 保育料」。令和9年度のしおり〔2026年10月作成〕も同じ文言）",
+  "period_note": "しおり「■保育料（利用者負担額）について 現在、すべての園児の保育料が無償化されています。・3歳児から5歳児クラスの児童（国の無償化制度による）・第2子以降の児童（東京都・国の軽減制度による）・第一子の0歳児から2歳児クラス（新たに無償化の対象となる児童）」。無償化の対象外は延長保育料（1時間350円）。終わりの時期は書かれていない。",
+  "tax_basis": "6%",
+  "tax_note": "政令市ではないので6%とした。すべての園児の保育料が無償なので、階層の判定は額に影響しない。保育料の表はしおりに載っていない（過去の保育料や制度の詳細は八丈町厚生係に問い合わせ）。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "第一子の0〜2歳児クラスも「新たに無償化の対象」となり、すべての園児の保育料が無償（令和8年度・令和9年度のしおり）。東京都の第1子保育料無償化（都の制度は2025年9月開始）によるものとみられるが、八丈町での開始月はしおりに書かれていない。町立保育園の給食費も徴収せず、材料費を含め全額町が負担（一時保育などを除く）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "しおり: 第2子以降の児童は東京都・国の軽減制度で無償。第1子も無償なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子と同じ（全員0円）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和8年度（令和8年4月8日〜令和9年3月31日）、八丈町立小学校・中学校に在籍する児童・生徒の学校給食費を無償化（八丈町立小中学校給食費補助金。学校で配る委任状を提出）。令和9年度以降は未定。",
+    "source": {
+      "label": "給食無償化について – 八丈町公式サイト（更新日：2026年9月3日）",
+      "url": "https://www.town.hachijo.tokyo.jp/kosodate-kyouiku/shougaku-chuugaku/k-mushoka/"
+    }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育園のしおり – 八丈町公式サイト",
+      "url": "https://www.town.hachijo.tokyo.jp/kosodate-kyouiku/ninshin-shussan-kosodate/kosodate/chouritsu-hoikuen/hoikuen-shiori/"
+    },
+    {
+      "label": "令和８年度 保育園のしおり（PDF、17ページ「9 保育料」）",
+      "url": "https://prd-hachijo.s3.ap-northeast-1.amazonaws.com/wp-content/uploads/2026/04/18170605/%E4%BB%A4%E5%92%8C%EF%BC%98%E5%B9%B4%E5%BA%A6-%E4%BF%9D%E8%82%B2%E5%9C%92%E3%81%AE%E3%81%97%E3%81%8A%E3%82%8A.pdf"
+    },
+    {
+      "label": "令和9年度 保育園のしおり（PDF、2026年10月）",
+      "url": "https://prd-hachijo.s3.ap-northeast-1.amazonaws.com/wp-content/uploads/2026/10/26103124/R9hoikuen_shiori.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べのページ一覧から「保育園のしおり」を開き、令和8年度・令和9年度のしおり（PDF）の「9 保育料」を読んだ。保育園のページに無償化の開始月の記載はなかった"
+  ],
+  "notes": "町立保育園のみ（保育園一覧のページ）。全員0円のため保育料の表（階層）は入れていない（しおりにも載っていない）。延長保育料は1時間350円。給食費は町が全額負担。東京都の018サポート（都の制度）は町独自ではないので cash に入れていない。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}
