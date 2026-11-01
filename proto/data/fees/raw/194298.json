@@ -1,0 +1,100 @@
+{
+ "code": "194298",
+ "pref": "山梨県",
+ "name": "鳴沢村",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「鳴沢村子育て支援施策」PDF〔2025年12月作成、ページ更新日2025年12月10日〕の「保育料無料化 全村民の保育料無料」と、保育所について（令和9年度申し込みについて）のページ〔更新日2025年10月1日〕の「保育料の無償化について」）",
+ "period_note": "国の無償化（3〜5歳児と住民税非課税世帯の0〜2歳児）、山梨県のやまなし子育て応援事業（第2子以降3歳未満児無料化）の対象外の子も、村に住所があれば村の「子育ての支援のための保育料等無料化事業」で保育料が無料。所得階層は4〜8月分が前年度、9月〜翌年3月分が当年度の市町村民税所得割額で決める（未申告は最高階層）が、村民は無料なので額は変わらない。開始時期は確かめていない。",
+ "tax_basis": "6%",
+ "tax_note": "保育料は村の無料化事業で0〜2歳児も0円のため、所得割で額は変わらない。村の保育料（利用者負担額）の表は公式サイトでは見つからなかった。政令市ではないので6%。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": null,
+ "first_child_free_note": "鳴沢村子育ての支援のための保育料等無料化事業（ページ更新日2025年6月9日）: 村に住所を有する世帯で監護されている3歳未満児（年度当初に満3歳未満）の3号認定子どもの利用者負担額を無料化。所得制限なし、条件は村に住所があり現に住んでいることと村税等の滞納がないこと。鳴沢保育所・認定こども園など特定教育・保育施設は申請不要（「利用決定通知書」で知らせる）。認可外保育施設や幼稚園（満3歳未満、保護者が就労等）は月額20,000円を上限に償還払い（年2回請求）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "0〜2歳児は第1子から保育料無料のため、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。山梨県のやまなし子育て応援事業（第2子以降3歳未満児無料化）もある。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料のため0円。",
+ "lunch_jh": {
+  "free": true,
+  "note": "「給食費への支援 ③小中学校の給食費を全額助成」（アレルギー等で弁当持参の場合は費用の一部を助成）。",
+  "source": {
+   "label": "鳴沢村子育て支援施策（PDF、2025年12月）",
+   "url": "https://www.vill.narusawa.yamanashi.jp/material/files/group/6/kosodateshien.pdf"
+  }
+ },
+ "cash": [
+  {
+   "label": "家庭内保育世帯支援金（在宅保育への支援）",
+   "per_child_yearly": 240000,
+   "max_age": 3,
+   "note": "満年齢1歳の翌月から満年齢3歳に達した最初の3月31日までの児童を家庭内で保育する保護者等に、対象児童1人につき月額2万円（4〜9月分と10〜3月分の年2回申請）。保育料等無料化事業の対象者（保育所などを使う子）は対象外。村に住所があり現に住んでいること、村税等の滞納がないことが条件。",
+   "source": {
+    "label": "家庭内保育世帯支援金給付事業について／鳴沢村（更新日：2025年06月09日）",
+    "url": "https://www.vill.narusawa.yamanashi.jp/gyosei/kosodate_kyoiku_bunka/kosodate/2189.html"
+   }
+  },
+  {
+   "label": "乳幼児用おむつ用品等購入費用の助成",
+   "per_child_yearly": 36000,
+   "max_age": 1,
+   "note": "満2歳までの乳幼児のおむつ用品等を助成（3,000円/月）。現金ではなく購入費の助成。",
+   "source": {
+    "label": "鳴沢村子育て支援施策（PDF、2025年12月）",
+    "url": "https://www.vill.narusawa.yamanashi.jp/material/files/group/6/kosodateshien.pdf"
+   }
+  }
+ ],
+ "one_time": [
+  {
+   "label": "すくすく赤ちゃん育成支援金",
+   "amount": 100000,
+   "note": "新生児1人につき10万円。",
+   "source": {
+    "label": "鳴沢村子育て支援施策（PDF、2025年12月）",
+    "url": "https://www.vill.narusawa.yamanashi.jp/material/files/group/6/kosodateshien.pdf"
+   }
+  },
+  {
+   "label": "入学祝金（小学校入学時）",
+   "amount": 10000,
+   "note": "小学校入学時 10,000円/1人。",
+   "source": {
+    "label": "鳴沢村子育て支援施策（PDF、2025年12月）",
+    "url": "https://www.vill.narusawa.yamanashi.jp/material/files/group/6/kosodateshien.pdf"
+   }
+  },
+  {
+   "label": "入学祝金（中学校・高校入学時）",
+   "amount": 30000,
+   "note": "中学・高校入学時 30,000円/1人（それぞれ）。",
+   "source": {
+    "label": "鳴沢村子育て支援施策（PDF、2025年12月）",
+    "url": "https://www.vill.narusawa.yamanashi.jp/material/files/group/6/kosodateshien.pdf"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "子育ての支援のための保育料等無料化事業について／鳴沢村（更新日：2025年06月09日）",
+   "url": "https://www.vill.narusawa.yamanashi.jp/gyosei/kosodate_kyoiku_bunka/kosodate/2191.html"
+  },
+  {
+   "label": "保育所について（令和9年度申し込みについて）／鳴沢村（更新日：2025年10月01日）",
+   "url": "https://www.vill.narusawa.yamanashi.jp/gyosei/kosodate_kyoiku_bunka/narusawahoikujo/953.html"
+  },
+  {
+   "label": "鳴沢村子育て支援施策（PDF、2025年12月作成）",
+   "url": "https://www.vill.narusawa.yamanashi.jp/material/files/group/6/kosodateshien.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べは村のサイトに接続できず0ページだった。村のサイトは途中で何度か接続が切れた（ws_closed_mid_exchange）ので、15秒あけて取り直した",
+  "munis_by_pop.json の URL（forms/top/top.aspx）ではなく、www.vill.narusawa.yamanashi.jp/ のサイトマップから「子育て・教育・文化」→「子育て」「鳴沢保育所」をたどった（vill.narusawa.lg.jp は接続できなかった）"
+ ],
+ "notes": "村内の保育施設は鳴沢保育所の1か所。鳴沢保育所に通う3歳以上児の主食費・副食費は全額助成（給食費の支払いを免除）。無料化事業の要綱の文そのもの（例規集）は見ていない。",
+ "read_at": "2026-11-01"
+}

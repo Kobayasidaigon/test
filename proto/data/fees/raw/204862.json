@@ -1,0 +1,168 @@
+{
+  "code": "204862",
+  "pref": "長野県",
+  "name": "小谷村",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「保育料月額表」のページ、更新日2026年3月31日。表に年度の表示はない）",
+  "period_note": "4月から8月までの月分は前年度所得割課税額、9月から翌年3月までの月分は当該年度の所得割課税額を基に決定（保育料の切り替えは9月、4月に遡っての精算はしない）。年齢区分は入園年度の4月1日現在（年度途中入園も同じ）。",
+  "tax_basis": "6%",
+  "tax_note": "所得割課税額は地方税法第292条第1項第2号に規定するもの。計算では地方税法第314条の7・第314条の8・第314条の9・附則第5条の4第6項の規定を適用しない（税額控除を引く前の額）。保護者以外の同居家族（祖父母）が園児や保護者を扶養している場合は、その方も算定の対象となる場合がある（認定こども園のご案内）。",
+  "table": {
+    "title": "認定こども園小谷村保育園 保育料月額表（単位：円）",
+    "kind": "3歳未満（3号認定）・保育認定 長時間（標準時間）・第1子（月額）",
+    "rows": [
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2",
+        "lower": null,
+        "upper": null,
+        "condition": "村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3",
+        "lower": null,
+        "upper": null,
+        "condition": "村民税均等割課税のみの世帯",
+        "monthly": 10000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-1",
+        "lower": 0,
+        "upper": 48600,
+        "condition": "村民税所得割課税額が48,600円未満の世帯",
+        "monthly": 15000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-2",
+        "lower": 48600,
+        "upper": 97000,
+        "condition": "村民税所得割課税額が48,600円以上97,000円未満の世帯",
+        "monthly": 19000,
+        "monthly_second": null
+      },
+      {
+        "label": "第5",
+        "lower": 97000,
+        "upper": 169000,
+        "condition": "村民税所得割課税額が97,000円以上169,000円未満の世帯",
+        "monthly": 23000,
+        "monthly_second": null
+      },
+      {
+        "label": "第6",
+        "lower": 169000,
+        "upper": 301000,
+        "condition": "村民税所得割課税額が169,000円以上301,000円未満の世帯",
+        "monthly": 30000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "村民税所得割課税額が301,000円以上397,000円未満の世帯",
+        "monthly": 40000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8",
+        "lower": 397000,
+        "upper": null,
+        "condition": "村民税所得割課税額が397,000円以上の世帯",
+        "monthly": 50000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "列は「教育標準時間認定 1号認定」「保育認定 2号認定 短・長時間」「保育認定 3号認定 短時間」「保育認定 3号認定 長時間」（HTMLの表で確かめた。1号・2号は全階層0円）。3号 短時間: 第1・第2 0、第3 8,000、第4-1 13,000、第4-2 17,000、第5 21,000、第6 28,000、第7 38,000、第8 48,000。延長保育料は1時間100円（1時間を超えるごとに100円増）。備考: 母子世帯等・在宅障害児（者）のいる世帯・その他特に困窮していると教育長が認めた世帯で「所得税課税額が77,101円未満」（表の文言のまま）の場合は、表の額から第1子は半額、第2子以降は0円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満の第1子は表の額を払う（国の制度で0〜2歳の非課税世帯は無償）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の備考: 「小学校就学前の範囲内において、同一世帯から2人以上の児童が入園している場合は、最年長の児童から順に2人目は半額、3人目以降は0円とする。ただし、延長保育料は適用外とする。」移住ガイド「小谷で暮らす」（2025年5月更新）も「同一世帯から2人以上の児童が入園している場合、0〜2歳児の保育料が最年長児童から順に2人目は半額、3人目以降は0円（卒園等により入園児童が1人となった場合は、規定保育料に戻る）」。同時に入園している就学前の子だけで数える。長野県の保育料軽減事業（同時入園の要件にかかわらず第2子半額・第3子以降無償、所得割57,700円未満の世帯は第2子無償・第1子半額。県のページでは令和7年度から全市町村で支援）については、村のページ・資料に書かれていない。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "同一世帯から入園している就学前の子のうち最年長から順に3人目以降は0円（所得の区分なし）。",
+  "lunch_jh": {
+    "free": false,
+    "note": "移住ガイド「小谷で暮らす」（2025年5月更新）に「学校給食費補助: 村にて給食費に対する補助を行います。【補助額】2分の1」。",
+    "source": {
+      "label": "小谷で暮らす（小谷村 移住ガイド、PDF）",
+      "url": "https://www.vill.otari.nagano.jp/material/files/group/17/otaridekurasu.pdf"
+    }
+  },
+  "cash": [
+    {
+      "label": "小谷村 高等学校子育て応援助成金",
+      "per_child_yearly": 30000,
+      "max_age": 18,
+      "note": "高等学校等に在学している生徒の保護者に、生徒1人当たり年額3万円（高校生の年代だけ）。",
+      "source": {
+        "label": "小谷で暮らす（小谷村 移住ガイド、PDF）",
+        "url": "https://www.vill.otari.nagano.jp/material/files/group/17/otaridekurasu.pdf"
+      }
+    }
+  ],
+  "one_time": [
+    {
+      "label": "小谷村 出産祝金（第1子）",
+      "amount": 100000,
+      "note": "小谷村に住所を有する出生児の保護者に支給。第2子20万円、第3子以降30万円。",
+      "source": {
+        "label": "小谷で暮らす（小谷村 移住ガイド、PDF）",
+        "url": "https://www.vill.otari.nagano.jp/material/files/group/17/otaridekurasu.pdf"
+      }
+    },
+    {
+      "label": "小谷村 出産祝金（第2子）",
+      "amount": 200000,
+      "note": "",
+      "source": {
+        "label": "小谷で暮らす（小谷村 移住ガイド、PDF）",
+        "url": "https://www.vill.otari.nagano.jp/material/files/group/17/otaridekurasu.pdf"
+      }
+    },
+    {
+      "label": "小谷村 出産祝金（第3子以降）",
+      "amount": 300000,
+      "note": "",
+      "source": {
+        "label": "小谷で暮らす（小谷村 移住ガイド、PDF）",
+        "url": "https://www.vill.otari.nagano.jp/material/files/group/17/otaridekurasu.pdf"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "label": "保育料月額表／小谷村公式ホームページ（更新日2026年3月31日）",
+      "url": "https://www.vill.otari.nagano.jp/kosodate-kyoiku/ikuji/5/1136.html"
+    },
+    {
+      "label": "認定こども園のご案内／小谷村公式ホームページ（更新日2026年3月31日）",
+      "url": "https://www.vill.otari.nagano.jp/kosodate-kyoiku/ikuji/5/1220.html"
+    },
+    {
+      "label": "小谷で暮らす（小谷村 移住ガイド、PDF、2025年5月更新）",
+      "url": "https://www.vill.otari.nagano.jp/material/files/group/17/otaridekurasu.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "例規集（www1.g-reiki.net/vill.otari）は403で開けなかった",
+    "WebSearch（vill.otari.nagano.jp）「小谷村 保育料 第2子 第3子 軽減 同時入園 保育園」: 移住ガイドのPDFが見つかり、pdftotext で文字が出ないため pdfminer で読んだ"
+  ],
+  "notes": "表は下調べの保育料月額表のページ（同じ内容のページが2つのURLにある）を開き直し、HTMLの表の列（3号 短時間・長時間）を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。認定こども園は満1歳から受け入れ（ページの補足）。",
+  "read_at": "2026-11-01"
+}

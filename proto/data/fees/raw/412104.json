@@ -1,0 +1,57 @@
+{
+ "code": "412104",
+ "pref": "佐賀県",
+ "name": "神埼市",
+ "status": "ok",
+ "fiscal_year": "令和8年度（令和8年度保育所・認定こども園の入所・入園申込みのページと2・3号認定の利用申込案内〔2025年10月作成〕が使う「神埼市保育料基準表」。表そのものに年度の記載はなく、2023年10月と2024年10月に掲載された同じ内容のPDF。令和9年度の入園受付ページも同じ表を載せている）",
+ "period_note": "（注2）4月から8月までは前年度の市町村民税、9月から3月までは当年度の市町村民税に基づき算定。（注3）児童の年齢は4月1日の年齢で、年度途中に変わらない（年度途中の入園も同様）。年度途中で保育料が変更になる場合がある。",
+ "tax_basis": "6%",
+ "tax_note": "保護者の市町村民税額（所得割額）の合計金額で算出。住宅ローン減税や寄付金控除などを適用する前の税額（2・3号認定の利用申込案内）。政令市ではないので6%とした。",
+ "table": {
+  "title": "神埼市保育料基準表",
+  "kind": "3号認定（0〜2歳児）・標準時間・第1子（月額）",
+  "rows": [
+   {"label": "1-1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null},
+   {"label": "2-1", "lower": null, "upper": null, "condition": "市町村民税非課税世帯（ひとり親世帯等）", "monthly": 0, "monthly_second": null},
+   {"label": "2-2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "3-2", "lower": 0, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 14200, "monthly_second": null},
+   {"label": "4-2a", "lower": 48600, "upper": 57700, "condition": "48,600円以上57,700円未満", "monthly": 22000, "monthly_second": null},
+   {"label": "4-2b", "lower": 57700, "upper": 77100, "condition": "57,700円以上77,100円未満", "monthly": 22000, "monthly_second": null},
+   {"label": "4-2", "lower": 77100, "upper": 81000, "condition": "77,100円以上81,000円未満", "monthly": 22000, "monthly_second": null},
+   {"label": "4-3", "lower": 81000, "upper": 97000, "condition": "81,000円以上97,000円未満", "monthly": 26000, "monthly_second": null},
+   {"label": "5-1", "lower": 97000, "upper": 121000, "condition": "97,000円以上121,000円未満", "monthly": 31000, "monthly_second": null},
+   {"label": "5-2", "lower": 121000, "upper": 145000, "condition": "121,000円以上145,000円未満", "monthly": 33400, "monthly_second": null},
+   {"label": "5-3", "lower": 145000, "upper": 169000, "condition": "145,000円以上169,000円未満", "monthly": 37000, "monthly_second": null},
+   {"label": "6-1", "lower": 169000, "upper": 201000, "condition": "169,000円以上201,000円未満", "monthly": 41000, "monthly_second": null},
+   {"label": "6-2", "lower": 201000, "upper": 257000, "condition": "201,000円以上257,000円未満", "monthly": 43000, "monthly_second": null},
+   {"label": "6-3", "lower": 257000, "upper": 301000, "condition": "257,000円以上301,000円未満", "monthly": 45000, "monthly_second": null},
+   {"label": "7", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 54000, "monthly_second": null},
+   {"label": "8", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 64000, "monthly_second": null}
+  ],
+  "notes": "列は3号認定（0〜2歳児）の標準時間・短時間と、2号認定（3歳以上児）の標準時間・短時間（全階層0）（画像で確かめた）。第2子の額の列はなく、（注6）で2人目は半額。保育短時間: 3-2 13,900、4-2a・4-2b・4-2 21,600、4-3 25,500、5-1 30,400、5-2 32,800、5-3 36,300、6-1 40,300、6-2 42,200、6-3 44,200、7 53,000、8 62,900。ひとり親世帯等（母子〔父子〕世帯、障がい者〔児〕同居世帯）は 3-1（所得割48,600円未満）と 4-1（77,101円未満）で標準時間・短時間とも 6,200。表は「77,100円」で区切っている（4-2b は 57,700円以上77,100円未満、4-2 は 77,100円以上81,000円未満）。3歳以上児の副食費は各園で決められた金額で保護者負担あり。延長保育（18時〜19時）は別途月2,000円（申込案内）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳の第1子は課税世帯で有料（標準時間で月14,200〜64,000円）。市町村民税非課税世帯の0〜2歳児と3歳以上児は無償。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "（注6）保育認定の場合、在園児の数で人数を計算し、保育料は1人目は全額、2人目は半額、3人目以降は無償。（注7）市町村民税所得割課税額57,700円未満の世帯は、保護者と生計を一にする子どもを含めて最年長の子どもから順に1人目と数える。表に第2子の額の列はないので monthly_second は null。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "（注6）在園児の数で数えて3人目以降は無償。所得割57,700円未満の世帯は生計を一にする子どもを含めて数える（注7）。上の子の年齢を問わず第3子を無料にする市や県の独自制度は、申込みページ・申込案内・基準表には見当たらない。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和８年度保育所・認定こども園の入所・入園申込み 子育てwithねっと-神埼市", "url": "https://www.city.kanzaki.saga.jp/main/19386.html"},
+  {"label": "保育料基準表（PDF、神埼市保育料基準表、2024年10月掲載）", "url": "https://www.city.kanzaki.saga.jp/site_files/file/2024/202410/p1i9biieoj1qjr1cqi17m4lcrpitc.pdf"},
+  {"label": "2・3号認定（保育所および認定こども園（保育園の部））利用申込案内（PDF、2025年10月作成）", "url": "https://www.city.kanzaki.saga.jp/site_files/file/2025/202510/68e8bf26ba4d2b9BxTV6x.pdf"},
+  {"label": "令和９年度 保育園等の入園受付が始まります 子育てwithねっと-神埼市", "url": "https://www.city.kanzaki.saga.jp/main/4410327.html"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "同じ申込みページのもう一つの「保育料基準表」のリンク（site_files/file/2023/202310/p1hbpo5eio1qg3u733gtk2k1j624.pdf）も取ったが、文字は2024年10月のものと同じだった"
+ ],
+ "notes": "表の年度が書かれていないため、令和8年度の申込みページと申込案内が案内している表として読んだ。保育料は認可保育所は市へ、認定こども園は施設へ納付。市内の公立保育園は仁比山・西郷・ちよだ保育園など。担当はこども家庭課 保育園・認定こども園係（0952-37-3873）。",
+ "read_at": "2026-11-01"
+}

@@ -1,0 +1,56 @@
+{
+ "code": "404471",
+ "pref": "福岡県",
+ "name": "筑前町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "「令和8年度筑前町保育料徴収基準（参考）」（令和9年度保育所入所申請のご案内のページ〔更新日2026年10月1日〕に載る Excel、2026年9月保存）。4月～8月分保育料は令和7年度の市町村民税額、9月～3月分は令和8年度の市町村民税額で決定。保育料は4月1日現在の年齢で決定。月額は令和7年度の徴収基準（令和8年度入所案内のページのPDF）と全階層同じ。月途中の入所・退所は保育所の開所日数による日割。",
+ "tax_basis": "6%",
+ "tax_note": "原則保護者（父・母）の市町村民税額で決定（保護者それぞれの年間所得がともに48万円以下〔9月の切替後は58万円以下〕の場合は同居の親族の税額を算定に入れることがある）。町民税額の計算には、配当控除、外国税額控除、住宅借入金等特別控除、寄付金控除、配当割額控除、株式等譲渡所得割額控除など控除できないものがある（町のページ: 住宅取得等特別控除や配当控除、寄付金控除などの税額控除〔調整控除を除く〕は保育料の算定上反映されない）。",
+ "table": {
+  "title": "令和8年度筑前町保育料徴収基準（参考） ■2号・3号認定（保育所等） 筑前町保育料（月額） 3歳未満児",
+  "kind": "3歳未満児・保育標準時間・きょうだい軽減前（月額）",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null},
+   {"label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "C", "lower": null, "upper": null, "condition": "市町村民税均等割課税世帯", "monthly": 15600, "monthly_second": null},
+   {"label": "D1", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 19500, "monthly_second": null},
+   {"label": "D2", "lower": 48600, "upper": 77101, "condition": "48,600円以上 77,101円未満", "monthly": 27000, "monthly_second": null},
+   {"label": "D3", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 30000, "monthly_second": null},
+   {"label": "D4", "lower": 97000, "upper": 147200, "condition": "97,000円以上 147,200円未満", "monthly": 40000, "monthly_second": null},
+   {"label": "D5", "lower": 147200, "upper": 169000, "condition": "147,200円以上 169,000円未満", "monthly": 44500, "monthly_second": null},
+   {"label": "D6", "lower": 169000, "upper": 251000, "condition": "169,000円以上 251,000円未満", "monthly": 54900, "monthly_second": null},
+   {"label": "D7", "lower": 251000, "upper": 301000, "condition": "251,000円以上 301,000円未満", "monthly": 61000, "monthly_second": null},
+   {"label": "D8", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 80000, "monthly_second": null},
+   {"label": "D9", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 84000, "monthly_second": null}
+  ],
+  "notes": "C（均等割課税世帯）は所得割0円なので lower・upper を null にし、D1 の lower を1にした。保育短時間: C 15,400、D1 19,300、D2 26,600、D3 29,600、D4 39,500、D5 43,900、D6 54,200、D7 60,100、D8 78,800、D9 82,700。備考1: C・D1・D2欄の（9,000）は母子・父子・在宅障がい者などの世帯に適用（標準・短時間とも9,000円）。3歳以上児は0（無償化）。表の題名に「（参考）」とあり、令和7年度版には「令和8年度は未定のため変更になる可能性があります」とあった。Excel は LibreOffice で xlsx に変えて読んだ（括弧つきの9,000は負の数として読まれたので元の表記に直した）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（3歳未満の標準時間で月15,600〜84,000円）。0円は生活保護世帯と市町村民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "同一世帯から2人以上の児童が保育所、幼稚園、認定こども園、企業主導型保育施設等に入所している場合は年齢順に2人目は半額。世帯の市町村民税所得割合算額が57,700円未満の場合は、上のお子さんの年齢や利用施設に関係なく第2子は半額。市町村民税非課税世帯または所得割合算額77,101円未満の母子・父子・在宅障がい者などの世帯は第2子以降無料。多子世帯保育料補助金: 下の子が保育園等、上の子が届出保育施設（認可外）を利用している場合（本来は多子軽減の対象外）の差額を町が補填。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第3子以降保育料無償化事業: 第1子・第2子の年齢や世帯の収入に関係なく、第3子以降の全てのこどもの保育料を無償（保護者と生計が同一で、保護者に監督・保護されるこどもが3人以上いる世帯）。福岡県の補助を活用し令和7年10月分以降の保育料から。認可保育所・小規模保育事業所は手続き不要、認可外保育施設（月上限42,000円）・企業主導型保育所（0歳37,100円、1・2歳37,000円）は助成金の申請が必要。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和9年度保育所入所申請のご案内（更新日2026年10月1日。「筑前町保育料徴収基準（参考）」Excel が載る）", "url": "https://www.town.chikuzen.fukuoka.jp/S042/230/20260928095353.html"},
+  {"label": "筑前町保育料徴収基準（参考）（Excel、シート名「保育料徴収基準R8参考」、題名「令和８年度筑前町保育料徴収基準（参考）」）", "url": "https://www.town.chikuzen.fukuoka.jp/S042/230/R9-18.xls"},
+  {"label": "令和8年度保育所入所申請のご案内（更新日2025年10月2日）", "url": "https://www.town.chikuzen.fukuoka.jp/S042/190/20250927125319.html"},
+  {"label": "令和8年度入所案内（PDF、4 保育料について・保育料の多子軽減について）", "url": "https://www.town.chikuzen.fukuoka.jp/S042/190/8nyuusyoannai.pdf"},
+  {"label": "令和7年度筑前町保育料徴収基準（参考）（PDF）", "url": "https://www.town.chikuzen.fukuoka.jp/S042/190/8hoikuryoutyousyuukizyunn.pdf"},
+  {"label": "第3子以降保育料助成金申請のお知らせ（更新日2025年9月30日）", "url": "https://www.town.chikuzen.fukuoka.jp/S042/088/20250930201811.html"},
+  {"label": "保育料について（更新日2023年9月1日）", "url": "https://www.town.chikuzen.fukuoka.jp/S042/20190409112022.html"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べ（crawl）はトップページ1枚だけだったので、トップ → 子育て・教育・スポーツ（li/040）→ 子育て → 保育所（園）（li/040/010/010）の順に開いた"
+ ],
+ "notes": "令和8年度入所案内のPDFには金額の表がなく、令和8年度の申請ページの徴収基準PDFは令和7年度版（「令和8年度は未定」）。令和9年度の申請ページの Excel が令和8年度版で、額は令和7年度版と同じ。区切りに切れ目・重なりなし、月額は階層の順に上がる。",
+ "read_at": "2026-11-01"
+}

@@ -1,0 +1,33 @@
+{
+ "code": "032077",
+ "pref": "岩手県",
+ "name": "久慈市",
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "市のサイトが開けず未確認。",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "未確認（市のサイトが開けない）。",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "未確認。岩手県の「いわて子育て応援保育料無償化事業」（令和5年度から、第2子以降の3歳未満児の保育料を無償化する市町村に県が経費の1/2を補助）があるが、久慈市での実施内容（数え方・所得制限）は市のサイトが開けず確かめられなかった。",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "未確認。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べの crawl は OSError で0ページ（index.json の errors）",
+  "curl で https://www.city.kuji.iwate.jp/index.html と https://www.city.kuji.iwate.jp/ を取ろうとしたが「SSL certificate problem: certificate has expired」で失敗。openssl で見ると証明書（CN=www.city.kuji.iwate.jp、GlobalSign GCC R6 AlphaSSL CA 2023）の期限は 2026年3月17日 14:26 GMT で切れている。TLS の検証を外して取ることはしていない。https://city.kuji.iwate.jp/ は存在しない（CONNECT 502）",
+  "WebFetch でも www.city.kuji.iwate.jp は名前解決できず（このセッションの許可ドメイン外の扱い）",
+  "WebSearch（allowed_domains: city.kuji.iwate.jp）を2回: 「久慈市 保育料 3歳未満 第2子 無償化 令和8年度」「久慈市 保育所 利用者負担額 保育料表 階層 市町村民税所得割 第2子以降 無料」。候補のページは見つかったが開けない: 幼児教育・保育の無償化について https://www.city.kuji.iwate.jp/kosodate/kosodate/shienjoho/youji_mushouka.html 、教育・保育施設を利用するには https://www.city.kuji.iwate.jp/kosodate/kosodate/shienjoho/iwateikumen_2.html 、令和７年度保育施設利用申込みのご案内 https://www.city.kuji.iwate.jp/kosodate/kyoiku/kyoikuhoikushisetsu/2023_hoiku_moushikomi.html 、子育て・医療情報｜KUJIターン https://www.city.kuji.iwate.jp/kturn/kosodate/kosodate.html 。検索結果の要約によると、申込み案内のページに年度ごとの「久慈市特定教育・保育施設利用料・副食費（徴収）免除基準表」が添付されている（令和元年度版・令和4年度版の名前が出た）が、表の中身と令和8年度版は確かめられなかった"
+ ],
+ "notes": "市の公式サイトの TLS 証明書が2026年3月17日で期限切れのため、curl（検証あり）では1ページも取れなかった。証明書が更新されたら、上の申込み案内のページ（令和8年度版があればそれ）から利用料基準表の PDF を開けば読めるはず。",
+ "read_at": "2026-11-01"
+}

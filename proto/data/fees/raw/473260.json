@@ -1,0 +1,49 @@
+{
+  "code": "473260",
+  "pref": "沖縄県",
+  "name": "北谷町",
+  "status": "ok",
+  "fiscal_year": "令和9年度（「令和9年度北谷町保育所等利用申込のしおり」〔PDF作成2026年10月21日〕p.6「6.令和9年度認可保育施設等保育料について」の【北谷町保育料基準額表】。令和8年度の表は町のサイトで見つからず、令和8年度の額と同じかは確かめていない）",
+  "period_note": "4月〜8月分は前年度の課税額、9月〜3月分は当年度の課税額で算定（令和9年度は4〜8月が令和8年度、9〜3月が令和9年度の市町村民税額。毎年9月が保育料の切り替え時期）。保育料の年齢は4月1日時点の満年齢で、年度途中で誕生日を迎えても変わらない。未申告・書類未提出は最高額（第9階層）。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市町村民税所得割課税額で決定。保護者の収入が生活保護基準に満たない場合は同居者（祖父母等）の税額を含めて算定。税額は住宅借入金等特別控除、寄付控除、電子証明等特別控除額、配当控除、外国税額控除を適用する前の税額（しおりでは「所得税額は」と書かれているが所得割の注と読んだ）。軍人・軍属の方は W-2 で算定。政令市ではないので6%とした。",
+  "table": {
+    "title": "【北谷町保育料基準額表】（6.令和9年度認可保育施設等保育料について）",
+    "kind": "0〜2歳・保育標準時間・第1子（月額）。3〜5階層は「上記以外」（ひとり親世帯等以外）の世帯の額。第2子の別の列はない",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯（上記以外。2Aのひとり親世帯等も0円）", "monthly": 0, "monthly_second": null },
+      { "label": "3B", "lower": null, "upper": null, "condition": "市町村民税均等割のみ課税世帯", "monthly": 12000, "monthly_second": null },
+      { "label": "4B", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "5B", "lower": 48600, "upper": 97000, "condition": "市町村民税所得割課税額 97,000円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "6", "lower": 97000, "upper": 169000, "condition": "市町村民税所得割課税額 169,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "7", "lower": 169000, "upper": 301000, "condition": "市町村民税所得割課税額 301,000円未満", "monthly": 39000, "monthly_second": null },
+      { "label": "8", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割課税額 397,000円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "9", "lower": 397000, "upper": null, "condition": "市町村民税所得割課税額 397,000円以上", "monthly": 50000, "monthly_second": null }
+    ],
+    "notes": "表は各行の上限（未満）だけが書かれ、lower は1つ上の行の上限とした（4Bは均等割のみの行3Bと分けるため1）。5Bの欄は「57,700円未満」「97,000円未満」の2段で、額は同じ（57,700円未満は年齢制限なしで多子を数える）。保育短時間の月額: 1・2 0円、3B 11,800円、4B 15,800円、5B 23,600円、6 32,400円、7 38,100円、8 39,800円、9 48,400円。ひとり親世帯等（母子世帯、父子世帯、在宅障害者がいる世帯）の月額（標準／短時間）: 2A 0円、3A 5,500／5,400円、4A（48,600円未満）7,500／7,400円、5A（77,101円未満）9,000／8,900円（3A〜5Aは第2子以降無料）。0〜2歳児クラスの副食費は保育料の一部。3〜5歳は0円。画像で列（標準時間・短時間・年齢制限・軽減割合）を確かめた。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月12,000〜50,000円）。0円は生活保護世帯と市町村民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "しおり p.7「保育料の軽減について」①多子軽減: 保育所等に在園中で、同一世帯の就学前児童が保育所等・幼稚園・企業主導型保育事業・特別支援学校幼稚部等に入園している場合、第2子は半額、第3子以降は無料（町外の私立幼稚園等は在園証明書が必要。認可外保育施設〔企業主導型を除く〕は対象外）。②年収約360万円未満相当世帯は、第何子かを決める子の年齢制限なし（生計を一つにする子。別居も含む）: ひとり親世帯等の3A・4A・5A（所得割77,101円未満）は第2子以降無料、それ以外の3B・4B・5Bの一部（所得割57,700円未満）は第2子半額・第3子以降無料。表の「年齢制限」欄: 5Bの57,700円未満まで「なし」、57,700円以上と6〜9階層は「あり」。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "同一世帯の就学前児童で保育所等・幼稚園等に入園している子を数えて第3子以降無料。所得割57,700円未満（ひとり親世帯等は77,101円未満）は年齢制限なしで数える。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和9年度北谷町保育所等入所申込について 北谷町公式ホームページ", "url": "https://www.chatan.jp/kosodate/kosodate/hoikusho/applicationform.html" },
+    { "label": "令和9年度北谷町保育所等利用申込のしおり（PDF、p.6〜7）", "url": "https://www.chatan.jp/kosodate/kosodate/hoikusho/applicationform.files/R9hoikusyonosiori.pdf" },
+    { "label": "令和8年度北谷町保育所等入所申込について 北谷町公式ホームページ（更新日2026年6月11日、保育料の表はない）", "url": "https://www.chatan.jp/kosodate/kosodate/hoikusho/r8nurseryschool.html" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの候補は認可外・延長保育料などで、保育料表はなかった。令和8年度の入所申込ページ（r8nurseryschool.html）・保育所とはのページ・保育所の一覧ページ・幼児教育・保育の無償化のページには保育料の表がない。令和8年度のしおりの URL を2つ推測して試したが 404（r8nurseryschool.files/R8hoikusyonosiori.pdf、applicationform.files/R8hoikusyonosiori.pdf）。令和9年度の申込ページのしおりで表を読んだ。"
+  ],
+  "notes": "",
+  "read_at": "2026-11-01"
+}

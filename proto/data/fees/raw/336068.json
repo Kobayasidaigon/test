@@ -1,0 +1,147 @@
+{
+ "code": "336068",
+ "pref": "岡山県",
+ "name": "鏡野町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（表の題は「鏡野町保育料月額表（令和元年10月1日から適用）」。令和8年度の入園申込ページ〔更新日2026年3月17日〕に令和8年度の表として掲載。利用者負担額（保育料）のページ〔更新日2026年9月4日〕の「保育料月額表（3号認定）」〔PDFの作成日2026年5月1日〕、令和9年度利用のご案内〔2026年9月作成〕p.10の表も同じ額）",
+ "period_note": "階層区分は4〜8月は前年度分、9月から翌年3月は当年度分の市町村民税で決定（毎年9月に再算定）。表中の年齢は4月1日現在の満年齢。保育料は月単位で、各月1日に在園していれば登園の有無にかかわらず全額（日割りなし）。3歳未満児の保育料には給食費（副食費）が含まれる。3〜5歳児は無償（保育園の給食費は月4,500円、所得割77,101円未満の世帯と第3子以降は副食費免除）。",
+ "tax_basis": "6%",
+ "tax_note": "保護者（父母等）の市町村民税所得割課税額の合計。市町村民税所得割課税額を計算する際、調整控除以外の税額控除（配当控除、住宅借入金等特別税額控除、寄付金税額控除等）は適用しない（控除前の所得割課税額で決定）。",
+ "table": {
+  "title": "鏡野町保育料月額表（３号認定）",
+  "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "第1階層",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "第2階層",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "第3階層",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税均等割のみ",
+    "monthly": 15600,
+    "monthly_second": null
+   },
+   {
+    "label": "第4階層",
+    "lower": 1,
+    "upper": 48600,
+    "condition": "市町村民税所得割額 48,600円未満",
+    "monthly": 17500,
+    "monthly_second": null
+   },
+   {
+    "label": "第5階層",
+    "lower": 48600,
+    "upper": 97000,
+    "condition": "48,600円以上 97,000円未満",
+    "monthly": 27000,
+    "monthly_second": null
+   },
+   {
+    "label": "第6階層",
+    "lower": 97000,
+    "upper": 121000,
+    "condition": "97,000円以上 121,000円未満",
+    "monthly": 35600,
+    "monthly_second": null
+   },
+   {
+    "label": "第7階層",
+    "lower": 121000,
+    "upper": 169000,
+    "condition": "121,000円以上 169,000円未満",
+    "monthly": 40000,
+    "monthly_second": null
+   },
+   {
+    "label": "第8階層",
+    "lower": 169000,
+    "upper": 230100,
+    "condition": "169,000円以上 230,100円未満",
+    "monthly": 48800,
+    "monthly_second": null
+   },
+   {
+    "label": "第9階層",
+    "lower": 230100,
+    "upper": 301000,
+    "condition": "230,100円以上 301,000円未満",
+    "monthly": 54900,
+    "monthly_second": null
+   },
+   {
+    "label": "第10階層",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "301,000円以上 397,000円未満",
+    "monthly": 68000,
+    "monthly_second": null
+   },
+   {
+    "label": "第11階層",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上",
+    "monthly": 83200,
+    "monthly_second": null
+   }
+  ],
+  "notes": "第3階層「市町村民税均等割のみ」は所得割0円（lower・upper は null）、第4階層「48,600円未満」は lower=1。保育短時間（月額）: 第1階層0、第2階層0、第3階層14,800、第4階層16,600、第5階層25,650、第6階層33,800、第7階層38,000、第8階層46,300、第9階層52,100、第10階層64,600、第11階層79,000。保育料の減免（ひとり親世帯、在宅障害児（者）のいる世帯、その他の世帯〔生活保護法に定める要保護者等〕、5階層〔所得割の合計額が77,101円未満〕まで、標準時間／短時間）: 第2階層0円、第3階層7,300／6,900、第4階層8,250／7,800、第5階層9,000／9,000、第2子以降は無料（この減免の表は令和元年10月からの表と令和9年度のご案内の表にあり、3号認定だけのPDFには注だけ）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（標準時間で月0〜83,200円）。0円は生活保護世帯・市町村民税非課税世帯だけ（令和9年度のご案内のQ&A「3～5歳児は原則無償、0～2歳児も住民税非課税世帯は無償」）。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "注: 小学校就学前の範囲において、保育園を同時に利用する最年長の子どもから順に2人目は半額、3人目以降は0円。世帯の市町村民税所得割合計額が57,700円未満なら、生計を一にする最年長の子から順に第2子は半額、第3子以降は0円（年齢の上限なし）。町独自の第2子無償化は見当たらない。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "注: 現に扶養する子が3人以上いる世帯で、満年齢が18歳以下の子から順に数えて第3子以降となる児童で、満年齢が0歳から2歳までの児童は0円（所得制限の記載なし、上の子が保育園に通っているかは問わない）。同時に保育園を利用する就学前の子の3人目以降も0円。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "利用者負担額（保育料） - こども園・保育園・幼稚園 - 鏡野町公式ホームページ（更新日2026年9月4日）",
+   "url": "https://www.town.kagamino.lg.jp/site/kodomoenhoikuen/14998.html"
+  },
+  {
+   "label": "保育料月額表（3号認定）（PDF）",
+   "url": "https://www.town.kagamino.lg.jp/uploaded/attachment/16321.pdf"
+  },
+  {
+   "label": "令和8年度 幼稚園・保育園・認定こども園の入園申込（更新日2026年3月17日）",
+   "url": "https://www.town.kagamino.lg.jp/site/kodomoenhoikuen/12835.html"
+  },
+  {
+   "label": "鏡野町保育料月額表（令和元年10月～）（PDF、減免の表つき）",
+   "url": "https://www.town.kagamino.lg.jp/uploaded/attachment/15196.pdf"
+  },
+  {
+   "label": "令和9年度 入園手続きのご案内（更新日2026年10月6日）",
+   "url": "https://www.town.kagamino.lg.jp/site/kodomoenhoikuen/15980.html"
+  },
+  {
+   "label": "令和9年度 幼稚園・保育園・認定こども園利用のご案内（PDF、8 保育料と給食費等 p.9〜10）",
+   "url": "https://www.town.kagamino.lg.jp/uploaded/attachment/16939.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表は文字の取れるPDFを pdftotext -layout で読み、画像（3号認定の表と、令和9年度のご案内 p.10＝PDFの11ページ、画像だけのページ）で列の並び（標準時間・短時間）と注を確かめた。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

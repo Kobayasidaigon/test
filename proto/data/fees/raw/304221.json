@@ -1,0 +1,72 @@
+{
+  "code": "304221",
+  "pref": "和歌山県",
+  "name": "太地町",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "保育料の表（階層と月額）は町のサイトで見つからなかった。",
+  "tax_basis": "unknown",
+  "tax_note": "所得割の定義の注記は見つからなかった。",
+  "table": null,
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "「太地町のこども園・小学校・中学校の特色」は保育料の軽減を第2子・第3子以降についてだけ書いており、第1子の無償化は書かれていない。令和7年3月の町議会で当初予算の民生費分担金（保育料）が説明されており、保育料は徴収されている（第1子の額は分からない）。",
+  "second_child": "other",
+  "second_count": "unknown",
+  "second_note": "「こども園では、第２子に係る保育料が半額化されます。第２子（所得制限有り）、第３子以降に係る保育料が無償化されます。」（町の特色のページ）。所得制限の額は書かれていない（和歌山県の「紀州っ子いっぱいサポート」の第2子無償化は年収360万円未満相当の世帯が対象）。第1子をどう数えるか（同時に通う子だけか、上の子の年齢を問わないか）は書かれていない。令和7年度の町の当初予算に「和歌山県第二子以降に係る保育料助成事業」（6名分）。",
+  "third_child": "free",
+  "third_count": "unknown",
+  "third_note": "「第３子以降に係る保育料が無償化されます。」（所得制限の記載なし）。数え方は書かれていない。",
+  "lunch_jh": {
+    "free": true,
+    "note": "「太地町のこども園・小学校・中学校の特色」に「自校式による完全給食を実施しております。無料で美味しい給食を提供しています。」（町の広報2024年5月号でも町独自施策の「給食無償化」を本年度も実施）。",
+    "source": {
+      "label": "太地町のこども園・小学校・中学校の特色｜太地町",
+      "url": "https://www.town.taiji.wakayama.jp/lifestage/nyugaku/nyuugaku901.html"
+    }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "太地町 出産祝金",
+      "amount": 300000,
+      "note": "出生した子ども1人につき300,000円。",
+      "source": {
+        "label": "出産祝金｜太地町",
+        "url": "https://www.town.taiji.wakayama.jp/lifestage/syussei/syussei902.html"
+      }
+    },
+    {
+      "label": "太地町 入学祝金",
+      "amount": 50000,
+      "note": "小学校、中学校、高校、特別支援学校に入学時に、1人につき5万円（入学ごとに支給。町から郵送される申請書で入学した年度の6月末までに申請）。",
+      "source": {
+        "label": "入学祝金｜太地町",
+        "url": "https://www.town.taiji.wakayama.jp/lifestage/nyugaku/nyuugaku902.html"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "label": "太地町のこども園・小学校・中学校の特色｜太地町",
+      "url": "https://www.town.taiji.wakayama.jp/lifestage/nyugaku/nyuugaku901.html"
+    },
+    {
+      "label": "太地こども園の入園について｜太地町",
+      "url": "https://www.town.taiji.wakayama.jp/lifestage/nyugaku/nyuugaku001.html"
+    },
+    {
+      "label": "令和7年第1回太地町議会定例会会議録（2025年3月。保育料の減額、和歌山県第二子以降に係る保育料助成事業）",
+      "url": "https://www.town.taiji.wakayama.jp/gikai/files/R7_01.pdf"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの候補（利用料減免申請書）は新宮市の病児保育の様式だった",
+    "入園・入学 → 太地こども園の入園について（申込書類だけで保育料の記載なし）、子育て支援、こども誰でも通園制度の各ページを開いた",
+    "町のサイトのトップ・町政・サイトマップに例規集へのリンクはなかった",
+    "WebSearch（town.taiji.wakayama.jp）「太地町 保育料 利用者負担額 こども園 規則 階層」と「太地こども園 保育料 月額 3歳未満 第1子 第2子 半額 無償」: 表は見つからず、議会会議録（令和7年3月・9月）と広報2024年5月号を開いたが保育料の額は載っていない"
+  ],
+  "notes": "保育料の表（階層と月額）と、第2子の所得制限の額・きょうだいの数え方が分からないので partial。検索結果の要約では町の議案に「利用者負担額を定める条例」の改正があるとされたが（会議録の本文では確かめていない）、町の例規集はネットで見つからなかった。令和7年3月の議会では当初予算の民生費分担金について「保育料の減額を見込み、76万4,000円の減額」と説明されている。",
+  "read_at": "2026-11-01"
+}

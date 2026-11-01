@@ -1,0 +1,72 @@
+{
+  "code": "144029",
+  "pref": "神奈川県",
+  "name": "清川村",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和８年度保育所等利用案内」7ページ。令和9年度の利用案内〔2026年10月作成〕の表も同じ額）",
+  "period_note": "令和8年度の利用案内: 令和8年4月〜8月は令和7年度、令和8年9月〜令和9年3月は令和8年度の市町村民税所得割額で算定。クラスは各年度4月1日現在の年齢で決まり、年度途中で3歳になり3号から2号に切り替わっても、その年度は保育料がかかる。利用しない日があっても減額されない。月の途中の入退所は月額×実入所日数÷25日（10円未満切り捨て）。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市町村民税課税額の合算額（父母がいずれも非課税で同居の祖父母〔二世帯住宅を含む〕がいる場合は、祖父母のうち税額の高い方）。表の備考2: 所得割は地方税法第314条の7、第314条の8、附則第5条第3項、第5条の4第6項、第5条の4の2第6項を適用しないで計算（寄附金税額控除・配当控除・住宅借入金等特別税額控除などの前の額）。所得の申告がなく課税額を確認できない場合は最高階層。政令市ではない。",
+  "table": {
+    "title": "支給認定子どもに係る利用者負担額（２号認定及び３号認定）",
+    "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法の規定による被保護世帯（単給世帯含む）", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市町村民税均等割", "monthly": 7000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 24300, "condition": "市町村民税所得割の額が 24,300円未満", "monthly": 8300, "monthly_second": null },
+      { "label": "C3", "lower": 24300, "upper": 48600, "condition": "24,300円以上48,600円未満", "monthly": 9300, "monthly_second": null },
+      { "label": "C4", "lower": 48600, "upper": 60700, "condition": "48,600円以上60,700円未満", "monthly": 11000, "monthly_second": null },
+      { "label": "C5", "lower": 60700, "upper": 72800, "condition": "60,700円以上72,800円未満", "monthly": 12600, "monthly_second": null },
+      { "label": "C6", "lower": 72800, "upper": 84900, "condition": "72,800円以上84,900円未満", "monthly": 14000, "monthly_second": null },
+      { "label": "C7", "lower": 84900, "upper": 97000, "condition": "84,900円以上97,000円未満", "monthly": 19400, "monthly_second": null },
+      { "label": "C8", "lower": 97000, "upper": 115000, "condition": "97,000円以上115,000円未満", "monthly": 22800, "monthly_second": null },
+      { "label": "C9", "lower": 115000, "upper": 133000, "condition": "115,000円以上133,000円未満", "monthly": 29400, "monthly_second": null },
+      { "label": "C10", "lower": 133000, "upper": 151000, "condition": "133,000円以上151,000円未満", "monthly": 34900, "monthly_second": null },
+      { "label": "C11", "lower": 151000, "upper": 169000, "condition": "151,000円以上169,000円未満", "monthly": 39600, "monthly_second": null },
+      { "label": "C12", "lower": 169000, "upper": 202000, "condition": "169,000円以上202,000円未満", "monthly": 42900, "monthly_second": null },
+      { "label": "C13", "lower": 202000, "upper": 235000, "condition": "202,000円以上235,000円未満", "monthly": 45700, "monthly_second": null },
+      { "label": "C14", "lower": 235000, "upper": 268000, "condition": "235,000円以上268,000円未満", "monthly": 47300, "monthly_second": null },
+      { "label": "C15", "lower": 268000, "upper": 301000, "condition": "268,000円以上301,000円未満", "monthly": 48200, "monthly_second": null },
+      { "label": "C16", "lower": 301000, "upper": 333000, "condition": "301,000円以上333,000円未満", "monthly": 51900, "monthly_second": null },
+      { "label": "C17", "lower": 333000, "upper": 365000, "condition": "333,000円以上365,000円未満", "monthly": 55900, "monthly_second": null },
+      { "label": "C18", "lower": 365000, "upper": 397000, "condition": "365,000円以上397,000円未満", "monthly": 60000, "monthly_second": null },
+      { "label": "C19", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 68600, "monthly_second": null }
+    ],
+    "notes": "rows は3号認定（3歳未満児）の保育標準時間の列（2号認定は全階層0円）。保育短時間: C1 7,000／C2 8,100／C3 9,100／C4 10,800／C5 12,300／C6 13,700／C7 19,000／C8 22,400／C9 28,900／C10 34,300／C11 38,900／C12 42,100／C13 44,900／C14 46,400／C15 47,400／C16 51,000／C17 54,900／C18 58,900／C19 67,400。「施設区分による違いはありません」（認可保育所・小規模保育とも同じ表）。備考1: C1〜C3階層の母子・父子世帯、在宅障害児（者）のいる世帯、村長が特に困窮と認めた世帯は1,000円減。C1（均等割のみ）は lower・upper を null、C2 は所得割が課税の世帯として lower=1 にした。村内の施設は認可保育所あおぞら保育園（定員30名、0歳児3名）と小規模保育施設おひさま保育園（定員6名、0〜2歳児）で、どちらも社会福祉法人白梅福祉会。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスは「市町村民税非課税世帯の保育料は無償となりますが、その他の世帯（課税世帯）は、毎月、保育料の納付が必要」（令和8年度利用案内）。第1子は所得に応じて標準時間で月7,000〜68,600円。神奈川県の0〜2歳の保育料の独自の制度はない。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "令和8年度利用案内「保育料の軽減」: 兄弟姉妹で保育所等を利用している場合（幼稚園等に在籍する兄・姉がいる場合を含む）は、小学校就学前の子どものうち最年長の子どもから数えて2人目は半額（表の備考3: 同一世帯の小学校就学前の子が同時に幼稚園・保育所・認定こども園・特別支援学校幼稚部・情緒障害児短期治療施設通所部・児童発達支援・医療型児童発達支援・地域型保育を利用している場合）。市町村民税所得割額57,700円未満の世帯は子どもの年齢にかかわらず最年長の子どもから数えて2人目は半額（household）。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "小学校就学前で同時に施設等を利用している子の3人目以降は無料。所得割57,700円未満の世帯は子どもの年齢にかかわらず最年長から数えて3人目以降が無料。所得割77,101円未満のひとり親世帯・在宅障害者世帯等は、子どもの年齢にかかわらず最年長から数えて1人目は半額、2人目以降は無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育所等について／清川村（更新日2026年10月23日）",
+      "url": "https://www.town.kiyokawa.kanagawa.jp/soshiki/hokenhukushi/kosodate/nurseryschool/361.html"
+    },
+    {
+      "label": "令和8年度保育所等利用案内（PDF、2026年4月13日作成。6〜7ページ）",
+      "url": "https://www.town.kiyokawa.kanagawa.jp/material/files/group/4/riyouannai88.pdf"
+    },
+    {
+      "label": "令和9年度保育所等利用案内（PDF、2026年10月26日作成。同じ表）",
+      "url": "https://www.town.kiyokawa.kanagawa.jp/material/files/group/4/riyouannai99.pdf"
+    },
+    {
+      "label": "保育料（利用者負担額）算定基準表（PDF）",
+      "url": "https://www.town.kiyokawa.kanagawa.jp/material/files/group/4/riyouhutanngaku.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの候補「保育料（利用者負担額）算定基準表」（文字の取れるPDF）と、同じページの令和8年度・令和9年度の保育所等利用案内（文字の取れるPDF）を pdftotext -layout で読み、令和8年度の案内の表と算定基準表、令和9年度の案内の表が同じ額だと確かめた。区切りは以上〜未満で切れ目・重なりなし、月額は階層の順に下がらない。lunch_jh・cash・one_time は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

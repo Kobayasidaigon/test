@@ -1,0 +1,124 @@
+{
+  "code": "344311",
+  "pref": "広島県",
+  "name": "大崎上島町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度入園申込みについて」PDF〔2025年12月作成〕の「保育料（３号認定）０歳～２歳児」表）",
+  "period_note": "9月が保育料の改定時期: 4月〜8月は前年度の住民税（所得割）等、9月〜3月は当年度の住民税（所得割）等で算出。保育料は利用施設へ支払う（利用施設と直接契約）。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は市町村民税所得割額をもとに決定（入園申込みPDF）。税額控除の扱いなどの注記はない。政令市ではないので6%とした。",
+  "table": {
+    "title": "保育料（３号認定）０歳～２歳児（令和8年度入園申込みについて）",
+    "kind": "3歳未満（3号認定）・標準時間・第1子（月額、徴収金基準額）",
+    "rows": [
+      {
+        "label": "第１",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第２",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第３",
+        "lower": 0,
+        "upper": 48600,
+        "condition": "４８,６００円未満（所得割課税額）",
+        "monthly": 11700,
+        "monthly_second": null
+      },
+      {
+        "label": "第４",
+        "lower": 48600,
+        "upper": 97000,
+        "condition": "９７,０００円未満（所得割課税額）",
+        "monthly": 24300,
+        "monthly_second": null
+      },
+      {
+        "label": "第５",
+        "lower": 97000,
+        "upper": 169000,
+        "condition": "１６９,０００円未満（所得割課税額）",
+        "monthly": 36000,
+        "monthly_second": null
+      },
+      {
+        "label": "第６",
+        "lower": 169000,
+        "upper": 301000,
+        "condition": "３０１,０００円未満（所得割課税額）",
+        "monthly": 49400,
+        "monthly_second": null
+      },
+      {
+        "label": "第７",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "３９７,０００円未満（所得割課税額）",
+        "monthly": 54400,
+        "monthly_second": null
+      },
+      {
+        "label": "第８",
+        "lower": 397000,
+        "upper": null,
+        "condition": "３９７,０００円以上（所得割課税額）",
+        "monthly": 64900,
+        "monthly_second": null
+      }
+    ],
+    "notes": "短時間: 第１ 0円、第２ 0円、第３ 11,500円、第４ 23,800円、第５ 35,300円、第６ 48,500円、第７ 53,400円、第８ 63,700円。階層の区分は国の基準（8階層）と同じで、額は国の上限額より低い。ひとり親世帯などの特定世帯の額は書かれていない。3〜5歳児の保育料は無償で、給食費も町が補助して無償（0〜2歳児の給食費は無償化の対象外と2019年の案内にある）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（生活保護・非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "入園申込みPDF「未就学児から第２子は半額、第３子以降は無料です。」。数える範囲は未就学児で、上の子が施設に通っている必要があるかや、所得割57,700円未満の世帯の年齢制限撤廃（国の制度）は書かれていない。together は「小学校就学前の範囲で数える」の意味で置いた。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "未就学児から数えて第3子以降は無料（数え方は第2子と同じ）。",
+  "lunch_jh": null,
+  "cash": [
+    {
+      "label": "大崎上島町子育て支援手当",
+      "per_child_yearly": 72000,
+      "max_age": 6,
+      "note": "大崎上島町子育て支援手当支給条例に基づく町独自の手当。町に住所があり、義務教育就学前（6歳到達後最初の年度末まで）の乳幼児を養育している人（公租公課を納めている人）に、就学前児童1人につき月額6,000円。6月・10月・2月に4か月分ずつ支給。申請が必要（申請月の翌月分から）。",
+      "source": {
+        "label": "子育て支援手当／大崎上島町（更新日：2025年10月23日）",
+        "url": "https://www.town.osakikamijima.hiroshima.jp/kosodate/kosodate/4172.html"
+      }
+    }
+  ],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度入園申込みについて／大崎上島町（更新日：2026年01月09日）",
+      "url": "https://www.town.osakikamijima.hiroshima.jp/kosodate/kyoiku/9/4529.html"
+    },
+    {
+      "label": "令和8年度入園申込みについて（PDF、2025年12月作成、保育料（３号認定）の表）",
+      "url": "https://www.town.osakikamijima.hiroshima.jp/material/files/group/11/R8nyuen.pdf"
+    },
+    {
+      "label": "幼児教育・保育の無償化について／大崎上島町（更新日：2026年07月14日、PDFは2019年の案内）",
+      "url": "https://www.town.osakikamijima.hiroshima.jp/kosodate/kyoiku/2197.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べのページ一覧から「幼児教育・保育の無償化について」と「令和8年度入園申込みについて」を開き、入園申込みのPDFで表ときょうだいの決まりを読んだ（下調べの候補文書は0件）"
+  ],
+  "notes": "町内で0〜2歳児（3号認定）を受け入れるのは認定こども園ひかりえん（私立）だけ。町立大崎上島幼稚園は3〜5歳。令和9年度の入園申込みの案内（表）は確かめていない。lunch_jh・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

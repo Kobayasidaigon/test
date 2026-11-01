@@ -1,0 +1,43 @@
+{
+  "code": "063657",
+  "pref": "山形県",
+  "name": "大蔵村",
+  "status": "ok",
+  "fiscal_year": "令和8年度（村のページ「保育所について」、更新日2026年9月3日）",
+  "period_note": "村の保育所の保育料は令和4年4月1日から村独自事業で完全無償化しているので、所得の年度の切り替えは保育料に関係しない。令和9年度の入所申請（受付 令和8年11月2日〜20日）の案内（2026年10月30日作成）には保育料の記載はない。",
+  "tax_basis": "6%",
+  "tax_note": "保育料を徴収しないので所得割で負担は変わらない（村の保育料の階層表は公開されていない）。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2022年4月",
+  "first_child_free_note": "村のページ「保育所について」（更新日2026年9月3日）の「保育料」: 「令和4年4月1日より、村独自事業として保育料を完全無償化しております。」。所得制限・第何子の条件は書かれていない。村内の施設は大蔵村保育所（利用定員120名、生後8か月〜就学前、0歳児は5名以内）で、肘折保育所・沼の台保育所は休所中。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無料なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育所について／大蔵村（更新日2026年9月3日）",
+      "url": "https://www.vill.ohkura.yamagata.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikusho/938.html"
+    },
+    {
+      "label": "令和9年度大蔵村保育所入所申請について／大蔵村（更新日2026年10月30日）",
+      "url": "https://www.vill.ohkura.yamagata.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikusho/2307.html"
+    },
+    {
+      "label": "令和9年度 保育所入所申請案内（PDF）",
+      "url": "https://www.vill.ohkura.yamagata.jp/material/files/group/10/hoiku2026.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "子育て・教育のよくあるご質問、教育委員会の学校教育のページを見たが、給食費の記載はなかった"
+  ],
+  "notes": "下調べは候補の文書なし（ページ一覧のみ）。ページ一覧の「保育所について」で、令和4年4月から村独自事業で保育料を完全無償化と確かめた。保育料の表はないので table は null。山形県の段階的負担軽減（0〜2歳の所得割169,000円未満を県が補助）は、村が全額無償にしているので保育料には関係しない。村外の施設（広域入所）の場合の扱いは書かれていない。cash・one_time は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

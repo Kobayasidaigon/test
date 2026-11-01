@@ -1,0 +1,163 @@
+{
+ "code": "123498",
+ "pref": "千葉県",
+ "name": "東庄町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "4〜8月分は前年度、9〜翌3月分は当年度の市町村民税所得割額で算定（令和9年度の案内では、令和9年4〜8月分→令和8年度、9月〜令和10年3月分→令和9年度の所得割）。保育料は各月初日の在籍で月額。4月1日時点で3歳以上のクラスは無償。0〜2歳児クラスの副食費は保育料に含まれる。表「令和8年度 東庄町保育所保育料基準額表」（PDFの作成日2026年6月10日。令和8年度保育所入所手続きページ（更新日2026年7月30日）に掲載、令和9年度保育所等入所のご案内（2026年10月）にも「参考資料」として同じ表が載る）。",
+ "tax_basis": "6%",
+ "tax_note": "父母の市町村民税所得割額の合計（祖父母などが家計の主宰者なら合算）。住宅借入金等特別控除、住宅耐震改修特別控除、電子証明書等特別控除等を含まないもの（控除前）として算出した額。市町村民税が未決定・未申告なら最高階層。",
+ "table": {
+  "title": "令和８年度 東庄町保育所保育料基準額表",
+  "kind": "3歳未満（0〜2歳児クラス）・保育標準時間認定・1人目（月額）。monthly_second は表の「2人目」の行（同時入所等による半額）",
+  "rows": [
+   {
+    "label": "1",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法に基づく被保護世帯(単給世帯を含む。)及び中国残留邦人等の…支援給付受給世帯並びに児童福祉法第６条の４に規定する里親である教育・保育給付認定保護者世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "2",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "3",
+    "lower": 0,
+    "upper": 48600,
+    "condition": "所得割課税額 48,600円未満",
+    "monthly": 15000,
+    "monthly_second": 7500
+   },
+   {
+    "label": "4a",
+    "lower": 48600,
+    "upper": 72800,
+    "condition": "72,800円未満",
+    "monthly": 21000,
+    "monthly_second": 10500
+   },
+   {
+    "label": "4b",
+    "lower": 72800,
+    "upper": 97000,
+    "condition": "72,800円以上 97,000円未満",
+    "monthly": 24000,
+    "monthly_second": 12000
+   },
+   {
+    "label": "5a",
+    "lower": 97000,
+    "upper": 133000,
+    "condition": "97,000円以上 133,000円未満",
+    "monthly": 33000,
+    "monthly_second": 16500
+   },
+   {
+    "label": "5b",
+    "lower": 133000,
+    "upper": 169000,
+    "condition": "133,000円以上 169,000円未満",
+    "monthly": 35500,
+    "monthly_second": 17750
+   },
+   {
+    "label": "6",
+    "lower": 169000,
+    "upper": 301000,
+    "condition": "169,000円以上 301,000円未満",
+    "monthly": 45000,
+    "monthly_second": 22500
+   },
+   {
+    "label": "7",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "301,000円以上 397,000円未満",
+    "monthly": 48000,
+    "monthly_second": 24000
+   },
+   {
+    "label": "8",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上",
+    "monthly": 51000,
+    "monthly_second": 25500
+   }
+  ],
+  "notes": "第3階層は所得割課税額48,600円未満で、均等割のみ（所得割0円）の世帯もここに入るとして lower=0。第4a階層の表の文言は「72,800円未満」だけ（第3階層の上なので48,600円以上）。表の「3人目以降」の行はどの階層も0円。保育短時間認定（月額、1人目／2人目）: 1 0/0、2 0/0、3 14,700/7,350、4a 20,600/10,300、4b 23,500/11,750、5a 32,400/16,200、5b 34,800/17,400、6 44,200/22,100、7 47,100/23,550、8 50,100/25,050。【保育料の軽減】ひとり親の世帯、在宅障害児（者）のいる世帯等: 第2階層の1人目0円、第3階層・第4a階層・第4b階層（所得割額77,101円未満）の1人目は標準時間7,000円・短時間6,800円、2人目以降は無料。3〜5歳児クラス（4月1日現在で3歳以上）は無料。0〜2歳児クラスの非課税世帯は無料。町税に滞納がある（世帯員を含む）と軽減されない。延長保育は1時間ごとに100円。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子（1人目）は有料（標準時間で月0〜51,000円）。0円は生活保護世帯・市町村民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "同時入所等による減額（国の制度、申請不要）: 同じ世帯で2人以上の就学前児童が保育所等を利用している場合、年齢の高い順から数えて2人目の児童が半額、3人目以降は無料。第2子半額軽減: 第3階層〜第4a階層（所得割額57,700円未満）は保護者と生計が同一の子や孫等を数える（年齢制限なし）。町独自の第2子の無償化は見当たらない。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "町単独助成制度（案内の文言）: 第3子からみて第1子の年齢上限を18歳到達後の3月31日までとして数え、第3子以降の保育料（3歳以上は副食費）を無料。第3階層〜第8階層の、保護者と同一世帯の子ども。「第3子以降の利用者負担額等軽減申請書」の提出が必要。町税に滞納がある（世帯員を含む）または保護者の税が未申告だと軽減されない。就学前の子が同時に保育所等を利用している場合の3人目以降は国の制度で申請不要の無料。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [
+  {
+   "label": "子育て応援祝金（出産祝金）",
+   "amount": 100000,
+   "note": "令和3年4月2日以降の出生。出生の日と申請日に町の住民基本台帳に記録されている児童の保護者。出生から3か月以内に申請。町税等の滞納があると支給されない場合あり。",
+   "source": {
+    "label": "子育て応援祝金の支給について／東庄町（更新日2024年2月9日）",
+    "url": "https://www.town.tohnosho.chiba.jp/kosodate_kyoiku/kosodate-all/1974.html"
+   }
+  },
+  {
+   "label": "子育て応援祝金（小学校入学祝金）",
+   "amount": 50000,
+   "note": "小学校入学の日と申請日に町に住民登録がある児童の保護者。入学から3か月以内に申請。",
+   "source": {
+    "label": "子育て応援祝金の支給について／東庄町（更新日2024年2月9日）",
+    "url": "https://www.town.tohnosho.chiba.jp/kosodate_kyoiku/kosodate-all/1974.html"
+   }
+  },
+  {
+   "label": "子育て応援祝金（中学校入学祝金）",
+   "amount": 50000,
+   "note": "中学校入学の日と申請日に町に住民登録がある児童の保護者。入学から3か月以内に申請。",
+   "source": {
+    "label": "子育て応援祝金の支給について／東庄町（更新日2024年2月9日）",
+    "url": "https://www.town.tohnosho.chiba.jp/kosodate_kyoiku/kosodate-all/1974.html"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "令和8年度 保育所入所手続き／東庄町（更新日2026年7月30日）",
+   "url": "https://www.town.tohnosho.chiba.jp/life_scene/nyuen_nyugaku/hoikuen_youchien/7934.html"
+  },
+  {
+   "label": "令和8年度 東庄町保育所保育料基準額表（PDF）",
+   "url": "https://www.town.tohnosho.chiba.jp/material/files/group/6/R8kijungaku.pdf"
+  },
+  {
+   "label": "令和8年度保育所等入所のご案内（PDF、3 保育料について）",
+   "url": "https://www.town.tohnosho.chiba.jp/material/files/group/6/R8annai.pdf"
+  },
+  {
+   "label": "令和9年度保育所入所手続き／東庄町（更新日2026年10月19日）",
+   "url": "https://www.town.tohnosho.chiba.jp/life_scene/nyuen_nyugaku/hoikuen_youchien/8999.html"
+  },
+  {
+   "label": "令和9年度保育所等入所のご案内（PDF、11 保育料（利用者負担額）等について・15 参考資料）",
+   "url": "https://www.town.tohnosho.chiba.jp/material/files/group/6/R9annai.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表はExcelで作ったPDF（文字の取れるPDF）を pdftotext -layout で読み、画像で列の並び（保育標準時間認定→保育短時間認定、各階層の1人目・2人目・3人目以降）を確かめた。lunch_jh・cash は探していない。",
+ "read_at": "2026-11-01"
+}

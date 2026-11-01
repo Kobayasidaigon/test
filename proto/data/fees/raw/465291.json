@@ -1,0 +1,42 @@
+{
+ "code": "465291",
+ "pref": "鹿児島県",
+ "name": "喜界町",
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "町の公式サイトに保育料（利用者負担額）の表や決め方のページが見つからなかった。保健福祉課の申請書のページに「保育所入所申込書等」（2・3号認定用の「施設型給付費・地域型保育給付費等支給認定申請書兼入所申込書」、PDF作成2026年3月17日）があり、町の市町村民税の情報で「決定した利用者負担額」を施設に示すことへの同意欄があるので、保育料は町が所得で決めているとみられるが、額は確かめられなかった。",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "町の資料では確かめられなかった。",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "町の資料では確かめられなかった。鹿児島県の「多子世帯保育料等軽減事業」（第3子以降の保育料等を助成する市町村に県が補助。令和6年度は29市町村が実施）を喜界町が実施しているかは未確認。",
+ "lunch_jh": null,
+ "cash": [
+  {"label": "乳児紙おむつ等購入費助成（助成券）", "per_child_yearly": 60000, "max_age": 1, "note": "町に住所がある1歳未満の乳児1人につき月額5,000円の助成券（紙おむつ・おしり拭きに使える。1歳に到達する月まで、上限12か月）。現金ではなく助成券。", "source": {"label": "出産祝金・乳児紙おむつ等購入費助成事業｜鹿児島県喜界町", "url": "https://www.town.kikai.lg.jp/fukushi/syussaniwaikin.html"}}
+ ],
+ "one_time": [
+  {"label": "喜界町出産祝金", "amount": 100000, "note": "第1子10万円、第2子20万円、第3子30万円、第4子40万円、第5子以降50万円（令和3年4月1日以降生まれで、出生後最初の住所が町の新生児。出産時に1年以上町に住所があり、引き続き6か月以上定住見込みの方）。", "source": {"label": "出産祝金・乳児紙おむつ等購入費助成事業｜鹿児島県喜界町", "url": "https://www.town.kikai.lg.jp/fukushi/syussaniwaikin.html"}}
+ ],
+ "sources": [
+  {"label": "保健福祉課（各種申請書。保育所入所申込書等）｜鹿児島県喜界町", "url": "https://www.town.kikai.lg.jp/hohuku/kurashi/shinse/hokenfukushi.html"},
+  {"label": "保育所入所申込書等（PDF、2・3号認定用 支給認定申請書兼入所申込書、2026年3月17日作成）", "url": "https://www.town.kikai.lg.jp/hohuku/kurashi/shinse/documents/nyuusyo.pdf"},
+  {"label": "出産祝金・乳児紙おむつ等購入費助成事業｜鹿児島県喜界町", "url": "https://www.town.kikai.lg.jp/fukushi/syussaniwaikin.html"}
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べはトップページ1枚だけ（トップは町政情報 /densan/home.html と観光・移住への入口だけ）",
+  "サイトマップ（/sitemap.html）、子育て・健康、入学・入園、くらしの情報 → 福祉・介護 → 福祉 → 児童福祉（放課後児童クラブ・子育て支援センター・医療助成・出産祝金だけで保育所のページはない）、教育・文化（学校給食のページに給食費の記載なし）、移住・定住者支援のページを見た",
+  "入学・入園のページの「入園・就学事務の手続き」（/kyoi/kurashi/kyoiku-bunka/kyoikuinkai/tetsuzuki.html）はページが見つからない（404相当）",
+  "町の情報のページに例規集へのリンクが見当たらなかった",
+  "WebSearch（allowed_domains: town.kikai.lg.jp、「喜界町 保育所 保育料 入所」）: 保育料の額の載ったページは出てこなかった。2022年3月の町議会会議録に0〜2歳児の保育料無料化の所得制限緩和を国へ要望する項目があるとの要約、保健福祉課のページに保育所入所申込書があることが分かっただけ"
+ ],
+ "notes": "保育料の表・きょうだいの決まり・無料かどうかは町の公式サイトで確かめられなかったので、すべて null／unknown のまま（推測で埋めていない）。保育料は町の保健福祉課（0997-65-3685）が扱う。lunch_jh は学校給食のページに給食費の記載がなく未確認。",
+ "read_at": "2026-11-01"
+}

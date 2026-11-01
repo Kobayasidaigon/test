@@ -1,0 +1,60 @@
+{
+  "code": "034029",
+  "pref": "岩手県",
+  "name": "平泉町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度 認定こども園入園のご案内」〔令和7年11月発行、PDF〕7ページ「□保育料表」）",
+  "period_note": "4月から8月分の保育料は令和7年度市町村民税額、9月から3月分は令和8年度市町村民税額で算定。保育料算定に係るお子さんの年齢は年度初日の前日の年齢が基準で、年度途中で誕生日を迎えても変わらない。毎月1日時点で在籍していれば当該月分を徴収（日割りなし）。",
+  "tax_basis": "6%",
+  "tax_note": "政令市ではないので6%とした。税額区分の町民税所得割額は保護者（父母）の課税額を合算した額。入園する子や父母が祖父母の税法上の扶養になっている場合などは祖父母等の市町村民税額で決定する場合がある。税額控除の扱い（住宅借入金等特別税額控除など）は案内に書かれていない。",
+  "table": {
+    "title": "□保育料表 ３号認定（３歳未満） 保育料（月額）",
+    "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": null, "upper": null, "condition": "町民税均等割のみ", "monthly": 12600, "monthly_second": null },
+      { "label": "D1", "lower": 1, "upper": 25000, "condition": "町民税所得割課税額 25,000円未満", "monthly": 13000, "monthly_second": null },
+      { "label": "D2", "lower": 25000, "upper": 40500, "condition": "町民税所得割課税額 40,500円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "D3", "lower": 40500, "upper": 48600, "condition": "町民税所得割課税額 48,600円未満", "monthly": 17000, "monthly_second": null },
+      { "label": "D4", "lower": 48600, "upper": 75000, "condition": "町民税所得割課税額 75,000円未満", "monthly": 21000, "monthly_second": null },
+      { "label": "D5", "lower": 75000, "upper": 97000, "condition": "町民税所得割課税額 97,000円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "D6", "lower": 97000, "upper": 140000, "condition": "町民税所得割課税額 140,000円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "D7", "lower": 140000, "upper": 169000, "condition": "町民税所得割課税額 169,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "D8", "lower": 169000, "upper": 213000, "condition": "町民税所得割課税額 213,000円未満", "monthly": 31000, "monthly_second": null },
+      { "label": "D9", "lower": 213000, "upper": 245000, "condition": "町民税所得割課税額 245,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "D10", "lower": 245000, "upper": 301000, "condition": "町民税所得割課税額 301,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "D11", "lower": 301000, "upper": 397000, "condition": "町民税所得割課税額 397,000円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "D12", "lower": 397000, "upper": null, "condition": "町民税所得割課税額 397,000円以上", "monthly": 42000, "monthly_second": null }
+    ],
+    "notes": "保育短時間: A・B 0、C 12,300、D1 12,700、D2 14,700、D3 16,700、D4 20,600、D5 22,600、D6 25,500、D7 29,400、D8 30,400、D9 32,400、D10 36,300、D11 40,300、D12 41,200。表の下の注記: 保護者と生計を一にしている子どものうち上から2人目以降の子どもは無料。ひとり親世帯等はB〜D5が無料、D6〜D12は第1子が半額・第2子以降は無料。保育料には給食費（主食・副食）を含む。3〜5歳児クラスと、0〜2歳児クラスの町民税非課税世帯（B）は無料（送迎費・行事費などの実費は保護者負担）。標準時間は月120時間以上の就労で最大11時間、短時間は月60〜120時間で最大8時間。表を画像で確かめた（標準時間が先、短時間が後）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月12,600〜42,000円。生活保護・町民税非課税世帯は0円）。ひとり親世帯等はB〜D5が無料、D6以上は第1子半額。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "「保護者と生計を一にしている子どものうち上から2人目以降の子どもは無料」（保育料表の注記）。上の子が施設に通っているかは問わない書き方で、上の子の年齢の上限・所得制限は書かれていない（岩手県の「いわて子育て応援保育料無償化事業」〔第2子以降の3歳未満児の保育料を無償化する市町村に県が1/2補助〕と同じ形）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子と同じ（上から2人目以降は無料）。3〜5歳児クラスの副食費（月4,500円）も第3子以降は免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "認定こども園入園申し込み | 平泉町ホームページ（子育て支援課、更新日2025年11月4日）",
+      "url": "https://www.town.hiraizumi.iwate.jp/%e8%aa%8d%e5%ae%9a%e3%81%93%e3%81%a9%e3%82%82%e5%9c%92%e5%85%a5%e5%9c%92%e7%94%b3%e3%81%97%e8%be%bc%e3%81%bf-33546/"
+    },
+    {
+      "label": "令和8年度 認定こども園入園のご案内（PDF、令和7年11月発行、7ページ 保育料表）",
+      "url": "https://hi-hp-production.s3.ap-northeast-1.amazonaws.com/wp-content/uploads/2025/11/04155630/%E2%96%A0R8%E5%85%A5%E5%9C%92%E6%A1%88%E5%86%85.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの「認定こども園入園申し込み」ページから令和8年度入園案内（PDF）を開き、保育料表を文字と画像で確かめた"
+  ],
+  "notes": "町内の施設は町立の認定こども園2園（二葉きらり園・長島こども園）。0〜2歳児クラスの保育料に給食費（主食・副食）を含む。3〜5歳児クラスの副食費は月4,500円（年収360万円未満相当世帯と第3子以降は免除）。延長保育あり（18:30〜19:00）。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

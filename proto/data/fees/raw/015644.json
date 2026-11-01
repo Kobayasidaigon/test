@@ -1,0 +1,50 @@
+{
+ "code": "015644",
+ "pref": "北海道",
+ "name": "大空町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和8年度の保育料は市町村民税所得割課税額をもとに年2回決定。4〜8月分は令和7年度の課税額（令和8年4月上旬ごろ決定）、9〜3月分は令和8年度の課税額（令和8年8月下旬ごろ決定）。3歳以上児は無料。月途中の入退園は在籍期間中の開園日数に応じた日割（10円未満切り捨て）。町内の保育施設は町立の認定こども園2園（めまんべつ・ひがしもこと。3号は満6か月から）。",
+ "tax_basis": "6%",
+ "tax_note": "市町村民税所得割課税額で階層を決める（町の案内に税額控除・調整控除の扱いの記載はない）。課税世帯は所得割の額にかかわらず同じ保育料。",
+ "table": {
+  "title": "大空町認定こども園の保育料について（保育料詳細：所得階層区分／保育料（月額）3歳未満児）",
+  "kind": "3歳未満児・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "1", "lower": null, "upper": null, "condition": "生活保護世帯・要保護世帯・里親世帯", "monthly": 0, "monthly_second": null},
+   {"label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "3", "lower": 0, "upper": 48600, "condition": "所得割課税額48,600円未満", "monthly": 13500, "monthly_second": null},
+   {"label": "4", "lower": 48600, "upper": 97000, "condition": "所得割課税額97,000円未満", "monthly": 13500, "monthly_second": null},
+   {"label": "5", "lower": 97000, "upper": 169000, "condition": "所得割課税額169,000円未満", "monthly": 13500, "monthly_second": null},
+   {"label": "6", "lower": 169000, "upper": 301000, "condition": "所得割課税額301,000円未満", "monthly": 13500, "monthly_second": null},
+   {"label": "7", "lower": 301000, "upper": 397000, "condition": "所得割課税額397,000円未満", "monthly": 13500, "monthly_second": null},
+   {"label": "8", "lower": 397000, "upper": null, "condition": "所得割課税額397,000円以上", "monthly": 13500, "monthly_second": null}
+  ],
+  "notes": "保育短時間は3〜8階層すべて月9,000円（1・2階層は0円）。令和8年度の「大空町認定こども園利用申込みのご案内」（PDF、2025年9月作成）の表は「生活保護世帯 0円／市町村民税非課税世帯 0円／市町村民税所得割課税世帯 13,500円（標準）・9,000円（短時間）」の3区分で、町のページの8階層の表と同じ額。「３歳未満児は、２子目以降無料」。ひとり親世帯等（ひとり親世帯・在宅障がい児（者）のいる世帯・準要保護世帯）で所得階層が3階層・4階層の世帯は1子目半額（13,500円→6,750円、短時間4,500円）、2子目以降無料（町のページ。案内では「一部の世帯は、１子目半額となる場合があります」）。町のページの表示上の更新日は2024年4月1日だが、ページ内に令和8年度の申込み案内があり、額は令和8年度の案内と一致。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は課税世帯なら所得にかかわらず月13,500円（標準時間）・9,000円（短時間）。0円は生活保護・非課税世帯だけ。",
+ "second_child": "free",
+ "second_count": "unknown",
+ "second_note": "「３歳未満児は、２子目以降無料です」（令和8年度の案内・町のページ）。上の子をどう数えるか（同時に在園しているか、上の子の年齢の上限）は町の案内に書かれていない。所得制限の記載もない。北海道の「多子世帯の保育料軽減支援事業」（扶養している子を年齢を問わず数える。道の補助は所得割169,000円未満）を使っている可能性があるが、町の資料では確かめられなかった。",
+ "third_child": "free",
+ "third_count": "unknown",
+ "third_note": "「２子目以降無料」に含まれる。数え方は第2子と同じく未確認。",
+ "lunch_jh": {
+  "free": true,
+  "note": "町の子育てガイド（2025年10月作成の1枚もの）の「就学後・教育」欄に「給食費無償化（中学生まで）」、就学前の欄にも「給食費無償化」とある。対象・期間の詳しいページは開いていない。",
+  "source": {"label": "大空町子育てガイド（PDF）", "url": "https://www.town.ozora.hokkaido.jp/material/files/group/4/kosodatesienngaidosaisinn.pdf"}
+ },
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "教育・保育施設等の利用に係る認定及び利用申込みについて／大空町（大空町認定こども園の保育料について）", "url": "https://www.town.ozora.hokkaido.jp/kenko_fukushi_kosodate/kosodate/2036.html"},
+  {"label": "令和８年度 大空町認定こども園利用申込みのご案内（PDF、５．保育料 p.6）", "url": "https://www.town.ozora.hokkaido.jp/material/files/group/4/888kodomoenmoushikomiannaipdf.pdf"},
+  {"label": "大空町子育てガイド（PDF）", "url": "https://www.town.ozora.hokkaido.jp/material/files/group/4/kosodatesienngaidosaisinn.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "3歳未満児の保育料は所得階層によらず定額（課税世帯は月13,500円・短時間9,000円）。きょうだいの数え方は町の案内に記載なし。",
+ "read_at": "2026-11-01"
+}

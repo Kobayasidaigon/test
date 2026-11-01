@@ -1,0 +1,233 @@
+{
+ "code": "113859",
+ "pref": "埼玉県",
+ "name": "上里町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（町独自の保育料の完全無償化〔令和6年4月から〕が続いている。町のページ「保育所等とは」〔令和8年度・令和9年度の申込み書類を掲載〕と「令和9年度 保育所等入所の手引き」〔2026年9月作成〕で確認。表は【参考】として町のページに残る「令和５年度 上里町保育所等利用者負担額表」）",
+ "period_note": "令和6年4月から、0〜2歳児の保育料（特定教育・保育施設に係る利用者負担額）は町独自に無償（申請不要）。参考の表では、4月〜8月分は前年度、9月〜3月分は当年度の市町村民税で算定。主食費・副食費・教材費等の実費は無償化の対象外。",
+ "tax_basis": "6%",
+ "tax_note": "参考の令和5年度の表: 市町村民税所得割の額（児童と生計を一にしている父母の合算。父母の収入金額の合計が103万円に満たず、同居する扶養義務者が家計の主宰者と判断される場合はその方の課税額も含める）。税額控除の扱いの記載はない。保育料は無償なので所得による違いはない。政令市ではない。",
+ "table": {
+  "title": "令和５年度 上里町保育所等利用者負担額表（【参考】、無償化の前の額）",
+  "kind": "保育所等・保育標準時間・第1子（月額）。令和5年度の参考の額で、令和6年4月からは町独自の完全無償化で0円",
+  "rows": [
+   {
+    "label": "1(A)",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "2(B)",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "3(C)",
+    "lower": null,
+    "upper": null,
+    "condition": "均等割のみ課税世帯",
+    "monthly": 8600,
+    "monthly_second": null
+   },
+   {
+    "label": "4(D1)",
+    "lower": 1,
+    "upper": 15000,
+    "condition": "市町村民税所得割の額の区分が次の区分に該当する世帯 15,000円未満の世帯",
+    "monthly": 10000,
+    "monthly_second": null
+   },
+   {
+    "label": "5(D2)",
+    "lower": 15000,
+    "upper": 32000,
+    "condition": "15,000円 以上 32,000円未満の世帯",
+    "monthly": 13500,
+    "monthly_second": null
+   },
+   {
+    "label": "6(D3)",
+    "lower": 32000,
+    "upper": 48600,
+    "condition": "32,000円 以上 48,600円未満の世帯",
+    "monthly": 16000,
+    "monthly_second": null
+   },
+   {
+    "label": "7(D4)",
+    "lower": 48600,
+    "upper": 60000,
+    "condition": "48,600円 以上 60,000円未満の世帯",
+    "monthly": 17900,
+    "monthly_second": null
+   },
+   {
+    "label": "8(D5)",
+    "lower": 60000,
+    "upper": 72000,
+    "condition": "60,000円 以上 72,000円未満の世帯",
+    "monthly": 20700,
+    "monthly_second": null
+   },
+   {
+    "label": "9(D6)",
+    "lower": 72000,
+    "upper": 84000,
+    "condition": "72,000円 以上 84,000円未満の世帯",
+    "monthly": 23200,
+    "monthly_second": null
+   },
+   {
+    "label": "10(D7)",
+    "lower": 84000,
+    "upper": 97000,
+    "condition": "84,000円 以上 97,000円未満の世帯",
+    "monthly": 25200,
+    "monthly_second": null
+   },
+   {
+    "label": "11(D8)",
+    "lower": 97000,
+    "upper": 115000,
+    "condition": "97,000円 以上 115,000円未満の世帯",
+    "monthly": 28700,
+    "monthly_second": null
+   },
+   {
+    "label": "12(D9)",
+    "lower": 115000,
+    "upper": 133000,
+    "condition": "115,000円 以上 133,000円未満の世帯",
+    "monthly": 31200,
+    "monthly_second": null
+   },
+   {
+    "label": "13(D10)",
+    "lower": 133000,
+    "upper": 151000,
+    "condition": "133,000円 以上 151,000円未満の世帯",
+    "monthly": 34200,
+    "monthly_second": null
+   },
+   {
+    "label": "14(D11)",
+    "lower": 151000,
+    "upper": 169000,
+    "condition": "151,000円 以上 169,000円未満の世帯",
+    "monthly": 36200,
+    "monthly_second": null
+   },
+   {
+    "label": "15(D12)",
+    "lower": 169000,
+    "upper": 213000,
+    "condition": "169,000円 以上 213,000円未満の世帯",
+    "monthly": 39200,
+    "monthly_second": null
+   },
+   {
+    "label": "16(D13)",
+    "lower": 213000,
+    "upper": 257000,
+    "condition": "213,000円 以上 257,000円未満の世帯",
+    "monthly": 42200,
+    "monthly_second": null
+   },
+   {
+    "label": "17(D14)",
+    "lower": 257000,
+    "upper": 301000,
+    "condition": "257,000円 以上 301,000円未満の世帯",
+    "monthly": 46600,
+    "monthly_second": null
+   },
+   {
+    "label": "18(D15)",
+    "lower": 301000,
+    "upper": 333000,
+    "condition": "301,000円 以上 333,000円未満の世帯",
+    "monthly": 48000,
+    "monthly_second": null
+   },
+   {
+    "label": "19(D16)",
+    "lower": 333000,
+    "upper": 365000,
+    "condition": "333,000円 以上 365,000円未満の世帯",
+    "monthly": 49400,
+    "monthly_second": null
+   },
+   {
+    "label": "20(D17)",
+    "lower": 365000,
+    "upper": 397000,
+    "condition": "365,000円 以上 397,000円未満の世帯",
+    "monthly": 51800,
+    "monthly_second": null
+   },
+   {
+    "label": "21(D18)",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上の世帯",
+    "monthly": 54200,
+    "monthly_second": null
+   }
+  ],
+  "notes": "令和6年4月から町独自の完全無償化で実際の負担は0円。この表は町のページに【参考】として残る令和5年度の額。保育短時間（月額）: 1(A) 0、2(B) 0、3(C) 8,400、4(D1) 9,800、5(D2) 13,200、6(D3) 15,700、7(D4) 17,500、8(D5) 20,300、9(D6) 22,800、10(D7) 24,700、11(D8) 28,200、12(D9) 30,600、13(D10) 33,600、14(D11) 35,500、15(D12) 38,500、16(D13) 41,400、17(D14) 45,800、18(D15) 47,100、19(D16) 48,500、20(D17) 50,900、21(D18) 53,200。4(D1) の lower は 3(C)（均等割のみ＝所得割なし）と分けるため1にした。令和5年度の表の裏面の軽減: 第1子はひとり親世帯・在宅障がい児（者）のいる世帯などの要保護世帯で C〜D3階層は「表の額から1,000円を控除した額の半額」、D4〜D6階層（所得割77,101円未満）は「表の額の半額または9,000円（短時間8,800円）のいずれか低い額」。第2子は、所得割57,700円未満（C〜D4階層）は兄姉の年齢に関わらず半額、兄姉が幼稚園・認定こども園・保育所等を同時利用なら半額、要保護世帯等で所得割77,101円未満は無料。第3子以降は3人以上同時利用なら無料、同時利用でなくても兄姉の年齢に関わらず無料（別途申請）。"
+ },
+ "first_child_free": true,
+ "first_child_free_since": "2024年4月",
+ "first_child_free_note": "町独自の「保育料の完全無償化」: 令和6年4月から、子どもの年齢、人数、保護者の所得に関わらず、上里町在住で町内・町外問わず保育所、認定こども園、地域型保育施設（事業所内保育所等）に通う0〜2歳児の保育料（毎月町又は施設に払う利用者負担額）を無償化。申請手続き不要。主食費・副食費・教材費等の実費は対象外。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から無料なので、きょうだいの数え方に関係なく0円（household は「数え方に関係なく0円」の意味で置いた）。無償化の前（令和5年度）の決まりは、兄姉が施設を同時利用なら第2子半額、所得割57,700円未満は兄姉の年齢に関わらず半額。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料なので0円。3〜5歳の第3子以降の副食費も、兄姉の年齢に関係なく無償化（申請が必要、申請の翌月から）。",
+ "lunch_jh": {
+  "free": true,
+  "note": "令和8年4月から町内公立小中学校の給食費を無償化。小学校は国の学校給食費の負担軽減に基づき、中学校は町独自の施策として無償化。申請不要。それまでの「上里町学校給食費補助金」は令和7年度末で終了。",
+  "source": {
+   "label": "公立小中学校に通う児童・生徒の学校給食費の無償化について/上里町",
+   "url": "https://www.town.kamisato.saitama.jp/7773.htm"
+  }
+ },
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料の完全無償化について/上里町",
+   "url": "https://www.town.kamisato.saitama.jp/6909.htm"
+  },
+  {
+   "label": "保育所等とは/上里町（※3 保育料について、※4 第3子以降の副食費無償化について、【参考】令和5年度の表）",
+   "url": "https://www.town.kamisato.saitama.jp/item/4248.htm"
+  },
+  {
+   "label": "令和9年度 保育所等入所の手引き（PDF、上里町子育て共生課、2026年9月作成）「4 保育料等」",
+   "url": "https://www.town.kamisato.saitama.jp/secure/4249/R9tebiki.pdf"
+  },
+  {
+   "label": "令和５年度 上里町保育所等利用者負担額表（PDF、【参考】）",
+   "url": "https://www.town.kamisato.saitama.jp/secure/4248/R5riyousyahutangaku.pdf"
+  },
+  {
+   "label": "保育料の完全無償化について（チラシ PDF）",
+   "url": "https://www.town.kamisato.saitama.jp/secure/13046/kanzenmusyouka.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べの docs/00.txt（保育料の完全無償化について）、docs/04.txt（チラシ）、docs/01.txt（令和5年度の表）を読んだ",
+  "令和8年度も続いているかを、「保育所等とは」のページ（item/4248.htm）と、そこにある令和9年度の手引き（R9tebiki.pdf、2026年9月作成）で確かめた"
+ ],
+ "notes": "0〜2歳の保育料は第1子から0円（令和6年4月から）。表は令和5年度の参考の額。",
+ "read_at": "2026-11-01"
+}

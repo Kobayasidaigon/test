@@ -1,0 +1,47 @@
+{
+  "code": "063649",
+  "pref": "山形県",
+  "name": "真室川町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度 子育て支援のお知らせ」〔2026年4月作成〕の「保育料無償化【申請不要】」、令和9年度の保育所等入所児童の受付案内〔2026年10月作成〕の「保育料は町の独自施策で令和6年度から無償」）",
+  "period_note": "令和6年度から町独自の子育て支援事業で全ての階層の保育料を無償化（申請不要。延長保育・一時預かりなどの一部事業を除く）。所得の階層は決めるので、利用者負担の決定通知は4月中旬に届く。前期分（4〜8月）は前年度、後期分（9〜3月）は当年度の町民税所得割額で算定。3歳未満児は副食費も保育料に含まれる。",
+  "tax_basis": "6%",
+  "tax_note": "所得の階層は原則として保護者の町民税課税額の合計で決める（町民税所得割額）。保育料が無償のため、所得割の細かい定義は確かめていない（保育料基準額表のPDFはリンク切れ）。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "「令和9年度 町内保育施設入園・入所のご案内」（2026年10月26日）: 「真室川町では、これまで町独自の子育て支援事業として保育料の軽減を実施しておりましたが、令和6年度からは拡充して、すべての階層を無償化しております。3歳児未満…副食費も保育料に含まれています。」令和8年度 子育て支援のお知らせ: 「保育料無償化【申請不要】※延長保育・一時預かりなどの一部事業を除く」「保育施設給食費無償化【申請不要】」。令和9年度の受付案内: 「保育料は町の独自施策で令和6年度から無償となっておりますが、所得の階層を定める必要があるため、利用者負担の決定通知を、4月中旬を目途に送付いたします。」所得制限なし。届出保育施設や町外の保育所を使う場合の扱いは書かれていない（市町村との調整が必要とだけある）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から0円のため、きょうだいの数え方は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和8年度 子育て支援のお知らせ: 「小・中学校給食費無償化【申請不要】」（小・中学校副教材費も無償化）。",
+    "source": { "label": "令和8年度 子育て支援のお知らせ（真室川町）", "url": "https://www.town.mamurogawa.yamagata.jp/material/files/group/6/R8_kosodatesiennoosirase.pdf" }
+  },
+  "cash": [
+    {
+      "label": "家庭保育支援給付金",
+      "per_child_yearly": 360000,
+      "max_age": 0,
+      "note": "満1歳未満の乳児を家庭で保育している保護者に月3万円（要申請）。保育施設に通う子は対象外とみられる（家庭で保育していることが条件）。年額は12か月分として置いた。",
+      "source": { "label": "令和8年度 子育て支援のお知らせ（真室川町）", "url": "https://www.town.mamurogawa.yamagata.jp/material/files/group/6/R8_kosodatesiennoosirase.pdf" }
+    }
+  ],
+  "one_time": [],
+  "sources": [
+    { "label": "令和9年度 町内保育施設入園・入所のご案内（2026年10月26日）", "url": "https://www.town.mamurogawa.yamagata.jp/kosodate_kyoiku/nyuen_nyugaku/5792.html" },
+    { "label": "令和9年度 保育所等入所児童の受付案内について（PDF、2026年10月作成）", "url": "https://www.town.mamurogawa.yamagata.jp/material/files/group/6/nyuuennannnaitirasi.pdf" },
+    { "label": "令和8年度真室川町～子育て支援のお知らせ～（2026年4月27日更新）", "url": "https://www.town.mamurogawa.yamagata.jp/kosodate_kyoiku/shussan_kosodate/5451.html" },
+    { "label": "令和8年度 子育て支援のお知らせ（PDF）", "url": "https://www.town.mamurogawa.yamagata.jp/material/files/group/6/R8_kosodatesiennoosirase.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl/063649）では保育料基準額表のPDFが取れなかった（OSError）。入園・入所のご案内のページのリンク https://www.town.mamurogawa.yamagata.jp/material/local/1379/files/group/6/hoikuryoukizyunngakuhyou.pdf と /material/files/group/6/ の両方を試したが404（リンク切れ）。保育料は令和6年度から全階層無償なので、表は入れていない"
+  ],
+  "notes": "町内の保育施設は公立の安楽城保育所・釜渕保育所（概ね2歳から）、私立のたんぽぽこども園（満8か月から）・キッズハウス（届出、満2か月から）。保育料・保育施設の給食費は無償。3〜5歳の主食も令和7年度から町負担で無償提供。",
+  "read_at": "2026-11-01"
+}

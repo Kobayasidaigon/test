@@ -1,0 +1,60 @@
+{
+ "code": "235628",
+ "pref": "愛知県",
+ "name": "東栄町",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "表の欄外: 「当該年度4月分～8月分までの利用者負担額の算定にあたっては、前年度分の市町村民税の額の区分を、9月分～3月分までの利用者負担額の算定に当たっては当該年度分の市町村民税の額の区分で算定します。」表はスキャンした画像のPDF（作成日2022年8月26日、サーバーの更新日2022年9月14日）で、年度は書かれていない。町のページ「東栄町立とうえい保育園について」（園児数は令和7年7月1日現在）から今もこの「利用者負担額」PDFにリンクしている。",
+ "tax_basis": "6%",
+ "tax_note": "表は「市町村民税額等」の区分（非課税、均等割額のみ、所得割の額で12,000円未満〜397,000円以上）。税額控除の扱いなど所得割の定義の注記はない。",
+ "table": {
+  "title": "利用者負担額（表題なし。保育標準時間・保育短時間 × 基準額・同時入所2番目）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "区分2", "lower": null, "upper": null, "condition": "非課税", "monthly": 0, "monthly_second": 0},
+   {"label": "区分3", "lower": null, "upper": null, "condition": "均等割額のみ", "monthly": 12100, "monthly_second": 6050},
+   {"label": "区分4", "lower": 1, "upper": 12000, "condition": "12,000円未満", "monthly": 14000, "monthly_second": 7000},
+   {"label": "区分5", "lower": 12000, "upper": 48600, "condition": "48,600円未満", "monthly": 16000, "monthly_second": 8000},
+   {"label": "区分6", "lower": 48600, "upper": 59000, "condition": "59,000円未満", "monthly": 17500, "monthly_second": 8750},
+   {"label": "区分7", "lower": 59000, "upper": 79000, "condition": "79,000円未満", "monthly": 19200, "monthly_second": 9600},
+   {"label": "区分8", "lower": 79000, "upper": 97000, "condition": "97,000円未満", "monthly": 21000, "monthly_second": 10500},
+   {"label": "区分9", "lower": 97000, "upper": 121000, "condition": "121,000円未満", "monthly": 22500, "monthly_second": 11250},
+   {"label": "区分10", "lower": 121000, "upper": 145000, "condition": "145,000円未満", "monthly": 24000, "monthly_second": 12000},
+   {"label": "区分11", "lower": 145000, "upper": 169000, "condition": "169,000円未満", "monthly": 25500, "monthly_second": 12750},
+   {"label": "区分12", "lower": 169000, "upper": 230000, "condition": "230,000円未満", "monthly": 27500, "monthly_second": 13750},
+   {"label": "区分13", "lower": 230000, "upper": 301000, "condition": "301,000円未満", "monthly": 30000, "monthly_second": 15000},
+   {"label": "区分14", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 34000, "monthly_second": 17000},
+   {"label": "区分15", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 42000, "monthly_second": 21000}
+  ],
+  "notes": "表の列は「保育標準時間（基準額・同時入所2番目）」「保育短時間（基準額・同時入所2番目）」。monthly_second は「同時入所2番目」の列。保育短時間の基準額（同時入所2番目）: 区分2 0（0）、区分3 10,100（5,050）、区分4 12,000（6,000）、区分5 14,000（7,000）、区分6 15,500（7,750）、区分7 17,200（8,600）、区分8 19,000（9,500）、区分9 20,500（10,250）、区分10 22,000（11,000）、区分11 23,500（11,750）、区分12 25,500（12,750）、区分13 28,000（14,000）、区分14 32,000（16,000）、区分15 40,000（20,000）。区分1（生活保護）の行は表にない。表に「3歳未満」とは書かれていないが、3〜5歳は無償化されているので3歳未満の表と読んだ。欄外: 「私的契約児使用料は第15階層と同じ保育料」。ひとり親・障がい者のいる世帯などの軽減、3人目の扱いは表に書かれていない。各行の下限は前の行の上限から置いた（表は「〇〇円未満」だけ）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "町のページ・令和8年度入園案内に第1子の無償化の記載はない。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "表の「同時入所2番目」の列が基準額の半額（同時に入所している子の2番目）。愛知県の「第二子保育料無料化等事業」（同じ県の他市町では、18歳未満の子を2人以上養育する世帯の2人目以降の3歳未満児を、所得割97,000円未満は無料、97,000円以上301,000円未満は半額）を東栄町が行っているかは、町のサイトに書かれておらず分からない（例規集〔g-reiki〕は403で読めなかった）。",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "表に3人目の列はなく、町のページにも書かれていない。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [
+  {"label": "出産準備金", "amount": 100000, "note": "東栄町に住所を有する妊婦に、産前70,000円・産後30,000円を支給（移住定住ページ「妊娠・出産・子育て」）。", "source": {"label": "妊娠・出産・子育て/東栄町（移住定住）", "url": "https://www.town.toei.aichi.jp/1977.htm"}}
+ ],
+ "sources": [
+  {"label": "東栄町立とうえい保育園について/東栄町（「利用者負担額(pdf:45KB)」へのリンク）", "url": "https://www.town.toei.aichi.jp/1149.htm"},
+  {"label": "利用者負担額（PDF、スキャンした画像、2022年8月作成）", "url": "https://www.town.toei.aichi.jp/secure/1200/hutangaku.pdf"},
+  {"label": "令和8年度 とうえい保育園の入園申込み手続きについて/東栄町", "url": "https://www.town.toei.aichi.jp/5302.htm"},
+  {"label": "令和８年度 とうえい保育園入園案内（PDF、保育料の記載なし）", "url": "https://www.town.toei.aichi.jp/secure/7100/%E2%98%85%E6%A1%88%E5%86%85%E6%96%87.pdf"}
+ ],
+ "confidence": "推定",
+ "tried": [
+  "下調べの候補 hutangaku.pdf（画像のPDF）を pdftoppm で画像にして読んだ",
+  "令和8年度 とうえい保育園の入園申込みページと令和8年度入園案内PDF（保育料の記載なし）",
+  "子育て・妊娠出産育児・移住定住（妊娠・出産・子育て、移住関連リーフレット5枚〔画像〕）のページ: 保育料の軽減・第2子の記載なし",
+  "例規集 https://www1.g-reiki.net/town.toei/reiki_menu.html は 403 で読めなかった"
+ ],
+ "notes": "町内の認可保育所は町立とうえい保育園のみ（定員90）。保育料の表は2022年にスキャンした画像のPDFで、令和8年度の表と確かめられないので status は partial、confidence は推定。愛知県の第2子の軽減（所得で変わる）を町が行っているかは不明。",
+ "read_at": "2026-11-01"
+}

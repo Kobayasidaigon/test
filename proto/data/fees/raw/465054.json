@@ -1,0 +1,65 @@
+{
+  "code": "465054",
+  "pref": "鹿児島県",
+  "name": "屋久島町",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "0〜2歳（3号認定）の保育料の階層表は町のサイトで見つからなかった。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料の表・算定の説明が見つからず未確認。",
+  "table": null,
+  "first_child_free": false,
+  "first_child_free_note": "町の「幼児教育・保育の無償化について」（更新日 2026年03月10日）は、0〜2歳は住民税非課税世帯の子どもだけが無償と書いている。保育所のページ（同日更新）の入園に必要な書類に「保育料納付誓約書（3号認定のみ）」（保育料を納期限内に納付する、滞納時は児童手当から特別徴収することに同意する、という誓約書）があり、3号認定の子は保育料を払う。町独自の0〜2歳の無償化は見当たらない。額は不明。",
+  "first_child_free_since": null,
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "町の資料に0〜2歳のきょうだいの軽減の記載が見つからなかった（無償化のページには3〜5歳の副食費が第3子以降は免除とだけある）。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "未確認。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    {
+      "label": "屋久島町すこやかベビー出産祝金（第1子・第2子）",
+      "amount": 100000,
+      "note": "第3子以降は200,000円。1年以上屋久島町に住所を有し出産した方（1年に満たない場合は1年を経過したとき。子が1歳の誕生日を迎えた後は対象外）。",
+      "source": {
+        "label": "屋久島町すこやかベビー出産祝金（更新日 2026年05月29日）",
+        "url": "https://www.town.yakushima.kagoshima.jp/kosodate_kyoiku/kosodate/2/1631.html"
+      }
+    },
+    {
+      "label": "屋久島町すこやかベビー出産祝金（第3子以降）",
+      "amount": 200000,
+      "note": "同上。",
+      "source": {
+        "label": "屋久島町すこやかベビー出産祝金（更新日 2026年05月29日）",
+        "url": "https://www.town.yakushima.kagoshima.jp/kosodate_kyoiku/kosodate/2/1631.html"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "label": "保育所／屋久島町（更新日 2026年03月10日）",
+      "url": "https://www.town.yakushima.kagoshima.jp/kurashinobamen/nyuen_nyugaku/hoiku_kyoiku/2974.html"
+    },
+    {
+      "label": "幼児教育・保育の無償化について／屋久島町（更新日 2026年03月10日）",
+      "url": "https://www.town.yakushima.kagoshima.jp/kurashinobamen/nyuen_nyugaku/hoiku_kyoiku/2977.html"
+    },
+    {
+      "label": "保育料納付誓約書（3号認定のみ）（PDF）",
+      "url": "https://www.town.yakushima.kagoshima.jp/material/files/group/9/20241120_03_3gou_nofuseiyakusho.pdf"
+    }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べの index.json の保育・教育のページ（保育所、幼稚園、無償化、無償化対象施設、保育園留学）を見た。保育所のページ（2974.html と別の場所の 338.html は同じ内容）・無償化のページに保育料の額はない",
+    "子育ての「手当・助成・支援」の一覧を見た（保育料の軽減のページはない）",
+    "例規集（https://www1.g-reiki.net/town.yakushima.kagoshima/reiki_menu.html）は 403 Forbidden",
+    "WebSearch（allowed_domains: town.yakushima.kagoshima.jp、「屋久島町 保育料 3歳未満 利用者負担額 階層 第2子」）: 保育料の表は出てこなかった"
+  ],
+  "notes": "保育料の表もきょうだいの決まりも見つからないので status は not_found。町内の施設は保育所 なかよし保育園、認定こども園 ゆかり幼稚園・どんぐりの森保育園・すみれ子ども園・安房保育園・あゆみの森こども園、小規模保育 マンマハウス（休止中）。2・3号認定の申込先は福祉支援課または役場各出張所。保育料の額は福祉支援課に問い合わせる必要がある。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,47 @@
+{
+  "code": "182061",
+  "pref": "福井県",
+  "name": "勝山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和6年9月分から保育料を完全無償化。令和9年度保育園・認定こども園入園申し込みのしおり〔PDF作成 2026年9月30日〕でも「保育料は、完全無償化となっています」）",
+  "period_note": "令和6年9月分から、保育園・認定こども園を利用しているすべての児童の保育料が無料（市独自、県内第1号）。階層の決定は続けており、令和9年度のしおりでは「令和9年4月から8月分は令和8年度の市民税額で決定」。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は全階層で無料なので所得割で負担は変わらない。しおり: 保育料の階層は保護者（父母）の市民税額で決める（父母が市民税非課税で父母以外の者と同居している場合は、父母以外の者を家計の主宰者として算定の対象にする場合がある）。政令市ではない。",
+  "table": {
+    "title": "（参考）利用者負担額表３号認定（令和9年度保育園・認定こども園入園申し込みのしおり 6 保育料・副食費について）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2-1・2-2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3-1・3-2", "lower": 0, "upper": 48600, "condition": "市町村民税均等割課税及び所得割課税額 48,600 円未満", "monthly": 12500, "monthly_second": null },
+      { "label": "4", "lower": 48600, "upper": 97000, "condition": "所得割課税額 97,000 円未満", "monthly": 22500, "monthly_second": null },
+      { "label": "5", "lower": 97000, "upper": 169000, "condition": "所得割課税額 169,000 円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "6", "lower": 169000, "upper": 301000, "condition": "所得割課税額 301,000 円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "7", "lower": 301000, "upper": 397000, "condition": "所得割課税額 397,000 円未満", "monthly": 48500, "monthly_second": null },
+      { "label": "8", "lower": 397000, "upper": null, "condition": "所得割課税額 397,000 円以上", "monthly": 52500, "monthly_second": null }
+    ],
+    "notes": "注意: 表の右に「令和６年９月～ 全ての階層で無料」とあり、勝山市に住む0〜2歳児が実際に払う保育料は全階層0円。表の額は無償化の前の基準額（しおりの「参考」）。標準時間・短時間の区別や第2子の列はない。表は各階層の上限だけを「未満」で書いているので、下限は1つ上の行の上限とした。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2024年9月",
+  "first_child_free_note": "市のページ「保育料の完全無償化について(第1子から無料)」（2024年8月23日更新）: 「県内第1号！ 令和6年9月から保育料を完全無償化しました。（勝山市独自）」「これまでは、第1子と年収640万円以上の第2子については保育料が必要でしたが、これを完全無償化します。」対象は保育園・認定こども園を利用しているすべての児童。令和9年度のしおりでも「保育料は、完全無償化となっています」。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無料なので、きょうだいの数え方は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。福井県の第2子以降の保育料無償化（県と市町、令和6年9月から所得制限なし）もある。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので第3子以降も0円。3歳以上の副食費も年収360万円未満相当の世帯と第3子以降は国の免除と福井県の「すくすく保育支援事業」で免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料の完全無償化について(第1子から無料) - 勝山市（2024年8月23日更新）", "url": "https://www.city.katsuyama.fukui.jp/site/kosodate/29686.html" },
+    { "label": "保育料無償化 チラシ（PDF、令和6年9月分から）", "url": "https://www.city.katsuyama.fukui.jp/uploaded/attachment/30821.pdf" },
+    { "label": "令和9年度保育園・認定こども園入園申し込みのしおり（PDF、【保育園・認定こども園】令和9年4月1日新規入園の受付を行います のページ）", "url": "https://www.city.katsuyama.fukui.jp/uploaded/attachment/37764.pdf" },
+    { "label": "保育施設利用時の給食費の補助について(令和8年4月から) - 勝山市（2026年3月27日更新）", "url": "https://www.city.katsuyama.fukui.jp/site/kosodate/36708.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "担当は教育委員会こども課。令和8年4月分から、市内に住む3歳児クラス以上（1号認定の満3歳児を含む）のすべての児童の主食費（月800円まで）と副食費（月4,900円まで）を市が補助（園の設定額が上回るときは差額を園に払う）。チラシでは、ほかに放課後児童クラブ・放課後こども教室の利用料無料、18歳までの医療費無料、第3子以降の出産祝い金（額はチラシに書かれていない）などを案内。",
+  "read_at": "2026-11-01"
+}

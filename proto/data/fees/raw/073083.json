@@ -1,0 +1,159 @@
+{
+  "code": "073083",
+  "pref": "福島県",
+  "name": "川俣町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "かわまた認定こども園の3歳未満児（3号認定）の利用料は令和6年度から町の助成で無償（「かわまた認定こども園利用料（保育料）の無償化を実施」2024年4月25日掲載）。令和9年度の入園申込のご案内（PDF、2026年10月作成）の「５ 利用料（保育料）について」にも「３歳未満児 保護者の市町村民税課税額により決定しますが、令和６年度から無償化（町で助成）しています。（ただし、川俣在住の園児に限ります。）」とあり、令和8年度も無償。表はその案内の「利用料徴収金額月額表」（無償化の前の基本の額。各月初日の世帯の階層、4月1日現在の年齢で決める）。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の市町村民税課税額で決める（表は市町村民税所得割課税額の区分）。税額控除の扱いは案内に書かれていない。",
+  "table": {
+    "title": "≪利用料徴収金額月額表≫（かわまた認定こども園入園申込のご案内 ５ 利用料（保育料）について）",
+    "kind": "3歳未満・標準時間（月額）。町の助成で川俣町在住の園児は0円になる前の基本の額。第2子の別の列はない",
+    "rows": [
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3a",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税均等割課税世帯",
+        "monthly": 10000,
+        "monthly_second": null
+      },
+      {
+        "label": "第3b",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市町村民税所得割課税額 48,600円未満",
+        "monthly": 13000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4a",
+        "lower": 48600,
+        "upper": 58200,
+        "condition": "市町村民税所得割課税額 58,200円未満",
+        "monthly": 16000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4b",
+        "lower": 58200,
+        "upper": 67800,
+        "condition": "市町村民税所得割課税額 67,800円未満",
+        "monthly": 19000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4c",
+        "lower": 67800,
+        "upper": 77400,
+        "condition": "市町村民税所得割課税額 77,400円未満",
+        "monthly": 22000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4d",
+        "lower": 77400,
+        "upper": 87000,
+        "condition": "市町村民税所得割課税額 87,000円未満",
+        "monthly": 25000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4e",
+        "lower": 87000,
+        "upper": 97000,
+        "condition": "市町村民税所得割課税額 97,000円未満",
+        "monthly": 28000,
+        "monthly_second": null
+      },
+      {
+        "label": "第5",
+        "lower": 97000,
+        "upper": 169000,
+        "condition": "市町村民税所得割課税額 169,000円未満",
+        "monthly": 32000,
+        "monthly_second": null
+      },
+      {
+        "label": "第6",
+        "lower": 169000,
+        "upper": 301000,
+        "condition": "市町村民税所得割課税額 301,000円未満",
+        "monthly": 35000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "市町村民税所得割課税額 397,000円未満",
+        "monthly": 40000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8",
+        "lower": 397000,
+        "upper": null,
+        "condition": "市町村民税所得割課税額 397,000円以上",
+        "monthly": 40000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "案内のPDFは文字の取れない画像のPDFで、3ページを画像で読んだ。表は各区分の上限（未満）だけが書かれていて、lower は1つ上の区分の上限とした（第3bは均等割課税世帯の行と分けるため1）。列は3歳以上（幼児教育・保育の無償化により無償）、3歳未満の標準時間・短時間。短時間: 第1・2 0円、第3a 9,800円、第3b 12,700円、第4a 15,700円、第4b 18,600円、第4c 21,600円、第4d 24,500円、第4e 27,500円、第5 31,400円、第6 34,400円、第7 39,200円、第8 40,000円。ひとり親世帯等・きょうだいの軽減は案内に書かれていない。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "「令和６年度からかわまた認定こども園における利用料を町で助成（無償化）」。対象は川俣町に住所を有し、かわまた認定こども園に在園する0歳から2歳の園児（3号認定児）。助成を受けるには手続きが必要（子育て支援課幼児教育係）。所得制限の記載はない。町内で3号認定を受け入れる施設はかわまた認定こども園（川俣町社会福祉協議会の運営）で、町外の施設に通う場合が助成の対象かは書かれていない（対象は「かわまた認定こども園に在園する」園児）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "かわまた認定こども園の0〜2歳児は第1子から町の助成で無償なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。無償化の前の基本のきょうだいの軽減は案内に書かれていない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無償（かわまた認定こども園、川俣町在住）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "かわまた認定こども園利用料（保育料）の無償化を実施 - 川俣町公式ホームページ（2024年4月25日掲載）",
+      "url": "https://www.town.kawamata.lg.jp/site/kosodate-iryo/kodomoen-riyouryou.html"
+    },
+    {
+      "label": "令和9年度かわまた認定こども園入園申込について - 川俣町公式ホームページ（2026年11月1日更新）",
+      "url": "https://www.town.kawamata.lg.jp/site/kosodate-iryo/nintei-kodomoen9.html"
+    },
+    {
+      "label": "かわまた認定こども園入園申込のご案内（令和9年度4月入園、PDF、3ページ 利用料徴収金額月額表）",
+      "url": "https://www.town.kawamata.lg.jp/uploaded/attachment/25301.pdf"
+    },
+    {
+      "label": "かわまた認定こども園給食費の無償化を実施（2024年4月25日掲載）",
+      "url": "https://www.town.kawamata.lg.jp/site/kosodate-iryo/kodomoen-kyuusyokuhi.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs/00.txt（利用料の無償化のページ）を読み、令和9年度の入園申込のページから案内のPDFを取った",
+    "案内のPDFは文字が取れない画像のPDF（フォントなし）だったので、全ページを縮小一覧にして表のページ（3ページ）を -r 150 で画像にして読んだ",
+    "令和8年度の入園申込のページ・案内は見当たらない（令和9年度のものに置き換わっている）"
+  ],
+  "notes": "かわまた認定こども園の定員は0歳18・1歳20・2歳24・3〜5歳各50の計212名。3〜5歳児（1号・2号）の給食費も令和5年度から町の助成で無償（川俣町在住の園児、手続きが必要）。町立幼稚園もある。",
+  "read_at": "2026-11-01"
+}

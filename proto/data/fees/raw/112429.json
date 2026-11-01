@@ -1,0 +1,63 @@
+{
+  "code": "112429",
+  "pref": "埼玉県",
+  "name": "日高市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度 保育のご案内」〔2025年10月作成〕p.12「令和８年度 保育料階層別区分表（2号・3号用）」。市の「保育所の入所申し込み」ページの「保育料階層別区分表」PDF は令和4年度の表で、額は同じ）",
+  "period_note": "4月から8月までは前年度、9月から翌年3月までは当該年度の市民税所得割額で決める。決定通知は4月中旬と9月中旬まで。日割りはなく、毎月1日の在籍で月額がかかる。年齢はクラス年齢（年度途中で年齢が上がっても変わらない）。地域型保育施設・認定こども園の保育料は施設に払う。",
+  "tax_basis": "6%",
+  "tax_note": "世帯の市民税所得割額（①配当控除 ②外国税額控除 ③配当割額控除 ④株式等譲渡所得割額控除 ⑤寄附金税額控除 ⑥住宅借入金等特別控除 の控除前の額）で決める。同居の祖父母が家計の主宰者とみなされる場合は合算（別世帯でも同じ建物・敷地内なら同居とみなす場合あり）。離婚しても父母が同居している場合や別居中でも親権者の場合は父母の税額を合算。所得が未確定なら最高階層で仮決定。政令市ではない。",
+  "table": {
+    "title": "令和８年度 保育料階層別区分表（2号・3号用） 日高市",
+    "kind": "3歳未満児・保育標準時間の額（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "被保護者又は小規模住居型児童養育事業を行う者若しくは里親（子ども・子育て支援法施行令に規定する被保護者又は小規模住居型児童養育事業を行う者若しくは里親）", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯（１階層を除き、政令に規定する「市町村民税を課されない者」の世帯）", "monthly": 0, "monthly_second": null },
+      { "label": "3a", "lower": null, "upper": null, "condition": "市町村民税課税世帯（１階層及び２階層を除き、政令に規定する「市町村民税の所得割の額を合算した額」が次の区分に該当する世帯） 所得割非課税", "monthly": 8000, "monthly_second": null },
+      { "label": "3b", "lower": 1, "upper": 10000, "condition": "1円以上10,000円未満", "monthly": 11000, "monthly_second": null },
+      { "label": "3c", "lower": 10000, "upper": 29000, "condition": "10,000円以上29,000円未満", "monthly": 13000, "monthly_second": null },
+      { "label": "3d", "lower": 29000, "upper": 48600, "condition": "29,000円以上48,600円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "4a", "lower": 48600, "upper": 61000, "condition": "48,600円以上61,000円未満", "monthly": 17000, "monthly_second": null },
+      { "label": "4b", "lower": 61000, "upper": 73000, "condition": "61,000円以上73,000円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "4c", "lower": 73000, "upper": 85000, "condition": "73,000円以上85,000円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "4d", "lower": 85000, "upper": 97000, "condition": "85,000円以上97,000円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "5a", "lower": 97000, "upper": 115000, "condition": "97,000円以上115,000円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "5b", "lower": 115000, "upper": 133000, "condition": "115,000円以上133,000円未満", "monthly": 36000, "monthly_second": null },
+      { "label": "5c", "lower": 133000, "upper": 151000, "condition": "133,000円以上151,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "5d", "lower": 151000, "upper": 169000, "condition": "151,000円以上169,000円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "6a", "lower": 169000, "upper": 202000, "condition": "169,000円以上202,000円未満", "monthly": 47000, "monthly_second": null },
+      { "label": "6b", "lower": 202000, "upper": 235000, "condition": "202,000円以上235,000円未満", "monthly": 50000, "monthly_second": null },
+      { "label": "6c", "lower": 235000, "upper": 268000, "condition": "235,000円以上268,000円未満", "monthly": 53000, "monthly_second": null },
+      { "label": "6d", "lower": 268000, "upper": 301000, "condition": "268,000円以上301,000円未満", "monthly": 56000, "monthly_second": null },
+      { "label": "7", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 58000, "monthly_second": null },
+      { "label": "8", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 58000, "monthly_second": null }
+    ],
+    "notes": "7階層と8階層は表で同じ欄（結合セル）で、標準時間58,000円・短時間57,000円。保育短時間の額（3歳未満児、月額）: 1 0、2 0、3a 7,800、3b 10,800、3c 12,700、3d 14,700、4a 16,700、4b 19,600、4c 23,500、4d 27,500、5a 31,400、5b 35,300、5c 39,300、5d 43,200、6a 46,200、6b 49,100、6c 52,000、6d 55,000、7・8 57,000。3歳児・4歳以上児は全階層0円。表に第2子の列はない（軽減は下の second_note）。要保護世帯軽減（ひとり親世帯・在宅障がい者世帯）: 3a〜3d階層は各階層の額から1,000円を引いてさらに1/4（10円未満切り捨て）、4a・4b・4c階層で負担額算定基準額77,101円未満は各額の1/4（10円未満切り捨て）、どちらも第2子以降は無料。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子の0〜2歳は表のとおり有料（標準時間で月0〜58,000円）。0円は1階層（被保護者等）と2階層（市町村民税非課税世帯）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "「保育料算定の軽減措置に該当するケース」の【多子軽減】（※埼玉県の多子世帯保育料軽減事業の状況により廃止となる可能性があります）: 「小学校就学前の範囲で最年長の子から２人目は、保育料が半額」。「世帯の市民税の所得割額が、57,700円未満である場合、年齢制限を撤廃し、最年長の子から２人目は、保育料が半額」。小学校就学前の範囲の子が施設に通っている必要があるかは、案内には書かれていない（副食費の免除では2号認定は「同一世帯に小学校就学前の兄・姉が2人以上いる場合」）。要保護世帯（ひとり親・在宅障がい者）で3a〜4c階層（77,101円未満）は第2子以降無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "【多子軽減】: 「第３子以降の子は、他の子が小学校就学前の範囲にない年齢でも保育料が無料」（埼玉県の多子世帯保育料軽減事業。所得制限の記載なし。上の子の年齢の上限は書かれていない）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和7年4月から市立小・中・義務教育学校の学校給食費を無償化（給食を喫食している児童生徒の保護者が対象、生活保護の教育扶助で給付を受けている人は除く）。令和8年度の1人当たりの年額: 中学校・義務教育学校（後期課程）6,000円×11か月＝66,000円、小学校・義務教育学校（前期課程）5,200円×11か月＝57,200円。",
+    "source": { "label": "学校給食費の無償化／日高市ホームページ（2026年10月22日更新）", "url": "https://www.city.hidaka.lg.jp/childcare_education/oshirase/32495.html" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度 保育のご案内（PDF、p.10〜12 保育料・軽減措置・保育料階層別区分表）", "url": "https://www.city.hidaka.lg.jp/material/files/group/18/R8hoikunogoannnai2.pdf" },
+    { "label": "令和8年度 保育所の入所申し込み（年度途中入所）／日高市ホームページ（2026年2月20日更新）", "url": "https://www.city.hidaka.lg.jp/soshiki/fukushikodomo/kosodateoen/hoiku/kosodate/shiritai/yochienhoikujonado/31070.html" },
+    { "label": "保育所の入所申し込み／日高市ホームページ（保育料階層別区分表 R4hoikuryou.pdf へのリンク、2026年10月1日更新）", "url": "https://www.city.hidaka.lg.jp/soshiki/fukushikodomo/kosodateoen/hoiku/kosodate/shiritai/yochienhoikujonado/5163.html" },
+    { "label": "保育料階層別区分表（令和４年度、PDF）", "url": "https://www.city.hidaka.lg.jp/material/files/group/18/R4hoikuryou.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "令和8年度の表を画像で見て、列（標準時間 3歳未満児・3歳児・4歳以上児、短時間 同）と7・8階層の結合セルを確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。3a（所得割非課税＝均等割のみ）は lower・upper とも null、3b は lower=1。令和4年度の表と額は同じ。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,60 @@
+{
+  "code": "032166",
+  "pref": "岩手県",
+  "name": "滝沢市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和８年度滝沢市保育施設入所申込み・教育・保育給付認定案内」〔令和7年10月発行〕p.14 の保育料表。市の保育料ページの PDF〔2025年6月16日作成〕と同じ額）",
+  "period_note": "前期（4〜8月分）は令和7年度の市町村民税（令和6年分所得）、後期（9〜翌3月分）は令和8年度の市町村民税（令和7年分所得）で決める。年齢は4月1日の前日の満年齢（年度の途中で誕生日が来ても変わらない）。日割りはなく、各月1日に在籍していれば1か月分。市内・市外の施設を問わず滝沢市民は同じ額。",
+  "tax_basis": "6%",
+  "tax_note": "表の備考1: 市町村民税所得割額は、寄附金控除・配当控除・外国税額控除・住宅借入金等特別控除・特定増改築住宅借入金等特別控除をする前の額。祖父母等と同居し父母の収入が生活保護の最低生活費以下と判断される場合は、祖父母等のうち家計の中心となる人の課税額で決めることがある。離婚が確定していない場合は父母の所得割を合算（調停中で住民票上別居などの例外あり）。未申告などで税額が確かめられない場合は暫定で最高額。政令市ではない。",
+  "table": {
+    "title": "滝沢市保育所・認定こども園（保育所機能）の保育料表（2号・3号） ○母子世帯等以外の保育料（月額）",
+    "kind": "3歳未満・保育標準時間・年齢を問わず世帯で第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "B0", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "B1", "lower": null, "upper": null, "condition": "市町村民税の課税世帯であってその市町村民税額が次の区分に該当する世帯 均等割の額のみ", "monthly": 5400, "monthly_second": 0 },
+      { "label": "B2", "lower": 1, "upper": 48600, "condition": "所得割の額が48,600円未満", "monthly": 7400, "monthly_second": 0 },
+      { "label": "B3", "lower": 48600, "upper": 54600, "condition": "所得割の額が48,600円以上 54,600円未満", "monthly": 10600, "monthly_second": 0 },
+      { "label": "B4", "lower": 54600, "upper": 57700, "condition": "所得割の額が54,600円以上 57,700円未満", "monthly": 14000, "monthly_second": 0 },
+      { "label": "B5", "lower": 57700, "upper": 59400, "condition": "所得割の額が57,700円以上 59,400円未満", "monthly": 14000, "monthly_second": 0 },
+      { "label": "B6", "lower": 59400, "upper": 77101, "condition": "所得割の額が59,400円以上 77,101円未満", "monthly": 17600, "monthly_second": 0 },
+      { "label": "B7", "lower": 77101, "upper": 78600, "condition": "所得割の額が77,101円以上 78,600円未満", "monthly": 17600, "monthly_second": 0 },
+      { "label": "B8", "lower": 78600, "upper": 97000, "condition": "所得割の額が78,600円以上 97,000円未満", "monthly": 21600, "monthly_second": 0 },
+      { "label": "B9", "lower": 97000, "upper": 115000, "condition": "所得割の額が97,000円以上 115,000円未満", "monthly": 26000, "monthly_second": 0 },
+      { "label": "B10", "lower": 115000, "upper": 133000, "condition": "所得割の額が115,000円以上 133,000円未満", "monthly": 30000, "monthly_second": 0 },
+      { "label": "B11", "lower": 133000, "upper": 169000, "condition": "所得割の額が133,000円以上 169,000円未満", "monthly": 36000, "monthly_second": 0 },
+      { "label": "B12", "lower": 169000, "upper": 268000, "condition": "所得割の額が169,000円以上 268,000円未満", "monthly": 42000, "monthly_second": 0 },
+      { "label": "B13", "lower": 268000, "upper": 301000, "condition": "所得割の額が268,000円以上 301,000円未満", "monthly": 47100, "monthly_second": 0 },
+      { "label": "B14", "lower": 301000, "upper": 397000, "condition": "所得割の額が301,000円以上 397,000円未満", "monthly": 51600, "monthly_second": 0 },
+      { "label": "B15", "lower": 397000, "upper": null, "condition": "所得割の額が397,000円以上", "monthly": 66000, "monthly_second": 0 }
+    ],
+    "notes": "列は「年齢を問わず世帯で第1子」の 3歳未満（標準）・3歳未満（短）・3歳以上、と「年齢を問わず世帯で第2子以降」の 全年齢。monthly_second はその「第2子以降・全年齢」の列（全階層0円）。3歳未満・保育短時間（第1子）: A 0、B0 0、B1 5,400、B2 7,300、B3 10,500、B4 13,800、B5 13,800、B6 17,400、B7 17,400、B8 21,300、B9 25,600、B10 29,500、B11 35,400、B12 41,300、B13 46,300、B14 50,800、B15 64,900。3歳以上は全階層0円。母子世帯等（ひとり親、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた人、特別児童扶養手当の支給対象児童、障害基礎年金の受給者のいる世帯）の別表: 3歳未満 標準/短 で b1 4,800/4,800、b2 6,200/6,100、b3〜b6 9,000/9,000、b7〜b15 は母子世帯等以外と同じ額、第2子以降は0円。欄外: 4月から8月分（前期賦課）は前年度市町村民税、9月から3月分（後期賦課）は今年度市町村民税で算定。保育標準時間は施設を最大11時間利用する認定。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子の0〜2歳は表のとおり有料（標準時間で月0〜66,000円）。0円は生活保護世帯・市民税非課税世帯。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "市の保育料ページ: 「令和5年度から県の補助制度を活用し、国の制度では無償化の対象とならない第2子以降の3歳未満児の保育料が無償化されています。（第2子以降とは、保護者が監護（生計管理）している子のうち、最年長者を除く子どもが該当します。）」。入所案内では「たきざわ子育て応援保育料無償化事業」。表の第2子以降の列は「年齢を問わず世帯で第2子以降」で全階層0円。上の子の年齢・通っている施設を問わず、所得制限の記載もない。別居で扶養している子がいる場合は申請が必要（入所案内の保育料の変更等）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降が0円なので第3子以降も0円（数え方は第2子と同じ、上の子の年齢を問わない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "滝沢市の保育施設利用者負担額（保育料）（ページID 00673、2025年6月16日更新）", "url": "https://www.city.takizawa.iwate.jp/kurashi/ikuji-kyoiku/hoikuen-yochien/hoikuen-goannai/hoikuryo" },
+    { "label": "2号・3号認定保育施設利用者負担額（保育料）表（母子世帯等以外）（PDF）", "url": "https://www.city.takizawa.iwate.jp/uploads/public/pages_0000000673_00/保育料一覧表（母子世帯等以外）【階層】2号3号認定保育料.pdf" },
+    { "label": "2号・3号認定保育施設利用者負担額（保育料）表（母子世帯等）（PDF）", "url": "https://www.city.takizawa.iwate.jp/uploads/public/pages_0000000673_00/保育料一覧表（母子世帯等）【階層】2号3号認定保育料.pdf" },
+    { "label": "令和８年度滝沢市保育施設入所申込み・教育・保育給付認定案内（PDF、令和7年10月発行、p.8〜9 保育料について、p.14〜15 保育料表）", "url": "https://www.city.takizawa.iwate.jp/uploads/public/pages_0000000811_00/令和８年度滝沢市保育施設入所申込み・教育・保育給付認定案内.pdf" },
+    { "label": "保育施設の入所申込について", "url": "https://www.city.takizawa.iwate.jp/kurashi/ikuji-kyoiku/hoikuen-yochien/hoikuen-goannai/contents-14937" },
+    { "label": "平成28年4月より実施している多子世帯及びひとり親世帯の保育料負担軽減制度について", "url": "https://www.city.takizawa.iwate.jp/kurashi/ikuji-kyoiku/hoikuen-yochien/hoikuen-goannai/hoikuryo/contents-10106" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "多子世帯の軽減ページの「多子世帯・ひとり親世帯等の保育料軽減措置について（PDF）」と「ご案内（pptx）」は404で読めなかった"
+  ],
+  "notes": "区切りは切れ目・重なりなし、月額は階層の順に下がらない（B4=B5、B6=B7 は同じ額）。表の画像を見て列の並び（第1子 3歳未満標準・短・3歳以上／第2子以降 全年齢）を確かめた。多子世帯の軽減ページ（平成28年〜）には国の制度（所得割57,700円未満で第1子の年齢を問わず第2子半額・第3子以降無料、ひとり親等は77,101円未満で第2子以降無料）が残っているが、令和5年度からの市の無償化で3歳未満の第2子以降はすべて0円になっている。",
+  "read_at": "2026-11-01"
+}

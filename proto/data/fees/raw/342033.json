@@ -1,0 +1,199 @@
+{
+  "code": "342033",
+  "pref": "広島県",
+  "name": "竹原市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度版 保育所・認定こども園 入園申込のしおり（2025年11月作成）p.9〜10「令和８年度竹原市教育・保育施設に係る徴収金基準額表」。令和8年4月〜8月分は令和7年度市町村民税、9月〜翌年3月分は令和8年度市町村民税で決める。保育料・副食費のページ（2024年4月1日更新）の表と基準額表PDF（年度の記載なし）も同じ額。月途中の入所・退所で在籍日数が25日未満のときは日割り（10円未満切り捨て）。",
+  "tax_basis": "6%",
+  "tax_note": "入所児童と同一世帯に属して生計を一にしている父母とそれ以外の扶養義務者（家計の主宰者である場合に限る）の市町村民税の課税額の合計で階層を決める。課税額を計算する際、配当控除・外国税額控除・住宅借入金特別控除・寄付金控除等は適用しない（基準額表備考）。",
+  "table": {
+    "title": "令和８年度 竹原市教育・保育施設に係る徴収金基準額表（表２ 各月初日の在籍児童の属する世帯階層区分・徴収金基準額（月額））",
+    "kind": "3号認定（満3歳に達する日以後の最初の3月31日までの間にある認定子どもを含む）・保育標準時間認定・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国在留邦人等の円滑な帰国の促進及び永住帰国の自立の支援に関する法律による支給給付受給世帯並びに小規模住居型児童養育事業を行う者又は里親である教育・保育給付認定保護者の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割課税のみ",
+        "monthly": 15000,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 10000,
+        "condition": "所得割課税額 10,000円未満",
+        "monthly": 16000,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 10000,
+        "upper": 48600,
+        "condition": "10,000円以上 48,600円未満",
+        "monthly": 17000,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 48600,
+        "upper": 58200,
+        "condition": "48,600円以上 58,200円未満",
+        "monthly": 20100,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 58200,
+        "upper": 67800,
+        "condition": "58,200円以上 67,800円未満",
+        "monthly": 22300,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 67800,
+        "upper": 77400,
+        "condition": "67,800円以上 77,400円未満",
+        "monthly": 24500,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 77400,
+        "upper": 87000,
+        "condition": "77,400円以上 87,000円未満",
+        "monthly": 26700,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 87000,
+        "upper": 97000,
+        "condition": "87,000円以上 97,000円未満",
+        "monthly": 29000,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "97,000円以上 115,000円未満",
+        "monthly": 35900,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 115000,
+        "upper": 133000,
+        "condition": "115,000円以上 133,000円未満",
+        "monthly": 38700,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 133000,
+        "upper": 151000,
+        "condition": "133,000円以上 151,000円未満",
+        "monthly": 41600,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 151000,
+        "upper": 169000,
+        "condition": "151,000円以上 169,000円未満",
+        "monthly": 44500,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 169000,
+        "upper": 235000,
+        "condition": "169,000円以上 235,000円未満",
+        "monthly": 52400,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "235,000円以上 301,000円未満",
+        "monthly": 57000,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "301,000円以上 397,000円未満",
+        "monthly": 61000,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 69000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "保育短時間認定: A・B 0円、C1 14,700円、C2 15,700円、C3 16,700円、C4 19,700円、C5 21,900円、C6 24,000円、C7 26,200円、C8 28,500円、C9 35,200円、C10 38,000円、C11 40,800円、C12 43,700円、C13 51,500円、C14 56,000円、C15 59,900円、C16 67,800円。3号認定の副食費は保育料に含む。表は画像（しおり p.10）で列（保育標準時間認定・保育短時間認定）を確かめた。基準額表備考（3）: ひとり親世帯、身体障害者手帳・療育手帳・精神障害者保健福祉手帳・特別児童扶養手当・障害基礎年金等の受給者のいる世帯、特に困窮していると市長が認めた世帯で、C1〜C5 と C6 のうち所得割額77,101円未満の階層は、第1子が標準時間 5,000円・短時間 4,900円、第2子以降0円（この場合の多子計算は生計を一にする子等で年齢制限なし）。多子軽減の端数は100円未満切り捨て。C1（均等割のみ＝所得割0円）と分けるため C2 の lower は1とした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満の第1子は表の額（生活保護・非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "基準額表備考（4）: 世帯の市町村民税所得割合算額が57,700円以上の場合は、小学校就学前の範囲で保育所・幼稚園・認定こども園等を同時に利用する最年長の子どもから順に2人目は半額（100円未満切り捨て）。57,700円未満の場合は、支給認定保護者と生計を一にする子等を年齢制限なしで数えて第2子半額・第3子以降無料（household）。ひとり親世帯等（所得割77,101円未満）は第2子以降0円。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "市独自の多子世帯の負担軽減: 現に扶養する子（申請年度内に満18歳以下＝満18歳に達する日以後の最初の3月31日までの者）が3人以上いる世帯の第3子以降である3歳未満の児童は、所得制限なしで保育料無料（「第3子以降にかかる利用者負担額（保育料）変更届」の提出が必要。3人以上が同時に入所して第3子以降が無料になる場合は届出不要）。所得割57,700円未満は生計を一にする子を年齢制限なしで数えて第3子以降無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度版 保育所・認定こども園 入園申込のしおり（PDF、竹原市、2025年11月作成、p.9〜11）",
+      "url": "https://www.city.takehara.lg.jp/material/files/group/12/R08nyuennoshiori.pdf"
+    },
+    {
+      "label": "認定こども園の新規入園募集／竹原市（令和8年4月からの新規入園児童、2025年11月10日更新）",
+      "url": "https://www.city.takehara.lg.jp/kosodate_kyoiku/kosodate/hoikujo_kodomoen/5357.html"
+    },
+    {
+      "label": "保育料・副食費／竹原市（2024年4月1日更新）",
+      "url": "https://www.city.takehara.lg.jp/kosodate_kyoiku/kosodate/hoikujo_kodomoen/4296.html"
+    },
+    {
+      "label": "竹原市教育・保育施設に係る徴収金基準額表備考（PDF）",
+      "url": "https://www.city.takehara.lg.jp/material/files/group/11/bikou_hoikuryou2.pdf"
+    },
+    {
+      "label": "第3子以降にかかる利用者負担額（保育料）変更届（令和8年度、PDF）",
+      "url": "https://www.city.takehara.lg.jp/material/files/group/12/R08dai3shihenkou.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの docs（保育料・副食費のページ、基準額表と備考のPDF）を読み、令和8年度の入園申込のしおりで同じ額の「令和８年度」の表を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。副食費（1・2号）は年収360万円未満相当世帯と全ての世帯の第3子以降（2号は就学前の児童を数える）が免除。中学校給食・現金給付・祝い金は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,55 @@
+{
+  "code": "364045",
+  "pref": "徳島県",
+  "name": "板野町",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "町の公式サイトは HTTPS で開けなかった（証明書の名前が web-cache.stream.ne.jp で合わない）ため、ページ本体は読んでいない。WebSearch（allowed_domains: town.itano.tokushima.jp）の検索結果に出た町のページの題名と抜粋だけで書いた: 「【保育料無償化・給食費無償化実施中】板野保育園について」（2024年11月1日 板野保育園）、「板野保育園 令和8年度園児募集について」（2025年11月4日）。令和8年度の保育料表そのものは見ていない。",
+  "tax_basis": "6%",
+  "tax_note": "政令市ではないので6%とした。町立保育園の保育料は無料（町内に住む世帯）とされるので、階層の判定は額に影響しないとみられる。町の保育料表・所得割の定義は読めていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2016年10月",
+  "first_child_free_note": "検索結果の抜粋（町の公式サイトのPDF・ページ）による: 町の文書（第2期板野町総合戦略または総合戦略評価シート。検索の要約ではどちらの文書か分からない）「平成28年4月から町立幼稚園の授業料無償化、同年10月から町立保育園の保育料無償化を実施し、令和元年10月から、町立幼稚園及び町立保育園の給食費無償化を実施」。総合戦略評価シート（評価対象年度：令和5年度）「父母、子ともに板野町に住民登録を有し、居住していることが無料化の要件」。町の「子育て」ページに「【保育料無償化・給食費無償化実施中】板野保育園について」（2024年11月1日）。町立の板野保育園は0歳〜3歳児の受け入れ（0歳は8か月を経過した次の月から）。保育施設の広域入所のページでは、他市町村の保育所に広域で入所する場合は一部保育料無償化の対象外とされる。ページ本体を開けていないので、所得制限の有無や、町立以外の施設・広域入所での扱いは確かめていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "町立保育園は第1子から保育料が無料とされるので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。広域入所など無償化の対象外になる場合のきょうだいの扱いは分からない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "町立保育園では第1子から無料とされる（第2子と同じく、検索結果の抜粋で読んだだけ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "板野保育園（町の組織ページ。検索結果で題名「【保育料無償化・給食費無償化実施中】板野保育園について」2024年11月1日を見た。ページ本体は未読）",
+      "url": "http://www.town.itano.tokushima.jp/soshiki/itanohoikuen/"
+    },
+    {
+      "label": "子育て（町の分野ページ。検索結果の抜粋のみ）",
+      "url": "http://www.town.itano.tokushima.jp/bunya/kosodate1/"
+    },
+    {
+      "label": "板野町総合戦略評価シート（評価対象年度：令和５年度）（PDF。検索結果の抜粋のみ）",
+      "url": "http://www.town.itano.tokushima.jp/docs/2025013000036/files/sougousenryakuhyoukasheet.pdf"
+    },
+    {
+      "label": "第2期板野町総合戦略（PDF。検索結果の抜粋のみ）",
+      "url": "http://www.town.itano.tokushima.jp/docs/2025013000036/files/dai2kiitanotyousougousenryakukakutei.pdf"
+    },
+    {
+      "label": "保育施設の広域入所について（検索結果の抜粋のみ）",
+      "url": "http://www.town.itano.tokushima.jp/docs/2020091100012/"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べ（index.json）は http://www.town.itano.tokushima.jp/ が OSError で0ページ",
+    "https://www.town.itano.tokushima.jp/ を curl で4回（2回目は15秒あけて）: 1回目・2回目は接続が途中で切れ（ws_closed_mid_exchange）、3回目・4回目は証明書の名前が合わない（CN=web-cache.stream.ne.jp、curl (60)）。TLS の検証は外していない",
+    "新しいドメインの候補 https://www.town.itano.lg.jp/（self-signed certificate in certificate chain）と https://town.itano.lg.jp/・https://town.itano.tokushima.jp/（CONNECT 502）も開けなかった",
+    "WebFetch は www.town.itano.tokushima.jp の名前を引けなかった（ENOTFOUND）",
+    "WebSearch を3回（allowed_domains: town.itano.tokushima.jp ほか）。題名と抜粋で町立保育園の保育料無償化（平成28年10月から）・無料化の要件（父母と子が町に住民登録し居住）・板野保育園の受け入れ年齢（0〜3歳）を見た"
+  ],
+  "notes": "公式サイトが HTTPS で読めないため、検索エンジンの抜粋だけで書いた（status=partial、confidence=推定）。町の公式サイトを開けるようになったら、板野保育園のページ（保育料無償化・給食費無償化実施中）と令和8年度園児募集のページで、無償化の対象（年齢・所得・広域入所）と町内のほかの認可保育施設の有無を確かめる必要がある。徳島県の保育料の制度は今回確かめていない。",
+  "read_at": "2026-11-01"
+}

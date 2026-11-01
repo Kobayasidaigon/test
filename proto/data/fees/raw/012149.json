@@ -1,0 +1,55 @@
+{
+  "code": "012149",
+  "pref": "北海道",
+  "name": "稚内市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "毎年9月が保育料の切り替え時期。令和8年4月〜8月の保育料は令和7年度の市民税額（令和6年1〜12月の収入）、令和8年9月〜令和9年3月は令和8年度の市民税額（令和7年1〜12月の収入）から算定。基準表の年齢は年度の初日の前日の年齢。月額表は年度を通じて同じ（令和8年度 保育所入所の手続きについてのページ、令和8年度保育所入所のしおり p.14）。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（両親等）の市民税所得割課税額等で算定。所得割課税額は住宅借入金特別控除、配当控除、外国税額控除、寄付金控除などの税額控除を控除する前の額（課税された所得割額と異なる場合がある）。祖父母等と同居し、父母の収入で生計が成り立っていないと認められる場合は祖父母等の税額も合算する場合がある。政令市ではないので6%とした。",
+  "table": {
+    "title": "令和8年度 稚内市保育料（月額）一覧表（ページでは「保育所保育料基準表・保育標準時間認定」）",
+    "kind": "保育所・0〜2歳児・保育標準時間・第1子（月額）。C1〜C4は「上記以外」の世帯の額。第2子の別の列はない",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税・非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市町村民税・均等割額のみ", "monthly": 16000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "所得割課税額48,600円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "C3", "lower": 48600, "upper": 64700, "condition": "所得割課税額64,700円未満", "monthly": 21500, "monthly_second": null },
+      { "label": "C4", "lower": 64700, "upper": 80800, "condition": "所得割課税額80,800円未満", "monthly": 23500, "monthly_second": null },
+      { "label": "C5", "lower": 80800, "upper": 97000, "condition": "所得割課税額97,000円未満", "monthly": 25500, "monthly_second": null },
+      { "label": "C6", "lower": 97000, "upper": 121000, "condition": "所得割課税額121,000円未満", "monthly": 29600, "monthly_second": null },
+      { "label": "C7", "lower": 121000, "upper": 145000, "condition": "所得割課税額145,000円未満", "monthly": 33700, "monthly_second": null },
+      { "label": "C8", "lower": 145000, "upper": 169000, "condition": "所得割課税額169,000円未満", "monthly": 37800, "monthly_second": null },
+      { "label": "C9", "lower": 169000, "upper": 235000, "condition": "所得割課税額235,000円未満", "monthly": 44800, "monthly_second": null },
+      { "label": "C10", "lower": 235000, "upper": 301000, "condition": "所得割課税額301,000円未満", "monthly": 51800, "monthly_second": null },
+      { "label": "C11", "lower": 301000, "upper": 349000, "condition": "所得割課税額349,000円未満", "monthly": 59900, "monthly_second": null },
+      { "label": "C12", "lower": 349000, "upper": 397000, "condition": "所得割課税額397,000円未満", "monthly": 68000, "monthly_second": null },
+      { "label": "C13", "lower": 397000, "upper": null, "condition": "所得割課税額397,000円以上", "monthly": 87000, "monthly_second": null }
+    ],
+    "notes": "表は各行の上限（未満）だけが書かれ、lower は1つ上の行の上限とした（C2は均等割のみの行C1と分けるため1）。しおりの一覧表ではC3が「57,700円未満」「64,700円未満」、C4が「77,101円未満」「80,800円未満」に分かれているが、上記以外の世帯の額は同じ（C3 21,500円、C4 23,500円）。保育短時間の月額: A・B 0円、C1 15,800円、C2 19,200円、C3 21,200円、C4 23,200円、C5 25,100円、C6 29,100円、C7 33,200円、C8 37,200円、C9 44,100円、C10 51,000円、C11 58,900円、C12 66,900円、C13 85,600円。減額（C1〜C3と、C4のうち所得割77,101円未満で、母子家庭・これに準じる父子家庭、在宅障害児（者）のいる世帯、特に困窮していると市長が認めた要保護者等）の月額（標準／短時間）: C1 7,500／7,400円、C2 9,000／8,900円、C3 9,000／8,900円、C4（77,101円未満）9,000／8,900円。3歳以上は0円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月16,000〜87,000円）。0円は生活保護世帯と市町村民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "しおり p.16「多子世帯の保育料の軽減」とページの説明: 保育所では、小学校就学前の範囲内に児童が2人以上いる場合、その範囲内の最年長を第1子、その下の子を第2子とカウントし、第1子は全額、第2子は半額、第3子以降は無料。C1〜C2階層と、C3階層のうち所得割課税額57,700円未満の世帯は、生計を同じくする小学生以上もカウントする。ひとり親等の減額に当たる世帯（C1〜C4、所得割77,101円未満）は、就学前という制限なく生計を同じくする子どもが2人以上いる場合、最年長を第1子とし、第2子以降は無料（しおり p.14 の注）。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は無料。数え方は第2子と同じ（基本は小学校就学前の範囲内。所得割57,700円未満は小学生以上も数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度 保育所入所の手続きについて | わっかない子育て応援サイト えーる（更新日2025年11月14日）", "url": "https://www.kosodateyell.city.wakkanai.lg.jp/LGArticle/Index/5577?DestinationId=08" },
+    { "label": "令和８年度保育所入所のしおり（PDF、p.14 令和8年度 稚内市保育料（月額）一覧表、p.16 保育料等の負担軽減）", "url": "https://www.kosodateyell.city.wakkanai.lg.jp/lgarticle/file?file=21366_%E4%BB%A4%E5%92%8C%EF%BC%98%E5%B9%B4%E5%BA%A6%E5%85%A5%E6%89%80%E3%81%AE%E3%81%97%E3%81%8A%E3%82%8A.pdf" },
+    { "label": "保育所入所の手続きについて | わっかない子育て応援サイト えーる（更新日2026年4月2日）", "url": "https://www.kosodateyell.city.wakkanai.lg.jp/LGArticle/Index/5069" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの候補は介護保険の文書だけだった。市の「保育所・幼稚園」ページ → 子育て応援サイト「えーる」の「保育所入所の手続きについて」→「令和８年度 保育所入所の手続きについて」のページで表を読んだ。しおりの PDF は文字が化けて取れない（ToUnicode なし）ので、pdftoppm で画像にして p.14・p.16 を読み、ページの表と同じ額であることを確かめた。"
+  ],
+  "notes": "",
+  "read_at": "2026-11-01"
+}

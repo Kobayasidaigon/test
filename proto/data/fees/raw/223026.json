@@ -1,0 +1,61 @@
+{
+ "code": "223026",
+ "pref": "静岡県",
+ "name": "河津町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「令和８年度 教育・保育施設入所のご案内」〔PDF作成2026年9月15日〕p.8「河津町保育料一覧表（３号認定）」。令和9年度の案内〔2026年10月28日〕の表も全行同じ額）",
+ "period_note": "4〜8月の保育料は前年度の市町村民税額、9〜3月は当年度の市町村民税額で算定（例: 令和8年4月分は令和7年度、令和8年9月分は令和8年度の市町村民税額）。毎年9月が切り替え。子どもの年齢は4月1日現在の年齢を1年間使う（年度途中に3歳になっても年度末までは2歳児として算定）。3号認定の保育料には給食費を含む。町内の施設は わかば保育園（私立、生後10か月から）、さくら幼稚園（公立）、家庭的保育3か所と事業所内保育1か所（保育短時間のみ）。",
+ "tax_basis": "6%",
+ "tax_note": "保護者（父母）の市町村民税額を合算して決定（祖父母などの同居者が生計の中心者であることが明らかな場合は同居者の税額で算定することがある）。住宅取得控除など税額控除がある場合は控除前の所得割額で算定。",
+ "table": {
+  "title": "河津町保育料一覧表（３号認定）",
+  "kind": "3号認定（0〜2歳）・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "第1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null},
+   {"label": "第2", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "第3-1", "lower": null, "upper": null, "condition": "町民税均等割のみ課税世帯", "monthly": 8500, "monthly_second": null},
+   {"label": "第3-2", "lower": 1, "upper": 5000, "condition": "町民税所得割額が5,000円未満", "monthly": 10500, "monthly_second": null},
+   {"label": "第3-3", "lower": 5000, "upper": 48600, "condition": "5,000円以上 48,600円未満", "monthly": 12000, "monthly_second": null},
+   {"label": "第4-1", "lower": 48600, "upper": 52200, "condition": "48,600円以上 52,200円未満", "monthly": 12500, "monthly_second": null},
+   {"label": "第4-2（その1）", "lower": 52200, "upper": 57700, "condition": "52,200円以上 57,700円未満", "monthly": 15000, "monthly_second": null},
+   {"label": "第4-2（その2）", "lower": 57700, "upper": 60500, "condition": "57,700円以上 60,500円未満", "monthly": 15000, "monthly_second": null},
+   {"label": "第4-3", "lower": 60500, "upper": 72400, "condition": "60,500円以上 72,400円未満", "monthly": 17000, "monthly_second": null},
+   {"label": "第4-4（その1）", "lower": 72400, "upper": 77101, "condition": "72,400円以上 77,101円未満", "monthly": 20000, "monthly_second": null},
+   {"label": "第4-4（その2）", "lower": 77101, "upper": 84600, "condition": "77,101円以上 84,600円未満", "monthly": 20000, "monthly_second": null},
+   {"label": "第4-5", "lower": 84600, "upper": 97000, "condition": "84,600円以上 97,000円未満", "monthly": 23000, "monthly_second": null},
+   {"label": "第5-1", "lower": 97000, "upper": 120400, "condition": "97,000円以上 120,400円未満", "monthly": 27000, "monthly_second": null},
+   {"label": "第5-2", "lower": 120400, "upper": 144400, "condition": "120,400円以上 144,400円未満", "monthly": 30000, "monthly_second": null},
+   {"label": "第5-3", "lower": 144400, "upper": 169000, "condition": "144,400円以上 169,000円未満", "monthly": 34000, "monthly_second": null},
+   {"label": "第6-1", "lower": 169000, "upper": 228700, "condition": "169,000円以上 228,700円未満", "monthly": 36000, "monthly_second": null},
+   {"label": "第6-2", "lower": 228700, "upper": 267600, "condition": "228,700円以上 267,600円未満", "monthly": 40000, "monthly_second": null},
+   {"label": "第6-3", "lower": 267600, "upper": 301000, "condition": "267,600円以上 301,000円未満", "monthly": 46000, "monthly_second": null},
+   {"label": "第7-1", "lower": 301000, "upper": 348600, "condition": "301,000円以上 348,600円未満", "monthly": 49000, "monthly_second": null},
+   {"label": "第7-2", "lower": 348600, "upper": 397000, "condition": "348,600円以上 397,000円未満", "monthly": 54000, "monthly_second": null},
+   {"label": "第8", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 60000, "monthly_second": null}
+  ],
+  "notes": "保育短時間（月額）: 第1 0、第2 0、第3-1 8,300、第3-2 10,300、第3-3 11,800、第4-1 12,100、第4-2 14,600、第4-3 16,600、第4-4 19,600、第4-5 22,600、第5-1 26,400、第5-2 29,400、第5-3 33,400、第6-1 35,100、第6-2 39,100、第6-3 45,100、第7-1 47,800、第7-2 52,800、第8 58,400。第4-2は表の中で57,700円で、第4-4は77,101円で線が引かれ2段に分かれている（多子軽減の数え方の境目 A: 一般世帯の年齢制限なし、B: ひとり親世帯等の年齢制限なし）が、額は同じなので（その1）（その2）の2行にした。第3-1（均等割のみ）は所得割0円なので lower・upper は null、第3-2は lower=1。表は画像で確かめた（列は 標準時間・短時間 の順）。ひとり親世帯・在宅障害児のいる世帯は、第3階層から所得割77,101円未満の世帯は一律月3,000円、いずれの階層も2人目以降は無料（年齢制限なし）。「※今後、改正がある場合がありますのでご了承ください」。0〜2歳児クラスで無償化の対象にならない子が認可外保育施設を使う場合、支払った利用料から町の保育料を引いた額を町が助成（保育の必要性の認定が必要）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（3号・標準時間で月8,500〜60,000円）。0円は生活保護・町民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "一般世帯の多子軽減: 所得割57,700円以上の世帯は「保育所等を利用する最年長の子どもから順に２人目は半額」で、第1子・第2子は未就学の児童のみで数える。第3階層から所得割57,700円未満の世帯は「同一世帯の最年長の子どもから順に２人目は半額」で年齢制限なし（household）。ひとり親世帯・在宅障害児のいる世帯は2人目以降無料（年齢制限なし）。町独自の第2子無償化は見当たらない。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "3人目以降は無料。所得割57,700円以上の世帯は保育所等を利用する子を未就学の児童のみで数える。所得割57,700円未満の世帯は年齢制限なしで数える（household）。静岡県の独自の保育料軽減制度は見つかっていない（県の調べ）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "教育・保育施設｜静岡県河津町役場", "url": "https://www.town.kawazu.shizuoka.jp/choumin/life02/hoikushisetsu-2/"},
+  {"label": "令和８年度 教育・保育施設入所のご案内（PDF、2026年9月15日作成。４ 保育料について p.6〜8）", "url": "https://www.town.kawazu.shizuoka.jp/wp/wp-content/uploads/2026/09/R8kyoikuhoikusisetunyusyoannaihimawarisyuseigo.pdf"},
+  {"label": "令和９年度 教育・保育施設入所のご案内（PDF、2026年10月28日作成。表は令和8年度と同じ額）", "url": "https://www.town.kawazu.shizuoka.jp/wp/wp-content/uploads/2026/10/7f76885398ddbe665d4a577db25b2ae4.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べの index.json には候補の文書がなかった。教育・保育施設のページには令和9年度の案内だけが載っていたので、WordPress の REST API（/wp-json/wp/v2/media?search=入所のご案内）で令和8年度の案内PDFを見つけた"
+ ],
+ "notes": "表は令和8年度の案内で読み、令和9年度の案内の表とも全行同じ額であることを確かめた。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

@@ -1,0 +1,39 @@
+{
+  "code": "324418",
+  "pref": "島根県",
+  "name": "川本町",
+  "status": "ok",
+  "fiscal_year": "令和8年度も継続とみられる（町のページ「保育所情報」〔更新日の表示なし、2026年11月に閲覧〕の「保育料の無料化について」と、「川本町の子育て支援制度一覧表」〔PDF、2025年9月18日作成〕の「保育料完全無償化」。令和8年度と書かれた資料では確かめていない）",
+  "period_note": "町内の保育所（社会福祉法人川本福祉会が運営する川本保育所・因原保育所・川本北保育所）は、利用者全世帯の保育料が無料。所得による階層はない。給食費（主食・副食）も無料。",
+  "tax_basis": "6%",
+  "tax_note": "保育料が全世帯無料のため、町の保育料の階層表は示されていない。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "保育所情報: 「■保育料の無料化について 川本町では子どもを産み育てる方の経済的負担を軽減し安心できる子育て環境づくりを推進するため、利用者全世帯の保育料を無料としています。」「■完全給食事業について … 給食費は主食・副食ともに無料です。」。子育て支援制度一覧表（2025年9月）にも「【健】保育料完全無償化」「【健】保育所完全給食：主食費・副食費（おかず代）の実費負担分全額助成」。無料がいつからかは確かめていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全世帯の保育料が無料のため、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので第3子以降も0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "子育て支援制度一覧表（2025年9月18日作成）の小学生・中学生の欄に「【教】学校給食費完全無償化」。",
+    "source": { "label": "川本町の子育て支援制度一覧表（PDF）", "url": "https://www.town.shimane-kawamoto.lg.jp/files/original/202509180907089555e99223d.pdf" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所情報（川本町 子育て・教育 > 子育て）", "url": "https://www.town.shimane-kawamoto.lg.jp/gyosei/gyosei_education/childcare/4657" },
+    { "label": "川本町の子育て支援制度一覧表（ページ）", "url": "https://www.town.shimane-kawamoto.lg.jp/gyosei/gyosei_education/childcare/7147" },
+    { "label": "川本町の子育て支援制度一覧表（PDF、2025年9月18日作成）", "url": "https://www.town.shimane-kawamoto.lg.jp/files/original/202509180907089555e99223d.pdf" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの docs は空（保育所情報のページは pages にあった）",
+    "保育所情報のページと子育て支援制度一覧表（PDF）で保育料・給食費の無料を確かめた。保育申請書（XLSX）に年度の記載はない"
+  ],
+  "notes": "町内の保育所3か所（川本・因原・川本北、いずれも社会福祉法人川本福祉会）とも利用者全世帯の保育料が無料なので table は null。延長保育は19:00まで（川本・因原保育所）、一時保育は川本保育所。ページに更新日がなく、令和8年度の文書で確かめていないため confidence は推定。",
+  "read_at": "2026-11-01"
+}

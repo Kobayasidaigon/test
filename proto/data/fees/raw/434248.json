@@ -1,0 +1,36 @@
+{
+ "code": "434248",
+ "pref": "熊本県",
+ "name": "小国町",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "町の公式サイト（www.town.kumamoto-oguni.lg.jp）はボット対策（Incapsula）で、この環境からはトップページも「保育園について」のページも 403 になり、原文を読めなかった。以下は町のドメインに絞った検索の結果の要約（町のページ「保育園について」などの抜粋）による: 保育料は子どもの年齢と世帯員の住民税の課税状況による階層区分で算定する。町内の保育施設は宮原保育園など（検索結果の要約による）。",
+ "tax_basis": "6%",
+ "tax_note": "世帯員の住民税の課税状況で階層を決める（検索結果の要約による。控除の扱いは未確認）。政令市でないので6%とした。",
+ "table": null,
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "検索結果の要約では、3歳未満の保育料を全面的に無償にしたという記載は見つからず、保育料は住民税の課税状況による階層で算定するとされている（原文は未確認）。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "検索結果の要約（町のページ「保育園について」）: 「同時に複数の児童が入園した場合は2人目が半額、3人目以降が無料」。原文は読めていない。年収360万円未満相当の世帯で上の子の年齢を問わず数える国の特例の扱いも未確認。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "同時に入園した3人目以降は無料（検索結果の要約）。あわせて「多子世帯子育て支援事業により第3子以降3歳未満児の保育料が無料になることがある」とされる。熊本県の多子世帯子育て支援事業は、保護者が扶養している18歳未満の子のうち第3子以降の就学前の子の保育料を軽減・無料にする市町村の事業への補助（市町村民税所得割合算額301,000円以上の世帯は対象外）なので、所得割301,000円未満なら上の子の年齢を問わず（household）第3子以降が無料になる可能性があるが、町の条件は原文で確かめられなかったので together のままにした。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "保育園について / 小国町（検索結果の要約で内容を見ただけ。直接は 403 で開けない）", "url": "https://www.town.kumamoto-oguni.lg.jp/kurashinojyoho/kurashi_fukushi/20152"},
+  {"label": "保育園 / 小国町（検索結果の題名のみ）", "url": "https://www.town.kumamoto-oguni.lg.jp/gyoseijyoho/gyosei_kakukanojyoho/gyosei_hoikuen"}
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "https://www.town.kumamoto-oguni.lg.jp/ → 403（Incapsula のボット対策。15秒あけて取り直しても 403。ヘッダーを偽ってすり抜けることはしていない）",
+  "https://www.town.oguni.kumamoto.jp/ → 接続できない",
+  "保育園についてのページ（/kurashinojyoho/kurashi_fukushi/20152）も直接は 403",
+  "WebSearch（allowed_domains: town.kumamoto-oguni.lg.jp、「小国町 保育料 3歳未満 無償化 保育園」）: 保育料の決め方・多子軽減の要約は得られたが、階層ごとの額は出てこなかった。2025年の町議会会議録の要約では、こども誰でも通園制度（宮原保育園・小国幼稚園、1時間300円予定）を検討"
+ ],
+ "notes": "公式サイトが Incapsula で 403 のため保育料の表は読めていない（table は null、status は partial、confidence は仮置き）。開ける環境で「保育園について」のページ（/kurashinojyoho/kurashi_fukushi/20152）と例規集の保育料の規則を読めば埋められる。",
+ "read_at": "2026-11-01"
+}

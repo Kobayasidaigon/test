@@ -1,0 +1,38 @@
+{
+ "code": "303810",
+ "pref": "和歌山県",
+ "name": "美浜町",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "町の公式サイト（www.town.mihama.wakayama.jp）は https で接続できず（TLS の握手で接続を切られる。enjyu.town.mihama.wakayama.jp も同じ）、http のページは規則により開いていないので、保育料の表は読めなかった。町のドメインに絞った検索の結果の要約では、町内の施設は美浜町立ひまわりこども園で、「美浜町立ひまわりこども園条例」で利用者負担額は町長が別に定めるとされ、0歳児〜2歳児クラスの入園料は無料（入園料2,000円の例外）。",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "検索結果の要約では、ひまわりこども園条例で利用者負担額を町長が定めるとされている（第1子が有料かどうかの原文は未確認なので null のまま）。",
+ "second_child": "other",
+ "second_count": "unknown",
+ "second_note": "和歌山県の「紀州っ子いっぱいサポート（保育料・育児支援）実施状況（2026年4月1日時点）」で、美浜町は0〜2歳の「第２子保育料無償化（所得制限あり）」を保育所・認定こども園などで実施（○）。県の制度の第2子無償化は年収360万円未満相当の世帯が対象で、それより上の世帯は国の多子軽減（同時に通う就学前の子で数えて2人目半額）とみられるが、町の資料では確かめていない。上の子の数え方も県のページに書かれていない。",
+ "third_child": "free",
+ "third_count": "unknown",
+ "third_note": "県の実施状況（2026年4月1日時点）で、美浜町は0〜2歳の「第３子保育料無償化」（所得制限なし）を保育所・認定こども園・認可外保育施設・児童発達支援センター等で実施（○）。検索結果の要約では、2023年の町議会の答弁でも、認可保育所などの保育料・副食費を県と町の負担で無償にする制度があり対象は基本的に第3子以降とされる。上の子の数え方（年齢の上限・同時に通うか）は確かめられなかった。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "和歌山県 紀州っ子いっぱいサポート（保育料・育児支援）実施状況（2026年4月1日時点、PDF）", "url": "https://www.pref.wakayama.lg.jp/prefg/040200/d00202861_d/fil/R8hoiku_ikuji.pdf"},
+  {"label": "和歌山県 紀州っ子いっぱいサポートについて", "url": "https://www.pref.wakayama.lg.jp/prefg/040200/d00202861.html"},
+  {"label": "美浜町立ひまわりこども園条例（町の例規集。http のみで、検索結果の要約で内容を見ただけ）", "url": "http://www.town.mihama.wakayama.jp/other-contents/reiki_int/reiki_honbun/k528RG00000295.html"},
+  {"label": "美浜町立ひまわりこども園条例施行規則（同上）", "url": "http://www.town.mihama.wakayama.jp/other-contents/reiki_int/reiki_honbun/k528RG00000296.html"}
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "https://www.town.mihama.wakayama.jp/ → TLS の握手で接続を切られる（curl exit 35、Connection reset by peer）。15秒あけて例規集のページを https で取り直しても同じ",
+  "https://enjyu.town.mihama.wakayama.jp/、https://www.town.mihama.lg.jp/、https://www.town.wakayama-mihama.lg.jp/ も接続できない",
+  "WebSearch（allowed_domains: town.mihama.wakayama.jp、「美浜町 保育料 3歳未満 保育所 利用者負担額」）: ひまわりこども園条例・同施行規則・2023年の議会会議録が出たが、3歳未満の階層ごとの額（町長が定める基準額表）は出てこなかった",
+  "和歌山県の紀州っ子いっぱいサポートの実施状況PDF（2026年4月1日時点）で美浜町の実施を確かめた"
+ ],
+ "notes": "町のサイトが https で開けないため、保育料の表と町の多子軽減の文は原文を読めていない（table は null、status は partial、confidence は仮置き）。きょうだいの決まりは県の実施状況（町が第2子〔所得制限あり〕・第3子の保育料無償化を実施）と検索結果の要約による。https で開けるようになったら、町の例規集（/other-contents/reiki_int/）のひまわりこども園条例・施行規則と、利用者負担額の規則・基準額表を読むとよい。",
+ "read_at": "2026-11-01"
+}

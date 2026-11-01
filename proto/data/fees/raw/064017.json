@@ -1,0 +1,31 @@
+{
+ "code": "064017",
+ "pref": "山形県",
+ "name": "小国町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（町のページ「保育所等の利用について」〔更新日2025年11月11日〕、令和8年度保育所等一覧〔令和7年11月1日現在〕を掲載）",
+ "period_note": "町のページ「費用（保育料）」: 「保育料は無償です。令和7年4月から町独自の無償化制度を拡充し、国の制度の対象となっていないお子さんもすべて無償としています。」町内の施設は認可保育所の白百合保育園と認定こども園すみれ保育園（どちらも社会福祉法人）。町外の保育所に広域入所する場合の保育料は「居住地の市町村が定めている基準額」（保育所等一覧）。",
+ "tax_basis": "6%",
+ "tax_note": "保育料が全員無償のため、所得割による階層は保育料に関係しない（表は掲載されていない）。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2025年4月",
+ "first_child_free_note": "町独自の無償化制度を令和7年4月から拡充し、国の制度（3〜5歳・非課税世帯など）の対象でない子もすべて無償（町のページ）。所得制限の記載はない。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から保育料が無償なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無償（同上）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "保育所等の利用について - 小国町ホームページ（更新日2025年11月11日。費用（保育料）「保育料は無償です」）", "url": "https://www.town.oguni.yamagata.jp/soshiki/kenkou/5020.html"},
+  {"label": "令和8年度保育所等一覧（PDF、小国町健康福祉課、令和7年11月1日現在）", "url": "https://www.town.oguni.yamagata.jp/uploaded/attachment/4622.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "0〜2歳児も含め保育料は全員無償（令和7年4月から）。延長保育料や給食費（副食費など）の扱いは町のページに書かれていない。",
+ "read_at": "2026-11-01"
+}

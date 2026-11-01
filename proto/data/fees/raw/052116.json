@@ -1,0 +1,56 @@
+{
+ "code": "052116",
+ "pref": "秋田県",
+ "name": "潟上市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "「潟上市利用者負担額基準額表（予定）及びすこやか子育て支援事業助成制度」（PDF、2025年10月作成）。令和8年度入園の書類「9.利用者負担額基準額表」として載り、令和9年度の入園のページ（更新日2026年10月21日）にも同じPDFが載っている。4〜8月分と9〜3月分で使う市民税の年度は、この表と入園のページには書かれていない。修正申告や結婚・離婚で保育料が変わるときは、変更の報告があった日（または変更を確認した日）の翌月分から。",
+ "tax_basis": "6%",
+ "tax_note": "【階層判定について】税額控除のうち、「寄付金税額控除（ふるさと納税）」「外国税額控除」「配当割額又は株式等譲渡所得割額の控除」「配当控除」「住宅借入金等特別税額控除額（住宅ローン控除）」等を受けている方は、控除した金額を加算して算出（控除額が反映されない）。",
+ "table": {
+  "title": "潟上市利用者負担額基準額表（予定）及びすこやか子育て支援事業助成制度 ●3号認定【一般世帯】",
+  "kind": "3号認定（0〜2歳）・一般世帯・保育標準時間・第1子（月額、すこやか子育て支援事業の助成前の基準額）",
+  "rows": [
+   {"label": "A1（国階層1）", "lower": null, "upper": null, "condition": "生活保護", "monthly": 0, "monthly_second": null},
+   {"label": "B1b（国階層2）", "lower": null, "upper": null, "condition": "非課税", "monthly": 0, "monthly_second": null},
+   {"label": "C1b（国階層3）", "lower": null, "upper": null, "condition": "均等割のみ", "monthly": 14500, "monthly_second": null},
+   {"label": "C2b（国階層3）", "lower": 1, "upper": 48600, "condition": "48,600円未満", "monthly": 19500, "monthly_second": null},
+   {"label": "D1b（国階層4）", "lower": 48600, "upper": 72800, "condition": "48,600円以上 72,800円未満", "monthly": 25000, "monthly_second": null},
+   {"label": "D2b（国階層4）", "lower": 72800, "upper": 97000, "condition": "72,800円以上 97,000円未満", "monthly": 30000, "monthly_second": null},
+   {"label": "D3（国階層5）", "lower": 97000, "upper": 169000, "condition": "97,000円以上 169,000円未満", "monthly": 35000, "monthly_second": null},
+   {"label": "D4（国階層6）", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 40000, "monthly_second": null},
+   {"label": "D5（国階層7・8）", "lower": 301000, "upper": null, "condition": "301,000円以上 397,000円未満／397,000円以上（どちらもD5）", "monthly": 45000, "monthly_second": null}
+  ],
+  "notes": "均等割のみ（C1b）は所得割0円なので lower・upper を null にし、C2b の lower を1にした。短時間: C1b 14,200、C2b 19,300、D1b 24,500、D2b 29,400、D3 34,300、D4 39,200、D5 44,100（A1・B1bは0）。【すこやか助成割合（一般世帯）】C1b・C2b（国階層3）は2分の1、D1b・D2b・D3（国階層4・5、所得割169,000円未満）は4分の1、D4・D5は助成なし。表の欄外: 「※3･4･5階層の第2子以降無料」「※6階層の第3子が出生した世帯に限り、第2子以降半額助成」。第1子の助成後の額（表の額×助成割合からの計算、標準時間）: C1b 7,250、C2b 9,750、D1b 18,750、D2b 22,500、D3 26,250、D4 40,000、D5 45,000（助成の申請の要否は表に書かれていない）。【3号認定 ひとり親世帯等】（母子（父子）世帯、障害者世帯（身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた者、特別児童扶養手当又は障害基礎年金の受給者等）、特に困窮していると市長が認める世帯）: A1 0、B1a 0、C1a（均等割のみ）6,000、C2a・D1a・D2a（所得割77,101円未満）9,000、D2b（77,101円以上97,000円未満）30,000、D3 35,000、D4 40,000、D5 45,000（短時間も 6,000／9,000 は同額、D2b以上は一般世帯の短時間と同じ）。ひとり親世帯等のすこやか助成割合は C1a〜D3 が2分の1。すこやか子育て支援事業助成金に関しては障害者世帯は一般世帯に含まれる。所得割77,101円以上の母子世帯等は一般世帯と同様の基準。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料。ただし、すこやか子育て支援事業で、所得割48,600円未満（均等割のみを含む）は保育料の2分の1、48,600円以上169,000円未満は4分の1を助成（一般世帯）。所得割169,000円以上は助成なし（標準時間で月40,000円・45,000円）。0円は生活保護と非課税だけ。",
+ "second_child": "other",
+ "second_count": "unknown",
+ "second_note": "所得で変わる。(1) すこやか子育て支援事業: 国階層3・4・5（均等割のみ〜所得割169,000円未満）の第2子以降は無料。国階層6（169,000円以上301,000円未満）は第3子が出生した世帯に限り第2子以降を半額助成。この「第2子」を上の子の年齢や通園を問わずに数えるかは、読んだ資料（基準額表、入園のページ、提出書類の案内）に書かれていないので unknown。(2) 保育料多子軽減制度: 所得割57,700円未満は子どもの年齢に関わらず生計同一の順に2人目半額・3人目以降無料。それ以上は生計同一の教育・保育施設に入所している最年長の子どもから順に2人目半額・3人目以降無料（表の注2: 同一世帯において小学校就学前までの範囲内にある子どもが複数人いる場合、最年長の子どもから順に2人目は半額、3人目以降は0円）。(3) 所得割77,101円未満の母子世帯等は、子どもの年齢に関わらず生計同一の順に2人目以降無料。所得割169,000円以上で上の子が通園していない第2子は表の額のまま（第3子が出生した国階層6の世帯を除く）。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "生計同一の教育・保育施設に入所している最年長の子どもから数えて3人目以降は所得に関係なく無料（就学前の範囲）。所得割57,700円未満は子どもの年齢に関わらず3人目以降無料。すこやか子育て支援事業で、国階層3〜5（所得割169,000円未満）は第2子以降無料、国階層6は第3子が出生した世帯の第2子以降を半額助成。国階層7・8（所得割301,000円以上）は、すこやか助成割合の欄が斜線（助成なし）。",
+ "lunch_jh": null,
+ "cash": [
+  {"label": "かたがみ未来子育て応援金（在宅子育て応援金）", "per_child_yearly": null, "max_age": 2, "note": "保育施設等を利用していない、生後9週を超え満2歳に達する日以後の最初の3月31日までの子どもの保護者に月額10,000円（育児休業給付金の受給者がいる世帯は月額5,000円）。保育施設等の利用開始月の前月分まで。保育所に通う子は対象外なので年額は null にした。", "source": {"label": "かたがみ未来子育て応援事業（更新日2026年10月13日）", "url": "https://www.city.katagami.lg.jp/soshiki/fukushihoken/kosodateouenka/kodomokateishien/zidoufukusi/5783.html"}}
+ ],
+ "one_time": [
+  {"label": "かたがみ未来子育て応援金（出産応援金）", "amount": 10000, "note": "1子につき10,000円。子どもが誕生した日に市に住所があること。誕生日から6か月以内に申請。", "source": {"label": "かたがみ未来子育て応援事業", "url": "https://www.city.katagami.lg.jp/soshiki/fukushihoken/kosodateouenka/kodomokateishien/zidoufukusi/5783.html"}},
+  {"label": "かたがみ未来子育て応援金（入学応援金・小学1年生）", "amount": 20000, "note": "小学校に入学した児童と同一世帯の保護者に20,000円。入学した日に市に住所があること。入学日から6か月以内に申請（保護者に申請書を郵送）。", "source": {"label": "かたがみ未来子育て応援事業", "url": "https://www.city.katagami.lg.jp/soshiki/fukushihoken/kosodateouenka/kodomokateishien/zidoufukusi/5783.html"}},
+  {"label": "かたがみ未来子育て応援金（入学応援金・中学1年生）", "amount": 30000, "note": "中学校に入学した生徒と同一世帯の保護者に30,000円。入学した日に市に住所があること。", "source": {"label": "かたがみ未来子育て応援事業", "url": "https://www.city.katagami.lg.jp/soshiki/fukushihoken/kosodateouenka/kodomokateishien/zidoufukusi/5783.html"}}
+ ],
+ "sources": [
+  {"label": "令和8年度 教育・保育施設等 入園について（更新日2026年10月21日）", "url": "https://www.city.katagami.lg.jp/soshiki/fukushihoken/kosodateouenka/shisetsuuneishien/kosodate_1/5700.html"},
+  {"label": "9.利用者負担額基準額表（潟上市利用者負担額基準額表（予定）及びすこやか子育て支援事業助成制度、PDF）", "url": "https://www.city.katagami.lg.jp/material/files/group/36/r8_09-riyousyahutangaku.pdf"},
+  {"label": "令和9年度 教育・保育施設等 入園について（同じ基準額表のPDFが載る）", "url": "https://www.city.katagami.lg.jp/soshiki/fukushihoken/kosodateouenka/shisetsuuneishien/kosodate_1/6605.html"},
+  {"label": "幼児教育・保育無償化について（更新日2026年10月1日）", "url": "https://www.city.katagami.lg.jp/soshiki/fukushihoken/kosodateouenka/shisetsuuneishien/kosodate_1/977.html"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "すこやか子育て支援事業の「第2子」の数え方を、入園のページ、提出書類の案内（r8_01_teisyutu.pdf）、無償化のページ、子育て応援課の各班のページ一覧で探したが見つからない"
+ ],
+ "notes": "表のPDFを画像で見て、列（国階層・市階層・課税の状況）と、すこやか助成割合の「2分の1」（C1b・C2b）と「4分の1」（D1b・D2b・D3）がどの列にかかるかを確かめた。区切りに切れ目・重なりなし、月額は階層の順に上がる。表の題名に「（予定）」とある。",
+ "read_at": "2026-11-01"
+}

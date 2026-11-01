@@ -1,0 +1,53 @@
+{
+  "code": "423084",
+  "pref": "長崎県",
+  "name": "時津町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "毎年9月に改定。令和8年4月分〜8月分は令和7年度市町村民税（令和6年中の収入）、令和8年9月分〜令和9年3月分は令和8年度市町村民税（令和7年中の収入）により算出（令和8年度保育料月額一覧の③、令和8年度保育のしおり）。月額表は年度を通じて同じ。公立保育所と民間保育所で保育料に違いはない。月途中の入退所だけ日割り。",
+  "tax_basis": "6%",
+  "tax_note": "市町村民税所得割課税額には、住宅借入金等特別税額控除、寄附金税額控除（調整控除除く）は含まれない（＝これらの税額控除を引く前の額。調整控除は引いた後）。保護者等の所得で階層を決める。政令市ではないので6%とした。",
+  "table": {
+    "title": "令和8年度 保育料月額一覧（時津町）",
+    "kind": "0〜2歳児クラス・保育標準時間・第1子（月額）。monthly_second は表の「第2子（※）」の列（同時在園の第2子、令和7年4月から無償化）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税均等割非課税世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "3", "lower": null, "upper": null, "condition": "市町村民税所得割非課税世帯", "monthly": 17500, "monthly_second": 0 },
+      { "label": "4", "lower": 100, "upper": 48600, "condition": "100円～48,599円", "monthly": 18500, "monthly_second": 0 },
+      { "label": "5-1", "lower": 48600, "upper": 57700, "condition": "48,600円～57,699円", "monthly": 26000, "monthly_second": 0 },
+      { "label": "5-2", "lower": 57700, "upper": 77101, "condition": "57,700円～77,100円", "monthly": 26000, "monthly_second": 0 },
+      { "label": "6", "lower": 77101, "upper": 97000, "condition": "77,101円～96,999円", "monthly": 27000, "monthly_second": 0 },
+      { "label": "7", "lower": 97000, "upper": 169000, "condition": "97,000円～168,999円", "monthly": 41500, "monthly_second": 0 },
+      { "label": "8", "lower": 169000, "upper": 211201, "condition": "169,000円～211,200円", "monthly": 55500, "monthly_second": 0 },
+      { "label": "9", "lower": 211201, "upper": 301000, "condition": "211,201円～300,999円", "monthly": 56500, "monthly_second": 0 },
+      { "label": "10", "lower": 301000, "upper": 397000, "condition": "301,000円～396,999円", "monthly": 62500, "monthly_second": 0 },
+      { "label": "11", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 68500, "monthly_second": 0 }
+    ],
+    "notes": "表は「〜円」（以下）で書かれていて、upper はその額＋1にした。保育短時間の第1子の月額: 1・2 0円、3 15,700円、4 16,600円、5-1・5-2 23,400円、6 24,300円、7 37,300円、8 49,900円、9 50,800円、10 56,200円、11 61,600円。【 】内はひとり親世帯等の第1子（標準／短時間）: 3 8,200／7,400円、4 8,700／7,800円、5（〜77,100円）9,000／9,000円。第2子（※）・第3子以降の列は全階層0円（標準・短時間とも）。3歳児〜5歳児クラスは無償化。画像で列（保育標準時間・保育短時間 × 第1子・第2子（※）・第3子以降）を確かめた。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は全額負担（標準時間で月17,500〜68,500円）。0円は生活保護世帯と市町村民税均等割非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "together",
+  "second_note": "令和7年4月から町独自に、第2子（同時在園）の0〜2歳児クラスの保育料を無償化（所得制限なし。国の物価高騰対応重点支援地方創生臨時交付金を活用）。数え方: 小学校就学前の範囲で、幼稚園や保育園等を同時に利用する最年長の子どもから順に数えて第2子（同じ園でなくても、無償化対象の違う園に同時に入園していればよい）。第2子の年齢制限が撤廃される世帯（上の子が小学生以上でも数える）: 第1階層〜第5階層の一部（表5-1、所得割57,699円以下）、またはひとり親世帯等の第5階層（77,100円）以下。きょうだいが別の施設なら在園証明書等の提出が必要（確認できた月の翌月から軽減）。",
+  "third_child": "free",
+  "third_count": "unknown",
+  "third_note": "令和6年4月から町独自に「第3子以降の0歳児から2歳児クラスのすべての子どもの保育料」を無償化（保育料月額一覧では「第３子以降：完全無償化」、全階層0円）。第3子の数え方（同時在園の子だけか、上の子の年齢を問わないか）は、町のページ・しおり・一覧表に書かれていない。国の基準（同時に通う子の3人目以降0円）と、所得割57,699円以下（ひとり親世帯等は77,100円以下）の年齢制限撤廃は当てはまる。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所等の利用について／時津町（更新日2025年12月01日）", "url": "https://www.town.togitsu.nagasaki.jp/kosodate_kyoiku/hoikujo_yochien_gakudohoiku/2553.html" },
+    { "label": "令和8年度保育料月額一覧（時津町）（PDF）", "url": "https://www.town.togitsu.nagasaki.jp/material/files/group/6/hoikuryougetugakuitiranR8.pdf" },
+    { "label": "令和8年度保育のしおり（PDF、p.4〜5 保育料）", "url": "https://www.town.togitsu.nagasaki.jp/material/files/group/6/hoikunosioriR8.pdf" },
+    { "label": "0～2歳児クラスの子どもの保育料の無償化について／時津町（更新日2025年04月01日）", "url": "https://www.town.togitsu.nagasaki.jp/kosodate_kyoiku/hoikujo_yochien_gakudohoiku/8015.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs/03.txt（令和8年度保育料月額一覧）、docs/00.txt（0〜2歳児クラスの無償化）、docs/06.txt（令和8年度保育のしおり）を読み、一覧表の PDF を画像で確かめた。第3子以降の無償化の数え方を書いた文は、無償化のページ・しおり・早見表・納付のお知らせに見当たらなかった。"
+  ],
+  "notes": "3歳以上の副食費は所得割57,699円以下（ひとり親世帯等は77,100円以下）の世帯と第3子以降は免除。",
+  "read_at": "2026-11-01"
+}

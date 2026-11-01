@@ -1,0 +1,57 @@
+{
+  "code": "352110",
+  "pref": "山口県",
+  "name": "長門市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "0〜2歳児の令和8年4月分〜8月分の保育料は令和7年度市民税所得割額、9月分〜翌年3月分は令和8年度市民税所得割額で決定（令和8年度入園手続き p.7、基準額表の欄外）。年齢は令和8年4月1日現在。月額表は年度を通じて同じ。ただし令和7年4月から3歳未満児の保育料は市独自に第1子から無料なので、表の額は実際には請求されない。",
+  "tax_basis": "6%",
+  "tax_note": "階層は「市民税の税額控除前所得割額（調整控除後）」（基準額表の階層区分の見出しと欄外）。父母の市民税所得割額の合算。両親とも市民税非課税かつ収入103万円未満のときは、同居の祖父母等のうち所得が一番高い者を家計の主宰者とみなして合算。婚姻によらないひとり親はみなし寡婦（夫）の適用申請ができる。政令市ではないので6%とした。",
+  "table": {
+    "title": "令和8年度 保育所等施設利用者負担額（保育料）基準額表（月額） 保育園用",
+    "kind": "3号認定（0〜2歳）・保育標準時間・第1子（月額）。C〜D3は「上記以外の世帯」の額。第2子の別の列はない",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": null, "upper": null, "condition": "市民税所得割非課税（均等割のみ課税）", "monthly": 12000, "monthly_second": null },
+      { "label": "D1", "lower": 1, "upper": 48600, "condition": "４８，６００円未満", "monthly": 13000, "monthly_second": null },
+      { "label": "D2", "lower": 48600, "upper": 69000, "condition": "６９，０００円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "D3", "lower": 69000, "upper": 77101, "condition": "７７，１０１円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "D4", "lower": 77101, "upper": 97000, "condition": "９７，０００円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "D5", "lower": 97000, "upper": 169000, "condition": "１６９，０００円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "D6", "lower": 169000, "upper": 211200, "condition": "２１１，２００円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "D7", "lower": 211200, "upper": 301000, "condition": "３０１，０００円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "D8", "lower": 301000, "upper": 397000, "condition": "３９７，０００円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "D9", "lower": 397000, "upper": null, "condition": "３９７，０００円以上", "monthly": 44000, "monthly_second": null }
+    ],
+    "notes": "これは基準額表で、令和7年4月から3歳未満児は第1子から無料（実際の負担は0円）。表は各行の上限（未満）だけが書かれ、lower は1つ上の行の上限とした（D1は均等割のみの行Cと分けるため1）。保育短時間の月額（上記以外の世帯）: A・B 0円、C 11,800円、D1 12,800円、D2 17,600円、D3 18,600円、D4 19,600円、D5 25,600円、D6 31,600円、D7 32,600円、D8・D9 43,600円。ひとり親世帯等の月額（標準／短時間）: B 0／0円、C 8,800／8,400円、D1 9,200／8,800円、D2 9,600／9,200円、D3 10,000／9,600円。利用する施設・事業、公・私立を問わず同じ額。3号認定の利用者負担額には給食（材料）費を含む。年度途中に満3歳になっても年度末までは3号の額。画像で列（1号、2号標準・短時間、3号標準・短時間）を確かめた。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年4月",
+  "first_child_free_note": "「3歳未満児の保育料完全無償化について」（更新日2025年3月21日）と令和8年度入園手続き p.7・p.9: 令和7年4月から長門市独自で、国・県で無償化されていない3歳未満児の保育料を、保護者の所得制限や同時入所要件を設けず第1子から無料。対象は長門市に住み、幼稚園・保育所・認定こども園を利用するすべての児童。手続きは原則不要。延長保育・一時預かり・休日保育・病児保育、制服代・行事代・バス代などの実費は対象外。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から無料なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。基準額表の決まり: 3号認定者で同時就園の場合、2番目は半額、3番目以降は無料。所得割57,700円未満の世帯は第1子（生計を一にする者）の年齢にかかわらず第2子半額・第3子以降無料。ひとり親世帯・在宅障害児（者）等のいる世帯で所得割77,101円未満は第1子半額、第2子以降は第1子の年齢にかかわらず無料。完全無償化の前（令和6年9月〜）から、第2子以降の3歳未満児は所得要件・同時入所要件なしで無償だった（保育料の無償化と副食費免除のページ）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので数え方に関係なく0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和6年4月から市立小・中学校の学校給食費を無償化。市外の学校に通う子・総合支援学校の子・毎食弁当の子には給食費相当分を補助（申請）。",
+    "source": { "label": "長門市学校給食費無償化 - 長門市教育委員会事務局", "url": "https://www.city.nagato.yamaguchi.jp/site/kyouiku/52750.html" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "3歳未満児の保育料完全無償化について - ながと子育てナビ（更新日2025年3月21日）", "url": "https://www.city.nagato.yamaguchi.jp/site/nagato-kosodatenavi/56742.html" },
+    { "label": "令和8年度保育園等の入園手続きについて - ながと子育てナビ", "url": "https://www.city.nagato.yamaguchi.jp/site/nagato-kosodatenavi/63772.html" },
+    { "label": "令和8年度入園手続き（公立保育園・みすゞ保育園）（PDF、p.7 保育料等について、p.9 令和8年度 保育所等施設利用者負担額（保育料）基準額表）", "url": "https://www.city.nagato.yamaguchi.jp/uploaded/attachment/36752.pdf" },
+    { "label": "保育料の無償化と副食費（給食のおかず代）免除について - ながと子育てナビ", "url": "https://www.city.nagato.yamaguchi.jp/site/nagato-kosodatenavi/52770.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの「保育料基準額表」PDF（attachment/33133.pdf）は画像だけで年度も不明だったので使わず、令和8年度入園手続きのページの PDF（公立保育園・みすゞ保育園用）p.9 の基準額表を読んだ。"
+  ],
+  "notes": "副食費は市独自の負担軽減で無料（私立は上限あり、市外施設は月4,800円まで請求で補助）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,61 @@
+{
+  "code": "074845",
+  "pref": "福島県",
+  "name": "鮫川村",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「運営及び保育料等に関するご案内」（PDF。作成は2023年10月13日）が、令和9年度の入園児募集のページ（更新日2026年10月15日）に現行の案内として付いている。同じ表は2023年3月作成の「さめがわこどもセンターに関するご案内」にもあり、それ以降変わっていない。表そのものに年度の表記はない。保育料は「４月に前年度の村民税額により決定し、９月にこの年度の村民税額により決定します」（4〜8月分は前年度、9〜3月分は当年度の村民税所得割の世帯合計額）。",
+  "tax_basis": "6%",
+  "tax_note": "世帯（父親と母親）の村民税額（所得割の合計額）が基準。税額控除の扱い（住宅ローン控除など）は案内に書かれていない。政令市ではない。",
+  "table": {
+    "title": "保育料基準額（教育・保育給付２号及び３号認定の保育料）",
+    "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": null, "upper": null, "condition": "均等割課税世帯（所得割課税額0円）", "monthly": 4700, "monthly_second": null },
+      { "label": "第4階層", "lower": 1, "upper": 12100, "condition": "所得割額 12,100円未満", "monthly": 6400, "monthly_second": null },
+      { "label": "第5階層", "lower": 12100, "upper": 24300, "condition": "所得割額 12,100円以上 24,300円未満", "monthly": 8100, "monthly_second": null },
+      { "label": "第6階層", "lower": 24300, "upper": 48600, "condition": "所得割額 24,300円以上 48,600円未満", "monthly": 9800, "monthly_second": null },
+      { "label": "第7階層", "lower": 48600, "upper": 57700, "condition": "所得割額 48,600円以上 57,700円未満", "monthly": 12400, "monthly_second": null },
+      { "label": "第8階層", "lower": 57700, "upper": 97000, "condition": "所得割額 57,700円以上 97,000円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "第9階層", "lower": 97000, "upper": 133000, "condition": "所得割額 97,000円以上 133,000円未満", "monthly": 18600, "monthly_second": null },
+      { "label": "第10階層", "lower": 133000, "upper": 169000, "condition": "所得割額 133,000円以上 169,000円未満", "monthly": 22200, "monthly_second": null },
+      { "label": "第11階層", "lower": 169000, "upper": 213000, "condition": "所得割額 169,000円以上 213,000円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "第12階層", "lower": 213000, "upper": null, "condition": "所得割額 213,000円以上", "monthly": 27700, "monthly_second": null }
+    ],
+    "notes": "表は「村民税額が次の区分に該当する世帯」の2号認定・3号認定の列で、rows は3号認定の列（2号認定は全階層0円）。村の施設はさめがわこどもセンター（幼保連携型認定こども園、3号は生後6か月から）だけで、2・3号認定は午前7時〜午後6時30分のうち最大11時間。国の保育標準時間・短時間の区分はあるが、センターは「現行のとおり」で短時間の別の額はない。村のページ: 「村が定める保育料は、国が定める基準の半額程度とし、限度額を低額に抑え、階層区分を多くしています。」（国の基準額表〔第3階層19,500円〜第8階層104,000円〕も参考に載っている）。ひとり親世帯（母子・父子家庭）・在宅障がい児（者）のいる家庭の3号認定: 第1・第2階層0円、所得割48,600円未満4,500円、48,600円以上77,101円未満4,500円。満3歳到達後（2号認定への切替後）次の3月までは3号認定の基準で算定。送迎バスは月2,500円（希望者）。1・2号認定の副食費・主食費は無料化済み。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児（3号認定）の第1子は所得に応じて月4,700〜27,700円（生活保護・非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "unknown",
+  "second_note": "案内の「多子世帯の保育料」: 一般世帯は第2子が半額（基準額×0.5）、ひとり親等の世帯は第2子が無料。何人目かの数え方（同時に通う子だけか、上の子の年齢の上限）と所得制限は書かれていない。",
+  "third_child": "free",
+  "third_count": "unknown",
+  "third_note": "第3子以降は無料（一般世帯・ひとり親等の世帯とも）。数え方は書かれていない。福島県の「ふくしま保育料支援事業」（第3子以降の3歳未満児の保育料を減免する市町村に県が補助、条件は市町村が決める）との関係は案内に書かれていない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "鮫川村 令和9年度「認定こども園 さめがわこどもセンター」入園児募集（更新日2026年10月15日）",
+      "url": "https://www.vill.samegawa.fukushima.jp/kosodate-kyoiku/gakko-kyoiku/kodomocenter/page003119.html"
+    },
+    {
+      "label": "運営及び保育料等に関するご案内（PDF、10ページ。保育料は8〜9ページ）",
+      "url": "https://www.vill.samegawa.fukushima.jp/data/doc/1791264559_doc_35_0.pdf"
+    },
+    {
+      "label": "鮫川村 幼保連携型認定こども園（保育料等の軽減、更新日2023年6月5日）",
+      "url": "https://www.vill.samegawa.fukushima.jp/kosodate-kyoiku/gakko-kyoiku/kodomocenter/page001652.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "学校給食のページ（運営方針・地産地消）を見たが、給食費の額や無償化の記載はなかった"
+  ],
+  "notes": "下調べの候補「運営及び保育料等に関するご案内」（文字の取れるPDF）を pdftotext -layout で読み、8〜9ページを画像にして列（2号認定・3号認定）と多子世帯の表を確かめた。区切りは「以上〜未満」で切れ目・重なりなし。第3階層（所得割0円の均等割課税世帯）は lower・upper を null、第4階層は所得割1円以上として lower=1 にした。表に年度の表記はないが、令和9年度の募集ページ（2026年10月）が現行の案内として付けているので令和8年度の表とした。",
+  "read_at": "2026-11-01"
+}

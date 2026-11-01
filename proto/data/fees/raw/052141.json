@@ -1,0 +1,41 @@
+{
+  "code": "052141",
+  "pref": "秋田県",
+  "name": "にかほ市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度 保育所・認定こども園入所案内（Word、令和8年4月からの新規入所用）と「令和8年度の認定こども園・保育園の入所申込みについて」のページ（2025年11月28日更新）で、3歳未満を含む全ての世帯の保育料を無償化していると確かめた。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は全世帯無償だが、市が助成する保育料・副食費の算定のため、今後も保護者の市民税額による階層の判定を行う（入所申込みのページ）。階層の表は公開されていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "市が国の幼児教育・保育の無償化を拡充し、0〜2歳児クラスの保育料を所得制限なく全額補助（「完全無償化」）。全ての世帯で保育料・副食費の保護者負担なし。助成を受けるには入所申込みの際に「すこやか子育て支援事業助成申請書」の提出が必要（秋田県と市のすこやか子育て支援事業の申請書）。始まった時期は読んだ資料に書かれていない（保育料・副食費のページは2025年1月8日更新）。対象は市内の認可保育所4園・認定こども園4園（市内に幼稚園と公立の保育所・認定こども園はない）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "0〜2歳児は第1子から保育料無償なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無償なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度の認定こども園・保育園の入所申込みについて／にかほ市公式サイト（2025年11月28日更新）",
+      "url": "https://www.city.nikaho.akita.jp/gyosei/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/2/2581.html"
+    },
+    {
+      "label": "令和8年度 保育所・認定こども園入所案内（Word）",
+      "url": "https://www.city.nikaho.akita.jp/material/files/group/24/r8nyuushoannai.docx"
+    },
+    {
+      "label": "にかほ市の保育料、副食費について／にかほ市公式サイト（2025年1月8日更新）",
+      "url": "https://www.city.nikaho.akita.jp/gyosei/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/2582.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "0〜2歳児の保育料が全世帯無償なので、階層ごとの保育料の表は市のサイトに載っていない（table は null）。3〜5歳児の副食費も全額助成。一時預かり保育の利用料は市民は無料（全額助成）、休日保育も無料。延長保育は1時間100円。中学校給食・現金給付・祝い金は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

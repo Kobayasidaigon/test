@@ -1,0 +1,98 @@
+{
+  "code": "093432",
+  "pref": "栃木県",
+  "name": "茂木町",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "第1子の0〜2歳の保育料の階層表は町のサイトで見つからなかった。令和8年度の茂木町子育て支援パンフレット（PDF、2026年4月作成）9ページ: 保育園・認定こども園の保育料は「保護者の前年所得や子どもの年齢により決定」、3歳以上児は無料、第2子以降の保育料は無料、町内在住園児の給食費（主食費・副食費）は無料。",
+  "tax_basis": "6%",
+  "tax_note": "表が見つからず、所得割の定義は未確認（政令市ではないので6%とした）。パンフレットは「保護者の前年所得や子どもの年齢により決定」とだけ書いている。",
+  "table": null,
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子の0〜2歳の保育料は有料（「保護者の前年所得や子どもの年齢により決定」）。額の表は見つからなかった。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "パンフレット（令和8年度）「第２子以降の保育料無償化」: 「保育園・認定こども園を利用する、第２子以降の保育料を無料にします。原則、同一世帯で１８歳までの子どもを２人以上養育している場合のみ対象となります。」移住ナビのページも「2人目（同一世帯で18歳未満の児童を2人以上養育している場合）以降の保育料が無料」。上の子が保育園等に通っているかは問わない書き方（household）。所得制限の記載なし。栃木県の「第2子以降保育料等免除事業」（令和6年10月から、県内すべての市町、所得制限なし、生計を一にする住民票上の同一世帯で保護者が育てている18歳未満〔18歳の年度末まで〕の子のうち2番目）と同じ内容。申請の要否は町の資料に書かれていない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降は無料（数え方は第2子と同じ）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "パンフレット（令和8年度）「学校給食費無償化」（町独自の施策の印つき）: 町内の小中学校に通学する児童生徒の給食費を無料。",
+    "source": {
+      "label": "茂木町子育て支援パンフレット（令和8年度、16ページ）",
+      "url": "https://www.town.motegi.tochigi.jp/motegi/download/27325.pdf"
+    }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "出産祝金",
+      "amount": 100000,
+      "note": "出生児1人あたり。出生児の母父または養育者で茂木町に住所があり出生児と同一世帯、申請者・出生児とも出生日から6か月間以上茂木町に住所があること。出生日から90日以内に申請。6か月未満で転出したら返還。",
+      "source": {
+        "label": "茂木町子育て支援パンフレット（令和8年度、7ページ）",
+        "url": "https://www.town.motegi.tochigi.jp/motegi/download/27325.pdf"
+      }
+    },
+    {
+      "label": "小中学校入学祝金（小学校入学時）",
+      "amount": 30000,
+      "note": "入学する年度の4月1日と申請日に茂木町に住所がある児童の保護者。中学校入学時も30,000円。",
+      "source": {
+        "label": "茂木町子育て支援パンフレット（令和8年度、16ページ）",
+        "url": "https://www.town.motegi.tochigi.jp/motegi/download/27325.pdf"
+      }
+    },
+    {
+      "label": "小中学校入学祝金（中学校入学時）",
+      "amount": 30000,
+      "note": "入学する年度の4月1日と申請日に茂木町に住所がある生徒の保護者。",
+      "source": {
+        "label": "茂木町子育て支援パンフレット（令和8年度、16ページ）",
+        "url": "https://www.town.motegi.tochigi.jp/motegi/download/27325.pdf"
+      }
+    },
+    {
+      "label": "乳児紙おむつ購入助成",
+      "amount": 12000,
+      "note": "1歳未満の乳児に1,000円の助成券×12枚（町内の指定店舗で使える。転入の場合は転入月から誕生日の前月までの枚数）。現金ではなく助成券。",
+      "source": {
+        "label": "茂木町子育て支援パンフレット（令和8年度、7ページ）",
+        "url": "https://www.town.motegi.tochigi.jp/motegi/download/27325.pdf"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "label": "茂木町ホームページ | 茂木町子育て支援パンフレット",
+      "url": "https://www.town.motegi.tochigi.jp/motegi/nextpage.php?cd=8113&syurui=2"
+    },
+    {
+      "label": "R8子育て支援パンフレット.pdf（9ページ 保育園・認定こども園、第2子以降の保育料無償化）",
+      "url": "https://www.town.motegi.tochigi.jp/motegi/download/27325.pdf"
+    },
+    {
+      "label": "手厚い手当てで、子育ておうえん | もてぎ暮らし -移住ナビ-",
+      "url": "https://www.town.motegi.tochigi.jp/teiju/kosodate1"
+    },
+    {
+      "label": "茂木町ホームページ | 保育園・認定こども園",
+      "url": "https://www.town.motegi.tochigi.jp/motegi/nextpage.php?cd=46735&syurui=0"
+    },
+    {
+      "label": "栃木県 子育て支援ポータル「とこぽ」特集：とちぎの「第２子の保育料無償化」",
+      "url": "https://tocopo.pref.tochigi.lg.jp/topics/feature-11/"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの保育園・認定こども園のカテゴリ（茂木保育園・茂木中央認定こども園・認定こども園茂木愛泉幼稚園などのページ）を見たが、保育料の表はない",
+    "子育て支援パンフレット（令和8年度）は文字が化けるPDF（ToUnicode なし）だったので、全ページを縮小一覧にして9・7・16ページを画像で読んだ",
+    "例規集（https://en3-jg.d1-law.com/motegi/d1w_reiki/reiki.html）は空の応答（Empty reply）で、15秒あけて取り直しても読めなかった",
+    "WebSearch（allowed_domains: town.motegi.tochigi.jp、「茂木町 保育料 3歳未満 利用者負担額 階層 所得割」）: 階層の表は出てこなかった（移住ナビの「保育料は第2子から無料」のページだけ）"
+  ],
+  "notes": "第1子の保育料の表が見つからないため status は partial。町内の施設は茂木中央認定こども園（保育部門60名）、認定こども園茂木愛泉幼稚園（保育部門79名）、茂木保育園（30名）。申込先は保健福祉課福祉係。町内在住園児の給食費（主食費・副食費）は無料。",
+  "read_at": "2026-11-01"
+}

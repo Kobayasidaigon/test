@@ -1,0 +1,55 @@
+{
+  "code": "074225",
+  "pref": "福島県",
+  "name": "湯川村",
+  "status": "ok",
+  "fiscal_year": "令和8年度（広報ゆがわ 708号〔令和7年11月1日発行〕の「令和8年4月からの入所」の募集案内。令和9年度の募集〔720号、令和8年11月1日発行〕も同じ）",
+  "period_note": "湯川村保育所（3号認定、生後6か月〜2歳児、定員80名）は、村内在住者が申請書を出せば保育料は無料。所得による階層はない。",
+  "tax_basis": "6%",
+  "tax_note": "保育料が所得に関係なく無料のため、村の保育料の階層表は示されていない。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "広報ゆがわ 708号（令和7年11月1日発行）「令和8年度 湯川村保育所入所児及幼稚園入園児募集」: 「４ 保育料 村内在住者の方は申請書をいただければ、保育料は無料となります。」（令和8年4月からの入所）。720号（令和8年11月1日発行）の令和9年度の募集も同じ文言。村のページ「子育て・就学支援施策」（2024年9月1日更新）にも「湯川村保育所（6ヶ月～2歳児）… 村内の保育所に通う方については保育料無料」。村外の保育所・認定こども園を使う場合は「個別に手続きのご案内」とあり、その場合の保育料は書かれていない。無料がいつからかは確かめていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から保育料が無料のため、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので第3子以降も0円。",
+  "lunch_jh": {
+    "free": false,
+    "note": "全員の無償化ではない。「湯川村第3子以降幼稚園給食費および学校給食費免除制度」: 15歳以下の児童生徒を3人以上養育している場合、第3子以降の給食費が免除（子育て・就学支援施策、2024年9月1日更新）。就学援助の世帯は給食費免除。",
+    "source": { "label": "子育て・就学支援施策（湯川村）", "url": "https://www.vill.yugawa.fukushima.jp/site/kurashi-top/kosodate-2-2.html" }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "出産祝い金（50,000円）",
+      "amount": 50000,
+      "note": "子育て・就学支援施策のページ（2024年9月1日更新）: 出産祝い金として50,000円を交付。",
+      "source": { "label": "子育て・就学支援施策（湯川村）", "url": "https://www.vill.yugawa.fukushima.jp/site/kurashi-top/kosodate-2-2.html" }
+    },
+    {
+      "label": "小学校入学祝金「‘未来の宝’子育て支援金」（50,000円）",
+      "amount": 50000,
+      "note": "湯川村に住所があり当該子を養育する方。事由の発生した日から6か月以内に手続き。",
+      "source": { "label": "入園・入学情報（湯川村）", "url": "https://www.vill.yugawa.fukushima.jp/site/kurashi-top/nyuen-nyugaku.html" }
+    }
+  ],
+  "sources": [
+    { "label": "広報ゆがわ 708号（令和7年11月1日発行）令和8年度 湯川村保育所入所児・幼稚園入園児募集（⑱〜⑲ページ）", "url": "https://www.vill.yugawa.fukushima.jp/uploaded/attachment/3710.pdf" },
+    { "label": "広報ゆがわ 720号（令和8年11月1日発行）令和9年度 湯川村保育所入所児・幼稚園入園児募集（⑯〜⑰ページ）", "url": "https://www.vill.yugawa.fukushima.jp/uploaded/attachment/4604.pdf" },
+    { "label": "子育て・就学支援施策（2024年9月1日更新）", "url": "https://www.vill.yugawa.fukushima.jp/site/kurashi-top/kosodate-2-2.html" },
+    { "label": "保育所・幼稚園の利用申込について（2026年1月22日更新）", "url": "https://www.vill.yugawa.fukushima.jp/site/kurashi-top/hoikusyo-youtiennnoriyoumousikomi.html" },
+    { "label": "入園・入学情報（2024年9月1日更新）", "url": "https://www.vill.yugawa.fukushima.jp/site/kurashi-top/nyuen-nyugaku.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs は空（保育所のページ一覧のみ）",
+    "保育所・幼稚園の利用申込についてのページは「広報11月号でお知らせ」とだけあり、広報ゆがわの令和7年11月号・令和8年11月号の募集記事で保育料が無料と確かめた",
+    "例規集は d1-law（JavaScript のアプリ）で、規則の確認はしていない"
+  ],
+  "notes": "村内の保育施設は湯川村保育所（3号認定のみ、6か月〜2歳児）と、ゆがわ幼稚園（3〜5歳、授業料・通園バス無料、預かり保育は保育の必要性の認定で国の上限内で無償）。0〜2歳児は村内在住なら申請により保育料無料なので table は null。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,181 @@
+{
+ "code": "336661",
+ "pref": "岡山県",
+ "name": "美咲町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "保育料は毎年9月に見直し: 4〜8月分は前年度、9〜3月分は当年度の町民税額に基づく。表は「美咲町子どものための教育・保育給付に係る利用者負担額に関する条例施行規則別表」。令和9年度保育所等入所のしおり（PDFの作成日2026年10月6日）に「令和８年１０月現在の保育料については、次のとおりです」として載っている表で、令和8年度のしおり（「令和７年１０月現在」）、美咲町保育料のお知らせのページ（更新日2026年5月26日）の利用負担額PDF（2019年10月作成）とも同じ額。3〜5歳児は無償で、副食費が別に月額3,200円。",
+ "tax_basis": "6%",
+ "tax_note": "父母にかかる町民税所得割額（父母以外の扶養義務者（祖父母等）が家計の主宰者ならその税額も合算）。配当控除、外国税額控除、住宅取得等特別控除、政党等寄付金特別控除及び住宅耐震改修特別控除などは適用しない（控除前の額）。住民税が未申告だと最高階層（最高額）となる場合がある。転入者は1月1日時点の住所地で課税された住民税で算定。",
+ "table": {
+  "title": "利用者負担額（美咲町子どものための教育・保育給付に係る利用者負担額に関する条例施行規則別表）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）。monthly_second は表の第2子の欄",
+  "rows": [
+   {
+    "label": "第1",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法による被保護世帯(単給世帯を含む)及び中国残留邦人等…支援給付受給世帯並びに児童福祉法第6条の4に規定する里親である教育･保育給付認定保護者の世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "第2",
+    "lower": null,
+    "upper": null,
+    "condition": "第1階層を除き前年度分又は当年度分の市町村民税の額の区分が次の区分に該当する世帯: 市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "第3",
+    "lower": 0,
+    "upper": 48600,
+    "condition": "市町村民税所得割課税額 48,600円未満",
+    "monthly": 12600,
+    "monthly_second": 3100
+   },
+   {
+    "label": "第4",
+    "lower": 48600,
+    "upper": 97000,
+    "condition": "市町村民税所得割課税額 48,600円以上 97,000円未満",
+    "monthly": 19500,
+    "monthly_second": 4800
+   },
+   {
+    "label": "第5",
+    "lower": 97000,
+    "upper": 169000,
+    "condition": "市町村民税所得割課税額 97,000円以上 169,000円未満",
+    "monthly": 28900,
+    "monthly_second": 7200
+   },
+   {
+    "label": "第6",
+    "lower": 169000,
+    "upper": 301000,
+    "condition": "市町村民税所得割課税額 169,000円以上 301,000円未満",
+    "monthly": 39600,
+    "monthly_second": 9900
+   },
+   {
+    "label": "第7",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "市町村民税所得割課税額 301,000円以上 397,000円未満",
+    "monthly": 40000,
+    "monthly_second": 10000
+   },
+   {
+    "label": "第8",
+    "lower": 397000,
+    "upper": null,
+    "condition": "市町村民税所得割課税額 397,000円以上",
+    "monthly": 52000,
+    "monthly_second": 13000
+   }
+  ],
+  "notes": "第3階層は所得割課税額48,600円未満で、均等割のみ（所得割0円）の世帯もここに入るとして lower=0。表の第3子以降の欄はどの階層も0円。保育短時間（月額、第1子／第2子）: 第1 0、第2 0/0、第3 9,200/2,300、第4 14,300/3,500、第5 21,100/5,200、第6 29,000/7,200、第7 29,200/7,300、第8 38,000/9,500。第2子は利用者負担額表の1/4で100円未満切り捨て。3階層のうち要保護世帯等（母子世帯等、在宅障害児（者）のいる世帯、町長が特に困窮していると認めた世帯）の特例: 3階層は町の保育料から1,000円の軽減に加え1人目を半額、2人目以降無料。4階層は1人目9,000円、2人目以降無料。町の子育て支援プラン（令和8年度詳細版）では0〜2歳の第1子は「国の定める保育料の65％以下の保育料」。早朝保育（7時15分から）は無料、延長保育は1回200円。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（標準時間で月0〜52,000円）。0円は生活保護世帯・市町村民税非課税世帯だけ。",
+ "second_child": "other",
+ "second_count": "household",
+ "second_note": "第2子は第1子の1/4（多子軽減制度: 「同一世帯内で扶養している子どもで、第2子の保育料は利用者負担額表の１／４、第3子以降については無料とし、100円未満の端数が生じた場合は切り捨て」）。しおりの文言は同一世帯で扶養している子どもを数えるとだけあり、上の子の年齢の上限や保育所等に通っているかの条件は書かれていない。保育料のお知らせのページの例: 第1子が3〜5歳児（無償）で第2子が0〜2歳児なら第2子は階層の保育料の1/4。所得制限なし。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第3子以降は無料（同一世帯内で扶養している子どもで数える。上の子の年齢の上限は書かれていない）。所得制限なし。",
+ "lunch_jh": null,
+ "cash": [
+  {
+   "label": "育児支援手当",
+   "per_child_yearly": 120000,
+   "max_age": 6,
+   "note": "保育園等に通っていない、小学校入学前の子を自宅で養育する保護者に、子1人当たり月額10,000円（5月・9月・1月に4か月分ずつ）。保育園に通う子は対象外。",
+   "source": {
+    "label": "令和8年度子育て支援プラン詳細版（PDF）",
+    "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/12/r8shienshousaipdf.pdf"
+   }
+  },
+  {
+   "label": "水道料金助成（少子化対策生活支援）",
+   "per_child_yearly": null,
+   "max_age": null,
+   "note": "3人以上の子がいる家庭に、3人目以降の末子が義務教育を終えるまで水道の基本料金を助成（世帯単位。例 1,650円×12か月＝19,800円、前年度完納分を5月に一括）。",
+   "source": {
+    "label": "令和8年度子育て支援プラン詳細版（PDF）",
+    "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/12/r8shienshousaipdf.pdf"
+   }
+  }
+ ],
+ "one_time": [
+  {
+   "label": "出産祝金（第1子）",
+   "amount": 30000,
+   "note": "出産日に美咲町に住所があり1年以上実際に居住し、住み続ける意思のある父母。",
+   "source": {
+    "label": "令和8年度子育て支援プラン詳細版（PDF）",
+    "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/12/r8shienshousaipdf.pdf"
+   }
+  },
+  {
+   "label": "出産祝金（第2子）",
+   "amount": 50000,
+   "note": "要件は第1子と同じ。",
+   "source": {
+    "label": "令和8年度子育て支援プラン詳細版（PDF）",
+    "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/12/r8shienshousaipdf.pdf"
+   }
+  },
+  {
+   "label": "出産祝金（第3子以降）",
+   "amount": 100000,
+   "note": "要件は第1子と同じ。",
+   "source": {
+    "label": "令和8年度子育て支援プラン詳細版（PDF）",
+    "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/12/r8shienshousaipdf.pdf"
+   }
+  },
+  {
+   "label": "こども笑顔手当（令和8年度限り）",
+   "amount": 10000,
+   "note": "物価高対策。令和8年4月1日〜令和9年2月28日の児童手当受給者などに、0歳〜高校3年生年代の対象児童1人につき10,000円。令和8年度限り。",
+   "source": {
+    "label": "令和8年度子育て支援プラン詳細版（PDF）",
+    "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/12/r8shienshousaipdf.pdf"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "美咲町保育料のお知らせ／美咲町ホームページ（更新日2026年5月26日）",
+   "url": "https://www.town.okayama-misaki.lg.jp/kosodate-kyoiku/kosodate/7/1/2597.html"
+  },
+  {
+   "label": "利用負担額(保育料）（PDF）",
+   "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/18/6014.pdf"
+  },
+  {
+   "label": "令和9年度保育園入園申し込みについて／美咲町ホームページ（更新日2026年10月9日）",
+   "url": "https://www.town.okayama-misaki.lg.jp/kosodate-kyoiku/kosodate/7/1/4372.html"
+  },
+  {
+   "label": "令和9年度保育所等入所のしおり（PDF、10 利用者負担額（保育料）について p.9〜12）",
+   "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/18/2027nyuusyonosiori.pdf"
+  },
+  {
+   "label": "令和8年度保育所等入所のしおり（PDF）",
+   "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/18/32253_212402_misc.pdf"
+  },
+  {
+   "label": "令和8年度子育て支援プラン詳細版（PDF、41 保育料の減免）",
+   "url": "https://www.town.okayama-misaki.lg.jp/material/files/group/12/r8shienshousaipdf.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "町の公式サイトは town.okayama-misaki.lg.jp（munis_by_pop.json の town.misaki.okayama.jp から移っている）。表はしおりの文字を pdftotext -layout で読み、画像（R9しおり p.13＝本文の11）で列の並び（保育標準時間→保育短時間、第1子・第2子・第3子以降）を確かめた。lunch_jh は探していない。",
+ "read_at": "2026-11-01"
+}

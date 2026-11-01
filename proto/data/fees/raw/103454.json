@@ -1,0 +1,43 @@
+{
+ "code": "103454",
+ "pref": "群馬県",
+ "name": "吉岡町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和5年4月から町独自の制度で3歳未満の第1子も保育料を無償化し、吉岡町に住民登録のある児童の保育料は無償（町のページ、最終更新日2026年10月28日。令和9年度保育所等入所案内〔2026年10月作成〕でも同じ）。施設が実費で集める費用（通園送迎費、食材料費〔主食費・副食費〕、行事費など）は無償化の対象外で保護者の負担。",
+ "tax_basis": "unknown",
+ "tax_note": "保育料が無償のため、町の保育料の基準額表（所得割の階層）は今回読んだ資料に載っていない。副食費免除の判定には市町村民税所得割（57,700円・77,101円の区切り）を使う。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2023年4月",
+ "first_child_free_note": "「町では、国や県の制度に加え、町独自の制度により3歳以上の子どもおよび3歳未満の第2子以降の保育料を無償化しています。さらに、令和5年4月からは、3歳未満の第1子についても保育料を無償化し、吉岡町に住民登録のある児童の保育料は無償となっています。」所得制限の記載なし。認可外保育施設は国の上限額の範囲内で無償化の対象。食材料費（主食費・副食費）など施設の実費は保護者負担（0〜2歳児の食材料費を施設が別に集めるかは施設による）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から保育料0円なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。3歳未満の第2子以降の無償化は令和5年4月より前から町独自で実施していた。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から0円。3〜5歳の副食費（月額約5,100円）は所得割57,700円未満（ひとり親世帯等は77,101円未満）の世帯や第3子以降（2号は所得割57,700円以上なら0歳〜小学校就学前の範囲で数える）が免除。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料の完全無償化について - 吉岡町（最終更新日2026年10月28日）",
+   "url": "https://www.town.yoshioka.lg.jp/kosodate/hoikusisetsu/54.html"
+  },
+  {
+   "label": "令和9年度中の保育所等への入所希望者の受付を行います - 吉岡町",
+   "url": "https://www.town.yoshioka.lg.jp/kosodate/hoikusisetsu/7_1.html"
+  },
+  {
+   "label": "令和9年度保育所等入所案内（PDF、p.8 ７ 保育料等について ７－１ 保育料完全無償化・７－２ 副食費免除）",
+   "url": "https://www.town.yoshioka.lg.jp/kosodate/pdf/令和9年度保育所等入所案内.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "munis_by_pop.json の https://www.town.yoshioka.gunma.jp/ は接続できず（下調べも失敗）。新しいドメイン https://www.town.yoshioka.lg.jp/ で開けた。"
+ ],
+ "notes": "町の公式サイトは town.yoshioka.lg.jp に移っている。保育料が全員無償のため table は null。町内には私立保育所などが6園。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

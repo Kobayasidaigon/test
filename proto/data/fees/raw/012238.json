@@ -1,0 +1,213 @@
+{
+  "code": "012238",
+  "pref": "北海道",
+  "name": "根室市",
+  "status": "partial",
+  "fiscal_year": "令和7年度",
+  "period_note": "市の「保育所の入所について」のページ（2025年8月5日更新）に載っている最新の表は「令和７年度利用者負担金」（PDF、2025年8月4日作成）。令和8年度の表は市のサイトで見つからなかった。保育料は毎年4月と9月に切り替え: 令和7年度は4月〜8月分を令和6年度、9月〜3月分を令和7年度の市町村民税所得割課税額で決める。",
+  "tax_basis": "6%",
+  "tax_note": "市町村民税所得割課税額で階層を決める（ページの説明では、市の保育料は国の徴収金基準額を1年遅れで実施し、階層区分を国より細分化している）。税額控除の扱いの記載は見当たらなかった。",
+  "table": {
+    "title": "令和７年度利用者負担金（２号認定・３号認定）",
+    "kind": "3号認定（3歳未満）・標準・母子世帯等以外（その他）・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法により被保護世帯",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税 非課税世帯",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税 均等割の額のみ（所得割の額のない世帯）",
+        "monthly": 8500,
+        "monthly_second": 0
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市町村民税 所得割の額 48,600円未満",
+        "monthly": 9700,
+        "monthly_second": 0
+      },
+      {
+        "label": "D1",
+        "lower": 48600,
+        "upper": 60700,
+        "condition": "48,600円以上 60,700円未満",
+        "monthly": 11000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D2",
+        "lower": 60700,
+        "upper": 61600,
+        "condition": "60,700円以上 61,600円未満",
+        "monthly": 12000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D3",
+        "lower": 61600,
+        "upper": 72800,
+        "condition": "61,600円以上 72,800円未満",
+        "monthly": 13000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D4",
+        "lower": 72800,
+        "upper": 84900,
+        "condition": "72,800円以上 84,900円未満（母子世帯等は 72,800円以上 77,101円未満）",
+        "monthly": 14000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D5",
+        "lower": 84900,
+        "upper": 97000,
+        "condition": "84,900 以上 97,000 未満",
+        "monthly": 15000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D6",
+        "lower": 97000,
+        "upper": 110600,
+        "condition": "97,000 以上 110,600 未満",
+        "monthly": 16500,
+        "monthly_second": 0
+      },
+      {
+        "label": "D7",
+        "lower": 110600,
+        "upper": 121000,
+        "condition": "110,600 以上 121,000 未満",
+        "monthly": 18200,
+        "monthly_second": 0
+      },
+      {
+        "label": "D8",
+        "lower": 121000,
+        "upper": 145000,
+        "condition": "121,000 以上 145,000 未満",
+        "monthly": 20000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D9",
+        "lower": 145000,
+        "upper": 169000,
+        "condition": "145,000 以上 169,000 未満",
+        "monthly": 22200,
+        "monthly_second": 0
+      },
+      {
+        "label": "D10",
+        "lower": 169000,
+        "upper": 177600,
+        "condition": "169,000 以上 177,600 未満",
+        "monthly": 25000,
+        "monthly_second": 12500
+      },
+      {
+        "label": "D11",
+        "lower": 177600,
+        "upper": 235000,
+        "condition": "177,600 以上 235,000 未満",
+        "monthly": 27700,
+        "monthly_second": 13800
+      },
+      {
+        "label": "D12",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "235,000 以上 301,000 未満",
+        "monthly": 30500,
+        "monthly_second": 15200
+      },
+      {
+        "label": "D13",
+        "lower": 301000,
+        "upper": 349000,
+        "condition": "301,000 以上 349,000 未満",
+        "monthly": 34000,
+        "monthly_second": 17000
+      },
+      {
+        "label": "D14",
+        "lower": 349000,
+        "upper": 397000,
+        "condition": "349,000 以上 397,000 未満",
+        "monthly": 37500,
+        "monthly_second": 18700
+      },
+      {
+        "label": "D15",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000 以上",
+        "monthly": 41000,
+        "monthly_second": 20500
+      }
+    ],
+    "notes": "monthly_second は表の（ ）内の額: B〜D9 の世帯では保護者と生計を同一にするきょうだいを最年長から数えて2人目以降が3号なら（0）、D10〜D15 の世帯では同一世帯から2人以上が幼稚園や保育所等を利用する場合の2人目の額（3人目以降は無料）。短時間（その他）: C1 8,400円、C2 9,600円、D1 10,800円、D2 11,800円、D3 12,800円、D4 13,800円、D5 14,800円、D6 16,300円、D7 18,000円、D8 19,700円、D9 21,900円、D10 24,600円（12,300円）、D11 27,300円（13,600円）、D12 30,000円（15,000円）、D13 33,500円（16,700円）、D14 36,900円（18,400円）、D15 40,300円（20,100円）。母子世帯等: B 0円、C1 3,900円（短時間3,800円）、C2・D1・D2・D3・D4（72,800円以上77,101円未満）4,500円（短時間4,400円）、2人目以降（0）。すくすく保育応援事業（令和5年4月から）で市保育料利用者負担金に準拠する0〜2歳児の保育料を「これまでの半額」にしている（申請不要）。子育てガイドブック（2025年9月作成）は保育料を「3号認定のみ0円〜41,000円」としており、表の最高額41,000円と同じなので、表の額は半額後の額とみられる（表には半額後と書かれていない）。表は画像で列（3号 3歳未満 標準・短時間、2号）と（ ）の行を確かめた。C1（均等割のみ＝所得割0円）と分けるため C2 の lower は1とした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は表の額（生活保護・非課税世帯は0円）。すくすく保育応援事業で令和5年4月から0〜2歳児の保育料を以前の半額にしている。",
+  "second_child": "other",
+  "second_count": "household",
+  "second_note": "所得で変わる（表の備考）。B〜D9（所得割169,000円未満、年収640万円未満相当）: 保護者と生計を同一にするきょうだいを最年長から数え、2人目以降が3号認定なら0円（上の子の年齢・在園を問わない。北海道の多子世帯の保育料軽減支援事業と同じ条件で市が実施、手続き不要）。D10〜D15（所得割169,000円以上）: 就学前の範囲で同一世帯から2人以上が幼稚園や保育所等を利用する場合、最年長から2人目は（ ）内の額（ほぼ半額）、3人目以降は無料（together）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第3子以降保育料無料化（市独自、申請が必要）: 22歳未満のお子さんが3人以上いて（全員が入所・在学等していることに限る。年度途中で22歳に達して最初の3月31日までの子を含む）、世帯員全員の住民登録が根室市にあり、所得税または市町村民税の申告をしていて、保育料の滞納がなければ、3号認定の第3子目以降の保育料が無料。所得割169,000円未満の世帯は第2子以降が0円。同時に保育所等に通う3人目以降も無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和7年度利用者負担金（PDF、2025年8月4日作成）",
+      "url": "https://www.city.nemuro.hokkaido.jp/material/files/group/52/riyousyafutankin.pdf"
+    },
+    {
+      "label": "保育所の入所について／根室市（2025年8月5日更新）",
+      "url": "https://www.city.nemuro.hokkaido.jp/kosodate/shien/hoikusyokodomoenyochien/hoiku/4143.html"
+    },
+    {
+      "label": "すくすく保育応援事業をはじめました／根室市（2026年4月10日更新）",
+      "url": "https://www.city.nemuro.hokkaido.jp/kosodate/shien/hoikusyokodomoenyochien/11387.html"
+    },
+    {
+      "label": "すくすく保育応援事業案内（PDF、2025年10月作成）",
+      "url": "https://www.city.nemuro.hokkaido.jp/material/files/group/52/sukusukugaiyou.pdf"
+    },
+    {
+      "label": "子育てガイドブック 保育所・幼稚園・認定こども園（PDF、2025年9月作成、p.22〜23）",
+      "url": "https://www.city.nemuro.hokkaido.jp/material/files/group/52/R7_kosodateguidebook_P22-28.pdf"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの docs（保育所の入所についてのページ、令和7年度利用者負担金のPDF）を読んだ",
+    "同じURLのPDFを取り直したが令和7年度のまま（2025年8月4日作成）",
+    "子育てガイドブックのページ（全体版は2025年版）の保育所の章を読んだが表はなく「3号認定のみ0円〜41,000円」とだけある",
+    "すくすく保育応援事業のページ（2026年4月10日更新）を読んだ（令和8年度の表へのリンクはない）",
+    "WebSearch（allowed_domains: city.nemuro.hokkaido.jp）「根室市 令和8年度 利用者負担金 保育料 3号認定」: 令和8年度の表は見つからなかった（保育所の入所について・幼児教育・保育無償化・副食費のチラシなどだけ）"
+  ],
+  "notes": "status を partial にしたのは、市のサイトにある最新の表が令和7年度のもので、令和8年度の表が見つからなかったため（表の額やきょうだいの決まりは令和7年度の表の備考で読んだ）。区切りは切れ目・重なりなし、月額は階層の順に下がらない。中学校給食・現金給付・祝い金は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

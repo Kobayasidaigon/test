@@ -1,0 +1,203 @@
+{
+ "code": "343099",
+ "pref": "広島県",
+ "name": "坂町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "毎年9月が切り替え: 4〜8月分は前年度の住民税額、9〜3月分は6月に決定する当年度の住民税額に基づく。年度途中で税額等が変わったら算定基準月までさかのぼって見直す。保育料は4月1日時点の年齢で決まり、年度途中で3歳になってもその年度中は3号認定（3歳未満児）の保育料。3〜5歳児は保育料無料（給食費は施設が定める額）。表は令和8年度保育所・認定こども園入園案内（PDFの作成日2025年10月28日）の「【令和８年度 利用者負担額基準額表】３号認定」。令和9年度入園案内（PDFの作成日2026年9月30日）の「【令和９年度 利用者負担額基準額表】」も同じ額。",
+ "tax_basis": "6%",
+ "tax_note": "児童の保護者（父母両方）の市町村民税所得割額の合算（保護者の所得状況によっては同居する祖父母等の所得で算定）。「保育料の算定の基となる市町村民税額には、調整控除以外の税額控除（寄付金税額控除、外国税額控除、配当控除、住宅借入金等特別控除）が含まれます」＝これらの税額控除を引く前の額で判定。収入の書類がそろわず決定できないと最高額。",
+ "table": {
+  "title": "【令和８年度 利用者負担額基準額表】３号認定",
+  "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "1",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法による被保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "2-1",
+    "lower": null,
+    "upper": null,
+    "condition": "非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "3-1",
+    "lower": null,
+    "upper": null,
+    "condition": "均等割額のみ世帯",
+    "monthly": 8500,
+    "monthly_second": null
+   },
+   {
+    "label": "3-2",
+    "lower": 1,
+    "upper": 24300,
+    "condition": "24,300 円未満",
+    "monthly": 9500,
+    "monthly_second": null
+   },
+   {
+    "label": "3-3",
+    "lower": 24300,
+    "upper": 48600,
+    "condition": "24,300 円以上 48,600 円未満",
+    "monthly": 10500,
+    "monthly_second": null
+   },
+   {
+    "label": "4-1",
+    "lower": 48600,
+    "upper": 57700,
+    "condition": "48,600 円以上 57,700 円未満",
+    "monthly": 13500,
+    "monthly_second": null
+   },
+   {
+    "label": "4-2",
+    "lower": 57700,
+    "upper": 77101,
+    "condition": "57,700 円以上 77,101 円未満",
+    "monthly": 15500,
+    "monthly_second": null
+   },
+   {
+    "label": "4-3",
+    "lower": 77101,
+    "upper": 82000,
+    "condition": "77,101 円以上 82,000 円未満",
+    "monthly": 18500,
+    "monthly_second": null
+   },
+   {
+    "label": "4-4",
+    "lower": 82000,
+    "upper": 89000,
+    "condition": "82,000 円以上 89,000 円未満",
+    "monthly": 23000,
+    "monthly_second": null
+   },
+   {
+    "label": "4-5",
+    "lower": 89000,
+    "upper": 97000,
+    "condition": "89,000 円以上 97,000 円未満",
+    "monthly": 28500,
+    "monthly_second": null
+   },
+   {
+    "label": "5-1",
+    "lower": 97000,
+    "upper": 117000,
+    "condition": "97,000 円以上 117,000 円未満",
+    "monthly": 33500,
+    "monthly_second": null
+   },
+   {
+    "label": "5-2",
+    "lower": 117000,
+    "upper": 139000,
+    "condition": "117,000 円以上 139,000 円未満",
+    "monthly": 38000,
+    "monthly_second": null
+   },
+   {
+    "label": "5-3",
+    "lower": 139000,
+    "upper": 151000,
+    "condition": "139,000 円以上 151,000 円未満",
+    "monthly": 42500,
+    "monthly_second": null
+   },
+   {
+    "label": "5-4",
+    "lower": 151000,
+    "upper": 169000,
+    "condition": "151,000 円以上 169,000 円未満",
+    "monthly": 44000,
+    "monthly_second": null
+   },
+   {
+    "label": "6-1",
+    "lower": 169000,
+    "upper": 212000,
+    "condition": "169,000 円以上 212,000 円未満",
+    "monthly": 52000,
+    "monthly_second": null
+   },
+   {
+    "label": "6-2",
+    "lower": 212000,
+    "upper": 256000,
+    "condition": "212,000 円以上 256,000 円未満",
+    "monthly": 55500,
+    "monthly_second": null
+   },
+   {
+    "label": "6-3",
+    "lower": 256000,
+    "upper": 301000,
+    "condition": "256,000 円以上 301,000 円未満",
+    "monthly": 58000,
+    "monthly_second": null
+   },
+   {
+    "label": "7",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "301,000 円以上 397,000 円未満",
+    "monthly": 64500,
+    "monthly_second": null
+   },
+   {
+    "label": "8",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000 円以上",
+    "monthly": 65000,
+    "monthly_second": null
+   }
+  ],
+  "notes": "3-1「均等割額のみ世帯」は所得割0円の世帯（lower・upper は null）、3-2「24,300円未満」は所得割1円以上として lower=1。短時間（月額）: 1 0、2-1 0、3-1 8,300、3-2 9,300、3-3 10,300、4-1 13,200、4-2 15,200、4-3 18,100、4-4 22,600、4-5 28,000、5-1 32,900、5-2 37,300、5-3 41,700、5-4 43,200、6-1 51,100、6-2 54,500、6-3 57,000、7 63,400、8 63,900。ひとり親世帯・在宅障害児（者）世帯（特定世帯）の第1子（標準時間／短時間）: 1・2-1 0円、3-1 3,750／3,650、3-2 4,250／4,150、3-3 4,750／4,650、4-1 6,750／6,600、4-2 7,750／7,600（4-3以上は欄なし）。特定世帯の3号認定は第2子以降無料。延長保育の定期利用は月3,000円（第2子2,000円、第3子1,000円）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（標準時間で月0〜65,000円）。0円は生活保護世帯と非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "多子世帯の軽減（入園案内の表）: 3号認定は「年長までの児童のうち、第２子 保育料半額」（就学前の子の中で数える。保育所等に通っていない就学前の子を数えるかは書かれていない）。年収360万円未満相当世帯（案内に所得割額の基準は書かれていない。国の制度では所得割57,700円未満で、表にも57,700円の区切りがある）は年齢の上限なしで「第２子 保育料半額」に拡充（国の制度と同じ）。町独自の第2子無償化は見当たらない。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "3号認定は「年長までの児童のうち、第３子以降 保育料無料」。年収360万円未満相当世帯は年齢の上限なしで第3子以降無料。2号認定は年長までの第3子以降、1号認定は小3までの第3子以降が副食費免除。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和８年度保育所・認定こども園入園案内 – 広島県 坂町役場 ホームページ",
+   "url": "https://www.town.saka.lg.jp/2025/10/31/%e4%bb%a4%e5%92%8c%ef%bc%98%e5%b9%b4%e5%ba%a6%e4%bf%9d%e8%82%b2%e6%89%80%e3%83%bb%e8%aa%8d%e5%ae%9a%e3%81%93%e3%81%a9%e3%82%82%e5%9c%92%e5%85%a5%e5%9c%92%e6%a1%88%e5%86%85/"
+  },
+  {
+   "label": "保育所・認定こども園入園案内（令和8年度、PDF、7 利用者負担額 p.6〜7）",
+   "url": "https://www.town.saka.lg.jp/wp-content/uploads/2025/10/%E4%BF%9D%E8%82%B2%E6%89%80%E3%83%BB%E8%AA%8D%E5%AE%9A%E3%81%93%E3%81%A9%E3%82%82%E5%9C%92%E5%85%A5%E5%9C%92%E6%A1%88%E5%86%85.pdf"
+  },
+  {
+   "label": "令和９年度保育園・認定こども園入園案内 – 広島県 坂町役場 ホームページ",
+   "url": "https://www.town.saka.lg.jp/2024/11/27/%e4%bb%a4%e5%92%8c%ef%bc%99%e5%b9%b4%e5%ba%a6%e4%bf%9d%e8%82%b2%e5%9c%92%e3%83%bb%e8%aa%8d%e5%ae%9a%e3%81%93%e3%81%a9%e3%82%82%e5%9c%92%e5%85%a5%e5%9c%92%e6%a1%88%e5%86%85/"
+  },
+  {
+   "label": "令和9年度保育所・認定こども園入園案内（PDF、7 利用者負担額 p.6〜7）",
+   "url": "https://www.town.saka.lg.jp/wp-content/uploads/2024/11/%E4%BB%A4%E5%92%8C9%E5%B9%B4%E5%BA%A6%E4%BF%9D%E8%82%B2%E6%89%80%E3%83%BB%E8%AA%8D%E5%AE%9A%E3%81%93%E3%81%A9%E3%82%82%E5%9C%92%E5%85%A5%E5%9C%92%E6%A1%88%E5%86%85.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "下調べの index.json に候補の文書がなかったため、入園案内のページ（R8・R9）を開いて href の PDF を取った。表は pdftotext -layout で読み、画像（R8入園案内 p.9＝本文の-7-）で列の並び（一般の標準時間・短時間、ひとり親世帯・在宅障害児（者）世帯の標準時間・短時間）を確かめた。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

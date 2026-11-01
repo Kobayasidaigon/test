@@ -1,0 +1,199 @@
+{
+ "code": "264075",
+ "pref": "京都府",
+ "name": "京丹波町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "4〜8月分は前年度の市町村民税額（4月に決定）、9〜3月分は当年度の市町村民税額（9月に決定）。児童の年齢は4月1日時点の満年齢で、年度途中で誕生日を迎えても区分は変わらない。月途中の入退園は日割。3〜5歳児と0〜2歳児の町民税非課税世帯は無料。0〜2歳児の給食費は利用料に含まれる。表は「令和8年度認定こども園入園のてびき」（PDFの作成日2026年4月28日、「表中の児童の年齢は、令和８年４月１日時点の満年齢」）の「こども園利用料及び給食費徴収基準額表【２・３号認定】」。令和9年度のてびき（2026年9月30日作成）の表も同じ額。町立認定こども園3園（3号認定は満10か月以上）。",
+ "tax_basis": "6%",
+ "tax_note": "保護者（基本的に父母。同居する父母以外が家計の主宰者と認められる場合はその方を含む）の市町村民税額（主に所得割課税額）。算定に用いる市町村民税額は、税額控除（配当控除、外国税額控除、住宅借入金特別控除、寄附金控除等）の適用を受ける前の税額。未申告は最も高い階層区分。",
+ "table": {
+  "title": "こども園利用料及び給食費徴収基準額表【２・３号認定】",
+  "kind": "3号認定（0・1・2歳児）・利用料・保育標準時間（月額、第1子）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等…支援給付受給世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "町民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C1",
+    "lower": null,
+    "upper": null,
+    "condition": "町民税均等割課税世帯",
+    "monthly": 9000,
+    "monthly_second": null
+   },
+   {
+    "label": "C2",
+    "lower": 1,
+    "upper": 8000,
+    "condition": "町民税所得割課税世帯 8,000円未満",
+    "monthly": 13000,
+    "monthly_second": null
+   },
+   {
+    "label": "C3",
+    "lower": 8000,
+    "upper": 48600,
+    "condition": "8,000円以上 48,600円未満",
+    "monthly": 17000,
+    "monthly_second": null
+   },
+   {
+    "label": "C4",
+    "lower": 48600,
+    "upper": 50000,
+    "condition": "48,600円以上 50,000円未満",
+    "monthly": 20000,
+    "monthly_second": null
+   },
+   {
+    "label": "C5",
+    "lower": 50000,
+    "upper": 54000,
+    "condition": "50,000円以上 54,000円未満",
+    "monthly": 23000,
+    "monthly_second": null
+   },
+   {
+    "label": "C6（その1）",
+    "lower": 54000,
+    "upper": 57700,
+    "condition": "54,000円以上 57,700円未満",
+    "monthly": 25000,
+    "monthly_second": null
+   },
+   {
+    "label": "C6（その2）",
+    "lower": 57700,
+    "upper": 70000,
+    "condition": "57,700円以上 70,000円未満",
+    "monthly": 25000,
+    "monthly_second": null
+   },
+   {
+    "label": "C7（その1）",
+    "lower": 70000,
+    "upper": 77101,
+    "condition": "70,000円以上 77,101円未満",
+    "monthly": 28000,
+    "monthly_second": null
+   },
+   {
+    "label": "C7（その2）",
+    "lower": 77101,
+    "upper": 83000,
+    "condition": "77,101円以上 83,000円未満",
+    "monthly": 28000,
+    "monthly_second": null
+   },
+   {
+    "label": "C8",
+    "lower": 83000,
+    "upper": 97000,
+    "condition": "83,000円以上 97,000円未満",
+    "monthly": 30000,
+    "monthly_second": null
+   },
+   {
+    "label": "C9",
+    "lower": 97000,
+    "upper": 121000,
+    "condition": "97,000円以上 121,000円未満",
+    "monthly": 33000,
+    "monthly_second": null
+   },
+   {
+    "label": "C10",
+    "lower": 121000,
+    "upper": 144000,
+    "condition": "121,000円以上 144,000円未満",
+    "monthly": 36000,
+    "monthly_second": null
+   },
+   {
+    "label": "C11",
+    "lower": 144000,
+    "upper": 169000,
+    "condition": "144,000円以上 169,000円未満",
+    "monthly": 38000,
+    "monthly_second": null
+   },
+   {
+    "label": "C12",
+    "lower": 169000,
+    "upper": 301000,
+    "condition": "169,000円以上 301,000円未満",
+    "monthly": 41000,
+    "monthly_second": null
+   },
+   {
+    "label": "C13",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "301,000円以上 397,000円未満",
+    "monthly": 45000,
+    "monthly_second": null
+   },
+   {
+    "label": "C14",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上",
+    "monthly": 50000,
+    "monthly_second": null
+   }
+  ],
+  "notes": "C1「町民税均等割課税世帯」は所得割0円（lower・upper は null）、C2「8,000円未満」は lower=1。C6・C7は表の中で所得割が2段に分かれている（C6は57,700円で2号認定の給食費が0円／4,500円に分かれる。C7の77,101円の区切りは2号の給食費もどちらも4,500円）が、3号認定の利用料は2段とも同じ額なので（その1）（その2）の2行にした。保育短時間（月額）: A 0、B 0、C1 8,800、C2 12,700、C3 16,700、C4 19,600、C5 22,600、C6 24,500、C7 27,500、C8 29,400、C9 32,400、C10 35,300、C11 37,300、C12 40,300、C13 44,200、C14 49,100。2号認定（3〜5歳児）の給食費（月額）: 所得割57,700円未満（C6の54,000円以上57,700円未満まで）は0円、57,700円以上は4,500円。町民税所得割額77,101円未満のひとり親・在宅障害児（者）同居世帯等の児童（年齢制限なし）は第1子半額・第2子以降無料、給食費免除。延長保育利用料は無償化の対象外。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（3号・標準時間で月0〜50,000円）。0円は生活保護世帯・町民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "「同時在園している世帯の児童は、第２子半額」。町民税所得割額57,700円未満の世帯の児童（年齢制限なし）は第2子半額・第3子以降無料。町独自の第2子無償化は見当たらない。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "「京丹波町では、18歳未満の子どもの中で第３子以降の児童について、こども園利用料及び給食費が無料になる制度を設けています」（京都府及び京丹波町独自の第3子以降利用者負担額等の無償化）。上の子が同時に在園しているかは問わず、18歳未満の子で数える。所得制限は町の案内に書かれていない。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和8年度認定こども園入園児童の随時受付について／京丹波町（更新日2026年1月19日）",
+   "url": "https://www.town.kyotamba.kyoto.jp/kakukakarasagasu/kyoikuiinkai_gakkokyoikuka/2/9239.html"
+  },
+  {
+   "label": "令和8年度認定こども園入園のてびき（PDF、3 こども園利用料・給食費の取扱い p.7〜9）",
+   "url": "https://www.town.kyotamba.kyoto.jp/material/files/group/15/r8tebikigakko.pdf"
+  },
+  {
+   "label": "令和9年度京丹波町立認定こども園一斉申込みについて／京丹波町（更新日2026年10月26日）",
+   "url": "https://www.town.kyotamba.kyoto.jp/kakukakarasagasu/kyoikuiinkai_gakkokyoikuka/2/9196.html"
+  },
+  {
+   "label": "令和9年度認定こども園入園のてびき（PDF）",
+   "url": "https://www.town.kyotamba.kyoto.jp/material/files/group/15/r9ninnteikodomoennnyuuennnotebiki.pdf"
+  },
+  {
+   "label": "認定こども園について／京丹波町（更新日2026年4月9日、利用者負担額の軽減制度）",
+   "url": "https://www.town.kyotamba.kyoto.jp/kakukakarasagasu/kyoikuiinkai_gakkokyoikuka/2/7787.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "下調べの index.json に候補の文書がなかったため、入園申込みのページ（R8随時受付・R9一斉申込み）を開いて href の PDF を取った。表は pdftotext -layout で読み、画像（R8てびき p.10＝本文の9）で列の並び（3号認定の保育標準時間・保育短時間、2号認定の給食費）とC6・C7の2段を確かめた。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

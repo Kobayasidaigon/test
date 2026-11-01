@@ -1,0 +1,343 @@
+{
+  "code": "383864",
+  "pref": "愛媛県",
+  "name": "久万高原町",
+  "status": "partial",
+  "fiscal_year": "令和8年度（「令和8年度保育施設入園のご案内」のページ〔2025年11月17日更新〕が「0歳から2歳児は次の表のとおりです」として案内する「久万高原町保育施設利用者負担額表」。表に年度の表示はなく、PDFは2019年11月作成）",
+  "period_note": "表の定義: 当該年度の4月分から8月分までは前年度分、9月分から3月分までは当該年度分の市町村民税の額の区分で決める。入園の手引き（令和8年度）: 令和8年4〜8月分は令和7年度、令和8年9月〜令和9年3月分は令和8年度の所得課税状況。毎年4月に決定し9月に切り替え。月単位で決定し日割り計算はない。",
+  "tax_basis": "6%",
+  "tax_note": "父・母ともの世帯の課税状況で決定（祖父母等と同居で父母の収入が少なく祖父母等が家計の主宰者と判断される場合は主宰者を判定に入れる）。住宅借入金等特別税額控除、配当割額控除、株式等譲渡所得割額控除、配当控除、外国税額控除、寄附金税額控除（ふるさと納税等）を差し引く前の町民税所得割額で算定（入園の手引き）。政令市ではないので6%とした。",
+  "table": {
+    "title": "久万高原町保育施設利用者負担額表",
+    "kind": "3歳未満（0〜2歳児）・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等支援給付受給世帯並びに里親である教育・保育給付認定保護者の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2-2",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯（一般世帯）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3-2",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税課税世帯均等割のみ（一般世帯）",
+        "monthly": 7000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-1",
+        "lower": 1,
+        "upper": 8600,
+        "condition": "所得割額 8,600円未満",
+        "monthly": 9600,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-2",
+        "lower": 8600,
+        "upper": 18600,
+        "condition": "8,600円以上 18,600円未満",
+        "monthly": 11100,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-3",
+        "lower": 18600,
+        "upper": 28600,
+        "condition": "18,600円以上 28,600円未満",
+        "monthly": 12600,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-4",
+        "lower": 28600,
+        "upper": 38600,
+        "condition": "28,600円以上 38,600円未満",
+        "monthly": 14100,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-5",
+        "lower": 38600,
+        "upper": 48600,
+        "condition": "38,600円以上 48,600円未満",
+        "monthly": 15600,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-6",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "48,600円以上 57,700円未満",
+        "monthly": 16000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-7",
+        "lower": 57700,
+        "upper": 67000,
+        "condition": "57,700円以上 67,000円未満",
+        "monthly": 18000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-8",
+        "lower": 67000,
+        "upper": 77101,
+        "condition": "67,000円以上 77,101円未満",
+        "monthly": 20000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-9",
+        "lower": 77101,
+        "upper": 87000,
+        "condition": "77,101円以上 87,000円未満",
+        "monthly": 22000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4-10",
+        "lower": 87000,
+        "upper": 97000,
+        "condition": "87,000円以上 97,000円未満",
+        "monthly": 24000,
+        "monthly_second": null
+      },
+      {
+        "label": "第5-1",
+        "lower": 97000,
+        "upper": 109000,
+        "condition": "97,000円以上 109,000円未満",
+        "monthly": 25600,
+        "monthly_second": null
+      },
+      {
+        "label": "第5-2",
+        "lower": 109000,
+        "upper": 121000,
+        "condition": "109,000円以上 121,000円未満",
+        "monthly": 27600,
+        "monthly_second": null
+      },
+      {
+        "label": "第5-3",
+        "lower": 121000,
+        "upper": 133000,
+        "condition": "121,000円以上 133,000円未満",
+        "monthly": 29600,
+        "monthly_second": null
+      },
+      {
+        "label": "第5-4",
+        "lower": 133000,
+        "upper": 145000,
+        "condition": "133,000円以上 145,000円未満",
+        "monthly": 31600,
+        "monthly_second": null
+      },
+      {
+        "label": "第5-5",
+        "lower": 145000,
+        "upper": 157000,
+        "condition": "145,000円以上 157,000円未満",
+        "monthly": 33600,
+        "monthly_second": null
+      },
+      {
+        "label": "第5-6",
+        "lower": 157000,
+        "upper": 169000,
+        "condition": "157,000円以上 169,000円未満",
+        "monthly": 35600,
+        "monthly_second": null
+      },
+      {
+        "label": "第6-1",
+        "lower": 169000,
+        "upper": 191000,
+        "condition": "169,000円以上 191,000円未満",
+        "monthly": 37800,
+        "monthly_second": null
+      },
+      {
+        "label": "第6-2",
+        "lower": 191000,
+        "upper": 213000,
+        "condition": "191,000円以上 213,000円未満",
+        "monthly": 39800,
+        "monthly_second": null
+      },
+      {
+        "label": "第6-3",
+        "lower": 213000,
+        "upper": 235000,
+        "condition": "213,000円以上 235,000円未満",
+        "monthly": 41800,
+        "monthly_second": null
+      },
+      {
+        "label": "第6-4",
+        "lower": 235000,
+        "upper": 257000,
+        "condition": "235,000円以上 257,000円未満",
+        "monthly": 43800,
+        "monthly_second": null
+      },
+      {
+        "label": "第6-5",
+        "lower": 257000,
+        "upper": 279000,
+        "condition": "257,000円以上 279,000円未満",
+        "monthly": 45800,
+        "monthly_second": null
+      },
+      {
+        "label": "第6-6",
+        "lower": 279000,
+        "upper": 301000,
+        "condition": "279,000円以上 301,000円未満",
+        "monthly": 48800,
+        "monthly_second": null
+      },
+      {
+        "label": "第7-1",
+        "lower": 301000,
+        "upper": 317000,
+        "condition": "301,000円以上 317,000円未満",
+        "monthly": 50000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7-2",
+        "lower": 317000,
+        "upper": 333000,
+        "condition": "317,000円以上 333,000円未満",
+        "monthly": 52000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7-3",
+        "lower": 333000,
+        "upper": 349000,
+        "condition": "333,000円以上 349,000円未満",
+        "monthly": 55000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7-4",
+        "lower": 349000,
+        "upper": 365000,
+        "condition": "349,000円以上 365,000円未満",
+        "monthly": 58000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7-5",
+        "lower": 365000,
+        "upper": 381000,
+        "condition": "365,000円以上 381,000円未満",
+        "monthly": 61000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7-6",
+        "lower": 381000,
+        "upper": 397000,
+        "condition": "381,000円以上 397,000円未満",
+        "monthly": 64000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 83200,
+        "monthly_second": null
+      }
+    ],
+    "notes": "保育短時間: 第1 0円、第2-2 0円、第3-2 7,000円、第4-1 9,400円、第4-2 10,900円、第4-3 12,400円、第4-4 13,900円、第4-5 15,400円、第4-6 15,600円、第4-7 17,600円、第4-8 19,600円、第4-9 21,600円、第4-10 23,600円、第5-1 25,100円、第5-2 27,100円、第5-3 29,100円、第5-4 31,100円、第5-5 33,100円、第5-6 35,100円、第6-1 37,000円、第6-2 39,000円、第6-3 41,000円、第6-4 43,000円、第6-5 45,000円、第6-6 48,000円、第7-1 49,000円、第7-2 51,000円、第7-3 54,000円、第7-4 57,000円、第7-5 60,000円、第7-6 63,000円、第8 81,900円。特定世帯: 第2-1（市町村民税非課税の母子世帯等）0円、第3-1（均等割のみの母子世帯等）標準・短時間とも3,000円（rows には入れていない）。表の列は保育標準時間・保育短時間の2つだけで、第2子の列やきょうだいの注記はない。表は文字と画像（pdftoppm）の両方で確かめた。3〜5歳児は無償（給食費等は保護者負担）。子育てハンドブック2026: 「久万高原町では、国が定めている保育料基準額よりも独自に負担軽減を行っています。」"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（生活保護・非課税世帯は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "検索結果の要約による・原文未確認: 久万高原町子ども・子育て支援法施行規則（町の例規集、第13条）で「同一世帯から小学校就学前子どもが複数人いるときは、2人目は利用者負担額の欄に掲げる額の半額、3人目以降は無料」、「第4の6階層以下（所得割57,700円未満）の世帯は、年齢にかかわらず第2子の保育料は半額、第3子以降は無料」とされている（WebSearch の要約。規則のページは403で開けず、条文そのものは読めていない）。就学前の子が施設を利用している必要があるか、ひとり親世帯等の扱いは確かめていない。町の保育料の表・入園の手引き・子育てハンドブックにはきょうだいの記載がない。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "検索結果の要約による・原文未確認: 同一世帯の小学校就学前の子の3人目以降は無料。第4の6階層以下（所得割57,700円未満）は年齢にかかわらず第3子以降無料（household）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和8年4月分から令和9年3月分まで、町立幼稚園の園児・小学校の児童・中学校の生徒の給食費を全額免除（小学校は国の学校給食費負担軽減、幼稚園・中学校は物価高騰対応重点支援地方創生臨時交付金を使った町独自事業）。令和9年度以降は未定。",
+    "source": {
+      "label": "令和8年度の学校給食費の取扱いについて - 久万高原町ホームページ（2026年3月25日更新）",
+      "url": "https://www.kumakogen.jp/soshiki/12/25951.html"
+    }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "出産世帯応援事業（出産前後の経費の助成）",
+      "amount": null,
+      "note": "出産前後に要する経費（育児用品、時短家電等）の一部を助成。新生児1人当たりの補助限度額は、出産時に父母ともに35歳以下の世帯30万円、それ以外の世帯20万円（新生児と父母の両方が町に住民票がある世帯）。現金の祝い金ではなく経費の助成。",
+      "source": {
+        "label": "久万高原町子育てハンドブック2026（PDF）",
+        "url": "https://www.kumakogen.jp/uploaded/attachment/14676.pdf"
+      }
+    },
+    {
+      "label": "乳幼児用紙おむつ券（久万高原町愛顔っ子応援券）",
+      "amount": 50000,
+      "note": "乳幼児用紙おむつが買える5万円分（1枚1,000円×50枚）の券を交付（愛媛県の事業を町独自で対象拡大し2種類発行）。対象は町内に住所のある、申請年度に3歳に満たない乳児の保護者。町内の登録店で使える。",
+      "source": {
+        "label": "久万高原町子育てハンドブック2026（PDF）",
+        "url": "https://www.kumakogen.jp/uploaded/attachment/14676.pdf"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "label": "令和8年度保育施設入園のご案内 - 久万高原町ホームページ（2025年11月17日更新）",
+      "url": "https://www.kumakogen.jp/soshiki/3/9326.html"
+    },
+    {
+      "label": "保育施設利用者負担額（PDF、久万高原町保育施設利用者負担額表、2019年11月作成）",
+      "url": "https://www.kumakogen.jp/uploaded/attachment/7575.pdf"
+    },
+    {
+      "label": "令和8年度入園の手引き（PDF、2025年11月作成）",
+      "url": "https://www.kumakogen.jp/uploaded/attachment/14248.pdf"
+    },
+    {
+      "label": "久万高原町子育てハンドブック2026（PDF、2026年3月）",
+      "url": "https://www.kumakogen.jp/uploaded/attachment/14676.pdf"
+    },
+    {
+      "label": "久万高原町子ども・子育て支援法施行規則（町の例規集。403で開けず、WebSearch の要約で第13条の内容を確認）",
+      "url": "https://www1.g-reiki.net/kumakogen/reiki_honbun/r032RG00001389.html"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの候補「保育施設利用者負担額」PDFと「令和8年度保育施設入園のご案内」のページ・入園の手引きを読んだ（きょうだいの記載なし）",
+    "子育てハンドブック2026（46ページ）を pdftotext で読み、保育料の節（26ページ）にきょうだいの軽減の記載がないことを確かめた",
+    "例規集（https://www1.g-reiki.net/kumakogen/reiki_menu.html）は403 Forbidden（15秒あけて取り直しても同じ。ヘッダーを偽ることはしていない）",
+    "WebSearch（allowed_domains: kumakogen.jp）「久万高原町 保育料 第2子 多子軽減 こども園」: 移住サイトの子育て関連施設・学校・こども園等のページが出たが、きょうだいの軽減の記載はなかった",
+    "WebSearch（allowed_domains: g-reiki.net, kumakogen.jp）「久万高原町 特定教育・保育施設 利用者負担額 規則 小学校就学前 2人目 半額」: 久万高原町子ども・子育て支援法施行規則（https://www1.g-reiki.net/kumakogen/reiki_honbun/r032RG00001389.html）が見つかり、要約で第13条のきょうだいの決まりが分かった。ページそのものは403で読めなかった"
+  ],
+  "notes": "表は町の公式の資料で読んだが、きょうだいの決まりは例規集の規則の検索結果の要約でしか確かめられなかった（原文は403）ので status は partial、confidence は推定。町内で0〜2歳児を預かる認可施設は私立の久万こども園（育和会）だけ。表は国の基準の第4〜第7階層を28段に分けた細かい表で、額は国の上限額より低い（町独自の負担軽減）。cash は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

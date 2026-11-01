@@ -1,0 +1,159 @@
+{
+ "code": "462241",
+ "pref": "鹿児島県",
+ "name": "伊佐市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "表は市の「保育園・児童福祉・子育て支援」のページの「R８保育料表」（PDF、2026年7月2日作成、右上に「参考」）「令和８年度 利用者負担徴収基準額表（保育料月額）」の2号・3号認定こども【保育認定】の3号認定（3歳未満）・伊佐市の列。毎年9月が保育料の切り替え時期（4〜8月分は前年度、9〜3月分は当年度の市民税額）。伊佐市の保育料は国の基準より低く設定（差額は市の一般財源）。",
+ "tax_basis": "6%",
+ "tax_note": "市民税所得割（保護者合算）で階層を決める（表の算定例）。税額控除（住宅ローン控除など）の扱いは表・入所申込み案内に書かれていない。",
+ "table": {
+  "title": "令和８年度 利用者負担徴収基準額表（保育料月額） ◆２号・３号認定こども【保育認定】（保育所・認定こども園の保育利用）",
+  "kind": "3号認定（3歳未満）・保育標準時間・伊佐市の額・ひとり親等以外の世帯（月額）",
+  "rows": [
+   {
+    "label": "A（国1）",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B（国2）",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税非課税世帯（上記以外）",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C1（国3）",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税均等割額のみ（上記以外）",
+    "monthly": 14000,
+    "monthly_second": null
+   },
+   {
+    "label": "C2（国3）",
+    "lower": 1,
+    "upper": 48600,
+    "condition": "市民税所得割48,600円未満（上記以外）",
+    "monthly": 17000,
+    "monthly_second": null
+   },
+   {
+    "label": "D1（国4）",
+    "lower": 48600,
+    "upper": 72800,
+    "condition": "所得割72,800円未満（上記以外）",
+    "monthly": 22000,
+    "monthly_second": null
+   },
+   {
+    "label": "D2（国4）（その1）",
+    "lower": 72800,
+    "upper": 77101,
+    "condition": "所得割77,101円未満（上記以外）",
+    "monthly": 25000,
+    "monthly_second": null
+   },
+   {
+    "label": "D2（国4）（その2）",
+    "lower": 77101,
+    "upper": 97000,
+    "condition": "所得割 97,000円未満",
+    "monthly": 25000,
+    "monthly_second": null
+   },
+   {
+    "label": "D3（国5）",
+    "lower": 97000,
+    "upper": 133000,
+    "condition": "所得割 133,000円未満",
+    "monthly": 30000,
+    "monthly_second": null
+   },
+   {
+    "label": "D4（国5）",
+    "lower": 133000,
+    "upper": 169000,
+    "condition": "所得割 169,000円未満",
+    "monthly": 35000,
+    "monthly_second": null
+   },
+   {
+    "label": "D5（国6）",
+    "lower": 169000,
+    "upper": 235000,
+    "condition": "所得割 235,000円未満",
+    "monthly": 41000,
+    "monthly_second": null
+   },
+   {
+    "label": "D6（国6）",
+    "lower": 235000,
+    "upper": 301000,
+    "condition": "所得割 301,000円未満",
+    "monthly": 46000,
+    "monthly_second": null
+   },
+   {
+    "label": "D7（国7）",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "所得割 397,000円未満",
+    "monthly": 55000,
+    "monthly_second": null
+   },
+   {
+    "label": "D8（国8）",
+    "lower": 397000,
+    "upper": null,
+    "condition": "所得割 397,000円以上",
+    "monthly": 71000,
+    "monthly_second": null
+   }
+  ],
+  "notes": "表の区切りは「〜円未満」だけなので lower は一つ上の行の上限（C2 は均等割のみと分けるため lower=1）。D2 はひとり親等の境目（77,101円）で2行に分かれ、ひとり親等以外は同じ25,000円。国の基準額（標準時間）: C1・C2 19,500、D1・D2 30,000、D3・D4 44,500、D5・D6 61,000、D7 80,000、D8 104,000。伊佐市の短時間: A・B 0、C1 13,800、C2 16,800、D1 21,700、D2 24,600、D3 29,500、D4 34,500、D5 40,400、D6 45,300、D7 54,100、D8 69,800。ひとり親等（ひとり親世帯等、在宅障害児（者）のいる世帯。D2までの保育料を低く設定）: B 0、C1 6,500（短時間6,400）、C2・D1・D2（所得割77,101円未満）7,000（短時間7,000）。表の注: 2子目は半額、3子目は無料（小学校就学前の範囲でカウント）、世帯市民税所得割57,700円未満のひとり親等以外の世帯は年齢制限なしで子をカウント、ひとり親等世帯の2子目は無料（年齢制限なし）。3人目の子ども（高校生以下の範囲）が入所する場合: ①県多子軽減制度でD1・D2階層の子は1人目1/3、同時入所の2人目1/2の軽減、②さらに所得制限なしで伊佐市が独自に保育料を無料化。3歳以上の副食費は年収360万円未満相当世帯は国の制度で全額免除、それ以外は月5,100円を上限に市が助成。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（標準時間で月0〜71,000円）。0円は生活保護世帯と市民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "表の注: 「２子目は半額、３子目は無料（小学校就学前の範囲でカウントします。）」。世帯市民税所得割57,700円未満のひとり親等以外の世帯は年齢制限なしで子を数える（household）。ひとり親等世帯の2子目は無料（年齢制限なしで数える）。表の算定例2（所得割90,000円、5歳・2歳・0歳と小3の兄）では2歳児が2子目で25,000円の半額12,500円。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "伊佐市第３子以降保育料無料化事業: 高校生以下（申請書では「現に養育している18歳未満の児童」）の範囲で3人目以降の子どもの保育料を、所得制限なしで市が独自に無料化（3歳未満児は「第３子以降保育料無料化申請書」の提出が必要）。上の子が保育所等に通っていなくてもよい（例: 小学生・小学生・保育所の3人目が対象）。鹿児島県の多子世帯保育料等軽減（満18歳未満の児童を3人以上扶養し所得割97,000円未満）より広い。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育園・児童福祉・子育て支援 | 伊佐市",
+   "url": "https://www.city.isa.kagoshima.jp/health/kosodate/kodomo/"
+  },
+  {
+   "label": "R８保育料表（令和８年度 利用者負担徴収基準額表（保育料月額）、PDF、2026年7月作成）",
+   "url": "https://www.city.isa.kagoshima.jp/wp-content/uploads/2026/07/6b89b3dc9a232ce22cfab1ec1badb383.pdf"
+  },
+  {
+   "label": "令和８年度 入所申込み案内（PDF、保育料について）",
+   "url": "https://www.city.isa.kagoshima.jp/wp-content/uploads/2026/07/c413db019290ba6f6ab5be4d652826f2.pdf"
+  },
+  {
+   "label": "多子世帯保育料等軽減説明（PDF）",
+   "url": "https://www.city.isa.kagoshima.jp/wp-content/uploads/2022/11/a329ed8248ca531dc86c1ad4cb1f5afe.pdf"
+  },
+  {
+   "label": "第3子以降保育料無料化申請書（PDF）",
+   "url": "https://www.city.isa.kagoshima.jp/wp-content/uploads/2024/11/e37b7bcceff4c06b78d05de580a08143.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表のPDF（文字の取れるPDF）を pdftotext -layout で読み、-r 250 の画像を切り出して列（3号 標準時間 国／伊佐市、短時間 国／伊佐市、2号…）と行（ひとり親等／上記以外）を確かめた。区切りは切れ目・重なりなし。",
+ "read_at": "2026-11-01"
+}

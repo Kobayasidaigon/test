@@ -1,0 +1,53 @@
+{
+ "code": "313254",
+ "pref": "鳥取県",
+ "name": "若桜町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（無料化は令和8年度わかさこども園入園案内〔2025年12月作成〕で確認。案内に載っている参考の負担額表は令和7年度〔令和7年4月1日現在〕）",
+ "period_note": "令和8年度入園案内「4．保育料について」: 「若桜町では引き続き、平成26年4月から実施しているいきいきわかさっ子サポート事業として、わかさこども園に通う若桜町に住民登録があり在住している児童及び保護者等を対象に、保育料（給食費含む）の無料化に取り組んでいます。（保育料が無料となる免除申請については、別途ご案内します）」。参考の表の欄外: 4月〜8月は前年度、9月〜3月は当年度の市町村民税額により利用者負担額を決定。年度途中に3歳になっても、利用者負担額は3号認定での額のまま（翌年度より変更）。",
+ "tax_basis": "6%",
+ "tax_note": "参考の表は市町村民税所得割課税額による階層（48,600円未満〜397,000円以上）。税額控除の扱いなど所得割の定義の注記はない。町内に住む子は保育料が無料（免除申請が必要）なので、表の額は無料化の対象にならない場合の額。",
+ "table": {
+  "title": "（参考）令和７年度わかさこども園利用者負担額表",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）", "monthly": 0, "monthly_second": null},
+   {"label": "B1", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "B2", "lower": null, "upper": null, "condition": "市町村民税課税世帯(均等割のみ)", "monthly": 11000, "monthly_second": null},
+   {"label": "C1", "lower": 0, "upper": 48600, "condition": "48,600円未満", "monthly": 14000, "monthly_second": null},
+   {"label": "C2", "lower": 48600, "upper": 62800, "condition": "48,600円以上62,800円未満", "monthly": 18000, "monthly_second": null},
+   {"label": "C3", "lower": 62800, "upper": 77101, "condition": "62,800円以上77,101円未満", "monthly": 20000, "monthly_second": null},
+   {"label": "C4", "lower": 77101, "upper": 97000, "condition": "77,101円以上97,000円未満", "monthly": 25000, "monthly_second": null},
+   {"label": "C5", "lower": 97000, "upper": 121000, "condition": "97,000円以上121,000円未満", "monthly": 29000, "monthly_second": null},
+   {"label": "C6", "lower": 121000, "upper": 145000, "condition": "121,000円以上145,000円未満", "monthly": 31000, "monthly_second": null},
+   {"label": "C7", "lower": 145000, "upper": 169000, "condition": "145,000円以上169,000円未満", "monthly": 35000, "monthly_second": null},
+   {"label": "C8", "lower": 169000, "upper": 211200, "condition": "169,000円以上211,200円未満", "monthly": 37000, "monthly_second": null},
+   {"label": "C9", "lower": 211200, "upper": 256100, "condition": "211,200円以上256,100円未満", "monthly": 39000, "monthly_second": null},
+   {"label": "C10", "lower": 256100, "upper": 301000, "condition": "256,100円以上301,000円未満", "monthly": 41000, "monthly_second": null},
+   {"label": "C11", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 43000, "monthly_second": null},
+   {"label": "C12", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 45000, "monthly_second": null}
+  ],
+  "notes": "C1〜C12は「市町村民税所得割課税額」の階層。保育部（3歳未満児）3号認定の短時間: A・B1 0、B2 8,000、C1 10,100、C2 13,000、C3 14,500、C4 18,100、C5 21,000、C6 22,500、C7 25,400、C8 26,900、C9 28,300、C10 29,800、C11 31,200、C12 32,700。ひとり親世帯又は在宅障がい児（者）のいる世帯でB2〜C3の階層は＊の額（標準時間/短時間）: B2 5,000/3,500、C1 6,500/4,550、C2 9,000/6,500、C3 9,000/7,250。なお、（ひとり親等で）世帯の所得割課税額が77,101円未満の場合は第2子以降が無料。3号認定子どもは、同一世帯で就学前の子どものうち年長の子どもから順に2人目以降がこども園等を利用している場合、1人目は基準額、2人目は基準額の1/2、3人目以降は無料（10円未満切り捨て）。この表は町の無料化（いきいきわかさっ子サポート事業）の対象にならない場合の額。表は画像で列の並び（標準時間が先、＊の額が上の段）を確かめた。"
+ },
+ "first_child_free": true,
+ "first_child_free_since": "2014年4月",
+ "first_child_free_note": "いきいきわかさっ子サポート事業（平成26年4月から）: わかさこども園（町立の幼保連携型認定こども園）に通う、若桜町に住民登録があり在住している児童及び保護者等を対象に保育料（給食費含む）を無料化。若桜町保育料免除申請書の提出が必要。延長保育・緊急時預かり保育など特別保育の利用料は無料にならない。所得制限・第何子の条件の記載はない。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から保育料が無料（わかさこども園に通う町内在住の子、免除申請）なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。参考の表の多子軽減は、就学前の子のうち年長から2人目半額・3人目以降無料（同時利用）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料（同上）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和8年度わかさこども園入園案内（PDF、2025年12月作成）4．保育料について・（参考）令和７年度わかさこども園利用者負担額表", "url": "https://www.town.wakasa.tottori.jp/material/files/group/7/R8nyuuennannnai.pdf"},
+  {"label": "わかさこども園／若桜町（更新日2025年05月12日、保育料無料化について）", "url": "https://www.town.wakasa.tottori.jp/kosodate_kyoiku/hoikusho_kodomoen_yochien/789.html"},
+  {"label": "利用者負担額表（PDF、（参考）令和７年度わかさこども園利用者負担額表）", "url": "https://www.town.wakasa.tottori.jp/material/files/group/7/R7futanngaku.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "町内の施設は町立の幼保連携型認定こども園「わかさこども園」。平成26年4月から町内に住民登録があり在住する子の保育料（給食費含む）が無料（免除申請が必要）。町外からの入園は里帰り出産・勤務地が若桜町の方のみ。表は無料化の対象外の場合の参考（令和7年度）。給食（中学校）・現金給付は探していない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

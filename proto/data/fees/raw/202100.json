@@ -1,0 +1,56 @@
+{
+ "code": "202100",
+ "pref": "長野県",
+ "name": "駒ヶ根市",
+ "status": "partial",
+ "fiscal_year": "令和7年度（「令和7年度 駒ヶ根市保育料（副食費）基準額表（令和7年9月～令和8年8月分）」。令和8年4月～8月分の保育料に使われた表。令和8年9月分以降の表は見つからない）",
+ "period_note": "表は令和7年9月～令和8年8月分（PDF、2026年3月11日作成。利用者負担額のページも2026年3月11日更新でこのPDFにリンク）。4月から8月までの保育料は前年度の市民税所得割額、9月以降は当年度の市民税所得割額で決定。子どもの年齢は4月1日現在の満年齢。令和9年度の「保育園・幼稚園のごあんない」（2026年9月）では保育料の表は「別紙」で、ごあんない本体には載っていない。",
+ "tax_basis": "6%",
+ "tax_note": "市町村民税所得割額については、配当控除・住宅借入金等特別控除・寄付金税額控除等の税額控除について適用しない。入所児童と同一世帯に属し生計を一にしている父母及びその他の扶養義務者（家計の主宰者に限る）の課税額の合計。",
+ "table": {
+  "title": "令和7年度 駒ヶ根市保育料（副食費）基準額表（令和7年9月～令和8年8月分） 3歳未満児（0歳～2歳）保育料基準額表 保育料徴収基準（月額）",
+  "kind": "3歳未満児（0〜2歳）・保育標準時間（11時間保育）・軽減前（月額）",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）及び中国残留邦人等の支援給付受給世帯", "monthly": 0, "monthly_second": null},
+   {"label": "B", "lower": null, "upper": null, "condition": "A階層を除き市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "C", "lower": null, "upper": null, "condition": "A階層を除き、市町村民税の額が均等割のみの世帯", "monthly": 12500, "monthly_second": null},
+   {"label": "D1", "lower": 1, "upper": 48600, "condition": "所得割が48,600円未満の世帯", "monthly": 14100, "monthly_second": null},
+   {"label": "D2", "lower": 48600, "upper": 71300, "condition": "48,600円以上 71,300円未満", "monthly": 16700, "monthly_second": null},
+   {"label": "D3", "lower": 71300, "upper": 78900, "condition": "71,300円以上 78,900円未満", "monthly": 20000, "monthly_second": null},
+   {"label": "D4", "lower": 78900, "upper": 88000, "condition": "78,900円以上 88,000円未満", "monthly": 23900, "monthly_second": null},
+   {"label": "D5", "lower": 88000, "upper": 97000, "condition": "88,000円以上 97,000円未満", "monthly": 26300, "monthly_second": null},
+   {"label": "D6", "lower": 97000, "upper": 132700, "condition": "97,000円以上 132,700円未満", "monthly": 32200, "monthly_second": null},
+   {"label": "D7", "lower": 132700, "upper": 169000, "condition": "132,700円以上 169,000円未満", "monthly": 34600, "monthly_second": null},
+   {"label": "D8", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 40600, "monthly_second": null},
+   {"label": "D9", "lower": 301000, "upper": null, "condition": "301,000円以上", "monthly": 46500, "monthly_second": null}
+  ],
+  "notes": "C（均等割のみ）は所得割0円なので lower・upper を null にし、D1 の lower を1にした。表の列は「保育短時間（8時間保育）」「保育標準時間（11時間保育）」の順。保育短時間: C 10,500、D1 12,100、D2 14,700、D3 18,000、D4 21,900、D5 24,300、D6 30,200、D7 32,600、D8 38,600、D9 44,500。表の右の欄「同時に2人以上入園している場合」: 年齢の大きな子から数えて1人目全額、2人目半額、3人目以降無料。注3: C〜D9階層は保護者と生計を一にする子どもから数えて、所得割57,700円未満は第1子半額・第2子無料・第3子以降無料、57,700円以上は第1子全額・第2子半額・第3子以降無料。注4: 母子・父子世帯、在宅障がい児（者）のいる世帯、市長が認めた世帯（要保護者等）のうちC〜D2階層とD3階層の一部（所得割77,101円未満）は、第1子は保育短時間3,200円・保育標準時間5,200円、第2子以降無料。保育料の額は公立・私立保育園で差はない。ごあんない（令和9年度）: 保護者が本来負担すべき保育料の約40%の額を市が負担。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（標準時間で月12,500〜46,500円）。ただし所得割57,700円未満（C・D1とD2の一部）の世帯は第1子も半額、ひとり親世帯等で所得割77,101円未満は第1子が標準時間5,200円。0円は生活保護世帯と非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "household",
+ "second_note": "利用者負担額のページ（2026年3月11日更新）と基準額表の注3: 保護者と生計を一にする子どもから数えて、所得割57,700円以上の世帯は第2子半額、57,700円未満は第2子無料（上の子の年齢や通園に関する条件の記載はない）。令和9年度のごあんない: 「県と協調した政策として、第2子は半額、第3子以降は無料」。ひとり親世帯等で所得割77,101円未満は第2子以降無料。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "保護者と生計を一にする子どもから数えて第3子以降は所得に関係なく無料。上の子の年齢の上限の記載はない。3歳以上児の副食費も同時入所に関わらず第3子以降は無料（入所児童の父母に年上の子が2人以上いる場合）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "利用者負担額（駒ヶ根市子育てサイト、更新日2026年3月11日）", "url": "https://www.city.komagane.nagano.jp/parenting/nenreidesagasu/2_3sai/7/3319.html"},
+  {"label": "保育料基準額表（PDF、令和7年度 駒ヶ根市保育料（副食費）基準額表 令和7年9月～令和8年8月分）", "url": "https://www.city.komagane.nagano.jp/material/files/group/18/hoikuryoukijyunnR7-9.pdf"},
+  {"label": "令和9年度 保育園入園希望者向け説明会（保育園・幼稚園のごあんないが載る）", "url": "https://www.city.komagane.nagano.jp/parenting/nenreidesagasu/2_3sai/7/12693.html"},
+  {"label": "令和9年度 保育園・幼稚園のごあんない（PDF、画像のPDF。p.4 保育料）", "url": "https://www.city.komagane.nagano.jp/material/files/group/18/R9nyuunogoannnai.pdf"}
+ ],
+ "confidence": "推定",
+ "tried": [
+  "下調べ（crawl）は3ページだけだったので、総合トップ → 駒ヶ根市子育てサイト → 就園・就学 → 保育園・幼稚園入園の準備 → 利用者負担額 の順に開いた",
+  "令和8年9月以降の表のファイル名を推測して開いた（.../group/18/hoikuryoukijyunnR8-9.pdf、hoikuryoukijyunnR8.pdf）→ どちらも404",
+  "WebSearch（city.komagane.nagano.jp に限定）「駒ヶ根市 保育料 基準額表 令和8年9月」「駒ヶ根市保育料（副食費）基準額表 令和8年度 令和9年8月分」→ 利用者負担額のページ（令和7年9月版のPDF）しか出ない",
+  "令和9年度 保育園・幼稚園のごあんない（画像のPDF、Canon複合機でスキャン）を画像で見た → 保育料の表は「別紙」で載っていない"
+ ],
+ "notes": "status を partial にしたのは、見つかった表の期間（令和7年9月～令和8年8月分）が終わっていて、令和8年9月分以降の表が市のサイトで見つからないため。表は画像で見て、列（短時間・標準時間）と階層の区切りを確かめた。区切りに切れ目・重なりなし、月額は階層の順に上がる。",
+ "read_at": "2026-11-01"
+}
