@@ -1,0 +1,274 @@
+{
+  "code": "122173",
+  "pref": "千葉県",
+  "name": "柏市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料算定時期は4月と9月の年2回。4月分から8月分までは前年度市民税所得割額（前々年中の所得）、9月分から3月分までは当年度市民税所得割額（前年中の所得）で決める（令和8年度なら4〜8月=令和7年度、9〜3月=令和8年度）。表は「令和8年4月」付けで、月額は年度を通じて同じ（令和7年4月の表と同じ額）。",
+  "tax_basis": "6%",
+  "tax_note": "保護者それぞれの市民税所得割額を合算。配当控除額、住宅借入金等特別税額控除額、寄附金税額控除額（ふるさと納税等）、外国税額控除額、配当割額控除額・株式等譲渡所得割額控除額等の税額控除をする前の金額。父母の所得割が課税されておらず、父母合算の年収が180万円未満（ひとり親家庭は120万円未満）または月収が3か月以上連続して15万円未満（ひとり親は10万円未満）なら、同居する祖父母等（直系親族）のうち所得割額が最も高い人を家計主宰者として合算。生計を一にする（同居）と判断される場合は、離婚した父母や婚姻関係にない人も算定対象。柏市は中核市で、6%・8%の換算の注記はない（市町村民税の標準税率6%）。",
+  "table": {
+    "title": "柏市2号・3号子ども保育料額表（月額）（令和8年4月）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "2",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "3-1",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税均等割のみ",
+        "monthly": 5900,
+        "monthly_second": null
+      },
+      {
+        "label": "3-2",
+        "lower": 1,
+        "upper": 5000,
+        "condition": "所得割 5,000円未満",
+        "monthly": 7700,
+        "monthly_second": null
+      },
+      {
+        "label": "3-3",
+        "lower": 5000,
+        "upper": 18600,
+        "condition": "所得割 5,000円～18,599円",
+        "monthly": 9500,
+        "monthly_second": null
+      },
+      {
+        "label": "3-4",
+        "lower": 18600,
+        "upper": 33600,
+        "condition": "所得割 18,600円～33,599円",
+        "monthly": 11300,
+        "monthly_second": null
+      },
+      {
+        "label": "3-5",
+        "lower": 33600,
+        "upper": 48600,
+        "condition": "所得割 33,600円～48,599円",
+        "monthly": 13100,
+        "monthly_second": null
+      },
+      {
+        "label": "4-1",
+        "lower": 48600,
+        "upper": 57000,
+        "condition": "所得割 48,600円～56,999円",
+        "monthly": 16400,
+        "monthly_second": null
+      },
+      {
+        "label": "4-2",
+        "lower": 57000,
+        "upper": 67000,
+        "condition": "所得割 57,000円～66,999円",
+        "monthly": 19700,
+        "monthly_second": null
+      },
+      {
+        "label": "4-3",
+        "lower": 67000,
+        "upper": 77000,
+        "condition": "所得割 67,000円～76,999円",
+        "monthly": 23000,
+        "monthly_second": null
+      },
+      {
+        "label": "4-4",
+        "lower": 77000,
+        "upper": 87000,
+        "condition": "所得割 77,000円～86,999円",
+        "monthly": 26300,
+        "monthly_second": null
+      },
+      {
+        "label": "4-5",
+        "lower": 87000,
+        "upper": 97000,
+        "condition": "所得割 87,000円～96,999円",
+        "monthly": 29600,
+        "monthly_second": null
+      },
+      {
+        "label": "5-1",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "所得割 97,000円～114,999円",
+        "monthly": 32900,
+        "monthly_second": null
+      },
+      {
+        "label": "5-2",
+        "lower": 115000,
+        "upper": 133000,
+        "condition": "所得割 115,000円～132,999円",
+        "monthly": 36200,
+        "monthly_second": null
+      },
+      {
+        "label": "5-3",
+        "lower": 133000,
+        "upper": 151000,
+        "condition": "所得割 133,000円～150,999円",
+        "monthly": 39500,
+        "monthly_second": null
+      },
+      {
+        "label": "5-4",
+        "lower": 151000,
+        "upper": 169000,
+        "condition": "所得割 151,000円～168,999円",
+        "monthly": 42800,
+        "monthly_second": null
+      },
+      {
+        "label": "6-1",
+        "lower": 169000,
+        "upper": 195000,
+        "condition": "所得割 169,000円～194,999円",
+        "monthly": 46100,
+        "monthly_second": null
+      },
+      {
+        "label": "6-2",
+        "lower": 195000,
+        "upper": 221000,
+        "condition": "所得割 195,000円～220,999円",
+        "monthly": 49400,
+        "monthly_second": null
+      },
+      {
+        "label": "6-3",
+        "lower": 221000,
+        "upper": 247000,
+        "condition": "所得割 221,000円～246,999円",
+        "monthly": 52700,
+        "monthly_second": null
+      },
+      {
+        "label": "6-4",
+        "lower": 247000,
+        "upper": 273000,
+        "condition": "所得割 247,000円～272,999円",
+        "monthly": 56000,
+        "monthly_second": null
+      },
+      {
+        "label": "6-5",
+        "lower": 273000,
+        "upper": 301000,
+        "condition": "所得割 273,000円～300,999円",
+        "monthly": 59300,
+        "monthly_second": null
+      },
+      {
+        "label": "7-1",
+        "lower": 301000,
+        "upper": 333000,
+        "condition": "所得割 301,000円～332,999円",
+        "monthly": 61300,
+        "monthly_second": null
+      },
+      {
+        "label": "7-2",
+        "lower": 333000,
+        "upper": 365000,
+        "condition": "所得割 333,000円～364,999円",
+        "monthly": 63300,
+        "monthly_second": null
+      },
+      {
+        "label": "7-3",
+        "lower": 365000,
+        "upper": 397000,
+        "condition": "所得割 365,000円～396,999円",
+        "monthly": 65300,
+        "monthly_second": null
+      },
+      {
+        "label": "8-1",
+        "lower": 397000,
+        "upper": 445000,
+        "condition": "所得割 397,000円～444,999円",
+        "monthly": 67300,
+        "monthly_second": null
+      },
+      {
+        "label": "8-2",
+        "lower": 445000,
+        "upper": 500000,
+        "condition": "所得割 445,000円～499,999円",
+        "monthly": 69300,
+        "monthly_second": null
+      },
+      {
+        "label": "8-3",
+        "lower": 500000,
+        "upper": null,
+        "condition": "所得割 500,000円以上",
+        "monthly": 71300,
+        "monthly_second": null
+      }
+    ],
+    "notes": "0〜2歳の列（標準時間・短時間）。3〜5歳は0円。表は「○円～○,999円」の書き方なので upper はその額＋1 にした。3-2 の下限は表に書かれていないが、3-1（均等割のみ＝所得割0円）と分けるため lower=1 とした。保育短時間: 3-1 5,790／3-2 7,560／3-3 9,330／3-4 11,100／3-5 12,870／4-1 16,120／4-2 19,360／4-3 22,600／4-4 25,850／4-5 29,090／5-1 32,340／5-2 35,580／5-3 38,820／5-4 42,070／6-1 45,310／6-2 48,560／6-3 51,800／6-4 55,040／6-5 58,290／7-1 60,250／7-2 62,220／7-3 64,180／8-1 66,150／8-2 68,120／8-3 70,080。第2子の別欄はない（軽減の表で第2子半額・第3子無料）。軽減後の保育料は10円未満切り捨て。母子・父子、在宅障害世帯: 市民税非課税は無料、市民税均等割のみ〜所得割77,100円は第1子半額（0〜2歳は半額が9,000円を超える場合は9,000円）・第2子無料（表の枠が「均等割のみ〜所得割57,699円」と「所得割57,700円〜77,100円」の2段にかかる）。所得割77,101円以上は多子世帯の軽減だけ。給食費（公立保育園は月6,000円＝主食費600円・副食費5,400円）と延長保育料は3〜5歳で別途（0〜2歳の給食費の扱いは表に書かれていない）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（表で月5,900〜71,300円）。0円は生活保護世帯と市民税非課税世帯だけ。保育園・認定こども園（保育利用）のページ（令和8年4月2日更新）に第1子を無料にする市独自の制度は書かれていない。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "保育料のきょうだい軽減（多子軽減）: 生計を一にする世帯で2人以上のお子さんがいれば、世帯所得や第1子の年齢にかかわらず、第2子の保育料を半額（例: 7歳・2歳・0歳なら2歳は2人目で半額）。保育料額表の軽減の表でも「生計を一にする兄・姉がいる → 第2子半額・第3子無料」が所得割の全区分（均等割のみ〜77,101円以上）にかかる。対象施設は認可保育施設（公立・私立保育園、認定こども園、小規模認可保育事業、家庭的保育事業、事業所内保育事業）。認可外保育施設は対象外。上の子が無償化の対象（3〜5歳）になっても多子軽減の数え方は変わらない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "生計を一にする子を世帯所得や第1子の年齢にかかわらず数えて第3子以降は無料（例: 14歳・9歳・2歳なら2歳は3人目で0円）。",
+  "lunch_jh": {
+    "free": false,
+    "note": "柏市立中学校の給食費が無償になるのは、所得税の扶養対象（または健康保険の被扶養者など）の子が3人以上いる世帯の、上から3番目以降の子だけ（申請が必要、所得制限・年齢制限なし、令和8年4月〜令和9年3月）。市立小学校は令和8年度は給食費が完全無償。",
+    "source": {
+      "label": "第3子以降の学校給食費の無償化 柏市（令和8年7月13日更新）",
+      "url": "https://www.city.kashiwa.lg.jp/kyushoku/kyouiku/kyushoku/mushouka.html"
+    }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "柏市2号・3号子ども保育料額表（月額）令和8年4月（PDF）",
+      "url": "https://www.city.kashiwa.lg.jp/documents/522/kaisouhyou.pdf"
+    },
+    {
+      "label": "保育園・認定こども園（保育利用） はぐはぐ柏 柏市（令和8年4月2日更新）",
+      "url": "https://www.city.kashiwa.lg.jp/hoikuunei/haguhagu/navi/nyuennyugaku/hoikuen/shinsedo/hoikuriyo.html"
+    },
+    {
+      "label": "保育料について はぐはぐ柏 柏市（令和8年4月1日更新）",
+      "url": "https://www.city.kashiwa.lg.jp/hoikuunei/faq9.html"
+    },
+    {
+      "label": "柏市2号・3号子ども保育料額表（月額）令和7年4月（PDF）",
+      "url": "https://www.city.kashiwa.lg.jp/documents/477/hoikuryougakuhyou.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "中核市。表は令和8年4月付けのPDF（1ページ、2026年3月作成、文字の取れるPDF）を pdftotext で読み、画像で列（0〜2歳の標準・短時間）と軽減の表の枠を確かめた。令和7年4月の表（documents/477）と同じ額。3-2〜8-3 の範囲は切れ目・重なりなし。中学校給食は research.json（cities20）の出典ページを開いて確かめた。cash・one_time は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

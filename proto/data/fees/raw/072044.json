@@ -1,0 +1,167 @@
+{
+ "code": "072044",
+ "pref": "福島県",
+ "name": "いわき市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "年齢は4月1日現在。4月から8月までの保育料は前年度の課税額、9月から3月までの保育料は当該年度の課税額で算定。3歳未満の給食（主食・副食）は保育料に含まれる。表は「令和８年度 保育所・幼稚園等ガイドブック」の「① 保育料一覧（月額）」と、保育料のページのPDF（ページは2025年4月1日更新、PDFに年度の記載なし）で同じ金額。",
+ "tax_basis": "6%",
+ "tax_note": "保護者（両親）の市町村民税額で算定。ひとり親家庭で家計の中心が同居の祖父母等なら、その人の市町村民税額を合算。住宅借入金等特別控除などの税額控除を受けている場合は控除前の課税額で算定。「年少扶養控除のみなし適用」は行わない。未申告等で確認できないと最高額になることがある。政令市ではない（中核市）。",
+ "table": {
+  "title": "〈３歳未満の保育認定児童に係る月額保育料〉（令和８年度 保育所・幼稚園等ガイドブック「① 保育料一覧（月額）」）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税均等割のみ課税",
+    "monthly": 11000,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 48600,
+    "condition": "市町村民税所得割課税額 48,600円未満",
+    "monthly": 14000,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 48600,
+    "upper": 65000,
+    "condition": "市町村民税所得割課税額 48,600円以上 65,000円未満",
+    "monthly": 21000,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 65000,
+    "upper": 75000,
+    "condition": "市町村民税所得割課税額 65,000円以上 75,000円未満",
+    "monthly": 23000,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 75000,
+    "upper": 85000,
+    "condition": "市町村民税所得割課税額 75,000円以上 85,000円未満",
+    "monthly": 25000,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 85000,
+    "upper": 122000,
+    "condition": "市町村民税所得割課税額 85,000円以上 122,000円未満",
+    "monthly": 28000,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 122000,
+    "upper": 131000,
+    "condition": "市町村民税所得割課税額 122,000円以上 131,000円未満",
+    "monthly": 33000,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 131000,
+    "upper": 168000,
+    "condition": "市町村民税所得割課税額 131,000円以上 168,000円未満",
+    "monthly": 37000,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 168000,
+    "upper": 213000,
+    "condition": "市町村民税所得割課税額 168,000円以上 213,000円未満",
+    "monthly": 42000,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 213000,
+    "upper": 220000,
+    "condition": "市町村民税所得割課税額 213,000円以上 220,000円未満",
+    "monthly": 47000,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 220000,
+    "upper": 353000,
+    "condition": "市町村民税所得割課税額 220,000円以上 353,000円未満",
+    "monthly": 54000,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 353000,
+    "upper": null,
+    "condition": "市町村民税所得割課税額 353,000円以上",
+    "monthly": 57000,
+    "monthly_second": null
+   }
+  ],
+  "notes": "短時間: C 10,500円、D1 13,500円、D2 20,500円、D3 22,500円、D4 24,500円、D5 27,500円、D6 32,500円、D7 36,500円、D8 41,500円、D9 46,500円、D10 53,500円、D11 56,500円（A・Bは0円）。ひとり親世帯や障がい者のいる世帯（所得割77,101円未満）: 生計を一にする子が2名以上で3歳未満の保育認定児童が子ども全体の2人目以降なら0円。1人目なら C 5,000円（短時間4,750円）、D1 6,500円（6,250円）、D2〜4（48,600円以上77,101円未満）9,000円（9,000円）。3歳以上は無料。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "3歳未満の第1子は所得に応じた保育料（C階層以上は有料）。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "多子世帯の保育料（ひとり親世帯等の軽減に当たる児童を除く）: (1) 市町村民税額57,700円未満の世帯は、生計を一にする子ども全体で数えて2人目以降なら2人目は半額、3人目は無料（上の子の年齢・施設利用を問わない）。(2) 57,700円以上の世帯は、保育所など（認可保育所、認定こども園、地域型保育事業、幼稚園、特別支援学校幼稚部、情緒障害児短期治療施設通所部、児童発達支援、医療型児童発達支援）を同時に2人以上利用している場合、最年長児から数えて2人目は半額、3人目は無料。ひとり親世帯・障がい者のいる世帯（所得割77,101円未満）は子ども全体の2人目以降0円。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "保育所などを同時に利用している児童の3人目は無料（所得割57,700円未満は生計を一にする子ども全体で数えて3人目は無料）。加えて(3) D2〜D11階層の世帯で、現に扶養している18歳未満の子どもが3人以上いて3歳未満の保育認定児童がその3人目以降なら、階層の金額（2人目半額に当たれば半額後の金額）から軽減: D2〜D5階層は1/2の額を軽減、D6〜D11階層は「その階層の額×1/4」と「D5階層とみなした額×1/2」の高いほうを軽減。つまり所得割57,700円以上で上の子が小学生以上の第3子は無料ではなく軽減。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和８年度 保育所・幼稚園等ガイドブック｜いわき市役所",
+   "url": "https://www.city.iwaki.lg.jp/www/contents/1627984475158/index.html"
+  },
+  {
+   "label": "令和８年度 保育所・幼稚園等ガイドブック「表紙、もくじ、利用案内」（PDF、２．保育料）",
+   "url": "https://www.city.iwaki.lg.jp/www/contents/1627984475158/simple/mokuji.pdf"
+  },
+  {
+   "label": "いわき市における保育認定児童の保育料や副食費について｜いわき市役所（2025年4月1日更新）",
+   "url": "https://www.city.iwaki.lg.jp/www/contents/1001000005227/index.html"
+  },
+  {
+   "label": "いわき市における保育認定児童の保育料や副食費について（PDF）",
+   "url": "https://www.city.iwaki.lg.jp/www/contents/1001000005227/files/iwakihoikuryou.pdf"
+  },
+  {
+   "label": "幼児教育・保育の無償化について｜いわき市役所（2026年10月1日更新）",
+   "url": "https://www.city.iwaki.lg.jp/www/contents/1563496739665/index.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "下調べの保育料PDFと令和8年度ガイドブックで読んだ。無償化のページ（2026年10月1日更新）と保育所・保育園の一覧ページに第2子以降の新しい無償化などの記事は見当たらなかった。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

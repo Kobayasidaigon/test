@@ -1,8 +1,8 @@
 // 案A「カプセルトイ」 — 見た目のための小さな道具。計算は @/shared の rank / compare / compareMany をそのまま使う。
 // ここでは数字は変えない。くわしくない街（制度が一部わかる街／国の調査だけの街）や被災した街で、言い切りすぎないための言い方だけを決める。
 import { useCallback, useEffect, useState } from 'react'
-import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, cityById, everyday, knownFacts, moodText, periodYears, sortTier, yenMan } from '@/shared'
-import type { Breakdown, Child, City, Comparison, DataLevel, FamilyInput, Pride } from '@/shared/types'
+import { ALL_CITIES, CITIES, DATA_LEVEL_TEXT, PREFS, basicText, cityById, everyday, knownFacts, moodText, nationalFacts, nurseryKnown, periodYears, sortTier, yenMan } from '@/shared'
+import type { Breakdown, Child, City, Comparison, Confidence, DataLevel, FamilyInput, Pride } from '@/shared/types'
 
 export type MotifKey =
   | 'job' | 'kettle' | 'senbei' | 'factory' | 'rocket' | 'takoyaki' | 'corn' | 'volcano' | 'drop' | 'house' | 'pear' | 'knife'
@@ -196,22 +196,42 @@ export const prideIsPref = (p: Pride, city: City) => isSharedPride(p) || p.fact.
 export const prefKind = (pref: string) => (pref.endsWith('都') ? '都' : pref.endsWith('道') ? '道' : pref.endsWith('府') ? '府' : '県')
 // 街の種類の字（市・区・町・村）
 export const townKind = (name: string) => (name.endsWith('区') ? '区' : name.endsWith('町') ? '町' : name.endsWith('村') ? '村' : '市')
-// 札に書く短い言葉。どの街も、国の全国調査（医療費・待機児童・家賃）は分かる
+// 札に書く短い言葉。待機児童の数はどの街も分かる（子ども医療費と家賃の目安は、分かる街だけ）
 export const LEVEL_TAG: Record<DataLevel, string> = { detailed: 'くわしい', pref: '一部わかる', basic: '国の調査だけ' }
 export const levelTag = (city: City) => LEVEL_TAG[city.level]
-// 説明の言葉（一部わかる街は、分かっている制度を名前で言う。保育料の月額の表がないことも隠さない）。
-// 「〇〇市は、」に続けても、1文で置いても読めるように書く
-export function levelText(city: City) {
+// 一部わかる街で、まだ調べていない子育ての制度（保育料の制度・中学校の給食費・独自の手当）
+function prefMissing(city: City): string[] {
+  const out: string[] = []
+  if (!nurseryKnown(city.nursery)) out.push('保育料の制度')
+  if (city.lunch.juniorHighFree === null) out.push('中学校の給食費')
+  out.push('独自の手当など')
+  return out
+}
+// 説明の言葉（一部わかる街は、分かっている制度を名前で言う。保育料の月額の表がないことも隠さない。
+// 国の調査だけの街は、その街が持っている項目だけを言う）。「〇〇市は、」に続けても、1文で置いても読めるように書く。
+// short は、まだ調べていないものを言わない形（金額の箱が missingText で言うので、カプセルの説明では重ねない）
+export function levelText(city: City, short = false) {
+  if (city.level === 'basic') {
+    if (!short) return basicText(city)
+    return `国の全国調査で${nationalFacts(city).join('・')}が分かる街${city.rent?.family == null ? '（家賃の統計はない町村）' : ''}`
+  }
   if (city.level !== 'pref') return DATA_LEVEL_TEXT[city.level]
   const facts = knownFacts(city)
-  const fee = city.nursery.firstChildFree ? '' : '保育料の月額の表はまだないので、お金がかかる子の保育料は確認中。'
-  return `${facts.join('・')}が分かっている街。${fee}ほかの制度は、まだ調べていません`
+  const fee = nurseryKnown(city.nursery) && !city.nursery.firstChildFree ? '保育料の月額の表はまだないので、お金がかかる子の保育料は確認中' : ''
+  if (short) return `${facts.join('・')}が分かっている街${fee ? `。${fee}` : ''}`
+  return `${facts.join('・')}が分かっている街。${fee ? `${fee}。` : ''}${prefMissing(city).join('・')}は、まだ調べていません`
 }
 export const LEVEL_ORDER: DataLevel[] = ['detailed', 'pref', 'basic']
 export const LEVEL_LEGEND: Record<DataLevel, { tag: string; text: string }> = {
   detailed: { tag: LEVEL_TAG.detailed, text: '市区町村の制度まで調べた街。保育料の月額の表があるのは、この中の一部。色がしっかりついたカプセル' },
-  pref: { tag: LEVEL_TAG.pref, text: '県や市区町村の制度（保育料の無償化・給食費・移住支援金など）が一部わかる街。保育料の月額の表はまだない。しま模様のカプセル' },
-  basic: { tag: LEVEL_TAG.basic, text: '国の全国調査（子ども医療費・待機児童・家賃）が分かる街。保育料・給食などの制度は準備中。すけたカプセル' },
+  pref: { tag: LEVEL_TAG.pref, text: '県や市区町村の子育ての制度（保育料の無償化・中学校の給食費・現金の給付）が一部わかる街。保育料の月額の表はまだない。しま模様のカプセル' },
+  basic: { tag: LEVEL_TAG.basic, text: '国の全国調査（待機児童・子ども医療費・家賃の目安）の、分かる分だけの街。家賃は人口の少ない町村にはない。保育料・給食などの制度は準備中。すけたカプセル' },
+}
+// 国の全国調査で分かる街の数（画面に書く数。ハードコードしない）
+export const NATIONAL_COUNT = {
+  wait: ALL_CITIES.filter((c) => c.waitlist).length,
+  medical: ALL_CITIES.filter((c) => c.medical.coversTo !== null).length,
+  rent: ALL_CITIES.filter((c) => c.rent?.family != null).length,
 }
 export const LEVEL_COUNT: Record<DataLevel, number> = {
   detailed: ALL_CITIES.filter((c) => c.level === 'detailed').length,
@@ -316,15 +336,17 @@ export function scopeOf(c: Comparison): Scope {
 // 準備中（まだ中身を比べられない）として扱うか
 export const isPending = (c: Comparison) => c.status === 'unknown' || !!thinCity(c)
 
-// まだ調べていないことの言い方（一部わかる街は「ほかの制度（独自の手当など）」、国の調査だけの街は「保育料・給食などの制度」）
+// まだ調べていないことの言い方（一部わかる街は、まだ調べていない制度を名前で。国の調査だけの街は「保育料・給食などの制度」）。
+// 独自の手当は、金額の箱の「入っていないもの」（excluded）がいつも言うので、ここでは重ねない
 function notYet(cities: City[]) {
-  const names = (list: City[]) => list.map((c) => c.name).join('と')
-  const basic = cities.filter((c) => c.level === 'basic')
-  const pref = cities.filter((c) => c.level === 'pref')
-  const parts: string[] = []
-  if (basic.length) parts.push(`${names(basic)}の保育料・給食などの制度`)
-  if (pref.length) parts.push(`${names(pref)}のほかの制度（独自の手当など）`)
-  return parts.join('、')
+  return cities
+    .map((c) => {
+      if (c.level === 'basic') return `${c.name}の保育料・給食などの制度`
+      const miss = prefMissing(c).filter((x) => x !== '独自の手当など')
+      return miss.length ? `${c.name}の${miss.join('・')}` : ''
+    })
+    .filter(Boolean)
+    .join('、')
 }
 
 // 見出し（共有の headline を、言い切りすぎない形に置きかえる）
@@ -347,8 +369,9 @@ export function sublineOf(c: Comparison): string {
 // まだ調べていないものを1文で（くわしくない街がからむとき。なければ空）
 export function missingText(c: Comparison): string {
   const cities = [c.to, c.from].filter((x) => x.level !== 'detailed')
-  if (!cities.length) return ''
-  return `${notYet(cities)}は、まだ${cities.every((x) => x.level === 'pref') ? '調べていません' : '準備中です'}。`
+  const text = notYet(cities)
+  if (!text) return ''
+  return `${text}は、まだ${cities.every((x) => x.level === 'pref') ? '調べていません' : '準備中です'}。`
 }
 // わかる差が見つからなかったときの1文（金額の箱・くらべ棚で使う）
 export function thinText(c: Comparison): string {
@@ -384,7 +407,7 @@ export function everydayText(yearly: number) {
 
 // 項目ごとの金額の言い方（期間が2年以上のときは、カードの上に「◯年でならすと」を小さく添える）
 export function itemAmount(i: Breakdown, c: Comparison): { tone: Tone | 'unknown' | 'once' | 'care'; text: string } {
-  if (i.oneTime) return { tone: 'once', text: `一度だけ ${i.upTo ? '最大 ' : ''}約${yenMan(i.total ?? 0, 0)}` }
+  if (i.oneTime) return { tone: 'once', text: `一度だけ ${onceText(i)}` }
   if (i.perYear === null) return { tone: 'unknown', text: '確認中' }
   if (Math.abs(i.perYear) < 1000) return { tone: 'even', text: '差はなし' }
   // 被災した街では、得・損の向きの言葉を使わず、どちらの制度の中身かだけを書く
@@ -421,9 +444,23 @@ export function tiesAtTop(ranked: Comparison[]) {
 }
 
 // 同じ額の街の並べ方：共有の並び（段 → 毎年の差が大きい順。sortTier）はそのまま。1,000円未満の差しかない街のなかだけ、
-// 全部わかる街 → 一度きりのお金がある街 → くわしい街 → 一部わかる街 → 国の調査だけの街、そのなかは今の街から近い順にする
+// 全部わかる街 → 一度きりのお金がある街 → くわしい街 → 一部わかる街 → 国の調査だけの街、そのなかは今の街から近い順にする。
+// spread（全国の台）のときは、同じ額・同じ組のなかで、都道府県を順にめぐる（近い県の街だけで棚が埋まらないように。額の順は変えない）
 const LEVEL_RANK: Record<DataLevel, number> = { detailed: 0, pref: 1, basic: 2 }
-export function settleTies(list: Comparison[]): Comparison[] {
+const onceRank = (c: Comparison) => (c.items.some((i) => i.oneTime) ? 0 : 1)
+const groupKey = (c: Comparison) => `${c.status === 'ok' ? 0 : 1}${onceRank(c)}${LEVEL_RANK[c.to.level]}`
+function roundRobin(seg: Comparison[]): Comparison[] {
+  const nth = new Map<string, number>()
+  const order = seg.map((c, k) => {
+    const key = `${groupKey(c)}|${c.to.pref}`
+    const n = nth.get(key) ?? 0
+    nth.set(key, n + 1)
+    return { c, k, n }
+  })
+  // 組（全部わかる・一度きり・くわしさ）の順は保ち、組のなかだけ「各県の1番目 → 各県の2番目 …」にする
+  return order.sort((a, b) => groupKey(a.c).localeCompare(groupKey(b.c)) || a.n - b.n || a.k - b.k).map((x) => x.c)
+}
+export function settleTies(list: Comparison[], opts: { spread?: boolean } = {}): Comparison[] {
   const out = [...list]
   let i = 0
   while (i < out.length) {
@@ -435,47 +472,87 @@ export function settleTies(list: Comparison[]): Comparison[] {
         .sort(
           (a, b) =>
             (a.status === 'ok' ? 0 : 1) - (b.status === 'ok' ? 0 : 1) ||
-            b.oneTime - a.oneTime ||
+            onceRank(a) - onceRank(b) ||
             LEVEL_RANK[a.to.level] - LEVEL_RANK[b.to.level] ||
             (a.distanceKm ?? 1e9) - (b.distanceKm ?? 1e9),
         )
-      out.splice(i, j - i, ...seg)
+      out.splice(i, j - i, ...(opts.spread ? roundRobin(seg) : seg))
     }
     i = j
   }
   return out
 }
 
+/* ───────── 全国の台の棚に出す街 ─────────
+   全国の台は1,700個をこえるので、棚には上から SHELF_LIMIT 個を出す。そのとき、同じ都道府県の街は PER_PREF 個までにする
+   （東京都の街だけで棚が埋まらないように）。並びの順（毎年の差が大きい順）は変えず、入れなかった街の数を県ごとに返す */
+export const SHELF_LIMIT = 30
+export const PER_PREF = 4
+export interface ShelfExtra { hidden: { pref: string; count: number }[]; topTies: number; perPref: number }
+export function shelfPick(full: Comparison[], limit = SHELF_LIMIT, perPref = PER_PREF): { list: Comparison[]; extra: ShelfExtra } {
+  const list: Comparison[] = []
+  const n = new Map<string, number>()
+  const hidden = new Map<string, number>()
+  for (const c of full) {
+    if (list.length >= limit) break
+    const k = n.get(c.to.pref) ?? 0
+    if (k < perPref) {
+      list.push(c)
+      n.set(c.to.pref, k + 1)
+    } else hidden.set(c.to.pref, (hidden.get(c.to.pref) ?? 0) + 1)
+  }
+  return { list, extra: { hidden: [...hidden].map(([pref, count]) => ({ pref, count })).sort((a, b) => b.count - a.count), topTies: tiesAtTop(full), perPref } }
+}
+
 /* ───────── 待機児童の目安（暮らしの目安。お金の差とは別） ───────── */
-export interface WaitInfo { from: number | null; to: number | null; asOf: string; note: string; source?: { label: string; url: string } }
+// fromConf・toConf はそれぞれの街の数の確からしさ（熊本県内はまだ確定していない数なので「推定」）。
+// note は、今の街と候補の街のメモを合わせたもの（同じなら1つ）
+export interface WaitInfo { from: number | null; to: number | null; fromConf?: Confidence; toConf?: Confidence; asOf: string; note: string; source?: { label: string; url: string } }
 export function waitOf(c: Comparison): WaitInfo | null {
   const fromCity = cityById(c.from.id), toCity = cityById(c.to.id)
-  const from = c.waitlist?.from ?? fromCity?.waitlist?.count ?? null
-  const to = c.waitlist?.to ?? toCity?.waitlist?.count ?? null
-  const w = c.waitlist ?? toCity?.waitlist ?? fromCity?.waitlist
+  const fw = fromCity?.waitlist, tw = toCity?.waitlist
+  const from = c.waitlist?.from ?? fw?.count ?? null
+  const to = c.waitlist?.to ?? tw?.count ?? null
+  const w = c.waitlist ?? tw ?? fw
   if ((from === null && to === null) || !w) return null
-  return { from, to, asOf: w.asOf, note: w.note, source: w.source }
+  const notes = [...new Set([fw?.note, tw?.note].filter((x): x is string => !!x))]
+  return { from, to, fromConf: fw?.confidence, toConf: tw?.confidence, asOf: w.asOf, note: notes.length ? notes.sort((a, b) => b.length - a.length)[0] : w.note, source: w.source }
 }
 // 「0人」は「表で0人」。国の定義で数えた人数なので、希望の園に入れるとは限らない
 export const waitText = (n: number | null) => (n === null ? 'データなし' : `${n.toLocaleString('ja-JP')}人`)
-export const WAIT_NOTE = '待機児童は国の定義で数えた人数（2026年4月1日）。0人でも、希望の園に入れるとは限りません。お金の差には入れていません。'
+// まだ確定していない数（熊本県内）に添える小さな字
+export const waitDraft = (conf?: Confidence) => (conf && conf !== '確認済' ? '暫定' : '')
+export const WAIT_NOTE = '待機児童は国の定義で数えた人数（2026年4月1日）。人数は街の大きさで変わり、申し込みの多い大きな街ほど多く出ます。0人でも、希望の園に入れるとは限りません。お金の差には入れていません。'
 
 /* ───────── 移住支援金（一度きり）の言い方 ─────────
-   23区から東京圏の外へ移る家族（パート・時短は対象外として計算）だけに関係する。判定はここ1か所で行う。
+   23区から移る家族（パート・時短は対象外として計算）だけに関係する。判定はここ1か所で行う。
    item    … 額が分かる（共有の計算が「一度きり」の項目を出している）
-   none    … 調べて、対象外と分かった（city.ijuCheck）
+   none    … 調べて、実施していないと分かった（city.ijuCheck。年度の途中で増えることがあるので「対象外」とは言わない）
    part    … 一部の地域だけ対象（city.ijuCheck。額は合計にも一度きりにも入れない）
-   pending … まだ調べていない。くわしい街でも「ない」とは言わず「準備中」 */
+   pending … まだ調べていない。くわしい街でも、東京圏の条件不利地域でも、「ない」とは言わず「準備中」
+   東京圏の条件不利地域でない街（23区・東京圏の多くの市）は、決まりの上で移住先にならないので出さない（null） */
 export type IjuState = 'item' | 'none' | 'part' | 'pending'
 export function ijuState(c: Comparison, input: FamilyInput): IjuState | null {
   if (c.items.some((i) => i.key === 'iju')) return 'item'
-  if (c.from.region !== 'tokyo23' || c.to.metro === 'shutoken' || input.work === 'part') return null
-  if (c.to.ijuCheck) return c.to.ijuCheck.result
+  if (c.from.region !== 'tokyo23' || input.work === 'part') return null
+  if (c.to.ijuCheck) return c.to.ijuCheck.result === 'unknown' ? 'pending' : c.to.ijuCheck.result
+  if (c.to.metro === 'shutoken') return null
   return 'pending'
 }
 // 表に出す短い言葉（item は額を出すので、ここでは扱わない）
 // 表の行の見出しが「移住支援金（一度きり）」なので、マスには短い言葉だけを書く
-export const IJU_SHORT: Record<'none' | 'part' | 'pending', string> = { none: '対象外', part: '一部の地域だけ', pending: '準備中' }
+export const IJU_SHORT: Record<'none' | 'part' | 'pending', string> = { none: '実施なし', part: '一部の地域だけ', pending: '準備中' }
+// 一度きりのお金の額の言い方（「最大 約」と重ねない。子どもの加算の額が分からない街は「＋子どもの加算（確認中）」）
+export function onceText(i: Breakdown): string {
+  const amount = `${i.upTo ? '最大' : ''}${yenMan(i.total ?? 0, 0)}`
+  return i.pendingPart ? `${amount}＋${i.pendingPart}（確認中）` : amount
+}
+// 棚・表に出す短い言い方（比べの一度きりのお金。加算の額が分からないときは「あり（加算は確認中）」）
+export function onceShort(c: Comparison): string {
+  const i = c.items.find((x) => x.oneTime)
+  if (!i) return ''
+  return i.pendingPart ? `${i.upTo ? '最大' : ''}${yenMan(i.total ?? 0, 0)}＋加算（確認中）` : onceText(i)
+}
 
 /* ───────── 次の一歩（結果に合わせて、最大3つ） ───────── */
 

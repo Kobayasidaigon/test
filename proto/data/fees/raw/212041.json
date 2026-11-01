@@ -1,0 +1,51 @@
+{
+  "code": "212041",
+  "pref": "岐阜県",
+  "name": "多治見市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料は毎年9月に切り替わる: 4〜8月分は令和7年度市民税額（令和6年1〜12月の収入）、9〜3月分は令和8年度市民税額（令和7年1〜12月の収入）で決定。表は市長名の「令和8年度の利用者負担金の決定について（4〜8月）」（令和8年4月1日付）の利用者負担金月額表。9月以降の別の表は見つけていない（同じページにはこの4〜8月の文書だけ）。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市民税額に基づき決定。「住宅借入金特別税額控除、寄附金税額控除、配当控除等の適用はありません」。父母が非課税の場合は入所児童と同一世帯に属する扶養義務者（祖父母等）の市民税額に基づき階層を決定。市民税が未申告の場合は最高階層（10階層）となる場合がある。政令市ではないので6%。",
+  "table": {
+    "title": "令和8年度の利用者負担金の決定について（4〜8月） ◎利用者負担金月額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "市民税課税世帯（所得割非課税）", "monthly": 9000, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "所得割課税 48,600円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "5A", "lower": 48600, "upper": 57700, "condition": "所得割課税 57,700円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "5B", "lower": 57700, "upper": 77101, "condition": "所得割課税 77,101円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "5C", "lower": 77101, "upper": 97000, "condition": "所得割課税 97,000円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "6", "lower": 97000, "upper": 133000, "condition": "所得割課税 133,000円未満", "monthly": 43400, "monthly_second": null },
+      { "label": "7", "lower": 133000, "upper": 169000, "condition": "所得割課税 169,000円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "8", "lower": 169000, "upper": 301000, "condition": "所得割課税 301,000円未満", "monthly": 57200, "monthly_second": null },
+      { "label": "9", "lower": 301000, "upper": 397000, "condition": "所得割課税 397,000円未満", "monthly": 58400, "monthly_second": null },
+      { "label": "10", "lower": 397000, "upper": null, "condition": "所得割課税 397,000円以上", "monthly": 59600, "monthly_second": null }
+    ],
+    "notes": "列は 保育短時間（3歳未満児クラス 保育料・延長、3歳以上児クラス 保育料・延長）、保育標準時間（同）。第2子の列はない（世帯の第2子以降の3歳未満児の通常保育料は無料）。保育短時間（3歳未満児クラス）: 1・2 0、3 6,600、4 16,100、5A〜5C 22,900、6 38,700、7 40,000、8 53,100、9 54,300、10 55,000。公立園の延長保育料（標準時間・3歳未満）: 2 500、3 800、4 1,300、5A〜5C 1,600、6 1,900、7 2,200、8 2,500、9 2,800、10 3,100（短時間は1,200〜6,700）。延長保育料には第2子以降無料は適用しない。母子世帯等及び在宅障害児（者）のいる世帯（階層2〜5B）は 3: 4,000（短時間2,800）、4・5A・5B: 9,000（短時間6,600）。3歳以上児クラスは0円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満児の第1子の保育料は引き続き全額負担（標準時間で月0〜59,600円）。0円は生活保護世帯と市民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "市独自（令和7年4月から）: 「保護者の所得やきょうだいの年齢に関係なく、世帯の第２子以降の保育料を無償化」。多治見市に住民登録があり、認可保育施設（公立保育園、私立保育園、認定こども園、小規模保育事業所、事業所内保育事業所。市内外を問わない）の0〜2歳児クラスに在籍している第2子以降の児童（第1子の年齢は問わない。例: 第1子が小学生以上でも就学前の第2子は無償）。同一生計が条件で、手続きは不要（第1子が別居なら利用者負担額別居監護申立書と戸籍全部事項証明書など）。延長保育料、保護者会費、教材費等は対象外。認可外保育施設等にも別の給付制度がある。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無料に含まれる（同一生計の世帯のきょうだい順で数える）。3歳以上児クラスの副食費は、3人以上が同時に保育所等（幼稚園を含む）に通園する場合の3人目以降や、階層5B〜5Cで18歳未満の兄姉がいて第3子以降の場合などに免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度の保育園の保育料について（PDF、令和8年4月1日付「令和8年度の利用者負担金の決定について（4〜8月）」）", "url": "https://www.city.tajimi.lg.jp/_res/projects/default_project/_page_/001/006/254/r8hoikuryou.pdf" },
+    { "label": "保育園・認定こども園・小規模保育事業所の年度途中入所手続き｜多治見市公式ホームページ（更新日令和8年5月18日）", "url": "https://www.city.tajimi.lg.jp/kosodate_tajimikko/mokuteki/1006224/1006225/1006254.html" },
+    { "label": "第2子以降の保育料無償化｜多治見市公式ホームページ（更新日令和8年2月10日）", "url": "https://www.city.tajimi.lg.jp/kosodate_tajimikko/mokuteki/1006224/1006225/1006256.html" },
+    { "label": "【参考】令和8年度入所申込案内（PDF、12〜14ページ）", "url": "https://www.city.tajimi.lg.jp/_res/projects/default_project/_page_/001/006/254/r8hoikusyoannnai.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「令和8年度の保育園の保育料について」PDFを pdftotext と画像で読み、5A〜5Cが同じ額（結合セル）であることを確かめた。所得割の定義は令和8年度入所申込案内13ページ（同案内12ページの表は「【参考】令和７年度利用者負担金」で画像）。4の「48,600円未満」は所得割非課税（3）と分けるため lower を1にした。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

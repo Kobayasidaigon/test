@@ -1,0 +1,283 @@
+{
+  "code": "131091",
+  "pref": "東京都",
+  "name": "品川区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "2025年（令和7年）9月1日から、認可保育園等に在園するすべての児童（0〜2歳児クラスを含む）の保育料が無償（保育園等保育料一覧のページ、2026年10月20日更新）。階層（負担区分）は延長夜間保育利用料の算定に使い続け、2026年（令和8年）4月〜8月分は2025年度（令和7年度）、2026年9月〜2027年3月分は2026年度（令和8年度）の区市町村民税所得割額で決める。2025年8月分以前の保育料、実費負担分（行事費用など）、延長夜間保育利用料は無償化の対象外。品川区外に住んで区内の認可保育所等を使う場合や、品川区に転入後に区外の認可保育所等に通い続ける場合は対象外になることがある。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は全員0円のため、所得割の判定は保育料に影響しない（延長夜間保育利用料の階層に使う）。区市町村民税所得割額は、調整控除以外の税額控除（住宅借入金等特別控除、寄附金税額控除、配当控除など）を適用する前の金額。住民税の未申告や税資料の未提出で税額を確認できない場合は、所得割1,031,300円以上の世帯（最高階層 D25）と同じ階層。特別区民税の標準税率は6%（参考）。",
+  "table": {
+    "title": "保育園等保育料一覧（令和7年9月1日施行）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "区市町村民税 非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "区市町村民税 均等割のみの世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 5000,
+        "condition": "5,000円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 5000,
+        "upper": 48700,
+        "condition": "5,000円以上 48,700円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 48700,
+        "upper": 50500,
+        "condition": "48,700円以上 50,500円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 50500,
+        "upper": 59800,
+        "condition": "50,500円以上 59,800円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 59800,
+        "upper": 68500,
+        "condition": "59,800円以上 68,500円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 68500,
+        "upper": 88600,
+        "condition": "68,500円以上 88,600円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 88600,
+        "upper": 108600,
+        "condition": "88,600円以上 108,600円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 108600,
+        "upper": 128500,
+        "condition": "108,600円以上 128,500円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 128500,
+        "upper": 148600,
+        "condition": "128,500円以上 148,600円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 148600,
+        "upper": 171600,
+        "condition": "148,600円以上 171,600円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 171600,
+        "upper": 204900,
+        "condition": "171,600円以上 204,900円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 204900,
+        "upper": 228800,
+        "condition": "204,900円以上 228,800円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 228800,
+        "upper": 252900,
+        "condition": "228,800円以上 252,900円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 252900,
+        "upper": 276800,
+        "condition": "252,900円以上 276,800円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 276800,
+        "upper": 300800,
+        "condition": "276,800円以上 300,800円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 300800,
+        "upper": 322000,
+        "condition": "300,800円以上 322,000円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 322000,
+        "upper": 338000,
+        "condition": "322,000円以上 338,000円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 338000,
+        "upper": 354000,
+        "condition": "338,000円以上 354,000円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 354000,
+        "upper": 370000,
+        "condition": "354,000円以上 370,000円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 370000,
+        "upper": 440200,
+        "condition": "370,000円以上 440,200円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D19",
+        "lower": 440200,
+        "upper": 500200,
+        "condition": "440,200円以上 500,200円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D20",
+        "lower": 500200,
+        "upper": 560200,
+        "condition": "500,200円以上 560,200円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D21",
+        "lower": 560200,
+        "upper": 665000,
+        "condition": "560,200円以上 665,000円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D22",
+        "lower": 665000,
+        "upper": 772600,
+        "condition": "665,000円以上 772,600円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D23",
+        "lower": 772600,
+        "upper": 887500,
+        "condition": "772,600円以上 887,500円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D24",
+        "lower": 887500,
+        "upper": 1031300,
+        "condition": "887,500円以上 1,031,300円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D25",
+        "lower": 1031300,
+        "upper": null,
+        "condition": "1,031,300円以上の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表の保育料（月額）の欄は、保育標準時間（保育園・小規模保育）・保育短時間（保育園・小規模保育・家庭的保育）のすべての階層（A〜D25）で「無償」と書かれているので monthly=0 とした。第2子の別欄はない。C2 の下限は表に書かれていないが、C1（均等割のみ）と分けるため lower=1 とした。品川区内の認可施設では食材料費の保護者負担もない。延長夜間保育利用料（区立保育園・区立民営保育園）: 1時間以内／1〜2時間以内／2時間〜3時間30分以内が、A・B 200／400／700円、C・D1〜D3 240／480／840円、D4〜D12 320／640／1,120円、D13〜D25 400／800／1,400円（標準時間認定で同じ月に10日以上使うと11日目以降は半額）。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "2025年（令和7年）9月1日から、認可保育園等に在園するすべての児童（0〜2歳児クラスの第1子を含む）の保育料が無償。品川区内の認可施設では食材料費の保護者負担もない。延長夜間保育利用料・行事費用などの実費は対象外。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無償のため、きょうだいの数え方や所得制限は保育料に関係しない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無償。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育園等保育料一覧 (令和7年9月1日施行） 品川区（2026年10月20日更新）",
+      "url": "https://www.city.shinagawa.tokyo.jp/kodomo/hoikuenyochien/1002036/1002052.html"
+    },
+    {
+      "label": "保育園等保育料一覧（PDF）品川区（令和7年9月1日施行）",
+      "url": "https://www.city.shinagawa.tokyo.jp/_res/projects/default_project/_page_/001/002/052/hpg000028019_1.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "特別区。表は文字の取れるPDF（1ページ）を pdftotext -layout で読み、画像で「無償」が全階層・全列にかかることを確かめた。C2〜D25 の範囲は切れ目・重なりなし。中学校給食・cash・one_time は探していない（なしという意味ではない）。東京都の018サポートは都の制度なので cash に入れていない。",
+  "read_at": "2026-11-01"
+}

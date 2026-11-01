@@ -1,0 +1,235 @@
+{
+  "code": "112275",
+  "pref": "埼玉県",
+  "name": "朝霞市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月分から8月分までは令和7年度市町村民税額、令和8年9月分から3月分までは令和8年度市町村民税額を基に決める（令和8年度 幼稚園・認定こども園・保育園等のご案内 p.70）。階層は各月初日の世帯で決める。月額表は年度を通じて同じ。保育料の変更決定は原則、手続きをした翌月から。",
+  "tax_basis": "6%",
+  "tax_note": "児童の扶養者である父母（家計の主宰者が父母と異なる場合は当該主宰者〔祖父母等〕を含む）の市町村民税の所得割額。住宅借入金等特別控除や配当控除、外国税額控除、寄附金控除等がある場合は控除前の税額を適用（一覧表の備考、ご案内 p.70）。表に税率の注記はない。朝霞市は政令市ではないので6%とした。",
+  "table": {
+    "title": "朝霞市利用者負担額一覧表【2号認定・3号認定】（令和8年度 幼稚園・認定こども園・保育園等のご案内 p.73）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法（昭和２５年法律第１４４号）による被保護世帯（単給世帯を含む）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割額のみ",
+        "monthly": 6400,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 2200,
+        "condition": "所得割課税額が 2,200円未満",
+        "monthly": 7000,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 2200,
+        "upper": 4400,
+        "condition": "所得割課税額が 2,200円～4,400円未満",
+        "monthly": 7900,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 4400,
+        "upper": 6600,
+        "condition": "所得割課税額が 4,400円～6,600円見満",
+        "monthly": 8600,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 6600,
+        "upper": 21000,
+        "condition": "所得割課税額が 6,600円～21,000円未満",
+        "monthly": 10100,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 21000,
+        "upper": 39000,
+        "condition": "所得割課税額が 21,000円～39,000円未満",
+        "monthly": 12100,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 39000,
+        "upper": 75000,
+        "condition": "所得割課税額が 39,000円～75,000円未満",
+        "monthly": 16300,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 75000,
+        "upper": 111000,
+        "condition": "所得割課税額が 75,000円～111,000円未満",
+        "monthly": 21500,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 111000,
+        "upper": 147000,
+        "condition": "所得割課税額が 111,000円～147,000円未満",
+        "monthly": 27000,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 147000,
+        "upper": 183000,
+        "condition": "所得割課税額が 147,000円～183,000円未満",
+        "monthly": 33700,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 183000,
+        "upper": 219000,
+        "condition": "所得割課税額が 183,000円～219,000円未満",
+        "monthly": 38300,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 219000,
+        "upper": 246000,
+        "condition": "所得割課税額が 219,000円～246,000円未満",
+        "monthly": 42400,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 246000,
+        "upper": 264000,
+        "condition": "所得割課税額が 246,000円～264,000円未満",
+        "monthly": 46300,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 264000,
+        "upper": 282000,
+        "condition": "所得割課税額が 264,000円～282,000円未満",
+        "monthly": 48400,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 282000,
+        "upper": 318000,
+        "condition": "所得割課税額が 282,000円～318,000円未満",
+        "monthly": 49200,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 318000,
+        "upper": 360000,
+        "condition": "所得割課税額が 318,000円～360,000円未満",
+        "monthly": 50000,
+        "monthly_second": null
+      },
+      {
+        "label": "C17",
+        "lower": 360000,
+        "upper": 410000,
+        "condition": "所得割課税額が 360,000円～410,000円未満",
+        "monthly": 50800,
+        "monthly_second": null
+      },
+      {
+        "label": "C18",
+        "lower": 410000,
+        "upper": 460000,
+        "condition": "所得割課税額が 410,000円～460,000円未満",
+        "monthly": 51700,
+        "monthly_second": null
+      },
+      {
+        "label": "C19",
+        "lower": 460000,
+        "upper": 510000,
+        "condition": "所得割課税額が 460,000円～510,000円未満",
+        "monthly": 52700,
+        "monthly_second": null
+      },
+      {
+        "label": "C20",
+        "lower": 510000,
+        "upper": null,
+        "condition": "所得割課税額が 510,000円以上",
+        "monthly": 53700,
+        "monthly_second": null
+      }
+    ],
+    "notes": "列は 3歳未満児クラス（標準時間・短時間）と3歳以上児クラス（一律0）。表に第2子の列はない。保育短時間の月額（3歳未満児クラス）: A 0／B 0／C1 6,200／C2 6,800／C3 7,700／C4 8,400／C5 9,900／C6 11,800／C7 16,000／C8 21,100／C9 26,500／C10 33,100／C11 37,600／C12 41,600／C13 45,500／C14 47,500／C15 48,300／C16 49,100／C17 49,900／C18 50,800／C19 51,800／C20 52,700。C4 の条件は表のとおり「6,600円見満」（未満の誤記と読んだ）。C2 の lower は C1（均等割額のみ＝所得割0円）と分けるため1とした。備考: 住宅借入金等特別控除や配当控除、外国税額控除、寄附金控除等がある場合は控除前の税額を適用。利用者負担額のほかに、施設・事業によって給食費、教材費・行事費等の実費徴収費、延長保育料がかかることがある。ひとり親世帯等で所得割77,101円未満は第1子半額（C8階層で所得割77,101円未満の3歳未満児クラスは9,000円、保育料軽減制度の早見表）、第2子以降無料。ホームページの「朝霞市利用者負担額一覧表」PDF（年度の表示なし）も同じ額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月6,400〜53,700円）。0円は生活保護世帯・市町村民税非課税世帯（と第3子以降、軽減の対象）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "0歳から小学校就学前までの範囲で、認可保育園・認定こども園・地域型保育施設・幼稚園等（企業主導型保育施設、児童発達支援等も含む）に通園しているきょうだいがいる場合、最年長の子どもから順に2人目は半額（100円未満切捨て）、3人目以降は無料（ご案内 p.71、保育料軽減制度のページ〔更新日2026年4月1日〕）。年収約360万円未満相当（所得割57,700円未満、C1〜C7階層の一部）の多子世帯は、保護者と生計を同一にするお子さんを年齢の高い順に数えて2番目半額・3番目以降無料（兄・姉の年齢上限なし）。ひとり親世帯等（所得割77,101円未満、C1〜C8階層の一部）は1番目半額・2番目以降無料（ホームページの軽減制度のページでは「77，700円未満」と書かれているが、ご案内と早見表は77,101円未満）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "朝霞市多子世帯保育料軽減事業（令和5年度から無料）: 3人以上の子どもが同居している世帯の0〜2歳児の第3子以降は、上の子の年齢を問わず保育料が無料。上の子が既に独立している（別生計である）場合は対象外。別居でも常に生活費・学費等を送金して生計を一にしている場合（寮で生活する高校生等）は同一世帯とみなす。所得制限の記載はない。手続きは原則不要（生計を一にするが転居している上の子がいる場合は申請）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度 幼稚園・認定こども園・保育園等のご案内『保育園等のご案内』（PDF 2.65MB）p.70〜73「18 保育料（利用者負担月額）について」「朝霞市利用者負担額一覧表【2号認定・3号認定】」",
+      "url": "https://www.city.asaka.lg.jp/uploaded/attachment/104866.pdf"
+    },
+    {
+      "label": "令和8年度保育園等入所申請 - 朝霞市（更新日2026年9月1日）",
+      "url": "https://www.city.asaka.lg.jp/site/kosodate/r8-hoikusinsei.html"
+    },
+    {
+      "label": "保育料（利用者負担額） - 朝霞市（更新日2024年8月7日）",
+      "url": "https://www.city.asaka.lg.jp/site/kosodate/hoikuryou.html"
+    },
+    {
+      "label": "朝霞市利用者負担額一覧表（PDF 75KB）",
+      "url": "https://www.city.asaka.lg.jp/uploaded/attachment/76165.pdf"
+    },
+    {
+      "label": "保育料軽減制度 - 朝霞市（更新日2026年4月1日）",
+      "url": "https://www.city.asaka.lg.jp/site/kosodate/hoikuryoukeigen.html"
+    },
+    {
+      "label": "保育料軽減制度の早見表（3歳児未満クラス）（PDF 40KB）",
+      "url": "https://www.city.asaka.lg.jp/uploaded/attachment/85037.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "令和8年度のご案内PDFは文字の埋め込みが壊れていて（pdftotext で読めない文字になる）、ページを画像にして読んだ（p.70〜73）。表の額はホームページの一覧表PDF（文字あり、年度の表示なし）と全行同じ。月額は階層の順に増えている。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

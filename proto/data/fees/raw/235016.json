@@ -1,0 +1,49 @@
+{
+  "code": "235016",
+  "pref": "愛知県",
+  "name": "幸田町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度保育料は、4月分〜8月分が令和7年度市町村民税（令和6年1〜12月の所得）、9月分〜3月分が令和8年度市町村民税（令和7年1〜12月の所得）で決定。料金表（月額）は年度を通じて同じ。保育料基準額表の算出年齢は当該年度の4月当初の年齢の通年制。第2子以降の無料は令和7年10月から。",
+  "tax_basis": "6%",
+  "tax_note": "扶養義務者（父母。祖父母が家計の主宰者である場合は合算＝同居の祖父母が家計の主宰者で入所児童が祖父母の扶養に入っている場合）の市町村民税の税額。保育料算定時の税額は、配当控除前、外国税額控除前、（特定増改築等）住宅借入金（取得）等特別控除前、住宅耐震改修特別控除前、住宅特定改修特別控除前、認定長期優良住宅新築等特別控除前、e-Taxによる所得税の特別控除前、国や地方公共団体等への寄附金控除前の金額。政令市ではない。",
+  "table": {
+    "title": "３ 保育料一覧表（令和８年度保育料）",
+    "kind": "3歳未満・第1子（月額、標準時間・短時間の区別なし）",
+    "rows": [
+      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3", "lower": null, "upper": null, "condition": "均等割の額のみの世帯", "monthly": 8500, "monthly_second": null },
+      { "label": "第4", "lower": 1, "upper": 48600, "condition": "所得割課税額 48,600円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "第5", "lower": 48600, "upper": 75300, "condition": "48,600円以上 75,300円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "第6", "lower": 75300, "upper": 97000, "condition": "75,300円以上 97,000円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "第7", "lower": 97000, "upper": 169000, "condition": "97,000円以上 169,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "第8", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 39500, "monthly_second": null },
+      { "label": "第9", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "第10", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 47000, "monthly_second": null }
+    ],
+    "notes": "表の金額は「満３歳未満保育認定子ども（０歳児～２歳児）」の1列だけで、保育標準時間・短時間の区別はない（第2子の列もない。第2子以降は無料）。町立保育園、認定こども園、地域型保育事業すべて共通の金額。母子・父子家庭、在宅障害者（児）等のいる世帯で第3〜第6階層（保護者の所得割課税額77,100円以下に限る）は第1子 2,000円。保育園のページ（保育料・児童クラブ手数料の減免について、2025年4月1日更新）にも同じ額の表がある。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（月0〜47,000円）。無料は生活保護世帯・市町村民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和7年10月から（それまでは第3子以降だけ無料）: 18歳未満の子どもを2人以上養育している世帯で、町内の保育所など（幸田町立保育園、認定こども園、地域型保育事業）を利用している第2子以降の園児（3歳未満児に限る）の保育料は無料。所得制限の記載なし、上の子が保育園に通っている必要もない（18歳未満の子どもから数える）。申請不要（こども課が対象者を抽出し、保育料等変更通知書で通知）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降はすべて無料（18歳未満の子どもから数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "R8保育園等入園案内（PDF）P15〜P16", "url": "https://www.town.kota.lg.jp/uploaded/attachment/17412.pdf" },
+    { "label": "令和8年度保育園等入園申し込み - 幸田町公式ホームページ", "url": "https://www.town.kota.lg.jp/soshiki/8/24559.html" },
+    { "label": "第二子以降の保育料が無料になります！ - 幸田町公式ホームページ（2025年8月18日更新）", "url": "https://www.town.kota.lg.jp/soshiki/8/24707.html" },
+    { "label": "保育料・児童クラブ手数料の減免について - 幸田町公式ホームページ", "url": "https://www.town.kota.lg.jp/soshiki/8/26273.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「第二子以降の保育料が無料になります！」「保育料・児童クラブ手数料の減免について」で決まりと表が分かり、表が令和8年度のものかを下調べのページ一覧の「令和8年度保育園等入園申し込み」の入園案内（Print To PDF、文字が取れる）で確かめた（同じ額）。表は画像でも確かめた（金額は1列だけ）。均等割のみの行は lower/upper=null、次の「48,600円未満」は lower=1。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

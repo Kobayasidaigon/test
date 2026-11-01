@@ -3,7 +3,7 @@ import NumberFlow from '@number-flow/react'
 import { AnimatePresence, motion, useAnimationControls, useInView, useReducedMotion } from 'motion/react'
 import { ArrowDown, ArrowLeft, ArrowRight, ChevronRight, ExternalLink, RotateCcw, Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react'
-import { DATA_AS_OF, DISCLAIMER, MUNI_SOURCE, NATIONAL_SOURCES, cityById, compare, yenMan } from '@/shared'
+import { DATA_AS_OF, DISCLAIMER, MUNI_SOURCE, NATIONAL_SOURCES, REFERENCE_SOURCES, cityById, compare, yenMan } from '@/shared'
 import type { Breakdown, Care, City, Comparison, Confidence, FamilyInput, Mood, Pride, Source } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Capsule, CapsuleBottom, CapsuleTop, CharmArt, Coin, ItemIcon, Piggy } from './art'
@@ -13,7 +13,8 @@ import { EmptyStamp, GotouchiStamp } from './stamp'
 import { LevelTag } from './towns'
 import {
   TONE_BG, TONE_INK, avgLead, everydayText, fromHit, headlineOf, ijuState, isHit, isPending, isSharedPride, itemAmount, levelTag, levelText, lookOf, manNumber,
-  missingText, moodLine, nextSteps, perYearChip, prefKind, prideIsPref, scopeOf, shelfLine, sublineOf, thinText, tiesAtTop, toneOf, waitOf, waitText,
+  missingText, moodLine, nextSteps, onceShort, perYearChip, prefKind, prideIsPref, scopeOf, shelfLine, sublineOf, thinText, tiesAtTop, toneOf, waitDraft, waitOf, waitText,
+  type ShelfExtra,
 } from './lib'
 
 /* ───────── 小さな部品 ───────── */
@@ -335,8 +336,10 @@ export function RentTag({ c, compact = false, className }: { c: Comparison; comp
   return (
     <div className={cn('relative rounded-[12px] border-[3px] border-[var(--ink)] bg-[#fff7e0] py-2.5 pl-7 pr-3 shadow-[3px_4px_0_var(--ink)]', className)}>
       <span aria-hidden className="absolute left-2.5 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--bg)]" />
-      <p className="flex flex-wrap items-center gap-x-1.5 text-[13px] font-black">
+      <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] font-black">
         家賃の目安
+        {/* いま住んでいる世帯の平均で、これから借りる家賃（募集家賃）ではないので「推定」 */}
+        <Conf c="推定" />
         <span className="rounded-full border-2 border-[var(--ink)]/60 px-1.5 text-[12px] font-bold leading-tight text-[var(--ink-soft)]">子育ての差とは別</span>
       </p>
       <p className="mt-0.5 text-[14px] font-black leading-snug">
@@ -357,24 +360,35 @@ export function RentTag({ c, compact = false, className }: { c: Comparison; comp
   )
 }
 
-// 待機児童の目安：家賃と同じく、お金の差とは別の札。0人は「表で0人」で、入りやすさを約束するものではない
+// 待機児童の目安：家賃と同じく、お金の差とは別の札。0人は「表で0人」で、入りやすさを約束するものではない。
+// 地の色は、損得の色（青・緑）と分けて、紙の色にする。まだ確定していない数（熊本県内）には「暫定」と小さく添える
+const DraftMark = ({ conf }: { conf?: Confidence }) =>
+  waitDraft(conf) ? <span className="ml-0.5 text-[12px] font-bold text-[var(--ink-soft)]">（{waitDraft(conf)}）</span> : null
 export function WaitTag({ c, compact = false, className }: { c: Comparison; compact?: boolean; className?: string }) {
   const w = waitOf(c)
   if (!w) return null
+  const conf: Confidence = w.fromConf === '推定' || w.toConf === '推定' ? '推定' : '確認済'
   return (
-    <div className={cn('relative rounded-[12px] border-[3px] border-[var(--ink)] bg-[var(--stay-bg)] py-2.5 pl-7 pr-3 shadow-[3px_4px_0_var(--ink)]', className)}>
+    <div className={cn('relative rounded-[12px] border-[3px] border-[var(--ink)] bg-[#f4f0e8] py-2.5 pl-7 pr-3 shadow-[3px_4px_0_var(--ink)]', className)}>
       <span aria-hidden className="absolute left-2.5 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--bg)]" />
-      <p className="flex flex-wrap items-center gap-x-1.5 text-[13px] font-black">
+      <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] font-black">
         保育園の待機児童
+        <Conf c={conf} />
         <span className="rounded-full border-2 border-[var(--ink)]/60 px-1.5 text-[12px] font-bold leading-tight text-[var(--ink-soft)]">お金の差とは別</span>
       </p>
       <p className="mt-0.5 text-[14px] font-black leading-snug">
         {c.from.name} {waitText(w.from)}
+        <DraftMark conf={w.fromConf} />
         <span className="mx-1 text-[var(--ink-soft)]">→</span>
         {c.to.name} {waitText(w.to)}
-        <span className="ml-1 text-[12px] font-bold text-[var(--ink-soft)]">（{w.asOf}）</span>
+        <DraftMark conf={w.toConf} />
+        <span className="ml-1 whitespace-nowrap text-[12px] font-bold text-[var(--ink-soft)]">（{w.asOf}）</span>
       </p>
-      {!compact && <p className="mt-1 text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{w.note}。0人でも、希望の園に入れるとは限りません。</p>}
+      {!compact && (
+        <p className="mt-1 text-[12px] font-bold leading-snug text-[var(--ink-soft)]">
+          {w.note}。人数は街の大きさで変わり、申し込みの多い大きな街ほど多く出ます。0人でも、希望の園に入れるとは限りません。
+        </p>
+      )}
       {!compact && w.source && (
         <p className="mt-0.5 text-[12px] leading-snug">
           <SourceLink s={w.source} />
@@ -468,10 +482,11 @@ export function MainCapsule({ c, input, sample, note }: { c: Comparison; input: 
       {note}
       {scope !== 'thin' && (c.to.level !== 'detailed' || c.from.level !== 'detailed') && (
         <div className="mt-1.5 space-y-0.5 rounded-[10px] bg-[var(--paper-2)] px-2.5 py-1.5 text-center text-[12.5px] font-bold leading-snug">
-          {c.to.level !== 'detailed' && <p>{c.to.name}は、{levelText(c.to)}。</p>}
+          {/* わかる分の金額を出すとき（known）は、まだ調べていないものを金額の箱（missingText）で言うので、ここでは重ねない */}
+          {c.to.level !== 'detailed' && <p>{c.to.name}は、{levelText(c.to, scope === 'known')}。</p>}
           {c.from.level !== 'detailed' && (
             <p>
-              {c.from.name}（今の街）は、{levelText(c.from)}。
+              {c.from.name}（今の街）は、{levelText(c.from, scope === 'known')}。
             </p>
           )}
         </div>
@@ -667,7 +682,7 @@ export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInpu
   const once = c.items.filter((i) => i.oneTime)
   const iju = ijuState(c, input)
   const ijuWait = iju === 'pending'
-  // 調べた結果、対象外・一部の地域だけと分かった街（額は一度きりにも入れない）
+  // 調べた結果、実施していない・一部の地域だけと分かった街（額は一度きりにも入れない）
   const ijuKnown = (iju === 'none' || iju === 'part') && c.to.ijuCheck ? c.to.ijuCheck : null
   const hit = isHit(c)
   return (
@@ -773,7 +788,7 @@ export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInpu
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-1.5">
                       <h3 className="text-[16px] font-black leading-snug">移住支援金（一度きり）</h3>
-                      <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-1.5 text-[12px] font-black">{ijuKnown.result === 'none' ? '対象外' : '一部の地域だけ'}</span>
+                      <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-1.5 text-[12px] font-black">{ijuKnown.result === 'none' ? '実施なし' : '一部の地域だけ'}</span>
                       <Conf c={ijuKnown.confidence} />
                     </div>
                     <p className="text-[12.5px] font-bold text-[var(--ink-soft)]">かかわる人：家族みんな</p>
@@ -798,7 +813,13 @@ export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInpu
                     <p className="text-[12.5px] font-bold text-[var(--ink-soft)]">かかわる人：{i.who}</p>
                   </div>
                 </div>
-                <p className="va-pop mt-2 text-[22px] leading-tight">最大 約{yenMan(i.total ?? 0, 0)}（条件つき）</p>
+                <p className="va-pop mt-2 text-[22px] leading-tight">
+                  {i.upTo ? '最大' : ''}
+                  {yenMan(i.total ?? 0, 0)}
+                  <span className="text-[15px]">（条件つき）</span>
+                </p>
+                {/* 額が分からない部分（子どもの加算など）は、額に足さずに別の行で */}
+                {i.pendingPart && <p className="mt-0.5 text-[15px] font-black leading-snug">＋{i.pendingPart}（額は確認中）</p>}
                 <p className="mt-1 text-[14px] leading-relaxed">{i.plain}</p>
                 <div className="flex flex-wrap gap-x-4">
                   <Detail text={i.detail} />
@@ -821,7 +842,7 @@ export function CapsuleContents({ c, input }: { c: Comparison; input: FamilyInpu
 export function shelfAria(r: Comparison, tag?: string | null) {
   const body = isHit(r) ? '地震で被害を受けた街なので、得・損は出していません' : `${r.status === 'partial' ? 'わかっている項目だけで、' : ''}${headlineOf(r)}`
   const miss = r.unknown.length && !isHit(r) ? `。確認中の${r.unknown.map((u) => u.label).join('・')}は入っていません` : ''
-  return `${r.to.pref}${r.to.name}（${levelTag(r.to)}）：${body}${miss}${r.oneTime ? `。一度きり 最大 約${yenMan(r.oneTime, 0)}` : ''}${tag ? `。${tag}` : ''}`
+  return `${r.to.pref}${r.to.name}（${levelTag(r.to)}）：${body}${miss}${r.oneTime ? `。一度きり ${onceShort(r)}` : ''}${tag ? `。${tag}` : ''}`
 }
 
 // 値札（「わかる分で」の小さな前置きつき）
@@ -843,7 +864,8 @@ function PriceTag({ r, className }: { r: Comparison; className?: string }) {
   )
 }
 
-export function Shelf({ ranked, sel, onSelect, limit = 12 }: { ranked: Comparison[]; sel: number; onSelect: (i: number) => void; limit?: number }) {
+// extra は全国の台のとき：同じ額の街の本当の数（棚には同じ都道府県の街を perPref 個までしか出さない）
+export function Shelf({ ranked, sel, onSelect, limit = 12, extra }: { ranked: Comparison[]; sel: number; onSelect: (i: number) => void; limit?: number; extra?: ShelfExtra }) {
   const [all, setAll] = useState(false)
   const [groupAll, setGroupAll] = useState(false)
   const ties = tiesAtTop(ranked)
@@ -856,15 +878,18 @@ export function Shelf({ ranked, sel, onSelect, limit = 12 }: { ranked: Compariso
   const restLimit = Math.max(4, limit - Math.min(group, GROUP_SHOWN))
   const restShown = all ? rest : rest.slice(0, restLimit)
   const top = ranked[0]
+  const allTies = Math.max(group, extra?.topTies ?? 0)
   return (
     <div className="space-y-4">
       {group > 0 && top && (
         <div className="relative rounded-[16px] border-[3px] border-[var(--ink)] bg-[var(--paper)]/70 px-2 pb-2 pt-3">
           <div className="flex flex-wrap items-center gap-2 px-1">
-            <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-2 text-[12px] font-black">同じ額 ×{group}</span>
+            <span className="rounded-full border-2 border-[var(--ink)] bg-[var(--paper)] px-2 text-[12px] font-black">同じ額 ×{allTies}</span>
             <PriceTag r={top} className="rotate-0" />
           </div>
-          <p className="mt-1.5 px-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">くわしい街から、今の街に近い順。押すと開けます。</p>
+          <p className="mt-1.5 px-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">
+            {allTies > group ? `棚には${group}個（同じ都道府県の街は${extra?.perPref}個まで）。` : ''}くわしい街から、今の街に近い順。押すと開けます。
+          </p>
           <ul className="va-shelf -mx-1 mt-1 flex flex-wrap px-1 pt-1">
             {groupShown.map((r, i) => {
               const on = i === sel
@@ -1051,8 +1076,15 @@ export function Notice() {
             <SourceLink s={madeFrom(s)} />
           </li>
         ))}
+        {REFERENCE_SOURCES.map((s) => (
+          <li key={s.url} className="flex min-h-[40px] items-center py-1">
+            <SourceLink s={s} />
+          </li>
+        ))}
       </ul>
-      <p className="mt-1">保育料の無償化・中学校の給食費・移住支援金の街ごとの値は、都道府県や市区町村の公開資料をもとに、このサイトがまとめたものです（出典は項目ごとの「出典を見る」に）。</p>
+      <p className="mt-1">
+        保育料の無償化・中学校の給食費・移住支援金の街ごとの値（移住支援金を実施している市町村と額をふくむ）は、都道府県や市区町村の公開資料をもとに、このサイトがまとめたものです（出典は項目ごとの「出典を見る」に）。
+      </p>
     </footer>
   )
 }
@@ -1085,9 +1117,10 @@ export function ResultHeader({ onBack, backLabel = '条件を変える' }: { onB
 
 /* ───────── 結果の画面（おまかせ） ───────── */
 
-export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoPick, sample, book, onClearBook }: {
+export function Result({ input, ranked, extra, sel, onSelect, onRetry, onRestart, onGoPick, sample, book, onClearBook }: {
   input: FamilyInput
   ranked: Comparison[]
+  extra?: ShelfExtra // 全国の台で、棚に出さなかった街（同じ都道府県は何個までか）と、上から同じ額が続く本当の数
   sel: number
   onSelect: (i: number) => void
   onRetry: () => void
@@ -1099,13 +1132,15 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoP
 }) {
   const c = ranked[sel]
   const ties = tiesAtTop(ranked)
+  // 全国の台では、同じ都道府県の街を棚に出しきらないので、同じ額の街の数は棚の外もふくめて言う
+  const allTies = Math.max(ties, extra?.topTies ?? 0)
   const allPending = ranked.every(isPending)
   const jumpShelf = () => document.getElementById('va-shelf')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   // 同じ額の街がほかにもあるときは、なぜこの街が出たのかを見出しの下に書く
   const tieNote =
     ties > 1 && sel < ties ? (
       <p className="mt-1.5 text-center text-[12.5px] font-bold leading-snug">
-        同じ額の街が、ほかに{ties - 1}個あります。
+        同じ額の街が、ほかに{allTies - 1}個あります{allTies > ties ? `（棚には${ties - 1}個）` : ''}。
         <button type="button" onClick={jumpShelf} className="inline-flex min-h-[32px] items-center font-black underline decoration-2 underline-offset-4">
           棚で見る
         </button>
@@ -1117,7 +1152,7 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoP
       {allPending && onGoPick && (
         <div className="mx-auto mb-4 flex max-w-[520px] flex-col gap-2 rounded-[16px] border-[3px] border-dashed border-[var(--ink)] bg-[var(--paper)] px-3.5 py-3 lg:max-w-none lg:flex-row lg:items-center lg:justify-between">
           <p className="text-[14px] font-bold leading-relaxed">
-            この台の街は、どれも、この家族に関係する制度が<span className="font-black">まだ確認中</span>でした。はんこと、医療費・待機児童・家賃の目安は見られます。
+            この台の街は、どれも、この家族に関係する制度が<span className="font-black">まだ確認中</span>でした。はんこと、待機児童・医療費・家賃の目安（分かる街だけ）は見られます。
           </p>
           <button type="button" onClick={onGoPick} className="va-push inline-flex min-h-[44px] shrink-0 items-center justify-center gap-1.5 px-4 py-2 text-[15px] font-black">
             くわしい街とくらべる
@@ -1141,6 +1176,11 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoP
                 ) : (
                   <>
                     押すと、そのカプセルを開けます。並びは、毎年の差が大きい順。
+                    {extra && extra.hidden.length > 0 && (
+                      <span className="mt-0.5 block">
+                        全国の台なので、同じ都道府県の街は{extra.perPref}個までにしています（ほかに{extra.hidden.slice(0, 3).map((h) => `${h.pref}の街が${h.count}個`).join('、')}{extra.hidden.length > 3 ? 'など' : ''}）。行きたい街は「えらんでくらべる」でも見られます。
+                      </span>
+                    )}
                     <details className="mt-0.5">
                       <summary className="inline-flex min-h-[36px] items-center gap-1 text-[12.5px] font-black text-[var(--ink)] underline decoration-2 underline-offset-4">
                         <ChevronRight className="va-caret h-3.5 w-3.5 transition-transform" strokeWidth={3} aria-hidden />
@@ -1149,10 +1189,11 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoP
                       <ul className="mt-1 space-y-0.5 rounded-[10px] bg-white/70 px-2.5 py-2 text-[12.5px] leading-relaxed text-[var(--ink)]">
                         <li>・毎年の差（{perYearChip(c)}）が大きい順。</li>
                         <li>・確認中の項目がある街は、わかる分の額で並べます。わかる分で得にならない街は、全部わかる街の後ろ。</li>
-                        <li>・確認中だけの街と、まだ準備中の街は、いちばん後ろ。</li>
-                        <li>・同じ額の街は、全部わかる街から。そのあとは、くわしい街から、今の街に近い順。</li>
+                        <li>・まだ比べられない街（札が「確認中」「調べ中」「準備中」）は、いちばん後ろ。</li>
+                        <li>・同じ額の街は、全部わかる街から。そのあとは、くわしい街から、今の街に近い順{extra ? '（全国の台は、都道府県を順にめぐる）' : ''}。</li>
                         <li>・一度きりのお金（移住支援金など）は、額に足さずに並べます（同じ額のときだけ、あるほうを先に）。</li>
                         <li>・地震で大きな被害を受けた街は、並べていません。</li>
+                        <li>・札の言葉：「確認中」は、この家族に関係する項目が分からない街。「調べ中」は、制度が一部わかる街で、わかる分では差がない街。「準備中」は、国の調査だけの街。</li>
                       </ul>
                     </details>
                   </>
@@ -1161,7 +1202,7 @@ export function Result({ input, ranked, sel, onSelect, onRetry, onRestart, onGoP
             >
               ほかのカプセル
             </SectionTitle>
-            <Shelf ranked={ranked} sel={sel} onSelect={onSelect} />
+            <Shelf ranked={ranked} sel={sel} onSelect={onSelect} extra={extra} />
           </section>
         }
         book={<StampBook ids={book} waiting={ranked.slice(0, 6).map((r) => r.to)} onClear={onClearBook} />}

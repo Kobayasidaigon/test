@@ -1,0 +1,59 @@
+{
+  "code": "032158",
+  "pref": "岩手県",
+  "name": "奥州市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月分〜8月分は前年度の市民税所得割額（令和8年度は令和7年度の税額＝令和6年中の所得）、9月分〜3月分は当年度の税額（令和8年度の税額＝令和7年中の所得）で算定し、4月中旬ごろと9月中旬ごろに通知。2号・3号認定の年齢は当該年度の前年度末3月31日時点の満年齢で決まり、年度途中で満3歳になっても無料になるのは翌年度から。表は「令和8年度 奥州市保育施設等利用のしおり（2・3号用）」22ページの「奥州市保育料等および副食費徴収確認表」（画像）。単独のPDF（作成2025年10月）も同じ金額。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の市民税所得割額を合算。「この場合の市民税所得割額には、調整控除以外の税額控除（配当控除、住宅ローン控除、寄附金税額控除 など）は適用されません」。政令指定都市より課税されている場合は、市民税所得割額に6/8を乗じた金額で決定。祖父母と同居し、保護者の収入だけでは生計維持が困難なとき（ひとり親世帯は保護者の収入が103万円以下、その他の世帯は保護者の収入の合計額が180万円以下）は祖父母も算定対象に含まれることがある。",
+  "table": {
+    "title": "奥州市保育料等および副食費徴収確認表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税均等割のみ課税世帯（上記以外）", "monthly": 8500, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 30000, "condition": "市民税所得割課税額 30,000円 未満（上記以外）", "monthly": 11000, "monthly_second": null },
+      { "label": "C3", "lower": 30000, "upper": 48600, "condition": "30,000円 以上 48,600円 未満（上記以外）", "monthly": 14000, "monthly_second": null },
+      { "label": "D1a", "lower": 48600, "upper": 57700, "condition": "48,600円 以上 57,700円 未満（上記以外）", "monthly": 16500, "monthly_second": null },
+      { "label": "D1b", "lower": 57700, "upper": 63600, "condition": "57,700円 以上 63,600円 未満（上記以外）", "monthly": 16500, "monthly_second": null },
+      { "label": "D2a", "lower": 63600, "upper": 77101, "condition": "63,600円 以上 77,101円 未満（上記以外）", "monthly": 20000, "monthly_second": null },
+      { "label": "D2b", "lower": 77101, "upper": 78600, "condition": "77,101円 以上 78,600円 未満", "monthly": 20000, "monthly_second": null },
+      { "label": "D3", "lower": 78600, "upper": 97000, "condition": "78,600円 以上 97,000円 未満", "monthly": 24000, "monthly_second": null },
+      { "label": "D4", "lower": 97000, "upper": 117000, "condition": "97,000円 以上 117,000円 未満", "monthly": 28000, "monthly_second": null },
+      { "label": "D5", "lower": 117000, "upper": 141900, "condition": "117,000円 以上 141,900円 未満", "monthly": 33000, "monthly_second": null },
+      { "label": "D6", "lower": 141900, "upper": 169000, "condition": "141,900円 以上 169,000円 未満", "monthly": 38000, "monthly_second": null },
+      { "label": "D7", "lower": 169000, "upper": 200100, "condition": "169,000円 以上 200,100円 未満", "monthly": 42000, "monthly_second": null },
+      { "label": "D8", "lower": 200100, "upper": 250000, "condition": "200,100円 以上 250,000円 未満", "monthly": 46000, "monthly_second": null },
+      { "label": "D9", "lower": 250000, "upper": 301000, "condition": "250,000円 以上 301,000円 未満", "monthly": 50000, "monthly_second": null },
+      { "label": "D10", "lower": 301000, "upper": 397000, "condition": "301,000円 以上 397,000円 未満", "monthly": 53000, "monthly_second": null },
+      { "label": "D11", "lower": 397000, "upper": null, "condition": "397,000円 以上", "monthly": 56000, "monthly_second": null }
+    ],
+    "notes": "対象は保育所・認定こども園（保育所分）・地域型保育事業の3号認定（3歳未満）。表は標準時間・短時間の2列で、第2子の列はない（第2子以降は無料）。保育短時間: A・B 0、C1 8,000、C2 10,400、C3 13,300、D1a 15,600、D1b 15,600、D2a 19,000、D2b 19,000、D3 22,800、D4 26,600、D5 31,300、D6 36,100、D7 39,900、D8 43,700、D9 47,500、D10 50,300、D11 53,000。ひとり親世帯等（ひとり親世帯及び障がいのある方がいる世帯）はC1〜D2a（所得割77,101円未満）で標準時間4,000円・短時間3,800円。3号認定の保育料には給食費（主食費及び副食費）を含む。遠足代・行事費・通園バス代などの実費徴収や上乗せ徴収がある場合がある。未申告などで税額が確認できない場合は暫定的に最高額。「保護者が現に扶養する子で、上から２番目以降の子に係る保育料は無料となります」。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は階層区分により徴収（標準時間で月0〜56,000円）。A・B階層（生活保護・非課税）は無料。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "市独自（令和5年4月から）: 保護者が扶養する第2子以降の0〜2歳児クラスの保育料を無償化。「保護者が扶養している第1子が小学生以上の場合でも第2子以降の保育料は無償化の対象」。別居の兄・姉がいる場合も対象になる可能性がある（入所申込の際に申し出る）。数えるのは「保護者が現に扶養する子」で、兄姉等の就職などで扶養する子の人数が変わると第何子かが変わることがある。所得制限の記載はない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無料に含まれる（数え方は第2子と同じ、保護者が現に扶養する子を上から数える）。3歳以上の副食費は、保護者が現に扶養する子で上から3番目以降の子は（市が定める上限額の範囲内で）徴収免除。",
+  "lunch_jh": null,
+  "cash": [
+    { "label": "奥州市子育て応援在宅育児支援金", "per_child_yearly": 120000, "max_age": 3, "note": "生後8週間を超え満3歳未満の第2子以降（高校卒業までの児童のうちで数える）を、保育所等（認可外保育施設を含む）に入所させずに在宅で育児している世帯に、対象児童1人当たり月額1万円。育児休業給付金等を受給している期間や生活保護世帯は対象外。保育所等を利用する家庭は対象にならない。4か月分ずつまとめて支給。", "source": { "label": "奥州市子育て応援在宅育児支援金を支給します／奥州市公式ホームページ（更新日2024年4月19日）", "url": "https://www.city.oshu.iwate.jp/life_scene/kosodate/10677.html" } }
+  ],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所・認定こども園・幼稚園などの利用についてのご案内／奥州市公式ホームページ（更新日2026年10月19日）", "url": "https://www.city.oshu.iwate.jp/soshiki/9/1066/10803.html" },
+    { "label": "令和8年度 奥州市保育施設等利用のしおり（2・3号用）（PDF、10〜11ページと22ページ）", "url": "https://www.city.oshu.iwate.jp/material/files/group/67/01_R08shiori_23.pdf" },
+    { "label": "奥州市保育料等および副食費徴収確認表（PDF）", "url": "https://www.city.oshu.iwate.jp/material/files/group/67/kankei03_hoikuryou.pdf" },
+    { "label": "第2子以降の保育料無償化について／奥州市公式ホームページ（更新日2024年3月29日）", "url": "https://www.city.oshu.iwate.jp/soshiki/9/1066/12560.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「奥州市保育料等および副食費徴収確認表」PDF（年度の書いていない単独版）の文字で金額を読み、令和8年度しおり（2026年4月作成）の22ページの画像と同じ金額であることを確かめた。C2の「30,000円未満」は均等割のみ（C1）と分けるため lower を1にした。表の行はひとり親世帯等でない「上記以外」の額。lunch_jh・one_time は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

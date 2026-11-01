@@ -1,0 +1,223 @@
+{
+  "code": "112259",
+  "pref": "埼玉県",
+  "name": "入間市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料の決定は原則年2回（4〜8月分と9月〜翌3月分）。令和8年4月〜8月分は令和7年度、令和8年9月〜令和9年3月分は令和8年度の市民税額で算定（令和8年度 入間市保育施設等申込みの手引き p.24）。年度の初日の年齢（クラス年齢）でその年度の保育料が決まり、年度の途中で3歳になっても2歳児クラスの保育料は無償にならない。月額表は年度を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の合算した市民税額（所得割）で階層を決める。税額控除（配当控除、外国税額控除、住宅借入金等特別税額控除、寄附金税額控除等）は算定に含まれない（控除前の額）。保護者の所得金額がそれぞれ48万円以下で他に家計の主宰者がいる場合はその方を含めて算定。婚姻関係にない同居の方は事実婚とみなして算定。保護者が別居していても子と同居していない方を含めて算定。表に税率の注記はない。入間市は政令市ではないので6%とした。",
+  "table": {
+    "title": "保育料表【２歳児クラスまで】（令和8年度 入間市保育施設等申込みの手引き p.30）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "A を除く、市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "A 及び B を除く、市民税所得割非課税世帯",
+        "monthly": 7400,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 10000,
+        "condition": "Ａを除く、市民税所得割課税額が 1円以上 10,000円未満",
+        "monthly": 8000,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 10000,
+        "upper": 48600,
+        "condition": "Ａを除く、市民税所得割課税額が 48,600円未満",
+        "monthly": 8900,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 48600,
+        "upper": 60000,
+        "condition": "Ａを除く、市民税所得割課税額が 60,000円未満",
+        "monthly": 9900,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 60000,
+        "upper": 71500,
+        "condition": "Ａを除く、市民税所得割課税額が 71,500円未満",
+        "monthly": 11600,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 71500,
+        "upper": 83000,
+        "condition": "Ａを除く、市民税所得割課税額が 83,000円未満",
+        "monthly": 14200,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 83000,
+        "upper": 97000,
+        "condition": "Ａを除く、市民税所得割課税額が 97,000円未満",
+        "monthly": 19000,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "Ａを除く、市民税所得割課税額が 115,000円未満",
+        "monthly": 24700,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 115000,
+        "upper": 133000,
+        "condition": "Ａを除く、市民税所得割課税額が 133,000円未満",
+        "monthly": 30900,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 133000,
+        "upper": 151000,
+        "condition": "Ａを除く、市民税所得割課税額が 151,000円未満",
+        "monthly": 37000,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 151000,
+        "upper": 169000,
+        "condition": "Ａを除く、市民税所得割課税額が 169,000円未満",
+        "monthly": 42700,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 169000,
+        "upper": 189000,
+        "condition": "Ａを除く、市民税所得割課税額が 189,000円未満",
+        "monthly": 44500,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 189000,
+        "upper": 209000,
+        "condition": "Ａを除く、市民税所得割課税額が 209,000円未満",
+        "monthly": 48400,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 209000,
+        "upper": 239000,
+        "condition": "Ａを除く、市民税所得割課税額が 239,000円未満",
+        "monthly": 49900,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 239000,
+        "upper": 269000,
+        "condition": "Ａを除く、市民税所得割課税額が 269,000円未満",
+        "monthly": 50900,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 269000,
+        "upper": 301000,
+        "condition": "Ａを除く、市民税所得割課税額が 301,000円未満",
+        "monthly": 52000,
+        "monthly_second": null
+      },
+      {
+        "label": "C17",
+        "lower": 301000,
+        "upper": 349000,
+        "condition": "Ａを除く、市民税所得割課税額が 349,000円未満",
+        "monthly": 53000,
+        "monthly_second": null
+      },
+      {
+        "label": "C18",
+        "lower": 349000,
+        "upper": 397000,
+        "condition": "Ａを除く、市民税所得割課税額が 397,000円未満",
+        "monthly": 54000,
+        "monthly_second": null
+      },
+      {
+        "label": "C19",
+        "lower": 397000,
+        "upper": null,
+        "condition": "Ａを除く、市民税所得割課税額が 397,000円以上",
+        "monthly": 54500,
+        "monthly_second": null
+      }
+    ],
+    "notes": "列は 0歳児〜2歳児クラスの標準時間・短時間。表に第2子の列はない。保育短時間: A 0／B 0／C1 7,200／C2 7,800／C3 8,700／C4 9,700／C5 11,400／C6 13,900／C7 18,600／C8 24,200／C9 30,300／C10 36,300／C11 41,900／C12 43,700／C13 47,500／C14 49,000／C15 50,000／C16 51,100／C17 52,000／C18 53,000／C19 53,500。C1 は市民税所得割非課税（均等割のみ）なので lower・upper を null、C2 は「1円以上10,000円未満」。表には上限（未満）だけが書かれているので、C3 以降の lower は1つ上の行の upper とした。3歳児クラス以上は幼児教育・保育の無償化で保育料無償（副食費は保護者負担、世帯収入や兄弟姉妹の状況で副食費も無償になる場合がある）。保育料のページ（保育施設等のごあんない、更新日2024年6月17日）の「入間市保育料表」PDF（年度の表示なし）も全行同じ額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月7,400〜54,500円）。0円は生活保護世帯等・市町村民税非課税世帯（と第3子以降、所得割77,101円未満のひとり親世帯等）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "年収約360万円未満相当の世帯以外: 同一世帯に施設（①保育所・地域型保育・認定こども園・新制度に移行した幼稚園、②新制度未移行幼稚園・特別支援学校幼稚部・児童心理治療施設・児童発達支援・医療型児童発達支援）を利用している未就学児が2人以上いる場合、未就学児で最も年齢の高い子を第1子と数え、第2子なら半額・第3子以降は無料（手引き p.26（ア）、2人以上の子どもが施設等を利用する世帯の保育料軽減のページ〔更新日2026年9月4日〕）。年収約360万円未満相当（ひとり親世帯等以外は所得割合算額57,700円未満＝C1〜C4階層の一部）: 生計を一にする子で最も年齢の高い子から数えて第2子半額・第3子以降無料（年齢制限なし）。ひとり親世帯等で所得割77,101円未満（C1〜C6階層の一部）は保育料無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "入間市多子世帯保育料軽減事業（平成27年4月から、埼玉県の補助事業）: 同一世帯に3人以上兄弟姉妹がいる場合で、保育施設（保育所〔園〕、小規模保育施設等の地域型保育、認定こども園〔保育部分〕）を利用する第3子以降の0・1・2歳児（3号認定）の保育料が無料。同一世帯で最も年齢の高い子から数える（上の子の年齢・在園を問わない）。同一世帯は原則同居して生計を一にする世帯（別居でも仕送り等で生計が同じなら認める）。所得制限の記載はない。年度ごとに減免申請書（保育所）または助成申請書（認定こども園・地域型保育）が必要。県の補助事業なので今後廃止や縮小の可能性がある（手引き p.26）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度 入間市保育施設等申込みの手引き（PDF 5.4MB、2026年3月11日版）p.24〜30「Ⅵ保育料等について」「保育料表」",
+      "url": "https://www.city.iruma.saitama.jp/material/files/group/34/R8tebiki0311.pdf"
+    },
+    {
+      "label": "令和8年度 保育施設等の申込み／入間市（更新日：2026年04月01日）",
+      "url": "https://www.city.iruma.saitama.jp/kosodate_kyoiku/hoikusho_youchien/14084.html"
+    },
+    {
+      "label": "入間市保育料表（PDF 120.0KB）",
+      "url": "https://www.city.iruma.saitama.jp/material/files/group/34/hoikusyohoikuryou.pdf"
+    },
+    {
+      "label": "2人以上の子どもが施設等を利用する世帯の保育料軽減／入間市（更新日：2026年09月04日）",
+      "url": "https://www.city.iruma.saitama.jp/kosodate_kyoiku/hoikusho_youchien/116/7120.html"
+    },
+    {
+      "label": "入間市多子世帯保育料軽減事業を実施します／入間市（更新日：2026年03月19日）",
+      "url": "https://www.city.iruma.saitama.jp/kosodate_kyoiku/hoikusho_youchien/116/7119.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "埼玉県の市。表は手引きの文字の取れるPDF（p.30＝PDFの32ページ）を pdftotext で読み、画像にして列の並び（0〜2歳児クラスの標準時間・短時間）を確かめた。保育料のページの保育料表PDFと全行同じ額。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

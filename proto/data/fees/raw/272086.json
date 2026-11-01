@@ -1,0 +1,52 @@
+{
+  "code": "272086",
+  "pref": "大阪府",
+  "name": "貝塚市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「令和８年度利用者負担額(保育料)・副食費について(お知らせ)」（令和8年8月、貝塚市子ども部子育て支援課、PDF作成 2026年9月8日）p.2の一覧表。4月から8月分は令和7年度課税額、9月から翌3月分は令和8年度課税額をもとに決定。年齢区分は年度当初の歳児クラスで決まり、年度途中で3歳になっても年度内は無償にならない。入所は毎月1日・16日付け、退所は15日・末日付けで、16日入所・15日退所の月は入所日数を25日で除した日割り（10円未満切り捨て）。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の市町村民税課税額等（調整控除、税額調整措置以外の税額控除については適用前の税額）。各保護者の課税額が非課税（0円）かつそれぞれの収入が130万円未満で、収入が300万円以上の同居祖父母がいる場合は、祖父母のうち最多所得者の課税額を含めて決定（保護者のいずれかに直近3か月で平均10万8千円以上の収入があれば保護者のみで再計算できる場合あり）。未申告等で課税額が未確定の間は最高階層。",
+  "table": {
+    "title": "貝塚市利用者負担額（保育料）・副食費一覧表【２号・３号認定】",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯（一般世帯）", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": null, "upper": null, "condition": "市町村民税均等割のみ課税世帯（※一般世帯）", "monthly": 8000, "monthly_second": null },
+      { "label": "D1", "lower": 1, "upper": 48600, "condition": "市町村民税所得割額 48,600円未満（※一般世帯）", "monthly": 9500, "monthly_second": null },
+      { "label": "D2（57,700円未満）", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満（※一般世帯）", "monthly": 12500, "monthly_second": null },
+      { "label": "D2（62,000円未満）", "lower": 57700, "upper": 62000, "condition": "57,700円以上 62,000円未満（一般世帯）", "monthly": 12500, "monthly_second": null },
+      { "label": "D3", "lower": 62000, "upper": 73000, "condition": "62,000円以上 73,000円未満（一般世帯）", "monthly": 16500, "monthly_second": null },
+      { "label": "D4（77,101円未満）", "lower": 73000, "upper": 77101, "condition": "73,000円以上 77,101円未満（一般世帯）", "monthly": 23500, "monthly_second": null },
+      { "label": "D4（97,000円未満）", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 23500, "monthly_second": null },
+      { "label": "D5", "lower": 97000, "upper": 115000, "condition": "97,000円以上 115,000円未満", "monthly": 31000, "monthly_second": null },
+      { "label": "D6", "lower": 115000, "upper": 133000, "condition": "115,000円以上 133,000円未満", "monthly": 38500, "monthly_second": null },
+      { "label": "D7", "lower": 133000, "upper": 169000, "condition": "133,000円以上 169,000円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "D8", "lower": 169000, "upper": 271000, "condition": "169,000円以上 271,000円未満", "monthly": 52000, "monthly_second": null },
+      { "label": "D9", "lower": 271000, "upper": 301000, "condition": "271,000円以上 301,000円未満", "monthly": 56000, "monthly_second": null },
+      { "label": "D10", "lower": 301000, "upper": null, "condition": "301,000円以上", "monthly": 57000, "monthly_second": null }
+    ],
+    "notes": "rows は3歳児未満・標準時間の一般世帯の列（D の区分は市町村民税所得割額）。表では D2 と D4 がそれぞれ2行に分かれている（金額は同じ、特定世帯の有無や副食費免除の区切りが違う）のでそのまま2行ずつ書いた。C（均等割のみ）は lower/upper を null、D1 は lower=1。短時間（一般世帯）: A・B 0／C 8,000／D1 9,300／D2 12,200／D3 16,200／D4 23,100／D5 30,400／D6 37,800／D7 43,700／D8 51,100／D9 55,000／D10 56,000。特定世帯（ひとり親世帯、在宅障害児（者）のいる世帯、特に困窮していると市長が認めた世帯）: B 0、C〜D4（77,101円未満）は標準・短時間とも3,300円。※印は多子軽減 b（年齢制限なしで数える）の対象の一般世帯。表に第2子の別の列はない。3歳児以上は無償（副食費は表の区分で免除・第3子以降免除）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳児未満の第1子は有料（一般世帯の標準時間で月0〜57,000円）。0円は生活保護世帯等（A）と市町村民税非課税世帯（B）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "多子軽減 c（a・b以外の世帯）: 小学校就学前のきょうだいが複数人同時に保育所、認定こども園、幼稚園等（特別支援学校幼稚部、児童心理治療施設通所部、地域型保育事業、企業主導型保育園、児童発達支援等を含む）を利用している場合、2番目に年齢が高い児童は表の1/2。b: ※印の一般世帯（均等割のみ・所得割57,700円未満）は生計を一にするきょうだい（年齢制限なし）で数えて2番目は1/2。a: 特定世帯は生計を一にするきょうだい（年齢制限なし）で数えて2番目以降0円。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "多子軽減 c: 就学前のきょうだいが同時に保育所等を利用している場合、3番目以降は0円。b（※印の一般世帯、所得割57,700円未満）は年齢制限なしで数えて3番目以降0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度利用者負担額(保育料)・副食費について(お知らせ) 貝塚市（貝塚市利用者負担額(保育料)・副食費免除について PDF）", "url": "https://www.city.kaizuka.lg.jp/material/files/group/24/R8hoikuryou03.pdf" },
+    { "label": "保育料について 貝塚市", "url": "https://www.city.kaizuka.lg.jp/kakuka/kodomo/kosodate/menu/houikusho/hoikuryo.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べ（crawl）は子育てのページで止まっていた（OSError）ので、子育て支援課 → 保育所・認定こども園 → 保育料について の順に開いた。このサイトは続けて取ると「このページは表示できません」のエラーのページ（HTTP 408）を返すことがあり、時間をあけて取り直すと取れた。表は pdftotext -layout と画像（pdftoppm -r 80）で列（3歳児未満の標準時間・短時間、特定世帯／一般世帯）を確かめた。区切りは切れ目・重なりなし、月額は階層の順に下がらない。保育料のページの更新日は2023年4月1日のままだが、リンク先のPDFは令和8年度版。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

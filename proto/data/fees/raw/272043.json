@@ -1,0 +1,39 @@
+{
+  "code": "272043",
+  "pref": "大阪府",
+  "name": "池田市",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "未確認（公式サイトに接続できず、原文を読めていない）。検索結果の要約では、令和8年度の保育施設入所ガイドに「4月1日時点の年齢をもとに算定するため、年度途中で2歳から3歳になっても」という注記があり、所得割額は年度ごとに切り替わる仕組みとのこと（4〜8月と9〜3月の区切りは未確認）。",
+  "tax_basis": "6%",
+  "tax_note": "原文未確認。検索結果の要約では「父母の市民税所得割額を合算し、保育料の階層区分を決定」。池田市は政令市ではないので市民税所得割は6%（法定の税率で、サイトの注記は読めていない）。控除の扱い（住宅ローン控除など）は未確認。",
+  "table": null,
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "検索結果の要約では、0〜2歳児の保育料は市民税（所得割額）などに応じた階層表で決まる（令和8年度保育施設入所ガイドに0〜2歳児（課税世帯）の月額表、第1子と第2子（半額）の欄あり）。要約に出た計算例: 市民税所得割額の合計295,400円で階層D5・月額45,710円（第1子とみられる）。表の全体は読めていない。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "検索結果の要約（池田市の「保育料」のページ・令和8年度入所ガイド）による・原文未確認: 同一世帯で複数の子が同時に保育所等に入所している場合、所得に関係なく2人目は半額、3人目以降は無料。小学校就学前の範囲で最年長の子を第1子として数える。年収約360万円未満相当の市町村民税所得割合算額の世帯は、第何子かを決める際の子どもの年齢制限を撤廃。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "検索結果の要約による・原文未確認: 同時に保育所等に入所している3人目以降は所得に関係なく無料（就学前の範囲で数える。年収約360万円未満相当は年齢制限なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料 | 池田市（検索結果。接続できず原文未確認、古い版の可能性あり）", "url": "https://www.city.ikeda.osaka.jp/soshiki/kodomo/youjihoiku/hoikusyoto/hoikuryo_hojyokin/1415933392265.html" },
+    { "label": "令和8年度 保育施設入所ガイド PDF（検索結果。接続できず原文未確認）", "url": "https://www.city.ikeda.osaka.jp/material/files/group/60/R8hoikusisetunyuusyogaido.pdf" },
+    { "label": "保育施設入所ガイド／池田市（検索結果）", "url": "https://www.city.ikeda.osaka.jp/shinseisho/shussan/hoikusyo/1528190212330.html" },
+    { "label": "施設類型別の無償化内容／池田市（検索結果）", "url": "https://www.city.ikeda.osaka.jp/soshiki/kodomo/youjihoiku/hoikusyoto/musyouka/1547198184187.html" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べ（crawl）は公式サイトのトップで OSError、候補文書なし",
+    "https://www.city.ikeda.osaka.jp/kosodate_kyoiku/hoiku/ → HTTP 408 と「このページは表示できません…イベント ID」のエラーページ",
+    "https://www.city.ikeda.osaka.jp/ → 接続が切れる（000、プロキシの記録ではサイト側で 3 秒後に切断）。数分後の再試行も同じ",
+    "https://www.city.ikeda.osaka.jp/material/files/group/60/R8hoikusisetunyuusyogaido.pdf → HTTP 408 のエラーページ（PDF は取れず）",
+    "WebSearch（allowed_domains=city.ikeda.osaka.jp）2回:「池田市 保育料 令和8年度 3歳未満 利用者負担額 第2子」「池田市 保育施設入所ガイド 令和8年度 保育料 第3子 無料 多子軽減 階層区分」。検索結果の要約から第2子・第3子の決まりと計算例を得たが、表の列は崩れていて読めなかった"
+  ],
+  "notes": "公式サイトがこちらからの接続を拒否する（408 エラーページ・切断）ため、原文は読めていない。きょうだいの決まりは検索エンジンの要約（公式ページの抜粋）によるもので未確認。要約の中の「第3子以降で所得割57,700円未満（ひとり親世帯等は77,101円未満）なら免除」は副食費の免除の基準とみられるので、保育料の決まりには使っていない。月額表は令和8年度保育施設入所ガイド PDF（上の URL）にあるので、接続できる環境で読み直すこと。小学校の給食費無償化のページ（中学校ではない）が検索結果に出ていた。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,59 @@
+{
+ "code": "112232",
+ "pref": "埼玉県",
+ "name": "蕨市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "「令和8年度保育園入園のてびき」p.14〜16「11．利用者負担額（保育料）等について」。認可保育園（公立・私立）・小規模保育園とも同額。令和8年4〜8月分は令和7年度市町村民税額（令和6年1〜12月収入）、令和8年9月〜令和9年3月分は令和8年度市町村民税額（令和7年1〜12月収入）で算定。税未申告等で市町村民税額が確認できない場合は暫定的に最高額（C17階層）。登園日数に関わらず1カ月分の保育料がかかる。3〜5歳児は無償化で0円。",
+ "tax_basis": "6%",
+ "tax_note": "保護者等（児童を監護する父母と、家計の主宰者である場合に限りそれ以外の扶養義務者）の市町村民税額の合計。住宅借入金等特別控除（住宅ローン控除）、寄附金控除（ふるさと納税等）、配当控除、外国税額控除、配当割・株式等譲渡所得割額控除等の税額控除が適用される前の金額。政令市ではない。",
+ "table": {
+  "title": "【利用者負担額（保育料）について】認可保育園（公立・私立）・小規模保育園とも同額",
+  "kind": "0〜2歳児クラス・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null},
+   {"label": "B1", "lower": null, "upper": null, "condition": "Ａ階層を除き市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "B2", "lower": null, "upper": null, "condition": "Ａ階層を除き市町村民税の均等割のみ課税される世帯（ひとり親世帯等以外の世帯）", "monthly": 7200, "monthly_second": null},
+   {"label": "C1", "lower": 1, "upper": 10000, "condition": "10,000円未満", "monthly": 8020, "monthly_second": null},
+   {"label": "C2", "lower": 10000, "upper": 48600, "condition": "10,000円以上48,600円未満", "monthly": 9120, "monthly_second": null},
+   {"label": "C3", "lower": 48600, "upper": 50400, "condition": "48,600円以上50,400円未満", "monthly": 10270, "monthly_second": null},
+   {"label": "C4", "lower": 50400, "upper": 57600, "condition": "50,400円以上57,600円未満", "monthly": 12070, "monthly_second": null},
+   {"label": "C5", "lower": 57600, "upper": 66600, "condition": "57,600円以上66,600円未満", "monthly": 14520, "monthly_second": null},
+   {"label": "C6", "lower": 66600, "upper": 84600, "condition": "66,600円以上84,600円未満", "monthly": 19570, "monthly_second": null},
+   {"label": "C7", "lower": 84600, "upper": 102600, "condition": "84,600円以上102,600円未満", "monthly": 25870, "monthly_second": null},
+   {"label": "C8", "lower": 102600, "upper": 121100, "condition": "102,600円以上121,100円未満", "monthly": 32500, "monthly_second": null},
+   {"label": "C9", "lower": 121100, "upper": 139100, "condition": "121,100円以上139,100円未満", "monthly": 40000, "monthly_second": null},
+   {"label": "C10", "lower": 139100, "upper": 169400, "condition": "139,100円以上169,400円未満", "monthly": 44000, "monthly_second": null},
+   {"label": "C11", "lower": 169400, "upper": 175100, "condition": "169,400円以上175,100円未満", "monthly": 49000, "monthly_second": null},
+   {"label": "C12", "lower": 175100, "upper": 193100, "condition": "175,100円以上193,100円未満", "monthly": 53300, "monthly_second": null},
+   {"label": "C13", "lower": 193100, "upper": 229100, "condition": "193,100円以上229,100円未満", "monthly": 53800, "monthly_second": null},
+   {"label": "C14", "lower": 229100, "upper": 268100, "condition": "229,100円以上268,100円未満", "monthly": 54900, "monthly_second": null},
+   {"label": "C15", "lower": 268100, "upper": 298100, "condition": "268,100円以上298,100円未満", "monthly": 56010, "monthly_second": null},
+   {"label": "C16", "lower": 298100, "upper": 328100, "condition": "298,100円以上328,100円未満", "monthly": 56430, "monthly_second": null},
+   {"label": "C17", "lower": 328100, "upper": null, "condition": "328,100円以上", "monthly": 56870, "monthly_second": null}
+  ],
+  "notes": "C1〜C17 は「Ａ階層及びＢ階層を除き市町村民税所得割額が次の区分に該当する世帯」。B2 のうちひとり親世帯等は0円（標準・短時間とも）。保育短時間: A・B1 0円、B2（ひとり親世帯等以外）7,080円、C1 7,890円、C2 8,970円、C3 10,100円、C4 11,870円、C5 14,280円、C6 19,240円、C7 25,440円、C8 31,950円、C9 39,320円、C10 43,260円、C11 48,170円、C12 52,400円、C13 52,890円、C14 53,970円、C15 55,060円、C16 55,480円、C17 55,910円。3〜5歳児クラスは無償化で0円。軽減: ① 年収360万円未満（市民税所得割額77,101円未満）の要保護世帯（ひとり親〔離婚調停中除く〕、障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた者がいる世帯、特別児童扶養手当の支給対象児童がいる世帯、障害基礎年金の受給者がいる世帯）は第1子半額（最高額9,000円）、第2子以降無料（生計が同一の兄弟姉妹を年齢制限なく数える、18歳以上・別居も含む）。市が把握していない軽減は申請（年度や保育園が変わるたび）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児クラスの第1子は所得に応じた保育料（生活保護・市町村民税非課税世帯、均等割のみ課税のひとり親世帯等は0円）。",
+ "second_child": "other",
+ "second_count": "together",
+ "second_note": "てびき p.15〜16 の軽減。③ 保育園に在籍している子が2人以上いる世帯: 1人目が保育園の3歳児以上（幼保無償化）なら2人目（保育園・3歳児未満）は半額で最高額15,000円（蕨市の独自軽減）、1人目も保育園の3歳児未満なら2人目は無料（蕨市の独自軽減）、3人目以降は無料。④ 就学前の子が2人以上いる世帯（③を除く）: 同一世帯の就学前の兄弟姉妹（幼稚園、保育所、認定こども園、地域型保育事業、特別支援学校幼稚部、児童心理治療施設、児童発達支援、企業主導型保育園に在園）を数えて2人目は半額、3人目以降無料。② 年収360万円未満（市民税所得割額57,700円未満）の世帯は、生計が同一の兄弟姉妹を年齢制限なく数えて（18歳以上・別居も含む）第2子半額、第3子以降無料。上の子が小学生以上で就学前の子が1人だけなら（②の世帯を除き）第2子も全額。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "⑤ 小学生以上も含めて子が3人以上いる世帯（③④を除く）: 生計が同一の兄弟姉妹を年齢制限なく数えて（18歳以上を含む）、第3子以降で保育園・3歳児未満の子は無料。③④の同時在籍・就学前の数え方でも3人目以降は無料。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和8年度保育園入園手続き｜蕨市公式ウェブサイト", "url": "https://www.city.warabi.saitama.jp/kosodate/hoiku/hoikuen/1012037.html"},
+  {"label": "令和8年度保育園入園のてびき（PDF）p.14〜16「11．利用者負担額（保育料）等について」", "url": "https://www.city.warabi.saitama.jp/_res/projects/default_project/_page_/001/012/037/r8tebiki.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べの index.json の候補は介護保険の利用者負担のページなどで保育料の文書はなかったので、保育園のページの「令和8年度保育園入園手続き」から入園のてびきを開いた"
+ ],
+ "notes": "表は pdftotext -layout と画像（pdftoppm）で列（0〜2歳児クラスの標準・短時間）を確かめた。第2子は上の子の在籍先・年齢で半額（上限15,000円）・無料・全額に分かれるので second_child を other にした。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

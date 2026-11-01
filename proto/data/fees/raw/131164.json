@@ -1,0 +1,45 @@
+{
+ "code": "131164",
+ "pref": "東京都",
+ "name": "豊島区",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和7年9月から認可保育施設（認可保育所・認定こども園・地域型保育事業）に在籍する子の基本保育料が無償（第一子無償化。これで0〜2歳も全員無償）。「令和8年度豊島区認可保育施設入園・転園・延長保育利用のしおり」第6章でも同じ記載。無償化の対象は豊島区民（区外から通園する子の保育料は住所地の自治体が決める）。無償は基本保育料のみで、通園送迎費、行事費、延長保育の利用料等は対象外。区立・公設民営の月極延長保育料は月額4,000円（1名あたり）、私立・地域型は各施設が決める。認可保育所・地域型保育事業の食材料費（副食費）は区が負担。",
+ "tax_basis": "6%",
+ "tax_note": "保育料が全員無償のため、所得割による階層は基本保育料に使われない（保育料の表は公開されていない。保育料のページは「現在、情報はありません」）。特別区（政令市ではない）。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2025年9月",
+ "first_child_free_note": "令和7年9月から認可保育施設に在籍する子の保育料について第一子無償化を実施し、認可保育施設に在籍する子の保育料が無償（所得制限なし、豊島区民が対象）。継続在籍の世帯には保育料決定通知を送らない（月極延長保育料を除く）。認可外保育施設利用補助も令和7年9月分から拡充（認証保育所・企業主導型は保育料等の全額、その他認可外は0〜2歳課税世帯で月額80,000円まで等）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から全員無償のため、きょうだいの数え方や所得制限は保育料に関係しない。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "全員無償（第2子と同じ）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料｜豊島区公式ホームページ（基本保育料について、更新日 2025年8月27日）",
+   "url": "https://www.city.toshima.lg.jp/260/kosodate/kosodate/hoikuen/nyuen/hoikuryo/004470.html"
+  },
+  {
+   "label": "保育料の無償化について｜豊島区公式ホームページ（更新日 2025年8月6日）",
+   "url": "https://www.city.toshima.lg.jp/260/kosodate/kosodate/hoikuen/hoikuryo/2507291548.html"
+  },
+  {
+   "label": "令和8年度豊島区認可保育施設入園・転園・延長保育利用のしおり（PDF、第６章 保育料について）",
+   "url": "https://www.city.toshima.lg.jp/documents/1921/r8-nyuuennoshiori.pdf"
+  },
+  {
+   "label": "保育園入園・転園・延長保育利用のしおり｜豊島区公式ホームページ（更新日 2026年10月1日）",
+   "url": "https://www.city.toshima.lg.jp/260/kosodate/kosodate/hoikuen/nyuen/028389.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "下調べの保育料ページと無償化のページ、令和8年度のしおり（第6章）で読んだ。保育料の階層表は公開されていない。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

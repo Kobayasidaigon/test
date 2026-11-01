@@ -39,7 +39,6 @@ const S = {
   kawasakiFee: { label: '川崎市の保育料の目安（第三者サイト・年度不明）', url: 'https://www.seikatsu-guide.com/keyword/2600/14/14130/' },
   kawasakiMed: { label: '川崎市 小児医療費助成の拡大（2026年9月〜）', url: 'https://www.city.kawasaki.jp/450/cmsfiles/contents/0000181/181307/kakujuu.pdf' },
   sagamiFee: { label: '相模原市の保育料の目安（第三者サイト・年度不明）', url: 'https://www.seikatsu-guide.com/keyword/2600/14/14150/' },
-  sagamiMed: { label: '相模原市 医療費助成の拡大（報道）', url: 'https://www.kanaloco.jp/taxonomy/term/1403' },
   osakaFirst: { label: '大阪市 0〜2歳第1子の保育料無償化（2026年9月〜）', url: 'https://www.city.osaka.lg.jp/hodoshiryo/seisakukikakushitsu/0000669117.html' },
   osakaSecond: { label: '大阪市 第2子以降の保育料無償化（報道）', url: 'https://www.bcnretail.com/market/detail/20240225_402969.html' },
   osakaMed: { label: '大阪市 こども医療費助成', url: 'https://www.city.osaka.lg.jp/kodomo/page/0000597952.html' },
@@ -161,7 +160,9 @@ const FIRST_13: City[] = [
       note: '所得割20万円・0歳の第1子の目安。ほかの年収帯ときょうだいの扱いは確認中。',
       sources: [S.sagamiFee],
     },
-    medical: { coversTo: 15, note: '2027年4月から18歳まで広げると報道（見出しのみ確認）', confidence: '推定', sources: [S.sagamiMed] },
+    // 前は「15歳まで（2027年4月から18歳と報道。見出しだけ確認）」としていたが、国の全国調査（令和7年4月1日）では18歳の年度末まで（高校生年代は所得制限あり）。
+    // 市の資料でも2023年12月の条例改正で高校生年代を対象に入れているので、国の調査の値を使う（下の ALL_CITIES で埋める）
+    medical: { coversTo: null, note: '確認中', confidence: '仮置き', sources: [] },
     lunch: { juniorHighFree: null, confidence: '仮置き', sources: [] },
     pride: [
       { label: '宇宙のまち', kind: 'industry', fact: 'JAXAの相模原キャンパスがあり、宇宙のまちとして知られる。', confidence: '推定' },
@@ -226,6 +227,8 @@ const CONF: Confidence[] = ['確認済', '推定', '仮置き']
 const natSources = (idx: number[]) => idx.map((i) => NAT_SOURCES[i])
 const uniqSources = (list: Source[]) => list.filter((s, i) => list.findIndex((x) => x.url === s.url) === i)
 
+// 国の全国調査の医療費助成。今年度（令和8年度）の版でなければ、所得制限がなくても「推定」（制度が年度の途中で変わることがある）
+const MEDICAL_CURRENT = (MEDICAL_META.edition as string) === '令和8年度'
 function nationalMedical(pref: string, name: string): City['medical'] | null {
   const r = MEDICAL[pref + name]
   if (!r) return null
@@ -234,7 +237,7 @@ function nationalMedical(pref: string, name: string): City['medical'] | null {
   return {
     coversTo: tsuin,
     note: `通院は${ageText}${incomeLimit ? '（所得制限あり。年収によっては対象外）' : ''}${copay ? '（一部自己負担あり）' : ''}。${MEDICAL_META.asOf}時点の全国調査${note ? `。${note}` : ''}`,
-    confidence: incomeLimit ? '推定' : '確認済',
+    confidence: incomeLimit || !MEDICAL_CURRENT ? '推定' : '確認済',
     sources: [S.cfaMed],
   }
 }
@@ -260,22 +263,29 @@ function nationalWaitlist(m: Muni): City['waitlist'] {
 }
 
 // 中学校の給食費（表にない街は null のまま＝確認中）
+// 前は無料だったが、今年度も続いているか分からない街（青森県・和歌山県の2024年度からの無償化）は確認中にして、メモに過去の値を書く
 function nationalLunch(code: string): City['lunch'] | null {
   const r = LUNCH[code]
   if (!r) return null
   const [free, conf, asOf, note, src] = r
+  if (free === 2) {
+    return { juniorHighFree: null, confidence: CONF[conf], note: `2024年度から無料になった（${NAT_TEXTS[asOf]}）。2026年度も無料かは確認中なので、計算には入れていません。${NAT_TEXTS[note]}`, sources: natSources(src) }
+  }
   return { juniorHighFree: free === 1, confidence: CONF[conf], note: `${NAT_TEXTS[note]}（時点: ${NAT_TEXTS[asOf]}）`, sources: natSources(src) }
 }
 
 // 移住支援金（表にない街は、iju も ijuCheck も付けない＝準備中）
+// 子どもの加算の額が分からない街（cu）は、加算を額に足さない（calc.ts で「確認中」と出す）
 function nationalIju(code: string): Pick<City, 'iju' | 'ijuCheck'> {
   const r = IJU[code]
   if (!r) return {}
   const sources = natSources(r.src)
-  const note = `${NAT_TEXTS[r.note]}（時点: ${NAT_TEXTS[r.asOf]}）`
+  const body = NAT_TEXTS[r.note], asOf = NAT_TEXTS[r.asOf]
+  // メモに時点がすでに書いてあれば、「（時点: …）」は足さない
+  const note = r.s === 'unknown' || body.includes(asOf.replace(/時点$/, '')) ? `${body.replace(/。$/, '')}。` : `${body}（時点: ${asOf}）`
   if (r.s === 'yes') {
     const cond = r.cn !== undefined ? `子どもの加算は${NAT_TEXTS[r.cn]}。` : ''
-    return { iju: { family: r.f!, perChild: r.c!, ...(r.s1 ? { single: r.s1 } : {}), familyUpTo: !!r.fu, perChildUpTo: !!r.cu, note: `${cond}${note}`, confidence: CONF[r.conf], sources } }
+    return { iju: { family: r.f!, perChild: r.c!, ...(r.s1 ? { single: r.s1 } : {}), familyUpTo: !!r.fu, perChildUpTo: !!r.cu, perChildUnknown: !!r.cu, note: `${cond}${note}`, confidence: CONF[r.conf], sources } }
   }
   return { ijuCheck: { result: r.s, note, confidence: CONF[r.conf], sources } }
 }
@@ -286,16 +296,24 @@ function nationalNursery(code: string, base: City['nursery'], extra: Source[] = 
   if (!r) return null
   const n: City['nursery'] = { ...base, monthly: { ...base.monthly } }
   if (r.ff) Object.assign(n, { firstChildFree: true, secondChild: 'free', thirdChild: 'free' })
-  if (r.ffu && !n.firstChildFree) n.firstFreeUnder = r.ffu
+  if (r.ffu && !n.firstChildFree) {
+    n.firstFreeUnder = r.ffu
+    if (r.ffx) n.firstFreeUnsure = true
+  }
   if (r.sf && n.secondChild !== 'free') {
     n.secondChild = 'free'
     if (r.sfu) n.secondFreeUnder = r.sfu
+    if (r.sfx) n.secondFreeUnsure = true
     if (r.so) n.secondOnly = true
     if (r.sc === 'h') n.secondCount = 'household'
   }
-  if (r.tf && !n.firstChildFree) {
+  // 3人目以降。下地がすでに「同じ世帯の子で数えて3人目0円（所得の条件なし）」（埼玉県）なら、条件つきの制度で狭めない
+  const baseHome = n.thirdChild === 'free' && n.thirdCount === 'household' && n.thirdFreeUnder === undefined
+  if (r.tf && !n.firstChildFree && !baseHome) {
     n.thirdChild = 'free'
     if (r.tc === 'h') n.thirdCount = 'household'
+    if (r.tfu) n.thirdFreeUnder = r.tfu
+    if (r.tfx) n.thirdFreeUnsure = true
   }
   if (r.fa !== undefined && !n.firstChildFree) n.freeFromAge = r.fa
   if (r.cc !== undefined) n.countConfidence = CONF[r.cc]
@@ -329,15 +347,15 @@ const tokyoLunch = (): City['lunch'] => ({
   sources: [S.tokyoLunchAll, S.tokyoLunchR6, S.tokyoLunchR8],
 })
 
-// 段（どこまで分かるか）。くわしい街でなければ、国の基準より先の制度が1つでも分かる街は pref、なければ basic
-// （東京圏の中の街は移住支援金の対象外の街が多いので、移住支援金は「実施」と分かった街だけ数える）
+// 段（どこまで分かるか）。くわしい街でなければ、子育ての制度（国の基準より先の保育料の制度・中学校の給食費・現金の給付）が
+// 1つでも分かる街は pref、なければ basic。移住支援金は23区から移る家族にしか関係しないので、段には数えない
+// （移住支援金が分かる街は、段にかかわらず、結果の「一度きりのお金」に出す）
+export const nurseryKnown = (n: City['nursery']) =>
+  n.firstChildFree || n.firstFreeUnder !== undefined || n.secondChild === 'free' || n.freeFromAge !== undefined ||
+  n.secondCount === 'household' || n.thirdCount === 'household' || Object.keys(n.monthly).length > 0
 export function levelFor(c: City): DataLevel {
   if (c.level === 'detailed') return 'detailed'
-  const n = c.nursery
-  const nursery = n.firstChildFree || n.firstFreeUnder !== undefined || n.secondChild === 'free' || n.freeFromAge !== undefined ||
-    n.secondCount === 'household' || n.thirdCount === 'household' || Object.keys(n.monthly).length > 0
-  const iju = !!c.iju || (c.metro !== 'shutoken' && !!c.ijuCheck)
-  return nursery || !!c.cash || c.lunch.juniorHighFree !== null || iju ? 'pref' : 'basic'
+  return nurseryKnown(c.nursery) || !!c.cash || c.lunch.juniorHighFree !== null ? 'pref' : 'basic'
 }
 
 function buildFromPref(m: Muni): City {
@@ -391,8 +409,9 @@ const FEATURED_BY_CODE = new Map(DETAILED_RAW.map((c) => [c.code!, c]))
 export const ALL_CITIES: City[] = MUNICIPALITIES.map((m) => {
   const f = FEATURED_BY_CODE.get(m.code)
   if (!f) return buildFromPref(m)
-  // くわしい街: 医療費が未確認（または弱い）なら国の全国調査で埋める（神奈川の市は、国の調査より新しい市の情報を優先）
-  const weak = f.medical.coversTo === null || (f.medical.confidence !== '確認済' && f.region !== 'kanagawa')
+  // くわしい街: 医療費が未確認か、市の情報が確認済でなければ、国の全国調査で埋める
+  // （市の情報を国の調査より先に使うのは、確認済のときだけ。相模原市の「15歳まで」は報道の見出しだけだったので、国の調査の18歳にした）
+  const weak = f.medical.coversTo === null || f.medical.confidence !== '確認済'
   const natMed = weak ? nationalMedical(m.pref, m.name) : null
   // 調べたが照合で確かめきれなかった市（coversTo が null で出典つき）は、そのメモと出典を国の調査に添える
   const medical = natMed ? (f.medical.coversTo === null && f.medical.sources.length ? { ...natMed, note: `${natMed.note}。${f.medical.note}`, sources: [...natMed.sources, ...f.medical.sources] } : natMed) : f.medical
@@ -428,5 +447,8 @@ export const NATIONAL_SOURCES: Source[] = [
   S.rentR5,
   { label: WAITLIST_META.label, url: WAITLIST_META.url },
   MEXT_LUNCH_SOURCE,
-  { label: '内閣府 地方創生「移住支援金」（制度のしくみ。実施している市町村は都道府県・市町村の案内から）', url: 'https://www.chisou.go.jp/sousei/ijyu_shienkin.html' },
+]
+// 制度のしくみの説明として見たページ（データを加工していないので、「加工して作成」とは書かない）
+export const REFERENCE_SOURCES: Source[] = [
+  { label: '内閣府 地方創生「移住支援金」（制度のしくみ）', url: 'https://www.chisou.go.jp/sousei/ijyu_shienkin.html' },
 ]

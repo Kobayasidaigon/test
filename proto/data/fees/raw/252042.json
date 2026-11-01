@@ -1,0 +1,53 @@
+{
+  "code": "252042",
+  "pref": "滋賀県",
+  "name": "近江八幡市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「令和8年度 入所のしおり（R8.3.1改定）」p.24の表。4月〜8月分は令和7年度、9月〜翌3月分は令和8年度の市町村民税所得割額で算定。月の初日に在籍していれば登園日数にかかわらずその月分を徴収（日割りなし）。令和9年度の入所のしおり（2026年10月掲載）の表も同じ金額。第2子の保育料無償化は令和8年9月〜令和9年3月の保育料が対象（令和9年4月以降は未定）。",
+  "tax_basis": "6%",
+  "tax_note": "児童と生計を共にしている父母の合計した市町村民税所得割額で決定。配当控除・住宅借入金（取得）等特別控除・政党等寄付金特別控除・住宅耐震改修特別控除・電子証明書等特別控除・寄付金控除・外国税額控除（いずれも税額控除）の控除前の金額を適用。父母の年間収入の合計が103万円未満（令和9年度のしおりでは123万円未満）で父母以外に児童を税の扶養としている親族や同居祖父母等がいる場合は最多所得者で算定。",
+  "table": {
+    "title": "保育料の階層区分（令和8年度 入所のしおり 11．保育料・給食費）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税所得割非課税世帯", "monthly": 13200, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市民税所得割額48,600円未満", "monthly": 14000, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 72800, "condition": "市民税所得割額72,800円未満", "monthly": 19800, "monthly_second": null },
+      { "label": "D2", "lower": 72800, "upper": 97000, "condition": "市民税所得割額97,000円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "D3", "lower": 97000, "upper": 133000, "condition": "市民税所得割額133,000円未満", "monthly": 30800, "monthly_second": null },
+      { "label": "D4", "lower": 133000, "upper": 169000, "condition": "市民税所得割額169,000円未満", "monthly": 35600, "monthly_second": null },
+      { "label": "D5", "lower": 169000, "upper": 213000, "condition": "市民税所得割額213,000円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "D6", "lower": 213000, "upper": 257000, "condition": "市民税所得割額257,000円未満", "monthly": 48800, "monthly_second": null },
+      { "label": "D7", "lower": 257000, "upper": 301000, "condition": "市民税所得割額301,000円未満", "monthly": 52000, "monthly_second": null },
+      { "label": "D8", "lower": 301000, "upper": 397000, "condition": "市民税所得割額397,000円未満", "monthly": 64000, "monthly_second": null },
+      { "label": "D9", "lower": 397000, "upper": null, "condition": "市民税所得割額397,000円以上", "monthly": 78000, "monthly_second": null }
+    ],
+    "notes": "rows は0歳児〜2歳児・保育標準時間の列。表の区分は「〜未満」だけが書かれているので、下限は1つ上の行の上限とした。C1「市民税所得割非課税世帯」は均等割のみ課税の世帯（lower/upper は null、C2 は lower=1）。3歳以上児は無償。表に第2子の別の列はない。保育短時間の月額: A・B 0／C1 13,000／C2 13,800／D1 19,500／D2 22,600／D3 30,300／D4 35,000／D5 43,300／D6 48,000／D7 51,100／D8 62,900／D9 76,700。0〜2歳児の給食費は保育料に含まれる。延長保育料は1日500円・1月10,000円が限度（無償化・第2子無償化の対象外）。しおりに「所得の変動や生活の変動等に伴う保育料の減免制度、また特定の階層による国・県の保育料減免制度があります」とあるが中身は書かれていない。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月0〜78,000円）。0円は生活保護受給世帯（A）と市民税非課税世帯（B）。",
+  "second_child": "free",
+  "second_count": "together",
+  "second_note": "「第2子の保育料無償化について」（2026年9月1日更新）: 子育て世帯の物価高騰による経済的負担軽減のため、令和8年9月から令和9年3月の保育料について、近江八幡市から教育・保育給付認定を受けて同一世帯から特定教育保育施設・特定地域型保育事業を利用する第2子の保育料を無償化（令和9年4月以降は未定）。第1子が認可外保育施設・企業主導型保育施設に通っている場合や保育施設に通っていない場合は対象外。「第2子のカウント方法は保護者等の市町村民税所得割額により異なる場合がある」。延長保育料は対象外。令和8年4〜8月分（と従来の決まり）は、同一世帯から同時に2人以上入所している場合、最も年齢の大きい児童が全額、2人目が半額（算定対象には教育・保育施設に入所している3歳以上児も含み、小学生以上は含まない）。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "しおり: 同一世帯から同時に2人以上入所している場合、3人目以降は無償（就学前で教育・保育施設に入所している子を年齢の大きい順に数える。例: 小学生・4歳児・1歳児なら4歳児が第1子、1歳児が第2子）。3〜5歳児の副食費は所得割の額にかかわらず第3子以降は免除（第3子以降の判定は就学前児童の人数による）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度 入所のしおり(R8.3.1改定) 近江八幡市（p.24〜25 保育料）", "url": "https://www.city.omihachiman.lg.jp/material/files/group/158/nyuushonoshiori20260301.pdf" },
+    { "label": "令和8年度に保育施設の利用を希望する方へ(利用案内・申請書) 近江八幡市（2026年8月3日更新）", "url": "https://www.city.omihachiman.lg.jp/soshiki/youji/riyou/bosyuu/41136.html" },
+    { "label": "第2子の保育料無償化について 近江八幡市（2026年9月1日更新）", "url": "https://www.city.omihachiman.lg.jp/kosodate/mishugaku/3/42494.html" },
+    { "label": "令和9年度 入所のしおり 近江八幡市（同じ金額の表）", "url": "https://www.city.omihachiman.lg.jp/material/files/group/158/2027shiori.pdf" },
+    { "label": "幼児教育・保育の無償化の概要 近江八幡市", "url": "https://www.city.omihachiman.lg.jp/kosodate/mishugaku/3/42536.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は pdftotext -layout で読んだ（0歳児〜2歳児の標準時間・短時間、3歳以上児は「無償」）。区切りは切れ目・重なりなし、月額は階層の順に上がる。第2子無償化は期間限定（令和8年9月〜令和9年3月）なので、令和9年4月以降に半額へ戻る可能性がある。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

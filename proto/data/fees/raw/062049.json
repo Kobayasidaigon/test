@@ -1,0 +1,53 @@
+{
+ "code": "062049",
+ "pref": "山形県",
+ "name": "酒田市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "4〜8月分は令和6年分所得による令和7年度課税、9〜3月分は令和7年分所得による令和8年度課税の市区町村民税（税額控除前所得割額）で算定。児童の年齢は4月1日時点の満年齢（令和8年度は令和5年4月2日以降生まれが3歳児未満）。月の途中の入所・退所は日割り。",
+ "tax_basis": "6%",
+ "tax_note": "保育利用児童の保護者の市町村民税所得割課税額（合計）で判定。「住宅ローン控除」「配当控除」「寄附金控除」などの税額控除前の所得割額を対象とする。自営業や農家などで父母が専従者の場合など、「家計の主宰者」と判断される同居祖父母などの課税状況で決める場合がある。所得割非課税の場合は均等割課税の状態による。政令市ではない。",
+ "table": {
+  "title": "酒田市 保育利用者（２号・３号認定）負担額表（令和8年度保育利用者負担額表）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）、及び中国残留邦人等の円滑な帰国の促進及び永住帰国後の自立の支援に関する法律による支援給付受給世帯", "monthly": 0, "monthly_second": 0},
+   {"label": "B", "lower": null, "upper": null, "condition": "市区町村民税非課税世帯（所得割課税額、均等割課税額ともに非課税）", "monthly": 0, "monthly_second": 0},
+   {"label": "C1", "lower": 0, "upper": 24300, "condition": "均等割課税額のみ課税 又は 所得割課税額 24,300円未満", "monthly": 0, "monthly_second": 0},
+   {"label": "C2", "lower": 24300, "upper": 48600, "condition": "所得割課税額 24,300円以上48,600円未満", "monthly": 0, "monthly_second": 0},
+   {"label": "D1", "lower": 48600, "upper": 72800, "condition": "所得割課税額 48,600円以上72,800円未満", "monthly": 0, "monthly_second": 0},
+   {"label": "D2", "lower": 72800, "upper": 97000, "condition": "所得割課税額 72,800円以上97,000円未満", "monthly": 0, "monthly_second": 0},
+   {"label": "D3", "lower": 97000, "upper": 169000, "condition": "所得割課税額 97,000円以上169,000円未満", "monthly": 22250, "monthly_second": 7410},
+   {"label": "D4", "lower": 169000, "upper": 235000, "condition": "所得割課税額 169,000円以上235,000円未満", "monthly": 44500, "monthly_second": 14830},
+   {"label": "D5", "lower": 235000, "upper": 301000, "condition": "所得割課税額 235,000円以上301,000円未満", "monthly": 49000, "monthly_second": 16330},
+   {"label": "D6", "lower": 301000, "upper": 397000, "condition": "所得割課税額 301,000円以上397,000円未満", "monthly": 51000, "monthly_second": 17000},
+   {"label": "D7", "lower": 397000, "upper": null, "condition": "所得割課税額 397,000円以上", "monthly": 71000, "monthly_second": 23660}
+  ],
+  "notes": "3歳児未満の欄。monthly_second は表の（ ）内の第2子の額（第1子の3分の1）。保育短時間（第1子／第2子）: D3 21,950／7,310、D4 43,700／14,560、D5 48,100／16,030、D6 50,100／16,700、D7 69,700／23,230、A〜D2 は0円。※印: 国の無償化（3歳以上と非課税世帯）に加え、山形県と酒田市の施策（保育料の段階的負担軽減）により令和3年9月分から3歳未満でも市区町村民税税額控除前所得割額97,000円未満の世帯の保育料は無償（B〜D2）。第3子以降は無料。ひとり親世帯等の別の保育料の欄はない（ひとり親世帯等の区分は3歳以上の副食費免除の基準〔所得割77,101円未満〕にだけ使う）。酒田市独自の軽減として、国基準の階層⑥（169,000〜301,000円未満）を D4・D5 に細分化し、国基準61,000円に対し市基準49,000円・44,500円としている（「酒田市の保育料の軽減施策」）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は所得割97,000円未満（D2以下）なら0円（山形県・酒田市の段階的負担軽減、令和3年9月分から）。97,000円以上の世帯は有料。",
+ "second_child": "other",
+ "second_count": "household",
+ "second_note": "第2子は標準額の3分の1（国基準の半額より軽い）。保育料を出すためのきょうだいの範囲は生計を一にしているきょうだい全員で、年齢等の条件はない（きょうだいカウントの第1子の年齢制限なし。上の子が小学生などでも数える）。所得制限の記載なし。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "生計を一にしているきょうだいのうち第3子以降は無料（年齢等の条件なし）。第3子以降の3歳以上児の副食費も所得割額に関わらず全額免除。",
+ "lunch_jh": {
+  "free": false,
+  "note": "令和8年度の中学校給食は1食415円のうち市が110円を助成し、保護者負担は1食305円（改定前と同額。年額60,085円、197回で試算）。小学校給食は令和8年4月分から無償化（国・県の支援月5,200円を超える分を市が負担）。いずれも酒田市立の学校。",
+  "source": {"label": "小学校給食無償化および中学校給食の保護者負担軽減について：酒田市公式ウェブサイト（2026年3月18日更新）", "url": "https://www.city.sakata.lg.jp/kosodate/kyouiku/school/kyuusyokuhikaitei.html"}
+ },
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "利用者負担額（保育料）：酒田市公式ウェブサイト（2026年4月1日更新）", "url": "https://www.city.sakata.lg.jp/kosodate/kosodate/hoikuen/kosodate02202209.html"},
+  {"label": "令和8年度保育利用者負担額表（PDF）", "url": "https://www.city.sakata.lg.jp/kosodate/kosodate/hoikuen/kosodate02202209.files/R08hoikuhutangaku3.pdf"},
+  {"label": "酒田市の保育料の軽減施策（PDF）", "url": "https://www.city.sakata.lg.jp/kosodate/kosodate/hoikuen/kosodate02202209.files/hoikuryoukeigenn.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表は1ページのPDF（文字あり）を pdftotext -layout と画像（pdftoppm）で確かめた。列は 3歳児未満（標準時間・短時間）・3歳児以上（標準時間・短時間）で、3歳未満の各欄の（ ）内が第2子の額。cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

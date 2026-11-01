@@ -1,0 +1,48 @@
+{
+  "code": "182109",
+  "pref": "福井県",
+  "name": "坂井市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "市の「保育園等について」のページ（2026年8月12日更新）に「〇令和8年4月から 保育料基準表1・2・3号」として掲載された表。保育料の切り替え時期は毎年9月で、4〜8月分は前年度の市町村民税額、9月分以降は当年度の市町村民税額により算定。表の月額は年度の途中で変わらない。PDFのファイル名は r7_choushukijunhyou.pdf（作成日2025年5月21日）だが、ページでは令和8年4月からの表として案内されている。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市町村民税所得割額の合算額（住宅取得控除等の特別控除前の課税額）により算定。住民税が未申告の方等は、申告が確認されるまで最大階層（第8階層）で決定。",
+  "table": {
+    "title": "保育料基準表1・2・3号",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護法による支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "市町村民税課税世帯 所得割 48,600円未満（上記以外の世帯）", "monthly": 13000, "monthly_second": null },
+      { "label": "第4-1階層", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満（上記以外の世帯）", "monthly": 21000, "monthly_second": null },
+      { "label": "第4-2階層", "lower": 57700, "upper": 77101, "condition": "57,700円以上 77,101円未満（上記以外の世帯）", "monthly": 21000, "monthly_second": null },
+      { "label": "第4-3階層", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 21000, "monthly_second": null },
+      { "label": "第5階層", "lower": 97000, "upper": 169000, "condition": "97,000円以上 169,000円未満", "monthly": 29000, "monthly_second": null },
+      { "label": "第6階層", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 38000, "monthly_second": null },
+      { "label": "第7階層", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 46000, "monthly_second": null },
+      { "label": "第8階層", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 53000, "monthly_second": null }
+    ],
+    "notes": "rows は3号認定（0〜2歳児クラス、4月1日時点で0〜2歳）・保育標準時間の列。表には第2子の別の列はない（第2子は保育料無償のため monthly_second は null）。保育短時間の月額: 第1・第2階層 0／第3階層 12,800／第4-1・4-2・4-3階層 20,700／第5階層 28,600／第6階層 37,400／第7階層 45,300／第8階層 52,100。ひとり親世帯等（ひとり親世帯〔同居家族がいる場合等対象外となることがある〕、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた者、特別児童扶養手当の支給対象児童・国民年金の障害基礎年金等の受給者を有する世帯。いずれも在宅に限る）は、第3階層・第4-1階層・第4-2階層（所得割77,101円未満）で標準時間・短時間とも月5,900円。第3階層の下限は表に書かれていないが、均等割のみ（所得割0円）の世帯も第3階層に入るとみて lower=0 とした。2号認定（3〜5歳児クラス）・1号認定は保育料0円（給食費は第3〜第4-2階層は免除、第4-3階層以上は実費徴収）。延長保育（公立、午後6時〜7時）は月額2,500円（1回200円）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜53,000円）。0円は生活保護世帯（第1階層）と非課税世帯（第2階層）だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "表の注記: 「第2子は保育料のみ無償です」「入所児童に兄または姉がいる場合、その年齢にかかわらず、人数に応じてカウントします」。上の子の年齢や在園を問わず数える。所得制限は表には書かれていない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "表の注記: 「第3子以降は保育料・給食費ともに無償です」。数え方は第2子と同じ（兄・姉を年齢にかかわらず数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料基準表1・2・3号（PDF：86KB）坂井市（「〇令和8年4月から」として掲載）", "url": "https://www.city.fukui-sakai.lg.jp/hoiku/kosodate/kosodate/hoiku/documents/r7_choushukijunhyou.pdf" },
+    { "label": "保育園等について 坂井市（2026年8月12日更新）", "url": "https://www.city.fukui-sakai.lg.jp/hoiku/kosodate/kosodate/hoiku/hoiku.html" },
+    { "label": "保育料納付期限表（令和8年度）坂井市", "url": "https://www.city.fukui-sakai.lg.jp/hoiku/kosodate/kosodate/hoiku/documents/r8noukigen.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は1ページの文字の取れるPDFで、pdftotext -layout と画像（pdftoppm -r 70）で列の並び（3号の標準時間・短時間、ひとり親世帯等／上記以外の世帯の2段）を確かめた。区切りは切れ目・重なりなし。表のPDF自体には年度の記載がなく、年度は掲載ページの「令和8年4月から」による。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

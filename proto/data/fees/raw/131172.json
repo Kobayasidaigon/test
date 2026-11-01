@@ -1,0 +1,283 @@
+{
+ "code": "131172",
+ "pref": "東京都",
+ "name": "北区",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和7年9月から第1子保育料を無償化し、これで認可保育施設の保育料はクラス・きょうだいの人数・階層に関わらず無償（「保育料について」ページ 2026年10月1日更新）。月ぎめ延長保育料・スポット保育料（時間内・時間外）は無償化の対象外。階層の決定は年2回で、4月分〜8月分は前年度、9月分〜翌年3月分はその年度の区民税所得割額等で決める（延長保育料の算定に使う）。保育料基準額表のPDF自体には年度の記載がない。",
+ "tax_basis": "6%",
+ "tax_note": "各家庭の区民税の所得割額（住宅取得控除等の税額控除適用前）等で階層を決める。父母が区民税非課税かつ父母の収入が生活保護の基準を下回る場合は、祖父母等の同居の親族の区民税所得割額等で決める。特別区（政令市ではない）なので6%のまま。",
+ "table": {
+  "title": "保育料基準額表",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "区民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C",
+    "lower": null,
+    "upper": null,
+    "condition": "区民税均等割のみ世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 44600,
+    "condition": "区市町村民税所得割額 44,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 44600,
+    "upper": 45600,
+    "condition": "区市町村民税所得割額 44,600円～45,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 45600,
+    "upper": 47400,
+    "condition": "区市町村民税所得割額 45,600円～47,400円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 47400,
+    "upper": 55800,
+    "condition": "区市町村民税所得割額 47,400円～55,800円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 55800,
+    "upper": 63600,
+    "condition": "区市町村民税所得割額 55,800円～63,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 63600,
+    "upper": 81600,
+    "condition": "区市町村民税所得割額 63,600円～81,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 81600,
+    "upper": 99600,
+    "condition": "区市町村民税所得割額 81,600円～99,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 99600,
+    "upper": 117600,
+    "condition": "区市町村民税所得割額 99,600円～117,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 117600,
+    "upper": 135600,
+    "condition": "区市町村民税所得割額 117,600円～135,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 135600,
+    "upper": 153600,
+    "condition": "区市町村民税所得割額 135,600円～153,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 153600,
+    "upper": 180600,
+    "condition": "区市町村民税所得割額 153,600円～180,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D12",
+    "lower": 180600,
+    "upper": 206700,
+    "condition": "区市町村民税所得割額 180,600円～206,700円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D13",
+    "lower": 206700,
+    "upper": 228300,
+    "condition": "区市町村民税所得割額 206,700円～228,300円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D14",
+    "lower": 228300,
+    "upper": 249900,
+    "condition": "区市町村民税所得割額 228,300円～249,900円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D15",
+    "lower": 249900,
+    "upper": 271500,
+    "condition": "区市町村民税所得割額 249,900円～271,500円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D16",
+    "lower": 271500,
+    "upper": 293100,
+    "condition": "区市町村民税所得割額 271,500円～293,100円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D17",
+    "lower": 293100,
+    "upper": 314200,
+    "condition": "区市町村民税所得割額 293,100円～314,200円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D18",
+    "lower": 314200,
+    "upper": 328600,
+    "condition": "区市町村民税所得割額 314,200円～328,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D19",
+    "lower": 328600,
+    "upper": 343000,
+    "condition": "区市町村民税所得割額 328,600円～343,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D20",
+    "lower": 343000,
+    "upper": 413200,
+    "condition": "区市町村民税所得割額 343,000円～413,200円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D21",
+    "lower": 413200,
+    "upper": 467200,
+    "condition": "区市町村民税所得割額 413,200円～467,200円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D22",
+    "lower": 467200,
+    "upper": 521200,
+    "condition": "区市町村民税所得割額 467,200円～521,200円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D23",
+    "lower": 521200,
+    "upper": 689600,
+    "condition": "区市町村民税所得割額 521,200円～689,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D24",
+    "lower": 689600,
+    "upper": 889600,
+    "condition": "区市町村民税所得割額 689,600円～889,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D25",
+    "lower": 889600,
+    "upper": 1289600,
+    "condition": "区市町村民税所得割額 889,600円～1,289,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D26",
+    "lower": 1289600,
+    "upper": null,
+    "condition": "区市町村民税所得割額 1,289,600円以上",
+    "monthly": 0,
+    "monthly_second": null
+   }
+  ],
+  "notes": "表は「0〜5歳クラス」の1列だけで「階層・保育必要量にかかわらず0円」（画像のPDFを画像で読んだ）。第2子の別の列はない。区切りは「〜円未満」。D1の下限は表にないが、C（区民税均等割のみ）と分けるため lower=1 とした。月ぎめ延長保育料・スポット保育料は無償化の範囲外で、別の「延長保育料基準額表」（画像のPDF）による。要保護世帯（区民税所得割合算額77,101円未満で、ひとり親・障害者手帳・特別児童扶養手当・障害基礎年金のいずれかに該当）は延長保育料等の扱いに関係する。"
+ },
+ "first_child_free": true,
+ "first_child_free_since": "2025年9月",
+ "first_child_free_note": "東京都の保育料等負担軽減の補助事業の対象拡大を受け、令和7年9月から0〜2歳児クラスの住民税課税世帯の第1子の保育料を無償化（認可保育所・地域型保育事業所・認定こども園の2号・3号、北区外の認可保育施設に通う子も対象、手続き不要）。無償化の範囲は保育必要量の認定で決まった時間内の月額保育料。月ぎめ延長保育料・スポット保育料は対象外。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から全員無償のため、きょうだいの数え方や所得制限は保育料に関係しない（第2子以降は令和7年9月より前から東京都の補助で無償化済み）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から全員無償（第2子と同じ）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料について｜東京都北区（ページ番号1002985、更新日：2026年10月1日）",
+   "url": "https://www.city.kita.lg.jp/children-edu/childcare/1002975/1002976/1002984/1002985.html"
+  },
+  {
+   "label": "保育料基準額表（PDF 281.2KB、画像のPDF）",
+   "url": "https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/002/985/kijungaku-.pdf"
+  },
+  {
+   "label": "第1子保育料の無償化について｜東京都北区（ページ番号1020563、更新日：2026年9月1日）",
+   "url": "https://www.city.kita.lg.jp/children-edu/childcare/1002975/1002976/1002984/1020563.html"
+  },
+  {
+   "label": "第1子保育料の無償化案内及び令和6年度の保育園運営経費（PDF 351.9KB）",
+   "url": "https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/020/563/musyokaannai.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "特別区。下調べ（crawl）の「保育料について」「第1子保育料の無償化について」のページと無償化案内PDFで読んだ。保育料基準額表は文字の取れない画像のPDFだったので、取り直して200dpiの画像で階層の区切り（D1〜D26）を読んだ。全階層0円なので金額の読み違いの心配はない。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

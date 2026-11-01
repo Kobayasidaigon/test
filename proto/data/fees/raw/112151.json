@@ -1,0 +1,243 @@
+{
+  "code": "112151",
+  "pref": "埼玉県",
+  "name": "狭山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料は4〜8月分は前年度、9月〜翌年3月分は当該年度の個人住民税課税額で階層を決める（入所のしおり〔令和8年度用〕p.19）。月額で、登園日数が少なくても減額しない。市外の保育施設に入所しても狭山市の基準で決めるので施設ごとの差はない。月額表は年度を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "こどもの保護者それぞれの前年度又は当該年度の個人住民税課税額（所得割額）の合計。保護者が非課税で祖父母等の同居者が課税の場合は同居者も含める。税額控除（住宅借入金等特別税額控除、寄附金税額控除、配当控除等）は適用せず、税額控除前の税額で算定。表に税率の注記はない。狭山市は政令市ではないので6%とした。",
+  "table": {
+    "title": "４．令和８年度 保育料表（入所のしおり〔令和8年度用〕p.21）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等（※）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市区町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市区町村民税均等割額のみ",
+        "monthly": 7400,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 24300,
+        "condition": "市区町村民税所得割額 24,300円未満",
+        "monthly": 8200,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 24300,
+        "upper": 48600,
+        "condition": "市区町村民税所得割額 48,600円未満",
+        "monthly": 9200,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 48600,
+        "upper": 55700,
+        "condition": "市区町村民税所得割額 55,700円未満",
+        "monthly": 10000,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 55700,
+        "upper": 62800,
+        "condition": "市区町村民税所得割額 62,800円未満",
+        "monthly": 11600,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 62800,
+        "upper": 77101,
+        "condition": "市区町村民税所得割額 77,100円以下",
+        "monthly": 14500,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "市区町村民税所得割額 97,000円未満",
+        "monthly": 19500,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 97000,
+        "upper": 109000,
+        "condition": "市区町村民税所得割額 109,000円未満",
+        "monthly": 26000,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 109000,
+        "upper": 121000,
+        "condition": "市区町村民税所得割額 121,000円未満",
+        "monthly": 32000,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 121000,
+        "upper": 133000,
+        "condition": "市区町村民税所得割額 133,000円未満",
+        "monthly": 36000,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 133000,
+        "upper": 145000,
+        "condition": "市区町村民税所得割額 145,000円未満",
+        "monthly": 39000,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 145000,
+        "upper": 157000,
+        "condition": "市区町村民税所得割額 157,000円未満",
+        "monthly": 41100,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 157000,
+        "upper": 169000,
+        "condition": "市区町村民税所得割額 169,000円未満",
+        "monthly": 43600,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 169000,
+        "upper": 190100,
+        "condition": "市区町村民税所得割額 190,100円未満",
+        "monthly": 47000,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 190100,
+        "upper": 211201,
+        "condition": "市区町村民税所得割額 211,200円以下",
+        "monthly": 49800,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 211201,
+        "upper": 232300,
+        "condition": "市区町村民税所得割額 232,300円未満",
+        "monthly": 51000,
+        "monthly_second": null
+      },
+      {
+        "label": "C17",
+        "lower": 232300,
+        "upper": 253400,
+        "condition": "市区町村民税所得割額 253,400円未満",
+        "monthly": 53500,
+        "monthly_second": null
+      },
+      {
+        "label": "C18",
+        "lower": 253400,
+        "upper": 274500,
+        "condition": "市区町村民税所得割額 274,500円未満",
+        "monthly": 55000,
+        "monthly_second": null
+      },
+      {
+        "label": "C19",
+        "lower": 274500,
+        "upper": 301000,
+        "condition": "市区町村民税所得割額 301,000円未満",
+        "monthly": 56000,
+        "monthly_second": null
+      },
+      {
+        "label": "C20",
+        "lower": 301000,
+        "upper": 349000,
+        "condition": "市区町村民税所得割額 349,000円未満",
+        "monthly": 58000,
+        "monthly_second": null
+      },
+      {
+        "label": "C21",
+        "lower": 349000,
+        "upper": 397000,
+        "condition": "市区町村民税所得割額 397,000円未満",
+        "monthly": 59900,
+        "monthly_second": null
+      },
+      {
+        "label": "C22",
+        "lower": 397000,
+        "upper": null,
+        "condition": "市区町村民税所得割額 397,000円以上",
+        "monthly": 62400,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表の列は 3歳未満児（標準時間・短時間）と3歳以上児（標準時間・短時間）。3歳以上児は全階層0円。表に第2子の列はない（きょうだいの軽減は別に記載）。保育短時間の月額（3歳未満児）: C1 7,200／C2 8,000／C3 9,000／C4 9,800／C5 11,400／C6 14,200／C7 19,100／C8 25,500／C9 31,400／C10 35,300／C11 38,300／C12 40,400／C13 42,800／C14 46,200／C15 48,900／C16 50,100／C17 52,500／C18 54,000／C19 55,000／C20 57,000／C21 58,800／C22 61,300。C2〜C22 は「市区町村民税所得割額」の区分で、表には上限（未満・以下）だけが書かれているので、lower は1つ上の行の upper とした（C2 の lower は C1〔均等割額のみ＝所得割0円〕と分けるため1）。C6（77,100円以下）と C15（211,200円以下）は upper を +1 した。（※）生活保護世帯等とは、生活保護法による被保護世帯（単給世帯を含む）、中国残留邦人等の支援給付受給世帯及び里親。3〜5歳児クラスの給食費は公立で主食費900円・副食費4,500円（年収360万円未満相当世帯と、就学前のこどもから数えて第3子以降は副食費免除）。0〜2歳児クラスは給食費が保育料に含まれる。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月7,400〜62,400円）。0円は生活保護世帯等・市区町村民税非課税世帯（と第3子以降、軽減の対象）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "同じ世帯から保育所・幼稚園・認定こども園・地域型保育事業所・企業主導型保育事業所・特別支援学校幼稚部・児童心理治療施設・児童発達支援・医療型児童発達支援を利用している就学前のこどもが2人以上いる場合、年齢が1番高いこどもを全額、2番目を半額、3番目以降を0円（しおり p.19）。保育料の軽減のページ（更新日2024年3月7日）: 数え方は1号認定児童は小学校3年生まで、2・3号認定児童は小学校就学前児童まで。市町村民税所得割額57,700円未満の世帯は2番目半額・3番目以降0円（国の制度で、上の子の年齢を問わない）。所得割額77,101円未満のひとり親世帯や障がい者（児）のいる世帯は保育料0円（同ページ）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "市の制度: 狭山市在住で、同一世帯に年齢にかかわらず3人以上のお子さんがいる世帯の、保育施設（認可保育所〔園〕・地域型保育事業所・認定こども園〔保育部分〕）の0〜2歳児クラスに在籍している第3子以降の保育料は0円（しおり p.19「狭山市では年齢制限に依らず、世帯で第３子以降の保育料を０円」、保育料の軽減のページ）。所得制限の記載はない。同一世帯は原則同居して生計を共にする世帯（別居でも仕送り等で生計が同じなら認める場合がある）。0〜2歳児は年度当初の4月1日時点で2歳以下の子（年度途中で3歳の誕生日を迎えてから初めて支給認定を受ける場合は対象外）。埼玉県の多子世帯保育料軽減事業費補助金（2分の1）を受けて実施。2024年度から申請書の提出は不要。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "入所のしおり〔令和8年度用〕（PDF、2026年3月更新）p.19〜21「保育料等（利用者負担額）について」「４．令和８年度 保育料表」",
+      "url": "https://www.city.sayama.saitama.jp/kosodate/homeciao/azukeru/hoikusho/downr8.files/R8nyuusyonosiori.pdf"
+    },
+    {
+      "label": "令和8年度入所関係書類 狭山市公式ウェブサイト（更新日2026年9月17日）",
+      "url": "https://www.city.sayama.saitama.jp/kosodate/homeciao/azukeru/hoikusho/downr8.html"
+    },
+    {
+      "label": "保育料の軽減 狭山市公式ウェブサイト（更新日2024年3月7日）",
+      "url": "https://www.city.sayama.saitama.jp/kosodate/homeciao/azukeru/hoikusho/hoikuryoukeigenn.html"
+    },
+    {
+      "label": "保育料 狭山市公式ウェブサイト（更新日2026年5月11日）",
+      "url": "https://www.city.sayama.saitama.jp/kosodate/homeciao/azukeru/hoikusho/hoikuryou.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は文字の取れるPDF（しおり p.21＝PDFの24ページ）を pdftotext で読み、画像にして列の並び（3歳未満児 標準時間/短時間、3歳以上児 標準時間/短時間）を確かめた。月額は階層の順に増えている。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない。「令和8年度学校給食費の改定及び補助について」というページの題名だけ見えた）。",
+  "read_at": "2026-11-01"
+}

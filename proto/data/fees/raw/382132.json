@@ -1,0 +1,53 @@
+{
+  "code": "382132",
+  "pref": "愛媛県",
+  "name": "四国中央市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「令和8年度 保育所等入所(園)の手引き（令和8年10月1日改定）」p.20〜21の「０～２歳児（保育認定）の保育料基準額表」（市の「令和８年度 保育園・認定こども園等の途中入所申込について」ページ、2026年10月20日更新から開ける）。令和8年4月から8月までは令和7年度、9月から令和9年3月までは令和8年度の市民税額（主に市民税所得割額）を基準とする。公立・私立に関わらず市が決定。「保育料について」「軽減措置」の単独PDFも同じ表。",
+  "tax_basis": "6%",
+  "tax_note": "父母それぞれの市民税所得割額を合計した額が基準額。「住宅ローン控除」「寄附金控除」「配当割額・株式等譲渡所得割額控除」「配当控除」「外国税額控除」は適用せず控除前の金額で計算（普通徴収と特別徴収の両方で課税されている場合は合計）。ひとり親世帯で同居親族がいる場合は、保護者の収入状況によって同居親族のうち所得割額が最も高い方を「生計の中心者」とみなして合計することがある。市民税額が不明な世帯は最高階層区分。",
+  "table": {
+    "title": "０～２歳児（保育認定）の保育料基準額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税均等割世帯", "monthly": 14000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市民税所得割 48,600 円未満", "monthly": 17000, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 64700, "condition": "市民税所得割 64,700 円未満", "monthly": 22000, "monthly_second": null },
+      { "label": "D2", "lower": 64700, "upper": 80800, "condition": "市民税所得割 80,800 円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "D3", "lower": 80800, "upper": 97000, "condition": "市民税所得割 97,000 円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "D4", "lower": 97000, "upper": 121000, "condition": "市民税所得割 121,000 円未満", "monthly": 31000, "monthly_second": null },
+      { "label": "D5", "lower": 121000, "upper": 145000, "condition": "市民税所得割 145,000 円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "D6", "lower": 145000, "upper": 169000, "condition": "市民税所得割 169,000 円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "D7", "lower": 169000, "upper": 235000, "condition": "市民税所得割 235,000 円未満", "monthly": 47000, "monthly_second": null },
+      { "label": "D8", "lower": 235000, "upper": 301000, "condition": "市民税所得割 301,000 円未満", "monthly": 54000, "monthly_second": null },
+      { "label": "D9", "lower": 301000, "upper": 397000, "condition": "市民税所得割 397,000 円未満", "monthly": 57000, "monthly_second": null },
+      { "label": "D10", "lower": 397000, "upper": null, "condition": "市民税所得割 397,000 円以上", "monthly": 57000, "monthly_second": null }
+    ],
+    "notes": "rows は0〜2歳児・標準時間の列。表の区分は「〜未満」だけなので下限は1つ上の行の上限とした。C1（均等割世帯）は lower/upper を null、C2 は lower=1。D9 と D10 は同じ額。短時間の月額: A・B 0／C1 13,700／C2 16,700／D1 21,600／D2 25,500／D3 27,500／D4 30,400／D5 36,300／D6 41,200／D7 46,200／D8 53,000／D9・D10 56,000。表に第2子の別の列はない（多子軽減で2人目は半額）。ひとり親世帯等（母子世帯、父子世帯、在宅障がい児（者）のいる世帯等）で C1・C2・D1・D2 のうち所得割77,101円未満は標準時間5,000円・短時間4,900円、2人目以降0円。0〜2歳児クラスの給食費は保育料に含まれる。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月0〜57,000円）。0円は生活保護世帯（A）と市民税非課税世帯（B）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "多子軽減: 小学校就学前の範囲で、保育所や幼稚園等を同時に利用する最年長の子どもから順に2人目は半額。ただし一般世帯のうち C1・C2 と D1 のうち所得割57,700円未満の世帯（ひとり親世帯等は C1・C2・D1・D2 のうち所得割77,101円未満）は年齢制限を撤廃し、子どもの年齢に関わらず生計を一にしている子どものうち最年長から数える（学業等で別居の子は書類で申し出）。ひとり親世帯等（所得割77,101円未満）は2人目以降0円。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "多子軽減: 就学前で保育所や幼稚園等を同時に利用する最年長の子から順に3人目以降は0円（所得割57,700円未満の世帯などは年齢に関わらず数える）。四国中央市独自: 生計を一にする18歳（18歳に達する日以降の最初の3月31日まで）以下の児童が4人以上いる世帯は、年長者から数えて4人目以降の児童も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度 保育所等入所(園)の手引き（令和8年10月1日改定）四国中央市（p.20〜21 保育料）", "url": "https://www.city.shikokuchuo.ehime.jp/uploaded/attachment/34208.pdf" },
+    { "label": "令和８年度 保育園・認定こども園等の途中入所申込について (保育認定2・3号） 四国中央市（2026年10月20日更新）", "url": "https://www.city.shikokuchuo.ehime.jp/site/kosodate/37124.html" },
+    { "label": "保育料について（PDF）四国中央市", "url": "https://www.city.shikokuchuo.ehime.jp/uploaded/attachment/33797.pdf" },
+    { "label": "軽減措置（PDF）四国中央市", "url": "https://www.city.shikokuchuo.ehime.jp/uploaded/attachment/28905.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は pdftotext -layout で読んだ（0〜2歳児の標準時間・短時間の2列）。区切りは切れ目・重なりなし、月額は階層の順に下がらない。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

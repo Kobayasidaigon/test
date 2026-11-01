@@ -1,0 +1,54 @@
+{
+  "code": "114642",
+  "pref": "埼玉県",
+  "name": "杉戸町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料の決定時期は年2回。4月分〜8月分は前年度、9月分〜3月分は当年度の市町村民税所得割額で決定（令和8年度の例: 4〜8月分は令和7年度、9〜3月分は令和8年度の市町村民税所得割額に基づく保育料）。表の金額は年度を通じて同じ。3〜5歳児クラスと0〜2歳児クラスの市町村民税非課税世帯は無償。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の市町村民税の課税状況で算出。住宅借入金等特別控除、配当控除、外国税額控除、寄附金税額控除は適用しない（税額控除前の所得割）。同一住所に祖父母や同居者が住んでいる場合は同居扱いとなり、保護者が町民税非課税の場合は同居者の税額が高い方を算定の対象とする。政令市ではないので6%で判定。",
+  "table": {
+    "title": "利用者負担額表（０歳児から２歳児クラス）※月額 単位：円（保育園等利用の手引き「５ 保育料について」）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第１", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "第２", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第３", "lower": null, "upper": null, "condition": "町民税均等割のみ課税世帯", "monthly": 9800, "monthly_second": null },
+      { "label": "第４", "lower": 1, "upper": 48600, "condition": "町民税所得割額 48,600 円未満", "monthly": 11700, "monthly_second": null },
+      { "label": "第５", "lower": 48600, "upper": 72800, "condition": "町民税所得割額 48,600 円以上 72,800 円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "第６", "lower": 72800, "upper": 97000, "condition": "町民税所得割額 72,800 円以上 97,000 円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "第７", "lower": 97000, "upper": 133000, "condition": "町民税所得割額 97,000 円以上 133,000 円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "第８", "lower": 133000, "upper": 169000, "condition": "町民税所得割額 133,000 円以上 169,000 円未満", "monthly": 36500, "monthly_second": null },
+      { "label": "第９", "lower": 169000, "upper": 235000, "condition": "町民税所得割額 169,000 円以上 235,000 円未満", "monthly": 47500, "monthly_second": null },
+      { "label": "第１０", "lower": 235000, "upper": 301000, "condition": "町民税所得割額 235,000 円以上 301,000 円未満", "monthly": 50500, "monthly_second": null },
+      { "label": "第１１", "lower": 301000, "upper": 397000, "condition": "町民税所得割額 301,000 円以上 397,000 円未満", "monthly": 55600, "monthly_second": null },
+      { "label": "第１２", "lower": 397000, "upper": null, "condition": "町民税所得割額 397,000 円以上", "monthly": 59000, "monthly_second": null }
+    ],
+    "notes": "表の列は「保育標準時間」「保育短時間」。rows は保育標準時間。保育短時間: 第１ 0／第２ 0／第３ 9,800／第４ 11,700／第５ 19,200／第６ 22,700／第７ 32,500／第８ 35,900／第９ 46,700／第１０ 49,700／第１１ 54,700／第１２ 58,000。第2子の別の列はない（第2子は半額、第3子以降は無料の決まりで計算）。ひとり親等の世帯（母子・父子・在宅障害児（者）のいる世帯）の減額後: 第３階層 4,400、第４階層 5,350、所得割48,600円以上77,101円未満（第５・第６階層の一部）9,000。ひとり親等で多子世帯かつ所得割77,101円未満は第2子以降無料。表は保育所・認定こども園・地域型保育で共通（手引きに区別の記載なし）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜59,000円）。0円は生活保護世帯等と町民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "①小学校就学前の範囲に子どもが2人以上いる多子世帯（兄姉年齢要件あり）: 最年長の子を第1子、その下の子を第2子と数え、第2子は半額、第3子以降は無料（杉戸町立幼稚園以外の幼稚園等に通う兄姉は在籍証明書が必要＝上の子も就学前で施設に通っていることが前提）。②市町村民税所得割課税額57,700円未満の多子世帯（兄姉年齢要件なし）: 第2子半額、第3子以降無料。③ひとり親等の世帯で所得割77,101円未満の多子世帯（兄姉年齢要件なし）: 第2子以降無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "⑥杉戸町多子世帯保育料軽減事業（兄姉年齢要件なし）: 保育所等に通っている令和8年4月1日現在3歳未満の児童が世帯の第3子以降に該当する場合は無料（予告なく内容変更・事業終了の場合あり。所得制限の記載なし）。このほか①の就学前カウントでも第3子以降は無料。3〜5歳児の副食費は、就学前の範囲で第3子以降なら免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "杉戸町／保育園の途中入園について（ページID 0007256、更新日2026年3月13日）", "url": "https://www.town.sugito.lg.jp/site/youchien-hoikuen/7256.html" },
+    { "label": "保育園等利用の手引き（PDF、2025.12、令和8年度）4〜6ページ", "url": "https://www.town.sugito.lg.jp/uploaded/attachment/16391.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs はチェック表・請求額内訳書だけで保育料の表はなかった",
+    "令和9年度 保育園新規入所案内 https://www.town.sugito.lg.jp/site/youchien-hoikuen/13126.html （表なし）",
+    "保育所のご案内 https://www.town.sugito.lg.jp/site/youchien-hoikuen/1058.html （表なし）",
+    "下調べで失敗していた https://www.town.sugito.lg.jp/site/youchien-hoikuen/1384.html は404"
+  ],
+  "notes": "「保育園の途中入園について」ページの「保育所等利用の手引き」PDF（令和8年度クラス年齢・令和8年度の保育料切替時期の例を載せた版）で表と軽減を読んだ。第3階層（均等割のみ）は所得割0円なので lower・upper は null、第4階層は lower 1 にした。表の区切りは「以上／未満」。3〜5歳児の副食費は所得割57,700円未満などで免除、主食費はかかる。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

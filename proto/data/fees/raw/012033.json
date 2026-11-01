@@ -1,0 +1,55 @@
+{
+  "code": "012033",
+  "pref": "北海道",
+  "name": "小樽市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "算定に使う課税年度は毎年9月に更新: 令和8年4月〜8月は令和7年度、9月〜令和9年3月は令和8年度の市町村民税に基づく保育料。月額表は令和5年9月の改定後の表で、令和8年度の申込案内にも同じ表が載っている。年度の途中で満3歳になっても同一年度内は3歳未満児の保育料。月の途中の入所・退所は日割（在籍日数/25日、10円未満切り捨て）。",
+  "tax_basis": "6%",
+  "tax_note": "保護者と、保護者と同居している扶養義務者（子どもから見た民法上の扶養義務者で家計の主宰者である者）の市町村民税所得割の合算額。所得割は調整控除以外の税額控除（住宅借入金等特別税額控除、配当控除、寄附金税額控除、外国税額控除、配当割額・株式等譲渡所得割額控除）を差し引く前の額。政令市ではないので6%。",
+  "table": {
+    "title": "保育料金額表【令和５年９月以降】※３歳以上児の保育料は０円（各月初日の３歳未満保育認定子どもの属する世帯の階層区分）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B1", "lower": null, "upper": null, "condition": "A階層を除き、要保護者等で当該年度分（4月から8月までにあっては、前年度分）の市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B2", "lower": null, "upper": null, "condition": "A階層及びB1階層を除き、当該年度分（4月から8月までにあっては、前年度分）の市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": 0, "upper": 48600, "condition": "48,600円未満（均等割課税含む）", "monthly": 11000, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 67000, "condition": "48,600円以上67,000円未満", "monthly": 15600, "monthly_second": null },
+      { "label": "D2", "lower": 67000, "upper": 97000, "condition": "67,000円以上97,000円未満", "monthly": 22500, "monthly_second": null },
+      { "label": "D3", "lower": 97000, "upper": 140000, "condition": "97,000円以上140,000円未満", "monthly": 30200, "monthly_second": null },
+      { "label": "D4", "lower": 140000, "upper": 169000, "condition": "140,000円以上169,000円未満", "monthly": 39500, "monthly_second": null },
+      { "label": "D5", "lower": 169000, "upper": 254000, "condition": "169,000円以上254,000円未満", "monthly": 45800, "monthly_second": null },
+      { "label": "D6", "lower": 254000, "upper": 301000, "condition": "254,000円以上301,000円未満", "monthly": 53700, "monthly_second": null },
+      { "label": "D7", "lower": 301000, "upper": 341000, "condition": "301,000円以上341,000円未満", "monthly": 60100, "monthly_second": null },
+      { "label": "D8", "lower": 341000, "upper": 397000, "condition": "341,000円以上397,000円未満", "monthly": 65400, "monthly_second": null },
+      { "label": "D9", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 75800, "monthly_second": null }
+    ],
+    "notes": "D1〜D9 は「A階層及びB階層を除き、市町村民税所得割合算額が次の区分に該当する世帯」。C は均等割のみの課税世帯も含む（所得割0円を含むので lower=0）。認可保育所・認定こども園（保育部分）・家庭的保育事業等を利用する0歳〜2歳クラスの児童の世帯内第1子目の保育料。保育短時間認定（月額）: A 0／B1 0／B2 0／C 10,800／D1 15,300／D2 22,100／D3 29,600／D4 38,800／D5 44,900／D6 52,700／D7 58,900／D8 64,200／D9 74,500。ひとり親世帯等（標準時間／短時間）: C* 48,600円未満（均等割課税含む）3,200／3,100、D1* 48,600円以上67,000円未満 4,400／4,300、D2* 67,000円以上77,101円未満 4,400／4,300（ひとり親世帯等で77,101円〜96,999円は D2）。第2子目以降は無料なので第2子の列はない。月の途中の入退所は日割。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳クラスの世帯内第1子目は有料（標準時間で月11,000〜75,800円）。0円は生活保護世帯・市町村民税非課税世帯。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "「同一世帯に子どもが2人以上いる世帯は、世帯の収入や子どもの年齢に関わらず、世帯の中で年齢の高い順に数え、第2子目以降の保育料は無料（北海道と小樽市独自施策による多子軽減）」。令和5年9月分から、それまでの世帯内第3子以降無料を第2子目以降に広げた。上の子の年齢の上限・同時在園の要件・所得制限なし。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子目以降が無料なので第3子以降も無料（世帯の中で年齢の高い順に数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所等利用申込みの御案内（利用希望日：令和8年5月〜令和9年4月の方向け、令和8年4月1日発行・令和8年9月1日改訂）PDF「4 保育料（3歳未満児）」「保育料金額表」", "url": "https://www.city.otaru.lg.jp/docs/2020111000414/file_contents/0809.pdf" },
+    { "label": "保育料新料金表（新）※令和5年9月より PDF", "url": "https://www.city.otaru.lg.jp/docs/2021032200068/file_contents/shinhoikuryou_ichiran.pdf" },
+    { "label": "保育料について | 小樽市（更新日 2023年12月28日）", "url": "https://www.city.otaru.lg.jp/docs/2021032200068/" },
+    { "label": "保育所・幼稚園等の利用について | 小樽市", "url": "https://www.city.otaru.lg.jp/docs/2020111000414/" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）の候補文書には保育料表がなかった（量の見込み・選考基準表など）",
+    "下調べの pages の「保育所・幼稚園等の利用について」の HTML から「保育料について」と申込案内 PDF のリンクを拾った"
+  ],
+  "notes": "表の題名は「令和5年9月以降」だが、令和8年度の申込案内（令和8年9月1日改訂）に同じ表がそのまま載っているので、令和8年度に使われている表として確認済にした。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

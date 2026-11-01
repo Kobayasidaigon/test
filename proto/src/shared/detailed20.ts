@@ -10,6 +10,7 @@
 // このファイルは、取り込みのあとは手で直して使う（作り直すためのスクリプトは置いていない）。2026年11月1日の検証のあとに手で直したこと:
 //   - きょうだいの数え方（secondCount・thirdCount・countConfidence）を材料の文から入れた（上の子の年齢や、園に通っているかを問わずに数える市）
 //   - 名物の説明から、会社名・商品名・キャラクター名を外した。神戸市の有馬温泉は「神戸市北区」と書いた
+//   - 画面に出るメモと出典の名前から、調べた作業の言葉（照合・収集・要約）を除き、「確かめきれていない」「はじめの調べでは」「未確認」と書き直した（意味は変えていない）
 import type { City } from './types'
 
 type Detailed = Omit<City, 'kana' | 'lat' | 'lng' | 'url' | 'phrase' | 'rent' | 'care'>
@@ -39,8 +40,8 @@ export const DETAILED_20: Detailed[] = [
         { label: 'さいたま市 多子世帯利用者負担額（保育料）無償化支援事業（第3子以降0〜2歳の保育料免除）', url: 'https://www.city.saitama.lg.jp/003/001/015/001/p045608.html' },
         { label: 'さいたま市 多子世帯の保育料免除に関する要綱（PDF）', url: 'https://www.city.saitama.lg.jp/003/001/015/001/p045608_d/fil/youkou.pdf' },
         { label: 'さいたま市 幼児教育・保育の無償化の全体像（3歳未満は非課税世帯のみ無料、その他は所得に応じて負担）', url: 'https://www.city.saitama.lg.jp/003/001/009/p061807.html' },
-        { label: 'さいたま市 子ども・子育て支援新制度における利用者負担額について（保育料の案内。表の数値は要約で確認できず）', url: 'https://www.city.saitama.lg.jp/003/001/015/001/p042312.html' },
-        { label: 'さいたま市 特定教育・保育施設等利用者負担額（保育料）について（PDF・南区掲載。表の数値は要約で確認できず）', url: 'https://www.city.saitama.lg.jp/minami/001/002/003/003/p123780_d/fil/riyousyafutanngaku.pdf' },
+        { label: 'さいたま市 子ども・子育て支援新制度における利用者負担額について（保育料の案内。表の数値は未確認）', url: 'https://www.city.saitama.lg.jp/003/001/015/001/p042312.html' },
+        { label: 'さいたま市 特定教育・保育施設等利用者負担額（保育料）について（PDF・南区掲載。表の数値は未確認）', url: 'https://www.city.saitama.lg.jp/minami/001/002/003/003/p123780_d/fil/riyousyafutanngaku.pdf' },
         { label: 'さいたま市 保育施設等の利用案内（第3子以降3歳未満の保育料免除、県の多子世帯保育料無償化支援事業を活用）', url: 'https://www.city.saitama.lg.jp/003/001/015/001/index.html' },
         { label: 'さいたま市 保育料を定める規則の別表（市町村民税所得割額の定義）', url: 'https://www.city.saitama.lg.jp/006/011/004/kisoku/0807-09/p132844_d/fil/kisoku_83.pdf' },
       ],
@@ -159,7 +160,7 @@ export const DETAILED_20: Detailed[] = [
       monthly: {},
       fiscalYear: '令和8年度（月額表は未確認。多子軽減は令和4年度の市の表）',
       confidence: '推定',
-      note: '第1子の市独自の無償化は見つからなかった（推定）。第2子は半額、第3子以降は0円（令和4年度の市の表。照合でも同じ表を確認）。第3子以降は、埼玉県の事業で上の子の年齢を問わず0円。令和8年度の月額表は確認中。',
+      note: '第1子の市独自の無償化は見つからなかった（推定）。第2子は半額、第3子以降は0円（令和4年度の市の表）。第3子以降は、埼玉県の事業で上の子の年齢を問わず0円。令和8年度の月額表は確認中。',
       sources: [
         { label: '埼玉県議会 第3子以降の保育料無償化（63市町村）', url: 'https://www.pref.saitama.lg.jp/e1601/gikai-gaiyou/r0509/4/k0210.html' },
         { label: '越谷市 保育施設の案内（保育所・保育園・認定こども園・地域型保育）', url: 'https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/hoikusho/nyusyo.html' },
@@ -280,7 +281,7 @@ export const DETAILED_20: Detailed[] = [
       },
       fiscalYear: '令和8年度（月額は令和元年10月以降の基準額表）',
       confidence: '推定',
-      note: '第1子に市独自の無償化はない。月額は「令和元年10月以降」の基準額表の一部の行から読んだ値で、年収600〜800万円の帯だけ（令和8年度も同じかは未確認）。第2子は、市の独自の扱いは確認中。国の基準で計算（同時に通う2人目は半額）。第3子以降は、上の子の年齢を問わず0円（埼玉県の事業。市のページでは照合で確かめきれなかった）。',
+      note: '第1子に市独自の無償化はない。月額は「令和元年10月以降」の基準額表の一部の行から読んだ値で、年収600〜800万円の帯だけ（令和8年度も同じかは未確認）。第2子は、市の独自の扱いは確認中。国の基準で計算（同時に通う2人目は半額）。第3子以降は、上の子の年齢を問わず0円（埼玉県の事業。市のページでは確かめきれていない）。',
       sources: [
         { label: '埼玉県議会 第3子以降の保育料無償化（63市町村）', url: 'https://www.pref.saitama.lg.jp/e1601/gikai-gaiyou/r0509/4/k0210.html' },
         { label: '所沢市 保育料について', url: 'https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/hoikuryounituite.html' },
@@ -290,10 +291,10 @@ export const DETAILED_20: Detailed[] = [
     },
     medical: {
       coversTo: null,
-      note: '市のページの「18歳の年度末まで・所得制限なし」は、照合で確かめきれなかった',
+      note: '市のページの「18歳の年度末まで・所得制限なし」は、まだ確かめきれていない',
       confidence: '仮置き',
       sources: [
-        { label: '所沢市 子ども医療費助成制度について（収集担当の検索で出た公式ページ。照合では未確認）', url: 'https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/kosodate/kodomonoteate/iryohijyosei/kodomoiryojoseihoho.html' },
+        { label: '所沢市 子ども医療費助成制度について（中身はまだ確かめきれていない）', url: 'https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/kosodate/kodomonoteate/iryohijyosei/kodomoiryojoseihoho.html' },
       ],
     },
     lunch: {
@@ -405,12 +406,12 @@ export const DETAILED_20: Detailed[] = [
       sources: [
         { label: '保育料のきょうだい軽減 - 船橋市（第2子半額・第3子以降無料、D7の例）', url: 'https://www.city.funabashi.lg.jp/kodomo/hoiku/002/p004538.html' },
         { label: '保育料表について - 船橋市', url: 'https://www.city.funabashi.lg.jp/kodomo/hoiku/002/hoikuryouhyou.html' },
-        { label: '船橋市 保育料表（標準時間）PDF 令和6年9月更新（照合では数値を確認できず）', url: 'https://www.city.funabashi.lg.jp/kodomo/hoiku/002/hoikuryouhyou_d/fil/hyoujunhoikuryou.pdf' },
+        { label: '船橋市 保育料表（標準時間）PDF 令和6年9月更新（数値は未確認）', url: 'https://www.city.funabashi.lg.jp/kodomo/hoiku/002/hoikuryouhyou_d/fil/hyoujunhoikuryou.pdf' },
       ],
     },
     medical: {
       coversTo: null,
-      note: '市のFAQでは、自己負担は1回300円か0円で、課税のぐあいで決まる。対象の年齢は照合で確かめきれなかった',
+      note: '市のFAQでは、自己負担は1回300円か0円で、課税のぐあいで決まる。対象の年齢は、まだ確かめきれていない',
       confidence: '仮置き',
       sources: [
         { label: '子ども医療費助成制度 - 船橋市', url: 'https://www.city.funabashi.lg.jp/kodomo/teate/002/p004273a.html' },
@@ -420,7 +421,7 @@ export const DETAILED_20: Detailed[] = [
     lunch: {
       juniorHighFree: false,
       confidence: '推定',
-      note: '中学校で0円になるのは第3子以降だけ（申請が必要）。照合では本文を読み直せていない。',
+      note: '中学校で0円になるのは第3子以降だけ（申請が必要）。市のページの本文は、あとから確かめ直せていない。',
       sources: [
         { label: '第3子以降の学校給食費無償化について｜船橋市公式ホームページ', url: 'https://www.city.funabashi.lg.jp/kodomo/gakkou/002/p108585.html' },
         { label: '令和8年度 船橋市第3子以降の学校給食費無償化制度について（PDF）', url: 'https://www.city.funabashi.lg.jp/kodomo/gakkou/002/p108585_d/fil/musyoukaseido.pdf' },
@@ -590,7 +591,7 @@ export const DETAILED_20: Detailed[] = [
     },
     medical: {
       coversTo: null,
-      note: '市のページの「通院1回200円、6回目から0円」などは、照合で確かめきれなかった',
+      note: '市のページの「通院1回200円、6回目から0円」などは、まだ確かめきれていない',
       confidence: '仮置き',
       sources: [
         { label: '子ども医療費の助成｜流山市', url: 'https://www.city.nagareyama.chiba.jp/1000011/1012585/1012614.html' },
@@ -600,7 +601,7 @@ export const DETAILED_20: Detailed[] = [
     lunch: {
       juniorHighFree: null,
       confidence: '仮置き',
-      note: '中学校の給食費は照合で確かめきれず確認中（収集では、0円になるのは第3子以降だけ）。',
+      note: '中学校の給食費は確かめきれず確認中（はじめの調べでは、0円になるのは第3子以降だけ）。',
       sources: [
         { label: '学校給食費｜流山市', url: 'https://www.city.nagareyama.chiba.jp/life/1001300/1001301/1029637/1030115.html' },
       ],
@@ -728,7 +729,7 @@ export const DETAILED_20: Detailed[] = [
     lunch: {
       juniorHighFree: false,
       confidence: '推定',
-      note: '中学校は国の無償化の対象外（1食330円は比較サイトの値。照合では確かめ直していない）。',
+      note: '中学校は国の無償化の対象外（1食330円は比較サイトの値）。',
       sources: [
         { label: '藤沢市立中学校給食のあり方について（2026年2月 藤沢市教育委員会）', url: 'https://www.city.fujisawa.kanagawa.jp/documents/35727/20260309171340.pdf' },
         { label: '神奈川県の給食費｜主要5市を比較【2026】', url: 'https://art-pi.com/kanagawa-kyushokuhi-major-cities/' },
@@ -934,7 +935,7 @@ export const DETAILED_20: Detailed[] = [
     lunch: {
       juniorHighFree: null,
       confidence: '仮置き',
-      note: '収集では2024年4月から無償とされたが、照合で確かめきれず確認中。',
+      note: 'はじめの調べでは2024年4月から無償とされたが、確かめきれず確認中。',
       sources: [
         { label: '調布市 市立小・中学校給食費の無償化', url: 'https://www.city.chofu.lg.jp/100020/p055116.html' },
         { label: '市報ちょうふ 令和6年4月5日号', url: 'https://www.city.chofu.lg.jp/documents/11564/s240405_05.pdf' },
@@ -1157,7 +1158,7 @@ export const DETAILED_20: Detailed[] = [
       monthly: {},
       fiscalYear: '令和8年度（表の年度は未確認）',
       confidence: '推定',
-      note: '第1子の市独自の無償化はない。第2子は半額、第3子以降は0円（第2子も0円とする民間サイトがあり、食い違いは未解決）。月額は照合で確かめきれず確認中。',
+      note: '第1子の市独自の無償化はない。第2子は半額、第3子以降は0円（第2子も0円とする民間サイトがあり、食い違いは未解決）。月額は確かめきれず確認中。',
       sources: [
         { label: '西宮市ホームページ：利用者負担額（保育料）について', url: 'https://www.nishi.or.jp/kosodate/hoikujo/hoikujo/riyofutan/h29riyofutan.html' },
         { label: '生活ガイド.com：西宮市の「保育園」関連データ（民間。第2子半額・第3子以降無償の記載）', url: 'https://www.seikatsu-guide.com/keyword/2300/28/28204/' },
@@ -1222,7 +1223,7 @@ export const DETAILED_20: Detailed[] = [
       monthly: {},
       fiscalYear: '令和8年度',
       confidence: '確認済',
-      note: '第1子の市独自の無償化はない。第2子は半額、第3子以降は0円（すべての世帯。市公式）。きょうだいは、上の子が園に通っていなくても数える（民間サイトの解説）。第1子の月額は照合で確かめきれず確認中。',
+      note: '第1子の市独自の無償化はない。第2子は半額、第3子以降は0円（すべての世帯。市公式）。きょうだいは、上の子が園に通っていなくても数える（民間サイトの解説）。第1子の月額は確かめきれず確認中。',
       sources: [
         { label: '神戸市：保育認定を受けた子どもに係る利用者負担額（保育料）', url: 'https://www.city.kobe.lg.jp/a65174/kosodate/shien/shinseido/riyomoshikomi/riyoshafutangaku.html' },
         { label: '計算ナビ（民間）：神戸市の保育料計算ツール', url: 'https://keisan-navi.jp/hoikuryo-keisan/kobeshi/' },
@@ -1243,7 +1244,7 @@ export const DETAILED_20: Detailed[] = [
     lunch: {
       juniorHighFree: null,
       confidence: '仮置き',
-      note: '照合で確かめきれず確認中（収集では1食170円の保護者負担があり、無料ではないとされた）。',
+      note: '確かめきれず確認中（はじめの調べでは1食170円の保護者負担があり、無料ではないとされた）。',
       sources: [
         { label: '神戸市FAQ：給食費の額はいくらですか？', url: 'https://faq.city.kobe.lg.jp/faq/show/3603?site_domain=default' },
         { label: '神戸市：「神戸市学校給食費の管理に関する条例施行規則の一部改正」の意見公募', url: 'https://www.city.kobe.lg.jp/a54017/kosodate/gakko/school/lunch/koukaikeika/kyushokuhijoureikaisei.html' },

@@ -1,0 +1,57 @@
+{
+  "code": "152102",
+  "pref": "新潟県",
+  "name": "十日町市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月〜8月分は令和7年度の市民税所得割額（令和6年分の所得に基づく課税額）、9月〜3月分は令和8年度の市民税所得割額（令和7年分の所得に基づく課税額）で算定し、「4〜8月、9〜3月で保育料が変わります」（令和8年度入園ガイド p.7）。料金表（月額）は年度を通じて同じ。住民税額が確定していない保護者がいる世帯は最高額で決定。",
+  "tax_basis": "6%",
+  "tax_note": "児童の保護者それぞれの市民税所得割額の合算で算定。「市民税所得割額・・・調整控除以外の税額控除適用前の金額」（住宅借入金等特別控除などの税額控除は引かない）。家庭状況によっては児童と生計を同一にする世帯員（祖父母など）の課税額で算定する場合がある（家計の主宰者の認定）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "7 0歳児〜2歳児（3号認定） 保育料基準額",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "住民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3B", "lower": 0, "upper": 24000, "condition": "所得割課税額 24,000円未満（A以外の世帯）", "monthly": 9700, "monthly_second": null },
+      { "label": "4B", "lower": 24000, "upper": 30000, "condition": "所得割課税額 24,000円以上30,000円未満（A以外の世帯）", "monthly": 12200, "monthly_second": null },
+      { "label": "5B", "lower": 30000, "upper": 48600, "condition": "所得割課税額 30,000円以上48,600円未満（A以外の世帯）", "monthly": 14500, "monthly_second": null },
+      { "label": "6B", "lower": 48600, "upper": 60000, "condition": "所得割課税額 48,600円以上60,000円未満（A以外の世帯）", "monthly": 18100, "monthly_second": null },
+      { "label": "7B", "lower": 60000, "upper": 77101, "condition": "所得割課税額 60,000円以上77,101円未満（A以外の世帯）", "monthly": 21200, "monthly_second": null },
+      { "label": "8", "lower": 77101, "upper": 80000, "condition": "所得割課税額 77,101円以上80,000円未満", "monthly": 21200, "monthly_second": null },
+      { "label": "9", "lower": 80000, "upper": 97000, "condition": "所得割課税額 80,000円以上97,000円未満", "monthly": 24500, "monthly_second": null },
+      { "label": "10", "lower": 97000, "upper": 110000, "condition": "所得割課税額 97,000円以上110,000円未満", "monthly": 27100, "monthly_second": null },
+      { "label": "11", "lower": 110000, "upper": 135000, "condition": "所得割課税額 110,000円以上135,000円未満", "monthly": 31300, "monthly_second": null },
+      { "label": "12", "lower": 135000, "upper": 169000, "condition": "所得割課税額 135,000円以上169,000円未満", "monthly": 34500, "monthly_second": null },
+      { "label": "13", "lower": 169000, "upper": 260000, "condition": "所得割課税額 169,000円以上260,000円未満", "monthly": 36500, "monthly_second": null },
+      { "label": "14", "lower": 260000, "upper": 301000, "condition": "所得割課税額 260,000円以上301,000円未満", "monthly": 37800, "monthly_second": null },
+      { "label": "15", "lower": 301000, "upper": null, "condition": "所得割課税額 301,000円以上", "monthly": 38200, "monthly_second": null }
+    ],
+    "notes": "rows は「徴収基準額（月額）標準」の列（保育標準時間認定）。3〜7階層は A（ひとり親家庭や障がい者を有する世帯）と B（A以外の世帯）に分かれており、rows には B を入れた。A の標準／短時間: 3A 2,700／2,600、4A 3,500／3,400、5A 4,200／4,100、6A 5,600／5,500、7A 6,600／6,500（A は第2子から無料）。3B は2階層が住民税非課税なので均等割のみ（所得割0円）を含むとして lower=0。短時間（保育短時間認定）: 3B 9,500、4B 11,900、5B 14,200、6B 17,700、7B 20,800、8 20,800、9 24,000、10 26,600、11 30,700、12 33,900、13 35,800、14 37,100、15 37,500。第2子の額は別の列にはなく「2人目は基準額の半額」。3号認定の副食費は保育料に含まれる。3〜5歳（1号・2号）と3号のうち住民税非課税世帯は無料。市のページ「十日町市保育料徴収基準額表」（更新日2024年4月1日）も同じ額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児（3号認定）の第1子は有料（標準時間で月0〜38,200円）。0円は生活保護世帯と住民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "①きょうだい同時通園（複数通園）: きょうだいが2人以上入園している場合、通園しているお子さんから1人目、2人目と数え、2人目は基準額の半額（所得制限なし）。②年収約360万円未満世帯（父母の市民税所得割額の合計が57,700円未満、障がい者世帯等は77,101円未満）: 年齢に関係なく、生計が同一の最年長のお子さんから数えて2人目は半額。ひとり親世帯・障がい者手帳等をお持ちの人が同一世帯（住民票が同一）にいる世帯で階層3A〜7Aに該当する場合は第2子から無料（添付書類の提出が必要）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "①同時通園で3人目以降は無料。②所得割57,700円未満の世帯は年齢に関係なく数えて3人目以降は無料。③市独自軽減: 18歳以下のお子さんが3人以上いて、そのうち3人目以降のお子さんが入園した場合、入園児童の保育料は無料（所得制限の記載なし、手続き不要。上の子が通園していなくても18歳以下なら数える）。第3子以降の副食費も免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度入園ガイド（2025年9月30日作成）p.6「6 保育料について」・p.7「7 0歳児〜2歳児（3号認定）保育料基準額」・p.8「保育料の減免」", "url": "https://www.city.tokamachi.lg.jp/material/files/group/12/R8nyuuenngaido.pdf" },
+    { "label": "十日町市保育料徴収基準額表／十日町市（更新日2024年4月1日）", "url": "https://www.city.tokamachi.lg.jp/kosodate_kyoiku/kosodate/hoikuen_ninteikodomoen/2975.html" },
+    { "label": "令和8年度認定こども園・保育園入園手続き／十日町市", "url": "https://www.city.tokamachi.lg.jp/kosodate_kyoiku/kosodate/hoikuen_ninteikodomoen/10741.html" },
+    { "label": "幼児教育・保育の無償化について／十日町市（更新日2026年10月1日）", "url": "https://www.city.tokamachi.lg.jp/kosodate_kyoiku/kosodate/hoikuen_ninteikodomoen/2993.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）の docs には保育料の文書がなかった（介護保険のページだけ）。下調べで見つかっていた「保育園・認定こども園（幼稚園）」の一覧ページを開き、「十日町市保育料徴収基準額表」と「令和8年度認定こども園・保育園入園手続き」をたどった",
+    "令和8年度入園ガイド（PDF）の p.7 を pdftoppm で画像にして、標準／短時間の列と A・B の行を確かめた"
+  ],
+  "notes": "中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,62 @@
+{
+ "code": "012246",
+ "pref": "北海道",
+ "name": "千歳市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "表は「千歳市 教育・保育施設等利用ガイドブック【令和９年度第１版】（令和８年９月発行）」p.28 の「（２）２・３号認定子どもの保育料（月額）及び副食費」（表に年度の記載はない）。ガイドブックは「市内認可保育施設を利用する第２子以降の保育料無償化を令和８年９月の保育料改定から実施しています」と書いており、表の第2子はすべて0円なので、令和8年9月分からの今の表と読んだ（第1子の額は9月の改定で変わったという記載はない）。4月から8月分の保育料は前年度分、9月から翌年3月分は当年度分の市民税の額で階層区分を決める。0〜2歳児は年度の初日の前日（3月31日）の年齢。入園日は各月1日・16日、退園日は15日・末日で、16日入園・15日退園の月は半額。",
+ "tax_basis": "6%",
+ "tax_note": "所得割を計算する場合には、寄附金税額控除、外国税額控除、配当所得控除、住宅借入金等特別税額控除を適用しない（所得割額にその額〔調整控除額を除く〕を加えた額が保育料算定税額）。政令指定都市で課税されている方は旧税率（6%）で算出した所得割額を使う。市町村民税の減免を受けている場合は減免後の額。政令市ではないので6%の税率のまま。",
+ "table": {
+  "title": "（２）２・３号認定子どもの保育料（月額）及び副食費",
+  "kind": "3号認定子ども・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "被保護世帯、支援給付受給世帯又は里親世帯", "monthly": 0, "monthly_second": 0},
+   {"label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": 0},
+   {"label": "C1", "lower": null, "upper": null, "condition": "市民税均等割のみ", "monthly": 11600, "monthly_second": 0},
+   {"label": "C2", "lower": 1, "upper": 24300, "condition": "市民税の所得割額 24,300円未満", "monthly": 13100, "monthly_second": 0},
+   {"label": "C3", "lower": 24300, "upper": 48600, "condition": "48,600円未満", "monthly": 14300, "monthly_second": 0},
+   {"label": "D1", "lower": 48600, "upper": 57700, "condition": "57,700円未満", "monthly": 19300, "monthly_second": 0},
+   {"label": "D1", "lower": 57700, "upper": 60700, "condition": "60,700円未満", "monthly": 19300, "monthly_second": 0},
+   {"label": "D2", "lower": 60700, "upper": 72800, "condition": "72,800円未満", "monthly": 21200, "monthly_second": 0},
+   {"label": "D3", "lower": 72800, "upper": 84900, "condition": "84,900円未満", "monthly": 23100, "monthly_second": 0},
+   {"label": "D4", "lower": 84900, "upper": 97000, "condition": "97,000円未満", "monthly": 25000, "monthly_second": 0},
+   {"label": "D5", "lower": 97000, "upper": 111000, "condition": "111,000円未満", "monthly": 30000, "monthly_second": 0},
+   {"label": "D6", "lower": 111000, "upper": 125000, "condition": "125,000円未満", "monthly": 33200, "monthly_second": 0},
+   {"label": "D7", "lower": 125000, "upper": 139000, "condition": "139,000円未満", "monthly": 36300, "monthly_second": 0},
+   {"label": "D8", "lower": 139000, "upper": 153000, "condition": "153,000円未満", "monthly": 39600, "monthly_second": 0},
+   {"label": "D9", "lower": 153000, "upper": 169000, "condition": "169,000円未満", "monthly": 42800, "monthly_second": 0},
+   {"label": "D10", "lower": 169000, "upper": 213000, "condition": "213,000円未満", "monthly": 47400, "monthly_second": 0},
+   {"label": "D11", "lower": 213000, "upper": 257000, "condition": "257,000円未満", "monthly": 50700, "monthly_second": 0},
+   {"label": "D12", "lower": 257000, "upper": 301000, "condition": "301,000円未満", "monthly": 54000, "monthly_second": 0},
+   {"label": "D13", "lower": 301000, "upper": 349000, "condition": "349,000円未満", "monthly": 57400, "monthly_second": 0},
+   {"label": "D14", "lower": 349000, "upper": 397000, "condition": "397,000円未満", "monthly": 60700, "monthly_second": 0},
+   {"label": "D15", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 68600, "monthly_second": 0}
+  ],
+  "notes": "3号認定子どもの列は「多子区分（第1子・第2子）× 保育料（標準時間・短時間）」。第2子（以降）はすべて0円。D1 は表で「57,700円未満」「60,700円未満」の2行（同額、副食費・年齢制限の扱いが違う）なのでそのまま2行にした。区分は「◯円未満」だけなので lower は1つ上の行の上限（C2 は均等割のみと分けるため lower=1）。短時間 第1子: C1 11,400／C2 12,900／C3 14,100／D1 19,000／D2 20,800／D3 22,700／D4 24,600／D5 29,500／D6 32,600／D7 35,700／D8 38,900／D9 42,100／D10 46,600／D11 49,800／D12 53,100／D13 56,400／D14 59,700／D15 67,400。ひとり親世帯等（母子・父子世帯等、障がい者手帳等の方がいる世帯）の表（標準時間 第1子）: C1 5,300／C2 6,050／C3 6,650／D1（60,700円未満）9,000／D2（72,800円未満）9,000／D3（77,101円未満）9,000、D3（84,900円未満）以上は一般と同額（短時間 C1 5,200／C2 5,950／C3 6,550／D1〜D3 9,000）。0〜2歳児の昼食代は保育料に含まれる。0歳と1〜2歳の区別はない。延長保育料などは別。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（3号認定 標準時間 月11,600〜68,600円）。0円は被保護世帯等と市民税非課税世帯だけ。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "「【令和８年９月から！】保育料第２子無償化」: 保護者の所得やきょうだい（第１子）の年齢に関係なく、認可保育施設の０～２歳児（２号・３号認定）クラスに通うすべての第２子以降の保育料を無償化（令和８年９月の保育料改定分から）。世帯年収による所得制限を撤廃し、小学生以上の子も第１子としてカウントする。令和8年8月分までは、年収約640万円未満の世帯（D9階層まで）の第2子は既に無料（小学生以上の子も数える）、年収約640万円以上（D10〜D15階層）は小学生以上の子を第1子として数えず、就学前の子で数えた第2子は半額だった。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "3号認定の第2子以降は令和8年9月分から所得・上の子の年齢に関係なく0円（第3子以降は以前から無料）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和９年度利用ガイドブック(第１版) （PDF 4.9 MB）（令和８年９月発行）p.28〜31", "url": "https://www.city.chitose.lg.jp/_res/projects/default_project/_page_/001/003/457/r09.pdf"},
+  {"label": "認定こども園・保育所・地域型保育事業入園の申込みについて｜北海道千歳市公式ウェブサイト", "url": "https://www.city.chitose.lg.jp/c20/1002643/1002650/1003457.html"},
+  {"label": "【令和８年９月から！】保育料第２子無償化について｜北海道千歳市公式ウェブサイト（更新日 2026年6月4日）", "url": "https://www.city.chitose.lg.jp/c20/1002643/1002649/1006486.html"},
+  {"label": "第２子無償化チラシ （PDF 531.7 KB）", "url": "https://www.city.chitose.lg.jp/_res/projects/default_project/_page_/001/006/486/dai2shi_musyo_v4.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べの docs に保育料の表はなかった（第2子無償化のページとチラシ、無償化の説明資料だけ）。入園の申込みのページ（1003457）から令和９年度利用ガイドブックを取って表を読んだ"
+ ],
+ "notes": "ガイドブック p.28 を pdftoppm で画像にして列の並び（3号認定 多子区分 × 標準時間・短時間、2号認定）を確かめた。区切りは「未満」で切れ目・重なりなし、月額は階層の順に上がる。令和8年4〜8月分の表（第2子が半額だった D10〜D15 を含む）は見ていないが、第1子の額が9月に変わったという記載はない。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

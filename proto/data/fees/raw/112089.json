@@ -1,0 +1,211 @@
+{
+ "code": "112089",
+ "pref": "埼玉県",
+ "name": "所沢市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "「令和8年度 入園のしおり（R8.4更新）」の【表10】0〜2歳児クラス所沢市保育料徴収基準額表（「保育料について」ページの基準額表PDF〔令和元年10月以降〕と同じ額）。毎年9月に保育料が切り替わる: 4月〜8月分は前年度、9月〜翌年3月分は当年度の市民税所得割額を基礎に算出。未申告などで所得割額が確認できない場合や他市町村課税で課税証明書の提出がない場合は最高階層。",
+ "tax_basis": "6%",
+ "tax_note": "原則として父母の合算した市民税所得割額（父母の所得状況によっては同居の祖父母等〔家計の主宰者〕の所得割額も合算）。配当控除、住宅借入金等特別税額控除、寄附金税額控除などの税額控除を適用する前の額（調整控除のみ適用する）。政令市ではないので6%のまま。",
+ "table": {
+  "title": "【表１０】０～２歳児クラス所沢市保育料徴収基準額表（令和8年度 入園のしおり）／所沢市保育料徴収基準額表（令和元年10月以降）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯等",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税非課税世帯等",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C1",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税均等割のみ",
+    "monthly": 6000,
+    "monthly_second": null
+   },
+   {
+    "label": "C2",
+    "lower": 1,
+    "upper": 9700,
+    "condition": "市民税所得割 9,700円未満",
+    "monthly": 6500,
+    "monthly_second": null
+   },
+   {
+    "label": "C3",
+    "lower": 9700,
+    "upper": 19400,
+    "condition": "市民税所得割 19,400円未満",
+    "monthly": 7300,
+    "monthly_second": null
+   },
+   {
+    "label": "C4",
+    "lower": 19400,
+    "upper": 29100,
+    "condition": "市民税所得割 29,100円未満",
+    "monthly": 9000,
+    "monthly_second": null
+   },
+   {
+    "label": "C5",
+    "lower": 29100,
+    "upper": 38800,
+    "condition": "市民税所得割 38,800円未満",
+    "monthly": 11000,
+    "monthly_second": null
+   },
+   {
+    "label": "C6",
+    "lower": 38800,
+    "upper": 48600,
+    "condition": "市民税所得割 48,600円未満",
+    "monthly": 12700,
+    "monthly_second": null
+   },
+   {
+    "label": "C7",
+    "lower": 48600,
+    "upper": 72800,
+    "condition": "市民税所得割 72,800円未満",
+    "monthly": 17100,
+    "monthly_second": null
+   },
+   {
+    "label": "C8",
+    "lower": 72800,
+    "upper": 97000,
+    "condition": "市民税所得割 97,000円未満",
+    "monthly": 23800,
+    "monthly_second": null
+   },
+   {
+    "label": "C9",
+    "lower": 97000,
+    "upper": 133000,
+    "condition": "市民税所得割 133,000円未満",
+    "monthly": 30800,
+    "monthly_second": null
+   },
+   {
+    "label": "C10",
+    "lower": 133000,
+    "upper": 169000,
+    "condition": "市民税所得割 169,000円未満",
+    "monthly": 39900,
+    "monthly_second": null
+   },
+   {
+    "label": "C11",
+    "lower": 169000,
+    "upper": 202000,
+    "condition": "市民税所得割 202,000円未満",
+    "monthly": 45100,
+    "monthly_second": null
+   },
+   {
+    "label": "C12",
+    "lower": 202000,
+    "upper": 235000,
+    "condition": "市民税所得割 235,000円未満",
+    "monthly": 47400,
+    "monthly_second": null
+   },
+   {
+    "label": "C13",
+    "lower": 235000,
+    "upper": 268000,
+    "condition": "市民税所得割 268,000円未満",
+    "monthly": 50500,
+    "monthly_second": null
+   },
+   {
+    "label": "C14",
+    "lower": 268000,
+    "upper": 301000,
+    "condition": "市民税所得割 301,000円未満",
+    "monthly": 53800,
+    "monthly_second": null
+   },
+   {
+    "label": "C15",
+    "lower": 301000,
+    "upper": 349000,
+    "condition": "市民税所得割 349,000円未満",
+    "monthly": 57000,
+    "monthly_second": null
+   },
+   {
+    "label": "C16",
+    "lower": 349000,
+    "upper": 397000,
+    "condition": "市民税所得割 397,000円未満",
+    "monthly": 57700,
+    "monthly_second": null
+   },
+   {
+    "label": "C17",
+    "lower": 397000,
+    "upper": 493300,
+    "condition": "市民税所得割 493,300円未満",
+    "monthly": 59500,
+    "monthly_second": null
+   },
+   {
+    "label": "C18",
+    "lower": 493300,
+    "upper": null,
+    "condition": "市民税所得割 493,300円以上",
+    "monthly": 61200,
+    "monthly_second": null
+   }
+  ],
+  "notes": "0〜2歳児クラスの保育料（月額）で、主食費・副食費を含む。保育料は公立・私立、保育園・認定こども園（保育認定）・地域型保育事業で差がない。保育短時間: A 0／B 0／C1 5,800／C2 6,300／C3 7,000／C4 8,700／C5 10,700／C6 12,300／C7 16,600／C8 23,200／C9 30,200／C10 39,200／C11 44,300／C12 46,600／C13 49,600／C14 52,900／C15 56,000／C16 56,700／C17 58,500／C18 60,200。常態的に土曜日閉所の施設を利用した場合の減じ額: A 0／B 0／C1 0／C2 0／C3 0／C4 0／C5 0／C6 0／C7 0／C8 1,000／C9 1,000／C10 2,000／C11 2,000／C12 2,000／C13 2,000／C14 3,000／C15 3,000／C16 3,000／C17 3,000／C18 3,000。第2子の別の列はない（第2子は半額、第3子以降は無料の決まりで計算）。区切りは「〜円未満」だけで書かれているので、各行の下限は1つ上の行の上限とした。C2の下限は表にないが、C1（均等割のみ）と分けるため lower=1 とした。年収約360万円未満相当のひとり親世帯等（ひとり親世帯・在宅障害児（者）のいる世帯で市民税所得割77,101円未満）はC階層が一律2,000円。年度途中で3歳になっても当該年度中は2歳児クラスの保育料。月の初日の状態で算定し、月の途中の世帯状況の変更は翌月分から。月の途中で退園する場合は日割り。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子から無料ではない。0円は生活保護世帯等・市民税非課税世帯等だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "基本（年収約360万円未満相当の世帯以外）: 入園児と同一世帯の兄姉が幼稚園・保育園・認定こども園・地域型保育事業等を利用する場合、小学校就学前までの範囲で最年長の子から順に数えて第二子は半額。就学前の兄姉が障害児施設等（特別支援学校幼稚部・情緒障害児短期治療施設通所部・児童発達支援・医療型児童発達支援）に通う場合は申請で軽減。例外: 年収約360万円未満相当（市民税所得割57,700円未満）の世帯は、生計を一にする兄姉を年齢に関係なく最年長から数えて第二子は半額。年収約360万円未満相当のひとり親世帯等（所得割77,101円未満）は年齢に関係なく第二子以降は無料（C階層は一律2,000円）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "埼玉県・所沢市独自の取り組みとして、入園児に生計を一にする兄姉がいる場合、年齢に関係なく最年長の子から順に数えて第三子以降の0〜2歳児クラスの子の保育料は世帯の収入に関係なく無料（生計を一にする別居の兄姉も申し出で数える）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "所沢市ホームページ 保育料について（更新日：2020年10月23日）",
+   "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/hoikuryounituite.html"
+  },
+  {
+   "label": "所沢市保育料徴収基準額表（PDF：111KB）（令和元年10月以降）",
+   "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/hoikuryounituite.files/kijyunngakuhyou31.pdf"
+  },
+  {
+   "label": "所沢市ホームページ 令和8年度教育・保育施設・地域型保育事業のご案内",
+   "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/R8_hoiku.html"
+  },
+  {
+   "label": "令和8年度 入園のしおり(R8.4更新)（PDF：1,448KB）p.26〜29「保育料、保育時間のご案内」",
+   "url": "https://www.city.tokorozawa.saitama.jp/kosodatekyouiku/hoikuen/R8_hoiku.files/R8shiori3.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "下調べ（crawl）の「保育料について」ページ（docs/01、2020年10月23日更新）と基準額表PDF（docs/04、令和元年10月以降）を読み、令和8年度のものか確かめるため「令和8年度教育・保育施設・地域型保育事業のご案内」ページから「令和8年度 入園のしおり」を取り、【表10】の額が同じことを確かめた。年収約360万円未満相当の判定表（1号77,101円未満／2・3号ひとり親世帯等77,101円未満／それ以外57,700円未満）は画像で読んだ。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

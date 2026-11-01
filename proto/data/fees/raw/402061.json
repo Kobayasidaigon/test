@@ -1,0 +1,32 @@
+{
+ "code": "402061",
+ "pref": "福岡県",
+ "name": "田川市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "「令和8年度4月保育所等の入所申し込みについて」のページ（最終更新日 2025年12月1日）の「保育料について」に「田川市では独自に平成31年4月から児童の年齢、収入によらず保育料の完全無償化を実施しています」とある。「幼児教育・保育の完全無償化について」のページ（最終更新日 2023年9月26日）も同じ内容。0〜2歳児も所得・年齢に関係なく保育料0円なので、所得割の階層表は載っていない。",
+ "tax_basis": "6%",
+ "tax_note": "保育料は年齢・収入によらず0円のため、所得割の判定方法はページに書かれていない（政令市ではないので、国の基準どおりなら6%）。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2019年4月",
+ "first_child_free_note": "市独自に平成31年（2019年）4月から、児童の年齢、収入によらず保育料の完全無償化（国の制度では0〜2歳は非課税世帯のみ無償化、田川市は0〜2歳児も無償化）。対象は保育所・認定こども園（保育部分）・小規模保育事業・家庭的保育事業・事業内保育事業などの保育所等。3〜5歳児の副食費（給食のおかず・おやつ）も収入によらず市が無償化。延長保育の利用料（A型・B型 1時間100円、月額上限2,500円。C型は園ごとに設定）は別にかかる。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から保育料0円なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から保育料0円なので第3子以降も0円。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "保育所等の利用（入所）申込について（令和8年度4月保育所等の入所申し込みについて、最終更新日 2025年12月1日）", "url": "https://www.joho.tagawa.fukuoka.jp/kiji0032838/index.html"},
+  {"label": "幼児教育・保育の完全無償化について（平成31年4月から）（最終更新日 2023年9月26日）", "url": "https://www.joho.tagawa.fukuoka.jp/kiji0032852/index.html"},
+  {"label": "保育所（園）・幼稚園｜福岡県田川市", "url": "https://www.joho.tagawa.fukuoka.jp/list00616.html"}
+ ],
+ "confidence": "確認済",
+ "tried": ["下調べ（crawl）はトップページ（https://www.joho.tagawa.fukuoka.jp/）の meta refresh で止まり1ページしか読めていなかった。default.html → 「保育所（園）・幼稚園」の一覧（list00616.html）→ 入所申込のページと完全無償化のページ、の順に必要なページだけ開いた。"],
+ "notes": "表がない（全員0円）ので table は null。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

@@ -3,34 +3,232 @@
   "pref": "大阪府",
   "name": "寝屋川市",
   "status": "partial",
-  "fiscal_year": null,
-  "period_note": "公式サイトを開けなかったので、検索結果に出た公式PDFの抜粋・要約だけで書いた。それによると、4〜8月分は前年度、9〜3月分は当該年度の市町村民税所得割課税額により決定。3歳未満の階層表には「令和5年10月1日～適用」とあるとのことで、令和8年度に改定されたかは分からない。第2子以降無償化の案内は「令和8年6月版」の保育施設利用案内などにある。",
+  "fiscal_year": "令和5年度（令和5年10月1日～適用の表）",
+  "period_note": "表は「寝屋川市２号認定・３号認定子どもの保育料（月額） 令和5年10月1日～適用」（fee_for_daycare.pdf、2024年3月作成、2026年11月1日に開けた）。令和8年度に改定されたかは、市のページ（保育料・無償化のページ）が HTTP 408 のエラーページで開けず、検索で見つけた「保育施設利用案内 令和8年6月版」の URL も HTTP 404 で、確かめていない。表の注記: ４～８月分は前年度、９～３月分は当該年度の市民税所得割課税額により決定。年齢は当該年度の４月１日の年齢。3歳から5歳児クラスの保育料は0円。",
   "tax_basis": "6%",
-  "tax_note": "政令市ではない（中核市）ので市町村民税所得割は6%。所得割の定義（税額控除前かどうか、調整控除の扱い、祖父母の扱いなど）は文書を開けず読めていない。",
-  "table": null,
+  "tax_note": "政令市ではない（中核市）ので市町村民税所得割は6%。表の区分は「市町村民税のうち所得割課税額」。所得割の定義（税額控除前かどうか、調整控除の扱い）や祖父母の扱いは表のPDFに書かれておらず、市のページも開けなかったので読めていない。",
+  "table": {
+    "title": "寝屋川市２号認定・３号認定子どもの保育料（月額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B1",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯（母子･父子･障害世帯）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B2",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯（一般世帯）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": 0,
+        "upper": 20000,
+        "condition": "市町村民税のうち所得割課税額 20,000円未満（一般世帯）",
+        "monthly": 8400,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 20000,
+        "upper": 26000,
+        "condition": "20,000円～26,000円未満（一般世帯）",
+        "monthly": 10700,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 26000,
+        "upper": 48600,
+        "condition": "26,000円～48,600円未満（一般世帯）",
+        "monthly": 12300,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 48600,
+        "upper": 53000,
+        "condition": "48,600円～53,000円未満（一般世帯）",
+        "monthly": 13500,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 53000,
+        "upper": 57700,
+        "condition": "53,000円～57,700円未満（一般世帯）",
+        "monthly": 14800,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 57700,
+        "upper": 62000,
+        "condition": "57,700円～62,000円未満（一般世帯）",
+        "monthly": 14800,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 62000,
+        "upper": 72000,
+        "condition": "62,000円～72,000円未満（一般世帯）",
+        "monthly": 15900,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 72000,
+        "upper": 77101,
+        "condition": "72,000円～77,101円未満（一般世帯）",
+        "monthly": 19900,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 77101,
+        "upper": 90000,
+        "condition": "77,101円～90,000円未満",
+        "monthly": 19900,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 90000,
+        "upper": 100000,
+        "condition": "90,000円～100,000円未満",
+        "monthly": 25900,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 100000,
+        "upper": 120000,
+        "condition": "100,000円～120,000円未満",
+        "monthly": 30200,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 120000,
+        "upper": 140000,
+        "condition": "120,000円～140,000円未満",
+        "monthly": 35400,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 140000,
+        "upper": 160000,
+        "condition": "140,000円～160,000円未満",
+        "monthly": 39000,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 160000,
+        "upper": 180000,
+        "condition": "160,000円～180,000円未満",
+        "monthly": 42000,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 180000,
+        "upper": 230000,
+        "condition": "180,000円～230,000円未満",
+        "monthly": 45200,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 230000,
+        "upper": 259000,
+        "condition": "230,000円～259,000円未満",
+        "monthly": 47400,
+        "monthly_second": null
+      },
+      {
+        "label": "C17",
+        "lower": 259000,
+        "upper": 281000,
+        "condition": "259,000円～281,000円未満",
+        "monthly": 49600,
+        "monthly_second": null
+      },
+      {
+        "label": "C18",
+        "lower": 281000,
+        "upper": 300000,
+        "condition": "281,000円～300,000円未満",
+        "monthly": 51800,
+        "monthly_second": null
+      },
+      {
+        "label": "C19",
+        "lower": 300000,
+        "upper": 328000,
+        "condition": "300,000円～328,000円未満",
+        "monthly": 54400,
+        "monthly_second": null
+      },
+      {
+        "label": "C20",
+        "lower": 328000,
+        "upper": 397000,
+        "condition": "328,000円～397,000円未満",
+        "monthly": 59000,
+        "monthly_second": null
+      },
+      {
+        "label": "C21",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 62600,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「3歳未満」「保育標準時間」の一般世帯の額（表の右上に「令和5年10月1日～適用」）。所得割77,101円未満の母子･父子･障害世帯は C1a〜C8a で標準時間2,100円・短時間2,000円（B1 は0円）。保育短時間（一般世帯）: A・B1・B2 0／C1 8,200／C2 10,500／C3 12,000／C4 13,200／C5 14,500／C6 14,500／C7 15,600／C8 19,500／C9 19,500／C10 25,400／C11 29,600／C12 34,700／C13 38,300／C14 41,200／C15 44,400／C16 46,500／C17 48,700／C18 50,900／C19 53,400／C20 57,900／C21 61,500。第2子の列はない（表の注記「同一世帯において児童が2人以上の場合、最年長者以外の児童の保育料は0円です。」＝市独自の第２子以降の保育料無償化）。C1 は「20,000円未満」で、非課税世帯（B1・B2）以外の所得割0円（均等割のみ）も含むので lower=0。区切りは「～…未満」の書き方。3歳から5歳児クラスは0円。副食費免除対象者（3〜5歳）は一般世帯 A〜C5、母子世帯等 B1 と C1a〜C8a、第3子の数え方は就学前児童のうち第3子以降。"
+  },
   "first_child_free": false,
   "first_child_free_since": null,
-  "first_child_free_note": "検索結果の要約では、第2子以降の無償化の対象外の第1子は階層表の額（最上位の C21〔所得割397,000円以上〕で保育標準時間62,600円・保育短時間61,500円）。表の全行は読めていない。",
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（一般世帯の保育標準時間で月8,400〜62,600円）。0円は生活保護世帯等と市町村民税非課税世帯。所得割77,101円未満の母子･父子･障害世帯は月2,100円（短時間2,000円）。",
   "second_child": "free",
   "second_count": "household",
-  "second_note": "市独自の第2子以降の保育料無償化（検索結果に出た公式PDF fee_for_daycare.pdf の抜粋・要約による。文書そのものは開けていない）: 対象児童は「寝屋川市に住民登録があり、認可保育施設の０～２歳児クラスに在籍している第２子以降の児童」、対象施設は「認可保育施設（市内外は問いません。）」、所得制限なし。要約では兄姉の年齢制限もなく、同一世帯で最年長者以外の児童は0円（保護者の市町村民税額が不明な場合は適用しない）。原則申請不要で、住民登録上の別世帯に兄姉がいる場合だけ別居親族の申出書・戸籍全部事項証明書が必要。延長保育料や実費徴収の経費は対象外。",
+  "second_note": "市独自の「第２子以降の保育料無償化」（fee_for_daycare.pdf の1ページ目）: 対象児童は寝屋川市に住民登録があり、認可保育施設（市内外は問わない）の０～２歳児クラスに在籍している第２子以降の児童。所得制限なし（保護者の市町村民税額が確認できない場合は無償化の判定ができないことがある）。原則申請不要で、兄姉の年齢制限はない。兄姉の中に住民登録上の別世帯の者がいる場合は「保育料算定における生計が同一の別居親族についての申出書」と戸籍全部事項証明書が必要。表の注記「同一世帯において児童が2人以上の場合、最年長者以外の児童の保育料は0円です。」。延長保育料や制服代等の実費徴収に係る経費は対象外。",
   "third_child": "free",
   "third_count": "household",
-  "third_note": "第2子以降無償化に含まれる（数え方は第2子と同じ。検索結果の要約による）。",
+  "third_note": "第２子以降の保育料無償化に含まれる（数え方は第2子と同じ。兄姉の年齢制限なし、最年長者以外は0円）。",
   "lunch_jh": null,
   "cash": [],
   "one_time": [],
   "sources": [
     {
-      "label": "第2子以降の保育料無償化の案内（PDF、検索結果で見つけたが開けなかった。見出し「● 対象児童 寝屋川市に住民登録があり、認可保育施設の０～２歳児クラスに在籍している第２子以降の児童 ● 対象施設 認可保育施設（市内外は問いません。）」）",
+      "label": "市独自 第２子以降の保育料無償化／寝屋川市２号認定・３号認定子どもの保育料（月額）令和5年10月1日～適用（PDF 2ページ、2024年3月作成。2026年11月1日の確かめで開けた）",
       "url": "https://www.city.neyagawa.osaka.jp/material/files/group/118/fee_for_daycare.pdf"
     },
     {
-      "label": "保育施設利用案内 令和8年6月版 寝屋川市こども部保育課（PDF、検索結果で見つけたが開けなかった）",
+      "label": "保育施設利用案内 令和8年6月版 寝屋川市こども部保育課（PDF、検索結果で見つけた URL。2026年11月1日は HTTP 404 で開けなかった）",
       "url": "https://www.city.neyagawa.osaka.jp/material/files/group/118/hoikusiseturiyouannai8nen6.pdf"
     },
     {
-      "label": "幼児教育・保育の無償化|寝屋川市（検索結果に出たページ、開けなかった）",
+      "label": "幼児教育・保育の無償化|寝屋川市（検索結果に出たページ、HTTP 408 のエラーページで開けなかった）",
       "url": "https://www.city.neyagawa.osaka.jp/organization_list/kodomo/hoikuka/musyouka/21032.html"
     }
   ],
@@ -40,8 +238,14 @@
     "curl で https://www.city.neyagawa.osaka.jp/ を2回取ったが、どちらも HTTP 408 と「このページは表示できません。詳細については、サポートまでお問い合わせください。イベント ID: …」というエラーページ（サイト側の防御で止められている）。ヘッダーを足して取り直すことは、ボット対策をくぐる操作として止められたのでやめた",
     "WebSearch（allowed_domains: city.neyagawa.osaka.jp）を2回使い、「保育料 令和8年度 3歳未満 第2子」「保育料 階層表 保育標準時間 保育短時間 所得割課税額 0～2歳児クラス」で公式PDFの URL と抜粋を得た",
     "検索で見つけた https://www.city.neyagawa.osaka.jp/material/files/group/118/fee_for_daycare.pdf も HTTP 408 のエラーページで開けなかった",
-    "検索で見つけた例規集「寝屋川市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する規則」（www2.city.neyagawa.osaka.jp/reiki/reiki_honbun/k217RG00000804.html）を https で取ろうとしたが接続が切れた（http のみのサーバーらしい）"
+    "検索で見つけた例規集「寝屋川市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する規則」（www2.city.neyagawa.osaka.jp/reiki/reiki_honbun/k217RG00000804.html）を https で取ろうとしたが接続が切れた（http のみのサーバーらしい）",
+    "確かめ係（2026-11-01）: fee_for_daycare.pdf を決まりどおりの curl で1回取ると HTTP 200 で開けた（PDF 2ページ、文字の取れるPDF）。hoikusiseturiyouannai8nen6.pdf は1回目が接続失敗、2回目が HTTP 404。21032.html（無償化のページ）は HTTP 408 のエラーページ（取り直しはしていない）。"
   ],
-  "notes": "公式サイトがこの環境からの取得を止めている（HTTP 408 のエラーページ）ため、保育料の表は読めず table は null。第2子以降無償化（0〜2歳児クラス、所得制限なし、同一世帯の最年長者以外は0円）は検索結果に出た公式PDFの抜粋と要約によるもので、文書そのものは確かめていない。検索結果の要約では、3歳未満の階層表は「令和5年10月1日～適用」で、PDFの文字が崩れていて全階層の額は読めなかったとのこと。人の手でブラウザから fee_for_daycare.pdf と hoikusiseturiyouannai8nen6.pdf を開いて表を書き写すと ok にできる。",
-  "read_at": "2026-11-01"
+  "notes": "公式サイトの HTML のページはこの環境からの取得を止めている（HTTP 408 のエラーページ）が、2026年11月1日には /material/files/ のfee_for_daycare.pdf が開けたので、表と第２子以降無償化の決まりはその PDF の本文で読んだ（pdftotext と画像で列〔3歳未満の保育標準時間・保育短時間〕と母子･父子･障害世帯の行を確かめた）。表は「令和5年10月1日～適用」で、令和8年度も現行かは確かめていないので status は partial のまま。市のページか令和8年度の保育施設利用案内を開いて同じ表と分かれば ok にできる。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "fixed",
+    "changes": "読み取り係のときは HTTP 408 で開けなかった fee_for_daycare.pdf が開けたので（HTTP 200、PDF 2ページ、2024年3月27日作成、文字が取れる）、表「寝屋川市２号認定・３号認定子どもの保育料（月額） 令和5年10月1日～適用」の全24行（A・B1・B2・C1〜C21、一般世帯の保育標準時間）を table に書き写し、母子･父子･障害世帯（C1a〜C8a）と保育短時間の額を table.notes に入れた。fiscal_year を null から「令和5年度（令和5年10月1日～適用の表）」に、period_note・tax_note・first_child_free_note・second_note・third_note・sources・tried・notes を PDF の本文に合わせて書き直した。第２子以降無償化の決まり（0〜2歳児クラス、所得制限なし、兄姉の年齢制限なし、最年長者以外0円、別世帯の兄姉は申出書）は検索結果の要約と同じで、second_child・second_count・third_child・third_count・tax_basis は変えていない。表が令和8年度も現行かは市のページが開けず確かめられないので、status は partial、confidence は推定のまま。"
+  }
 }

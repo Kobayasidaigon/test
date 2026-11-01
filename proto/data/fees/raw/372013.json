@@ -1,0 +1,127 @@
+{
+  "code": "372013",
+  "pref": "香川県",
+  "name": "高松市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "切り替えの時期は毎年9月。令和8年4月から8月は令和7年度（令和6年中の所得に対する税額）、令和8年9月から令和9年3月は令和8年度（令和7年中の所得に対する税額）の市区町村民税で決める。子どもの年齢はその年度の4月1日時点。各月初日に在籍する子どもについて決める。表（月額）は年度を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "お子さんと生計を同じくする父母（場合によっては生計を維持している祖父母等）の市区町村民税課税額。住宅借入金等特別税額控除、配当控除などの税額控除が適用される前の金額を用いる。市区町村民税を確認できない場合は仮算定。高松市は中核市で、6%・8%の換算の注記はない（市町村民税の標準税率6%）。",
+  "table": {
+    "title": "令和8年度 利用者負担額（2歳児クラス以下の子ども）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯又は中国残留邦人等自立支援法等による支援給付受給世帯（いずれも単給世帯を含む。）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "A階層を除き、市区町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "A階層を除き、市区町村民税均等割のみ課税世帯",
+        "monthly": 15000,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "A階層を除き、市区町村民税所得割の額が 1円以上 48,600円未満",
+        "monthly": 18000,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 48600,
+        "upper": 58000,
+        "condition": "48,600円以上 58,000円未満",
+        "monthly": 23000,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 58000,
+        "upper": 97000,
+        "condition": "58,000円以上 97,000円未満",
+        "monthly": 30000,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 97000,
+        "upper": 134000,
+        "condition": "97,000円以上 134,000円未満",
+        "monthly": 38000,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 134000,
+        "upper": 169000,
+        "condition": "134,000円以上 169,000円未満",
+        "monthly": 44500,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 169000,
+        "upper": 301000,
+        "condition": "169,000円以上 301,000円未満",
+        "monthly": 49000,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 301000,
+        "upper": null,
+        "condition": "301,000円以上",
+        "monthly": 53000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表は保育標準時間（最大11時間保育）と保育短時間（最大8時間保育）の2列。保育短時間: C1 14,700／C2 17,600／C3 22,600／C4 29,400／C5 37,300／C6 43,700／C7 48,100／C8 52,000。第2子の別欄はなく、備考1〜4で減免を決めている（second_note・third_note）。C2 の下限は表どおり1円。2歳児クラス以下の給食費は保育料に含まれる。備考3: C1〜C4階層（所得割77,101円未満に限る）の特定世帯（要保護者、ひとり親〔配偶者のない者で現に児童を扶養〕、在宅の身体障害者手帳・療育手帳・精神障害者保健福祉手帳の所持者、特別児童扶養手当の対象、障害基礎年金の受給権者、市長が認める困窮者のいる世帯）は保育標準時間7,000円・保育短時間6,800円。備考4: 特定世帯で特定被監護者等が2人以上なら、出生順位第2位以降は0円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "2歳児クラス以下の第1子は有料（表で月15,000〜53,000円、特定世帯は7,000円）。0円は A（生活保護等）と B（市区町村民税非課税）だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "備考1（C1〜C8階層）: 同一世帯で施設等（認定こども園、幼稚園、特別支援学校幼稚部、保育所、地域型保育事業、特例保育、認可外保育施設〔企業主導型を含み、月ぎめ契約に限る（令和5年10月から）〕、児童発達支援、医療型児童発達支援、居宅訪問型児童発達支援、児童心理治療施設）を利用している兄または姉が1人いる、出生順位第2位の子は、表の額の1/2。さらに、その兄・姉が満3歳に達する日以後の最初の3月31日まで（0〜2歳児クラスの年齢）なら第2子は0円（兄・姉が1号認定・新1号認定の子なら除く）。施設等を使っていない兄・姉（小学生など）しかいないときは、第2子は全額。備考2: C1〜C3階層（所得割57,700円未満に限る）は、年齢にかかわらず保護者と生計を一にする子（特定被監護者等）を数えて第2位は1/2。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "備考1(1)（C1〜C8階層）: 同一世帯で3人以上の子ども（満18歳に達する日以後の最初の3月31日までの者）が養育されていれば、出生順位第3位以降の子どもは0円（上の子が施設を利用しているかは問わない。上の子は18歳年度末までだけ数える）。所得割57,700円未満（C1〜C3）の世帯は、年齢にかかわらず生計を一にする子を数えて第3位以降0円（備考2）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度 利用者負担額表（2歳児クラス以下の子ども）（PDF）高松市",
+      "url": "https://www.city.takamatsu.kagawa.jp/kurashi/kosodate/youchien_hoiku/kodomoen/hoiku.files/14hutankingaku.pdf"
+    },
+    {
+      "label": "保育施設等の利用 高松市（2026年10月5日更新）",
+      "url": "https://www.city.takamatsu.kagawa.jp/kurashi/kosodate/youchien_hoiku/kodomoen/hoiku.html"
+    },
+    {
+      "label": "認可保育施設の保育料の第2子減免の対象拡大について（令和5年10月～）（PDF）高松市",
+      "url": "https://www.city.takamatsu.kagawa.jp/kurashi/kosodate/youchien_hoiku/kodomoen/hoiku.files/r510dainisigenmentirasi.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "中核市。表は令和8年度の利用者負担額表（1ページ、2025年9月作成、文字の取れるPDF）を pdftotext -layout で読み、画像で列（標準・短時間）と備考1〜4を確かめた。C2〜C8 の範囲は切れ目・重なりなし。second_child は、よくある「兄・姉が3〜5歳で施設に通う」場合の1/2 にした（兄・姉も0〜2歳児クラスの年齢なら0円）。cash・one_time・中学校給食は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

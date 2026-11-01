@@ -1,0 +1,34 @@
+{
+  "code": "252123",
+  "pref": "滋賀県",
+  "name": "高島市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和8年度 入園のしおり 16ページ「幼児教育・保育の無償化について」）",
+  "period_note": "0〜2歳児も市独自に保育料を完全無償化しているので、年度・所得による保育料の切り替えはない（料金表は公開されていない）。",
+  "tax_basis": "6%",
+  "tax_note": "0〜2歳児の保育料は住民税課税世帯も無料なので、所得割での階層判定は保育料に使われない。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "令和8年度 入園のしおり: 「国の無償化の対象とならない子ども（０～２歳までの住民税課税世帯）の保育料も市が独自に完全無償化を行っています」。所得制限・きょうだいの条件なし。給食費（主食費・副食費）も公立・私立を問わず市が補助。認可外保育施設・一時預かりも「認可外保育施設等利用者助成認定」で課税世帯の0〜2歳児（市内在住）を国と同じ基準で無償化（上限 月額42,000円、令和8年10月利用分から45,700円）。開始時期はしおり・市のページに書かれていないので null。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "0〜2歳児は第1子から無料なので、きょうだいの数え方は関係ない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度 入園のしおり（PDF）6．幼児教育・保育の無償化について（16ページ）", "url": "https://www.city.takashima.lg.jp/material/files/group/122/R8nyuuennosiori.pdf" },
+    { "label": "令和8年度認定こども園などの新規入園申し込みについて【随時申込】／高島市（2026年8月31日更新）", "url": "https://www.city.takashima.lg.jp/soshiki/kodomomiraibu/youjihoiku/2879.html" },
+    { "label": "子育てのための施設等利用給付および認可外保育施設等利用者助成制度について／高島市", "url": "https://www.city.takashima.lg.jp/soshiki/kodomomiraibu/youjihoiku/7445.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "無償化の開始時期: 入園のしおり（令和8年度）・幼児保育課の記事一覧・施設等利用給付のページを見たが書かれていない"
+  ],
+  "notes": "下調べに候補の文書がなかったので、下調べのページ一覧にあった「令和8年度認定こども園などの新規入園申し込みについて」から入園のしおり（62ページ、DocuWorksのPDFだが文字が取れる）を取り、無償化の節を読んだ。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

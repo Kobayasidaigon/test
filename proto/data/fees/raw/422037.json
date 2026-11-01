@@ -1,0 +1,47 @@
+{
+  "code": "422037",
+  "pref": "長崎県",
+  "name": "島原市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4〜8月分（前期）は令和7年度、9〜3月分（後期）は令和8年度の市民税額をもとに決定（毎年9月に切替え）。市のページに載っている表は「令和8年度保育料表【4月～8月】」（2026年6月作成のPDF）で、後期の保育料は8月下旬頃に別途知らせるとある（後期の表はページに載っていない。月額の表が変わるとは書かれていない）。年度途中に3歳になっても年度末までは3歳未満の保育料。",
+  "tax_basis": "6%",
+  "tax_note": "児童と同一世帯に属して生計を一にしている父母（単身赴任等で別居中の父母も含む）の市民税額の合計。父母がともに市が定める基準以下の収入の場合は同居の家計の主宰者（祖父母）の市民税額も算定対象。寄附金税額控除、外国税額控除、配当控除、住宅借入金等特別控除、電子証明書等特別控除等の税額控除前の金額で算定。政令市ではない。",
+  "table": {
+    "title": "令和８年度 保育料（利用者負担額）表　２号・３号認定（保育認定）子どもの保育料表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "C", "lower": 0, "upper": 48600, "condition": "市民税所得割課税額 48,600円未満", "monthly": 18000, "monthly_second": 0 },
+      { "label": "D0", "lower": 48600, "upper": 57700, "condition": "市民税所得割課税額 57,700円未満", "monthly": 22000, "monthly_second": 0 },
+      { "label": "D1", "lower": 57700, "upper": 77101, "condition": "市民税所得割課税額 77,101円未満", "monthly": 22000, "monthly_second": 0 },
+      { "label": "D2", "lower": 77101, "upper": 97000, "condition": "市民税所得割課税額 97,000円未満", "monthly": 25000, "monthly_second": 0 },
+      { "label": "D3", "lower": 97000, "upper": 169000, "condition": "市民税所得割課税額 169,000円未満", "monthly": 35000, "monthly_second": 0 },
+      { "label": "D4", "lower": 169000, "upper": 301000, "condition": "市民税所得割課税額 301,000円未満", "monthly": 40000, "monthly_second": 0 },
+      { "label": "D5", "lower": 301000, "upper": 397000, "condition": "市民税所得割課税額 397,000円未満", "monthly": 40000, "monthly_second": 0 },
+      { "label": "D6", "lower": 397000, "upper": null, "condition": "市民税所得割課税額 397,000円以上", "monthly": 50000, "monthly_second": 0 }
+    ],
+    "notes": "表の3歳未満（3号認定及び2号認定の一部、令和5年4月2日以降に生まれた子ども）の列。保育短時間: C 17,800／D0 21,800／D1 21,800／D2 24,600／D3 34,600／D4 39,400／D5 39,400／D6 49,200。注1）生計を一にしているきょうだいがいる場合、第2子以降の保育料は無料（monthly_second は表に列はないが注1から0）。注2）ひとり親世帯、在宅の障害児（者）がいる世帯等でC〜D1階層は（）内の金額: C 8,500（短時間8,400）、D0 9,000（9,000）、D1 9,000（9,000）。表では D4 と D5 が同じ40,000円。各行の下限は表に書かれていないので一つ上の行の上限とした。Cは市民税課税で所得割48,600円未満（均等割のみを含むと読んで lower を0にした）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満の第1子は表のとおり（生活保護・市民税非課税世帯は0円）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "すこやか子育て支援事業（令和元年10月〜）: 所得制限（以前は市民税所得割169,000円未満）と年齢制限（以前は小学生以下の児童）を撤廃し、第2子以降の保育料を完全無料化。生計を一にしているきょうだいを数える。市が対象児童を判定するので申請は原則不要だが、市外に住所を有し養育している兄姉がいる場合は申請が必要。就労等で既に保護者が養育していない兄姉は数えない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降はすべて無料（所得制限・年齢制限なし、保護者が養育する兄姉を数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度保育料表【4月～8月】（PDF、令和８年度 保育料（利用者負担額）表）", "url": "https://www.city.shimabara.lg.jp/common/UploadFileOutput.ashx?c_id=3&id=3366&sub_id=23&flid=77041" },
+    { "label": "令和8年度の保育料について / 島原市", "url": "https://www.city.shimabara.lg.jp/page3366.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「令和8年度の保育料について」のページから、HTMLを1回取って表のPDFのリンクを見つけた。表は pdftotext -layout と画像で確かめた。ページの最終更新日は2024年4月1日と出るが、本文とPDFは令和8年度（PDFは2026年6月作成）。cash・one_time・給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

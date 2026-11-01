@@ -1,0 +1,58 @@
+{
+  "code": "232254",
+  "pref": "愛知県",
+  "name": "知立市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "市町村民税額は4月から8月までは前年度分、9月から3月までは当年度分で判定（令和8年度入所案内 27ページ）。通常保育料徴収基準額表（月額）は年度を通じて同じ。保育料がかかるのは3歳未満児だけ（3歳以上児は無償、主食費・副食費は別）。令和9年度入所案内（2026年9月更新のページ）の令和9年度表も同じ金額。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（父・母）及び同居の扶養義務者（祖父母等）に係る市町村民税課税額で階層を認定。住宅借入金等特別控除、寄附金控除等の税額控除前（調整控除は除く）の金額で算定。父母がともに市町村民税非課税の場合は同居の父母以外の扶養義務者が算定対象。未申告等で把握できない場合は最高階層の額。政令市ではないので6%で判定。",
+  "table": {
+    "title": "１２ 令和８年度 通常保育料徴収基準額表（知立市）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む。）、中国残留邦人等の支援給付を受けている者の属する世帯又は教育・保育給付認定保護者が里親である世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税が非課税の世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": null, "upper": null, "condition": "市町村民税均等割の額のみ課税されている世帯", "monthly": 7400, "monthly_second": null },
+      { "label": "D1", "lower": 1, "upper": 10000, "condition": "所得割の額が 10,000円未満", "monthly": 8000, "monthly_second": null },
+      { "label": "D2", "lower": 10000, "upper": 48600, "condition": "所得割の額が 10,000円以上 48,600円未満", "monthly": 9000, "monthly_second": null },
+      { "label": "D3", "lower": 48600, "upper": 58200, "condition": "所得割の額が 48,600円以上 58,200円未満", "monthly": 10000, "monthly_second": null },
+      { "label": "D4", "lower": 58200, "upper": 67900, "condition": "所得割の額が 58,200円以上 67,900円未満", "monthly": 11900, "monthly_second": null },
+      { "label": "D5", "lower": 67900, "upper": 77600, "condition": "所得割の額が 67,900円以上 77,600円未満", "monthly": 14200, "monthly_second": null },
+      { "label": "D6", "lower": 77600, "upper": 87300, "condition": "所得割の額が 77,600円以上 87,300円未満", "monthly": 18400, "monthly_second": null },
+      { "label": "D7", "lower": 87300, "upper": 102700, "condition": "所得割の額が 87,300円以上 102,700円未満", "monthly": 23900, "monthly_second": null },
+      { "label": "D8", "lower": 102700, "upper": 119800, "condition": "所得割の額が 102,700円以上 119,800円未満", "monthly": 29800, "monthly_second": null },
+      { "label": "D9", "lower": 119800, "upper": 137000, "condition": "所得割の額が 119,800円以上 137,000円未満", "monthly": 37100, "monthly_second": null },
+      { "label": "D10", "lower": 137000, "upper": 154200, "condition": "所得割の額が 137,000円以上 154,200円未満", "monthly": 41900, "monthly_second": null },
+      { "label": "D11", "lower": 154200, "upper": 173000, "condition": "所得割の額が 154,200円以上 173,000円未満", "monthly": 43900, "monthly_second": null },
+      { "label": "D12", "lower": 173000, "upper": 185700, "condition": "所得割の額が 173,000円以上 185,700円未満", "monthly": 44600, "monthly_second": null },
+      { "label": "D13", "lower": 185700, "upper": 257500, "condition": "所得割の額が 185,700円以上 257,500円未満", "monthly": 45600, "monthly_second": null },
+      { "label": "D14", "lower": 257500, "upper": null, "condition": "所得割の額が 257,500円以上", "monthly": 46000, "monthly_second": null }
+    ],
+    "notes": "表は各階層の上段が保育標準時間認定、下段が保育短時間認定（PDFを画像にして確認）。rows は上段（保育標準時間）の額。保育短時間: A 0／B 0／C 6,300／D1 6,800／D2 7,700／D3 8,500／D4 10,100／D5 12,100／D6 15,600／D7 20,900／D8 26,800／D9 34,100／D10 38,900／D11 40,900／D12 41,600／D13 42,600／D14 43,000。3歳以上児はすべての階層で0円。欄外: 「同時就園の第２子は上記の額の半額、満18歳までの子から数えて第３番目以降の子は0円」「ひとり親世帯等で所得割の額が77,101円未満の世帯は1,600円(1,400円)」（ひとり親世帯等＝母子・父子世帯、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた者がいる世帯、特別児童扶養手当・障害基礎年金の受給者がいる世帯。C、D1〜D5階層（D5は所得割77,101円未満に限る）が対象）。3歳以上児の主食費・副食費は別途（所得割77,101円未満の世帯と満18歳までの子から数えて第3番目以降の子は副食費免除。公立は主食費600円・副食費4,500円）。延長保育料は公立で月額500円／30分・日額100円／30分。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月0〜46,000円）。0円は生活保護等の世帯（A）と市町村民税非課税世帯（B）だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "「同時就園の第２子は上記の額の半額」。多子軽減のため、小学校就学前の子どもが認定こども園・幼稚園・保育所・特別支援学校幼稚部・特定地域型保育施設（家庭的・小規模・居宅訪問型・事業所内）・児童発達支援等・児童心理治療施設を利用していれば申込書に施設名を書く（＝就学前で施設を利用している子を数える）。所得制限の記載なし。令和9年度入所案内（2026年9月更新）の欄外には「満18歳までの子から数えて第２番目以降は所得割の額に応じて軽減があり」が加わっているが、所得割の額の区切りと軽減の額は書かれていない（令和8年度入所案内には記載なし）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "「満18歳までの子から数えて第３番目以降の子は0円」。上の子は就園していなくてもよく、満18歳までの子から数える。所得制限の記載なし。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "知立市／【令和8年度】保育所等への入所について", "url": "https://www.city.chiryu.aichi.jp/kosodate_kyoiku/azukeru/1/hoiku/18786.html" },
+    { "label": "令和8年度入所案内（PDF）27ページ「９ 保育料等」・31ページ「１２ 令和８年度 通常保育料徴収基準額表」", "url": "https://www.city.chiryu.aichi.jp/material/files/group/10/R8nyuusyoannaiJ.pdf" },
+    { "label": "知立市／【令和9年度】保育所等への入所について（更新日：2026年09月01日）", "url": "https://www.city.chiryu.aichi.jp/kosodate_kyoiku/azukeru/1/hoiku/20056.html" },
+    { "label": "令和9年度入所案内（PDF）31ページ「１２ 令和９年度 通常保育料徴収基準額表」", "url": "https://www.city.chiryu.aichi.jp/material/files/group/35/R9annai.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（index.json）の候補は入所基準表・日程表・指数表だけで保育料表はなかった。【令和8年度】保育所等への入所についてのページから令和8年度入所案内PDF（18.7MB）を取得して表を読んだ。"
+  ],
+  "notes": "令和8年度入所案内PDFの31ページ（ファイルの31ページ目）を pdftoppm で画像にして、上段＝保育標準時間・下段＝保育短時間の並びと金額を確認した。D1は「所得割の額が10,000円未満」で、均等割のみ（所得割0円）のC階層と分けるため lower を1にした。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

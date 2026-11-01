@@ -1,0 +1,231 @@
+{
+ "code": "142158",
+ "pref": "神奈川県",
+ "name": "海老名市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "保育料を決める市民税は対象月で異なる: 令和8年4月〜8月分は令和7年度分（令和6年1月〜12月の収入）、令和8年9月〜令和9年3月分は令和8年度分（令和7年1月〜12月の収入）。在園児は毎年4月と9月に算定し、決定通知は3月と8月ごろ送付。月額の表は年度を通じて同じ。",
+ "tax_basis": "6%",
+ "tax_note": "政令市ではないので6%。父母の市民税所得割額を合算して算定（同居の祖父母等がいる場合、父母の所得状況により祖父母が算定対象になることがある。世帯分離していても玄関が別でなければ同居とみなす）。『住宅ローン控除』や『ふるさと納税等の寄付金控除』等の税額控除額は保育料の算定では控除しない（市民税所得割額にこれらの税額控除額を加えた額で算定）。所得が確認できる資料の提出がない場合は、いったん最高階層（72,800円）で決定。",
+ "table": {
+  "title": "認可保育所・認定こども園（保育認定）・地域型保育施設 保育料表 ２歳児クラス以下【令和８年度版】",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "Ａ",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｂ",
+    "lower": null,
+    "upper": null,
+    "condition": "非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｃ",
+    "lower": null,
+    "upper": null,
+    "condition": "均等割額のみ課税",
+    "monthly": 7000,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ１",
+    "lower": 1,
+    "upper": 12000,
+    "condition": "所得割額12,000円未満",
+    "monthly": 8100,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ２",
+    "lower": 12000,
+    "upper": 24000,
+    "condition": "12,000円以上 24,000円未満",
+    "monthly": 9300,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ３",
+    "lower": 24000,
+    "upper": 36000,
+    "condition": "24,000円以上 36,000円未満",
+    "monthly": 10500,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ４",
+    "lower": 36000,
+    "upper": 48600,
+    "condition": "36,000円以上 48,600円未満",
+    "monthly": 11700,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ５",
+    "lower": 48600,
+    "upper": 60000,
+    "condition": "48,600円以上 60,000円未満",
+    "monthly": 14300,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ６",
+    "lower": 60000,
+    "upper": 72000,
+    "condition": "60,000円以上 72,000円未満",
+    "monthly": 16900,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ７",
+    "lower": 72000,
+    "upper": 84000,
+    "condition": "72,000円以上 84,000円未満",
+    "monthly": 19500,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ８",
+    "lower": 84000,
+    "upper": 97000,
+    "condition": "84,000円以上 97,000円未満",
+    "monthly": 23300,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ９",
+    "lower": 97000,
+    "upper": 115000,
+    "condition": "97,000円以上 115,000円未満",
+    "monthly": 28200,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ10",
+    "lower": 115000,
+    "upper": 133000,
+    "condition": "115,000円以上 133,000円未満",
+    "monthly": 31100,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ11",
+    "lower": 133000,
+    "upper": 151000,
+    "condition": "133,000円以上 151,000円未満",
+    "monthly": 34700,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ12",
+    "lower": 151000,
+    "upper": 169000,
+    "condition": "151,000円以上 169,000円未満",
+    "monthly": 38300,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ13",
+    "lower": 169000,
+    "upper": 213000,
+    "condition": "169,000円以上 213,000円未満",
+    "monthly": 42000,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ14",
+    "lower": 213000,
+    "upper": 257000,
+    "condition": "213,000円以上 257,000円未満",
+    "monthly": 45700,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ15",
+    "lower": 257000,
+    "upper": 301000,
+    "condition": "257,000円以上 301,000円未満",
+    "monthly": 50400,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ16",
+    "lower": 301000,
+    "upper": 333000,
+    "condition": "301,000円以上 333,000円未満",
+    "monthly": 55200,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ17",
+    "lower": 333000,
+    "upper": 365000,
+    "condition": "333,000円以上 365,000円未満",
+    "monthly": 60000,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ18",
+    "lower": 365000,
+    "upper": 397000,
+    "condition": "365,000円以上 397,000円未満",
+    "monthly": 64200,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ19",
+    "lower": 397000,
+    "upper": 450000,
+    "condition": "397,000円以上 450,000円未満",
+    "monthly": 68500,
+    "monthly_second": null
+   },
+   {
+    "label": "Ｄ20",
+    "lower": 450000,
+    "upper": null,
+    "condition": "450,000円以上",
+    "monthly": 72800,
+    "monthly_second": null
+   }
+  ],
+  "notes": "表は認可保育所・認定こども園（保育認定）・地域型保育施設の共通表（2歳児クラス以下）。きょうだい別の列はない（2人目は半額、3人目は無料。monthly_second は null）。保育短時間の月額: C 6,800、D1 7,900、D2 9,100、D3 10,300、D4 11,500、D5 14,000、D6 16,600、D7 19,100、D8 22,900、D9 27,700、D10 30,500、D11 34,100、D12 37,600、D13 41,200、D14 44,900、D15 49,500、D16 54,200、D17 58,900、D18 63,100、D19 67,300、D20 71,500。3歳児クラス以上は無償化で0円（給食費〔主食費・副食費〕は実費）。2歳児クラスの途中で3歳になっても保育料はかかる。ひとり親世帯・障がい者手帳を持っている方がいる世帯で父母の合計市民税所得割額77,101円未満の場合は第1子が半額・第2子以降無料（保育料算定表（軽減措置））。D1の下限は表に書かれていないが、C（均等割額のみ課税＝所得割0円）と分けるため lower=1 とした。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "2歳児クラス以下の第1子は所得に応じて有料（令和8年度の表で保育標準時間 月0〜72,800円）。0円は生活保護世帯（A）と非課税世帯（B）だけ。ひとり親世帯・障がい者手帳を持っている方がいる世帯で合計所得割77,101円未満は第1子半額。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "保育所等をきょうだいで利用する場合、最年長の児童から順に2人目は半額、3人目は無料。小学1年生以上のきょうだいは含まない。保育所等＝認可保育所、地域型保育施設、幼稚園、認定こども園、特別支援学校幼稚部、児童心理治療施設通所部、児童発達支援センター（認可外保育所と認可保育所の一時預かりは含まない）。世帯の市区町村民税（所得割）合算額57,700円未満の世帯は、きょうだいの年齢制限を撤廃（小学1年生以上のきょうだいも数える）。ひとり親世帯・障がい者手帳を持っている方がいる世帯で合算額77,101円未満の場合は、年齢制限なしで第1子半額・第2子無料・第3子無料。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "最年長の児童から順に数えて3人目は無料（小学1年生以上のきょうだいは含まない。合算所得割57,700円未満〔ひとり親世帯等は77,101円未満〕の世帯は年齢制限なしで数える）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料について｜海老名市公式ウェブサイト（更新日 令和8年3月25日）",
+   "url": "https://www.city.ebina.kanagawa.jp/guide/kosodate/hoikuen/1003010.html"
+  },
+  {
+   "label": "保育料表 ２歳児クラス以下【令和８年度版】（PDF）",
+   "url": "https://www.city.ebina.kanagawa.jp/_res/projects/default_project/_page_/001/003/010/hoikuryouhyouR8.pdf"
+  },
+  {
+   "label": "保育料算定表（軽減措置）（PDF）",
+   "url": "https://www.city.ebina.kanagawa.jp/_res/projects/default_project/_page_/001/003/010/hoikuryousanntei1.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表は市の公式PDF（令和８年度版、文字の取れるPDF）の文字で読んだ。列は保育標準時間・保育短時間の2列だけで、きょうだい別の列はない。D1〜D20の範囲は切れ目・重なりなし。ページの算定例（所得割合計240,000円→D14で標準45,700円、均等割のみ→C 7,000円）とも一致。lunch_jh・cash・one_time はこのページを探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

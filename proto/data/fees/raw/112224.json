@@ -1,0 +1,209 @@
+{
+ "code": "112224",
+ "pref": "埼玉県",
+ "name": "越谷市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "『【令和9年度用】保育施設・幼稚園等のご案内』p.45 の利用者負担（基準額表）（令和8年8月現在）。『【令和8年度用】』（令和7年8月現在）の表と同じ額。8月分までと9月分以降で元となる税額の年度が変わる: 4月〜8月分は前年度、9月〜翌年3月分は当年度の市民税所得割額から算定（保育施設の案内ページでは利用者負担額を「9月から翌年8月まで」の区切りで案内）。クラス年齢（4月1日現在の年齢）で決まり、年度途中で3歳になっても年度中は0〜2歳児の額。",
+ "tax_basis": "6%",
+ "tax_note": "世帯の市民税所得割額等で決定（父母の合算。父母ともに収入が93万円以下の場合などは同居の祖父母等の家計の主宰者の税額で算定し、祖父母が児童を扶養している場合は別居でも算定に含める）。表の税額は住宅借入金控除（住宅ローン）、配当控除、外国税額控除、寄附金控除（ふるさと納税等）等の税額控除をする前の額。政令市ではないので6%のまま。",
+ "table": {
+  "title": "利用者負担（基準額表）（令和８年８月現在）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯・中国残留邦人等支援給付受給世帯・里親世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税が非課税の世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C1",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税が均等割のみ課税の世帯",
+    "monthly": 11900,
+    "monthly_second": null
+   },
+   {
+    "label": "C2",
+    "lower": 1,
+    "upper": 11000,
+    "condition": "市民税所得割額 11,000 円未満の世帯",
+    "monthly": 13800,
+    "monthly_second": null
+   },
+   {
+    "label": "C3",
+    "lower": 11000,
+    "upper": 48600,
+    "condition": "市民税所得割額 11,000 円以上 48,600 円未満",
+    "monthly": 15700,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 48600,
+    "upper": 53600,
+    "condition": "市民税所得割額 48,600 円以上 53,600 円未満",
+    "monthly": 17400,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 53600,
+    "upper": 58600,
+    "condition": "市民税所得割額 53,600 円以上 58,600 円未満",
+    "monthly": 19200,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 58600,
+    "upper": 63600,
+    "condition": "市民税所得割額 58,600 円以上 63,600 円未満",
+    "monthly": 21000,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 63600,
+    "upper": 78600,
+    "condition": "市民税所得割額 63,600 円以上 78,600 円未満",
+    "monthly": 23800,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 78600,
+    "upper": 97000,
+    "condition": "市民税所得割額 78,600 円以上 97,000 円未満",
+    "monthly": 27600,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 97000,
+    "upper": 117000,
+    "condition": "市民税所得割額 97,000 円以上 117,000 円未満",
+    "monthly": 32000,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 117000,
+    "upper": 135000,
+    "condition": "市民税所得割額 117,000 円以上 135,000 円未満",
+    "monthly": 36500,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 135000,
+    "upper": 169000,
+    "condition": "市民税所得割額 135,000 円以上 169,000 円未満",
+    "monthly": 41900,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 169000,
+    "upper": 202000,
+    "condition": "市民税所得割額 169,000 円以上 202,000 円未満",
+    "monthly": 43700,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 202000,
+    "upper": 235000,
+    "condition": "市民税所得割額 202,000 円以上 235,000 円未満",
+    "monthly": 50000,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 235000,
+    "upper": 268000,
+    "condition": "市民税所得割額 235,000 円以上 268,000 円未満",
+    "monthly": 52900,
+    "monthly_second": null
+   },
+   {
+    "label": "D12",
+    "lower": 268000,
+    "upper": 301000,
+    "condition": "市民税所得割額 268,000 円以上 301,000 円未満",
+    "monthly": 55800,
+    "monthly_second": null
+   },
+   {
+    "label": "D13",
+    "lower": 301000,
+    "upper": 349000,
+    "condition": "市民税所得割額 301,000 円以上 349,000 円未満",
+    "monthly": 60600,
+    "monthly_second": null
+   },
+   {
+    "label": "D14",
+    "lower": 349000,
+    "upper": 397000,
+    "condition": "市民税所得割額 349,000 円以上 397,000 円未満",
+    "monthly": 61200,
+    "monthly_second": null
+   },
+   {
+    "label": "D15",
+    "lower": 397000,
+    "upper": null,
+    "condition": "市民税所得割額 397,000 円以上",
+    "monthly": 66500,
+    "monthly_second": null
+   }
+  ],
+  "notes": "地域型保育・公立保育所・私立保育園・認定こども園(保育部分)で同額（公立・私立問わず共通料金）。0〜2歳児は給食費はかからない（夕食等除く）。表に第2子の別の列はない（多子世帯への軽減の枠に「上から2番目 1/2、上から3番目以降 無料」）。保育短時間（ ）: A 0／B 0／C1 11,600／C2 13,500／C3 15,400／D1 17,100／D2 18,800／D3 20,600／D4 23,300／D5 27,100／D6 31,400／D7 35,800／D8 41,100／D9 42,900／D10 49,100／D11 52,000／D12 54,800／D13 59,500／D14 60,100／D15 65,300。区切りは「以上〜未満」で切れ目・重なりなし。C2の下限は表にないが、C1（均等割のみ）と分けるため lower=1 とした。母子(父子)世帯等・在宅障がい児(者)のいる世帯・生活保護法に定める要保護者等で、C・D階層（市民税所得割77,101円未満に限る）は別表: C1 4,950（短時間4,850）／C2 5,900（5,750）／C3 6,750（6,600）／D1 7,200（7,050）／D2 7,650（7,500）／D3 8,100（7,950）／D4※ 8,550（8,400）（※所得割77,101円未満の方まで）。延長保育・時間外保育料と実費徴収は別。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子から無料ではない。0円は生活保護世帯等・市民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "市民税所得割額57,700円以上: 同一世帯から2人以上の就学前児童（0〜5歳児）が対象施設（保育所・認定こども園・地域型保育・幼稚園・特別支援学校幼稚部・児童心理治療施設通所部・児童発達支援・企業主導型保育）に入所する場合、入所児童で数えて上から2番目は1/2（一部の施設は「多子軽減に関する届出書」の提出が必要）。市民税所得割額57,700円未満: 同一世帯の子を年齢問わず数えて上から2番目は1/2。母子(父子)世帯等（所得割77,101円未満）: 年齢問わず上から2番目以降は無料。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "市民税所得割額57,700円未満は同一世帯の子を年齢問わず数えて上から3番目以降は無料。57,700円以上でも当面の間、同一世帯の「3人目以降」に当たる場合は申請の上で無料（埼玉県多子世帯保育料無償化支援事業。県の事業で、県が見直した場合は実施されなくなる可能性がある）。57,700円以上で就学前の3人が対象施設に同時に入所する場合も上から3番目以降は無料。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育施設の案内（保育所・保育園・認定こども園（保育部分）・地域型保育） | こしがや子育てネット",
+   "url": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/hoikusho/nyusyo.html"
+  },
+  {
+   "label": "【令和9年度用】保育施設・幼稚園等のご案内（PDF：10,069KB）p.45「6 利用者負担（保育料）」（令和8年8月現在）",
+   "url": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/hoikusho/files/goannai.pdf"
+  },
+  {
+   "label": "【令和8年度用】保育施設・幼稚園等のご案内（PDF：3,433KB）p.45「7 利用者負担（保育料）」（令和7年8月現在）",
+   "url": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/hoikusho/files/R8goannai.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べ（crawl）の docs には保育料の表がなかった（保育施設の案内ページだけ）。案内ページのHTMLを1回取り、リンクの「保育施設・幼稚園等のご案内」（令和8年度用・令和9年度用）のPDFを読んだ。"
+ ],
+ "notes": "下調べの保育施設の案内ページ（docs/00）から「保育施設・幼稚園等のご案内」PDFにたどった。令和9年度用（令和8年8月現在）と令和8年度用（令和7年8月現在）の表は同じ額。表のページは画像でも見て、行（国の階層・市の階層）と列（保育標準時間・（保育短時間））、多子世帯への軽減の枠を確かめた。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

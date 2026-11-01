@@ -1,0 +1,257 @@
+{
+ "code": "131075",
+ "pref": "東京都",
+ "name": "墨田区",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和7年9月から東京都の保育所等利用多子世帯負担軽減事業の拡充（第1子保育料無償化）で、墨田区で保育料を算定する認可保育施設を利用する子の通常保育料（利用者負担額）が無償（手続き不要）。延長保育、スポット延長保育、教材費等は対象外。「令和8年用 認可保育施設利用申込みのご案内」の「（6）保育料（利用者負担額）徴収基準額表＜令和8年度＞」でも保育料（月額）は0〜5歳児クラス・標準時間・短時間とも全階層0円。階層は延長保育料の決定や国への実績報告のために引き続き決める: 前期（4〜8月分）は令和7年度区市町村民税、後期（9〜3月分）は令和8年度区市町村民税。区の注意書き: 都の補助金を使っているので、都の事業が終わると保育料の負担が生じる場合がある。",
+ "tax_basis": "6%",
+ "tax_note": "保護者（原則父と母）の区市町村民税所得割額の合計（父母以外の同居者が家計の主宰者ならその人の区市町村民税額も含める）。住宅借入金等特別税額控除、寄附金税額控除、外国税額控除、配当控除等の規定は適用しない。区の説明では、会社員等は「税額控除前所得割額」、自営業者等は「算出所得割額」で確認（厳密にはここから調整控除額を引く）。未申告・確認できない場合は D23（最高額）。特別区（政令市ではない）。",
+ "table": {
+  "title": "（6）保育料（利用者負担額）徴収基準額表 ＜令和8年度＞",
+  "kind": "0〜2歳児クラス・標準時間・短時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯、里親世帯等",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "区民税非課税（ひとり親世帯）／区民税非課税（その他の世帯）",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C",
+    "lower": null,
+    "upper": null,
+    "condition": "区民税均等割のみ",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 5000,
+    "condition": "区民税所得割 5,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 5000,
+    "upper": 10000,
+    "condition": "5,000～10,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 10000,
+    "upper": 23200,
+    "condition": "10,000～23,200円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 23200,
+    "upper": 36400,
+    "condition": "23,200～36,400円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 36400,
+    "upper": 48600,
+    "condition": "36,400～48,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 48600,
+    "upper": 72800,
+    "condition": "48,600～72,800円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 72800,
+    "upper": 97000,
+    "condition": "72,800～97,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 97000,
+    "upper": 115000,
+    "condition": "97,000～115,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 115000,
+    "upper": 133000,
+    "condition": "115,000～133,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 133000,
+    "upper": 151000,
+    "condition": "133,000～151,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 151000,
+    "upper": 169000,
+    "condition": "151,000～169,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D12",
+    "lower": 169000,
+    "upper": 185500,
+    "condition": "169,000～185,500円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D13",
+    "lower": 185500,
+    "upper": 202000,
+    "condition": "185,500～202,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D14",
+    "lower": 202000,
+    "upper": 218500,
+    "condition": "202,000～218,500円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D15",
+    "lower": 218500,
+    "upper": 235000,
+    "condition": "218,500～235,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D16",
+    "lower": 235000,
+    "upper": 251500,
+    "condition": "235,000～251,500円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D17",
+    "lower": 251500,
+    "upper": 268000,
+    "condition": "251,500～268,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D18",
+    "lower": 268000,
+    "upper": 284500,
+    "condition": "268,000～284,500円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D19",
+    "lower": 284500,
+    "upper": 301000,
+    "condition": "284,500～301,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D20",
+    "lower": 301000,
+    "upper": 349000,
+    "condition": "301,000～349,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D21",
+    "lower": 349000,
+    "upper": 397000,
+    "condition": "349,000～397,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D22",
+    "lower": 397000,
+    "upper": 443600,
+    "condition": "397,000～443,600円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D23",
+    "lower": 443600,
+    "upper": null,
+    "condition": "443,600円以上",
+    "monthly": 0,
+    "monthly_second": null
+   }
+  ],
+  "notes": "表の保育料（月額）列は0〜5歳児クラス・標準時間・短時間の全階層で0。別の列の公立・公設民営保育園の延長保育料（0〜2歳児クラス、標準時間の1日1時間の場合の月額、第1子・第2子）は A 0、B（ひとり親）0、B（その他の世帯）200、C〜D2 1,000、D3〜D5 1,300、D6 2,000、D7 2,400、D8 2,700、D9 3,000、D10 3,200、D11 3,400、D12 3,700、D13 4,000、D14 4,100、D15 4,300、D16 4,600、D17 4,800、D18 5,000、D19 5,100、D20 5,600、D21 6,300、D22 6,900、D23 7,300（延長保育は小学校就学前の範囲で第3子以降無償）。"
+ },
+ "first_child_free": true,
+ "first_child_free_since": "2025年9月",
+ "first_child_free_note": "令和7年9月から、東京都の保育所等利用多子世帯負担軽減事業の拡充による第1子保育料無償化で、墨田区で保育料を算定する0〜2歳児クラスの子の通常保育料が無償（所得制限なし、手続き不要）。延長保育料・教材費等は対象外。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "令和5年10月から都の多子世帯負担軽減事業で、保護者が監護し生計が同一の子なら第2子以上（兄弟姉妹の数え方に年齢制限なし）の保育料が無償。令和7年9月からは第1子も無償なので、数え方は保育料に関係しない。区の説明では、都の事業が終わった場合は就学前の範囲で数え、第2子は第1子の半額、第3子以降は無償になる。在園児と兄弟姉妹の住民登録が違う場合は申請が必要。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "全員無償（第2子と同じ）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "認可保育施設の保育料の決定と支払いについて（Web口座振替受付サービス） 墨田区公式ホームページ（更新日 2025年8月1日）",
+   "url": "https://www.city.sumida.lg.jp/kosodate_kyouiku/kosodate_site/azukeru/hoikuen/zaien/hoikuenhoikuryoukete.html"
+  },
+  {
+   "label": "令和8年用 認可保育施設利用申込みのご案内（PDF、21．保育料（利用者負担額）、（6）保育料（利用者負担額）徴収基準額表＜令和8年度＞）",
+   "url": "https://www.city.sumida.lg.jp/kosodate_kyouiku/kosodate_site/azukeru/hoikuen/nyuuen/riyou_annai/annai.files/R8moushikomi.pdf"
+  },
+  {
+   "label": "認可保育施設利用申込みのご案内(令和8年用) 墨田区公式ホームページ（更新日 2026年10月30日）",
+   "url": "https://www.city.sumida.lg.jp/kosodate_kyouiku/kosodate_site/azukeru/hoikuen/nyuuen/riyou_annai/annai.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べ（crawl/131075）は保育料の文書を拾えていなかったので、公式サイトの子育て応援サイト → 子どもを預ける → 認可保育園・認定こども園 → 在園に関すること／入園に関すること の順に開いた（サイトはときどき接続がリセットされるので数秒あけて再試行した）。"
+ ],
+ "notes": "保育料のページ（令和6年度の徴収基準額表PDF R6hoikuryou.pdf が残っている）と令和8年用の利用申込みのご案内で読んだ。表は令和8年度の案内の表を使った。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

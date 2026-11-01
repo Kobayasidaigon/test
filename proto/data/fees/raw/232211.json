@@ -1,0 +1,53 @@
+{
+  "code": "232211",
+  "pref": "愛知県",
+  "name": "新城市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料は保護者等の市町村民税額で決まり、毎年6月に基準年の変更が行われ9月分から保育料が変わることがある（4〜8月分と9〜3月分で基準の年度が変わる）。月額の表は年度を通じて同じ。令和9年度の案内（2026年9月作成）の表も令和8年度と同額。0〜2歳児の保育料は平日8:30〜15:00の基本保育時間の月額（給食費込み）で、7:30〜8:30と15時以降の延長は1時間あたりの月額を加算、土曜保育は別の月額を加算する仕組み（保育標準時間・短時間の区分の表ではない）。",
+  "tax_basis": "6%",
+  "tax_note": "表の区分は「基準年度 市町村民税額等」で、C〜H階層は市町村民税所得割額。税額控除（住宅借入金等特別控除など）の扱いの定義は案内に書かれていない。政令市ではない。",
+  "table": {
+    "title": "＊令和8年度 保育料表（０～２歳児）＊",
+    "kind": "3歳未満・平日保育（8:30〜15:00の基本保育時間、給食費込み）・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税所得割非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": 100, "upper": 48600, "condition": "100円以上 48,600円未満", "monthly": 4500, "monthly_second": null },
+      { "label": "D", "lower": 48600, "upper": 77101, "condition": "48,600円以上 77,101円未満", "monthly": 7800, "monthly_second": null },
+      { "label": "E", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 10700, "monthly_second": null },
+      { "label": "F", "lower": 97000, "upper": 169000, "condition": "97,000円以上 169,000円未満", "monthly": 16900, "monthly_second": null },
+      { "label": "G", "lower": 169000, "upper": 264100, "condition": "169,000円以上 264,100円未満", "monthly": 20400, "monthly_second": null },
+      { "label": "H", "lower": 264100, "upper": null, "condition": "264,100円以上", "monthly": 26800, "monthly_second": null }
+    ],
+    "notes": "表の列は「平日保育」と「土曜保育」の月額で、（）内は7:30〜8:30及び15時以降にかかる延長保育料（1時間あたり月額）。平日の延長1時間あたり月額: A 0／B 0／C 400／D 700／E 1,000／F 1,600／G 2,000／H 2,500。土曜保育の月額: A 0／B 0／C 1,200／D 2,100／E 2,800／F 3,100／G 3,400／H 4,900（土曜の延長1時間あたり月額: C 100／D 200／E 200／F 300／G 300／H 400）。未満児の7:30〜8:30、15:00〜19:00の保育は各1時間単位。平日の保育料には給食費を含み、午後の延長利用料にはおやつ代を含む（土曜は給食なし・弁当持参）。計算例（案内の単価から）: 平日7:30〜18:00の利用なら延長4時間分を加算し、H階層で26,800＋2,500×4＝36,800円。減免: ひとり親世帯・在宅障がい児（者）世帯は、C〜D階層で、入園している児童が保護者と生計を一緒にする子ども（年齢や同居にかかわらず）のうち上から1番目は半額、2番目以降は無料。減免の基準は見直す場合がある。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表のとおり（A・B階層だけ0円）。令和9年度の案内では表の題名が「保育料表（０～２歳児の第１子）」になった。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和8年4月から、保護者の所得に関係なく第2子以降の保育料を無償化（市のページ・令和9年度の案内）。案内の表の注記: 階層区分がC〜H階層で、保護者と生計を一緒にする子ども（年齢や同居にかかわらず）を2人以上養育している世帯は、入園している児童が上から2番目以降なら無料。対象は市に住民登録があり、認可保育施設（認定こども園、小規模保育事業所など）の0〜2歳児クラスに在籍している第2子以降の児童。別世帯で生計を一にする兄弟姉妹（例: 大学進学で別居の姉）も「保育料軽減申出書（多子軽減）」で数えられる。上の子の年齢の上限なし、所得制限なし。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降はすべて無料（保護者と生計を一緒にする子どもを年齢や同居にかかわらず上から数える）。",
+  "lunch_jh": {
+    "free": false,
+    "note": "令和8年度の学校給食費は1食あたり中学校400円（小学校350円、令和8年4月から40円値上げ）。国及び市で負担し、中学校の保護者負担額は1食330円に据え置き（小学校は保護者負担0円）。",
+    "source": { "label": "学校給食費：新城市（2026年4月28日更新）", "url": "https://www.city.shinshiro.lg.jp/kosodate/kyoiku/kyuushoku/kyuusyokuhi.html" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度新城市立「こども園」等のご案内（PDF、保育料表はP8）", "url": "https://www.city.shinshiro.lg.jp/kosodate/kodomoen/moshikomi.files/nyuuenngoannnai.pdf" },
+    { "label": "令和8年度こども園入園申込みのご案内：新城市", "url": "https://www.city.shinshiro.lg.jp/kosodate/kodomoen/moshikomi.html" },
+    { "label": "第2子以降の保育料無償化：新城市（2026年7月30日更新）", "url": "https://www.city.shinshiro.lg.jp/kosodate/kodomoen/dainishimushouka.html" },
+    { "label": "令和9年度新城市立「こども園」等のご案内（PDF）", "url": "https://www.city.shinshiro.lg.jp/kosodate/kodomoen/R9nyuuen.files/nyuuengoannai.pdf" },
+    { "label": "保育料軽減申出書（多子軽減）・記入例付き（PDF）", "url": "https://www.city.shinshiro.lg.jp/kosodate/kodomoen/R9nyuuen.files/keigen-tashi.pdf" },
+    { "label": "学校給食費：新城市", "url": "https://www.city.shinshiro.lg.jp/kosodate/kyoiku/kyuushoku/kyuusyokuhi.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「第2子以降の保育料無償化」のページと多子軽減の申出書から入り、入園申込みのページのHTMLを1回取って「こども園等のご案内」PDFを見つけた。表は pdftotext -layout と画像（P9）で確かめた。新城市の0〜2歳児の保育料は基本保育時間（8:30〜15:00）の月額＋延長の時間単価という独自の形なので、rows は平日の基本保育料。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

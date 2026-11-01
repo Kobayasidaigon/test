@@ -1,0 +1,51 @@
+{
+  "code": "273619",
+  "pref": "大阪府",
+  "name": "熊取町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月分〜8月分の保育料は令和7年度市町村民税額（令和6年1〜12月の所得）、令和8年9月分〜令和9年3月分は令和8年度市町村民税額（令和7年1〜12月の所得）で決定。料金表（月額）は年度を通じて同じ。令和7年度（町のページの表）・令和9年度（2026年10月26日作成のPDF）の表も同じ額。第2子無料（就学前の範囲、町独自）は令和5年9月分から。",
+  "tax_basis": "6%",
+  "tax_note": "町民税所得割課税額。所得割課税額の計算では、住宅借入金等特別税額控除、配当控除、寄附金税額控除、外国税額控除、配当割・株式等譲渡所得割、寄附金特例控除、東日本大震災に係る住宅借入金等特別税額控除は適用しない。誰の税額を合算するか（父母・家計の主宰者）の記載は表のPDFにはない。政令市ではない。",
+  "table": {
+    "title": "令和8年度 保育認定（2・3号認定）利用者負担額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "2-B", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": 0 },
+      { "label": "3-B", "lower": 0, "upper": 48600, "condition": "町民税所得割課税額 48,600円未満", "monthly": 13600, "monthly_second": 0 },
+      { "label": "4-B", "lower": 48600, "upper": 97000, "condition": "町民税所得割課税額 97,000円未満", "monthly": 21000, "monthly_second": 0 },
+      { "label": "5", "lower": 97000, "upper": 169000, "condition": "町民税所得割課税額 169,000円未満", "monthly": 31100, "monthly_second": 0 },
+      { "label": "6", "lower": 169000, "upper": 301000, "condition": "町民税所得割課税額 301,000円未満", "monthly": 42700, "monthly_second": 0 },
+      { "label": "7", "lower": 301000, "upper": 397000, "condition": "町民税所得割課税額 397,000円未満", "monthly": 56000, "monthly_second": 0 },
+      { "label": "8", "lower": 397000, "upper": null, "condition": "町民税所得割課税額 397,000円以上", "monthly": 62200, "monthly_second": 0 }
+    ],
+    "notes": "列は保育料（3〜5歳児）・保育料（0〜2歳児）・【注】第2子 保育料（0〜2歳児）のそれぞれ標準時間（7:00〜18:00）・短時間（8:30〜16:30）。monthly は0〜2歳児の標準時間、monthly_second は【注】第2子の標準時間（全階層0円）。rows は特定世帯以外の行（B）。条件が「〜円未満」だけの行は、下限を一つ上の行の上限とした。3-B「48,600円未満」は均等割のみ（所得割0円）を含むとみて lower=0。保育短時間（0〜2歳児）: 3-B 13,500／4-B 20,700／5 30,700／6 42,000／7 55,100／8 61,100。特定世帯（ひとり親世帯、在宅障がい者（児）のいる世帯等）: 2-A 町民税非課税 0円、3-A 所得割48,600円未満 標準6,300円／短時間6,300円、4-A 所得割77,101円未満 6,300円／6,300円。園によっては標準時間7:30〜18:30。3号認定（0〜2歳児）は保育料の中に副食費を含む。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月0〜62,200円）。無料は生活保護世帯・町民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "together",
+  "second_note": "町独自（令和5年9月分から）: 小学校就学前の範囲で、最年長の子どもから順に2人目以降は無料（それまでは2人目半額）。所得制限の記載なし。上の子が保育所・幼稚園などに通っている必要があるかの記載はない（数えるのは就学前の子だけ）。所得割57,700円未満の世帯（第3階層B、第4階層Bの一部）と、特定世帯で所得割77,101円未満の世帯（第3階層A、第4階層A）は、小学校就学後も含めて生計を一にしている子どものうち最年長から2人目以降が無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "2人目以降が無料なので3人目以降も無料（就学前の範囲で最年長から数える。所得割57,700円未満と特定世帯77,101円未満は就学後の子も数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度保育認定（2・3号認定）利用者負担額表および副食費について（PDF）", "url": "https://www.town.kumatori.lg.jp/material/files/group/21/R8riyousahutanngakuhyou.pdf" },
+    { "label": "保育所等の入所申込書類（令和8年度）／熊取町", "url": "https://www.town.kumatori.lg.jp/soshiki/hoiku/shinseisho/shinsei_kosodate/14417.html" },
+    { "label": "特定教育・保育施設等の利用者負担額(保育料)について／熊取町（表は令和7年度、同じ額）", "url": "https://www.town.kumatori.lg.jp/soshiki/hoiku/gyomu/ninshin_syussan/hoikusho_kodomoen/3035.html" },
+    { "label": "保育料第2子無償化（令和5年9月分～）／熊取町", "url": "https://www.town.kumatori.lg.jp/soshiki/hoiku/gyomu/ninshin_syussan/hoikusho_kodomoen/11750.html" },
+    { "label": "令和9年度保育認定（2･3号認定）利用者負担額表および副食費について（PDF、照合用）", "url": "https://www.town.kumatori.lg.jp/material/files/group/21/R9riyousyahutangaku_hukusyokuhi.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べは町のサイトの接続エラー（OSError）が多く、候補の文書は0件だった",
+    "町のサイトはページによって 408（「このページは表示できません」）や接続切れを返すことがあり、数十秒あけて取り直すと取れた"
+  ],
+  "notes": "保育所・こども園・幼稚園の一覧ページから「保育料第2子無償化」「利用者負担額(保育料)について」（表は令和7年度のまま）を開き、令和8年度の申込書類ページ（14417.html）にある「令和8年度保育認定（2・3号認定）利用者負担額表」PDF（JUST Note から作ったPDF、文字が取れる）で令和8年度の表を確かめた（pdftotext -layout と画像）。令和7年度・令和9年度の表とも同じ額。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

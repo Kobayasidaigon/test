@@ -1,0 +1,56 @@
+{
+  "code": "082171",
+  "pref": "茨城県",
+  "name": "取手市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月分から8月分の保育料は前年度の税額をもとに、9月分から3月分の保育料は現年度の税額により算定。3号認定の子が年度途中に3歳になり2号認定に切り替わっても、その年度中は3号認定の利用者負担額（クラス年齢は4月1日時点）。未申告などで市町村民税額が確定しない場合は15階層。表は「保育施設利用のご案内」（令和8年度、R8.4月作成）2ページと、市の「教育・保育施設の保育料一覧（0から2歳児クラス）」（2026年10月14日更新）で同じ金額。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市民税の税額控除前所得割額（調整控除後）を基に算定。「住宅借入金等特別控除・配当控除・外国税額控除・寄付金控除等を適用しない税額」。父母の収入が103万円に達していない場合は、生計の中心者を同居祖父母とみなし、同居祖父母の市民税額も含めて算定。政令市ではないので6%。",
+  "table": {
+    "title": "取手市立保育所・取手市内私立保育園 利用者負担額（保育料）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "市町村民税均等割のみ課税世帯", "monthly": 6700, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税世帯の所得割額 48,600円 未満", "monthly": 9200, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 64000, "condition": "64,000円 未満（48,600円以上64,000円未満）", "monthly": 13300, "monthly_second": null },
+      { "label": "6", "lower": 64000, "upper": 97000, "condition": "97,000円 未満（64,000円以上97,000円未満）", "monthly": 20000, "monthly_second": null },
+      { "label": "7", "lower": 97000, "upper": 111000, "condition": "111,000円 未満（97,000円以上111,000円未満）", "monthly": 27500, "monthly_second": null },
+      { "label": "8", "lower": 111000, "upper": 127000, "condition": "127,000円 未満（111,000円以上127,000円未満）", "monthly": 32400, "monthly_second": null },
+      { "label": "9", "lower": 127000, "upper": 169000, "condition": "169,000円 未満（127,000円以上169,000円未満）", "monthly": 36200, "monthly_second": null },
+      { "label": "10", "lower": 169000, "upper": 200000, "condition": "200,000円 未満（169,000円以上200,000円未満）", "monthly": 39900, "monthly_second": null },
+      { "label": "11", "lower": 200000, "upper": 233000, "condition": "233,000円 未満（200,000円以上233,000円未満）", "monthly": 41200, "monthly_second": null },
+      { "label": "12", "lower": 233000, "upper": 264000, "condition": "264,000円 未満（233,000円以上264,000円未満）", "monthly": 42400, "monthly_second": null },
+      { "label": "13", "lower": 264000, "upper": 301000, "condition": "301,000円 未満（264,000円以上301,000円未満）", "monthly": 44500, "monthly_second": null },
+      { "label": "14", "lower": 301000, "upper": 349000, "condition": "349,000円 未満（301,000円以上349,000円未満）", "monthly": 48300, "monthly_second": null },
+      { "label": "15", "lower": 349000, "upper": null, "condition": "349,000円 以上", "monthly": 52000, "monthly_second": null }
+    ],
+    "notes": "国水準の8階層を15階層に細分化し、国水準との差額を市が負担。表は標準時間・短時間の2列で、第2子の列はない（第2子は階層表の半額、第3子以降は無料）。保育短時間: 1・2階層 0、3階層 6,600、4階層 9,100、5階層 13,100、6階層 19,700、7階層 27,100、8階層 31,900、9階層 35,700、10階層 39,300、11階層 40,600、12階層 41,700、13階層 43,800、14階層 47,500、15階層 51,200。公立・私立とも同じ料金で入園料なし。市外の保育施設に入所しても取手市の基準料金。ひとり親世帯・在宅障害児（者）のいる世帯は第3・第4階層で1,000円減（案内PDFでは「1,000円減額後の金額の半額」）、所得割77,101円未満なら第1子は4,200円以下・第2子以降は無償。里親・ファミリーホームに委託されている児童は無償。0〜2歳児クラスの給食費は保育料に含む。延長保育料・施設の実費負担は別。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜52,000円）。0円は生活保護世帯・市町村民税非課税世帯・里親等の委託児童だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "「各認定区分における兄弟姉妹の数え方に基づき、第2子に該当する場合は、階層表の半額」。数え方: 保育所・幼稚園・認定こども園・小規模保育事業・家庭的保育事業・事業所内保育事業・居宅訪問型保育事業・企業主導型保育事業、特別支援学校幼稚部・情緒障害児短期治療施設通所部・児童発達支援・医療型児童発達支援に在籍している就学前児童の中で、年齢の高い順に第1子、第2子と数える。多子世帯に係る特例措置: 市町村民税所得割合算額57,700円未満の世帯は年齢上限がなくなり、生計が同一の子を最年長者から数えて第2子半額。ひとり親世帯・在宅障害児（者）のいる世帯で所得割77,101円未満は第2子以降無償。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は無料。数え方は第2子と同じ（施設・事業に在籍する就学前児童の中で年齢の高い順）。所得割合算額57,700円未満の世帯は生計が同一の子を年齢上限なしで数える。市の第3子以降を世帯で数える独自の無償化は、見た範囲（決め方のページ・令和8年度の利用案内）には書かれていない。3歳以上の副食費は第3子（2号は小学校就学前、1号は小学校3年生修了前までの範囲で数える）が免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "教育・保育施設の保育料一覧（0から2歳児クラス）｜取手市（更新日2026年10月14日）", "url": "https://www.city.toride.ibaraki.jp/kosodate/kurashi/kosodate/hoikujo/hoikuryo-2.html" },
+    { "label": "教育・保育施設の保育料の決め方（0から2歳児クラス）｜取手市（更新日2026年4月1日）", "url": "https://www.city.toride.ibaraki.jp/kosodate/kurashi/kosodate/hoikujo/hoikuryo.html" },
+    { "label": "保育施設利用のご案内（令和8年度、R8.4月作成、PDF）", "url": "https://www.city.toride.ibaraki.jp/kosodate/kurashi/kosodate/hoikujo/documents/r8nyusyoannai.pdf" },
+    { "label": "【令和8年度】保育施設利用のお申込み｜取手市", "url": "https://www.city.toride.ibaraki.jp/kosodate/kurashi/kosodate/hoikujo/r3hoiku.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl/082171）はトップページの取得で OSError となり空だったので、トップ → 結婚・子育て・教育 → 保育所 の順に開いた（1回接続が切れたが、あけて取り直せた）"
+  ],
+  "notes": "ウェブの保育料一覧には年度の明記がないため、令和8年度の申し込みページの「保育施設利用のご案内」（令和8年度、R8.4月作成）2ページの表と照らして同じ金額であることを確かめた。4階層の「48,600円未満」は均等割のみ（3階層）と分けるため lower を1にした。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

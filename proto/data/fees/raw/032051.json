@@ -1,0 +1,59 @@
+{
+ "code": "032051",
+ "pref": "岩手県",
+ "name": "花巻市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和8年4月〜8月分は令和7年度、令和8年9月〜令和9年3月分は令和8年度の市町村民税課税額で算定。年度の初日の前日に満2歳の子はその年度中は3号認定の額。毎月1日に在籍していればその月の1か月分（原則日割りなし）。表の額は令和4年9月以降に適用している保育料（令和8年度のしおりに掲載）。",
+ "tax_basis": "6%",
+ "tax_note": "保育施設に入所している児童と同じ世帯（生計が一緒）の父母や父母以外の扶養義務者（家計の主宰者である場合に限る）の市町村民税課税額の合計。住宅借入金等特別控除・配当控除・寄付金控除等の税額控除を差し引く前の額。表の備考に、政令指定都市の税率変更（6%→8%）に関わらず従来の税率（6%）で計算した税額を用いるとある。家計の主宰者: 父母が非課税で収入合計103万円未満、かつ同居の祖父母等が最多収入者で収入360万円以上の場合はその人の税額で算定。未申告は暫定で最高額。",
+ "table": {
+  "title": "令和８年度 花巻市利用者負担額（保育料）について ◆世帯の合計税額による保育料の基準額表（単位：円）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）", "monthly": 0, "monthly_second": null},
+   {"label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "C1", "lower": null, "upper": null, "condition": "市町村民税均等割のみの世帯", "monthly": 9000, "monthly_second": null},
+   {"label": "C2", "lower": 1, "upper": 30000, "condition": "市町村民税所得割課税額 30,000円未満", "monthly": 10000, "monthly_second": null},
+   {"label": "C3", "lower": 30000, "upper": 48600, "condition": "市町村民税所得割課税額 30,000円以上 48,600円未満", "monthly": 11000, "monthly_second": null},
+   {"label": "D1", "lower": 48600, "upper": 57700, "condition": "市町村民税所得割課税額 48,600円以上 57,700円未満", "monthly": 14000, "monthly_second": null},
+   {"label": "D2", "lower": 57700, "upper": 72100, "condition": "市町村民税所得割課税額 57,700円以上 72,100円未満", "monthly": 15000, "monthly_second": null},
+   {"label": "D3", "lower": 72100, "upper": 77101, "condition": "市町村民税所得割課税額 72,100円以上（ひとり親・障がい児（者）世帯 77,101円未満）", "monthly": 16000, "monthly_second": null},
+   {"label": "D4", "lower": 77101, "upper": 83800, "condition": "市町村民税所得割課税額 77,101円以上 83,800円未満", "monthly": 18000, "monthly_second": null},
+   {"label": "D5", "lower": 83800, "upper": 97000, "condition": "83,800円以上 97,000円未満", "monthly": 19000, "monthly_second": null},
+   {"label": "D6", "lower": 97000, "upper": 109800, "condition": "97,000円以上 109,800円未満", "monthly": 23000, "monthly_second": null},
+   {"label": "D7", "lower": 109800, "upper": 133900, "condition": "109,800円以上 133,900円未満", "monthly": 27000, "monthly_second": null},
+   {"label": "D8", "lower": 133900, "upper": 169000, "condition": "133,900円以上 169,000円未満", "monthly": 31000, "monthly_second": null},
+   {"label": "D9", "lower": 169000, "upper": 198000, "condition": "169,000円以上 198,000円未満", "monthly": 36000, "monthly_second": null},
+   {"label": "D10", "lower": 198000, "upper": 274900, "condition": "198,000円以上 274,900円未満", "monthly": 40000, "monthly_second": null},
+   {"label": "D11", "lower": 274900, "upper": 301000, "condition": "274,900円以上 301,000円未満", "monthly": 42000, "monthly_second": null},
+   {"label": "D12", "lower": 301000, "upper": 325000, "condition": "301,000円以上 325,000円未満", "monthly": 43000, "monthly_second": null},
+   {"label": "D13", "lower": 325000, "upper": 397000, "condition": "325,000円以上 397,000円未満", "monthly": 45000, "monthly_second": null},
+   {"label": "D14", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 59000, "monthly_second": null}
+  ],
+  "notes": "3号認定（3歳児未満）の標準時間の列（各階層の上段＝ひとり親・障がい児（者）世帯以外）。表に第2子の列はないので monthly_second は null（0歳児〜2歳児のうち第2子以降は国の基準や市の補助制度により無償＝0円）。短時間: A・B 0、C1 8,800、C2 9,900、C3 10,900、D1 13,800、D2 14,600、D3 15,700、D4 17,700、D5 18,700、D6 22,400、D7 26,400、D8 30,600、D9 35,300、D10 39,200、D11 41,400、D12 41,800、D13 44,000、D14 58,000。ひとり親世帯・障がい児（者）のいる世帯（身体障害者手帳・療育手帳・精神障害者保健福祉手帳・特別児童扶養手当・障害基礎年金等）は B〜D3 階層で下段の額（標準／短時間）: B 0、C1 5,000／4,900、C2・C3・D1・D2・D3 6,000／6,000。0〜2歳児クラスの給食費（主食・副食）は保育料に含まれる。花巻市在住で市内の私立保育施設・私立幼稚園に勤める保育士等は第1子の保育料が月10,000円まで減免（申請）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（生活保護・市町村民税非課税世帯は0円）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "0歳児〜2歳児のうち第2子以降は、国の基準や市の補助制度により保育料無償（申し込み不要）。生計を一にしている最年長者（保護者が監護している子の最年長者）から数えて2番目以降の児童が対象で、上の子の年齢・在園の条件はない。生計を一にしている兄・姉の住所が異なる場合は「多子軽減届」で軽減される場合がある。所得制限の記載なし。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第2子以降が無償なので第3子以降も無償（生計を一にする子の最年長者から数える）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "保育所等の入所申込方法について｜花巻市（更新日 令和8年5月28日）", "url": "https://www.city.hanamaki.iwate.jp/kosodate_kyoiku/kosodate/hoikuen_yochien/shisetsu_nyusho/hoikuen/1001744.html"},
+  {"label": "令和8年度保育所等入所のしおり（PDF、8〜10ページ「保育料（利用者負担額）について」「令和８年度 花巻市利用者負担額（保育料）について」）", "url": "https://www.city.hanamaki.iwate.jp/_res/projects/default_project/_page_/001/001/744/hoikusyosiori_0520.pdf"},
+  {"label": "よくある質問 保育料はどのくらいですか？｜花巻市", "url": "https://www.city.hanamaki.iwate.jp/faq/kyoiku/1006154/1006507.html"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べの index.json に保育料の表の文書がなかったので、よくある質問「保育料はどのくらいですか？」の「料金表」の案内から「保育所等の入所申込方法について」のページを開き、令和8年度保育所等入所のしおりのPDFを読んだ"
+ ],
+ "notes": "表はしおり（14ページのPDF、文字あり）の10ページ目を pdftotext -layout と画像（pdftoppm）で確かめた。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

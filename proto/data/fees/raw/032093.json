@@ -1,0 +1,62 @@
+{
+  "code": "032093",
+  "pref": "岩手県",
+  "name": "一関市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月〜8月分は令和7年度、令和8年9月〜令和9年3月分は令和8年度の市町村民税課税額で算定するため、9月に保育料が変わる場合がある。月額表は年度を通じて同じ。年度途中で3歳になり3号から2号認定に変わっても、年度末までは2歳児クラスの保育料。0〜2歳児クラスの副食費は保育料に含まれる。月のうち1日でも在籍していれば月額がかかる。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（父母）の市町村民税の均等割額・所得割額で、住宅借入金等特別控除・配当控除・寄附金税額控除・外国税額控除・配当割額または株式等譲渡所得割額の控除を適用する前の額。政令指定都市の8%は従前の6%相当に換算して計算する旨の注記あり（一関市は政令市ではないので6%）。祖父母等と同居し父母の収入合計が103万円以下のときなどは祖父母等（家計の主宰者）や児童を税法上扶養している人の税額も合算。未申告の場合は最高階層。",
+  "table": {
+    "title": "一関市保育料基準表 ▽0〜2歳児クラス 副食費は保育料の中に含まれます。",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市町村民税均等割のみ", "monthly": 8000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市町村民税所得割48,600円未満", "monthly": 11000, "monthly_second": null },
+      { "label": "D1-1", "lower": 48600, "upper": 57700, "condition": "48,600円以上57,700円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "D1-2", "lower": 57700, "upper": 65000, "condition": "57,700円以上65,000円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "D2-1", "lower": 65000, "upper": 77101, "condition": "65,000円以上77,101円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "D2-2", "lower": 77101, "upper": 81500, "condition": "77,101円以上81,500円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "D3", "lower": 81500, "upper": 97000, "condition": "81,500円以上97,000円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "E1", "lower": 97000, "upper": 121000, "condition": "97,000円以上121,000円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "E2", "lower": 121000, "upper": 145000, "condition": "121,000円以上145,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "E3", "lower": 145000, "upper": 169000, "condition": "145,000円以上169,000円未満", "monthly": 34000, "monthly_second": null },
+      { "label": "F1", "lower": 169000, "upper": 213000, "condition": "169,000円以上213,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "F2", "lower": 213000, "upper": 257000, "condition": "213,000円以上257,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "F3", "lower": 257000, "upper": 301000, "condition": "257,000円以上301,000円未満", "monthly": 47000, "monthly_second": null },
+      { "label": "G", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 50000, "monthly_second": null },
+      { "label": "H", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 53000, "monthly_second": null }
+    ],
+    "notes": "表は「令和8年度 保育所・こども園等入所のご案内（R8.4改定版）」13ページ（PDFの14ページ目）。D1-1とD1-2、D2-1とD2-2は表の中で金額のセルが結合されていて同じ額。保育短時間（月額）: A 0／B 0／C1 7,800／C2 10,800／D1-1・D1-2 15,700／D2-1・D2-2 19,600／D3 22,600／E1 25,500／E2 29,400／E3 33,400／F1 36,300／F2 39,300／F3 46,200／G 49,100／H 52,000。ひとり親世帯・障がい児（者）世帯は別表（標準時間／短時間）: 特B 市町村民税非課税 0／0、特C1 均等割のみ 3,400／3,300、特C2 所得割48,600円未満・特D1-1〜特D1-2 48,600円以上65,000円未満 4,750／4,650、特D2-1 65,000円以上77,101円未満 6,000／5,850（特D2-1の基準を超える税額はD2-2以降と同じ）。第2子以降は無料のため第2子の列はない（monthly_second は null）。C2 の下限は均等割のみ（C1）と分けるため lower=1。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月8,000〜53,000円）。0円は生活保護世帯・市町村民税非課税世帯。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "一関市は令和5年度から、世帯が扶養する第2子以降の保育料を無償化（「保護者が現に扶養するお子さんが2人以上いる場合は、2番目以降のお子さんの保育料が無料」）。上の子が同時に保育所等に通っている必要はなく、上の子の年齢の上限・所得制限の記載もない（入所案内・無償化のページとも）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降が無料なので第3子以降も無料（保護者が現に扶養する子で数える）。3〜5歳児クラスの副食費も、保護者が現に扶養する子が3人以上いる場合は3番目以降が無料。",
+  "lunch_jh": {
+    "free": false,
+    "note": "令和8年度の中学校の給食費は1食423円のうち保護者負担336円（年額55,104円、給食164日）。値上げ分は市が補填して保護者負担は据え置き。小学校は令和8年度は国の給食費負担軽減などで保護者から徴収しない。",
+    "source": { "label": "学校給食費の改定と令和8年度の保護者負担額のお知らせ | 一関市ホームページ（更新日：2026年3月30日）", "url": "https://www.city.ichinoseki.iwate.jp/archive/contents-180313" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度 保育所・こども園等入所のご案内（R8.4改定）PDF（8 保育料・副食費について、一関市保育料基準表）", "url": "https://www.city.ichinoseki.iwate.jp/uploads/public/archive_0000001520_00/R8nyuen-anai-R8.4kaitei.pdf" },
+    { "label": "令和8年度 保育所・こども園等入所申し込みについて | 一関市ホームページ", "url": "https://www.city.ichinoseki.iwate.jp/archive/contents-180624" },
+    { "label": "幼児教育・保育の無償化について | 一関市ホームページ（更新日：2024年1月31日）", "url": "https://www.city.ichinoseki.iwate.jp/archive/contents-118697" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）の候補文書は限度額適用の申請書だけで、保育料表はなかった",
+    "下調べの pages にあった「令和8年度 保育所・こども園等入所申し込みについて」のページの HTML から入所案内 PDF の href を拾って読んだ"
+  ],
+  "notes": "表は PDF の文字を pdftotext -layout で読み、ページの画像で列（標準時間・短時間）と結合セルを確かめた。cash・one_time は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

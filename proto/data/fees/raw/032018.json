@@ -1,0 +1,185 @@
+{
+ "code": "032018",
+ "pref": "岩手県",
+ "name": "盛岡市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "表題「令和８年度 盛岡市教育・保育施設利用者負担額表」。各月初日の世帯の階層区分による。4月から8月分は令和7年度分、9月から3月分は令和8年度分の市民税（所得割課税額）の区分で決める。児童の年齢は令和8年4月1日の年齢で、年度途中に年齢が変わっても変更しない。3歳以上児（2号）と1号は無償。施設によって特定負担額や教材費・副食費などの実費徴収がある。",
+ "tax_basis": "6%",
+ "tax_note": "市民税の額は、寄付金税額控除・配当割額控除・株式等譲渡所得割額控除・配当控除・外国税額控除・住宅借入金等特別控除・特定増改築住宅借入金等特別控除をする前の額（備考1）。修正申告で変わることがある。政令市ではない（中核市）。",
+ "table": {
+  "title": "令和８年度 盛岡市教育・保育施設利用者負担額表",
+  "kind": "3歳未満児（3号）・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法第６条第１項に規定する被保護世帯、中国残留邦人等の…支援給付受給世帯、保護者が小規模住居型児童養育事業を行う者又は里親である世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "非課税世帯（B0階層を除く）",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C",
+    "lower": null,
+    "upper": null,
+    "condition": "均等割のみの世帯、1号認定で保護者が児童福祉法による里親である世帯（C0階層を除く）",
+    "monthly": 5400,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 48600,
+    "condition": "48,600円未満（D0階層を除く）",
+    "monthly": 7400,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 48600,
+    "upper": 54600,
+    "condition": "48,600円以上 54,600円未満（D20階層を除く）",
+    "monthly": 10600,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 54600,
+    "upper": 57700,
+    "condition": "54,600円以上 57,700円未満（D30階層を除く）",
+    "monthly": 14000,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 57700,
+    "upper": 59400,
+    "condition": "57,700円以上 59,400円未満（D40階層を除く）",
+    "monthly": 14000,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 59400,
+    "upper": 77101,
+    "condition": "59,400円以上 77,101円未満（D50階層を除く）",
+    "monthly": 17600,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 77101,
+    "upper": 78600,
+    "condition": "77,101円以上 78,600円未満",
+    "monthly": 17600,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 78600,
+    "upper": 97000,
+    "condition": "78,600円以上 97,000円未満",
+    "monthly": 21600,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 97000,
+    "upper": 115000,
+    "condition": "97,000円以上 115,000円未満",
+    "monthly": 26600,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 115000,
+    "upper": 133000,
+    "condition": "115,000円以上 133,000円未満",
+    "monthly": 30000,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 133000,
+    "upper": 169000,
+    "condition": "133,000円以上 169,000円未満",
+    "monthly": 36000,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 169000,
+    "upper": 268000,
+    "condition": "169,000円以上 268,000円未満",
+    "monthly": 42000,
+    "monthly_second": null
+   },
+   {
+    "label": "D12",
+    "lower": 268000,
+    "upper": 301000,
+    "condition": "268,000円以上 301,000円未満",
+    "monthly": 47100,
+    "monthly_second": null
+   },
+   {
+    "label": "D13",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "301,000円以上 397,000円未満",
+    "monthly": 51600,
+    "monthly_second": null
+   },
+   {
+    "label": "D14",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上",
+    "monthly": 66000,
+    "monthly_second": null
+   }
+  ],
+  "notes": "保育短時間（3号）: C 5,300円、D1 7,200円、D2 10,400円、D3 13,700円、D4 13,700円、D5 17,300円、D6 17,300円、D7 21,200円、D8 26,100円、D9 29,400円、D10 35,300円、D11 41,200円、D12 46,200円、D13 50,700円、D14 64,800円（A・Bは0円）。母子・父子・障がい者世帯等の階層（標準時間／短時間）: B0（非課税）0／0、C0（均等割のみ）4,800／4,700、D0（48,600円未満）6,200／6,000、D20（48,600〜54,600円未満）9,000／8,800、D30（54,600〜57,700円未満）9,000／8,800、D40（57,700〜59,400円未満）9,000／8,800、D50（59,400〜77,101円未満）9,000／8,800。○保育料の軽減について: 保育施設を利用する3歳未満児（3号）が同一世帯の（保護者に監護される生計を一にする）子どものうち2人目以降なら保育料は免除（最年長の子どもの年齢やきょうだいの保育施設等の利用の有無を問わない）。3歳以上児（2号）・1号は無償。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児（3号）の第1子は有料（標準時間で月5,400〜66,000円、母子・父子・障がい者世帯等は4,800〜9,000円）。0円は生活保護世帯等と非課税世帯だけ。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "市独自の「子育て世帯応援プロジェクト」（令和2年4月から、当初は世帯年収おおむね550万円未満相当に限る）を、岩手県との共同事業で令和5年4月分から所得（税額）要件を廃止して拡大。保護者が監護する世帯の子どものうち最年長から数えて2人目以降の0〜2歳児の保育料を0円（保育所・認定こども園・地域型保育事業、手続き不要。延長保育料などは対象外）。子どもの年齢やきょうだいの保育施設の同時利用の有無を問わない。認可外保育施設（企業主導型を含む）は月42,000円まで助成。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第2子以降はすべて0円（第2子と同じ数え方、所得制限なし）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和8年度盛岡市教育・保育施設利用者負担額表（PDF）",
+   "url": "https://www.city.morioka.iwate.jp/_res/projects/default_project/_page_/001/053/010/R8riyousyahutangaku.pdf"
+  },
+  {
+   "label": "令和8年度 保育施設入園・転園申込みについて｜盛岡市公式ホームページ（更新日 令和8年9月25日）",
+   "url": "https://www.city.morioka.iwate.jp/kodomo_kyoiku/hoikuen_kodomoen_youchien/nyuen_tenen_tetsuzuki/1053010.html"
+  },
+  {
+   "label": "【令和5年度から】第2子以降の保育料無償化範囲の拡大について｜盛岡市公式ホームページ（更新日 令和8年9月15日）",
+   "url": "https://www.city.morioka.iwate.jp/kodomo_kyoiku/hoikuen_kodomoen_youchien/ouen_project/1042073.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べ（crawl/032018）の候補は民営化の説明会資料だけだったので、下調べのページ一覧にあった「保育施設の入園・転園手続き」→「令和8年度 保育施設入園・転園申込みについて」を開き、そこにあった利用者負担額表PDFと第2子以降無償化のページを読んだ。"
+ ],
+ "notes": "表の行の対応（母子・父子・障がい者世帯等の行と一般の行が交互に並ぶ）は画像で確かめた。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

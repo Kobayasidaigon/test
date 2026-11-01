@@ -8,7 +8,7 @@ import { sortTier, yenMan } from '@/shared'
 import type { Comparison, FamilyInput } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { ItemIcon } from './art'
-import { IJU_SHORT, WAIT_NOTE, ijuState, isHit, levelTag, lookOf, perYearChip, thinCity, toneOf, waitOf, waitText } from './lib'
+import { IJU_SHORT, WAIT_NOTE, ijuState, isHit, levelTag, lookOf, onceShort, perYearChip, thinCity, toneOf, waitDraft, waitOf, waitText } from './lib'
 import { NamedCapsuleG } from './machine'
 import { DetailGrid, Notice, NextStepsBox, ResultHeader, RetryButtons, SectionTitle, StampBook, rentOf, type SampleMark } from './result'
 import { GotouchiStamp } from './stamp'
@@ -70,7 +70,7 @@ function rowAria(c: Comparison) {
   const r = rentOf(c)
   const wt = waitOf(c)
   const miss = c.unknown.length && !isHit(c) ? `。確認中の${c.unknown.map((u) => u.label).join('・')}は入っていません` : ''
-  return `${c.to.pref}${c.to.name}（${levelTag(c.to)}）：${w.main}${w.sub && !isHit(c) ? `（${w.sub}）` : ''}${miss}${c.oneTime ? `。ほかに一度きり 最大 約${yenMan(c.oneTime, 0)}` : ''}${r && r.to !== null ? `。家賃の目安 月${man1(r.to)}` : ''}${wt && wt.to !== null ? `。待機児童 ${waitText(wt.to)}` : ''}${c.care ? '。災害への配慮あり' : ''}`
+  return `${c.to.pref}${c.to.name}（${levelTag(c.to)}）：${w.main}${w.sub && !isHit(c) ? `（${w.sub}）` : ''}${miss}${c.oneTime ? `。ほかに一度きり ${onceShort(c)}` : ''}${r && r.to !== null ? `。家賃の目安 月${man1(r.to)}` : ''}${wt && wt.to !== null ? `。待機児童 ${waitText(wt.to)}` : ''}${c.care ? '。災害への配慮あり' : ''}`
 }
 
 function ShelfRow({ c, on, onClick, max }: { c: Comparison; on: boolean; onClick: () => void; max: number }) {
@@ -106,14 +106,19 @@ function ShelfRow({ c, on, onClick, max }: { c: Comparison; on: boolean; onClick
                 {r.diff !== null && Math.abs(r.diff) >= 1000 && `（今の街${r.diff > 0 ? '＋' : '−'}${man1(Math.abs(r.diff))}）`}
               </span>
             )}
-            {wt && wt.to !== null && <span className="text-[12px] font-bold text-[var(--ink-soft)]">待機児童 {waitText(wt.to)}</span>}
+            {wt && wt.to !== null && (
+              <span className="text-[12px] font-bold text-[var(--ink-soft)]">
+                待機児童 {waitText(wt.to)}
+                {waitDraft(wt.toConf) && `（${waitDraft(wt.toConf)}）`}
+              </span>
+            )}
           </span>
         </span>
         <span className="col-start-2 mt-1 min-w-0 sm:col-start-3 sm:mt-0">
           <Bar c={c} max={max} />
           <span className={cn('mt-0.5 block font-black leading-snug', isHit(c) ? 'text-[13px]' : 'text-[13.5px]')}>{w.main}</span>
           {w.sub && <span className="block text-[12px] font-bold text-[var(--ink-soft)]">{w.sub}</span>}
-          {c.oneTime > 0 && <span className="mt-0.5 inline-block rounded-full bg-[var(--ink)] px-1.5 text-[12px] font-black text-[var(--yolk)]">ほかに一度きり 最大 約{yenMan(c.oneTime, 0)}</span>}
+          {c.oneTime > 0 && <span className="mt-0.5 inline-block rounded-full bg-[var(--ink)] px-1.5 text-[12px] font-black text-[var(--yolk)]">ほかに一度きり {onceShort(c)}</span>}
         </span>
       </button>
     </li>
@@ -200,6 +205,7 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
   const from = list[0]?.from
   const fromRent = list.map(rentOf).find((r) => r && r.from !== null)?.from ?? null
   const fromWait = list.map(waitOf).find((w) => w && w.from !== null)?.from ?? null
+  const fromWaitConf = list.map(waitOf).find((w) => w && w.from !== null)?.fromConf
   const waitAsOf = list.map(waitOf).find((w) => w)?.asOf
   const hasHit = list.some(isHit)
   return (
@@ -216,7 +222,7 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
           ＋は候補の街のほうが得、−は今の街（{from?.name}）のほうが得。金額は{list[0] ? perYearChip(list[0]).replace('1年ぶん', '1年ぶんの額') : ''}。「—」は、この家族に当てはまらない項目です。
         </p>
         <div className="overflow-x-auto overscroll-x-contain rounded-[10px] border-2 border-[var(--ink)]/25">
-          <table className="w-full min-w-[520px] border-collapse text-[13px]">
+          <table className="w-full min-w-[600px] border-collapse text-[13px]">
             <thead>
               <tr className="bg-[var(--paper-2)]">
                 <th scope="col" className="sticky left-0 z-10 min-w-[6.5em] bg-[var(--paper-2)] px-2 py-2 text-left text-[12px] font-black">
@@ -242,7 +248,7 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
                   {list.map((c) => {
                     const v = cell(c, r.key)
                     return (
-                      <td key={c.to.id} className={cn('px-2 py-2 text-center font-black', v.soft && 'text-[12px] text-[var(--ink-soft)]')}>
+                      <td key={c.to.id} className={cn('whitespace-nowrap px-2 py-2 text-center font-black', v.soft && 'text-[12px] text-[var(--ink-soft)]')}>
                         {v.text}
                       </td>
                     )
@@ -255,12 +261,23 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
                   <span className="block text-[12px] font-bold text-[var(--ink-soft)]">一度きり</span>
                 </th>
                 {list.map((c) => {
-                  // 調べていない街は「—」（ない）に見せず「準備中」。対象外・一部の地域だけと分かった街は、そう書く
+                  // 調べていない街（東京圏の条件不利地域で実施が分からない街もふくむ）は「—」（ない）に見せず「準備中」。実施なし・一部の地域だけと分かった街は、そう書く
                   const st = ijuState(c, input)
                   const soft = st === 'pending' || st === 'none' || st === 'part'
+                  const once = c.items.find((i) => i.oneTime)
                   return (
-                    <td key={c.to.id} className={cn('px-2 py-2 text-center font-black', soft && 'text-[12px] text-[var(--ink-soft)]')}>
-                      {c.oneTime > 0 ? `最大 ${yenMan(c.oneTime, 0)}` : st && st !== 'item' ? IJU_SHORT[st] : '—'}
+                    <td key={c.to.id} className={cn('whitespace-nowrap px-2 py-2 text-center font-black', soft && 'text-[12px] text-[var(--ink-soft)]')}>
+                      {once ? (
+                        <>
+                          {once.upTo ? '最大' : ''}
+                          {yenMan(once.total ?? 0, 0)}
+                          {once.pendingPart && <span className="block text-[12px] font-bold text-[var(--ink-soft)]">＋{once.pendingPart.replace('子どもの', '')}は確認中</span>}
+                        </>
+                      ) : st && st !== 'item' ? (
+                        IJU_SHORT[st]
+                      ) : (
+                        '—'
+                      )}
                     </td>
                   )
                 })}
@@ -275,7 +292,7 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
                 {list.map((c) => {
                   const r = rentOf(c)
                   return (
-                    <td key={c.to.id} className="px-2 py-2 text-center font-bold">
+                    <td key={c.to.id} className="whitespace-nowrap px-2 py-2 text-center font-bold">
                       {r && r.to !== null ? man1(r.to) : 'データなし'}
                       {r && r.diff !== null && (
                         <span className="block text-[12px] text-[var(--ink-soft)]">{Math.abs(r.diff) < 1000 ? 'ほぼ同じ' : `${r.diff > 0 ? '＋' : '−'}${man1(Math.abs(r.diff))}`}</span>
@@ -285,18 +302,21 @@ export function CompareTable({ list, input }: { list: Comparison[]; input: Famil
                 })}
               </tr>
               {waitAsOf && (
-                <tr className="border-t-2 border-[var(--ink)]/15 bg-[var(--stay-bg)]">
-                  <th scope="row" className="sticky left-0 z-10 min-w-[6.5em] bg-[var(--stay-bg)] px-2 py-2 text-left text-[12.5px] font-black">
-                    待機児童（{waitAsOf}）
+                <tr className="border-t-2 border-[var(--ink)]/15 bg-[#f4f0e8]">
+                  <th scope="row" className="sticky left-0 z-10 min-w-[6.5em] bg-[#f4f0e8] px-2 py-2 text-left text-[12.5px] font-black">
+                    待機児童
+                    <span className="block whitespace-nowrap text-[12px] font-bold text-[var(--ink-soft)]">（{waitAsOf}）</span>
                     <span className="block text-[12px] font-bold text-[var(--ink-soft)]">
                       今の街 {from?.name} {waitText(fromWait)}
+                      {waitDraft(fromWaitConf) && `（${waitDraft(fromWaitConf)}）`}
                     </span>
                   </th>
                   {list.map((c) => {
                     const w = waitOf(c)
                     return (
-                      <td key={c.to.id} className="px-2 py-2 text-center font-bold">
+                      <td key={c.to.id} className="whitespace-nowrap px-2 py-2 text-center font-bold">
                         {waitText(w?.to ?? null)}
+                        {waitDraft(w?.toConf) && <span className="block text-[12px] text-[var(--ink-soft)]">{waitDraft(w?.toConf)}</span>}
                       </td>
                     )
                   })}

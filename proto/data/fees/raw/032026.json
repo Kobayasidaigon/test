@@ -1,0 +1,33 @@
+{
+  "code": "032026",
+  "pref": "岩手県",
+  "name": "宮古市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（0歳から就学前まで保育料無料。「宮古市の軽減支援について（全体説明用）」は令和8年6月29日版、令和9年度入所のしおり〔令和8年9月発行〕も同じ）",
+  "period_note": "認可保育所・認定こども園（2号・3号）・地域型保育事業所（家庭的保育など）は、0歳から就学前までのすべての期間で保育料が無料（0〜2歳児は市の制度、3歳児〜就学前は国の制度）。在園中の手続きは不要で自動的に無償。市の独自支援は宮古市民に限る。",
+  "tax_basis": "6%",
+  "tax_note": "0〜2歳児の保育料は所得にかかわらず無料なので、所得割での階層判定は保育料に使われない（料金表は公開されていない）。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2019年10月",
+  "first_child_free_note": "国の無償化の対象外となる0歳〜2歳児の課税世帯の保育料を市独自に無償化し、就学前の保育料はすべて無料（所得制限・きょうだいの条件なし）。開始時期は「令和元年10月1日から幼児教育・保育の無償化が始まりました。宮古市では、国の無償化制度の対象とならない方に対しても、独自の軽減支援を行っています」「国の制度による無償化にあわせ」という書き方から2019年10月とした。認可外保育施設は保育の必要性がある場合に0〜2歳児で月額42,000円まで軽減。3歳以上の副食費も月額ひとり5,100円を上限に市が支援。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "0〜2歳児は第1子から無料なので、きょうだいの数え方は関係ない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "幼児教育・保育の無償化について／岩手県宮古市（2026年6月29日更新）", "url": "https://www.city.miyako.iwate.jp/gyosei/kosodate_kyoiku/kosodate_support/5/5808.html" },
+    { "label": "宮古市の軽減支援について（全体説明用）（PDF、令和8年6月29日版）", "url": "https://www.city.miyako.iwate.jp/material/files/group/18/01_mushouka_miyakocity_R80629.pdf" },
+    { "label": "令和9年度入所のしおり（R8.9発行版）（PDF）利用料（保育料）について", "url": "https://www.city.miyako.iwate.jp/material/files/group/18/siori9.pdf" },
+    { "label": "保育所などのご案内／岩手県宮古市", "url": "https://www.city.miyako.iwate.jp/gyosei/kosodate_kyoiku/kosodate_support/5/5769.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べに候補の文書がなかったので、下調べのページ一覧にあった「保育所などのご案内」「幼児教育・保育の無償化について」を開いた。入所のしおり（令和9年度、令和8年9月発行）と全体説明のPDF（令和8年6月29日版）がどちらも「0歳から就学前までのすべての期間で保育料が無料」。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

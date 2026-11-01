@@ -39,8 +39,9 @@ export type Region = 'tokyo23' | 'tokyo' | 'saitama' | 'kanagawa' | 'chiba' | 'o
 
 // どこまで調べた街か。
 //   detailed = 市区町村の制度まで調べた「くわしい街」（保育料の月額の表があるのは、この中の一部）
-//   pref     = 都道府県や市区町村の制度（保育料の無償化・給食費・移住支援金など）が一部わかる街（月額の表はない）
-//   basic    = 国の全国調査（子ども医療費・待機児童・家賃）だけ分かる街。市区町村の制度は準備中
+//   pref     = 都道府県や市区町村の子育ての制度（保育料の無償化・中学校の給食費・現金の給付）が一部わかる街（月額の表はない）
+//   basic    = 国の全国調査（待機児童・子ども医療費・家賃）だけ分かる街。家賃は集計のある市町村だけ。子育ての制度は準備中
+//              （移住支援金は23区から移る家族にしか関係しないので、移住支援金だけ分かる街も basic）
 export type DataLevel = 'detailed' | 'pref' | 'basic'
 
 // 災害などへの配慮。hit = 被災した市町村（順位と悲しい演出を出さない）、area = 被災した地域を含む県
@@ -80,12 +81,16 @@ export interface City {
   // 0〜2歳の保育料（認可保育所・保育標準時間・第1子の月額）。3〜5歳は国の無償化で0円。
   // 国の基準（同時に通う子で数えて2人目は半額、3人目以降は0円）は、どの街にも当てはまるものとして計算で足す
   nursery: {
-    firstChildFree: boolean          // 0〜2歳の第1子から無料
-    firstFreeUnder?: number          // 第1子の無料に所得の条件があるとき、世帯年収の目安（万円）。この額をまたぐ年収帯・上の年収帯は確認中
+    firstChildFree: boolean          // 0〜2歳の第1子から無料（所得の条件なし）
+    firstFreeUnder?: number          // 第1子の無料に所得の条件があるとき、世帯年収の目安（万円）。この額をまたぐ年収帯は確認中、上の年収帯は対象外
+    firstFreeUnsure?: boolean        // 第1子の無料に所得の条件があるか確かめていない。firstFreeUnder は目安で、この額をまたぐ年収帯・上の年収帯は確認中
     secondChild: 'free' | 'half'     // 2人目（数え方は secondCount）
     secondFreeUnder?: number         // 2人目の無料に所得の条件があるとき（firstFreeUnder と同じ読み方）
+    secondFreeUnsure?: boolean       // 2人目の無料に所得の条件があるか確かめていない（firstFreeUnsure と同じ読み方）
     secondOnly?: boolean             // 2人目だけが対象の制度（3人目以降は国の基準）
     thirdChild: 'free' | 'half'      // 3人目以降（数え方は thirdCount）
+    thirdFreeUnder?: number          // 3人目以降の無料（国の基準より広い数え方の分）に所得の条件があるとき。上の年収帯は国の基準（同時に通う3人目は0円）
+    thirdFreeUnsure?: boolean        // 3人目以降の無料に所得の条件があるか確かめていない
     secondCount?: SiblingCount       // 2人目の数え方。書いていなければ together（国の基準）
     thirdCount?: SiblingCount        // 3人目の数え方。書いていなければ together（国の基準）
     countConfidence?: Confidence     // 数え方の確からしさ（書いていなければ confidence と同じ。民間サイトの解説だけなら 推定）
@@ -100,14 +105,17 @@ export interface City {
   cash?: { label: string; perChildYearly: number; maxAge: number; confidence: Confidence; sources: Source[] }
   // 子ども医療費（通院）の対象：何歳の年度末まで
   medical: { coversTo: number | null; note: string; confidence: Confidence; sources: Source[] }
-  // 中学校の給食費が無料か
+  // 中学校の給食費が無料か（null は確認中。前は無料だったが今年度も続いているか分からない街も null にして、note に書く）
   lunch: { juniorHighFree: boolean | null; confidence: Confidence; note?: string; sources: Source[] }
   // 移住支援金（23区から移る家族が対象）。familyUpTo・perChildUpTo は「最大」の額（市町村の要綱でもっと少ないことがある）
+  // perChildUnknown は、子どもの加算の額が分からない（perChild は国の上限）。このときは加算を額に足さず「確認中」と出す
   // single は単身の額（分かっている街だけ。ないときは国の上限の最大60万円で計算）
-  iju?: { family: number; perChild: number; single?: number; familyUpTo?: boolean; perChildUpTo?: boolean; note: string; confidence: Confidence; sources: Source[] }
-  // 移住支援金を調べた結果（iju がない街だけ）。none = 調べて対象外と分かった、part = 一部の地域だけ対象（額は合計に入れない）。
-  // 東京圏の外の街で iju も ijuCheck もないときは「まだ調べていない」（画面は「準備中」と出す。「ない」とは言わない）
-  ijuCheck?: { result: 'none' | 'part'; note: string; confidence: Confidence; sources: Source[] }
+  iju?: { family: number; perChild: number; single?: number; familyUpTo?: boolean; perChildUpTo?: boolean; perChildUnknown?: boolean; note: string; confidence: Confidence; sources: Source[] }
+  // 移住支援金を調べた結果（iju がない街だけ）。none = 調べて実施していないと分かった、part = 一部の地域だけ対象（額は合計に入れない）、
+  // unknown = 東京圏の条件不利地域（移住先になりうる街）で、実施しているか分からない（画面は「準備中」）。
+  // 東京圏の外の街で iju も ijuCheck もないときも「まだ調べていない」（画面は「準備中」と出す。「ない」とは言わない）。
+  // 東京圏の条件不利地域でない街（決まりの上で移住先にならない）は、iju も ijuCheck も持たない
+  ijuCheck?: { result: 'none' | 'part' | 'unknown'; note: string; confidence: Confidence; sources: Source[] }
   pride: Pride[]
 }
 
@@ -121,6 +129,7 @@ export interface Breakdown {
   total: number | null          // 期間の合計
   oneTime: boolean              // 一度きりのお金か
   upTo?: boolean                // 額が「最大」の見込み（移住支援金の加算が市町村で違うときなど）
+  pendingPart?: string          // 額に足していない、確認中の部分（例: 子どもの加算）。画面は「＋子どもの加算（確認中）」と出す
   confidence: Confidence
   who: string                   // 関係する家族（例: 1歳の子）
   plain: string                 // 噛み砕いた説明（1〜2文）

@@ -14,7 +14,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ChevronRight, ExternalLink, MapPin, Pencil, X } from 'lucide-react'
 import { useId, useMemo, useState, type KeyboardEvent, type ReactNode } from 'react'
-import { citiesInPref, cityById, distanceKm, nearbyCities, searchCities } from '@/shared'
+import { citiesInPref, cityById, distanceKm, nationalFacts, nearbyCities, searchCities } from '@/shared'
 import type { City } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { Capsule } from './art'
@@ -613,7 +613,11 @@ function PickNotes({ picks }: { picks: string[] }) {
   if (!hit.length && !basic.length && !pref.length) return null
   return (
     <ul className="space-y-1 rounded-[12px] bg-[var(--paper-2)] px-3 py-2 text-[12.5px] font-bold leading-snug">
-      {basic.length > 0 && <li>・{names(basic)}は、国の全国調査（医療費・待機児童・家賃）だけ分かる街。保育料などは「確認中」になります。</li>}
+      {basic.length > 0 && (
+        <li>
+          ・{names(basic)}は、国の全国調査だけ分かる街（{[...new Set(basic.flatMap(nationalFacts))].join('・')}。家賃の統計がない町村もあります）。保育料などは「確認中」になります。
+        </li>
+      )}
       {pref.length > 0 && <li>・{names(pref)}は、制度が一部だけ分かる街。分からない項目は「確認中」になります。</li>}
       {hit.length > 0 && <li>・{names(hit)}は地震で被害を受けた街。得・損は出さず、制度の中身だけ見せます。</li>}
     </ul>

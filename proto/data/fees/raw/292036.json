@@ -1,0 +1,51 @@
+{
+  "code": "292036",
+  "pref": "奈良県",
+  "name": "大和郡山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「令和８年度 大和郡山市保育所・認定こども園入所等案内」p.16の保育料月額表。市の「保育園・認定こども園のご案内」ページ（2026年2月4日更新）から開ける「大和郡山市保育料月額表(2号、3号認定用)」（ファイル名 R6hoikuryou.pdf、2024年4月作成）も同じ金額。前期（4〜8月）は前年度分、後期（9〜3月）は現年度分の市町村民税額で算定（令和8年4〜8月分＝令和7年度、9〜3月分＝令和8年度）。年齢は当該年度の4月1日現在の満年齢。公立保育所・民立保育所・認定こども園を問わず同じ月額表。各月初日の在籍で判定し、月の途中で退所しても還付なし。",
+  "tax_basis": "6%",
+  "tax_note": "入所児童の属する世帯（原則として父母）の市町村民税所得割課税額。児童の扶養形態や父母の課税状況によっては同居の祖父母等の税額を合算する場合がある。配当控除、外国税額控除、住宅借入金等特別控除、電子証明書等特別控除、市町村等に対する寄附金控除、住宅特定改修特別税額控除、認定長期優良住宅新築等特別税額控除等は適用しない（控除前の額）。",
+  "table": {
+    "title": "大和郡山市保育料月額表（２号、３号認定用）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第１階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）", "monthly": 0, "monthly_second": null },
+      { "label": "第２階層", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第３階層", "lower": null, "upper": null, "condition": "市町村民税均等割額課税世帯(所得割課税額のない世帯）", "monthly": 14800, "monthly_second": null },
+      { "label": "第４階層", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "第５階層", "lower": 48600, "upper": 65000, "condition": "市町村民税所得割課税額 48,600円以上65,000円未満", "monthly": 22800, "monthly_second": null },
+      { "label": "第６階層", "lower": 65000, "upper": 97000, "condition": "市町村民税所得割課税額 65,000円以上97,000円未満", "monthly": 25600, "monthly_second": null },
+      { "label": "第７階層", "lower": 97000, "upper": 140000, "condition": "市町村民税所得割課税額 97,000円以上140,000円未満", "monthly": 33900, "monthly_second": null },
+      { "label": "第８階層", "lower": 140000, "upper": 169000, "condition": "市町村民税所得割課税額 140,000円以上169,000円未満", "monthly": 41100, "monthly_second": null },
+      { "label": "第９階層", "lower": 169000, "upper": 301000, "condition": "市町村民税所得割課税額 169,000円以上301,000円未満", "monthly": 49000, "monthly_second": null },
+      { "label": "第１０階層", "lower": 301000, "upper": null, "condition": "市町村民税所得割課税額 301,000円以上", "monthly": 59000, "monthly_second": null }
+    ],
+    "notes": "rows は3歳未満児・保育標準時間の列。3歳児・4歳以上児は標準時間・短時間とも0円。表に第2子の別の列はない（2人目は半額＝備考①）。保育短時間の月額: 第1・第2階層 0／第3階層 14,500／第4階層 15,700／第5階層 22,400／第6階層 25,200／第7階層 33,300／第8階層 40,400／第9階層 48,200／第10階層 58,000。備考③: 第2〜第5階層と第6階層のうち所得割77,100円以下の世帯で、ひとり親世帯及び在宅障害児（者）を有する世帯等は、第2階層0円、第3〜第5階層・第6階層のうち77,100円以下は標準時間6,800円・短時間6,700円とし、2人目以上の保育料は無料。2人目の半額で10円未満の端数が生じた場合は切り捨て。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満児の第1子は有料（標準時間で月0〜59,000円）。0円は生活保護世帯（第1階層）と市町村民税非課税世帯（第2階層）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の備考①: 2人以上の児童が保育所に入所している場合のほか、保育所入所児童の世帯から幼稚園、認定こども園、特定地域型保育事業所、特別支援学校幼稚部、情緒障害児短期治療施設通所部に入所又は児童発達支援を利用している就学前児童がいる場合も算定対象人数に含め、2人目は半額。児童の数は年齢が高い順に数える。ただし市町村民税所得割課税額が57,700円未満の世帯は子どもの年齢に関係なく2人目は半額（上の子の年齢を問わない）。市町村民税非課税世帯は2人目以上無料。ひとり親世帯・在宅障害児（者）のいる世帯等（所得割77,100円以下）は2人目以上無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "備考①: 同時に就学前の施設等を利用している児童のうち3人目以上の保育料は無料（年齢の高い順に数える）。所得割57,700円未満の世帯は子どもの年齢に関係なく3人目以上無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度 大和郡山市保育所・認定こども園入所等案内（p.15 保育料・給食費、p.16 保育料月額表）", "url": "https://www.city.yamatokoriyama.lg.jp/material/files/group/62/annaippp.pdf" },
+    { "label": "保育園・認定こども園の令和8年度新規入園申込みのお知らせ 大和郡山市", "url": "https://www.city.yamatokoriyama.lg.jp/kosodate_kyoiku/hoikuen_yochien_ninteikodomoen/hoiku/16902.html" },
+    { "label": "保育園・認定こども園のご案内 大和郡山市（2026年2月4日更新）", "url": "https://www.city.yamatokoriyama.lg.jp/kosodate_kyoiku/hoikuen_yochien_ninteikodomoen/hoiku/5834.html" },
+    { "label": "大和郡山市保育料月額表(2号、3号認定用)（PDF）", "url": "https://www.city.yamatokoriyama.lg.jp/material/files/group/62/R6hoikuryou.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "令和9年度入園等案内（https://www.city.yamatokoriyama.lg.jp/material/files/group/62/R9_nyuuennannnai.pdf、ページは2026年8月24日更新）は2回取りに行ったが、サーバーがエラーのページ（HTML）を返したので読めていない"
+  ],
+  "notes": "表は pdftotext -layout で読んだ（3歳未満児・3歳児・4歳以上児 × 標準時間・短時間の6列）。区切りは切れ目・重なりなし、月額は階層の順に上がる。第3階層（均等割のみ）は lower/upper を null、第4階層は lower=1 とした。このサイトは続けて取るとエラーのページ（インシデントID付き）を返すことがあり、数秒あけると取れた。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

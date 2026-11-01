@@ -15,7 +15,10 @@ import { Capsule, Coin, Figure, MiniMachine } from './art'
 import { CompareResult } from './compare'
 import { GachaShow } from './gacha'
 import { GachaHandle } from './handle'
-import { ALL_COUNT, FEATURED_GROUPS, LEVEL_COUNT, LEVEL_ORDER, LEVEL_TAG, isHit, isPending, lookOf, settleTies, spoken, tiesAtTop, useShortScreen, useStampBook, type TownGroup } from './lib'
+import {
+  ALL_COUNT, FEATURED_GROUPS, LEVEL_COUNT, LEVEL_ORDER, LEVEL_TAG, NATIONAL_COUNT, PER_PREF, SHELF_LIMIT, isHit, isPending, lookOf, settleTies, shelfPick, spoken, tiesAtTop,
+  useShortScreen, useStampBook, type ShelfExtra, type TownGroup,
+} from './lib'
 import { Dome, MachineFront, Marquee, Outlet, type FrontCap, type Mix } from './machine'
 import { Result, type SampleMark } from './result'
 import { STEP_INFO, StepBody, Summary, stepsFor, type Mode, type StepKey } from './steps'
@@ -180,7 +183,7 @@ function TownsInside({ poster = false }: { poster?: boolean }) {
         ))}
       </p>
       <p className="mt-1 text-[12.5px] font-bold leading-snug text-[var(--ink-soft)]">
-        どの街も、国の全国調査（子ども医療費・待機児童・家賃）は分かります。保育料の月額の表があるのは、くわしい街の一部だけです。
+        国の全国調査で、待機児童の数はどの街も、子ども医療費は{n(NATIONAL_COUNT.medical)}、家賃の目安は{n(NATIONAL_COUNT.rent)}の市区町村で分かります（人口の少ない町村は家賃の統計がありません）。保育料の月額の表があるのは、くわしい街の一部だけです。
       </p>
       <p className="mt-2 text-[12.5px] font-black">くわしく調べた{CITIES.length}の街</p>
       <div className="mt-1">{poster ? <CityLineupPoster /> : <CityLineup />}</div>
@@ -327,13 +330,14 @@ const n = (v: number) => v.toLocaleString('ja-JP')
 const allPendingPool = (s?: PoolStat) => !!s && s.count > 0 && s.pending === s.count
 
 // 台の説明：何が出てくるかを正直に（まだ比べられない街しか入っていない台は、回す前に言う）
+// まだ比べられない街（確認中・調べ中・準備中）は、共有の並び（sortTier）で、わかる差がある街の後ろに並ぶ
 function poolNote(p: Pool, s: PoolStat) {
-  if (allPendingPool(s)) return `この台の街（${n(s.count)}個）は、この家族に関係する制度がまだ確認中。回すと、はんこと、医療費・待機児童・家賃の目安が出ます。`
+  if (allPendingPool(s)) return `この台の街（${n(s.count)}個）は、この家族に関係する制度がまだ確認中。回すと、はんこと、待機児童・医療費・家賃の目安（分かる分だけ）が出ます。`
   if (p === 'featured') return `${POOL_INFO[p].where}（${n(s.count)}個）から。毎年の差がいちばん大きい街が出てきます。`
-  // わかる差がある街には、018サポートの差だけが分かる街もふくむので、「保育料などが分かる」とは言わない。
-  // まだ比べられない街は、わかる差がなければ後ろに並ぶが、わかる差が0円近くの街（制度が一部わかる区など）はその額の所に並ぶので、「後ろ」とは言い切らない
+  // わかる差がある街には、018サポートの差だけが分かる街もふくむので、「保育料などが分かる」とは言わない
   const known = s.count - s.pending
-  return `${POOL_INFO[p].where}の${n(s.count)}個。わかる差がある街は${n(known)}個${known ? `（確認中の項目がない街は${n(s.full)}個）` : ''}。${s.pending ? `まだ比べられない${n(s.pending)}個は、0円とはせず「確認中」として並べます。` : ''}${p === 'all' ? '棚には上の30個を出します。' : ''}`
+  const shelf = p === 'all' ? `棚には上から${SHELF_LIMIT}個を出します（同じ都道府県の街は${PER_PREF}個まで）。` : s.count > SHELF_LIMIT ? `棚には上から${SHELF_LIMIT}個を出します。` : ''
+  return `${POOL_INFO[p].where}の${n(s.count)}個。わかる差がある街は${n(known)}個${known ? `（確認中の項目がない街は${n(s.full)}個）` : ''}。${s.pending ? `まだ比べられない${n(s.pending)}個は、0円とはせず、後ろに並べます。` : ''}${shelf}`
 }
 
 function PoolPicker({ pools, value, onChange, stats, compact }: { pools: Pool[]; value: Pool; onChange: (p: Pool) => void; stats: Record<Pool, PoolStat>; compact?: boolean }) {
@@ -363,7 +367,8 @@ function PoolPicker({ pools, value, onChange, stats, compact }: { pools: Pool[];
             >
               <MiniMachine body={POOL_INFO[p].body} caps={s.caps} size={compact ? 24 : 44} className="shrink-0" />
               <span className={cn('min-w-0', compact ? 'block' : 'contents')}>
-                <span className={cn('block text-[13px] font-black leading-tight', !compact && 'mt-1')}>{POOL_INFO[p].name}</span>
+                {/* 背の低い画面（compact）では、名前の途中で折れないように小さくする */}
+                <span className={cn('block font-black leading-tight', compact ? 'whitespace-nowrap text-[12px]' : 'mt-1 text-[13px]')}>{POOL_INFO[p].name}</span>
                 <span className="block text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{count}</span>
                 {onlyPending && <span className="mt-0.5 inline-block rounded-full border-2 border-dashed border-[var(--ink)] px-1 text-[12px] font-black leading-tight">確認中だけ</span>}
               </span>
@@ -391,6 +396,8 @@ export default function VariantA() {
   const [picks, setPicksState] = useState<string[]>(() => (boot.step === 'compare' || boot.step === 'pick' ? [...boot.picks] : []))
   // 同じ額の街は、くわしい街から・今の街に近い順に並べ直す（共有の並び＝毎年の差が大きい順は変えない）
   const [ranked, setRanked] = useState<Comparison[]>(() => (boot.step === 'result' ? settleTies(rank(bootSample)) : []))
+  // 全国の台で棚に出さなかった街（同じ都道府県の街は PER_PREF 個まで）と、上から同じ額が続く数
+  const [shelfExtra, setShelfExtra] = useState<ShelfExtra | undefined>(undefined)
   const [list, setList] = useState<Comparison[]>(() => (boot.step === 'compare' ? compareMany(bootSample, boot.picks) : []))
   const [sel, setSel] = useState(0)
   const [jiggle, setJiggle] = useState(0)
@@ -429,7 +436,7 @@ export default function VariantA() {
     if (screen !== 'input' || step !== 'turn' || mode !== 'gacha') return null
     const out = {} as Record<Pool, PoolStat>
     for (const p of pools) {
-      const all = settleTies(rank(input, { pool: p, limit: 2000 }))
+      const all = settleTies(rank(input, { pool: p, limit: 2000 }), { spread: p === 'all' })
       out[p] = {
         count: all.length,
         pending: all.filter(isPending).length,
@@ -519,11 +526,13 @@ export default function VariantA() {
       book.add(l[0].to.id)
       announce(undefined, l)
     } else {
-      // 同じ額の街を並べ直してから、棚に出す30個を切り出す（全国・近くの台）
-      const full = settleTies(rank(input, { pool, limit: 2000 }))
-      const r = pool === 'featured' ? full : full.slice(0, 30)
+      // 同じ額の街を並べ直してから、棚に出す30個を切り出す（全国・近くの台）。全国の台は、同じ額のなかで都道府県を順にめぐる
+      const full = settleTies(rank(input, { pool, limit: 2000 }), { spread: pool === 'all' })
+      const picked = pool === 'all' ? shelfPick(full) : { list: pool === 'featured' ? full : full.slice(0, SHELF_LIMIT), extra: undefined }
+      const r = picked.list
       if (!r.length) return
       setRanked(r)
+      setShelfExtra(picked.extra && (picked.extra.hidden.length || picked.extra.topTies > tiesAtTop(r)) ? picked.extra : undefined)
       setSel(0)
       setBootSampleResult(false)
       book.add(r[0].to.id)
@@ -778,7 +787,7 @@ export default function VariantA() {
         <GachaShow
           list={mode === 'pick' ? list : [ranked[0]]}
           many={mode === 'pick'}
-          note={mode === 'gacha' && tiesAtTop(ranked) > 1 ? `同じ額の街が${tiesAtTop(ranked)}個。まずは${ranked[0].to.name}から` : undefined}
+          note={mode === 'gacha' && tiesAtTop(ranked) > 1 ? `同じ額の街が${Math.max(tiesAtTop(ranked), shelfExtra?.topTies ?? 0)}個。まずは${ranked[0].to.name}から` : undefined}
           onDone={() => {
             setScreen('result')
             window.scrollTo({ top: 0 })
@@ -790,6 +799,7 @@ export default function VariantA() {
         <Result
           input={resultInput}
           ranked={ranked}
+          extra={shelfExtra}
           sel={sel}
           onSelect={(i) => {
             setSel(i)

@@ -1,0 +1,37 @@
+{
+ "code": "372064",
+ "pref": "香川県",
+ "name": "さぬき市",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "公式サイト（www.city.sanuki.kagawa.jp）はサーバーの証明書の期限が切れていて（curl: SSL certificate problem: certificate has expired）、ページもPDFも開けなかった。検索結果の要約（直接は読めていない）によると、「保育施設利用案内」のページに、0〜2歳児クラスの利用者負担額は4月分から8月分までは前年度、9月分から3月分までは当年度の市民税所得割額で算定するとあり、基準表は「保育認定子どもの利用者負担額基準表【PDF形式/97KB】」として同じページに載っている。表の年度・金額は確認できていない。",
+ "tax_basis": "6%",
+ "tax_note": "政令市ではないので6%と置いた（表の注記は読めていない）。検索結果の要約では、0〜2歳児クラスの利用者負担額と3〜5歳児クラスの副食費免除の判定は、子どもと生計を同じくする父母および扶養義務者（生計を維持している祖父母等）の市民税の課税額で決めるとある。税額控除の扱いは不明。",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "確認できていない。検索結果の要約では「2歳児以下の保育料は、各世帯の前年度または当年度の市民税によって決定」とあり、第1子から無料という記載は見当たらなかった（直接は読めていない）。",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "市のページが開けず確認できていない。参考: 香川県の「令和元年10月から幼児教育・保育の無償化が実施されます」のページには、国の制度（保育所等を利用する最年長の子を第1子とし、0〜2歳の第2子は半額・第3子以降無償、年収360万円未満相当世帯は第1子の年齢を問わない）の説明と、「各市町において、多子世帯に対する利用料が異なる場合があります」とある。検索結果の要約には、さぬき市の病児・病後児保育で「第2子の3歳未満の児童は利用料免除の対象（事前の登録申請が必要）」という記載があったが、保育料の第2子の扱いは出てこなかった。",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "市のページが開けず確認できていない。参考: 香川県の同じページに「香川県の独自事業として、概ね18歳までの最年長の子どもを第1子とカウントして、第3子以降の保育料を減免しています」とある（2019年の制度開始時のページ。減免の割合や、さぬき市での実施内容は書かれていない）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "保育施設利用案内｜さぬき市（検索結果で見つけたURL。証明書の期限切れで開けていない）", "url": "https://www.city.sanuki.kagawa.jp/life/childcare/entrance-3"},
+  {"label": "令和元年10月から幼児教育・保育の無償化が実施されます｜香川県", "url": "https://www.pref.kagawa.lg.jp/kosodate/hoikujo/wyd1a4190807084612.html"}
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べ（crawl）はトップページ https://www.city.sanuki.kagawa.jp/ で OSError になり、1ページも読めていなかった。",
+  "curl で https://www.city.sanuki.kagawa.jp/ を取ると「SSL certificate problem: certificate has expired」（TLS alert: certificate expired）。証明書の確認を外すことはしていない。",
+  "WebSearch（allowed_domains: city.sanuki.kagawa.jp）「さぬき市 保育料 利用者負担額 3歳未満 令和8年度」→ 保育施設利用案内のページ（life/childcare/entrance-3）と基準表PDFの名前は分かったが、表の中身は検索結果に出ない。",
+  "WebSearch（allowed_domains: city.sanuki.kagawa.jp）「さぬき市 保育料 第2子 多子 軽減 無料 保育所」→ 保育料のきょうだいの扱いは出てこない。",
+  "WebSearch（allowed_domains: pref.kagawa.lg.jp）で香川県の第2子・多子の制度を探し、県の無償化のページ（2019年）と「出生数反転に向けた市町交付金について」（市町への一般的な交付金で、保育料の決まりではない）を curl で読んだ。"
+ ],
+ "notes": "公式サイトの証明書が切れているため、表もきょうだいの決まりも直接は読めていない。period_note・tax_note・first_child_free_note の市の説明は検索エンジンの要約から書いたもので、ページそのものでは確かめていない。証明書が直ったら、https://www.city.sanuki.kagawa.jp/life/childcare/entrance-3 のページと「保育認定子どもの利用者負担額基準表」（PDF 97KB）を読み直す必要がある。",
+ "read_at": "2026-11-01"
+}

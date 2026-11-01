@@ -1,0 +1,62 @@
+{
+  "code": "072010",
+  "pref": "福島県",
+  "name": "福島市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「福島市の保育料（利用者負担額）」のページ〔2026年9月1日更新〕の保育料（月額）一覧表。表に年度の表示はなく、同じページの一覧表PDFは「Ｒ７．４．１現在」で全階層同じ額。（令和8年度）保育料のよくあるお問い合わせもこの算定方法を案内）",
+  "period_note": "4月〜8月分は前年度、9〜3月分は現年度の課税状況で算定（令和8年度は4〜8月が令和7年度住民税〔令和6年中の所得〕、9〜3月が令和8年度住民税〔令和7年中の所得〕）。料金表は年度を通じて同じ。年齢区分は4月1日時点の年齢で決め、年度途中で誕生日を迎えても変わらない。欠席しても減免なし。未申告などで課税状況が確認できない場合は最高階層で仮決定。",
+  "tax_basis": "6%",
+  "tax_note": "父母など保護者の市町村民税所得割課税額（家計の主宰者が同居の祖父母等と判断される場合はその人の課税状況）。所得割課税額は配当控除、住宅借入金等特別税額控除、寄附金税額控除、外国税額控除、配当割額または株式等譲渡所得割額の控除などの適用を受ける前の金額（調整控除のみ適用）。令和8年度FAQ: 父母が非課税で父母の年収合計が164万円（ひとり親は135万円）未満かつ祖父母と同居なら、課税額の高い方の祖父母を家計の主宰者として対象に含める（令和8年9月分からは153万円・ひとり親122万円未満）。中核市で政令市ではない。",
+  "table": {
+    "title": "福島市の保育料（月額）一覧表",
+    "kind": "3歳未満（0〜2歳児クラス）・保育標準時間・第1子（月額）（ひとり親世帯等以外）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯・里親等", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "均等割のみ課税", "monthly": 15400, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "所得割48,600円未満", "monthly": 18500, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 78000, "condition": "所得割78,000円未満", "monthly": 23100, "monthly_second": null },
+      { "label": "D2", "lower": 78000, "upper": 97000, "condition": "所得割97,000円未満", "monthly": 29000, "monthly_second": null },
+      { "label": "D3", "lower": 97000, "upper": 135000, "condition": "所得割135,000円未満", "monthly": 29500, "monthly_second": null },
+      { "label": "D4", "lower": 135000, "upper": 169000, "condition": "所得割169,000円未満", "monthly": 39500, "monthly_second": null },
+      { "label": "D5", "lower": 169000, "upper": 183000, "condition": "所得割183,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "D6", "lower": 183000, "upper": 216000, "condition": "所得割216,000円未満", "monthly": 45000, "monthly_second": null },
+      { "label": "D7", "lower": 216000, "upper": 301000, "condition": "所得割301,000円未満", "monthly": 56000, "monthly_second": null },
+      { "label": "D8", "lower": 301000, "upper": 397000, "condition": "所得割397,000円未満", "monthly": 59000, "monthly_second": null },
+      { "label": "D9", "lower": 397000, "upper": null, "condition": "所得割397,000円以上", "monthly": 67000, "monthly_second": null }
+    ],
+    "notes": "monthly は「標準時間認定の場合」の額。短時間認定: C1 15,200／C2 18,300／D1 22,700／D2 28,600／D3 29,000／D4 38,900／D5 39,400／D6 44,300／D7 55,100／D8 58,100／D9 65,900（A・B は0円）。ひとり親世帯等: C1F（均等割のみ課税）6,500円、C2F（所得割48,600円未満）8,000円、D1F（所得割77,101円未満）8,000円（標準・短時間とも同じ）。「ひとり親世帯等」は母子・父子世帯、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた者や特別児童扶養手当の支給対象児・障害基礎年金等の受給者がいる世帯、生活保護法に定める要保護者等特に困窮していると市長が認めた世帯。表の額は福島型給食推進事業により1,000円を減じた額（すべての子に一律1,000円減免）。第2子の列はない（2人目半額・3人目以降無料はページの多子世帯の表）。3歳児クラス以上（4月1日現在で3〜5歳）と非課税世帯の0〜2歳児クラスは無料。認可保育所・認定こども園・小規模保育など市が決める施設は市立・私立とも同じ額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（0〜2歳児クラス）は階層により月0〜67,000円（標準時間）。生活保護・里親等・非課税世帯は0円。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "ページの「多子世帯の保育料の負担軽減について」: 生計を一にする世帯において最年長の子から数えて2人目は表の額の半額（上の子の年齢や通園の要件は書かれていない）。一覧表PDF: 生計を一にする最年長のこどもから順に2人目半額。所得制限なし。ひとり親世帯等（C1F・C2F・D1F階層）は2人目以降無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "生計を一にする世帯の最年長の子から数えて3人目以降は無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "福島市の保育料(利用者負担額)／福島市公式ホームページ（更新日 2026年09月01日）",
+      "url": "https://www.city.fukushima.fukushima.jp/kosodate-kyoiku/hokenjo-yochien/2/13531.html"
+    },
+    {
+      "label": "利用者負担額（令和7年4月以降）（PDF）福島市 利用者負担額（保育料）一覧表 Ｒ７．４．１現在",
+      "url": "https://www.city.fukushima.fukushima.jp/material/files/group/55/futanngakuichirann.pdf"
+    },
+    {
+      "label": "（令和8年度）保育料のよくあるお問い合わせ（PDF）",
+      "url": "https://www.city.fukushima.fukushima.jp/material/files/group/55/reiwa8nendohoikuryounoyokuaruotoiawase.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs の保育料のページ・一覧表PDF・令和8年度FAQを読み、ページを取り直して（2026年9月1日更新）表の額と多子軽減の文を確かめた。"
+  ],
+  "notes": "副食費（3歳児クラス以上）は年収360万円未満相当なら年齢にかかわらず世帯の全ての子が免除、それ以上は小学校就学前の子だけで数えて3人目以降（1号認定は小学校3年生まで）が免除。令和8年10月から認可外保育施設等の無償化の給付上限額を見直し。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

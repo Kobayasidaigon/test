@@ -1,0 +1,235 @@
+{
+  "code": "012301",
+  "pref": "北海道",
+  "name": "登別市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "所得階層の認定: 4月〜8月の負担額は令和7年度の市町村民税、9月〜3月の負担額は令和8年度の市町村民税を基に認定（切り替えは4月と9月、決定は4月中旬頃と9月中旬頃）。表の金額は年度を通じて同じ。負担額の区分は生年月日によるクラス（年度の途中で年齢が変わってもその年度中は変わらない）。月途中の入退所に限り日割り。",
+  "tax_basis": "6%",
+  "tax_note": "原則、保護者である父と母の市民税の合計（祖父母等が同一住所または同居〔世帯分離を含む〕で生計の主宰者と考えられる場合＝保護者の収入が一定基準額に満たない場合は、その方の市民税額を合算する場合がある）。保育料決定の市民税額は、住宅借入金等特別控除、配当控除、外国税額控除、住宅耐震改修特別控除、地方公共団体等への寄付金控除等の適用を受ける前の額で、定額減税は適用を受けた後の額（表の補足では「税額控除については、調整控除等を除き、反映しない」）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "登別市保育所等利用者負担額基準額表【令和８年度】２号・３号認定（保育所利用）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税均等割課税世帯",
+        "monthly": 11100,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 5000,
+        "condition": "0円 ～ 4,999円",
+        "monthly": 14300,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 5000,
+        "upper": 48600,
+        "condition": "5,000円 ～ 48,599円",
+        "monthly": 17300,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 48600,
+        "upper": 60700,
+        "condition": "48,600円 ～ 57,699円／57,700円 ～ 60,699円",
+        "monthly": 19600,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 60700,
+        "upper": 72800,
+        "condition": "60,700円 ～ 72,799円",
+        "monthly": 22000,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 72800,
+        "upper": 77101,
+        "condition": "72,800円 ～ 77,100円",
+        "monthly": 24300,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 77101,
+        "upper": 84900,
+        "condition": "77,101円 ～ 84,899円",
+        "monthly": 24300,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 84900,
+        "upper": 97000,
+        "condition": "84,900円 ～ 96,999円",
+        "monthly": 26800,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "97,000円 ～ 114,999円",
+        "monthly": 30000,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 115000,
+        "upper": 133000,
+        "condition": "115,000円 ～ 132,999円",
+        "monthly": 33200,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 133000,
+        "upper": 151000,
+        "condition": "133,000円 ～ 150,999円",
+        "monthly": 36500,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 151000,
+        "upper": 169000,
+        "condition": "151,000円 ～ 168,999円",
+        "monthly": 39800,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 169000,
+        "upper": 213000,
+        "condition": "169,000円 ～ 212,999円",
+        "monthly": 44900,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 213000,
+        "upper": 257000,
+        "condition": "213,000円 ～ 256,999円",
+        "monthly": 49800,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 257000,
+        "upper": 301000,
+        "condition": "257,000円 ～ 300,999円",
+        "monthly": 54700,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 301000,
+        "upper": 333000,
+        "condition": "301,000円 ～ 332,999円",
+        "monthly": 60400,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 333000,
+        "upper": 365000,
+        "condition": "333,000円 ～ 364,999円",
+        "monthly": 66100,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 365000,
+        "upper": 397000,
+        "condition": "365,000円 ～ 396,999円",
+        "monthly": 71800,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 397000,
+        "upper": 430000,
+        "condition": "397,000円 ～ 429,999円",
+        "monthly": 79100,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 430000,
+        "upper": 463000,
+        "condition": "430,000円 ～ 462,999円",
+        "monthly": 86300,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 463000,
+        "upper": null,
+        "condition": "463,000円以上",
+        "monthly": 93400,
+        "monthly_second": null
+      }
+    ],
+    "notes": "D階層の定義は「市町村民税均等割課税世帯かつ市町村民税所得割の課税額が右記の世帯」。表の区切りは「〜（以下）」なので upper は表の上の額＋1。C2 は表の文言では「0円 〜」だが、所得割0円（均等割のみ）の世帯は C1 なので lower 1 にした。D1 は表の中で2つの区切り（48,600〜57,699円と57,700〜60,699円、副食費の扱いだけが違う）に分かれているが月額は同じなので1行にした。列は 保育料（0〜2歳児クラス）の保育標準時間・第1子、保育短時間・第1子と、副食費（3〜5歳児クラス）。保育短時間・第1子: A・B 0／C1 10,900／C2 14,100／C3 17,100／D1 19,200／D2 21,600／D3 23,900／D4 23,900／D5 26,400／D6 29,400／D7 32,600／D8 35,900／D9 39,200／D10 44,000／D11 48,900／D12 53,800／D13 59,200／D14 64,900／D15 70,600／D16 77,500／D17 84,700／D18 91,800。C1〜D3 のひとり親世帯の額は標準時間・短時間とも3,000円。第2子以降は階層に関わらず0円。副食費（3〜5歳児クラス）は所得割57,699円まで（D1の前半まで）0円、57,700円以上は4,900円→0円（令和8年度以降4,500円から4,900円に値上げしたが、令和8年度に限り国の物価高騰対策の交付金で市内の公立保育所は0円）、ひとり親世帯は D3 まで0円。表は令和7年4月に平均約15％引き下げて12階層から18階層にした改定の後の額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜93,400円）。0円は生活保護世帯と市町村民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "保育料は第2子以降は階層に関わらず0円（令和8年度の表の補足、令和8年度保育施設入所のご案内「第２子以降の保育料は所得階層に関わらず無償化します」）。子数は同じ世帯内にいる0歳から22歳に到達し、かつ初めて3月31日を迎えていない者を対象（上の子が保育所等に通っていなくてもよい、上の子の年齢の上限は22歳到達後最初の3月31日まで）。令和7年4月から多子世帯の第1子のカウントを22歳までに広げ（それまでは所得割169,000円以上の世帯は小学生未満の子のみで数えていた）、第2子の保育料を段階的に無償化する方針だった。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降は階層に関わらず0円のため第3子以降も無料（第2子と同じ数え方、0歳〜22歳到達年度末までの同じ世帯内の子）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "登別市／令和８年度保育所等のご案内（公開日2026年10月13日）",
+      "url": "https://www.city.noboribetsu.lg.jp/article/2023111400062/"
+    },
+    {
+      "label": "登別市保育所等利用者負担額基準額表【令和８年度】（利用者負担額（2026.4~）、PDF）",
+      "url": "https://www.city.noboribetsu.lg.jp/article/2023111400062/file_contents/file_20263301193553_1.pdf"
+    },
+    {
+      "label": "令和８年度保育所施設入所のご案内（PDF）3〜4ページ",
+      "url": "https://www.city.noboribetsu.lg.jp/article/2023111400062/file_contents/file_20267611096_1.pdf"
+    },
+    {
+      "label": "情報提供４－１ 保育施設における３歳未満児の保育料（利用者負担額）の改定及び一時預かり事業費について（PDF）",
+      "url": "https://www.city.noboribetsu.lg.jp/docs/2024122400027/file_contents/jouhouteikyou4-1.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json の「利用者負担額（2026.4~）」PDF（文字あり）で表を読み、pdftoppm で画像にして列の並び（標準時間・第1子、短時間・第1子、副食費）と D1 の2つの区切りを確かめた。index.json 先頭の平成27年度の基準額表は古いので使っていない。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,255 @@
+{
+  "code": "132152",
+  "pref": "東京都",
+  "name": "国立市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和7年9月から、東京都の第1子保育料無償化にあわせて、認可保育施設に通う市内在住のすべてのお子さん（0〜2歳クラス）の保育料が無償（手続き不要）。無償化後も階層は決める: 4月から8月は世帯の前年度区市町村民税の合計額、9月から3月は世帯の当年度区市町村民税の合計額による（保育料のページ、2026年7月28日更新）。各月初日に在籍する支給認定子どもの属する世帯で階層を決める。3歳未満・3歳以上の区分は入所した日の属する年度の初日の前日の満年齢。",
+  "tax_basis": "6%",
+  "tax_note": "所得割課税額は地方税法第292条第1項第2号の所得割で、調整控除以外の税額控除（寄附金控除〔国及び地方公共団体に対する寄附金〕、配当控除、外国税額控除、(特定増改築等)住宅借入金等特別控除、住宅耐震改修特別控除、住宅特定改修特別控除、認定長期優良住宅新築等特別控除）は適用しない（控除前の額）。指定都市に住所がある人は指定都市以外の市町村に住所がある者とみなして算定（6%に換算）。市町村民税の減免があった場合は減免後の額（利用者負担額表の注4・注5）。",
+  "table": {
+    "title": "認可保育所・認定こども園（2号・3号）・地域型保育事業の利用者負担額表（利用者負担額表(保育料・令和7年9月から)）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "Ａ",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯及び中国残留邦人等の円滑な帰国の促進並びに永住帰国した中国残留邦人等及び特定配偶者のの自立の支援に関する法律による支援給付受給世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｂ",
+        "lower": null,
+        "upper": null,
+        "condition": "Ａ階層を除き、当該年度分の市民税が非課税の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ1",
+        "lower": null,
+        "upper": null,
+        "condition": "当該年度分の市民税が均等割額のみの世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ2",
+        "lower": 1,
+        "upper": 28000,
+        "condition": "当該年度分の市民税の所得割額が28,000円未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ3",
+        "lower": 28000,
+        "upper": 48600,
+        "condition": "28,000円～48,600円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ4",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "48,600円～57,700円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ5",
+        "lower": 57700,
+        "upper": 67400,
+        "condition": "57,700円～67,400円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ6",
+        "lower": 67400,
+        "upper": 77101,
+        "condition": "67,400円～77,101円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ7",
+        "lower": 77101,
+        "upper": 87000,
+        "condition": "77,101円～87,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ8",
+        "lower": 87000,
+        "upper": 97000,
+        "condition": "87,000円～97,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ9",
+        "lower": 97000,
+        "upper": 111400,
+        "condition": "97,000円～111,400円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ10",
+        "lower": 111400,
+        "upper": 125800,
+        "condition": "111,400円～125,800円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ11",
+        "lower": 125800,
+        "upper": 140200,
+        "condition": "125,800円～140,200円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ12",
+        "lower": 140200,
+        "upper": 154600,
+        "condition": "140,200円～154,600円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ13",
+        "lower": 154600,
+        "upper": 169000,
+        "condition": "154,600円～169,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ14",
+        "lower": 169000,
+        "upper": 190100,
+        "condition": "169,000円～190,100円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ15",
+        "lower": 190100,
+        "upper": 211201,
+        "condition": "190,100円～211,201円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ16",
+        "lower": 211201,
+        "upper": 233650,
+        "condition": "211,201円～233,650円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ17",
+        "lower": 233650,
+        "upper": 256100,
+        "condition": "233,650円～256,100円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ18",
+        "lower": 256100,
+        "upper": 278550,
+        "condition": "256,100円～278,550円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ19",
+        "lower": 278550,
+        "upper": 301000,
+        "condition": "278,550円～301,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ20",
+        "lower": 301000,
+        "upper": 349000,
+        "condition": "301,000円～349,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ21",
+        "lower": 349000,
+        "upper": 397000,
+        "condition": "349,000円～397,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ22",
+        "lower": 397000,
+        "upper": 445000,
+        "condition": "397,000円～445,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ23",
+        "lower": 445000,
+        "upper": 493000,
+        "condition": "445,000円～493,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ24",
+        "lower": 493000,
+        "upper": null,
+        "condition": "493,000円～",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表は令和7年9月からの額で、3歳未満児（標準時間保育・短時間保育）・3歳以上児のすべての階層が0円。保育短時間・3歳以上児もすべて0。表に第2子の列はない。注2: 令和7年9月より、東京都の第1子保育料無償化にあわせて、認可保育施設に通う市内在住のすべてのお子さんの保育料が無償化。教材費、行事費、延長保育料等は対象外。注3: 保育料負担がなくても入園選考の優先順位、給食費（副食費）、延長保育料額の決定などに保育料階層を定める必要がある。Ｃ2の lower は Ｃ1（均等割額のみ＝所得割0円）と分けるため1とした。無償化前の階層ごとの額は、この表からは分からない。所得を確認する書類を出さない場合は区分Ｃ24として扱う（階層に係る確認書）。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "「これまで東京都の支援策により第2子以降が無償化となっておりましたが、東京都の支援策の拡大により、令和7年9月以降は、第1子も無償化の対象となりました。」「お子様の年齢・人数・保護者の所得にかかわらず、市内在住のすべてのお子様の保育料が無償となります。お手続きは不要です。」（保育料のページ、2026年7月28日更新）。対象施設は認可保育所、認定こども園（2号・3号）、小規模保育事業所、家庭的保育事業所、事業所内保育事業所。延長保育料は対象外。0〜2歳クラスの給食費（副食費）は利用者負担額に含まれ、別に集めない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から保育料が0円のため、きょうだいの数え方で額は変わらない（どう数えても0円）。household は「数え方に関係なく0円」という意味で置いた。令和7年8月までも東京都の支援策で第2子以降は無償だった（保育料のページ）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円のため、第3子以降も0円（数え方は関係ない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "認可保育所等における利用者負担額(保育料)／国立市ホームページ（更新日2026年07月28日）",
+      "url": "https://www.city.kunitachi.tokyo.jp/kosodate/kosodate/4/3/12842.html"
+    },
+    {
+      "label": "利用者負担額表(保育料・令和7年9月から) (PDFファイル: 146.1KB)",
+      "url": "https://www.city.kunitachi.tokyo.jp/material/files/group/41/hoiku_riyousyafutangakuhyou.pdf"
+    },
+    {
+      "label": "利用者負担額の階層に係る確認書(認可保育所等用) (Excelファイル: 14.0KB)",
+      "url": "https://www.city.kunitachi.tokyo.jp/material/files/group/41/kakuninsho.xlsx"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表の題は「令和7年9月から」で、令和8年度も使われている（保育料のページは2026年7月28日更新で、令和8年9月からの副食費無償化も書いてある）。保育料のページによると、3〜5歳クラスの給食費（副食費）は令和8年9月から国立市独自に無償化（月4,500円まで補助。市内施設は申請不要）。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

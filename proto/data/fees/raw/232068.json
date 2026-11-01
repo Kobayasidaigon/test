@@ -1,0 +1,195 @@
+{
+ "code": "232068",
+ "pref": "愛知県",
+ "name": "春日井市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "0歳〜2歳児クラスの保育料は、4月〜8月分は前年度、9月〜3月分は当年度の市町村民税所得割額の合計で決める。原則として各月初日の世帯状況で算定。公立・私立保育園、認定こども園、小規模保育園で保育料は同じ。0〜2歳児クラスの給食費は保育料に含まれる。令和8年度入園申込みのご案内（R7_10）・令和9年度入園申込みのご案内（R9-09、公立保育園の給食費を「令和８年度現在」月額6,000円と記載）・保育料のページの表（hoikuryo_R7.10）がすべて同じ金額。延長保育料は朝・夕それぞれ月額1,000円（A・B階層は加算なし）。",
+ "tax_basis": "6%",
+ "tax_note": "市町村民税所得割額は住宅ローン控除、配当控除、寄附金税額控除等を適用する前の額。算定対象は児童の父母（事実婚を含む）。父母の収入金額が150万円（ひとり親家庭は120万円）を超えない場合で、同一地番内に父母の収入合計を上回る祖父母（または児童・父母を扶養親族としている者）がいれば、その者も算定対象。政令市ではない。",
+ "table": {
+  "title": "【保育料表】保育料（０歳～２歳児クラス）",
+  "kind": "3歳未満（0〜2歳児クラス）・第1子（月額）（標準時間・短時間の区別は書かれていない）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法による被保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税均等割のみの世帯",
+    "monthly": 1000,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 16200,
+    "condition": "市町村民税所得割額 16,200円未満の世帯",
+    "monthly": 3000,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 16200,
+    "upper": 32400,
+    "condition": "市町村民税所得割額 16,200円以上32,400円未満の世帯",
+    "monthly": 5000,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 32400,
+    "upper": 48600,
+    "condition": "市町村民税所得割額 32,400円以上48,600円未満の世帯",
+    "monthly": 7000,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 48600,
+    "upper": 60700,
+    "condition": "市町村民税所得割額 48,600円以上60,700円未満の世帯",
+    "monthly": 9000,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 60700,
+    "upper": 72800,
+    "condition": "市町村民税所得割額 60,700円以上72,800円未満の世帯",
+    "monthly": 12600,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 72800,
+    "upper": 84900,
+    "condition": "市町村民税所得割額 72,800円以上84,900円未満の世帯",
+    "monthly": 16200,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 84900,
+    "upper": 97000,
+    "condition": "市町村民税所得割額 84,900円以上97,000円未満の世帯",
+    "monthly": 19800,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 97000,
+    "upper": 109000,
+    "condition": "市町村民税所得割額 97,000円以上109,000円未満の世帯",
+    "monthly": 23400,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 109000,
+    "upper": 121000,
+    "condition": "市町村民税所得割額 109,000円以上121,000円未満の世帯",
+    "monthly": 27000,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 121000,
+    "upper": 133000,
+    "condition": "市町村民税所得割額 121,000円以上133,000円未満の世帯",
+    "monthly": 30600,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 133000,
+    "upper": 145000,
+    "condition": "市町村民税所得割額 133,000円以上145,000円未満の世帯",
+    "monthly": 34200,
+    "monthly_second": null
+   },
+   {
+    "label": "D12",
+    "lower": 145000,
+    "upper": 157000,
+    "condition": "市町村民税所得割額 145,000円以上157,000円未満の世帯",
+    "monthly": 37800,
+    "monthly_second": null
+   },
+   {
+    "label": "D13",
+    "lower": 157000,
+    "upper": 169000,
+    "condition": "市町村民税所得割額 157,000円以上169,000円未満の世帯",
+    "monthly": 41400,
+    "monthly_second": null
+   },
+   {
+    "label": "D14",
+    "lower": 169000,
+    "upper": 265200,
+    "condition": "市町村民税所得割額 169,000円以上265,200円未満の世帯",
+    "monthly": 45000,
+    "monthly_second": null
+   },
+   {
+    "label": "D15",
+    "lower": 265200,
+    "upper": null,
+    "condition": "市町村民税所得割額 265,200円以上の世帯",
+    "monthly": 48600,
+    "monthly_second": null
+   }
+  ],
+  "notes": "表は保育標準時間・短時間の区別なし。きょうだい: 同時に2人以上が保育園・幼稚園等を利用していれば2人目は各階層の半額、3人目以降は無料（年齢の高い順に数える）。18歳未満（年度初日時点）の子が2人以上いる世帯の第2子は、所得割97,000円未満なら無料、97,000円以上301,000円未満なら各階層の半額、301,000円以上は48,600円（令和7年10月から）。第3子以降は無料。多子世帯の減免: 所得割57,700円未満でこどもが2人以上なら（施設利用の要件なし）第2子半額・第3子以降無料。ひとり親世帯等の減免（所得割77,101円未満）: 第1子は C 500円、D1 1,400円、D2 2,300円、D3 3,200円、D4 4,100円、D5 5,800円、D6 7,500円、第2子以降は無料。長期欠席などの減免あり。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子の0〜2歳児クラスは所得に応じた保育料（C階層以上は有料）。",
+ "second_child": "other",
+ "second_count": "household",
+ "second_note": "所得で変わる。(1) 令和7年10月から、次のア〜ウすべてに当たる児童（同居していない児童も含む）が2人以上いる世帯の第2子: ア 保護者に監護されている、イ 保護者と生計を同じくしている、ウ 年度初日に18歳未満。所得割97,000円未満は無料、97,000円以上301,000円未満は各階層の半額、301,000円以上は48,600円（=減額なし）。上の子が保育園などに通っているかは問わない。(2) 同一世帯で2人以上が保育園・幼稚園等を同時に利用していれば、2人目は各階層の半額（所得制限なし。年齢の高い順に数える）。所得割301,000円以上でも上の子が保育園・幼稚園等にいれば半額。(3) 所得割57,700円未満でこどもが2人以上の世帯は施設利用の要件なしで第2子半額（(1)で無料のほうが有利）。ひとり親世帯等（所得割77,101円未満）は第2子以降無料。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "18歳未満（年度初日時点、保護者に監護され生計を同じくする、同居していない子も含む）の児童が3人以上いる世帯の第3子以降は無料（所得制限の記載なし）。同時に保育園・幼稚園等を利用する3人目以降も無料。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料について｜春日井市公式ホームページ（更新日 令和7年9月22日）",
+   "url": "https://www.city.kasugai.lg.jp/kosodate/hoikuen/hoikuen/1037607.html"
+  },
+  {
+   "label": "保育料(0歳児～2歳児クラス)（PDF、hoikuryo_R7.10）",
+   "url": "https://www.city.kasugai.lg.jp/_res/projects/default_project/_page_/001/037/607/hoikuryo_R7.10.pdf"
+  },
+  {
+   "label": "令和8年度保育園等入園申込みのご案内「保育料・給食費について」（PDF、R7_10hoikuryo）",
+   "url": "https://www.city.kasugai.lg.jp/_res/projects/default_project/_page_/001/022/101/R7_10hoikuryo.pdf"
+  },
+  {
+   "label": "令和9年度保育園等入園申込みのご案内「保育料・給食費について」（PDF、R9-09hoikuryo）",
+   "url": "https://www.city.kasugai.lg.jp/_res/projects/default_project/_page_/001/022/102/R9-09hoikuryo.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "下調べの文書（保育料のページ、0〜2歳児クラスの保育料PDF、令和8年度・令和9年度の入園申込みのご案内の保育料ページ）で読んだ。3つとも同じ表。lunch_jh・cash・one_time は探していない。",
+ "read_at": "2026-11-01"
+}

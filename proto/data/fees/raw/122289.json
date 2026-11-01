@@ -1,0 +1,60 @@
+{
+ "code": "122289",
+ "pref": "千葉県",
+ "name": "四街道市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "表は「令和8年度保育所等利用のしおり」（2025年10月作成）p.13「5 保育料料金表について」。令和８年度の保育料は、４月分～８月分は令和７年度分、９月分～翌年３月分は令和８年度分の市町村民税額に基づいて算定。令和9年度のしおり（2026年10月27日作成）も同じ決まり（令和9年度の料金表の金額は今回比べていない）。年度途中で3歳になってもその年度中は保育料がかかる。月途中の入退所は日割り。",
+ "tax_basis": "6%",
+ "tax_note": "原則、父・母の市町村民税所得割課税額の合計（ひとり親で同居し生計を一にする祖父母等がいる場合はその祖父母等が扶養義務者となることがある）。階層区分認定の基礎となる課税額は、住宅借入金等特別税額控除、配当控除、寄附金税額控除、外国税額控除、配当割額・株式等譲渡所得割額控除の適用はない（控除しない額で算定）。課税額が確認できない場合は20階層。政令市ではないので6%の税率のまま。",
+ "table": {
+  "title": "○保育（２号・３号）認定子どもの利用者負担額（月額保育料）",
+  "kind": "0〜2歳児・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯等", "monthly": 0, "monthly_second": null},
+   {"label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "3", "lower": null, "upper": null, "condition": "市町村民税所得割非課税世帯", "monthly": 4110, "monthly_second": null},
+   {"label": "4", "lower": 1, "upper": 48600, "condition": "48,600円未満", "monthly": 6170, "monthly_second": null},
+   {"label": "5", "lower": 48600, "upper": 51500, "condition": "48,600円以上 51,500円未満", "monthly": 11180, "monthly_second": null},
+   {"label": "6", "lower": 51500, "upper": 56600, "condition": "51,500円以上 56,600円未満", "monthly": 14960, "monthly_second": null},
+   {"label": "7", "lower": 56600, "upper": 60100, "condition": "56,600円以上 60,100円未満", "monthly": 18840, "monthly_second": null},
+   {"label": "8", "lower": 60100, "upper": 74000, "condition": "60,100円以上 74,000円未満", "monthly": 18840, "monthly_second": null},
+   {"label": "9", "lower": 74000, "upper": 79000, "condition": "74,000円以上 79,000円未満", "monthly": 26650, "monthly_second": null},
+   {"label": "10", "lower": 79000, "upper": 97000, "condition": "79,000円以上 97,000円未満", "monthly": 26650, "monthly_second": null},
+   {"label": "11", "lower": 97000, "upper": 112000, "condition": "97,000円以上 112,000円未満", "monthly": 33450, "monthly_second": null},
+   {"label": "12", "lower": 112000, "upper": 115000, "condition": "112,000円以上 115,000円未満", "monthly": 40760, "monthly_second": null},
+   {"label": "13", "lower": 115000, "upper": 132000, "condition": "115,000円以上 132,000円未満", "monthly": 40760, "monthly_second": null},
+   {"label": "14", "lower": 132000, "upper": 169000, "condition": "132,000円以上 169,000円未満", "monthly": 44000, "monthly_second": null},
+   {"label": "15", "lower": 169000, "upper": 203800, "condition": "169,000円以上 203,800円未満", "monthly": 51690, "monthly_second": null},
+   {"label": "16", "lower": 203800, "upper": 301000, "condition": "203,800円以上 301,000円未満", "monthly": 54330, "monthly_second": null},
+   {"label": "17", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 57460, "monthly_second": null},
+   {"label": "18", "lower": 397000, "upper": 480000, "condition": "397,000円以上 480,000円未満", "monthly": 60600, "monthly_second": null},
+   {"label": "19", "lower": 480000, "upper": 671800, "condition": "480,000円以上 671,800円未満", "monthly": 65750, "monthly_second": null},
+   {"label": "20", "lower": 671800, "upper": null, "condition": "671,800円以上", "monthly": 70900, "monthly_second": null}
+  ],
+  "notes": "列は「0〜2歳児（標準時間・短時間）」「3歳児以上（標準時間・短時間）」（3歳児以上はすべて0円）。短時間: 3 4,040／4 6,070／5 10,990／6 14,710／7 18,520／8 18,520／9 26,200／10 26,200／11 32,880／12 40,070／13 40,070／14 43,250／15 50,810／16 53,410／17 56,480／18 59,570／19 64,630／20 69,690。所得割77,101円未満（第3階層〜9階層の一部）の要保護世帯（在宅障がい児（者）のいる世帯及びひとり親世帯等）は、年齢にかかわらず最年長から数えて第1子に別表（標準時間 3 2,050／4 3,080／5 5,590／6 7,480／7〜9(一部) 9,000、短時間 2,020／3,030／5,490／7,350／9,000）を適用し、第2子以降は0円。第2子の別の列はない（半額は10円未満切り捨て）。0〜2歳児クラスの給食費は保育料に含まれる。0歳と1〜2歳の区別はない。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子は有料（0〜2歳児 標準時間 月4,110〜70,900円）。0円は被保護世帯等と市町村民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "「小学校就学前の範囲において、同一世帯から２人以上の子どもが保育所・幼稚園等を利用する場合、当該児童のうち第２子は半額（10円未満切り捨て）、第３子以降は０円」。世帯の市民税所得割額が57,700円未満の場合は小学校就学前の年齢制限を撤廃し、年齢にかかわらず最年長の子どもから数えて第2子半額・第3子以降0円。所得割77,101円未満の要保護世帯（在宅障がい児（者）のいる世帯・ひとり親世帯等）は第2子以降0円。千葉県や市の第2子無料化の記載は見当たらない。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "小学校就学前で保育所・幼稚園等を利用する子で数えて第3子以降0円。所得割57,700円未満は年齢にかかわらず最年長から数えて第3子以降0円（household）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和8年度保育所等利用のしおり（PDF：7,938KB）p.11〜13「9 保育料について」", "url": "https://www.city.yotsukaido.chiba.jp/kosodate/azukeru/hoikusyoinfo/r8nyuushoannnai.files/R8hoikusyosiori.pdf"},
+  {"label": "令和8年度保育所入所案内 四街道市", "url": "https://www.city.yotsukaido.chiba.jp/kosodate/azukeru/hoikusyoinfo/r8nyuushoannnai.html"},
+  {"label": "令和9年度保育所等利用のしおり（PDF：2,071KB）（令和9年度保育所入所案内、更新 2026年10月27日）", "url": "https://www.city.yotsukaido.chiba.jp/kosodate/azukeru/hoikusyoinfo/nyuusyoannnair9.files/R9shiori.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べの docs はこどもルーム（学童）や災害時の減免のページばかりで、保育料の表はなかった。下調べのページ一覧にあった「令和8年度保育所入所案内」を開いてしおりのPDFを取った"
+ ],
+ "notes": "しおり p.13（PDFの15ページ目）を pdftoppm で画像にして列の並び（0〜2歳児 標準時間・短時間、3歳児以上）を確かめた。区切りは「以上〜未満」で切れ目・重なりなし、月額は階層の順に下がらない（7=8、9=10、12=13 は同額）。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

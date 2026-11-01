@@ -1,0 +1,226 @@
+{
+  "code": "142115",
+  "pref": "神奈川県",
+  "name": "秦野市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "その年度の4月から8月の保育料は前年度の市町村民税所得割額、9月から3月の保育料は現年度の市町村民税所得割額で決める（令和9年度利用案内では「令和8年9月〜令和9年8月は令和8年度の市町村民税所得割額」）。料金表は年度を通じて同じ。クラスは4月1日現在の年齢で決まり、年度途中で3歳になってもその年度は保育料がかかる。0〜2歳児の保育料には主食費・副食費が含まれる。利用しない日があっても減額なし。表の額は令和2年度からの見直し（3年間の経過措置）を終えた「令和4年度以降」の額で、令和8年度もこの額（令和9年度保育所等利用案内〔2026年9月作成〕の算定基準表も同じ額）。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市町村民税所得割額の合算で決める。父母がいずれも非課税で同居の祖父母（二世帯住宅を含む）がいる場合は、祖父母のうち税額の高い方の額で算定（保育料についてのページでは、生計の中心者である同一世帯の扶養義務者の税額を合算）。調整控除以外の税額控除（住宅借入金等特別税額控除・配当控除・外国税額控除・寄附金税額控除等）は適用しない。海外での収入はその収入額で市町村民税課税相当額を算定。所得の申告がなく課税額が確認できない場合は最高階層で仮算定。",
+  "table": {
+    "title": "秦野市保育料（利用者負担額）算定基準表（令和９年度保育所等利用案内 18ページ、令和４年度以降の額）",
+    "kind": "3歳未満（0～2歳児クラス）・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税均等割額のみ課税",
+        "monthly": 6500,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市町村民税所得割額 48,600円未満",
+        "monthly": 9000,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 48600,
+        "upper": 54000,
+        "condition": "48,600円～54,000円未満",
+        "monthly": 12600,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 54000,
+        "upper": 62000,
+        "condition": "54,000円～62,000円未満",
+        "monthly": 14300,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 62000,
+        "upper": 71000,
+        "condition": "62,000円～71,000円未満",
+        "monthly": 16600,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 71000,
+        "upper": 97000,
+        "condition": "71,000円～97,000円未満",
+        "monthly": 19600,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 97000,
+        "upper": 111000,
+        "condition": "97,000円～111,000円未満",
+        "monthly": 27500,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 111000,
+        "upper": 134000,
+        "condition": "111,000円～134,000円未満",
+        "monthly": 31000,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 134000,
+        "upper": 154000,
+        "condition": "134,000円～154,000円未満",
+        "monthly": 36000,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 154000,
+        "upper": 169000,
+        "condition": "154,000円～169,000円未満",
+        "monthly": 38000,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 169000,
+        "upper": 238000,
+        "condition": "169,000円～238,000円未満",
+        "monthly": 45400,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 238000,
+        "upper": 260000,
+        "condition": "238,000円～260,000円未満",
+        "monthly": 48900,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 260000,
+        "upper": 301000,
+        "condition": "260,000円～301,000円未満",
+        "monthly": 50300,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 301000,
+        "upper": 348000,
+        "condition": "301,000円～348,000円未満",
+        "monthly": 57100,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 348000,
+        "upper": 366000,
+        "condition": "348,000円～366,000円未満",
+        "monthly": 58900,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 366000,
+        "upper": 386000,
+        "condition": "366,000円～386,000円未満",
+        "monthly": 60200,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 386000,
+        "upper": 397000,
+        "condition": "386,000円～397,000円未満",
+        "monthly": 60700,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 397000,
+        "upper": 417000,
+        "condition": "397,000円～417,000円未満",
+        "monthly": 65100,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 417000,
+        "upper": null,
+        "condition": "417,000円～",
+        "monthly": 67500,
+        "monthly_second": null
+      }
+    ],
+    "notes": "保育短時間: C 6,400／D1 8,800／D2 12,400／D3 14,100／D4 16,300／D5 19,300／D6 27,000／D7 30,500／D8 35,400／D9 37,400／D10 44,600／D11 48,100／D12 49,400／D13 56,100／D14 57,900／D15 59,200／D16 59,700／D17 64,000／D18 66,400。施設区分による違いはない。表に第2子の列はない（2人目は半額、3人目以降は無料）。表の注: 同一世帯から2人以上の子どもが保育所等に入所している場合は2人目半額・3人目以降無料（幼稚園・特別支援学校幼稚部・企業主導型保育事業・児童心理治療施設・児童発達支援センター等に在籍する兄・姉も同様）。所得割57,700円未満の世帯は小学生以上の子どもを含め原則第2子半額・第3子以降無料。ひとり親世帯・在宅障害者世帯・その他（生活保護法に定める要保護者等）で所得割77,101円未満は、小学生以上の子どもを含め原則第1子半額（上限9,000円）、第2子以降無料。D1 の下限は表にないが、C（均等割のみ＝所得割0円）と分けるため lower=1 とした。「保育料の見直し」ページの「見直し後の保育料一覧（経過措置含む）」の令和4年度以降の欄と同じ額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は階層により月0〜67,500円（標準時間）。生活保護・非課税世帯は0円。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "同一世帯で小学校就学前までの範囲内に保育所等を利用する子どもが2人以上いる場合、最年長の子どもから数えて2人目は半額（幼稚園・認定こども園等に在園する兄・姉がいる場合も同様）。市町村民税所得割額57,700円未満（教育利用は77,101円未満）の世帯は子の年齢にかかわらず第2子半額。所得割77,101円未満のひとり親・障がい者世帯等は子の年齢にかかわらず第1子半額（上限9,000円）・第2子以降無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "小学校就学前で保育所等・幼稚園等を利用する子どものうち最年長から数えて3人目以降は無料。所得割57,700円未満の世帯は子の年齢にかかわらず第3子以降無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和9年度保育所等利用案内（PDF、13〜14ページ「保育料（利用者負担額）について」、18ページ「秦野市保育料（利用者負担額）算定基準表」）",
+      "url": "https://www.city.hadano.kanagawa.jp/material/files/group/41/R9riyouannnai.pdf"
+    },
+    {
+      "label": "保育料について／秦野市公式ホームページ（2026年1月30日更新）",
+      "url": "https://www.city.hadano.kanagawa.jp/info-search/life-scene/3/2/3/10466.html"
+    },
+    {
+      "label": "保育料の見直し／秦野市公式ホームページ（2026年1月30日更新）",
+      "url": "https://www.city.hadano.kanagawa.jp/info-search/life-scene/3/2/3/10465.html"
+    },
+    {
+      "label": "見直し後の保育料一覧（経過措置含む）（PDF）",
+      "url": "https://www.city.hadano.kanagawa.jp/material/files/group/41/minaosigohoikuryou.pdf"
+    },
+    {
+      "label": "保育所等への申し込み／秦野市公式ホームページ（2026年10月1日更新）",
+      "url": "https://www.city.hadano.kanagawa.jp/info-search/life-scene/3/2/2/10460.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs の「保育料について」「保育料の見直し」ページと「見直し後の保育料一覧」PDF（令和4年度以降の欄）を読んだ。令和8年度と書かれた表は見つからなかった。",
+    "申し込みのページ（10460.html）は令和9年度向けに更新済みで、令和8年度利用案内は掲載がなく、R8riyouannnai.pdf も 404。令和9年度保育所等利用案内（2026年9月作成）の算定基準表が令和4年度以降の額と同じだったので、令和8年度もこの額と判断した。"
+  ],
+  "notes": "表は令和9年度利用案内（令和8年9月以降の算定にも触れている）に載っている現行の算定基準表で、令和4年度以降変わっていない額。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

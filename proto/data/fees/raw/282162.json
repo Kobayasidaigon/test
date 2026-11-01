@@ -1,0 +1,50 @@
+{
+  "code": "282162",
+  "pref": "兵庫県",
+  "name": "高砂市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "8月までの保育料は前年度の住民税の課税状況、9月以降は当年度の住民税の課税状況により決定するため、年度中に保育料が変わる場合がある（令和8年度なら4〜8月は令和7年度、9〜3月は令和8年度の住民税）。こどもの年齢は年度の初日の年齢で決め、年度途中で変わらない。満3歳に到達した日の属する年度中の2号認定の利用者負担額は3号認定の額を適用。表の月額は年度の途中で変わらない。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の住民税の所得割に応じた保育料を市が設定（国が決める水準が上限）。税額控除（住宅ローン控除・寄附金控除など）を引く前か後か、調整控除の扱い、合算する人の範囲は、保育料のページと表には書かれていない。",
+  "table": {
+    "title": "令和8年度 高砂市における特定教育・保育施設等の利用者負担（月額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税均等割のみの世帯", "monthly": 12200, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市民税所得割額 48,600円未満", "monthly": 15100, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 57700, "condition": "市民税所得割額 57,700円未満", "monthly": 20300, "monthly_second": null },
+      { "label": "D1", "lower": 57700, "upper": 72800, "condition": "市民税所得割額 72,800円未満", "monthly": 20300, "monthly_second": null },
+      { "label": "D2", "lower": 72800, "upper": 77101, "condition": "市民税所得割額 77,100円以下", "monthly": 24700, "monthly_second": null },
+      { "label": "D2", "lower": 77101, "upper": 97000, "condition": "市民税所得割額 97,000円未満", "monthly": 24700, "monthly_second": null },
+      { "label": "D3", "lower": 97000, "upper": 133000, "condition": "市民税所得割額 133,000円未満", "monthly": 32400, "monthly_second": null },
+      { "label": "D4", "lower": 133000, "upper": 169000, "condition": "市民税所得割額 169,000円未満", "monthly": 38700, "monthly_second": null },
+      { "label": "D5", "lower": 169000, "upper": 301000, "condition": "市民税所得割額 301,000円未満", "monthly": 48000, "monthly_second": null },
+      { "label": "D6", "lower": 301000, "upper": 397000, "condition": "市民税所得割額 397,000円未満", "monthly": 62000, "monthly_second": null },
+      { "label": "D7", "lower": 397000, "upper": null, "condition": "市民税所得割額 397,000円以上", "monthly": 64000, "monthly_second": null }
+    ],
+    "notes": "rows は3号認定・標準の列。表に第2子の別の列はない（第2子の扱いは second_note）。表の条件は上限だけが書かれており、下限は一つ上の段の上限とした（C1＝均等割のみを別の行にしているので C2 の lower は1。D2 の1段目は「77,100円以下」なので upper=77101）。D1とD2はそれぞれ2段に分かれ、同じ額。短時間の月額: C1 11,200／C2 14,100／D1 19,300／D2 23,700／D3 31,400／D4 37,700／D5 47,000／D6 61,000／D7 63,000。〔 〕書きはひとり親世帯、障害者のいる世帯等の利用者負担額で、C1〜D2の1段目（所得割77,100円以下）は0円（年収約360万円未満相当のひとり親世帯等は無料）。1か月休んでも籍があれば保育料を徴収。保育料以外に諸費・雑費等、延長保育の負担が別に必要。私立認定こども園は園へ支払う。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3号認定の第1子は有料（標準で月0〜64,000円）。0円は生活保護世帯（A）と市民税非課税世帯（B）、所得割77,100円以下のひとり親世帯等だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の注記: 「多子軽減」とは、小学校就学前の範囲において、最年長の子どもから順に2人目は半額、3人目以降は無料とする制度。ただし年収約360万円未満相当の世帯（市民税所得割額57,700円未満、ひとり親世帯等は77,100円以下）は多子軽減における年齢制限を撤廃する。ページには「同一世帯において2人以上のこどもが保育施設・事業を利用している場合には、軽減があります」とある。数えるのは小学校就学前の子（施設を利用している子）で、どの施設を数えるかの一覧は書かれていない。兵庫県の補助（ひょうご保育料軽減事業。尼崎市などでは案内がある）は、高砂市の保育料のページと表には書かれていなかった。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "多子軽減で3人目以降は無料（小学校就学前の範囲で最年長の子から数える）。市民税所得割額57,700円未満（ひとり親世帯等は77,100円以下）の世帯は年齢制限を撤廃。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度高砂市における特定教育・保育施設等の利用者負担額（PDF）", "url": "https://www.city.takasago.lg.jp/material/files/group/22/riyousyahutangaku8.pdf" },
+    { "label": "保育所・認定こども園の利用者負担額(保育料)／高砂市（2026年4月6日更新）", "url": "https://www.city.takasago.lg.jp/soshikikarasagasu/yojihoikuka/ikuji_mishugakuji/1/hoikuryou/2362.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は1ページの文字の取れるPDF（2026年4月6日作成）を pdftotext -layout と画像（pdftoppm -r 70）で読み、列の並び（3号認定 標準/短時間、〔 〕はひとり親等の額）と、D1・D2の2段を確かめた。区切りは切れ目・重なりなし。保育料の一覧ページ（ページID 6471）の子ページは「利用者負担額」「幼児教育・保育の無償化」「給食費(副食費)の無償化」の3つだけで、第2子の独自の無償化のページは見当たらなかった。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

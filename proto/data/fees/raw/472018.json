@@ -1,0 +1,172 @@
+{
+ "code": "472018",
+ "pref": "沖縄県",
+ "name": "那覇市",
+ "status": "partial",
+ "fiscal_year": "令和9年度",
+ "period_note": "読めたのは『令和9年度 認可保育園・私立認定こども園(2号・3号)入園申込みのご案内』の「令和9年度階層別保育料算定表」（p.38）と「保育料算定および階層認定について」（p.35〜37）で、令和9年4月からの表。今年度（令和8年度）の表は市のサイトで見つからなかった（令和8年度用のページ・PDFは差し替え済み）。前期保育料（4〜8月分）は前年度、後期保育料（9〜3月分）は当年度の課税額で算定（令和9年度の例: 4〜8月分は令和8年度〔令和7年1〜12月の収入〕、9〜3月分は令和9年度〔令和8年1〜12月の収入〕）。保育料の変更は申請があった日の翌月から。",
+ "tax_basis": "6%",
+ "tax_note": "児童と生計をひとつにしている保護者の市民税所得割額の合計額。配当控除・外国税額控除・住宅借入金等特別税額控除・寄附金税額控除等の税額控除は適用しない。同一世帯に保護者より収入が高い祖父母がいる場合は祖父母の税額を合算することがある（祖父母合算。保護者の収入が生活保護基準を上回れば解除できる）。課税情報が確認できない場合（他市町村在住で未提出、未申告）は最高額。中核市（政令市ではない）なので6%のまま。",
+ "table": {
+  "title": "階層別保育料算定表 保育園・認定こども園（0〜2歳クラス）（令和9年度階層別保育料算定表）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯等",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "B2",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税が非課税　B1以外の世帯（ひとり親世帯・在宅障がい者のいる世帯以外）",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "C1B",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税の均等割のみ課税　C1A以外の世帯",
+    "monthly": 13200,
+    "monthly_second": 6600
+   },
+   {
+    "label": "C2B",
+    "lower": 1,
+    "upper": 48600,
+    "condition": "所得割額が48,600円未満　C2A以外の世帯",
+    "monthly": 15600,
+    "monthly_second": 7800
+   },
+   {
+    "label": "D1B",
+    "lower": 48600,
+    "upper": 56300,
+    "condition": "所得割額が48,600円以上56,300円未満　D1A以外の世帯",
+    "monthly": 19100,
+    "monthly_second": 9550
+   },
+   {
+    "label": "D2B（57,700円未満）",
+    "lower": 56300,
+    "upper": 57700,
+    "condition": "所得割額が56,300円以上65,500円未満　D2A以外の世帯　57,700円未満",
+    "monthly": 22900,
+    "monthly_second": 11450
+   },
+   {
+    "label": "D2B（57,700円以上）",
+    "lower": 57700,
+    "upper": 65500,
+    "condition": "所得割額が56,300円以上65,500円未満　D2A以外の世帯　57,700円以上",
+    "monthly": 22900,
+    "monthly_second": 11450
+   },
+   {
+    "label": "D3B",
+    "lower": 65500,
+    "upper": 77101,
+    "condition": "所得割額が65,500円以上77,101円未満　D3A以外の世帯",
+    "monthly": 26400,
+    "monthly_second": 13200
+   },
+   {
+    "label": "D3C",
+    "lower": 77101,
+    "upper": 84900,
+    "condition": "所得割額が77,101円以上84,900円未満",
+    "monthly": 26400,
+    "monthly_second": 13200
+   },
+   {
+    "label": "D4",
+    "lower": 84900,
+    "upper": 97000,
+    "condition": "所得割額が84,900円以上97,000円未満",
+    "monthly": 29400,
+    "monthly_second": 14700
+   },
+   {
+    "label": "D5",
+    "lower": 97000,
+    "upper": 119800,
+    "condition": "所得割額が97,000円以上119,800円未満",
+    "monthly": 34300,
+    "monthly_second": 17150
+   },
+   {
+    "label": "D6",
+    "lower": 119800,
+    "upper": 169000,
+    "condition": "所得割額が119,800円以上169,000円未満",
+    "monthly": 38200,
+    "monthly_second": 19100
+   },
+   {
+    "label": "D7",
+    "lower": 169000,
+    "upper": 301000,
+    "condition": "所得割額が169,000円以上301,000円未満",
+    "monthly": 39600,
+    "monthly_second": 19800
+   },
+   {
+    "label": "D8",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "所得割額が301,000円以上397,000円未満",
+    "monthly": 40800,
+    "monthly_second": 20400
+   },
+   {
+    "label": "D9",
+    "lower": 397000,
+    "upper": null,
+    "condition": "所得割額が397,000円以上",
+    "monthly": 53000,
+    "monthly_second": 26500
+   }
+  ],
+  "notes": "rows はひとり親世帯・在宅障がい者のいる世帯以外の行（monthly=第1子、monthly_second=第2子の列。第3子以降の列はすべて0）。D2Bは表で「57,700円未満」と「57,700円以上」の2段に分かれ、額は同じ（きょうだいの数え方が変わる境目）。保育短時間 第1子（第2子）: A 0（0）／B2 0（0）／C1B 12,900（6,450）／C2B 15,300（7,650）／D1B 18,700（9,350）／D2B（57,700円未満） 22,500（11,250）／D2B（57,700円以上） 22,500（11,250）／D3B 25,900（12,950）／D3C 25,900（12,950）／D4 28,900（14,450）／D5 33,700（16,850）／D6 37,500（18,750）／D7 38,900（19,450）／D8 40,100（20,050）／D9 52,000（26,000）。ひとり親世帯・在宅障がい者のいる世帯の行（第2子・第3子以降は0）: B1 0／C1A 6,200／C2A 7,400／D1A 9,000／D2A 9,000／D3A 9,000（所得割77,101円未満まで。短時間も同じ額）。区切りは「以上〜未満」で切れ目・重なりなし。C2Bの下限は表にないが、C1B（均等割のみ）と分けるため lower=1 とした。表は文字の取れない画像のPDFで、160dpiの画像で読んだ。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子から無料ではない（令和9年度の表）。0円は生活保護世帯等・市町村民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "表の第2子の列（第1子のちょうど半額）。きょうだいの数え方は世帯の市民税所得割額で決まる: 57,700円未満（ひとり親や在宅障がい者のいる世帯は77,101円未満）は同一生計のきょうだいを年齢に関係なく数える。それ以外は対象施設（認可保育園・認定こども園・地域型保育事業所・幼稚園〔未移行・移行どちらも〕・企業主導型保育園・特別支援学校幼稚部・児童発達支援または医療型児童発達支援サービス）に在籍している未就学のきょうだいだけを数える。進学などで別住所に住み、保護者の扶養に入っているきょうだいは社会保険証の写しで数える。ひとり親世帯・在宅障がい者のいる世帯（所得割77,101円未満）は第2子0円。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "表の第3子以降の列はすべての階層で0円。数え方は第2子と同じ（所得割57,700円未満〔ひとり親等は77,101円未満〕は年齢に関係なく同一生計のきょうだいを数え、それ以外は対象施設に在籍する未就学のきょうだいだけを数える）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和9年度 認可保育園・私立認定こども園(2号・3号)入園申込みのご案内｜那覇市公式ホームページ",
+   "url": "https://www.city.naha.okinawa.jp/child/hoikuen/1002762/1002783/1002785.html"
+  },
+  {
+   "label": "令和9年度階層別保育料算定表 （PDF 191.7 KB、画像のPDF）",
+   "url": "https://www.city.naha.okinawa.jp/_res/projects/default_project/_page_/001/002/785/r9hoikuryousannteihyou.pdf"
+  },
+  {
+   "label": "保育料の算定および階層認定について （PDF 840.7 KB、画像のPDF）",
+   "url": "https://www.city.naha.okinawa.jp/_res/projects/default_project/_page_/001/002/785/r9kaisounintei.pdf"
+  }
+ ],
+ "confidence": "推定",
+ "tried": [
+  "下調べ（crawl）の docs は令和9年度の算定表・階層認定のPDF（どちらも画像だけ）だった",
+  "令和8年度の表を探して https://www.city.naha.okinawa.jp/_res/projects/default_project/_page_/001/002/785/r8hoikuryousannteihyou.pdf を試した → 404",
+  "令和8年度関連のページ（1002784.html 小学校隣接こども園の令和8年5月〜令和9年3月申込み、1002787.html 令和8年度現況確認届、1002752.html 幼児教育・保育の無償化）のPDFリンクを見たが、保育料の表はなかった",
+  "WebSearch（allowed_domains: www.city.naha.okinawa.jp、「那覇市 令和8年度 階層別保育料算定表 保育料」）→ 令和8年度の表は出ず、令和7年度の算定表 https://www.city.naha.okinawa.jp/child/hoikuen/ninteikodomoen/R6hoikuen_moushikomi.files/R7.hoikuryou.pdf が出たが404（サイト移行で削除済み）。同じ形の .../R7hoikuen_moushikomi.files/R8.hoikuryou.pdf も404"
+ ],
+ "notes": "中核市。表と多子区分表は画像のPDFなので画像で読んだ（第2子の列は全行で第1子のちょうど半額になっていることを確かめた）。今年度（令和8年度）の表が見つからず、令和9年度（来年度）の表を入れたので status は partial、confidence は推定。令和8年度の額と同じかどうかは確かめられていない。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

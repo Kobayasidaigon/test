@@ -1,0 +1,139 @@
+{
+  "code": "252026",
+  "pref": "滋賀県",
+  "name": "彦根市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月1日適用の表。4月分〜8月分は令和7年度分市民税、9月分〜翌年3月分は令和8年度分市民税で算定。年齢は4月1日における年齢。保育料は月の初日に在籍していると発生し、原則日割計算はしない。表（月額）は年度を通じて同じ。保育料のページ（2026年8月28日更新）は令和9年度の利用案内に切り替わっていて、この表は「（参考）令和8年度」として載っている。",
+  "tax_basis": "6%",
+  "tax_note": "「児童の父母」および「父母以外が扶養義務者の場合はその扶養義務者」の市民税の合計で決定。市民税所得割額には、配当控除・住宅借入金等特別控除・寄附金税額控除・外国税額控除等の税額控除の適用はない（控除前の額）。政令市ではなく、6%・8%の換算の注記はない。",
+  "table": {
+    "title": "（参考）令和8年度彦根市保育所等保育料徴収基準額表（令和8年４月１日適用、単位：円／月）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税所得割非課税世帯（均等割のみ課税世帯）",
+        "monthly": 16000,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市民税所得割額48,600円未満",
+        "monthly": 16000,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 48600,
+        "upper": 64800,
+        "condition": "市民税所得割額64,800円未満",
+        "monthly": 22000,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 64800,
+        "upper": 80900,
+        "condition": "市民税所得割額80,900円未満",
+        "monthly": 27000,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 80900,
+        "upper": 97000,
+        "condition": "市民税所得割額97,000円未満",
+        "monthly": 30000,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 97000,
+        "upper": 169000,
+        "condition": "市民税所得割額169,000円未満",
+        "monthly": 40000,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 169000,
+        "upper": 246500,
+        "condition": "市民税所得割額246,500円未満",
+        "monthly": 55000,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 246500,
+        "upper": 301000,
+        "condition": "市民税所得割額301,000円未満",
+        "monthly": 61000,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "市民税所得割額397,000円未満",
+        "monthly": 65000,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 397000,
+        "upper": null,
+        "condition": "市民税所得割額397,000円以上",
+        "monthly": 76000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表は保育標準時間認定・保育短時間認定 × 3歳未満児／3歳以上児の4列（3歳以上児は斜線）。保育短時間認定・3歳未満児: A・B 0／C1 15,000／C2 15,000／D1 21,000／D2 26,000／D3 29,000／D4 39,000／D5 54,000／D6 59,000／D7 63,000／D8 74,000。国の階層区分の列もある（C1・C2＝3、D1〜D3＝4、D4＝5、D5・D6＝6、D7＝7、D8＝8）。各行は上限だけの書き方なので、下限は1つ上の行の上限とした（C2 は C1 が均等割のみなので1円から）。備考6: ひとり親世帯等（児童扶養手当を受給している世帯に限る）や在宅障害児（者）のいる世帯は保育料が軽減される場合がある（D2階層の所得割77,101円以上〜D8階層を除く。軽減後の額は表にない）。0〜2歳児の副食費は保育料に含まれる。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（保育標準時間で月16,000〜76,000円）。無償は生活保護世帯・住民税非課税世帯（A・B階層）だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "備考7・8: 同一世帯で小学校就学前の範囲において保育所等を同時利用している場合、第2子は半額（D4〜D8階層＝所得割97,000円以上は、0歳から小学校就学前までの保育所等を利用している子どもだけを数える）。C1〜D1階層の所得割57,700円未満の世帯は、生計を一にする世帯で年齢制限や保育所等（企業主導型を含む）の同時利用に関わらず数えて第2子は半額。D1階層57,700円以上〜D3階層は、上の子が就学児以上なら第2子は全額（同時利用なら半額）。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "D4〜D8階層（所得割97,000円以上）は、小学校就学前の範囲で保育所等を同時利用している子どもを数えて3人目以降無料。A〜D3階層（所得割97,000円未満）は年齢制限や保育所等の同時利用に関わらず、生計を一にする世帯の子どもを数えて第3子以降無料（この所得帯は household の数え方）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "（参考）令和8年度彦根市保育所等保育料徴収基準額表（PDF）彦根市",
+      "url": "https://www.city.hikone.lg.jp/material/files/group/107/R8hoikuryoutyousyuukijungakuhyou.pdf"
+    },
+    {
+      "label": "保育料／彦根市（令和9年度保育所等利用案内、2026年8月28日更新）",
+      "url": "https://www.city.hikone.lg.jp/kakuka/kodomo_mirai/7/r9hoikusyotouriyouannai/30707.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの文書で足りた。表は1ページの文字の取れるPDF（2026年8月作成）を pdftotext -layout で読み、画像（pdftoppm -r 80）で列（標準・短時間 × 3歳未満・3歳以上）を確かめた。C2〜D8 の範囲は切れ目・重なりなし、月額は階層の順に増える（C1 と C2 は同額）。きょうだいの決まりは PDF の備考7・8 と保育料のページの「きょうだいがいる場合の保育料一覧」で読んだ。cash・one_time・中学校給食は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

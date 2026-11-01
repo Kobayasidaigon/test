@@ -1,0 +1,73 @@
+{
+  "code": "162108",
+  "pref": "富山県",
+  "name": "南砺市",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "6%",
+  "tax_note": "保育料の表と所得割の定義の注記は見つからなかった。政令市ではないので、ふつうどおり6%で判定と見て 6% とした（市の資料では確かめていない）。",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子の保育料の表が見つからず、第1子が有料かどうかは市の資料で確かめられていない（多子軽減の案内が「2人目半額・3人目以降無料」と書くので、第1子は有料とみられるが未確認）。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "市の子育て支援ガイド「すこやか」の「子どもを預けたい」（2025年8月12日更新）: 「多子軽減により、養育されている２２歳までの範囲で最年長のお子さんから順に２人目の保育料が半額」。同時入園の条件は書かれていない（22歳までの養育している子を数える）。所得制限は書かれていない。認可外保育施設に入園している子も同様に軽減になる場合がある。副食費（3〜5歳）は1人目と2人目が半額、3人目以降が無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "「３人目以降のお子さんの保育料は無料」。数え方は第2子と同じ（養育している22歳までの子を最年長から数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    {
+      "label": "南砺市入学支援金（小学校・義務教育学校入学）",
+      "amount": 30000,
+      "note": "令和8年度。申請日・入学日に市内に住所がある保護者に交付、1人1回。国の重点支援地方交付金を活用した事業（「子育て応援入学・卒業祝い金」は令和6年度で終了）。",
+      "source": {
+        "label": "令和8年度入学支援金交付事業について／南砺市",
+        "url": "https://www.city.nanto.toyama.jp/soshiki/kodomo/5/7141.html"
+      }
+    },
+    {
+      "label": "南砺市入学支援金（中学校入学・義務教育学校後期課程）",
+      "amount": 40000,
+      "note": "令和8年度。1人1回。",
+      "source": {
+        "label": "令和8年度入学支援金交付事業について／南砺市",
+        "url": "https://www.city.nanto.toyama.jp/soshiki/kodomo/5/7141.html"
+      }
+    },
+    {
+      "label": "南砺市入学支援金（高校等入学）",
+      "amount": 50000,
+      "note": "令和8年度。1人1回。高校1年生は通学支援金（通学定期の年間購入費相当額の1/2以内）も別に申請できる。",
+      "source": {
+        "label": "令和8年度入学支援金交付事業について／南砺市",
+        "url": "https://www.city.nanto.toyama.jp/soshiki/kodomo/5/7141.html"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "label": "子どもを預けたい（保育料等の軽減について）| 南砺市子育て支援ガイド すこやか",
+      "url": "https://sukoyaka.city.nanto.toyama.jp/nursey"
+    },
+    {
+      "label": "令和8年度入学支援金交付事業について／南砺市",
+      "url": "https://www.city.nanto.toyama.jp/soshiki/kodomo/5/7141.html"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べ（index.json）に保育料の文書の候補なし（docs が空）",
+    "市サイト: 保育所・こども園・幼稚園 https://www.city.nanto.toyama.jp/kosodate-kyoiku/ikuji-mishugakuji/3/index.html と https://www.city.nanto.toyama.jp/lifescene/nyuen-nyugaku/5006.html（記事2件だけ、保育料のページなし）",
+    "こども課の記事一覧: https://www.city.nanto.toyama.jp/soshiki/kodomo/index.html ・ /soshiki/kodomo/1/index.html ・ /soshiki/kodomo/1/1/index.html ・ /soshiki/kodomo/1/2/index.html ・ /soshiki/kodomo/5/index.html（保育料・入園申込のページなし）",
+    "南砺市の保育サービス https://www.city.nanto.toyama.jp/soshiki/kodomo/1/2/5074.html（入園の案内だけで保育料なし）",
+    "子育て支援ガイド すこやか: トップ・子どもを預けたい・子育て支援制度のページ、サイト内検索「保育料」（多子軽減の文だけ、料金表なし）",
+    "WebSearch（allowed_domains city.nanto.toyama.jp）「南砺市 保育料 3歳未満児 市町村民税所得割 階層」: 料金表なし。出てきた すこやか の PDF（2022年作成、画像だけ）は特別保育と保育園一覧のチラシで保育料表ではない",
+    "WebSearch（allowed_domains city.nanto.toyama.jp）「南砺市 保育園 入園申込 保育料 月額 令和8年度」: 料金表なし。出てきた移住サイト「南砺市の子育て補助関係 支援制度」 https://kurashi.city.nanto.toyama.jp/support/parenting はトップへ転送されて読めなかった"
+  ],
+  "notes": "0〜2歳児の保育料の表（所得割の階層と月額）は市の公式サイト・子育て支援ガイドのどちらにも見つからなかった（入園申込は前年度10月、申込書は9月下旬から各保育園で配布とあり、表は紙の入園案内だけの可能性）。きょうだいの決まりは すこやか の文で分かった。tax_basis の 6% は政令市でないことからの見込み。",
+  "read_at": "2026-11-01"
+}

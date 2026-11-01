@@ -1,0 +1,59 @@
+{
+  "code": "042111",
+  "pref": "宮城県",
+  "name": "岩沼市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和7年12月〜令和8年8月分は令和7年度市町村民税所得割・均等割額（令和6年所得分）、令和8年9月〜令和9年8月分は令和8年度市町村民税所得割・均等割額（令和7年所得分）で算定（令和8年度の保育所等入所のしおり 11ページ）。表の金額は令和8年度を通じて同じ: 令和8年度しおりの表（「令和７年１０月１日以降（予定）」）と令和9年度向けしおり（令和8年12月以降入所、2026年9月作成）の表（「令和８年１０月１日以降（予定）」）は同じ額。年齢区分は4月1日現在の年齢（年度途中で3歳になっても年度内は3号認定の額）。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（父、母、事実婚の父母）の市町村民税所得割で算定。保護者の市町村民税が非課税の場合のみ、同居（住民票がない場合や世帯分離の場合も同居とみなす）の祖父母等（直系尊属）も算定対象。所得割課税額の計算では、調整控除及び定額減税以外の税額控除（住宅借入金等特別税額控除、配当控除、寄付金税額控除等）は適用しない（税額控除前）。課税額が確認できない場合は最高階層（C13）で決定。政令市ではないので6%で判定。",
+  "table": {
+    "title": "岩沼市利用者負担額（保育料）基準額表 保育利用（２号・３号認定）《認可保育所、認定こども園（保育所部分）、小規模保育事業》（令和７年１０月１日以降（予定）／令和８年１０月１日以降（予定）で同額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯等（令和9年度向けしおりでは「生活保護世帯、里親世帯」）", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市町村民税均等割の額のみの世帯", "monthly": 11000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市町村民税所得割のある世帯であって、その額が 48,600円未満", "monthly": 13400, "monthly_second": null },
+      { "label": "C3", "lower": 48600, "upper": 51000, "condition": "48,600円以上51,000円未満", "monthly": 15400, "monthly_second": null },
+      { "label": "C4", "lower": 51000, "upper": 56000, "condition": "51,000円以上56,000円未満", "monthly": 17400, "monthly_second": null },
+      { "label": "C5", "lower": 56000, "upper": 57700, "condition": "56,000円以上57,700円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "C5-1", "lower": 57700, "upper": 59000, "condition": "57,700円以上59,000円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "C6", "lower": 59000, "upper": 77101, "condition": "59,000円以上77,101円未満", "monthly": 25200, "monthly_second": null },
+      { "label": "C6-1", "lower": 77101, "upper": 78000, "condition": "77,101円以上78,000円未満", "monthly": 25200, "monthly_second": null },
+      { "label": "C7", "lower": 78000, "upper": 97000, "condition": "78,000円以上97,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "C8", "lower": 97000, "upper": 115000, "condition": "97,000円以上115,000円未満", "monthly": 39800, "monthly_second": null },
+      { "label": "C9", "lower": 115000, "upper": 169000, "condition": "115,000円以上169,000円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "C10", "lower": 169000, "upper": 237000, "condition": "169,000円以上237,000円未満", "monthly": 51000, "monthly_second": null },
+      { "label": "C11", "lower": 237000, "upper": 301000, "condition": "237,000円以上301,000円未満", "monthly": 54500, "monthly_second": null },
+      { "label": "C12", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 55300, "monthly_second": null },
+      { "label": "C13", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 56100, "monthly_second": null }
+    ],
+    "notes": "単位：円。3号認定（3歳未満児）の列は「保育標準時間」「保育短時間」。rows は保育標準時間。保育短時間: A・B 0／C1 10,800／C2 13,100／C3 15,100／C4 17,100／C5 19,600／C5-1 19,600／C6 24,700／C6-1 24,700／C7 29,400／C8 39,100／C9 43,700／C10 50,100／C11 53,500／C12 54,300／C13 55,100。2号認定（3歳以上児）は0円（無償）。要保護世帯（母子世帯等、在宅障害児（者）のいる世帯、特に困窮していると市長が認めた世帯）で B〜C6-1 階層の場合の3歳未満児（標準時間／短時間）: B 0／0、C1 4,500／4,400、C2 5,000／4,900、C3 6,000／5,800、C4 7,000／6,800、C5 8,000／7,800、C5-1 8,000／7,800、C6 9,000／8,800、C6-1 9,000／8,800。3歳未満児は保育料に食材料費が含まれる。第2子の別の列はない（市独自制度で第2子以降は免除）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月0〜56,100円）。0円は生活保護世帯等と市町村民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "岩沼市独自制度（令和6年4月から）: 第2子以降児童に係る保育料を免除。世帯の所得制限や階層区分は問わず、第1子の年齢、同別居の別を問わない（別居のきょうだいや小中高校生のきょうだいも数える）。第1子は保護者に扶養されている大学生等までに限り、18歳以上の兄・姉を数える場合は扶養が分かる書類が必要な場合がある。免除には「岩沼市第２子以降児童に係る保育料免除申請書」の提出が必要（希望月の前月25日まで）。対象は認可保育所（園）、認定こども園（保育所部分）、地域型保育事業。認可外保育施設・企業主導型保育施設の第2子以降の給付（月45,700円まで、償還払い）は令和9年3月まで（令和9年4月から無償化の範囲を変更）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降の免除により第3子以降も無料（第2子と同じ数え方）。3歳以上児の食材料費は年収360万円未満相当世帯（市階層A〜C5、要保護世帯はA〜C6）と第3子以降の児童が免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "岩沼市／第２子以降児童に係る保育料無償化について（更新日2026年9月30日）", "url": "https://www.city.iwanuma.miyagi.jp/kyoiku-sports/hoiku/ninnkagai_dainisimusyouka.html" },
+    { "label": "岩沼市／保育料の第２子以降無償化（更新日2025年2月4日）", "url": "https://www.city.iwanuma.miyagi.jp/kyoiku-sports/kosodate/dai2shi-musyoka.html" },
+    { "label": "岩沼市／令和8年11月までに入所を希望される方の保育所等入所申し込みについて（更新日2026年9月10日）", "url": "https://www.city.iwanuma.miyagi.jp/kyoiku-sports/hoiku/R7hoikusyotounyuusyomousikomi000.html" },
+    { "label": "令和7年12月以降入所を希望する方のための保育所等入所のしおり（令和8年度、PDF）10〜13ページ", "url": "https://www.city.iwanuma.miyagi.jp/kyoiku-sports/hoiku/documents/R8shiori.pdf" },
+    { "label": "令和8年12月以降に入所を希望する方のための保育所等入所のしおり（PDF、令和8年9月現在）10〜12ページ", "url": "https://www.city.iwanuma.miyagi.jp/kyoiku-sports/hoiku/documents/R9hoikusyonyuusyonosiori.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs は無償化の早見表・申請書などで、保育料基準額表は入所申し込みページのしおりPDFにあった"
+  ],
+  "notes": "保育料基準額表は入所申し込みのページにある「保育所等入所のしおり」（令和8年度版と、令和8年12月以降入所の版）の中にある（文字あり）。2つの版で全階層の額が同じことを確かめた。表の見出しはどちらも「（予定）」付き。区切りは「以上／未満」。C1（均等割のみ）は lower・upper を null、C2 は lower 1。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,50 @@
+{
+  "code": "222259",
+  "pref": "静岡県",
+  "name": "伊豆の国市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月分〜8月分は令和7年度、9月分〜3月分は令和8年度の市町村民税所得割額（父母の合算）で決定。料金表（月額）は年度を通じて同じ。表の年齢区分は4月1日時点の年齢で、年度途中で年齢が変わっても保育料は変わらない。公立園・私立園で同じ。令和9年度利用者負担額(保育料)表（案）も同じ額・同じ区切り。",
+  "tax_basis": "6%",
+  "tax_note": "原則として父母の市町村民税所得割額の合算。住宅借入金等特別税額控除、配当控除、寄付金控除等は適用しない（控除前の額）。父母の1年間の所得金額が一定額未満で同居する祖父母等がいる場合は、主たる生計維持者を「家計の主宰者」と認定して算定の対象にする。政令市ではない。",
+  "table": {
+    "title": "令和８年度 利用者負担額(保育料)表（０歳～２歳児）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯及び中国残留邦人等の…支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "第１階層を除き、市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "市町村民税所得割の額が 48,600 円未満", "monthly": 11400, "monthly_second": null },
+      { "label": "第4階層（77,101円未満）", "lower": 48600, "upper": 77101, "condition": "48,600 円以上 77,101 円未満", "monthly": 21300, "monthly_second": null },
+      { "label": "第4階層（77,101円以上）", "lower": 77101, "upper": 97000, "condition": "77,101 円以上 97,000 円未満", "monthly": 21300, "monthly_second": null },
+      { "label": "第5階層", "lower": 97000, "upper": 133000, "condition": "97,000 円以上 133,000 円未満", "monthly": 27700, "monthly_second": null },
+      { "label": "第6階層", "lower": 133000, "upper": 169000, "condition": "133,000 円以上 169,000 円未満", "monthly": 34200, "monthly_second": null },
+      { "label": "第7階層", "lower": 169000, "upper": 235000, "condition": "169,000 円以上 235,000 円未満", "monthly": 41100, "monthly_second": null },
+      { "label": "第8階層", "lower": 235000, "upper": 301000, "condition": "235,000 円以上 301,000 円未満", "monthly": 47700, "monthly_second": null },
+      { "label": "第9階層", "lower": 301000, "upper": 349000, "condition": "301,000 円以上 349,000 円未満", "monthly": 55500, "monthly_second": null },
+      { "label": "第10階層", "lower": 349000, "upper": null, "condition": "349,000 円以上", "monthly": 60300, "monthly_second": null }
+    ],
+    "notes": "monthly は0歳〜2歳児の保育標準時間の月額（1人につき）。保育短時間の月額: 第1・第2階層 0／第3階層 11,200／第4階層（77,101円未満）20,900／第4階層（77,101円以上）20,900／第5階層 27,200／第6階層 33,600／第7階層 40,400／第8階層 46,800／第9階層 54,500／第10階層 59,200。第4階層は表で2行（48,600以上77,101未満と77,101以上97,000未満）に分かれ、金額は同じ。第2子の別の列はなく、注記で第2子は半額・第3子以降は無料。ひとり親世帯又は在宅障がい児（者）のいる世帯: 第3階層の第1子は表示金額から1,000円減額して半額（標準5,200／短時間5,100）、第2子以降は無料。第4階層で所得割77,101円未満なら第1子は9,000円（標準・短時間とも）、第2子以降は無料。第4階層で77,101円以上と第5〜第10階層は第2子半額・第3子以降無料。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月0〜60,300円）。0円は第1階層（生活保護等）と第2階層（市町村民税非課税世帯）だけ。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "表の注記は「二人親世帯の第３階層以上の階層において、同一生計に児童の兄弟がいる場合は、第2子は半額、第3子以降は無料」。就学前・同時入所・上の子の年齢の上限などの条件は表にも入園案内にも書かれていないので、文言どおり同じ家計（同一生計）のきょうだいを数えると読んだ（上の子の年齢の上限は不明）。所得制限はない。ひとり親世帯又は在宅障がい児（者）のいる世帯は、第3階層と第4階層（所得割77,101円未満）で第2子以降が無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第3子以降は無料（第3階層以上）。数え方は第2子と同じく「同一生計に児童の兄弟がいる場合」（年齢の上限は書かれていない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度 利用者負担額(保育料)表（PDF）伊豆の国市", "url": "https://www.city.izunokuni.shizuoka.jp/youji/manabi/hoikuen/documents/hoikuhyouhyou.pdf" },
+    { "label": "令和8年度（年度途中）保育園・認定こども園（保育認定）の入園案内／伊豆の国市", "url": "https://www.city.izunokuni.shizuoka.jp/youji/manabi/hoikuen/r7choiku-chuto2.html" },
+    { "label": "保育園・認定こども園（保育認定）入園案内（令和8年度途中）（PDF）", "url": "https://www.city.izunokuni.shizuoka.jp/youji/manabi/hoikuen/documents/zuijinyuusyoannnai.pdf" },
+    { "label": "令和９年度 利用者負担額(保育料)表（案）（PDF、照合用）", "url": "https://www.city.izunokuni.shizuoka.jp/youji/manabi/hoikuen/documents/hoikuryouann.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの「令和8年度利用者負担額(保育料)」PDF（文字が取れる）を pdftotext -layout で読んだ。列は標準時間・短時間の順（どの行も左の方が高い）。きょうだいの数え方は表の注記だけで、入園案内（令和8年度途中）・無償化のページにも詳しい書き方はなかった。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}
