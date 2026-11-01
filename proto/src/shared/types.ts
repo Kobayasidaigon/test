@@ -35,7 +35,13 @@ export interface FamilyInput {
   years: 1 | 5 | 18    // 比べる期間。18 は「下の子が18歳になるまで」
 }
 
-export type Region = 'tokyo23' | 'saitama' | 'kanagawa' | 'chiba' | 'osaka' | 'chiho'
+export type Region = 'tokyo23' | 'tokyo' | 'saitama' | 'kanagawa' | 'chiba' | 'osaka' | 'chiho'
+
+// どこまで調べた街か。detailed = 市の制度まで確かめた街、pref = 都道府県の制度だけ分かる街、basic = 国の制度だけ
+export type DataLevel = 'detailed' | 'pref' | 'basic'
+
+// 災害などへの配慮。hit = 被災した市町村（順位と悲しい演出を出さない）、area = 被災した地域を含む県
+export interface Care { level: 'hit' | 'area'; note: string; sources: Source[] }
 
 export interface Pride {
   label: string        // バッジに出す短い名前（例: 草加せんべい）
@@ -51,6 +57,14 @@ export interface City {
   name: string
   region: Region
   metro: 'shutoken' | 'kansai' | 'other'
+  level: DataLevel
+  code?: string        // 地方公共団体コード（6けた）
+  kana?: string
+  lat?: number
+  lng?: number
+  url?: string         // 公式サイト
+  phrase?: string      // 街のキャッチフレーズ（localgovjp より）
+  care?: Care
   // 0〜2歳の保育料（認可保育所・保育標準時間・第1子の月額）。3〜5歳は国の無償化で0円。
   nursery: {
     firstChildFree: boolean          // 0〜2歳の第1子から無料
@@ -103,4 +117,9 @@ export interface Comparison {
   mood: Mood
   headline: string              // 例: 草加市なら、年 約50万円 得
   subline: string               // 例: 1歳の子の保育料の差がいちばん大きい
+  status: 'ok' | 'partial' | 'unknown'  // ok = 全部わかる、partial = 確認中の項目がある、unknown = わかる差が1つもない
+  perYearLabel: string          // 例: 1年あたり（5年の平均）
+  excluded: string              // 合計に入っていないもの（確認中の項目、家賃、通勤費、税金など）
+  care?: Care
+  distanceKm?: number           // 今の街からの直線距離
 }
