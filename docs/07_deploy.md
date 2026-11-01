@@ -13,10 +13,11 @@
 
 ## 運営者がやること
 
-1. **Vercel に GitHub でログイン**し、Add New → Project → `Kobayasidaigon/test` を Import → 設定は変えずに Deploy。
+1. **Vercel に GitHub でログイン**し、Add New → Project → `Kobayasidaigon/sumugacha` を Import → 設定は変えずに Deploy。
    - リポジトリが一覧に出ないときは、Vercel の GitHub アプリにこのリポジトリへのアクセスを許可する。
-2. **本番は main ブランチから出る。** 作業ブランチ（`claude/affiliate-niche-site`）を main に入れるまで、sumugacha.com には中身が出ない。
-   - 作業ブランチに push するたびに、確認用の URL（プレビュー）が自動でできる。プレビューは検索エンジンに載らない。
+2. **本番は `main` ブランチから出る。** 作業は `develop` ブランチで行い、公開できる状態になったら `develop` → `main` のプルリクエストをマージする。それまで sumugacha.com には中身が出ない（`main` には README だけがある）。
+   - `develop` に push するたびに、確認用の URL（プレビュー）が自動でできる。プレビューは検索エンジンに載らない。
+   - 2026年11月1日に、リポジトリを `Kobayasidaigon/test` から `Kobayasidaigon/sumugacha` に移した（履歴ごと）。
 3. **ドメインをつなぐ。** Project → Settings → Domains で `sumugacha.com` を追加し、「www.sumugacha.com を sumugacha.com へリダイレクト」を選ぶ（サイトの正式な URL は `https://sumugacha.com/` にしてある）。
    - ドメインを Vercel で買った場合は、何もしなくてよい。
    - ほかの会社で買った場合は、Vercel の画面に出る DNS の値を、その会社の管理画面に入れる（例: `@` の A レコード `76.76.21.21`、`www` の CNAME `cname.vercel-dns.com`。プロジェクトによって値がちがうので、画面に出た値を使う）。前からある `@` の A レコードは消す。

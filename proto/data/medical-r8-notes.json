@@ -1,0 +1,262 @@
+{
+ "title": "こども家庭庁「こどもに係る医療費の助成についての調査」— 令和8年4月1日時点の版についてのメモ",
+ "researched_at": "2026-11-01",
+ "conclusion": "令和8年4月1日時点の版（令和8年度の調査）は、2026年11月1日の時点ではこども家庭庁のサイトに出ていない。母子保健のページの一覧にも、サイトマップ（2026-10-31更新）にもなく、令和8年度のページの予想URLは404だった。この調査は毎年12月に公表されている（e-Stat の業務統計の記録で公表月は12月。令和6年度版は2024-12-25、令和7年度版は2025-12-24）ので、令和8年度版は2026年12月ごろの公表と見込まれる（推定）。いま使える最新は令和7年度版（令和7年4月1日現在）で、data/medical-r7.csv がそれにあたる。市区町村別の表（別紙3）のURLと、令和7年度版からの書式の違いは、公表前なので「未確認」。公表されたときにすぐ見比べられるよう、令和7年度版の別紙1〜3の場所・形・読み方と、令和6年度版から令和7年度版で変わった点をこのメモに残す。",
+ "r8_published": false,
+ "r8": {
+  "status": "未公表",
+  "checked_at": "2026-11-01",
+  "confidence": "確認済",
+  "evidence": [
+   {
+    "what": "こども家庭庁「母子保健・不妊症・不育症など」のページの「こどもに係る医療費の助成についての調査」の欄",
+    "url": "https://www.cfa.go.jp/policies/boshihoken/",
+    "result": "令和7年度・令和6年度・令和4年度・5年度へのリンクだけで、令和8年度はない"
+   },
+   {
+    "what": "令和8年度のページの予想URL（令和6・7年度のURLの付け方から）",
+    "url": "https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r8/",
+    "result": "HTTP 404（末尾の「/」あり・なしとも）"
+   },
+   {
+    "what": "こども家庭庁のサイトマップ（2ページ、全2,983件、lastmod 2026-10-31T07:47:17+09:00）",
+    "url": "https://www.cfa.go.jp/sitemap.xml",
+    "result": "「kodomoiryouhityousa」は r4r5・r6・r7 の3つだけ。iryo・josei・medical などの別の綴りでも令和8年度の医療費の調査はない"
+   },
+   {
+    "what": "母子保健の通知の一覧（2026年・2025年）",
+    "url": "https://www.cfa.go.jp/policies/boshihoken/tsuuchi/2026",
+    "result": "医療費助成の調査に関する通知・事務連絡は載っていない（2025年の一覧 https://www.cfa.go.jp/policies/boshihoken/tsuuchi/2025 も同じ）"
+   },
+   {
+    "what": "e-Stat「行政記録情報等を用いて経常的に作成されている統計（業務統計）」の記録",
+    "url": "https://www.e-stat.go.jp/admrecord/business/0017000009",
+    "result": "統計の名称「乳幼児等に係る医療費の援助についての調査結果」、作成機関 こども家庭庁 成育局母子保健課、作成開始 平成16年度、作成周期 年、公表月 12月、HP掲載URLは令和7年度のページ（https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r7/）"
+   },
+   {
+    "what": "WebSearch（2回。1回は cfa.go.jp に絞った）",
+    "url": "",
+    "result": "令和8年度版は見つからない。e-Stat の記録（公表月12月）が出てきただけ"
+   }
+  ],
+  "expected_release": {
+   "value": "2026年12月ごろ",
+   "confidence": "推定",
+   "basis": "e-Stat の記録の公表月（12月）と、過去の公表日（ファイル名の日付）: 令和4・5年度版 2023-09-27、令和6年度版 2024-12-25、令和7年度版 2025-12-24"
+  },
+  "expected_page_url": {
+   "value": "https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r8/",
+   "confidence": "推定",
+   "basis": "令和6・7年度のURL（kodomoiryouhityousa-r6/、kodomoiryouhityousa-r7/）の付け方から。2026-11-01には404。ちがうURLで出ることもあるので、母子保健のページの欄から入るのが確実"
+  },
+  "expected_file_names": {
+   "value": "「（公表日）policies-boshihoken-kodomoiryouhityousa-r8-01.pdf」〜「-03.pdf」（別紙1〜3、別紙3が市区町村別）",
+   "confidence": "推定",
+   "basis": "令和6年度は 20241225-policies-boshihoken-kodomoiryouhityousa-r6-0N.pdf、令和7年度は 20251224policies-boshihoken-kodomoiryouhityousa-r7-0N.pdf（日付のあとの「-」の有無も版で違う）。URLの途中のフォルダ名（英数字）は版ごとに変わるので予想できない。ページの「別紙3」のリンクから取ること"
+  },
+  "bessi3_url": null,
+  "bessi3_url_note": "未確認（未公表）",
+  "format_diff_from_r7": "未確認（未公表）。公表されたら下の r7_format と check_when_r8_published の手順で見比べる",
+  "downloaded": "令和8年度版のファイルはない（未公表）。見比べ用に令和7年度版の別紙1〜3と令和6年度版の別紙3を /tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/medical-r8/dl/ に置いた（下の r7_baseline.files と format_changes_r6_to_r7）"
+ },
+ "r7_baseline": {
+  "label": "こども家庭庁「令和7年度『こどもに係る医療費の助成についての調査』」",
+  "page_url": "https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r7/",
+  "as_of": "2025-04-01（令和7年4月1日現在）",
+  "published": "2025-12-24（ファイル名の日付。PDFの作成日時は2025-12-19）",
+  "confidence": "確認済",
+  "used_by": "data/medical-r7.csv（別紙3から作った。奈良県の吉野町は「確認中」）",
+  "files": [
+   {
+    "name": "別紙1",
+    "content": "全国の集計。都道府県（47）と市区町村（1,741）について、通院・入院の対象年齢の区分ごとの数、所得制限の有無、一部自己負担の有無の数",
+    "url": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/6a9b8926-411c-4044-81aa-d8c26b21aaf5/39db7d2e/20251224policies-boshihoken-kodomoiryouhityousa-r7-01.pdf",
+    "pages": 1,
+    "bytes": 190652,
+    "sha256": "12a3a17d2363ed44ab6a068fb6a91fd8456ac3237b35bdbb0fa2e8e95a53bfc4",
+    "local_copy": "/tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/medical-r8/dl/r7_01/r7-01.pdf"
+   },
+   {
+    "name": "別紙2",
+    "content": "都道府県別（都道府県の補助の制度）。47行。都道府県の名前の横に※1〜※15の注がつき、表の下に注の文がある。新潟県は交付金のため「ー」",
+    "url": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/6a9b8926-411c-4044-81aa-d8c26b21aaf5/e6ac7b84/20251224policies-boshihoken-kodomoiryouhityousa-r7-02.pdf",
+    "pages": 1,
+    "bytes": 302950,
+    "sha256": "403e3e95a252be858f1562aa3a2b385886055417bfeccc60ebb5092214a7d095",
+    "local_copy": "/tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/medical-r8/dl/r7_02/r7-02.pdf"
+   },
+   {
+    "name": "別紙3",
+    "content": "市区町村別（1,741行）。この調査で市区町村ごとの値がのっているのはこれだけ",
+    "url": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/6a9b8926-411c-4044-81aa-d8c26b21aaf5/12ae0d40/20251224policies-boshihoken-kodomoiryouhityousa-r7-03.pdf",
+    "pages": 32,
+    "bytes": 458712,
+    "sha256": "87d120435ef2c26dea1fec0ac609c512ed8af7afec528de4102d6a2605ffd872",
+    "local_copy": "/tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/medical-r8/dl/r7_03/r7-03.pdf"
+   }
+  ]
+ },
+ "r7_format": {
+  "bessi3": {
+   "heading": "こども医療費に対する助成の実施状況調査（市区町村用）（令和７年４月１日時点）",
+   "pdf": "A4縦32ページ。「Microsoft: Print To PDF」で作られている。文字は埋め込みフォント（CID TrueType、Unicode対応あり）で、画像ではない。pdftotext -layout でそのまま読める",
+   "columns": [
+    "都道府県名",
+    "番号（都道府県の中の通し番号。1から）",
+    "市区町村名（後ろに「※」が付くことがある）",
+    "対象年齢・通院",
+    "対象年齢・入院",
+    "所得制限・通院",
+    "所得制限・入院",
+    "一部自己負担・通院",
+    "一部自己負担・入院"
+   ],
+   "values": {
+    "対象年齢": "R7の別紙3に出てくる値は 就学前／12歳年度末／15歳年度末／18歳年度末／20歳年度末／22歳年度末／24歳年度末。別紙1の区分には、ほかに 9歳年度末・19歳年度末（市区町村）、4歳未満・5歳未満（都道府県）がある",
+    "所得制限": "有／無",
+    "一部自己負担": "有／無"
+   },
+   "row_order": "北海道から沖縄県へ都道府県ごとに並ぶ。都道府県の中の順は地方公共団体コード順とは限らない（令和6・7年度とも14都道府県で順が入れ替わる。例: 沖縄県は那覇市・うるま市・沖縄市…の順。令和7年度は奈良県の誤植の行でもう1か所ずれる）。コードは「都道府県＋名前」で対応づける",
+   "designated_cities": "政令市は区に分けず市で1行。東京都の特別区は区ごとに1行（62行）",
+   "footnote": "※ 18歳年度末以降は学生医療として実施しており、対象は大学等に通う者に限る。（一定の所得制限あり。）",
+   "starred_rows": [
+    "愛知県 春日井市",
+    "愛知県 豊田市",
+    "愛知県 東海市",
+    "愛知県 みよし市",
+    "愛知県 東郷町",
+    "和歌山県 紀の川市"
+   ],
+   "known_errata": "奈良県の29番の行が「17 安堵町」と重複して印字され、29番がない（令和6年度版の29番は吉野町）。data/medical-r7.csv では吉野町を「確認中」にしている",
+   "name_variants": [
+    {
+     "bessi3": "鯵ケ沢町",
+     "localgovjp": "鰺ヶ沢町",
+     "code": "023213",
+     "pref": "青森県"
+    },
+    {
+     "bessi3": "飯館村",
+     "localgovjp": "飯舘村",
+     "code": "075647",
+     "pref": "福島県"
+    },
+    {
+     "bessi3": "鶴ケ島市",
+     "localgovjp": "鶴ヶ島市",
+     "code": "112411",
+     "pref": "埼玉県"
+    },
+    {
+     "bessi3": "青ケ島村",
+     "localgovjp": "青ヶ島村",
+     "code": "134023",
+     "pref": "東京都"
+    },
+    {
+     "bessi3": "梼原町",
+     "localgovjp": "檮原町",
+     "code": "394050",
+     "pref": "高知県"
+    }
+   ],
+   "row_counts": "1,741行（都道府県ごとの行数は令和6年度版と同じ。北海道179、東京都62、沖縄県41 など）",
+   "consistency_with_bessi1": "別紙3の行を数えると、別紙1の市区町村の集計（通院: 就学前9・12歳1・15歳145・18歳1,576・20歳4・22歳6、入院: 就学前1・12歳7・15歳116・18歳1,600・20歳4・22歳7・24歳6、所得制限あり 通院49・入院48、一部自己負担あり 通院422・入院331）とすべて一致した（2026-11-01に確認）"
+  },
+  "how_to_read": [
+   "pdftotext -layout で文字にする（OCRはいらない）。",
+   "1行が1市区町村。次の正規表現で読める（都道府県名は47のどれか）: ^\\s*(都道府県名)\\s+(\\d+)\\s+(\\S+?)\\s*(※)?\\s+(\\S+)\\s+(\\S+)\\s+(有|無)\\s+(有|無)\\s+(有|無)\\s+(有|無)\\s*$ 。都道府県名で始まるのにこの形に合わない行が0になることを確かめる。",
+   "名前は NFKC にしたうえで「ヶ→ケ」「ヵ→カ」をそろえ、name_variants の5件（鯵ケ沢町・飯館村・鶴ケ島市・青ケ島村・梼原町）を直してから data/localgovjp-utf8.csv（政令市の区を除く1,741）と「都道府県＋名前」で対応づける。",
+   "行数が1,741か、都道府県ごとの番号が1から欠けずに続くか、(都道府県, 名前) の重複がないかを確かめる（R7は奈良県で番号29が欠け、安堵町が重複）。",
+   "別紙1の市区町村の集計と、別紙3を数えた結果が合うかを確かめる。",
+   "「※」の付いた行は、18歳年度末より上の年齢（20・22・24歳年度末など）が大学等に通う人だけ・所得制限ありの「学生医療」。高校生までの助成として読むときは18歳年度末にそろえるかどうかを決めておく。"
+  ],
+  "parse_script": "/tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/medical-r8/scripts/parse_b3.py（令和6・7年度版の別紙3を1,741行とも読めた）"
+ },
+ "format_changes_r6_to_r7": {
+  "note": "令和8年度版の書式は未確認。参考として、令和6年度版から令和7年度版で変わった点（2026-11-01に両方の別紙3を見比べた）",
+  "confidence": "確認済",
+  "r6_page_url": "https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r6/",
+  "r6_bessi3_url": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/e70912ef-140a-4e0b-a80b-b5f24bd4bdeb/2a900aa8/20241225-policies-boshihoken-kodomoiryouhityousa-r6-03.pdf",
+  "r6_local_copy": "/tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/medical-r8/dl/r6_03/r6-03.pdf",
+  "changes": [
+   "PDFの作り方: 令和6年度は Excel から直接（Microsoft Excel for Microsoft 365、31ページ、4.4MB）、令和7年度は「Microsoft: Print To PDF」（32ページ、448KB）。どちらも文字で読める。",
+   "列の並び・見出し（対象年齢・所得制限・一部自己負担の通院／入院）と値の書き方（○歳年度末、有／無）は同じ。",
+   "脚注: 令和7年度に「（一定の所得制限あり。）」が足された。",
+   "※の付いた市町村: 令和6年度は愛知県の春日井市・東海市・みよし市・東郷町の4つ、令和7年度は豊田市と和歌山県紀の川市が加わって6つ。",
+   "誤植: 令和7年度は奈良県29番（吉野町）の行が「17 安堵町」になっている。令和6年度は正しく吉野町。",
+   "名前の字（鯵ケ沢町・飯館村・鶴ケ島市・青ケ島村・梼原町）は両方の版で同じ。",
+   "値の分布: 通院の18歳年度末は 1,448→1,576、所得制限ありは通院 96→49、一部自己負担ありは通院 475→422。"
+  ]
+ },
+ "check_when_r8_published": [
+  "https://www.cfa.go.jp/policies/boshihoken/ の「こどもに係る医療費の助成についての調査」の欄に「令和8年度」が出ているか見る（curl で取れる）。",
+  "ページの本文の「（令和8年4月1日現在）」と、別紙1〜3のリンクを確かめる。別紙3（市区町村別）を /tmp/claude-0/-home-user-test/f7632ef6-fec1-5705-b5b8-c4efbe3f1fdd/scratchpad/national/medical-r8/dl/ の新しいフォルダに取る。",
+  "pdfinfo で作り方（Creator/Producer）とページ数、pdftotext -layout で見出し・列の並び・脚注・※の付いた行を見て、上の r7_format と違う点を書き出す。",
+  "形式が PDF でなく Excel などで出たときは、列の並びを見てから読む（令和4〜7年度はすべてPDF）。",
+  "奈良県29番（吉野町）の誤植が直っているか、名前の字の5件が同じかを確かめる。",
+  "行数1,741と、別紙1の集計との一致を確かめてから取り込む。"
+ ],
+ "sources": [
+  {
+   "label": "こども家庭庁「母子保健・不妊症・不育症など」（調査の一覧）",
+   "url": "https://www.cfa.go.jp/policies/boshihoken/",
+   "as_of": "2026-11-01に取得",
+   "confidence": "確認済"
+  },
+  {
+   "label": "こども家庭庁「令和7年度『こどもに係る医療費の助成についての調査』」",
+   "url": "https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r7/",
+   "as_of": "令和7年4月1日現在（2025-12-24公表）",
+   "confidence": "確認済"
+  },
+  {
+   "label": "こども家庭庁「令和6年度『こどもに係る医療費の助成についての調査』」",
+   "url": "https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r6/",
+   "as_of": "令和6年4月1日現在（2024-12-25公表）",
+   "confidence": "確認済"
+  },
+  {
+   "label": "こども家庭庁「令和4年度・5年度『こどもに係る医療費の援助についての調査』」",
+   "url": "https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r4r5/",
+   "as_of": "令和4年・5年4月1日現在（2023-09-27公表）",
+   "confidence": "確認済"
+  },
+  {
+   "label": "こども家庭庁 サイトマップ",
+   "url": "https://www.cfa.go.jp/sitemap.xml",
+   "as_of": "2026-10-31更新のものを2026-11-01に取得",
+   "confidence": "確認済"
+  },
+  {
+   "label": "こども家庭庁 母子保健の通知（2026年）",
+   "url": "https://www.cfa.go.jp/policies/boshihoken/tsuuchi/2026",
+   "as_of": "2026-11-01に取得",
+   "confidence": "確認済"
+  },
+  {
+   "label": "e-Stat 業務統計「乳幼児等に係る医療費の援助についての調査結果」",
+   "url": "https://www.e-stat.go.jp/admrecord/business/0017000009",
+   "as_of": "2026-11-01に取得",
+   "confidence": "確認済"
+  }
+ ],
+ "unresolved": [
+  "令和8年度版（令和8年4月1日現在）の公表日・ページのURL・別紙3のURL・書式の違い（未公表のため未確認）。",
+  "公表が2026年12月ごろになるというのは、e-Stat の記録と過去の公表日からの推定。",
+  "令和7年度版の奈良県吉野町の値（別紙3の誤植のため、公表資料からは未確認）。"
+ ],
+ "search_log": [
+  {
+   "n": 1,
+   "query": "令和8年度「こどもに係る医療費の助成についての調査」 令和8年4月1日現在 こども家庭庁",
+   "result": "令和8年度版は見つからない。e-Stat の業務統計の記録（公表月12月）が出た"
+  },
+  {
+   "n": 2,
+   "query": "こどもに係る医療費の助成についての調査 令和8年度 別紙3（cfa.go.jp に限定）",
+   "result": "令和8年度版は見つからない（母子保健の補助金・予算の資料だけ）"
+  }
+ ],
+ "searches_used": 2
+}
