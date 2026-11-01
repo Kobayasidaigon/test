@@ -2,7 +2,7 @@ import { html, esc, man, jdate } from '../lib.mjs'
 
 const CSV_COLUMNS = [
   ['都道府県', (c) => c.pref], ['市町村', (c) => c.city], ['制度名', (c) => c.subsidy?.name],
-  ['上限額（円）', (c) => c.subsidy?.max_yen], ['補助率', (c) => c.subsidy?.rate], ['受付期間', (c) => c.subsidy?.period],
+  ['上限額（円）', (c) => c.subsidy?.max_yen], ['補助率', (c) => c.subsidy?.rate_label || c.subsidy?.rate], ['受付状況', (c) => c.subsidy?.status],
   ['契約前の申請', (c) => c.subsidy?.apply_before_contract === true ? '必要' : c.subsidy?.apply_before_contract === false ? '不要' : ''],
   ['年度', (c) => c.subsidy?.fiscal_year], ['都市計画税率（%）', (c) => c.city_planning_tax?.rate_percent],
   ['空き家率（%）', (c) => c.vacancy?.rate_percent], ['確認日', (c) => c.checked_at], ['出典', (c) => (c.subsidy?.sources || []).join(' ')],
@@ -27,8 +27,8 @@ export function dataPage(ctx, { cities }) {
     <table class="data">
       <thead><tr>${CSV_COLUMNS.slice(0, 10).map(([k]) => html`<th scope="col">${esc(k)}</th>`)}</tr></thead>
       <tbody>${cities.map((c) => html`<tr>
-        <td>${esc(c.pref)}</td><td><a href="${h(`/area/${c.pref_slug}/${c.slug}/`)}">${esc(c.city)}</a></td><td>${esc(c.subsidy?.name || '—')}</td>
-        <td class="r">${c.subsidy?.max_yen ? man(c.subsidy.max_yen) : '—'}</td><td>${esc(c.subsidy?.rate || '—')}</td><td class="small">${esc(c.subsidy?.period || '—')}</td>
+        <td>${esc(c.pref)}</td><td><a href="${h(`/area/${c.pref_slug}/${c.slug}/`)}">${esc(c.city)}</a></td><td>${esc((c.subsidy?.name || '—').replace(/（[^）]*）/g, ''))}</td>
+        <td class="r">${c.subsidy?.max_yen ? man(c.subsidy.max_yen) : '—'}</td><td>${esc(c.subsidy?.rate_label || c.subsidy?.rate || '—')}</td><td class="small">${esc(c.subsidy?.status || '—')}</td>
         <td>${c.subsidy?.apply_before_contract === true ? '必要' : c.subsidy?.apply_before_contract === false ? '不要' : '—'}</td>
         <td class="small">${esc(c.subsidy?.fiscal_year || '')}</td><td class="r">${c.city_planning_tax?.rate_percent ?? '—'}</td><td class="r">${c.vacancy?.rate_percent ?? '—'}</td>
       </tr>`)}</tbody>

@@ -1,12 +1,12 @@
 import { html, esc, man, jdate } from '../lib.mjs'
-import { fracText, EXAMPLE_INPUT } from './home.mjs'
+import { fracText, EXAMPLE_INPUT, pickExampleCity } from './home.mjs'
 
 export function toolPage(ctx, { cities, params, offers }) {
   const h = (to) => ctx.href('/tool/', to)
   const data = {
     cities: cities.map((c) => ({
       slug: c.slug, city: c.city, pref: c.pref, pref_slug: c.pref_slug,
-      subsidy: c.subsidy ? { exists: c.subsidy.exists, name: c.subsidy.name, max_yen: c.subsidy.max_yen, rate: c.subsidy.rate, conditions: c.subsidy.conditions, fiscal_year: c.subsidy.fiscal_year, period: c.subsidy.period } : null,
+      subsidy: c.subsidy ? { exists: c.subsidy.exists, name: (c.subsidy.name || '').replace(/（[^）]*）/g, ''), max_yen: c.subsidy.max_yen, rate: c.subsidy.rate, rate_label: c.subsidy.rate_label, fixed_table: c.subsidy.fixed_table, fixed_note: c.subsidy.fixed_note, conditions: c.subsidy.conditions, fiscal_year: c.subsidy.fiscal_year, status: c.subsidy.status, open: c.subsidy.open } : null,
       city_planning_tax: c.city_planning_tax ? { rate_percent: c.city_planning_tax.rate_percent } : null,
       page: h(`/area/${c.pref_slug}/${c.slug}/`),
       estimate_window: c.estimate_window,
@@ -17,6 +17,7 @@ export function toolPage(ctx, { cities, params, offers }) {
     example: EXAMPLE_INPUT,
   }
   const ex = EXAMPLE_INPUT
+  const exampleSlug = pickExampleCity(cities)?.slug
   const radio = (name, items, checked) => html`<div class="choices">${items.map(([v, label]) => html`<label><input type="radio" name="${name}" value="${v}"${v === checked ? ' checked' : ''}> ${label}</label>`)}</div>`
   const num = (id, label, value, hint, unit = '') => html`<div class="field-row">
     <label for="${id}">${label}${unit ? `（${unit}）` : ''}</label>
@@ -37,7 +38,7 @@ export function toolPage(ctx, { cities, params, offers }) {
         <div class="field-row">
           <label for="city">市町村</label>
           <select id="city" name="city">
-            ${cities.map((c) => html`<option value="${c.slug}"${c.slug === 'nagano-shi' ? ' selected' : ''}>${esc(c.pref)} ${esc(c.city)}</option>`)}
+            ${cities.map((c) => html`<option value="${c.slug}"${c.slug === exampleSlug ? ' selected' : ''}>${esc(c.pref)} ${esc(c.city)}</option>`)}
             <option value="other">一覧にない市町村</option>
           </select>
           <p class="hint" id="city-note"></p>
@@ -109,7 +110,7 @@ export function toolPage(ctx, { cities, params, offers }) {
     <h3>解体費の目安</h3>
     <p>延床面積（坪）× 構造ごとの単価の幅。木造 ${man(d.wood.min)}〜${man(d.wood.max)}、鉄骨造 ${man(d.steel.min)}〜${man(d.steel.max)}、鉄筋コンクリート造 ${man(d.rc.min)}〜${man(d.rc.max)}（いずれも1坪あたり）。${esc(d.note || '')}</p>
     <h3>補助額</h3>
-    <p>解体費 × 補助率 と 上限額 の、少ない方（千円未満は切り捨て）。対象になる経費の範囲や端数の扱いは市町村ごとに違うため、実際の額は要綱で確かめてください。</p>
+    <p>解体費 × 補助率 と 上限額 の、少ない方（千円未満は切り捨て）。神戸市のように床面積の区分で定額が決まる市は、その額と解体費の少ない方。対象になる経費の範囲や端数の扱いは市町村ごとに違うため、実際の額は要綱で確かめてください。</p>
     <h3>土地の税（家が建っている場合）</h3>
     <p>住宅用地の特例で、200㎡までの部分は課税標準が評価額の${fracText(params.small.fixed)}（都市計画税は${fracText(params.small.city)}）、200㎡を超える部分は${fracText(params.general.fixed)}（都市計画税は${fracText(params.general.city)}）。住宅用地として扱われるのは、建物の床面積の${params.residentialFloorMultiple}倍までです。税率は固定資産税${(params.fixedAssetTaxRate * 100).toFixed(1)}%、都市計画税は市町村の税率（上限${(params.cityPlanningTaxMaxRate * 100).toFixed(1)}%）。</p>
     <h3>土地の税（解体して更地にした場合）</h3>

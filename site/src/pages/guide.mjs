@@ -62,6 +62,7 @@ export function taxGuidePage(ctx, { params }) {
       <p><strong>200㎡以下の土地の固定資産税</strong>：${cap}% ÷ ${fracText(p.small.fixed)} ＝ 約${(p.vacantLandBurdenCap / p.small.fixed).toFixed(1)}倍</p>
       <p><strong>都市計画税</strong>：${cap}% ÷ ${fracText(p.small.city)} ＝ 約${(p.vacantLandBurdenCap / p.small.city).toFixed(1)}倍</p>
     </div>
+    <p>この${cap}%の上限は、${esc(p.burdenAdjustmentUntil)}まで適用される負担調整措置によるものです。${esc(p.burdenAdjustmentUntil)}より後の扱いは、その年の税制改正で決まります。</p>
     <p>これは上限で計算した目安です。実際の課税標準は、前の年度の課税標準や市町村の扱いで決まるので、これより低くなることがあります。正確な額は、市町村の資産税の担当課で「解体した場合の税額」を尋ねると教えてもらえます。</p>
 
     <h2>いつから上がるか</h2>
@@ -94,7 +95,7 @@ export function kaitoriGuidePage(ctx, { params }) {
 <section class="section wrap">
   <div class="prose">
     <h2 style="margin-top:0">クーリング・オフはできない</h2>
-    <p>自宅や実家を業者に売る契約には、クーリング・オフの制度がありません。国民生活センターは、強引な勧誘で自宅を相場より安く売らされた相談について注意を呼びかけています${cite(p, 'kokusen_baikyaku')}。家を売ったあとも住み続けられる「リースバック」の契約でも、同じような注意が出ています${cite(p, 'leaseback')}。</p>
+    <p>自宅や実家を業者に売る契約には、クーリング・オフの制度がありません。国民生活センターは、強引な勧誘で自宅を相場より安く売らされた相談について注意を呼びかけています${cite(p, 'kokusen_baikyaku')}。家を売ったあとも住み続けられる「リースバック」の契約でも、同じような注意が出ています${cite(p, 'leaseback')}。2026年8月には、リースバックの後に家賃を上げられたり退去を求められたりした相談についても注意が出ました${cite(p, 'leaseback2026')}。</p>
 
     <h2>その場で決めない</h2>
     <ul>

@@ -25,7 +25,7 @@ export function ledgerHtml(r, j, { caption = '', cityName = '市町村' } = {}) 
       key: 'demolish',
       fig: r.net ? `<span style="white-space:nowrap">${Math.round(Math.max(0, r.net.min) / 10000)}〜${Math.round(Math.max(0, r.net.max) / 10000)}${unit}</span>` : '—',
       lines: [
-        r.cost ? `解体費 ${man(r.cost.min)}〜${man(r.cost.max)}${r.sub ? `から、${cityName}の補助 ${man(r.sub.min)}〜${man(r.sub.max)}を引いた額` : '（補助なしで計算）'}` : '延床面積と構造を入れると解体費を出します',
+        r.cost ? `解体費 ${man(r.cost.min)}〜${man(r.cost.max)}${r.sub ? `から、${cityName}の補助 ${r.sub.min === r.sub.max ? man(r.sub.min) : `${man(r.sub.min)}〜${man(r.sub.max)}`}を引いた額` : '（補助なしで計算）'}` : '延床面積と構造を入れると解体費を出します',
         r.tax ? `解体後の土地の税は年 約${man(r.tax.vacant.total)}（今は約${man(r.tax.withHouse.total)}）` : '土地の評価額を入れると、解体後の税を出します',
       ],
     },

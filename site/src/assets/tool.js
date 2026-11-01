@@ -45,7 +45,7 @@ function renderConditions(city) {
     box.innerHTML = ''
     return
   }
-  note.innerHTML = `${esc(s.name || '解体の補助制度')}（${esc(s.fiscal_year || '')}）：上限${s.max_yen ? man(s.max_yen) : '未確認'}、補助率${esc(s.rate || '未確認')}。<a href="${city.page}">要件と出典</a>`
+  note.innerHTML = `${esc(s.name || '解体の補助制度')}（${esc(s.fiscal_year || '')}）：上限${s.max_yen ? man(s.max_yen) : '未確認'}、${esc(s.rate_label || s.rate || '補助率未確認')}。${esc(s.status || '')} <a href="${city.page}">要件と出典</a>`
   box.innerHTML = (s.conditions || []).length
     ? `<p class="hint">主な要件：</p><ul class="plain hint">${s.conditions.slice(0, 6).map((c) => `<li>${esc(c)}</li>`).join('')}</ul>`
     : ''
@@ -67,7 +67,9 @@ function render() {
 
   const extra = []
   if (input.rebuild === 'unknown') extra.push('再建築ができるかは、市町村の建築指導の窓口で「接道」を確かめると分かります。できない土地なら、判定は「業者の買取」に変わります。')
-  if (input.eligible && city?.subsidy?.exists && parseRate(city.subsidy.rate) === null && city.subsidy.max_yen) extra.push('補助率が要綱から読み取れなかったため、上限額を補助額として計算しています。')
+  if (input.eligible && city?.subsidy?.exists && !city.subsidy.fixed_table && parseRate(city.subsidy.rate) === null && city.subsidy.max_yen) extra.push('補助率が要綱から読み取れなかったため、上限額を補助額として計算しています。')
+  if (r.subUnknown) extra.push(`この延床面積の補助額は区分が確かめられていないため、補助なしで計算しています。${r.subUnknown}`)
+  if (input.eligible && city?.subsidy?.open === false) extra.push(`${city.city}の補助は、今年度の受付を終えています。来年度の受付開始を待つか、補助なしで比べてください。`)
   if (r.tax && r.tax.ratio) extra.push(`解体すると、土地の税は年 約${man(r.tax.vacant.total - r.tax.withHouse.total)}増えます（約${r.tax.ratio.toFixed(1)}倍）。税額は1月1日時点の状況で決まります。`)
   $('verdict').innerHTML = `<h2>次の一歩：${OPTION_TITLES[j.primary]}</h2>${[...j.reasons, ...extra].map((t) => `<p>${esc(t)}</p>`).join('')}${j.primary === 'kaitori' ? `<p><a href="${data.links.kaitori}">業者に売る前に知っておくこと</a></p>` : ''}`
 

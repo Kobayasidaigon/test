@@ -3,6 +3,8 @@ import { compare } from '../assets/calc.js'
 import { EXAMPLE_INPUT, fracText } from './home.mjs'
 
 const yesNo = (v) => v === true ? '必要' : v === false ? '不要' : '未確認'
+// 制度名の括弧書き（「市公式ページの題名は…」など）を落とす
+const shortName = (n) => (n || '').replace(/（[^）]*）/g, '').trim()
 
 export function areaIndexPage(ctx, { cities, prefs }) {
   const h = (to) => ctx.href('/area/', to)
@@ -22,7 +24,7 @@ export function areaIndexPage(ctx, { cities, prefs }) {
           <td><a href="${h(`/area/${c.pref_slug}/${c.slug}/`)}">${esc(c.city)}</a></td>
           <td>${c.subsidy?.exists ? esc(c.subsidy.name || 'あり') : '確認できず'}</td>
           <td class="r">${c.subsidy?.max_yen ? man(c.subsidy.max_yen) : '—'}</td>
-          <td>${esc(c.subsidy?.rate || '—')}</td>
+          <td>${esc(c.subsidy?.rate_label || c.subsidy?.rate || '—')}</td>
           <td class="small">${jdate(c.checked_at)}</td>
         </tr>`)}</tbody>
       </table>
@@ -46,19 +48,19 @@ export function prefPage(ctx, { pref, cities }) {
 <section class="section wrap">
   <div class="table-scroll rise">
     <table class="data">
-      <thead><tr><th scope="col">市町村</th><th scope="col" class="r">上限額</th><th scope="col">補助率</th><th scope="col">受付</th><th scope="col">契約前の申請</th><th scope="col" class="r">空き家率</th></tr></thead>
+      <thead><tr><th scope="col">市町村</th><th scope="col" class="r">上限額</th><th scope="col">補助率</th><th scope="col">受付状況</th><th scope="col">契約前の申請</th><th scope="col" class="r">都市計画税率</th></tr></thead>
       <tbody>${list.map((c) => html`<tr>
         <td><a href="${h(`/area/${pref.slug}/${c.slug}/`)}">${esc(c.city)}</a></td>
         <td class="r">${c.subsidy?.max_yen ? man(c.subsidy.max_yen) : '—'}</td>
-        <td>${esc(c.subsidy?.rate || '—')}</td>
-        <td class="small">${esc(c.subsidy?.period || '未確認')}</td>
+        <td>${esc(c.subsidy?.rate_label || c.subsidy?.rate || '—')}</td>
+        <td class="small">${esc(c.subsidy?.status || '未確認')}</td>
         <td>${yesNo(c.subsidy?.apply_before_contract)}</td>
-        <td class="r">${c.vacancy?.rate_percent != null ? `${c.vacancy.rate_percent}%` : '—'}</td>
+        <td class="r">${c.city_planning_tax?.rate_percent != null ? `${c.city_planning_tax.rate_percent}%` : '—'}</td>
       </tr>`)}</tbody>
     </table>
   </div>
   ${pref.note ? html`<p class="small" style="margin-top:16px">${esc(pref.note)}</p>` : ''}
-  ${rates.length ? html`<p class="small" style="margin-top:16px">空き家率は総務省「令和5年住宅・土地統計調査」。</p>` : ''}
+  <p class="small" style="margin-top:16px">受付状況と都市計画税率は、各市町村の公式ページで確かめた値です。</p>
 </section>
 <section class="section wrap">
   <div class="split">
@@ -86,12 +88,12 @@ export function cityPage(ctx, { city: c, params, prefs, log }) {
 <section class="wrap hero compact" style="padding-top:clamp(24px,4vw,48px)">
   <h1>${esc(title)}</h1>
   <p class="lead">${s.exists
-    ? `${esc(c.city)}の「${esc(s.name || '解体の補助制度')}」は、${s.max_yen ? `上限${man(s.max_yen)}` : '上限額は未確認'}${s.rate ? `、補助率${esc(s.rate)}` : ''}。${esc(s.fiscal_year || '')}の要綱を${jdate(c.checked_at)}に確かめました。`
+    ? `${esc(c.city)}の「${esc(shortName(s.name) || '解体の補助制度')}」は、${s.max_yen ? `上限${man(s.max_yen)}` : '上限額は未確認'}${s.rate_label ? `、${esc(s.rate_label)}` : ''}。${esc(s.fiscal_year || '')}の内容を${jdate(c.checked_at)}に確かめました。${esc(s.status || '')}`
     : `${esc(c.city)}では、空き家の解体に使える補助制度を確かめられていません（${jdate(c.checked_at)}時点）。`}</p>
   ${s.exists ? html`<dl class="keyrow">
     <div><dt>上限額</dt><dd>${s.max_yen ? man(s.max_yen) : '未確認'}</dd></div>
-    <div><dt>補助率</dt><dd class="${(s.rate || '').length > 8 ? 'text' : ''}">${esc(s.rate || '未確認')}</dd></div>
-    <div><dt>受付</dt><dd class="text">${esc(s.period || '未確認')}</dd></div>
+    <div><dt>補助率</dt><dd class="${(s.rate_label || '').length > 6 ? 'text' : ''}">${esc(s.rate_label || '未確認')}</dd></div>
+    <div><dt>${jdate(c.checked_at)}の受付</dt><dd class="text">${s.open === true ? '受付中' : s.open === false ? '今年度は終了' : '要確認'}</dd></div>
     <div><dt>工事の契約前の申請</dt><dd class="text">${yesNo(s.apply_before_contract)}</dd></div>
   </dl>` : ''}
 </section>
@@ -100,7 +102,9 @@ ${s.exists ? html`<section class="section wrap">
   <div class="split">
     <div class="rise">
       <h2>対象になる家と人</h2>
-      ${s.formula_note ? html`<p style="margin-top:20px">${esc(s.formula_note)}</p>` : ''}
+      ${s.formula_note ? html`<h3 style="margin-top:24px">補助額の決まり方</h3><p>${esc(s.formula_note)}</p>` : ''}
+      ${s.period ? html`<h3>受付の期間</h3><p>${esc(s.period)}</p>` : ''}
+      ${s.office ? html`<h3>担当課</h3><p>${esc(s.office)}</p>` : ''}
     </div>
     <div class="rise">
       <ul class="plain">${(s.conditions || []).map((x) => html`<li>${esc(x)}</li>`)}</ul>
@@ -169,7 +173,7 @@ ${(s.changes_from_last_year || s.end_note) ? html`<section class="section wrap">
         ${c.city_planning_tax?.source ? html`<li>都市計画税率：<a href="${esc(c.city_planning_tax.source)}" rel="noopener">${esc(c.city_planning_tax.source)}</a></li>` : ''}
         ${c.vacancy?.source ? html`<li>空き家率：<a href="${esc(c.vacancy.source)}" rel="noopener">${esc(c.vacancy.source)}</a></li>` : ''}
       </ul>
-      ${(c.unverified || []).length ? html`<h3>確かめられていないこと</h3><ul class="plain small">${c.unverified.map((x) => html`<li>${esc(x)}</li>`)}</ul>` : ''}
+      <p class="small">確かめられなかった項目は「未確認」と表示し、数字は載せていません。</p>
       <h3>担当課への確認</h3>
       ${myLog.length ? html`<ul class="plain small">${myLog.map((e) => html`<li>${jdate(e.date)}　${esc(e.office)}：${esc(e.summary)}</li>`)}</ul>`
         : html`<p class="small">まだ電話での確認をしていません。${s.office ? `担当は${esc(s.office)}です。` : ''}申請の前に、受付状況と要件を担当課で確かめてください。</p>`}

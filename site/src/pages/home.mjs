@@ -11,7 +11,8 @@ export const EXAMPLE_INPUT = {
 }
 
 export function pickExampleCity(cities) {
-  return cities.find((c) => c.slug === 'nagano-shi' && c.subsidy?.exists && c.subsidy.max_yen)
+  // 例には、今年度受付中で、都市計画税率まで確かめられた市を使う
+  return cities.find((c) => c.subsidy?.open === true && c.subsidy.max_yen && c.city_planning_tax?.rate_percent != null)
     || cities.find((c) => c.subsidy?.exists && c.subsidy.max_yen && parseRate(c.subsidy.rate) !== null)
     || cities[0]
 }
@@ -24,6 +25,8 @@ export function homePage(ctx, { cities, params, prefs }) {
   const ratioFixed = params.vacantLandBurdenCap / params.small.fixed
   const withSub = cities.filter((c) => c.subsidy?.exists)
   const sorted = [...withSub].sort((a, b) => (b.subsidy.max_yen || 0) - (a.subsidy.max_yen || 0))
+  const closed = withSub.filter((c) => c.subsidy.open === false).length
+  const asOf = cities.map((c) => c.checked_at).sort().pop()
 
   const body = html`
 <section class="hero wrap">
@@ -44,9 +47,9 @@ export function homePage(ctx, { cities, params, prefs }) {
 <section class="section wrap">
   <div class="split">
     <div class="rise">
-      <h2>解体すると、土地の固定資産税は約${ratioFixed.toFixed(1)}倍</h2>
+      <h2>更地の固定資産税は、最大で約${ratioFixed.toFixed(1)}倍</h2>
       <p class="lead" style="margin-top:20px">「更地にすると6倍」とよく言われますが、6倍になるのは軽減の割合の話です。更地の土地には負担調整の上限があり、課税標準は評価額の${Math.round(params.vacantLandBurdenCap * 100)}%までに抑えられます。</p>
-      <p>200㎡までの住宅用地は課税標準が評価額の${fracText(params.small.fixed)}、更地は最大で${Math.round(params.vacantLandBurdenCap * 100)}%。${Math.round(params.vacantLandBurdenCap * 100)}% ÷ ${fracText(params.small.fixed)} で約${ratioFixed.toFixed(1)}倍です。都市計画税は軽減が${fracText(params.small.city)}なので、上がり方は約${(params.vacantLandBurdenCap / params.small.city).toFixed(1)}倍にとどまります。</p>
+      <p>200㎡までの住宅用地は課税標準が評価額の${fracText(params.small.fixed)}、更地は最大で${Math.round(params.vacantLandBurdenCap * 100)}%。${Math.round(params.vacantLandBurdenCap * 100)}% ÷ ${fracText(params.small.fixed)} で約${ratioFixed.toFixed(1)}倍です。都市計画税は軽減が${fracText(params.small.city)}なので、上がり方は約${(params.vacantLandBurdenCap / params.small.city).toFixed(1)}倍にとどまります。この上限は、${esc(params.burdenAdjustmentUntil)}までの負担調整措置によるものです。</p>
       <p><a href="${h('/guide/kaitai-go-zeikin/')}">解体後の税の計算を詳しく読む</a></p>
     </div>
     <div class="rise">
@@ -69,18 +72,17 @@ export function homePage(ctx, { cities, params, prefs }) {
 <section class="section wrap">
   <div class="section-head rise">
     <h2>補助金は、市町村によってこれだけ違う</h2>
-    <p class="lead">同じ県の隣の市でも、上限額も補助率も対象の建物も違います。要綱を読んで、確かめた日付と一緒に載せています。</p>
+    <p class="lead">同じ県の隣の市でも、上限額も補助率も対象の建物も違います。確かめた${withSub.length}市町のうち${closed}市は、${jdate(asOf)}の時点で今年度の受付を終えていました。予算の枠は、春の受付開始から埋まっていきます。</p>
   </div>
   <div class="table-scroll rise">
     <table class="data">
-      <thead><tr><th scope="col">市町村</th><th scope="col" class="r">上限額</th><th scope="col">補助率</th><th scope="col">受付</th><th scope="col">年度</th></tr></thead>
+      <thead><tr><th scope="col">市町村</th><th scope="col" class="r">上限額</th><th scope="col">補助率</th><th scope="col">${jdate(asOf)}の受付状況</th></tr></thead>
       <tbody>
         ${sorted.map((c) => html`<tr>
           <td><a href="${h(`/area/${c.pref_slug}/${c.slug}/`)}">${esc(c.city)}</a><br><span class="small">${esc(c.pref)}</span></td>
           <td class="r">${c.subsidy.max_yen ? man(c.subsidy.max_yen) : '—'}</td>
-          <td>${esc(c.subsidy.rate || '—')}</td>
-          <td class="small">${esc(c.subsidy.period || '未確認')}</td>
-          <td class="small">${esc(c.subsidy.fiscal_year || '')}</td>
+          <td>${esc(c.subsidy.rate_label || c.subsidy.rate || '—')}</td>
+          <td class="small">${esc(c.subsidy.status || '未確認')}</td>
         </tr>`)}
       </tbody>
     </table>
@@ -113,7 +115,7 @@ export function homePage(ctx, { cities, params, prefs }) {
     </div>
     <div class="rise">
       <p class="bigfig num">${withSub.length}<small>市町</small></p>
-      <p class="lead" style="margin-top:12px">要綱を確かめて載せている市町村の数。県単位で、運営者が電話で確かめられる範囲から増やしています。</p>
+      <p class="lead" style="margin-top:12px">要綱を確かめて載せている市町村の数。最新の年度の要綱が見つからない市町村は、確かめられるまで載せません。</p>
     </div>
   </div>
 </section>

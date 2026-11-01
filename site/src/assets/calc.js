@@ -27,8 +27,15 @@ export function demolitionCost(params, structure, floorSqm) {
 }
 
 // 補助額の目安。補助率と上限がわかれば min(上限, 解体費×補助率)。
-export function subsidyAmount(sub, cost) {
+export function subsidyAmount(sub, cost, floorSqm) {
   if (!sub || !sub.exists || !cost) return null
+  // 床面積の区分で定額が決まる方式（例：神戸市）。区分が分からない面積なら null。
+  if (Array.isArray(sub.fixed_table)) {
+    const row = sub.fixed_table.find((r) => floorSqm >= r.min_sqm && (r.max_sqm === null || r.max_sqm === undefined || floorSqm < r.max_sqm))
+    if (!row) return { unknown: true, note: sub.fixed_note || '' }
+    const calc = (c) => Math.floor(Math.min(row.yen, c) / 1000) * 1000
+    return { min: calc(cost.min), max: calc(cost.max), rate: null, cap: row.yen, fixed: true }
+  }
   const rate = parseRate(sub.rate)
   const cap = sub.max_yen ?? null
   if (rate === null && cap === null) return null
@@ -75,7 +82,8 @@ export function landTax(p, o) {
 // 4つの選択肢の数字をまとめて出す。
 export function compare(p, city, input) {
   const cost = demolitionCost(p, input.structure, input.floorSqm)
-  const sub = input.eligible ? subsidyAmount(city?.subsidy, cost) : null
+  const subRaw = input.eligible ? subsidyAmount(city?.subsidy, cost, input.floorSqm) : null
+  const sub = subRaw && !subRaw.unknown ? subRaw : null
   // 補助は「費用が安い側では補助も小さい」ので、実質負担の幅は (安い側 − 安い側の補助, 高い側 − 高い側の補助)
   const net = cost ? { min: cost.min - (sub ? sub.min : 0), max: cost.max - (sub ? sub.max : 0) } : null
   const tax = landTax(p, {
@@ -87,7 +95,7 @@ export function compare(p, city, input) {
   const yearlyVacant = (tax ? tax.vacant.total : 0) + (input.landUpkeep || 0)
   const years = input.years || 10
   return {
-    cost, sub, net, tax,
+    cost, sub, subUnknown: subRaw && subRaw.unknown ? subRaw.note : null, net, tax,
     keep: { yearly: yearlyKeep, total: yearlyKeep * years, years },
     demolish: { yearlyAfter: yearlyVacant, totalMin: net ? net.min + yearlyVacant * years : null, totalMax: net ? net.max + yearlyVacant * years : null },
     sellMonths: input.sellMonths || 12,

@@ -147,8 +147,11 @@ ul.plain li, ol.plain li { margin-bottom: 0.5em; max-width: 40em; }
 @media (max-width: 960px) { .ledger-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ledger-col:nth-child(even) { background: transparent; } .ledger-col:nth-child(2), .ledger-col:nth-child(3) { background: var(--surface-2); } }
 @media (max-width: 520px) { .ledger-grid { grid-template-columns: 1fr; } .ledger-col:nth-child(n) { background: transparent; } .ledger-col:nth-child(even) { background: var(--surface-2); } }
 
+/* 判定された列は、どの幅でも面の緑（並びの色分けより優先） */
+.ledger .ledger-grid .ledger-col.is-primary { background: var(--field); color: var(--on-field); }
+
 /* ---------- 大きな数字と説明 ---------- */
-.bigfig { font-size: clamp(5rem, 16vw, 13rem); font-weight: 700; line-height: 0.9; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.bigfig { margin: 0; font-size: clamp(5rem, 16vw, 13rem); font-weight: 700; line-height: 0.9; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
 .bigfig small { font-size: 0.32em; letter-spacing: -0.02em; margin-left: 0.08em; }
 
 /* 納税通知書の一部を写した表 */
@@ -195,6 +198,7 @@ table.data a { font-weight: 700; }
 /* 出典の並び */
 .sources { font-size: var(--size-small); }
 .sources li { word-break: break-all; }
+.prose a, .sources a, .crumbs a { overflow-wrap: anywhere; }
 .status { font-weight: 700; }
 .missing { background: var(--surface); padding: 20px 24px; }
 
