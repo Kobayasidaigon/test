@@ -1,0 +1,247 @@
+{
+  "code": "262013",
+  "pref": "京都府",
+  "name": "福知山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和８年度 保育園・認定こども園・小規模保育事業所 ご利用案内 本文〔2025年10月作成〕15ページ「7.4 福知山市 利用者負担額（保育料）一覧」）",
+  "period_note": "保育料の額の切り替え（再算定）は毎年9月。4〜8月分は前年度、9月〜3月分は当年度の市民税所得割額から算定（令和8年度は4〜8月分が令和7年度、9月〜翌年3月分が令和8年度）。年齢クラスは当該年度の4月1日の満年齢で判定。表の月額は年度を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "原則として保護者（同一世帯の父母）の市民税所得割額の合計。児童（保護者を含む）が保護者以外の扶養義務者（家計の主宰者〔祖父・祖母等〕）に扶養されていると認められるときは、その扶養義務者を含めた課税額で決める。税額は住宅取得控除、配当控除、寄附金控除（ふるさと納税等）等の税額控除適用前の額。政令市ではないので6%（指定都市の税率の扱いの記載はない）。",
+  "table": {
+    "title": "7.4 福知山市 利用者負担額（保育料）一覧",
+    "kind": "3歳未満（2歳児クラス以下）・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税課税世帯のうち、均等割のみ課税世帯",
+        "monthly": 9800,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 16200,
+        "condition": "市町村民税課税世帯であって、その所得割の額が次の区分に該当する世帯 16,200円未満",
+        "monthly": 10700,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 16200,
+        "upper": 32400,
+        "condition": "16,200円以上 32,400円未満",
+        "monthly": 11700,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 32400,
+        "upper": 48600,
+        "condition": "32,400円以上 48,600円未満",
+        "monthly": 12700,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 48600,
+        "upper": 53900,
+        "condition": "48,600円以上 53,900円未満",
+        "monthly": 15000,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 53900,
+        "upper": 59200,
+        "condition": "53,900円以上 59,200円未満",
+        "monthly": 16500,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 59200,
+        "upper": 64500,
+        "condition": "59,200円以上 64,500円未満",
+        "monthly": 18000,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 64500,
+        "upper": 69800,
+        "condition": "64,500円以上 69,800円未満",
+        "monthly": 21000,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 69800,
+        "upper": 75100,
+        "condition": "69,800円以上 75,100円未満",
+        "monthly": 22500,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 75100,
+        "upper": 80400,
+        "condition": "75,100円以上 80,400円未満",
+        "monthly": 24000,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 80400,
+        "upper": 85700,
+        "condition": "80,400円以上 85,700円未満",
+        "monthly": 25500,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 85700,
+        "upper": 91000,
+        "condition": "85,700円以上 91,000円未満",
+        "monthly": 27000,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 91000,
+        "upper": 97000,
+        "condition": "91,000円以上 97,000円未満",
+        "monthly": 28500,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 97000,
+        "upper": 111400,
+        "condition": "97,000円以上 111,400円未満",
+        "monthly": 31200,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 111400,
+        "upper": 125800,
+        "condition": "111,400円以上 125,800円未満",
+        "monthly": 33400,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 125800,
+        "upper": 140200,
+        "condition": "125,800円以上 140,200円未満",
+        "monthly": 35600,
+        "monthly_second": null
+      },
+      {
+        "label": "C17",
+        "lower": 140200,
+        "upper": 154600,
+        "condition": "140,200円以上 154,600円未満",
+        "monthly": 37800,
+        "monthly_second": null
+      },
+      {
+        "label": "C18",
+        "lower": 154600,
+        "upper": 169000,
+        "condition": "154,600円以上 169,000円未満",
+        "monthly": 40100,
+        "monthly_second": null
+      },
+      {
+        "label": "C19",
+        "lower": 169000,
+        "upper": 235000,
+        "condition": "169,000円以上 235,000円未満",
+        "monthly": 42700,
+        "monthly_second": null
+      },
+      {
+        "label": "C20",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "235,000円以上 301,000円未満",
+        "monthly": 48800,
+        "monthly_second": null
+      },
+      {
+        "label": "C21",
+        "lower": 301000,
+        "upper": 349000,
+        "condition": "301,000円以上 349,000円未満",
+        "monthly": 56000,
+        "monthly_second": null
+      },
+      {
+        "label": "C22",
+        "lower": 349000,
+        "upper": 397000,
+        "condition": "349,000円以上 397,000円未満",
+        "monthly": 64000,
+        "monthly_second": null
+      },
+      {
+        "label": "C23",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 72800,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「利用者負担額（月額）＜２歳児クラス以下＞」の保育標準時間の列。C1 は均等割のみ課税世帯なので null、C2 の下限は表にないが C1 と分けるため lower=1。保育短時間: C1 9,700／C2 10,600／C3 11,600／C4 12,500／C5 14,800／C6 16,300／C7 17,700／C8 20,700／C9 22,200／C10 23,600／C11 25,100／C12 26,600／C13 28,100／C14 30,700／C15 32,900／C16 35,000／C17 37,200／C18 39,500／C19 42,000／C20 48,000／C21 55,100／C22 63,000／C23 71,600（A・B は0円）。＜３歳児クラス以上＞は幼児教育・保育の無償化により0円（給食費〔主食費及び副食費〕、教材費、行事費、通園バス代などは負担）。0〜2歳児クラスの保育料には給食副食費が含まれる。7.3 その他軽減制度: 世帯の市民税所得割額が77,101円未満で、母子・父子家庭の世帯、障害児（者）がいる世帯、障害基礎年金の受給者がいる世帯は、申請により保育料が第1子 4,500円・第2子以降 無償（きょうだい判定は年齢にかかわらず扶養している児童全員。毎年申請が必要）。欠席が続いた場合に保育料が半額になる減免措置もある（別途申請、Q13）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜72,800円）。0円は生活保護世帯等と市町村民税非課税世帯だけ。所得割77,101円未満のひとり親世帯・障害児（者）のいる世帯などは申請で第1子 月4,500円。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "7.1.1 ①国の多子軽減制度: 世帯に複数人の就学前児童がいる場合、就学前の児童の中で第2子が半額（ご利用案内の書き方は「就学前の児童の中で」で、通園の条件は書かれていない）。ただし市民税所得割世帯合算額57,700円未満の世帯は、きょうだい判定が「年齢にかかわらず扶養している児童全員」になる。所得割77,101円未満のひとり親世帯・障害児（者）がいる世帯などは申請で第2子以降無償（年齢にかかわらず扶養している児童全員で数える）。きょうだいが別世帯にいる場合などは申し出が必要。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "7.1.1 ②京都府第３子以降無償化制度: 世帯の市民税所得割額が169,000円未満（C18階層以下）の場合、世帯の18歳未満のきょうだいの中で第3子以降の児童の保育料が無償（18歳に達する日以降最初の3月31日までを含む。上の子が通園していなくても数える。申請は不要だが、住民票を別にして進学している子がいる場合などは申し出）。所得割169,000円以上は国の制度で就学前の児童の中で第3子のときだけ無償。57,700円未満は年齢にかかわらず扶養している児童全員の中で第3子以降無償。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度保育所等途中入所申込について - 福知山市オフィシャルホームページ（2025年12月1日更新）",
+      "url": "https://www.city.fukuchiyama.lg.jp/site/kosodate/80731.html"
+    },
+    {
+      "label": "ご利用案内 本文（PDF 1.49MB）福知山市「令和８年度 保育園・認定こども園・小規模保育事業所 ご利用案内」7 利用者負担額等について（11〜15ページ）",
+      "url": "https://www.city.fukuchiyama.lg.jp/uploaded/attachment/54313.pdf"
+    },
+    {
+      "label": "保育料第3子以降無償化となります - 福知山市オフィシャルホームページ（2020年12月16日更新）",
+      "url": "https://www.city.fukuchiyama.lg.jp/site/kosodate/1755.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べには保育料の表がなく（ご利用案内の表紙と給食献立だけ）、「保育園の入所について」の一覧から「令和8年度保育所等途中入所申込について」のページを開き、ご利用案内 本文（文字の取れるPDF、20ページ）を pdftotext -layout で読んだ。15ページを画像にして列（＜２歳児クラス以下＞の保育標準時間・保育短時間、＜３歳児クラス以上＞は0円）と23階層の区切りを確かめた。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

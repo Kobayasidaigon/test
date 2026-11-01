@@ -46,5 +46,10 @@
     "下調べの crawl は市の公式サイト（www.city.machida.tokyo.jp）の保育料あり方検討部会のページなどしか拾っておらず、保育料のページは市の「まちだ子育てサイト」（kosodate-machida.tokyo.jp、Copyright Machida City）にあった。research.json（cities20）の出典URLから開いた。"
   ],
   "notes": "保育料は第1子から0円なので table は null（2025年8月分までの2025年度基準額表は読んでいない）。東京都の018サポート（月5,000円）は都の制度なので cash に入れていない。one_time は探していない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "なし。形の確認（JSON として読める・必須キー・選べる値）で問題なし。first_child_free が true（2025年9月から都内在住は第1子から保育料無償）で table が null なので、月額との矛盾はない。出典を取り直しての読み直しはしていない。"
+  }
 }

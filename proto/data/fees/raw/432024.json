@@ -10,7 +10,7 @@
   "table": null,
   "first_child_free": null,
   "first_child_free_since": null,
-  "first_child_free_note": "公式サイトが読めず不明。",
+  "first_child_free_note": "公式サイトが読めず不明。検索結果に出た公式ページの題名「【市独自】令和5年9月から保育料を無償化しています！」からは、市独自の保育料無償化（令和5年9月から）があるとみられるが、本文が403で読めず、対象（0〜2歳の第1子を含むか・所得制限・施設の種類）と令和8年度も続いているかは未確認なので null のまま。",
   "second_child": "unknown",
   "second_count": "unknown",
   "second_note": "公式サイトが読めず不明。",
@@ -26,8 +26,15 @@
     "下調べ（crawl/432024/index.json）はトップページの取得で OSError、ページ0件。",
     "curl で https://www.city.yatsushiro.lg.jp/ を2回（2026-11-01 15:08ごろと15:26ごろ）取ったが、どちらも HTTP 403（Incapsula のボット対策ページ「Request unsuccessful. Incapsula incident ID ...」）。ボット対策を回避する取り方はしていない。",
     "WebFetch で https://www.city.yatsushiro.lg.jp/ を開こうとしたが、このセッションの許可されたネットワークの外で名前解決できず（getaddrinfo ENOTFOUND）。",
-    "WebSearch はこの市には使っていない（公式サイトのページを開けないため、検索で URL が分かっても読めない）。"
+    "WebSearch はこの市には使っていない（公式サイトのページを開けないため、検索で URL が分かっても読めない）。",
+    "検証（2026-11-01）: WebSearch（allowed_domains: city.yatsushiro.lg.jp、「八代市 保育料 利用者負担額 3歳未満 令和8年度」）を1回使った。公式サイトのページ「【市独自】令和5年9月から保育料を無償化しています！ / 熊本県八代市」（https://www.city.yatsushiro.lg.jp/kiji00319794/index.html）、「幼児教育・保育の無償化について」（https://www.city.yatsushiro.lg.jp/kiji00310908/index.html）、「令和８年度 当初予算の概要」（PDF）が出た。",
+    "検証（2026-11-01）: 上の無償化のページと当初予算の概要PDF（https://www.city.yatsushiro.lg.jp/kiji00325739/3_25739_150039_up_laj6y0vp.pdf）を curl で1回ずつ取ったが、どちらも HTTP 403（Incapsula のボット対策ページ）で本文は読めなかった。回避はしていない。"
   ],
-  "notes": "公式サイト（www.city.yatsushiro.lg.jp）が Incapsula のボット対策で curl からの取得を 403 で拒むため、保育料の表もきょうだいの決まりも読めなかった。別のネットワーク（ブラウザ）から読む必要がある。推測では埋めていない。",
-  "read_at": "2026-11-01"
+  "notes": "公式サイト（www.city.yatsushiro.lg.jp）が Incapsula のボット対策で curl からの取得を 403 で拒むため、保育料の表もきょうだいの決まりも読めなかった。別のネットワーク（ブラウザ）から読む必要がある。推測では埋めていない。手がかり（2026-11-01 の検証で WebSearch により見つけた）: 公式ページ「【市独自】令和5年9月から保育料を無償化しています！」（https://www.city.yatsushiro.lg.jp/kiji00319794/index.html）。検索結果の要約には「0歳から2歳までの第1子・第2子も含めて、すべての子どもの保育料を無償化」という趣旨の説明があったが、要約は公式ページの本文そのものではないので、first_child_free・second_child などには入れていない。ブラウザでこのページ（と『幼児教育・保育の無償化について』https://www.city.yatsushiro.lg.jp/kiji00310908/index.html）を開いて、対象と開始時期・令和8年度も続いているかを確かめれば、第1子から無料の市として埋められる見込み。",
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "値の直しはなし（status は not_found、first_child_free は null、きょうだいは unknown のまま）。別の探し方として WebSearch を1回使い、公式ページ「【市独自】令和5年9月から保育料を無償化しています！」の題名とURLを見つけたが、そのページと当初予算の概要PDFは curl で 403（Incapsula）だったので本文を読めず、tried・notes・first_child_free_note に手がかりとして書き足しただけ。"
+  }
 }

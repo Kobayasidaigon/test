@@ -1,0 +1,235 @@
+{
+  "code": "012050",
+  "pref": "北海道",
+  "name": "室蘭市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和８年度 保育料徴収基準額表）",
+  "period_note": "4月から8月までの利用者負担額（保育料）は前年度の市町村民税額、9月から3月までは今年度の市町村民税額で決める（令和8年度は4〜8月分が令和7年度、9月〜翌年3月分が令和8年度）。クラスは4月1日時点の年齢で分ける。月途中での入退所者のみ日割り計算。表の月額は年度を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "こどものクラス年齢と、父母の市町村民税の合計額で決める（生計の中心者が祖父母などの場合は祖父母などの税額で決めることがある。入所あんないでは「父母または祖父母などの家計の主宰者である扶養親族の市民税額を合算」）。市町村民税所得割額の算出には、外国税額控除、配当控除、住宅借入金等特別税額控除、寄附金税額控除（ふるさと納税）を適用しない（＝これらの控除前の額）。政令市ではないので6%（指定都市の税率の扱いの記載はない）。",
+  "table": {
+    "title": "令和８年度 保育料徴収基準額表",
+    "kind": "3歳未満（0〜2歳児クラス）・保育標準時間・第1子（月額。ひとり親・障がい・その他の世帯以外）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税均等割額のみ",
+        "monthly": 11200,
+        "monthly_second": 0
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 5000,
+        "condition": "市町村民税所得割額5,000円未満",
+        "monthly": 14400,
+        "monthly_second": 0
+      },
+      {
+        "label": "C3",
+        "lower": 5000,
+        "upper": 48600,
+        "condition": "5,000円以上48,600円未満",
+        "monthly": 17500,
+        "monthly_second": 0
+      },
+      {
+        "label": "D1",
+        "lower": 48600,
+        "upper": 60700,
+        "condition": "48,600円以上60,700円未満",
+        "monthly": 19800,
+        "monthly_second": 0
+      },
+      {
+        "label": "D2",
+        "lower": 60700,
+        "upper": 72800,
+        "condition": "60,700円以上72,800円未満",
+        "monthly": 22200,
+        "monthly_second": 0
+      },
+      {
+        "label": "D3",
+        "lower": 72800,
+        "upper": 77101,
+        "condition": "72,800円以上77,101円未満",
+        "monthly": 24500,
+        "monthly_second": 0
+      },
+      {
+        "label": "D4",
+        "lower": 77101,
+        "upper": 84900,
+        "condition": "77,101円以上84,900円未満",
+        "monthly": 24500,
+        "monthly_second": 0
+      },
+      {
+        "label": "D5",
+        "lower": 84900,
+        "upper": 97000,
+        "condition": "84,900円以上97,000円未満",
+        "monthly": 27000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D6",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "97,000円以上115,000円未満",
+        "monthly": 30200,
+        "monthly_second": 0
+      },
+      {
+        "label": "D7",
+        "lower": 115000,
+        "upper": 133000,
+        "condition": "115,000円以上133,000円未満",
+        "monthly": 33400,
+        "monthly_second": 0
+      },
+      {
+        "label": "D8",
+        "lower": 133000,
+        "upper": 151000,
+        "condition": "133,000円以上151,000円未満",
+        "monthly": 36700,
+        "monthly_second": 0
+      },
+      {
+        "label": "D9",
+        "lower": 151000,
+        "upper": 169000,
+        "condition": "151,000円以上169,000円未満",
+        "monthly": 40000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D10",
+        "lower": 169000,
+        "upper": 213000,
+        "condition": "169,000円以上213,000円未満",
+        "monthly": 45000,
+        "monthly_second": 22500
+      },
+      {
+        "label": "D11",
+        "lower": 213000,
+        "upper": 257000,
+        "condition": "213,000円以上257,000円未満",
+        "monthly": 49900,
+        "monthly_second": 24900
+      },
+      {
+        "label": "D12",
+        "lower": 257000,
+        "upper": 301000,
+        "condition": "257,000円以上301,000円未満",
+        "monthly": 54900,
+        "monthly_second": 27400
+      },
+      {
+        "label": "D13",
+        "lower": 301000,
+        "upper": 333000,
+        "condition": "301,000円以上333,000円未満",
+        "monthly": 60500,
+        "monthly_second": 30200
+      },
+      {
+        "label": "D14",
+        "lower": 333000,
+        "upper": 365000,
+        "condition": "333,000円以上365,000円未満",
+        "monthly": 66200,
+        "monthly_second": 33100
+      },
+      {
+        "label": "D15",
+        "lower": 365000,
+        "upper": 397000,
+        "condition": "365,000円以上397,000円未満",
+        "monthly": 72000,
+        "monthly_second": 36000
+      },
+      {
+        "label": "D16",
+        "lower": 397000,
+        "upper": 430000,
+        "condition": "397,000円以上430,000円未満",
+        "monthly": 79200,
+        "monthly_second": 39600
+      },
+      {
+        "label": "D17",
+        "lower": 430000,
+        "upper": 463000,
+        "condition": "430,000円以上463,000円未満",
+        "monthly": 86400,
+        "monthly_second": 43200
+      },
+      {
+        "label": "D18",
+        "lower": 463000,
+        "upper": null,
+        "condition": "463,000円以上",
+        "monthly": 93600,
+        "monthly_second": 46800
+      }
+    ],
+    "notes": "rows は「標準時間認定」の第1子・第2子の列で、C1〜D3 は一般の世帯の行。C1 は均等割額のみなので null、C2 の下限は表にないが C1 と分けるため lower=1。第2子の列は C1〜D9 が0（表で1つのセル）、A・B は全部の列が0。短時間認定 第1子: C1 11,000／C2 14,200／C3 17,300／D1 19,400／D2 21,800／D3 24,100／D4 24,100／D5 26,600／D6 29,600／D7 32,800／D8 36,100／D9 39,400／D10 44,100／D11 49,000／D12 54,000／D13 59,300／D14 65,000／D15 70,800／D16 77,600／D17 84,800／D18 92,000、短時間 第2子: C1〜D9 0／D10 22,000／D11 24,500／D12 27,000／D13 29,600／D14 32,500／D15 35,400／D16 38,800／D17 42,400／D18 46,000。「ひとり親・障がい・その他」の世帯（ひとり親世帯、在宅障害児（者）のいる世帯、その他市長が要保護者に準ずる程度に困窮していると認める世帯）は B 0、C1〜D3（所得割77,101円未満）は第1子 3,200（標準・短時間とも）・第2子 0。3歳児クラス以降の保育料は無料（3歳を迎えた後の最初の4月以降無料）。備考: C1〜D9 に属する世帯は同一世帯の最年長の子から順に第2子以降無料、D10〜D18 は同一世帯の最年長の子から順に第2子は半額・第3子以降は無料。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜93,600円）。0円は生活保護世帯等と市町村民税非課税世帯だけ。ひとり親・障がい・その他の世帯は C1〜D3 で第1子 月3,200円。",
+  "second_child": "other",
+  "second_count": "household",
+  "second_note": "階層で違う（表の備考）。C1〜D9（所得割169,000円未満、均等割のみを含む）は「同一世帯の最年長の子から順に、第２子以降は無料」。D10〜D18（169,000円以上）は「同一世帯の最年長の子から順に、第２子は半額」（表の第2子の列）。入所あんない（令和8年度）では「同一世帯（保護者が扶養している別居の子を含む）の最年長の子から数えて第２子以降のこどもは保育料が半額、または無料」とあり、上の子が保育所等に通っていなくても、年齢にかかわらず数える（上の子の年齢の上限は書かれていない）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全階層で、同一世帯（保護者が扶養している別居の子を含む）の最年長の子から順に数えて第3子以降は無料（所得制限なし。上の子の年齢・通園を問わない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "0～2歳児クラスの利用者負担額（保育料）｜認可保育所・認定こども園(2、3号)等｜室蘭市（2026年10月19日更新）",
+      "url": "https://www.city.muroran.lg.jp/education/?content=1652"
+    },
+    {
+      "label": "令和8年度保育料表（PDF 118KB）室蘭市「令和８年度 保育料徴収基準額表」",
+      "url": "https://www.city.muroran.lg.jp/assets/images/content/content_20260511_132710.pdf"
+    },
+    {
+      "label": "認可保育所・認定こども園（2・3号）・小規模保育事業所の入所手続き｜室蘭市",
+      "url": "https://www.city.muroran.lg.jp/education/?content=1660"
+    },
+    {
+      "label": "令和8年度 入所あんない（PDF 582.1KB）室蘭市 5ページ「保育料（０～２歳児）について」",
+      "url": "https://www.city.muroran.lg.jp/assets/images/content/content_20251202_152530.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は市の公式PDF（1ページ、文字の取れるPDF）を pdftotext -layout で読み、画像で列（標準時間認定・短時間認定 × 第1子・第2子）と、C1〜D3 の一般の世帯と「ひとり親・障がい・その他」の2行を確かめた。令和9年度の入所あんないは画像だけのPDF（Microsoft Print To PDF）で文字が取れず読んでいない。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

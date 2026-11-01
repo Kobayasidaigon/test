@@ -1,0 +1,47 @@
+{
+  "code": "142107",
+  "pref": "神奈川県",
+  "name": "三浦市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月分〜8月分は令和7年度、9月分以降は令和8年度の課税額で決定（令和8年度保育料について）。保育料は見直しによる改定や課税資料調査等で変わることがある。年齢区分は4月1日時点の年齢で、2歳児クラスは年度の途中で3歳になっても0円にならない。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の市民税所得割額（両親等の合算）又は前年分所得税額とお子さんの年齢で決定。両親に所得がなく、祖父母が生計を支えている場合は、その人が基準。税金の申告がない場合は最高額（無収入でも申告が必要）。住宅ローン控除などの税額控除を引く前か後かは、表と入所案内には書かれていない。政令市ではないので6%で判定。",
+  "table": {
+    "title": "令和８年度三浦市保育料徴収基準額表",
+    "kind": "3歳未満（0才児〜2才児）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯及び里親世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "市民税所得割額 48,600 円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "第4階層", "lower": 48600, "upper": 97000, "condition": "市民税所得割額 48,600 円以上 ～ 97,000 円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "第5階層", "lower": 97000, "upper": 169000, "condition": "市民税所得割額 97,000 円以上 ～ 169,000 円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "第6階層", "lower": 169000, "upper": 301000, "condition": "市民税所得割額 169,000 円以上 ～ 301,000 円未満", "monthly": 55000, "monthly_second": null },
+      { "label": "第7階層", "lower": 301000, "upper": 397000, "condition": "市民税所得割額 301,000 円以上 ～ 397,000 円未満", "monthly": 64000, "monthly_second": null },
+      { "label": "第8階層", "lower": 397000, "upper": null, "condition": "市民税所得割額 397,000 円以上", "monthly": 73000, "monthly_second": null }
+    ],
+    "notes": "保育短時間（0才児〜2才児）: 第3階層 14,800／第4階層 25,600／第5階層 40,400／第6階層 54,100／第7階層 63,000／第8階層 71,800（第1・第2階層は0）。3才児〜5才児は全階層0円。母子・父子家庭又は在宅障害児（者）のいる世帯: 第2階層0円、第3階層 9,000円（短時間も9,000円）、第4階層のうち市民税所得割77,101円未満 9,000円。第3階層は均等割のみの世帯（所得割0円）を分けていないので lower=0 とした。令和9年度の表（令和9年度保育所等入所案内）も同じ額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月0〜73,000円）。0円は生活保護世帯・里親世帯と市民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "注１: 同一世帯から2人以上の児童が保育所や幼稚園などを利用している場合は、最も年齢が高い児童は基準額、その次に年齢が高い児童は半額、それ以外の児童は0円（同時に利用する子だけを数える）。例外: ①多子世帯で保護者の市民税所得割額の合算が57,700円未満の場合は、第2子半額・第3子以降無料の算定対象となる子どもの年齢制限を撤廃（同一生計に限る）。第2階層（市民税非課税）は平成29年4月から第2子以降無料。②母子・父子家庭又は障害児（者）のいる世帯で所得割合算77,101円未満は第2子以降無料。市独自の第2子無償化は書かれていない。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "保育所や幼稚園などを同時に利用する子の3人目以降は0円（所得制限なし）。所得割57,700円未満は年齢制限を撤廃して同一生計の子を数える。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所・認定こども園新規入園案内／三浦市（2026年9月8日更新）", "url": "https://www.city.miura.kanagawa.jp/soshiki/kodomoka/kodomoka_kodomoshien/hoikuen/1708.html" },
+    { "label": "令和8年度保育料について（2・3号認定）（PDF）", "url": "https://www.city.miura.kanagawa.jp/material/files/group/31/R8hoikuryou.pdf" },
+    { "label": "令和8年度保育所等入所案内（PDF）8〜9ページ「保育料について」", "url": "https://www.city.miura.kanagawa.jp/material/files/group/31/01_R8annnai-1.pdf" },
+    { "label": "令和9年度保育所等入所案内（PDF）", "url": "https://www.city.miura.kanagawa.jp/material/files/group/31/01_R9annnai.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json の「令和8年度保育料について（2・3号認定）」PDFを読み、新規入園案内のページの令和8年度・令和9年度の入所案内でも表と注記が同じことを確かめた（令和9年度も同じ額・同じきょうだいの決まり）。紙おむつ等育児用品支給事業のページがあるが、現金給付ではないので cash には入れていない。cash・one_time・中学校給食はほかに目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

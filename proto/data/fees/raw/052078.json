@@ -1,0 +1,51 @@
+{
+  "code": "052078",
+  "pref": "秋田県",
+  "name": "湯沢市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料は4〜8月分は前年度の課税額、9〜3月分は当年度の課税額で算定するが、すこやか子育て支援事業の助成で実負担額はない（令和8年度入園申し込みのしおり 5ページ）。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市町村民税の課税合算額で算定（税額控除を適用する前の税額）。父母の収入が低く、父母以外の方（祖父母等）が生計の中心者と判断される場合はその方の市町村民税課税額も含めて算定。政令市ではないので6%で判定（ただし実負担は全階層0円）。",
+  "table": {
+    "title": "参考：保育所や認定こども園（保育部分）第１子の保育料（月額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）。すこやか子育て支援事業の助成前の「徴収金基準額」で、助成適用後は全階層0円",
+    "rows": [
+      { "label": "第１階層", "lower": null, "upper": null, "condition": "生活保護受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第２階層", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第３階層", "lower": 0, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "第４階層", "lower": 48600, "upper": 97000, "condition": "〃 48,600円以上 97,000円未満", "monthly": 28500, "monthly_second": null },
+      { "label": "第５階層", "lower": 97000, "upper": 169000, "condition": "〃 97,000円以上 169,000円未満", "monthly": 40000, "monthly_second": null },
+      { "label": "第６階層", "lower": 169000, "upper": 301000, "condition": "〃 169,000円以上 301,000円未満", "monthly": 48000, "monthly_second": null },
+      { "label": "第７階層", "lower": 301000, "upper": 397000, "condition": "〃 301,000円以上 397,000円未満", "monthly": 52000, "monthly_second": null },
+      { "label": "第８階層", "lower": 397000, "upper": null, "condition": "〃 397,000円以上", "monthly": 52000, "monthly_second": null }
+    ],
+    "notes": "表の列は「徴収金基準額 保育標準時間／保育短時間」と「すこやか助成 適用後」。適用後は全階層0円。短時間の基準額: 第３階層 19,300／第４階層 28,000／第５階層 39,300／第６階層 47,100／第７・第８階層 51,100（第１・第２階層は0）。0〜2歳の副食費は保育料に含まれる。令和8年度と令和9年度の入園申し込みのしおりで同じ表。第３階層は均等割のみの世帯を分けていないので lower=0 とした。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "すこやか子育て支援事業（秋田県と湯沢市の協働）: 令和7年9月分から、保護者の所得や子どもの年齢などにかかわらず、すべての子どもの保育料を完全無償化（湯沢市上乗せ助成）。助成を受けるには「すこやか子育て支援事業保育料等助成申請書」の提出が必要（通常は保育所の入所申し込み時・継続入所申し込み時に記入、マイナポータルの電子申請も可）。認可外保育施設の保育料等も助成対象（詳細は問い合わせ）。主食費・教材費・バス代など施設ごとの費用は別。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和7年9月分からは第1子から全員0円のため、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員0円。3歳以上の副食費も、国の制度で免除にならない世帯をすこやか子育て支援事業で全額助成。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和6年度から学校給食費を無償化（湯沢市立小中学校は給食費を免除、手続き不要。県立・市外の学校や食物アレルギー等で弁当の場合は相当額を補助金で交付）。中学生は1食354円×年間喫食数を免除。生活保護・就学援助の対象は別の制度で支給。",
+    "source": { "label": "学校給食費無償化のお知らせ - 湯沢市ホームページ（2026年4月30日更新）", "url": "https://www.city-yuzawa.jp/site/kosodate-navi/5534.html" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料及び副食費を完全無償化（すこやか子育て支援事業） - 湯沢市ホームページ（2026年3月26日更新）", "url": "https://www.city-yuzawa.jp/site/kosodate-navi/3574.html" },
+    { "label": "令和8年度入園申し込みのしおり（PDF）5ページ「利用者負担（保育料・副食費）について」", "url": "https://www.city-yuzawa.jp/uploaded/life/50483_72320_misc.pdf" },
+    { "label": "令和8年度 保育所および認定こども園の入所申し込み受付について - 湯沢市ホームページ（2026年10月28日更新）", "url": "https://www.city-yuzawa.jp/site/kosodate-navi/6085.html" },
+    { "label": "令和9年度入園申し込みのしおり（PDF）5ページ", "url": "https://www.city-yuzawa.jp/uploaded/attachment/37728.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json の完全無償化のページを読み、令和8年度・令和9年度の入園申し込みのしおりで「すこやか子育て支援事業助成により実負担額はありません（完全無償化）」と助成前の基準額表を確かめた。cash・one_time は目に入らなかった（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

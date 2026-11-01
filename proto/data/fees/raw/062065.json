@@ -1,0 +1,47 @@
+{
+  "code": "062065",
+  "pref": "山形県",
+  "name": "寒河江市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月から8月までの保育料は前年度分（令和7年度）の市町村民税、9月から翌年3月までは当該年度分（令和8年度）の市町村民税で決定（令和8年度寒河江市保育施設の保育料）。年齢は当該年度の4月1日現在。階層は各月初日の子どもの属する世帯で判定。",
+  "tax_basis": "6%",
+  "tax_note": "原則として子どもの父母の市町村民税所得割額の合算（自営業や農業を営み事業主が父母以外の人であるときはその事業主が該当することがある。世帯の状況によって同居の祖父母分も含める場合がある）。寄付金税額控除、外国税控除、配当控除、住宅借入金等特別税額控除をする前の額。政令市ではないので6%で判定。",
+  "table": {
+    "title": "令和８年度 寒河江市保育施設の保育料（利用者負担額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "Ａ", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "Ｂ", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "Ｃ", "lower": null, "upper": null, "condition": "市町村民税均等割の額のみ課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "Ｄ１～Ｄ５", "lower": 1, "upper": 97000, "condition": "市町村民税所得割額課税世帯 97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "Ｄ６", "lower": 97000, "upper": 133000, "condition": "市町村民税所得割額課税世帯 97,000円以上133,000円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "Ｄ７", "lower": 133000, "upper": 169000, "condition": "市町村民税所得割額課税世帯 133,000円以上169,000円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "Ｄ８", "lower": 169000, "upper": 235000, "condition": "市町村民税所得割額課税世帯 169,000円以上235,000円未満", "monthly": 22200, "monthly_second": null },
+      { "label": "Ｄ９", "lower": 235000, "upper": 301000, "condition": "市町村民税所得割額課税世帯 235,000円以上301,000円未満", "monthly": 26700, "monthly_second": null },
+      { "label": "Ｄ10", "lower": 301000, "upper": null, "condition": "市町村民税所得割額課税世帯 301,000円以上", "monthly": 29000, "monthly_second": null }
+    ],
+    "notes": "保育短時間: Ｄ６ 14,700／Ｄ７ 19,100／Ｄ８ 21,800／Ｄ９ 26,200／Ｄ10 28,500（Ａ〜Ｄ５は0円）。表の額は軽減後: Ｃ〜Ｄ５階層は「山形県保育料段階的無償化事業」で県が1/2、寒河江市が残りの1/2を軽減して無料（令和3年9月から）。Ｄ６とＤ７は県が1/4・市が1/4を補助、Ｄ８以降は市が独自に1/2を補助（令和7年4月から市独自の補助をＤ６階層以降に拡充）。Ｄ１〜Ｄ５の下限は表に書かれていないが、Ｃ（均等割のみ＝所得割0円）と分けるため lower=1 とした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子も、市町村民税所得割97,000円未満（Ｃ〜Ｄ５）は県の段階的無償化事業と市の拡充で0円。所得割97,000円以上は有料（標準時間で月15,000〜29,000円）。",
+  "second_child": "free",
+  "second_count": "together",
+  "second_note": "多子世帯の保育料の減免事業（令和9年度版 利用のしおり）: 認可保育施設に2人以上同時入所している場合、同時入所している児童のうち2番目に年長の児童が0〜2歳児クラスなら保育料は無料。同時入所以外（就学している兄弟がいる場合）であっても、2番目に年長の児童は半額。令和8年度の保育料表の裏面の書き方: 支給認定保護者と生計を一にしている子どもの未就学児のうち、特定教育・保育施設等を同時利用している子どもの範囲において、2人目の子どもは同時入所の場合は全額免除、同時入所以外の場合は半額免除（両親のいずれかの収入が未申告の場合や滞納がある場合など、条件によっては免除にならない）。所得制限は書かれていない。上の子が小学生などのときに半額になる範囲（上の子の年齢の上限）は資料によって書き方が違うので要確認。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "最年長の子どもから順に3人目以降は全額免除（同時入所にかかわらず無料）。上の子の年齢の上限は書かれていない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "教育・保育にかかる利用者負担額（保育料）：寒河江市公式サイト（2026年4月1日更新）", "url": "https://www.city.sagae.yamagata.jp/kosodatekyoiku/kosodatehoiku/hoiku/hoikusisetu/hoikuryo.html" },
+    { "label": "令和8年度寒河江市保育所利用者負担額一覧（PDF）", "url": "https://www.city.sagae.yamagata.jp/kosodatekyoiku/kosodatehoiku/hoiku/hoikusisetu/hoikuryo.files/R8.4hoikuryo.pdf" },
+    { "label": "令和9年度版 認可保育施設 利用のしおり（PDF）5〜6ページ「保育料（利用者負担額）」", "url": "https://www.city.sagae.yamagata.jp/kosodatekyoiku/kosodatehoiku/hoiku/hoikusisetu/hoiku_uketsuke.files/2026siori.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json の保育料のページと「令和8年度寒河江市保育所利用者負担額一覧」PDFを読み、令和9年度 認可保育施設の利用申請受付のページ（2026年8月17日更新）の利用のしおりで多子の決まりを確かめた。3歳以上児クラスの副食費は市の助成で無料（施設の金額によっては実費あり）。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}
