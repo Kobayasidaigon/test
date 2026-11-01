@@ -138,4 +138,7 @@ export function nextSteps(c: Comparison, f: FamilyInput): Step[] {
   return out.slice(0, 4)
 }
 
+/** 見出しを「、」のあとで区切る（数字と単位が行をまたがないように）。 */
+export const phrases = (text: string) => text.split(/(?<=、)/)
+
 export const YEN_HINT = '＋は引っ越すと浮くお金、−は今の街のほうが安く済むお金'

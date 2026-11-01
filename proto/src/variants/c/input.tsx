@@ -21,9 +21,9 @@ export const STEPS = [
 
 // ---------- 札を選ぶ（ラジオ） ----------
 type Opt<T> = { v: T; disabled?: boolean; aria?: string }
-function CardRadio<T extends string | number>({ label, value, options, onChange, className, optionClass, render }: {
+function CardRadio<T extends string | number>({ label, value, options, onChange, className, optionClass, render, lift = true }: {
   label: string; value: T; options: Opt<T>[]; onChange: (v: T) => void; className?: string; optionClass?: string
-  render: (v: T, on: boolean) => ReactNode
+  render: (v: T, on: boolean) => ReactNode; lift?: boolean
 }) {
   const reduce = useReducedMotion()
   const refs = useRef<(HTMLButtonElement | null)[]>([])
@@ -55,7 +55,7 @@ function CardRadio<T extends string | number>({ label, value, options, onChange,
             onClick={() => onChange(o.v)}
             onKeyDown={(e) => onKey(e, i)}
             className={cn('vc-opt', on && 'is-on', optionClass)}
-            animate={reduce ? undefined : { y: on ? -5 : 0, rotate: on ? -0.6 : 0 }}
+            animate={reduce || !lift ? undefined : { y: on ? -5 : 0, rotate: on ? -0.6 : 0 }}
             whileTap={reduce ? undefined : { scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 420, damping: 24 }}
           >
@@ -110,7 +110,7 @@ function FamilyCard({ input, pristine, step, onJump }: { input: FamilyInput; pri
               <motion.span key={c.id} className="vc-fam-person is-kid" layout={!reduce}
                 initial={reduce ? false : { y: 24, opacity: 0, rotate: 8 }} animate={{ y: 0, opacity: 1, rotate: 0 }} exit={{ y: 16, opacity: 0 }}>
                 <Person kind={c.age < 0 ? 'baby' : 'child'} seed={i + 2} face="smile" className="vc-fam-fig" />
-                <span className="vc-fam-plabel">{ageText(c.age)}{c.age <= 2 && c.nursery ? '・園' : ''}</span>
+                <span className="vc-fam-plabel">{ageText(c.age)}{c.age >= 0 && c.age <= 2 && c.nursery ? '・園' : ''}</span>
               </motion.span>
             ))}
           </AnimatePresence>
@@ -148,7 +148,7 @@ const WORK_ICON: Record<WorkStyle, ReactNode> = {
 function YesNo({ value, onChange, label }: { value: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <CardRadio label={label} value={value ? 'yes' : 'no'} onChange={(v) => onChange(v === 'yes')}
-      options={[{ v: 'yes' }, { v: 'no' }]} className="vc-yn" optionClass="vc-yn-opt"
+      options={[{ v: 'yes' }, { v: 'no' }]} className="vc-yn" optionClass="vc-yn-opt" lift={false}
       render={(v) => <span>{v === 'yes' ? '通う' : '通わない'}</span>} />
   )
 }
@@ -304,7 +304,7 @@ export function InputFlow({ input, update, pristine, step, setStep, onDraw, onHo
     <div className="vc-input">
       <header className="vc-bar">
         <button type="button" className="vc-logo" onClick={onHome} aria-label="住む街ガチャ（はじめの画面へ）">住む街ガチャ</button>
-        <span className="vc-bar-step" aria-hidden>{step + 1} / {STEPS.length}</span>
+        <span className="vc-bar-step">入力は送信しません</span>
       </header>
 
       <div className="vc-input-grid">
@@ -314,13 +314,16 @@ export function InputFlow({ input, update, pristine, step, setStep, onDraw, onHo
         </div>
 
         <div className="vc-input-main">
-          <ol className="vc-pips" aria-label={`${STEPS.length}問中 ${step + 1}問目`}>
-            {STEPS.map((x, i) => (
-              <li key={x.key} className={cn('vc-pip', i < step && 'is-done', i === step && 'is-now')} aria-current={i === step ? 'step' : undefined}>
-                <span className="sr-only">{i + 1}問目{i < step ? '（済み）' : ''}</span>
-              </li>
-            ))}
-          </ol>
+          <div className="vc-qtop">
+            <ol className="vc-pips" aria-label={`${STEPS.length}問中 ${step + 1}問目`}>
+              {STEPS.map((x, i) => (
+                <li key={x.key} className={cn('vc-pip', i < step && 'is-done', i === step && 'is-now')} aria-current={i === step ? 'step' : undefined}>
+                  <span className="sr-only">{i + 1}問目{i < step ? '（済み）' : ''}</span>
+                </li>
+              ))}
+            </ol>
+            <span className="vc-q-no" aria-hidden>Q{step + 1} / {STEPS.length}</span>
+          </div>
           <AnimatePresence mode="wait" initial={false} custom={dir.current}>
             <motion.section key={s.key} className="vc-q" aria-labelledby={`vc-q-${s.key}`}
               custom={dir.current}
@@ -328,8 +331,7 @@ export function InputFlow({ input, update, pristine, step, setStep, onDraw, onHo
               animate={{ opacity: 1, x: 0, rotate: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir.current * -48, rotate: dir.current * -1.5 }}
               transition={{ duration: reduce ? 0.01 : 0.28, ease: [0.3, 0.7, 0.2, 1] }}>
-              <p className="vc-q-no" aria-hidden>Q{step + 1}</p>
-              <h2 id={`vc-q-${s.key}`} ref={head} tabIndex={-1} className="vc-q-title">{s.q}</h2>
+              <h1 id={`vc-q-${s.key}`} ref={head} tabIndex={-1} className="vc-q-title">{s.q}</h1>
               <p className="vc-q-help">{s.help}</p>
               {body}
               {(s.key === 'from' || s.key === 'years' || s.key === 'work') && candidates === 0 && (

@@ -1,0 +1,532 @@
+/* 案D「家計レシート」 — 感熱紙のレシートと、あたたかい木の食卓。
+   色: 壁はクリーム、テーブルははちみつ色の木、紙は少し黄みの白、印字は青みの黒、はんこと丸は朱。
+   書体: 印字は M PLUS 1 Code（等幅）、手書きのPOPや赤ペンは Yusei Magic。
+   すべて .vd の中に閉じこめる（ほかの案と混ざらないように）。 */
+
+.vd {
+  --wall: #f5ecdc;
+  --wall-2: #ecdfc6;
+  --wall-line: rgba(150, 104, 58, 0.07);
+  --wood: #c88a4c;
+  --wood-2: #a96d36;
+  --wood-3: #7f4d25;
+  --wood-hi: #dca46a;
+  --paper: #fffdf7;
+  --paper-2: #f3eee2;
+  --paper-edge: #e3dac8;
+  --ink: #2a2730;
+  --ink-2: #5c5761;
+  --red: #c8392e;
+  --red-ink: #b3322a;
+  --plus: #1d6a4e;
+  --lamp: #ffd98c;
+  --pr: #e6ebef;
+  --pr-ink: #44505a;
+
+  font-family: 'M PLUS 1 Code', 'BIZ UDGothic', ui-monospace, monospace;
+  font-weight: 400;
+  color: var(--ink);
+  background-color: var(--wall);
+  background-image: repeating-linear-gradient(90deg, transparent 0 26px, var(--wall-line) 26px 28px);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
+  font-feature-settings: 'palt' 0;
+}
+
+.vd *,
+.vd *::before,
+.vd *::after {
+  box-sizing: border-box;
+}
+
+.vd-hand {
+  font-family: 'Yusei Magic', 'M PLUS 1 Code', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.vd :focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+.vd .vd-dark :focus-visible {
+  outline-color: var(--paper);
+}
+
+.vd-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ───────── ボタン ───────── */
+
+.vd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 54px;
+  padding: 0 22px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  color: var(--paper);
+  background: var(--red);
+  border: 0;
+  border-bottom: 4px solid #9b2a21;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-bottom-width 0.12s ease, background-color 0.15s ease;
+  touch-action: manipulation;
+}
+.vd-btn:hover {
+  background: #d24236;
+}
+.vd-btn:active {
+  transform: translateY(3px);
+  border-bottom-width: 1px;
+}
+.vd-btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.vd-btn--ink {
+  background: var(--ink);
+  border-bottom-color: #0f0e12;
+}
+.vd-btn--ink:hover {
+  background: #3a3641;
+}
+.vd-btn--paper {
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-bottom-width: 4px;
+}
+.vd-btn--paper:hover {
+  background: #fff;
+}
+.vd-btn--paper:active {
+  border-bottom-width: 1.5px;
+}
+.vd-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 44px;
+  padding: 0 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 5px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ───────── 感熱紙 ───────── */
+
+.vd-paper-wrap {
+  filter: drop-shadow(0 1px 1px rgba(70, 45, 20, 0.1)) drop-shadow(0 12px 14px rgba(70, 45, 20, 0.16));
+}
+/* ギザギザの上下は CSS のマスク（21st「Receipt Pricing」n1m4mz の作り方を借りた） */
+.vd-paper {
+  --tooth-w: 12px;
+  --tooth-h: 12px;
+  position: relative;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(180deg, rgba(42, 39, 48, 0.026) 0 1px, transparent 1px 4px);
+  -webkit-mask-image: linear-gradient(135deg, transparent 50%, #000 0), linear-gradient(-135deg, transparent 50%, #000 0), linear-gradient(#000, #000),
+    linear-gradient(135deg, #000 50%, transparent 0), linear-gradient(-135deg, #000 50%, transparent 0);
+  mask-image: linear-gradient(135deg, transparent 50%, #000 0), linear-gradient(-135deg, transparent 50%, #000 0), linear-gradient(#000, #000),
+    linear-gradient(135deg, #000 50%, transparent 0), linear-gradient(-135deg, #000 50%, transparent 0);
+  -webkit-mask-size: var(--tooth-w) var(--tooth-h), var(--tooth-w) var(--tooth-h), 100% calc(100% - var(--tooth-h)), var(--tooth-w) var(--tooth-h),
+    var(--tooth-w) var(--tooth-h);
+  mask-size: var(--tooth-w) var(--tooth-h), var(--tooth-w) var(--tooth-h), 100% calc(100% - var(--tooth-h)), var(--tooth-w) var(--tooth-h),
+    var(--tooth-w) var(--tooth-h);
+  -webkit-mask-position: 0 0, 0 0, 0 calc(var(--tooth-h) / 2), 0 100%, 0 100%;
+  mask-position: 0 0, 0 0, 0 calc(var(--tooth-h) / 2), 0 100%, 0 100%;
+  -webkit-mask-repeat: repeat-x, repeat-x, no-repeat, repeat-x, repeat-x;
+  mask-repeat: repeat-x, repeat-x, no-repeat, repeat-x, repeat-x;
+}
+.vd-paper--flat-top {
+  -webkit-mask-image: linear-gradient(#000, #000), linear-gradient(135deg, #000 50%, transparent 0), linear-gradient(-135deg, #000 50%, transparent 0);
+  mask-image: linear-gradient(#000, #000), linear-gradient(135deg, #000 50%, transparent 0), linear-gradient(-135deg, #000 50%, transparent 0);
+  -webkit-mask-size: 100% calc(100% - var(--tooth-h) / 2), var(--tooth-w) var(--tooth-h), var(--tooth-w) var(--tooth-h);
+  mask-size: 100% calc(100% - var(--tooth-h) / 2), var(--tooth-w) var(--tooth-h), var(--tooth-w) var(--tooth-h);
+  -webkit-mask-position: 0 0, 0 100%, 0 100%;
+  mask-position: 0 0, 0 100%, 0 100%;
+  -webkit-mask-repeat: no-repeat, repeat-x, repeat-x;
+  mask-repeat: no-repeat, repeat-x, repeat-x;
+}
+
+.vd-rule {
+  height: 0;
+  border-top: 1.5px dashed rgba(42, 39, 48, 0.32);
+}
+.vd-rule--double {
+  height: 5px;
+  border-top: 1.5px solid rgba(42, 39, 48, 0.55);
+  border-bottom: 1.5px solid rgba(42, 39, 48, 0.55);
+}
+.vd-leader {
+  flex: 1 1 auto;
+  min-width: 10px;
+  border-bottom: 1.5px dotted rgba(42, 39, 48, 0.3);
+  transform: translateY(-0.32em);
+}
+/* 見出しは「数字＋単位」の途中で折り返さない（はみ出すときだけ中で折る） */
+.vd-phrase {
+  display: inline-block;
+}
+.vd-phrases {
+  word-break: auto-phrase;
+}
+
+/* 倍角（レシートの店名・合計の、横に2倍・縦に2倍の文字） */
+.vd-wide {
+  display: inline-block;
+  transform: scaleX(1.55);
+  transform-origin: center;
+}
+.vd-tall {
+  display: inline-block;
+  transform: scaleY(1.45);
+  transform-origin: bottom;
+}
+
+.vd-conf {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 5px;
+  min-height: 18px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink-2);
+  border: 1.2px solid currentColor;
+  border-radius: 3px;
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+.vd-conf--est {
+  border-style: dashed;
+}
+.vd-conf--tmp {
+  border-style: dotted;
+  color: var(--red-ink);
+}
+
+.vd-stamp {
+  display: inline-block;
+  flex: none;
+  white-space: nowrap;
+  padding: 2px 8px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--red-ink);
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  transform: rotate(-4deg);
+  opacity: 0.92;
+  mix-blend-mode: multiply;
+}
+.vd-stamp--round {
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+/* 印字の行。タップで中身が開く */
+.vd-line {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 2px 10px;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.vd-line:hover {
+  background: rgba(200, 138, 76, 0.07);
+}
+
+/* 印字ヘッドの細い影（21st「Receipt Pricing」の print head を借りた） */
+.vd-head-line {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 88%, rgba(42, 39, 48, 0.06) 97%, rgba(42, 39, 48, 0.32) 100%);
+}
+
+/* ───────── 伝票（選ぶところ） ───────── */
+
+.vd-slip {
+  background: var(--paper);
+  border-radius: 4px;
+  box-shadow: 0 1px 0 var(--paper-edge), 0 8px 18px -10px rgba(70, 45, 20, 0.35);
+}
+.vd-opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 14px 8px 12px;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 10px;
+}
+.vd-opt:hover {
+  background: rgba(200, 138, 76, 0.08);
+}
+.vd-opt[aria-checked='true'] {
+  font-weight: 700;
+}
+.vd-box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  background: var(--paper);
+}
+
+/* ───────── 数を変えるつまみ（21st「Quantity Stepper」を作り変え） ───────── */
+
+.vd-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+}
+.vd-stepper button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.vd-stepper button:hover {
+  background: #ebe3d2;
+}
+.vd-stepper button[data-edge='true'] {
+  opacity: 0.35;
+}
+.vd-stepper [role='spinbutton'] {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  height: 44px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── 食卓の絵のうごき ───────── */
+
+.vd-scene svg {
+  overflow: visible;
+}
+.vd-bob {
+  animation: vd-bob 3.4s ease-in-out infinite;
+}
+.vd-hop {
+  animation: vd-hop 0.9s ease-in-out infinite;
+}
+.vd-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: vd-blink 5.2s infinite;
+}
+.vd-steam {
+  animation: vd-steam 2.6s ease-in-out infinite;
+}
+.vd-pig-idle {
+  animation: vd-bob 3s ease-in-out infinite;
+}
+.vd-pig-hop {
+  animation: vd-pig-hop 0.8s ease-in-out infinite;
+}
+.vd-pig-sigh {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: vd-pig-sigh 3.8s ease-in-out infinite;
+}
+.vd-coin {
+  animation: vd-coin 1.4s ease-in infinite;
+}
+.vd-cloud {
+  animation: vd-bob 2.4s ease-in-out infinite;
+}
+.vd-drop {
+  animation: vd-drop 1.6s ease-in infinite;
+}
+
+@keyframes vd-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.4px);
+  }
+}
+@keyframes vd-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes vd-blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+@keyframes vd-steam {
+  0% {
+    transform: translateY(2px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-7px);
+    opacity: 0;
+  }
+}
+@keyframes vd-pig-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes vd-pig-sigh {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.97);
+  }
+}
+@keyframes vd-coin {
+  0% {
+    transform: translateY(-22px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(2px);
+    opacity: 0;
+  }
+}
+@keyframes vd-drop {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(9px);
+    opacity: 0;
+  }
+}
+
+/* ───────── ガチャ（レジのプリンター） ───────── */
+
+.vd-jiji {
+  animation: vd-jiji 0.09s steps(2) infinite;
+}
+@keyframes vd-jiji {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(1px, -1px);
+  }
+  100% {
+    transform: translate(-1px, 0);
+  }
+}
+.vd-led-on {
+  animation: vd-led 0.5s steps(2) infinite;
+}
+@keyframes vd-led {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.35;
+  }
+}
+
+/* ───────── PR（広告の仮の枠） ───────── */
+
+.vd-pr {
+  color: var(--pr-ink);
+  background-color: var(--pr);
+  background-image: repeating-linear-gradient(-45deg, transparent 0 9px, rgba(68, 80, 90, 0.05) 9px 11px);
+  border: 1.5px dashed rgba(68, 80, 90, 0.45);
+  border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vd *,
+  .vd *::before,
+  .vd *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

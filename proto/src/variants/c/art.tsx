@@ -325,14 +325,17 @@ const ART: Record<string, (p: ArtProps) => ReactNode> = {
   ),
 }
 
-/** 街のカードに入る絵 */
-export function CityArt({ id, className, label }: { id: string; className?: string; label?: boolean }) {
+/** 絵のいちばん上（空）の色。枠が絵より縦長のとき、この色で上をつなぐ */
+export const skyOf = (id: string) => (id === 'kawasaki' ? meta(id).ink : mix(meta(id).ink, CREAM, 0.88))
+
+/** 街のカードに入る絵。fit=bottom は、枠が縦長でも絵を切らずに下に置く（上は空の色） */
+export function CityArt({ id, className, label, fit = 'slice' }: { id: string; className?: string; label?: boolean; fit?: 'slice' | 'bottom' }) {
   const raw = useId()
   const uid = 'vc' + raw.replace(/[^a-zA-Z0-9]/g, '')
   const m = meta(id)
   const draw = ART[id]
   return (
-    <svg viewBox="0 0 240 132" className={className} preserveAspectRatio="xMidYMid slice"
+    <svg viewBox="0 0 240 132" className={className} preserveAspectRatio={fit === 'bottom' ? 'xMidYMax meet' : 'xMidYMid slice'}
       role={label ? 'img' : undefined} aria-label={label ? `絵: ${m.motif}` : undefined} aria-hidden={label ? undefined : true}>
       <defs>
         <pattern id={`${uid}-dot`} width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">

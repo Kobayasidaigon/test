@@ -18,7 +18,7 @@ import NumberFlow from '@number-flow/react'
 import type { City, Comparison, Confidence, FamilyInput } from '@/shared'
 import { DATA_AS_OF, yenMan } from '@/shared'
 import { cn } from '@/lib/utils'
-import { BackPattern, CityArt, KindIcon } from './art'
+import { BackPattern, CityArt, KindIcon, skyOf } from './art'
 import { KIND_LABEL, fmtYen, incomeLabel, man1, meta, pickPride, statOf } from './lib'
 import { Conf } from './ui'
 
@@ -104,12 +104,43 @@ function Stat({ cmp, role, compact }: { cmp?: Comparison | null; role: Role; com
   )
 }
 
-/** 表: 都道府県・番号（自治体コード）・街の名前・絵・名物・毎年の差 */
+// カードの表の小さな棒グラフ（項目ごとの差）。左＝いまの街が得、右＝この街が得。
+// 文字の説明は結果画面の「となり町くらべ」にあるので、ここは絵として扱う（aria-hidden）。
+const SHORT: Record<string, string> = { nursery: '保育料', cash: '現金給付', lunch: '給食費', medical: '医療費' }
+function MiniBars({ cmp }: { cmp: Comparison }) {
+  const known = cmp.items.filter((i) => !i.oneTime && i.perYear !== null).sort((a, b) => Math.abs(b.perYear ?? 0) - Math.abs(a.perYear ?? 0))
+  const rows = [...known.map((i) => ({ i, unk: false })), ...cmp.unknown.map((i) => ({ i, unk: true }))].slice(0, 3)
+  if (!rows.length) return null
+  const max = Math.max(1, ...known.map((i) => Math.abs(i.perYear ?? 0)))
+  return (
+    <div className="vc-cf-bars" aria-hidden style={{ '--ink-from': meta(cmp.from.id).ink } as CSSProperties}>
+      <div className="vc-cf-bars-legend"><span>← {cmp.from.name}</span><span>この街 →</span></div>
+      {rows.map(({ i, unk }) => {
+        const v = i.perYear ?? 0
+        const even = !unk && Math.abs(v) < 1
+        const w = unk || even ? 0 : Math.max(8, (Math.abs(v) / max) * 100)
+        return (
+          <div className="vc-cf-bar" key={i.key}>
+            <span className="vc-cf-bar-k">{SHORT[i.key] ?? i.label}</span>
+            <span className={cn('vc-cf-bar-t', unk && 'is-unk', even && 'is-even')}>
+              <span className="vc-cf-bar-l">{!unk && v < 0 && !even && <i style={{ width: `${w}%` }} />}</span>
+              <span className="vc-cf-bar-a" />
+              <span className="vc-cf-bar-r">{!unk && v > 0 && !even && <i style={{ width: `${w}%` }} />}</span>
+            </span>
+            <span className="vc-cf-bar-v">{unk ? '確認中' : even ? '差なし' : fmtYen(v)}</span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+/** 表: 都道府県・番号（自治体コード）・街の名前・絵・名物・項目ごとの差・毎年の差 */
 export function CardFront({ city, cmp, role = 'to', compact }: { city: City; cmp?: Comparison | null; role?: Role; compact?: boolean }) {
   const m = meta(city.id)
   const pride = pickPride(city)
   return (
-    <div className={cn('vc-cf', compact && 'is-compact')} style={{ '--ink': m.ink } as CSSProperties}>
+    <div className={cn('vc-cf', compact && 'is-compact')} style={{ '--ink': m.ink, '--sky': skyOf(city.id) } as CSSProperties}>
       <div className="vc-cf-frame">
         <div className="vc-cf-strip">
           <span>{city.pref}</span>
@@ -117,7 +148,7 @@ export function CardFront({ city, cmp, role = 'to', compact }: { city: City; cmp
         </div>
         <div className="vc-cf-name">{city.name}</div>
         <div className="vc-cf-art">
-          <CityArt id={city.id} label={!compact} />
+          <CityArt id={city.id} label={!compact} fit="bottom" />
         </div>
         {!compact && pride && (
           <div className="vc-cf-pride">
@@ -128,6 +159,7 @@ export function CardFront({ city, cmp, role = 'to', compact }: { city: City; cmp
             <p>{pride.fact}</p>
           </div>
         )}
+        {!compact && role === 'to' && cmp && <MiniBars cmp={cmp} />}
         <Stat cmp={cmp} role={role} compact={compact} />
       </div>
     </div>
