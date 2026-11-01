@@ -5,9 +5,10 @@
  * 借りたところ: 指の位置から角度を出す計算、0時をまたいだときの角度の折り返し、さわったときの小さな振動。
  * 変えたところ: 端のあるダイヤルではなく、時計回りにしか進まない「ラチェット」にした。
  *   1/4回転ごとにカチッと止まり、ぐるっと1周すると onTurned。タップ・Enter・Space なら自動で1周する。
+ *   影は回らない台の円盤に付け、回すのは黄色い面と赤いバーだけ（光が回って見えないように）。
  */
 import { animate, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from 'motion/react'
-import { type KeyboardEvent, type PointerEvent, useRef, useState } from 'react'
+import { type KeyboardEvent, type PointerEvent, type Ref, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 function pointerAngle(event: PointerEvent, rect: DOMRect) {
@@ -19,7 +20,7 @@ function hapticTick() {
   if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(8)
 }
 
-export function GachaHandle({ onTurned, onNotch, disabled = false, size = 168 }: { onTurned: () => void; onNotch?: (quarter: number) => void; disabled?: boolean; size?: number }) {
+export function GachaHandle({ onTurned, onNotch, disabled = false, size = 168, knobRef, label = 'ハンドルを回して、カプセルを出す（押すだけでも回ります）' }: { onTurned: () => void; onNotch?: (quarter: number) => void; disabled?: boolean; size?: number; knobRef?: Ref<HTMLDivElement>; label?: string }) {
   const reduce = useReducedMotion()
   const rot = useMotionValue(0)
   const quarter = useRef(0)
@@ -121,10 +122,11 @@ export function GachaHandle({ onTurned, onNotch, disabled = false, size = 168 }:
         })}
       </svg>
       <div
+        ref={knobRef}
         role="button"
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled || undefined}
-        aria-label="ハンドルを回して、カプセルを出す（押すだけでも回ります）"
+        aria-label={label}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -136,7 +138,9 @@ export function GachaHandle({ onTurned, onNotch, disabled = false, size = 168 }:
         )}
         style={{ width: size * 0.74, height: size * 0.74 }}
       >
-        <motion.div aria-hidden className="absolute inset-0 rounded-full border-[3px] border-[var(--ink)] bg-[var(--yolk)] shadow-[3px_5px_0_var(--ink)]" style={{ rotate: rot }}>
+        {/* 回らない台（影はここだけ） */}
+        <span aria-hidden className="absolute inset-0 translate-x-[3px] translate-y-[5px] rounded-full bg-[var(--ink)]" />
+        <motion.div aria-hidden className="absolute inset-0 rounded-full border-[3px] border-[var(--ink)] bg-[var(--yolk)]" style={{ rotate: rot }}>
           <span className="absolute left-1/2 top-1/2 block -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-[var(--ink)] bg-[var(--red)]" style={{ width: size * 0.66, height: size * 0.19 }}>
             <span className="absolute left-[12%] top-1/2 h-[30%] w-[22%] -translate-y-1/2 rounded-full bg-white/45" />
           </span>

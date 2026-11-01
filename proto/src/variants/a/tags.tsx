@@ -6,7 +6,8 @@
  *   - ラジオグループとしてのふるまい（矢印キー・Home/End で選択が動く、選んだものだけ Tab で止まる）と、
  *     選んだところへ「しるし」が layoutId ですべっていく考え方はそのまま使った。
  *   - 横一列のピルをやめ、ひもで吊るした札を格子に並べた。すべっていくのは黄色い札の地。
- *   - 選んだ札は少しゆれて、赤い丸のしるしがポンと付く。札には小さな説明（hint）も書ける。
+ *   - 選んだ札は少しゆれて、赤い丸のしるしがポンと付く。札には小さな説明（hint）と絵（icon）も付けられ、
+ *     選んだときの地の色（tint。街のカプセルの色など）も変えられる。
  */
 import { motion, useReducedMotion } from 'motion/react'
 import { Check } from 'lucide-react'
@@ -19,6 +20,8 @@ export interface TagOption<T extends string> {
   sub?: ReactNode
   hint?: ReactNode
   aria?: string
+  icon?: ReactNode
+  tint?: string
 }
 
 export function TagGroup<T extends string>({ options, value, onChange, ariaLabel, columns = 2, compact = false }: {
@@ -78,18 +81,22 @@ export function TagGroup<T extends string>({ options, value, onChange, ariaLabel
               {on && (
                 <motion.span
                   layoutId={pill}
-                  className="absolute inset-0 rounded-[11px] bg-[var(--yolk)]"
+                  className="absolute inset-0 rounded-[11px]"
+                  style={{ background: o.tint ?? 'var(--yolk)' }}
                   transition={reduce ? { duration: 0 } : { type: 'spring', bounce: 0.22, duration: 0.42 }}
                 />
               )}
               {/* 札の穴 */}
               <span aria-hidden className="absolute left-1/2 top-1 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--bg)]" />
-              <span className="relative block">
-                {o.sub && <span className="block text-[11px] font-bold leading-tight text-[var(--ink-soft)]">{o.sub}</span>}
+              <span className={cn('relative block', o.icon && 'flex items-center gap-1.5')}>
+                {o.icon && <span className="shrink-0">{o.icon}</span>}
+                <span className="block min-w-0">
+                {o.sub && <span className="block text-[12px] font-bold leading-tight text-[var(--ink-soft)]">{o.sub}</span>}
                 <span className={cn('block font-black leading-snug [word-break:keep-all]', compact ? 'text-[15px]' : 'text-[16px]')}>
                   {typeof o.label === 'string' ? o.label.replace(/・/g, '・\u200b') : o.label}
                 </span>
                 {o.hint && <span className="mt-0.5 block text-[12px] font-bold leading-snug text-[var(--ink-soft)]">{o.hint}</span>}
+                </span>
               </span>
               {on && (
                 <motion.span

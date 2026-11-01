@@ -10,6 +10,8 @@
  *     まわりの札（notches）を置けるようにした。札を押してもその位置まで回る。
  *   - 見た目をガチャの筐体のつまみに：卵黄色のノブ、墨色の太い線、ぼかさない影、ふちのギザギザ。
  *   - 目盛りの色を墨と赤に。テーマ用の CSS とダークモードの指定は外した。
+ *   - 赤い目印はふちのギザギザの帯の中だけに収め、窓の文字（18歳まで）に重ならないようにした。
+ *   - 読み上げの名前（ariaLabel）を外から渡せるようにした（例: 1人目の子の年齢）。
  */
 import {
   AnimatePresence,
@@ -63,6 +65,7 @@ export interface DialProps {
   startAngle?: number
   notches?: { value: number; label: string }[]
   endLabels?: [string, string]
+  ariaLabel?: string
   className?: string
 }
 
@@ -79,6 +82,7 @@ export function Dial({
   startAngle = -135,
   notches,
   endLabels,
+  ariaLabel,
   className,
 }: DialProps) {
   const labelId = useId()
@@ -261,7 +265,7 @@ export function Dial({
         endLabels.map((t, i) => {
           const p = polar(center, center, outer + 14, i === 0 ? startAngle - 8 : startAngle + sweep + 8)
           return (
-            <span key={t} aria-hidden className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[11px] font-bold text-[var(--ink-soft)]" style={{ left: p.x, top: p.y }}>
+            <span key={t} aria-hidden className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[12px] font-bold text-[var(--ink-soft)]" style={{ left: p.x, top: p.y }}>
               {t}
             </span>
           )
@@ -295,7 +299,8 @@ export function Dial({
         ref={knobRef}
         role="slider"
         tabIndex={0}
-        aria-labelledby={labelId}
+        aria-labelledby={ariaLabel ? undefined : labelId}
+        aria-label={ariaLabel}
         aria-valuemin={min}
         aria-valuemax={max}
         aria-valuenow={value}
@@ -323,10 +328,10 @@ export function Dial({
               <span className="absolute left-0 top-[3px] h-[7px] w-[2px] rounded-full bg-[var(--yolk-deep)]" />
             </span>
           ))}
-          <span className="absolute left-1/2 top-[9px] h-[18px] w-[7px] -translate-x-1/2 rounded-full border-2 border-[var(--ink)] bg-[var(--red)]" />
+          <span className="absolute left-1/2 top-[2px] h-[11px] w-[7px] -translate-x-1/2 rounded-full border-2 border-[var(--ink)] bg-[var(--red)]" />
         </motion.div>
         <div className="pointer-events-none absolute inset-[12%] flex flex-col items-center justify-center rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--paper)]">
-          <span id={labelId} className="text-[10px] font-bold leading-none text-[var(--ink-soft)]">
+          <span id={labelId} className="text-[12px] font-bold leading-none text-[var(--ink-soft)]">
             {label}
           </span>
           <RollingValue text={formatValue(value)} direction={direction} reduceMotion={Boolean(reduceMotion)} room={knobSize * 0.76 * 0.84} />
