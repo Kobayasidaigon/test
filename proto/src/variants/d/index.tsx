@@ -29,7 +29,7 @@ function readUrl() {
 
 function Logo({ onClick }: { onClick?: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="inline-flex min-h-[44px] items-center gap-2 rounded-lg pr-2 text-[15px] font-bold tracking-[0.06em]" aria-label="住む街ガチャ（はじめの画面へ）">
+    <button type="button" onClick={onClick} className="inline-flex min-h-[44px] flex-none items-center gap-2 whitespace-nowrap rounded-lg pr-2 text-[15px] font-bold tracking-[0.06em]" aria-label="住む街ガチャ（はじめの画面へ）">
       <svg viewBox="0 0 22 26" width={20} height={24} aria-hidden="true">
         <path d="M2 1 H20 V22 l-2 2 -2 -2 -2 2 -2 -2 -2 2 -2 -2 -2 2 -2 -2 -2 2Z" fill="var(--paper)" stroke="var(--ink)" strokeWidth={1.5} strokeLinejoin="round" />
         <path d="M6 7 H16 M6 11 H13 M6 15 H16" stroke="var(--ink)" strokeWidth={1.5} strokeLinecap="round" />
@@ -41,7 +41,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
 
 function Dots({ n, at }: { n: number; at: number }) {
   return (
-    <span aria-hidden="true" className="flex items-center gap-1">
+    <span aria-hidden="true" className="flex items-center gap-1 max-[359px]:hidden">
       {Array.from({ length: n }, (_, i) => (
         <span key={i} className={cn('h-[5px] rounded-full transition-all', i < at ? 'w-4 bg-[var(--ink)]' : i === at ? 'w-7 bg-[var(--red)]' : 'w-4 bg-[rgba(42,39,48,.18)]')} />
       ))}
@@ -175,7 +175,7 @@ export default function VariantD() {
           <header className="mx-auto flex w-full max-w-[1120px] items-center justify-between gap-3 px-4 pt-2 lg:px-8 lg:pt-4">
             <Logo onClick={() => go('start')} />
             {screen === 'input' && (
-              <p className="flex items-center gap-2 text-[12.5px] font-bold text-[var(--ink-2)]">
+              <p className="flex items-center gap-2 whitespace-nowrap text-[12.5px] font-bold text-[var(--ink-2)]">
                 <span>
                   質問 {at + 1}/{steps.length}
                 </span>
@@ -216,7 +216,7 @@ export default function VariantD() {
 
           {screen === 'input' && (
             <motion.main key="input" {...fade} className="mx-auto w-full max-w-[1120px] px-4 pb-6 pt-1 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)] lg:gap-14 lg:px-8 lg:pt-6">
-              <div className="lg:sticky lg:top-6 lg:self-start">
+              <div className="vd-stick-sm">
                 <TableScene
                   input={input}
                   mode={key === 'family' ? 'family' : key === 'ages' ? 'ages' : 'plain'}
@@ -262,14 +262,20 @@ export default function VariantD() {
                   aria-label="質問の移動"
                   className="sticky bottom-0 z-20 -mx-4 mt-5 flex items-center gap-3 border-t border-dashed border-[rgba(42,39,48,.25)] bg-[var(--wall)] px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 lg:static lg:mx-0 lg:border-0 lg:bg-transparent lg:px-0"
                 >
-                  <button type="button" className="vd-btn vd-btn--paper !px-4" onClick={back}>
+                  <button type="button" className="vd-btn vd-btn--paper !px-3.5" onClick={back} aria-label={at > 0 ? 'ひとつ前の質問にもどる' : 'はじめの画面にもどる'}>
                     <ArrowLeft size={18} aria-hidden="true" />
-                    もどる
+                    <span className="max-[359px]:hidden">もどる</span>
                   </button>
-                  <button type="button" className={cn('vd-btn flex-1', at === steps.length - 1 ? '' : 'vd-btn--ink')} onClick={next}>
-                    {at === steps.length - 1 ? 'ガチャ！ レシートを出す' : 'つぎへ'}
-                    {at < steps.length - 1 && <ArrowRight size={18} aria-hidden="true" />}
-                  </button>
+                  {at === steps.length - 1 ? (
+                    <button type="button" className="vd-btn flex-1 whitespace-nowrap !px-3 !text-[clamp(15px,4.2vw,16px)]" onClick={next}>
+                      ガチャ！レシートを出す
+                    </button>
+                  ) : (
+                    <button type="button" className="vd-btn vd-btn--ink flex-1" onClick={next}>
+                      つぎへ
+                      <ArrowRight size={18} aria-hidden="true" />
+                    </button>
+                  )}
                 </nav>
               </section>
             </motion.main>
@@ -279,6 +285,7 @@ export default function VariantD() {
             <motion.main key="result" {...fade}>
               {current ? (
                 <Result
+                  focusHeadline={!printOnMount}
                   ranked={ranked}
                   current={current}
                   input={input}

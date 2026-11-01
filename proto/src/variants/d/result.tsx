@@ -1,5 +1,5 @@
 // 案D「家計レシート」 — 結果。見出し → 名物の食卓 → 家計のレシート → ほかの街 → 次の一歩（PRの仮の枠）→ もう1回 → 免責。
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { useReducedMotion } from 'motion/react'
 import { RotateCcw } from 'lucide-react'
@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 import { PiggyFace } from './art'
 import { Conf, Receipt } from './receipt'
 import { TableScene } from './scene'
-import { nextSteps, signedMan } from './lib'
+import { nextSteps, phrases, signedMan } from './lib'
 
 const PIGGY_SAYS: Record<Mood, string> = {
   2: '貯金箱は大よろこび',
@@ -17,6 +17,13 @@ const PIGGY_SAYS: Record<Mood, string> = {
   0: '貯金箱はいつもどおり',
   [-1]: '貯金箱はちょっとしょんぼり',
   [-2]: '貯金箱はしょんぼり',
+}
+const CAPTION: Record<Mood, string> = {
+  2: '家族はばんざい。貯金箱（家計）も大よろこび。',
+  1: '家族はにこにこ。貯金箱（家計）もにっこり。',
+  0: 'いつもの晩ごはん。貯金箱（家計）もいつもどおり。',
+  [-1]: '家族はいつもの笑顔。しょんぼりは貯金箱（家計）だけ。',
+  [-2]: '家族はいつもの笑顔。しょんぼりは貯金箱（家計）だけ。',
 }
 const FAMILY_SAYS: Record<Mood, string> = {
   2: '家族はばんざい',
@@ -26,14 +33,23 @@ const FAMILY_SAYS: Record<Mood, string> = {
   [-2]: '家族はいつもどおりの笑顔',
 }
 
-function Headline({ c }: { c: Comparison }) {
+function Headline({ c, focus }: { c: Comparison; focus: boolean }) {
+  const ref = useRef<HTMLHeadingElement>(null)
+  useEffect(() => {
+    if (focus) ref.current?.focus({ preventScroll: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <section aria-labelledby="vd-headline" className="px-1">
       <p className="text-[13px] font-bold tracking-[0.08em] text-[var(--ink-2)]">
         {c.from.name} → {c.to.name}・{c.years}年で比べると
       </p>
-      <h1 id="vd-headline" className="vd-hand mt-1 text-[clamp(27px,7.4vw,36px)] leading-[1.25] text-[var(--ink)]">
-        <span style={{ background: 'linear-gradient(transparent 60%, rgba(255,217,140,.95) 60%, rgba(255,217,140,.95) 92%, transparent 92%)' }}>{c.headline}</span>
+      <h1 id="vd-headline" ref={ref} tabIndex={-1} className="vd-hand vd-phrases mt-1 outline-none text-[clamp(26px,7.2vw,36px)] leading-[1.3] text-[var(--ink)]">
+        {phrases(c.headline).map((t, i) => (
+          <span key={i} className="vd-phrase" style={{ background: 'linear-gradient(transparent 60%, rgba(255,217,140,.95) 60%, rgba(255,217,140,.95) 92%, transparent 92%)' }}>
+            {t}
+          </span>
+        ))}
       </h1>
       <p className="mt-2 flex items-center gap-2 text-[15px] font-bold leading-snug">
         <PiggyFace mood={c.mood} size={34} />
@@ -50,7 +66,7 @@ function PrideList({ c }: { c: Comparison }) {
       <h2 id="vd-pride" className="px-1 text-[13px] font-bold tracking-[0.12em] text-[var(--ink-2)]">
         {c.to.name}の名物を、食卓にならべました
       </h2>
-      <ul className="mt-2 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+      <ul className={cn('mt-2 grid gap-2.5', c.to.pride.length > 1 && 'sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2')}>
         {c.to.pride.map((p) => (
           <li key={p.label} className="relative overflow-hidden rounded-[6px] bg-[var(--paper)] px-3.5 pb-3 pt-4 shadow-[0_1px_0_var(--paper-edge),0_6px_14px_-10px_rgba(70,45,20,.45)]">
             <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[5px] bg-[var(--red)]" />
@@ -126,7 +142,7 @@ function NextSteps({ c, input }: { c: Comparison; input: FamilyInput }) {
   const [done, setDone] = useState<Record<string, boolean>>({})
   return (
     <section aria-labelledby="vd-next" className="mt-10">
-      <div className="relative rounded-[4px] bg-[var(--paper)] px-4 pb-4 pt-5 shadow-[0_1px_0_var(--paper-edge),0_10px_18px_-12px_rgba(70,45,20,.5)]" style={{ backgroundImage: 'repeating-linear-gradient(180deg, transparent 0 31px, rgba(63,111,143,.16) 31px 32px)', backgroundPosition: '0 14px' }}>
+      <div className="relative rounded-[4px] bg-[var(--paper)] px-4 pb-4 pt-5 shadow-[0_1px_0_var(--paper-edge),0_10px_18px_-12px_rgba(70,45,20,.5)]">
         <span aria-hidden="true" className="absolute -top-2.5 left-1/2 h-5 w-20 -translate-x-1/2 rotate-[-2deg] bg-[rgba(241,194,50,.55)]" />
         <h2 id="vd-next" className="vd-hand text-[26px] leading-tight">
           次の一歩
@@ -170,6 +186,7 @@ function NextSteps({ c, input }: { c: Comparison; input: FamilyInput }) {
 }
 
 export function Result({
+  focusHeadline,
   ranked,
   current,
   input,
@@ -179,6 +196,7 @@ export function Result({
   onRetry,
   onRestart,
 }: {
+  focusHeadline: boolean
   ranked: Comparison[]
   current: Comparison
   input: FamilyInput
@@ -221,12 +239,12 @@ export function Result({
       <p className="vd-sr" aria-live="polite">
         {live}
       </p>
-      <div className="lg:sticky lg:top-6 lg:self-start">
-        <Headline c={c} />
+      <div className="vd-stick">
+        <Headline c={c} focus={focusHeadline} />
         <div className="mt-3">
           <TableScene input={input} mode="result" mood={c.mood} city={c.to} label={sceneLabel} />
-          <p className="mt-1 text-center text-[12.5px] text-[var(--ink-2)]">
-            {FAMILY_SAYS[c.mood]}。{PIGGY_SAYS[c.mood]}（貯金箱＝家族の財布）
+          <p className="mt-1 text-center text-[12.5px] leading-snug text-[var(--ink-2)]" aria-hidden="true">
+            {CAPTION[c.mood]}
           </p>
         </div>
         <PrideList c={c} />

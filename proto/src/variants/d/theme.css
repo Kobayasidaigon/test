@@ -512,6 +512,22 @@
   }
 }
 
+/* 広い画面では左の食卓を止めておく（画面が低いときは止めない。下が見えなくなるので） */
+@media (min-width: 1024px) and (min-height: 640px) {
+  .vd-stick-sm {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+  }
+}
+@media (min-width: 1024px) and (min-height: 860px) {
+  .vd-stick {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+  }
+}
+
 /* ───────── PR（広告の仮の枠） ───────── */
 
 .vd-pr {

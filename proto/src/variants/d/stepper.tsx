@@ -101,8 +101,10 @@ export function Stepper({ value, onChange, min, max, label, format = String, val
     [min, max, onChange, label, text, edgeText],
   )
 
+  const pressedAt = useRef(0)
   const hold = (delta: number) => (e: PointerEvent<HTMLButtonElement>) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return
+    pressedAt.current = Date.now()
     stop()
     if (!stepBy(delta)) return
     delayRef.current = setTimeout(() => {
@@ -119,9 +121,9 @@ export function Stepper({ value, onChange, min, max, label, format = String, val
     }, HOLD_DELAY)
   }
 
-  // キーボードや読み上げソフトで押されたとき（detail が 0 の click）。pointerdown を通らないので、ここで1つ動かす
-  const keyClick = (delta: number) => (e: MouseEvent<HTMLButtonElement>) => {
-    if (e.detail === 0) stepBy(delta)
+  // キーボードや読み上げソフトで押されたとき。pointerdown を通らない click だけ、ここで1つ動かす
+  const keyClick = (delta: number) => (_e: MouseEvent<HTMLButtonElement>) => {
+    if (Date.now() - pressedAt.current > 700) stepBy(delta)
   }
 
   const onKey = (e: KeyboardEvent<HTMLSpanElement>) => {

@@ -140,7 +140,7 @@ export function ChoiceSlip<T extends string | number>({
               {g.name}
             </p>
           )}
-          <div className={cn('grid', columns === 2 ? 'grid-cols-2 gap-x-1' : 'grid-cols-1')}>
+          <div className={cn('grid', columns === 2 ? 'grid-cols-2 gap-x-1' : 'grid-cols-1 divide-y divide-dashed divide-[rgba(42,39,48,.14)]')}>
             {g.items.map(({ o, i }) => {
               const checked = i === selected
               return (

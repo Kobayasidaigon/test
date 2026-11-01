@@ -144,7 +144,7 @@ export function CardFront({ city, cmp, role = 'to', compact }: { city: City; cmp
       <div className="vc-cf-frame">
         <div className="vc-cf-strip">
           <span>{city.pref}</span>
-          <span className="vc-cf-code" aria-label={`自治体コード ${m.code}`}>No.{m.code}</span>
+          <span className="vc-cf-code"><span className="sr-only">自治体コード </span><span aria-hidden>No.</span>{m.code}</span>
         </div>
         <div className="vc-cf-name">{city.name}</div>
         <div className="vc-cf-art">

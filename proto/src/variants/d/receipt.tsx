@@ -17,7 +17,7 @@ import { DATA_AS_OF, everyday, yenMan } from '@/shared'
 import type { Breakdown, Comparison, Confidence, FamilyInput } from '@/shared/types'
 import { cn } from '@/lib/utils'
 import { HandCircle } from './choice'
-import { MOOD_NOTE, YEN_HINT, bars, familyShort, incomeLabel, kidsShort, perMonth, receiptNo, signedMan, workLabel } from './lib'
+import { MOOD_NOTE, YEN_HINT, bars, familyShort, incomeLabel, kidsShort, perMonth, phrases, receiptNo, signedMan, workLabel } from './lib'
 
 export function Conf({ c }: { c: Confidence }) {
   return <span className={cn('vd-conf', c === '推定' && 'vd-conf--est', c === '仮置き' && 'vd-conf--tmp')}>{c}</span>
@@ -262,7 +262,14 @@ export function Receipt({ c, input, isSample, printOnMount }: { c: Comparison; i
         <p className="vd-hand mt-3 text-right text-[20px] leading-tight text-[var(--red-ink)]" style={{ transform: 'rotate(-3deg)' }}>
           {MOOD_NOTE[r.mood]}
         </p>
-        <p className="mt-2 text-[15px] font-bold leading-snug">→ {r.headline}</p>
+        <p className="vd-phrases mt-2 text-[15px] font-bold leading-snug">
+          →{' '}
+          {phrases(r.headline).map((t, i) => (
+            <span key={i} className="vd-phrase">
+              {t}
+            </span>
+          ))}
+        </p>
         {r.unknown.length > 0 && (
           <p className="mt-2 text-[12.5px] leading-snug text-[var(--red-ink)]">
             確認中の「{r.unknown.map((u) => u.label).join('・')}」は、0円にせず合計から外しています。
@@ -271,10 +278,8 @@ export function Receipt({ c, input, isSample, printOnMount }: { c: Comparison; i
 
         {once.length > 0 && (
           <section aria-label="一度きりのお金（別会計）" className="mt-5 rounded-md border-[1.5px] border-[var(--ink)] px-3 pb-2 pt-2.5">
-            <p className="flex items-center justify-between text-[13px] font-bold tracking-[0.12em]">
-              一度きり（別会計）
-              <span className="text-[11.5px] font-normal tracking-normal text-[var(--ink-2)]">毎年の合計には入れていません</span>
-            </p>
+            <p className="text-[13px] font-bold tracking-[0.12em]">一度きり（別会計）</p>
+            <p className="text-[11.5px] leading-snug text-[var(--ink-2)]">毎年の差とは混ぜず、上の合計には入れていません。</p>
             <ul className="mt-1">
               {once.map((it) => (
                 <Line key={it.key} item={it} />
@@ -284,14 +289,20 @@ export function Receipt({ c, input, isSample, printOnMount }: { c: Comparison; i
         )}
 
         <Rule className="mt-5" />
-        <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[11.5px] text-[var(--ink-2)]">
-          <span>数字の確からしさ:</span>
-          <Conf c="確認済" />
-          <span>公式で確認</span>
-          <Conf c="推定" />
-          <span>根拠つきの見込み</span>
-          <Conf c="仮置き" />
-          <span>まだ確かめていない</span>
+        <p className="mt-3 text-[11.5px] font-bold text-[var(--ink-2)]">数字の確からしさ</p>
+        <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11.5px] text-[var(--ink-2)]">
+          <span className="inline-flex items-center gap-1 whitespace-nowrap">
+            <Conf c="確認済" />
+            公式で確認
+          </span>
+          <span className="inline-flex items-center gap-1 whitespace-nowrap">
+            <Conf c="推定" />
+            根拠つきの見込み
+          </span>
+          <span className="inline-flex items-center gap-1 whitespace-nowrap">
+            <Conf c="仮置き" />
+            まだ確かめていない
+          </span>
         </p>
         <Barcode seed={`${no}-${r.to.id}`} />
         <p className="mt-1 text-center text-[11px] tracking-[0.3em] text-[var(--ink-2)]" aria-hidden="true">
@@ -308,7 +319,7 @@ export function Receipt({ c, input, isSample, printOnMount }: { c: Comparison; i
 export function MiniReceipt({ c, input }: { c: Comparison; input: FamilyInput }) {
   const yearly = c.items.filter((i) => !i.oneTime)
   return (
-    <div className="px-5 pb-6 pt-7 text-[13px] leading-[20px]">
+    <div className="px-4 pb-6 pt-7 text-[13px] leading-[20px]">
       <p className="text-center text-[19px] font-bold leading-[26px]">
         <span className="vd-wide">住む街ガチャ</span>
       </p>
@@ -324,21 +335,23 @@ export function MiniReceipt({ c, input }: { c: Comparison; input: FamilyInput })
       <Rule className="my-2" />
       {yearly.length ? (
         yearly.map((it) => (
-          <p key={it.key} className="flex items-baseline gap-2">
-            <span className="truncate">{it.label.replace('（現金の給付）', '')}</span>
+          <p key={it.key} className="flex items-baseline gap-1.5">
+            <span className="min-w-0 truncate">{it.label.replace('（現金の給付）', '')}</span>
             <span className="vd-leader" aria-hidden="true" />
-            <span className="shrink-0 font-bold tabular-nums">{it.perYear === null ? '確認中' : signedMan(it.perYear)}</span>
+            <span className="shrink-0 whitespace-nowrap font-bold tabular-nums">{it.perYear === null ? '確認中' : signedMan(it.perYear)}</span>
           </p>
         ))
       ) : (
         <p>差が出る項目なし</p>
       )}
       <div aria-hidden="true" className="vd-rule--double my-2" />
-      <p className="flex items-baseline gap-2 text-[15px] font-bold">
-        <span className="vd-tall">合計</span>
-        <span className="text-[12px] font-normal">年あたり</span>
+      <p className="flex items-baseline gap-1.5 whitespace-nowrap font-bold">
+        <span className="text-[15px]">
+          <span className="vd-tall">合計</span>
+        </span>
+        <span className="text-[11px] font-normal max-[359px]:hidden">年あたり</span>
         <span className="vd-leader" aria-hidden="true" />
-        <span className="text-[20px] tabular-nums">{signedMan(c.perYear)}</span>
+        <span className="text-[clamp(15px,4.6vw,18px)] tabular-nums">{signedMan(c.perYear)}</span>
       </p>
       {c.oneTime > 0 && (
         <p className="mt-1 flex items-baseline gap-2 text-[12px]">
@@ -348,7 +361,13 @@ export function MiniReceipt({ c, input }: { c: Comparison; input: FamilyInput })
         </p>
       )}
       <Rule className="my-2" />
-      <p className="text-center text-[13px] font-bold leading-snug">{c.headline}</p>
+      <p className="vd-phrases text-center text-[13px] font-bold leading-snug">
+        {phrases(c.headline).map((t, i) => (
+          <span key={i} className="vd-phrase">
+            {t}
+          </span>
+        ))}
+      </p>
       <div aria-hidden="true" className="mx-auto mt-3 flex h-7 w-fit items-stretch">
         {bars(`${c.to.id}-${c.years}`, 40).map((w, i) => (
           <span key={i} className={i % 2 === 0 ? 'bg-[var(--ink)]' : ''} style={{ width: `${w}px` }} />

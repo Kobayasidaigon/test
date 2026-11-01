@@ -1,5 +1,5 @@
 /**
- * 案C「街カード」— ガチャの演出: 山札をまぜて、1枚が飛び出して裏返る（約3.5秒・とばせる）。
+ * 案C「街カード」— ガチャの演出: 山札をまぜて、1枚が飛び出して裏返る（約3秒・とばせる）。
  * 結果は計算で決まっている。まぜるのは演出だけで、出てくる1枚は rank() のいちばん上。
  *
  * 21st から借りた部品（詳しくは CREDITS.md）
@@ -39,22 +39,22 @@ export function Gacha({ cmps, input, onDone }: { cmps: Comparison[]; input: Fami
     let alive = true
     ;(async () => {
       try {
-        await animate('.vc-dk', { opacity: [0, 1], y: [36, 0] }, { duration: 0.26, delay: stagger(0.025) })
+        await animate('.vc-dk', { opacity: [0, 1], y: [36, 0] }, { duration: 0.24, delay: stagger(0.022) })
         if (!alive) return
         for (let k = 0; k < 2; k++) {
           await Promise.all([
-            animate('.vc-dk.is-l', { x: [0, -88, 0], rotate: [0, -10, 0], y: [0, -8, 0] }, { duration: 0.46, delay: stagger(0.03), ease: 'easeInOut' }),
-            animate('.vc-dk.is-r', { x: [0, 88, 0], rotate: [0, 10, 0], y: [0, -8, 0] }, { duration: 0.46, delay: stagger(0.03, { from: 'last' }), ease: 'easeInOut' }),
+            animate('.vc-dk.is-l', { x: [0, -88, 0], rotate: [0, -10, 0], y: [0, -8, 0] }, { duration: 0.42, delay: stagger(0.026), ease: 'easeInOut' }),
+            animate('.vc-dk.is-r', { x: [0, 88, 0], rotate: [0, 10, 0], y: [0, -8, 0] }, { duration: 0.42, delay: stagger(0.026, { from: 'last' }), ease: 'easeInOut' }),
           ])
           if (!alive) return
         }
         setPhase('rise')
-        await animate('.vc-pick', { y: -118, scale: 1.14, rotate: [0, -5, 0] }, { duration: 0.5, ease: [0.2, 0.9, 0.3, 1.15] })
+        await animate('.vc-pick', { y: -118, scale: 1.14, rotate: [0, -5, 0] }, { duration: 0.45, ease: [0.2, 0.9, 0.3, 1.15] })
         if (!alive) return
-        await animate('.vc-pick-flip', { rotateY: [180, 0] }, { duration: 0.62, ease: [0.3, 0.6, 0.25, 1] })
+        await animate('.vc-pick-flip', { rotateY: [180, 0] }, { duration: 0.55, ease: [0.3, 0.6, 0.25, 1] })
         if (!alive) return
         setPhase('open')
-        await wait(700)
+        await wait(650)
         if (alive) finish()
       } catch {
         if (alive) finish()

@@ -279,9 +279,9 @@ export function InputFlow({ input, update, pristine, step, setStep, onDraw, onHo
         render={(v) => {
           const c = cityById(v)
           return (
-            <span className="vc-pick" style={{ ['--ink' as string]: meta(c.id).ink }}>
-              <span className="vc-pick-art"><CityArt id={c.id} /></span>
-              <span className="vc-pick-txt"><small>{c.pref}</small><b>{c.name}</b></span>
+            <span className="vc-citypick" style={{ ['--ink' as string]: meta(c.id).ink }}>
+              <span className="vc-citypick-art"><CityArt id={c.id} /></span>
+              <span className="vc-citypick-txt"><small>{c.pref}</small><b>{c.name}</b></span>
             </span>
           )
         }} />

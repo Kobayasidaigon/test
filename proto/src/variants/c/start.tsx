@@ -5,10 +5,13 @@ import { cityById } from '@/shared'
 import { CityCard } from './card'
 import { Btn } from './ui'
 
+// まん中（最後）が手前。外側の2枚は広い画面だけで出す
 const FAN = [
+  { id: 'sapporo', r: -19, x: -250, y: 46, outer: true },
+  { id: 'kawasaki', r: 18, x: 250, y: 44, outer: true },
   { id: 'soka', r: -11, x: -58, y: 18 },
   { id: 'kagoshima', r: 10, x: 58, y: 16 },
-  { id: 'osaka', r: -1.5, x: 0, y: 0 },
+  { id: 'osaka', r: -1.5, x: 0, y: 0, center: true },
 ]
 
 export function Start({ onStart, onSample }: { onStart: () => void; onSample: () => void }) {
@@ -23,13 +26,13 @@ export function Start({ onStart, onSample }: { onStart: () => void; onSample: ()
 
       <div className="vc-start-fan" aria-hidden>
         {FAN.map((f, i) => (
-          <motion.div key={f.id} className={i === 2 ? 'vc-start-card is-center' : 'vc-start-card'}
+          <motion.div key={f.id} className={f.center ? 'vc-start-card is-center' : f.outer ? 'vc-start-card is-outer' : 'vc-start-card'}
             initial={reduce ? false : { y: 160, rotate: 0, opacity: 0 }}
-            animate={{ x: f.x * (i === 2 ? 0 : 1), y: f.y, rotate: f.r, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 150, damping: 17, delay: reduce ? 0 : 0.1 + i * 0.12 }}
-            style={{ zIndex: i === 2 ? 3 : 1 }}>
-            <CityCard city={cityById(f.id)} role="preview" compact={i !== 2} tilt={i === 2} back="deck"
-              flipped={i === 2 && flip} onTap={i === 2 ? () => setFlip((v) => !v) : undefined} />
+            animate={{ x: f.x, y: f.y, rotate: f.r, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 150, damping: 17, delay: reduce ? 0 : 0.1 + i * 0.1 }}
+            style={{ zIndex: f.center ? 3 : f.outer ? 0 : 1 }}>
+            <CityCard city={cityById(f.id)} role="preview" compact={!f.center} tilt={!!f.center} back="deck"
+              flipped={!!f.center && flip} onTap={f.center ? () => setFlip((v) => !v) : undefined} />
           </motion.div>
         ))}
       </div>

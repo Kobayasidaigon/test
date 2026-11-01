@@ -27,8 +27,8 @@ const newChild = (): Child => ({ id: `k${Date.now().toString(36)}${seq++}`, age:
 
 function Row({ title, sub, children }: { title: string; sub?: string; children: ReactNode }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-b border-dashed border-[rgba(42,39,48,.18)] px-3 py-3 last:border-b-0">
-      <div className="min-w-0">
+    <div className="flex items-center justify-between gap-3 border-b border-dashed border-[rgba(42,39,48,.18)] px-3 py-3 last:border-b-0">
+      <div className="min-w-0 flex-1">
         <p className="text-[16px] font-bold">{title}</p>
         {sub && <p className="text-[12.5px] leading-snug text-[var(--ink-2)]">{sub}</p>}
       </div>
@@ -46,10 +46,10 @@ export function StepFamily({ input, set }: { input: FamilyInput; set: (f: Family
   return (
     <div className="vd-slip">
       <Row title="大人" sub="1〜2人">
-        <Stepper label="大人の人数" value={input.adults} min={1} max={2} format={(v) => `${v}人`} onChange={(v) => set({ ...input, adults: v as 1 | 2 })} edgeText={(m) => (m ? '大人は1人から' : '大人は2人まで')} />
+        <Stepper label="大人の人数" width={60} value={input.adults} min={1} max={2} format={(v) => `${v}人`} onChange={(v) => set({ ...input, adults: v as 1 | 2 })} edgeText={(m) => (m ? '大人は1人から' : '大人は2人まで')} />
       </Row>
-      <Row title="子ども" sub="0〜5人。これから生まれる子もふくめて">
-        <Stepper label="子どもの人数" value={input.children.length} min={0} max={5} format={(v) => `${v}人`} onChange={setKids} edgeText={(m) => (m ? '子どもは0人から' : '子どもは5人まで')} />
+      <Row title="子ども" sub="0〜5人。生まれる予定の子も">
+        <Stepper label="子どもの人数" width={60} value={input.children.length} min={0} max={5} format={(v) => `${v}人`} onChange={setKids} edgeText={(m) => (m ? '子どもは0人から' : '子どもは5人まで')} />
       </Row>
     </div>
   )
@@ -89,19 +89,22 @@ export function StepAges({ input, set, active, setActive }: { input: FamilyInput
           onFocusCapture={() => setActive(c.id)}
           onPointerDown={() => setActive(c.id)}
         >
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-            <p className="flex items-center gap-2 text-[16px] font-bold">
-              <span aria-hidden="true" className="grid h-7 min-w-7 place-items-center rounded-[4px] border-[1.5px] border-[var(--ink)] px-1 text-[13px]">
-                {i + 1}
-              </span>
-              {i + 1}人目の子
+          <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-2">
+            <p className="flex min-w-0 items-center gap-2 text-[16px] font-bold">
+              <svg viewBox="0 0 30 20" width={30} height={20} aria-hidden="true" className="flex-none">
+                <path d="M2 19 L4.5 2 H25.5 L28 19Z" fill="var(--paper)" stroke="var(--ink)" strokeWidth={1.4} strokeLinejoin="round" />
+                <text x={15} y={14.5} textAnchor="middle" fontSize={10} fontWeight={700} fill="var(--ink)">
+                  {i + 1}
+                </text>
+              </svg>
+              <span className="whitespace-nowrap">{i + 1}人目</span>
             </p>
             <Stepper
               label={`${i + 1}人目の子の年齢`}
               value={c.age}
               min={-1}
               max={18}
-              width={112}
+              width={92}
               format={(v) => (v < 0 ? 'これから' : `${v}歳`)}
               valueText={(v) => ageText(v)}
               edgeText={(m) => (m ? 'これから生まれる子がいちばん下です' : '18歳までです')}
@@ -179,23 +182,25 @@ export function StepPeriod({ input, set }: { input: FamilyInput; set: (f: Family
 /** 入力の途中で見える伝票の控え。タップでその質問へ戻れる。 */
 export function OrderStrip({ input, steps, current, go }: { input: FamilyInput; steps: StepKey[]; current: number; go: (i: number) => void }) {
   const city = CITIES.find((c) => c.id === input.fromCityId)
+  const WORK_SHORT: Record<FamilyInput['work'], string> = { commute: '通勤', remote: 'リモート', self: '自営', part: 'パート' }
   const value: Record<StepKey, string> = {
-    family: `大人${input.adults}・子ども${input.children.length}`,
-    ages: input.children.map((c) => (c.age < 0 ? 'もうすぐ' : `${c.age}歳`)).join('・') || 'なし',
-    income: INCOME_BANDS.find((b) => b.id === input.income)?.label ?? '',
-    work: WORK_STYLES.find((w) => w.id === input.work)?.label ?? '',
+    family: `大人${input.adults}・子${input.children.length}`,
+    ages: input.children.map((c) => (c.age < 0 ? 'もうすぐ' : `${c.age}`)).join('・') + (input.children.some((c) => c.age >= 0) ? '歳' : ''),
+    income: (INCOME_BANDS.find((b) => b.id === input.income)?.label ?? '').replace('万円', '万'),
+    work: WORK_SHORT[input.work],
     city: city?.name ?? '',
     period: input.years === 18 ? `${periodYears(input)}年` : `${input.years}年`,
   }
   return (
-    <nav aria-label="入力した内容（タップで戻れます）" className="flex flex-wrap gap-1.5">
+    <nav aria-label="入力した内容（タップで戻れます）" className="flex flex-wrap gap-1">
       {steps.map((k, i) =>
         i < current ? (
           <button
             key={k}
             type="button"
             onClick={() => go(i)}
-            className="inline-flex min-h-[32px] items-center gap-1 rounded-[4px] border border-dashed border-[rgba(42,39,48,.4)] bg-[var(--paper)] px-2 text-[12px] leading-tight"
+            aria-label={`${STEP_META[k].short}: ${value[k]}（この質問にもどる）`}
+            className="inline-flex min-h-[30px] items-center gap-1 rounded-[4px] border border-dashed border-[rgba(42,39,48,.4)] bg-[var(--paper)] px-1.5 text-[11.5px] leading-tight"
           >
             <span className="text-[var(--ink-2)]">{STEP_META[k].short}</span>
             <span className="font-bold">{value[k]}</span>

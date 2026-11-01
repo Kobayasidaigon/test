@@ -74,8 +74,8 @@ function dishesFor(city: City | null | undefined, mood: Mood): Dish[] {
     key: `p-${p.label}`,
     node: (
       <g transform="scale(1.2)">
-        <PrideFlag />
         {PrideArt({ pride: p })}
+        <PrideFlag />
       </g>
     ),
     title: `名物: ${p.label}`,
@@ -175,7 +175,7 @@ export function TableScene({
                   <GhostChair label={s.kind === 'ghost-adult' ? '大人' : '子ども'} />
                 ) : (
                   <>
-                    <Chair kind={kind} />
+                    <Chair kind={kind} open={s.empty} />
                     {!s.empty && kind !== 'unborn' && <Person kind={kind} idx={s.idx} face={kind === 'adult' ? faces.adult : faces.kid} hat={s.hat} />}
                   </>
                 )}
@@ -230,7 +230,7 @@ export function TableScene({
         ))}
 
         {mode === 'start' && (
-          <g transform={`translate(180 ${FRONT - 7})`}>
+          <g transform={`translate(172 ${FRONT - 6}) scale(1.3)`}>
             <ReservedCard />
           </g>
         )}

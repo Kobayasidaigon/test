@@ -148,11 +148,26 @@ export function Person({ kind, idx, face, hat }: { kind: Kind; idx: number; face
   )
 }
 
-/** いすの背もたれ（人のうしろに描く）。 */
-export function Chair({ kind }: { kind: SeatKind }) {
+/** いすの背もたれ（人のうしろに描く）。open は誰も座っていない、すき間のある背もたれ。 */
+export function Chair({ kind, open }: { kind: SeatKind; open?: boolean }) {
   const high = kind === 'baby' || kind === 'unborn'
   const hw = kind === 'adult' ? 23 : kind === 'teen' ? 21 : kind === 'kid' ? 18 : 16
   const top = kind === 'adult' ? -50 : kind === 'teen' ? -46 : kind === 'kid' ? -36 : -46
+  if (open) {
+    const inner = hw * 2 - 9
+    return (
+      <g>
+        <rect x={-hw} y={top + 3} width={4.5} height={-top} rx={2.2} fill="var(--wood-2)" />
+        <rect x={hw - 4.5} y={top + 3} width={4.5} height={-top} rx={2.2} fill="var(--wood-2)" />
+        {[1, 2, 3].map((i) => (
+          <rect key={i} x={-hw + 4.5 + (inner * i) / 4 - 1.5} y={top + 8} width={3} height={-top - 8} rx={1.5} fill="var(--wood-2)" opacity={0.9} />
+        ))}
+        <rect x={-hw - 2} y={top} width={hw * 2 + 4} height={9} rx={4.5} fill="var(--wood-2)" />
+        <rect x={-hw + 1} y={top + 1.6} width={hw * 2 - 2} height={3} rx={1.5} fill="var(--wood-hi)" opacity={0.65} />
+        <rect x={-hw + 2} y={top + 20} width={hw * 2 - 4} height={4} rx={2} fill="var(--wood-2)" />
+      </g>
+    )
+  }
   return (
     <g>
       <rect x={-hw} y={top} width={hw * 2} height={-top + 2} rx={high ? 9 : 6} fill="var(--wood-2)" />
@@ -245,9 +260,9 @@ export function ReservedCard() {
 export function PrideFlag() {
   return (
     <g>
-      <path d="M-25 1 V-37" stroke="#8a5a2e" strokeWidth={1.2} strokeLinecap="round" />
-      <path d="M-25 -37 H-7 L-9.5 -32.4 L-7 -27.8 H-25Z" fill="var(--red)" />
-      <text x={-16.6} y={-30.2} textAnchor="middle" fontSize={6.2} fontWeight={700} fill="#fffdf7">
+      <path d="M-27 1 V-46" stroke="#8a5a2e" strokeWidth={1.2} strokeLinecap="round" />
+      <path d="M-27 -46 H-8 L-10.5 -41.4 L-8 -36.8 H-27Z" fill="var(--red)" />
+      <text x={-18.2} y={-39.2} textAnchor="middle" fontSize={6.2} fontWeight={700} fill="#fffdf7">
         名物
       </text>
     </g>
