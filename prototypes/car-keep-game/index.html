@@ -1897,7 +1897,7 @@ function updateGauges(gNow, y, maxM, price){
 
 /* ---------- デザイン案の切り替え（#an1〜#an5、#an0 はいまの版） ---------- */
 var SKIN_FONT_TEXT='車検税金UP重量税年末いま13年18年10万km15万km令和R0123456789万円−+の維持費超え！自動車税アップ毎年部品交換大きな修理買取ダウン';
-function skinFromHash(){var m=/^#an(\d)$/.exec(location.hash||''); var b=document.querySelector('#skinbar button[data-n="'+(m?m[1]:'1')+'"]'); return b?b.dataset.skin:'paper';}
+function skinFromHash(){var m=/^#an(\d)$/.exec(location.hash||''); var b=document.querySelector('#skinbar button[data-n="'+(m?m[1]:'3')+'"]'); return b?b.dataset.skin:'paper';}
 function applySkin(id){
   G.skin=id;
   if(id==='base') delete document.documentElement.dataset.skin; else document.documentElement.dataset.skin=id;
