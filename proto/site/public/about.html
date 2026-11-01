@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>住む街ガチャについて｜計算のしくみ・データの出典・プライバシー</title>
+<meta name="description" content="住む街ガチャの計算に入っているもの、街ごとの調べた細かさ、データの出典（こども家庭庁・e-Stat など）、入力の扱い（どこにも送らない）について。">
+<link rel="canonical" href="https://sumugacha.com/about">
+<meta name="theme-color" content="#bfe8dc">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="住む街ガチャ">
+<meta property="og:title" content="住む街ガチャについて">
+<meta property="og:description" content="計算に入っているもの、データの出典、入力の扱いについて。">
+<meta property="og:url" content="https://sumugacha.com/about">
+<meta property="og:image" content="https://sumugacha.com/og.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&amp;family=Zen+Maru+Gothic:wght@500;700;900&amp;display=swap">
+<style>
+/* 本体（案A「カプセルトイ」）と同じ色と手ざわり。墨色の太線、ぼかさない影、ミントの床に白い水玉。 */
+:root {
+  --ink: #1f2430;
+  --ink-soft: #3d4452;
+  --red: #d93a2b;
+  --red-text: #b52f22;
+  --yolk: #ffc928;
+  --bg: #bfe8dc;
+  --paper: #fffdf7;
+  --stay: #1d5fae;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.62) 0 3.5px, transparent 4.5px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'BIZ UDPGothic', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.8;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px max(16px, env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: 'Mochiy Pop One', 'Zen Maru Gothic', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+}
+.brand svg { width: 34px; height: 34px; flex: none; }
+.go {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: var(--yolk);
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  font-weight: 900;
+  font-size: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.go:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+h1 {
+  margin: 4px 0 6px;
+  font-family: 'Mochiy Pop One', 'Zen Maru Gothic', sans-serif;
+  font-weight: 400;
+  font-size: clamp(28px, 7vw, 40px);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+}
+.lead { margin: 0 0 22px; font-weight: 700; font-size: 17px; }
+.card {
+  margin: 0 0 18px;
+  padding: 18px 18px 14px;
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+h2 {
+  margin: 0 0 8px;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+h2::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: linear-gradient(var(--yolk) 0 50%, #fff 50% 100%);
+  vertical-align: -1px;
+}
+p { margin: 0 0 10px; }
+ul { margin: 0 0 10px; padding-left: 1.25em; }
+li { margin-bottom: 6px; }
+li::marker { color: var(--red); }
+strong { font-weight: 900; }
+a { color: var(--stay); font-weight: 700; text-underline-offset: 3px; overflow-wrap: anywhere; }
+a:focus-visible, .go:focus-visible, .brand:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.tags { display: grid; gap: 10px; margin: 6px 0 10px; padding: 0; list-style: none; }
+.tags li { margin: 0; padding: 10px 12px; border: 2px solid var(--ink); border-radius: 12px; background: #fff; }
+.tags b { display: block; font-weight: 900; }
+.small { font-size: 14px; color: var(--ink-soft); }
+.foot { margin-top: 26px; text-align: center; font-weight: 700; font-size: 14px; }
+.foot p { margin: 6px 0 0; font-size: 12.5px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="/" aria-label="住む街ガチャ（トップへ）">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-16 32 32)"><path d="M6 32a26 26 0 0 0 52 0z" fill="#fff"/><path d="M6 32a26 26 0 0 1 52 0z" fill="#ffc928"/><path d="M12.5 23.5a21 21 0 0 1 6.5-8" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".9"/><path d="M21 23.5 32 13.5l11 10h-3V32H24v-8.5z" fill="#fff" stroke="#1f2430" stroke-width="3" stroke-linejoin="round"/><rect x="29.6" y="25" width="4.8" height="7" rx="1" fill="#1f2430"/><path d="M6 32h52" stroke="#1f2430" stroke-width="4"/><circle cx="32" cy="32" r="26" fill="none" stroke="#1f2430" stroke-width="5"/></g></svg>
+      住む街ガチャ
+    </a>
+    <a class="go" href="/">計算してみる</a>
+  </header>
+
+  <main>
+    <h1>住む街ガチャについて</h1>
+    <p class="lead">住む街は、選べる。家族の条件を入れてハンドルを回すと、引っ越し先の候補の街で、子育ての制度による家計の差が年いくらになるかを計算します。</p>
+
+    <section class="card" aria-labelledby="h-kuji">
+      <h2 id="h-kuji">出てくる街は、くじではありません</h2>
+      <p>見た目はカプセルトイですが、出てくる街は、入力した条件からの計算で決まります。「当たり」「はずれ」はありません。今の街のままがお得なら、そのとおりに出ます。</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-calc">
+      <h2 id="h-calc">計算に入っているもの</h2>
+      <ul>
+        <li>0〜2歳の保育料（認可保育所。3〜5歳は国の無償化で0円）</li>
+        <li>毎月の現金給付（東京都の018サポートなど）</li>
+        <li>中学校の給食費</li>
+        <li>子どもの医療費の助成（何歳まで助成されるか）</li>
+        <li>移住支援金（一度きりのお金なので、毎年の差とは分けて出します）</li>
+      </ul>
+      <p><strong>入っていないもの</strong>：家賃の差（目安として別に出します）、通勤費、税金、引っ越しの費用など。</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-level">
+      <h2 id="h-level">街ごとの、調べた細かさ</h2>
+      <p>全国の市区町村を選べますが、調べた細かさは街によってちがいます。カプセルの見た目と言葉で区別しています。</p>
+      <ul class="tags">
+        <li><b>くわしく調べた街</b>保育料などの市区町村の制度まで、公式の資料で確かめた街。</li>
+        <li><b>都道府県の制度まで分かる街</b>東京都の018サポートなど、都道府県の制度まで計算に入れた街。</li>
+        <li><b>国の統計だけ分かる街</b>子どもの医療費の助成と家賃の目安だけ分かる街。保育料などは準備中で、「確認中」と出します（0円とはみなしません）。</li>
+      </ul>
+      <p>数字には「確認済」「推定」「仮置き」の札と、出典を付けています。</p>
+    </section>
+
+    <section class="card" id="sources" aria-labelledby="h-src">
+      <h2 id="h-src">データの出典</h2>
+      <ul>
+        <li>市区町村の一覧：<a href="https://github.com/code4fukui/localgovjp" rel="noopener">Code for FUKUI「localgovjp」</a>（CC0）</li>
+        <li>子どもの医療費の助成：<a href="https://www.cfa.go.jp/policies/boshihoken/kodomoiryouhityousa-r7" rel="noopener">こども家庭庁「こどもに係る医療費の助成についての調査」（令和7年4月1日時点）</a>を加工して作成</li>
+        <li>家賃の目安：総務省統計局「令和5年住宅・土地統計調査」第111-3表（<a href="https://www.e-stat.go.jp/" rel="noopener">政府統計の総合窓口（e-Stat）</a>）を加工して作成。いま住んでいる世帯が払っている家賃の平均なので、これから借りる部屋の募集家賃より低めに出やすい数字です。</li>
+        <li>各市区町村の保育料・給食費・移住支援金など：それぞれの市区町村や都道府県の公式サイト。結果の画面で、項目ごとに出典を出しています。</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-labelledby="h-note">
+      <h2 id="h-note">ご注意</h2>
+      <p>試作版です。数字は2026年11月1日時点の調査値と推定を含みます。制度は年度ごとに変わります。申請や引っ越しを決める前に、必ず市区町村の窓口や公式サイトで確かめてください。このサイトの計算を使ったことで生じた損害について、運営者は責任を負いかねます。</p>
+    </section>
+
+    <section class="card" id="privacy" aria-labelledby="h-privacy">
+      <h2 id="h-privacy">プライバシー</h2>
+      <ul>
+        <li>入力した家族のこと（子どもの年齢、世帯年収、働き方、今の街）は、お使いのブラウザの中で計算に使うだけです。どこにも送らず、保存もしません。</li>
+        <li>開けた街の「スタンプ帳」だけは、次に開いたときのために、このブラウザの中（localStorage）に記録します。運営者には届きません。ブラウザのサイトデータを消すと消えます。</li>
+        <li>文字の表示に Google Fonts を使っています。ページを開くと、フォントを Google のサーバーから読み込みます。</li>
+        <li>サイトの配信に Vercel を使っています。配信のしくみ上、アクセスの記録（IPアドレスやブラウザの種類など）が Vercel に残ることがあります。</li>
+        <li>アクセス解析や広告を入れるときは、このページを更新してお知らせします。</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-labelledby="h-ad">
+      <h2 id="h-ad">広告について</h2>
+      <p>いまは、広告や提携リンクを載せていません。載せるときは、その場所に「PR」と表示します。計算の結果や街の並び順は、広告によって変えません。</p>
+    </section>
+
+    <p class="small">このページの更新日：2026年11月1日</p>
+  </main>
+
+  <footer class="foot">
+    <a href="/">住む街ガチャで計算する</a>
+    <p>© 2026 住む街ガチャ</p>
+  </footer>
+</div>
+</body>
+</html>

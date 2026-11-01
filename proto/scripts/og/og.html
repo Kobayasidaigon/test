@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>og</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&amp;family=Zen+Maru+Gothic:wght@700;900&amp;display=block">
+<style>
+/* 共有したときに出る画像（1200×630）。案A「カプセルトイ」の看板・筐体・カプセルと同じ描き方（墨色の太線、ぼかさない影）。 */
+html, body { margin: 0; }
+body {
+  width: 1200px; height: 630px; overflow: hidden; position: relative;
+  background-color: #bfe8dc;
+  background-image: radial-gradient(circle, rgba(255,255,255,.62) 0 4.5px, transparent 5.5px);
+  background-size: 30px 30px;
+  background-position: 6px 6px;
+  color: #1f2430;
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+.sign { position: absolute; left: 60px; top: 58px; }
+.copy { position: absolute; left: 66px; top: 262px; width: 640px; }
+.tag {
+  margin: 0; font-weight: 900; font-size: 64px; line-height: 1.15; letter-spacing: .01em;
+}
+.sub { margin: 18px 0 0; font-weight: 700; font-size: 33px; line-height: 1.45; }
+.url {
+  position: absolute; left: 66px; top: 512px;
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 10px 24px 12px 14px;
+  border: 5px solid #1f2430; border-radius: 999px; background: #fffdf7;
+  box-shadow: 6px 6px 0 #1f2430;
+  font-weight: 900; font-size: 32px; line-height: 1; letter-spacing: .02em;
+}
+.url svg { width: 38px; height: 38px; }
+.machine { position: absolute; right: 54px; top: 26px; }
+</style>
+</head>
+<body>
+<svg class="sign" width="640" height="176" viewBox="0 0 640 176" aria-hidden="true">
+  <rect x="12" y="12" width="616" height="152" rx="30" fill="#1f2430"/>
+  <rect x="2" y="2" width="616" height="152" rx="30" fill="#ffc928" stroke="#1f2430" stroke-width="8"/>
+  <g id="bulbs"></g>
+  <text x="310" y="112" text-anchor="middle" font-family="Mochiy Pop One" font-size="92" letter-spacing="2"><tspan fill="#1f2430">住む街</tspan><tspan fill="#d93a2b">ガチャ</tspan></text>
+</svg>
+
+<div class="copy">
+  <p class="tag">住む街は、選べる。</p>
+  <p class="sub">うちの家族なら、<br>子育てのお金は年いくら変わる？</p>
+</div>
+
+<div class="url">
+  <svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-16 32 32)"><path d="M6 32a26 26 0 0 0 52 0z" fill="#fff"/><path d="M6 32a26 26 0 0 1 52 0z" fill="#ffc928"/><path d="M12.5 23.5a21 21 0 0 1 6.5-8" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".9"/><path d="M21 23.5 32 13.5l11 10h-3V32H24v-8.5z" fill="#fff" stroke="#1f2430" stroke-width="3" stroke-linejoin="round"/><rect x="29.6" y="25" width="4.8" height="7" rx="1" fill="#1f2430"/><path d="M6 32h52" stroke="#1f2430" stroke-width="4"/><circle cx="32" cy="32" r="26" fill="none" stroke="#1f2430" stroke-width="5"/></g></svg>
+  sumugacha.com
+</div>
+
+<svg class="machine" width="420" height="580" viewBox="0 0 420 580" aria-hidden="true">
+  <defs>
+    <clipPath id="win"><rect x="52" y="56" width="316" height="236" rx="26"/></clipPath>
+    <clipPath id="cab"><rect x="22" y="22" width="376" height="510" rx="36"/></clipPath>
+    <pattern id="groove" width="26" height="10" patternUnits="userSpaceOnUse"><rect width="3" height="10" fill="rgba(0,0,0,.07)"/></pattern>
+    <pattern id="stripe" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="6" height="12" fill="rgba(255,255,255,.75)"/></pattern>
+  </defs>
+  <!-- 脚と影 -->
+  <rect x="74" y="526" width="64" height="34" rx="10" fill="#1f2430"/>
+  <rect x="282" y="526" width="64" height="34" rx="10" fill="#1f2430"/>
+  <rect x="36" y="36" width="376" height="510" rx="36" fill="#1f2430"/>
+  <!-- 胴体 -->
+  <rect x="22" y="22" width="376" height="510" rx="36" fill="#d93a2b"/>
+  <rect x="22" y="22" width="376" height="510" rx="36" fill="url(#groove)" clip-path="url(#cab)"/>
+  <rect x="22" y="22" width="376" height="510" rx="36" fill="none" stroke="#1f2430" stroke-width="8"/>
+  <!-- 窓とカプセル -->
+  <rect x="52" y="56" width="316" height="236" rx="26" fill="#eaf8fb"/>
+  <g id="caps" clip-path="url(#win)"></g>
+  <path d="M74 96v120" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".8"/>
+  <path d="M74 236v16" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".8"/>
+  <rect x="52" y="56" width="316" height="236" rx="26" fill="none" stroke="#1f2430" stroke-width="7"/>
+  <!-- コインの口 -->
+  <rect x="62" y="318" width="112" height="104" rx="20" fill="#e4e8ec" stroke="#1f2430" stroke-width="6"/>
+  <rect x="108" y="336" width="20" height="68" rx="10" fill="#1f2430"/>
+  <!-- ハンドル -->
+  <circle cx="286" cy="372" r="62" fill="#e4e8ec" stroke="#1f2430" stroke-width="7"/>
+  <g transform="rotate(-28 286 372)">
+    <rect x="222" y="356" width="128" height="32" rx="16" fill="#ffc928" stroke="#1f2430" stroke-width="6"/>
+  </g>
+  <circle cx="286" cy="372" r="11" fill="#1f2430"/>
+  <!-- 取り出し口と、出てきたカプセル -->
+  <rect x="112" y="446" width="196" height="66" rx="20" fill="#2a2f3a" stroke="#1f2430" stroke-width="7"/>
+  <g id="burst"></g>
+  <g id="out"></g>
+</svg>
+
+<script>
+// 形は決まった値で描く（毎回同じ絵になるように）
+const NS = 'http://www.w3.org/2000/svg'
+const INK = '#1f2430'
+const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent && parent.appendChild(n); return n }
+
+// 看板の電球
+const bulbs = document.getElementById('bulbs')
+for (let x = 40; x <= 580; x += 60) {
+  el('circle', { cx: x, cy: 22, r: 7, fill: '#fff', stroke: INK, 'stroke-width': 3 }, bulbs)
+  el('circle', { cx: x, cy: 134, r: 7, fill: '#fff', stroke: INK, 'stroke-width': 3 }, bulbs)
+}
+
+// カプセル1個（上が色、下が白。ときどきしま模様）
+function capsule(parent, cx, cy, r, color, opts = {}) {
+  const g = el('g', { transform: `rotate(${opts.rot || 0} ${cx} ${cy})` }, parent)
+  el('circle', { cx, cy, r, fill: '#fff' }, g)
+  el('path', { d: `M${cx - r} ${cy}a${r} ${r} 0 0 1 ${2 * r} 0z`, fill: color }, g)
+  if (opts.stripe) el('path', { d: `M${cx - r} ${cy}a${r} ${r} 0 0 1 ${2 * r} 0z`, fill: 'url(#stripe)' }, g)
+  el('line', { x1: cx - r, y1: cy, x2: cx + r, y2: cy, stroke: INK, 'stroke-width': 4.5 }, g)
+  el('circle', { cx, cy, r, fill: 'none', stroke: INK, 'stroke-width': 5 }, g)
+  el('path', { d: `M${cx - r * 0.55} ${cy - r * 0.42}a${r * 0.7} ${r * 0.7} 0 0 1 ${r * 0.42} ${-r * 0.3}`, fill: 'none', stroke: '#fff', 'stroke-width': 4, 'stroke-linecap': 'round', opacity: 0.85 }, g)
+  return g
+}
+
+const C = ['#ffc928', '#4cc3e8', '#3cc8a4', '#ff9fb8', '#d93a2b', '#2f4a8a', '#a8d14f', '#ff8a3d', '#c9ced6']
+const caps = document.getElementById('caps')
+// 窓の下から積み上げる（奥の段から描く）
+const rows = [
+  { y: 92, xs: [96, 160, 226, 292, 352], r: 33 },
+  { y: 146, xs: [70, 132, 196, 262, 330], r: 34 },
+  { y: 200, xs: [100, 166, 232, 298, 360], r: 35 },
+  { y: 254, xs: [66, 134, 200, 268, 336], r: 36 },
+]
+let k = 0
+for (const row of rows) {
+  for (const x of row.xs) {
+    const c = C[(k * 5 + 3) % C.length]
+    capsule(caps, x, row.y + ((k % 3) - 1) * 4, row.r, c, { rot: ((k * 37) % 50) - 25, stripe: k % 4 === 1 })
+    k++
+  }
+}
+
+// 「ポン！」の星形と、取り出し口から出てきたカプセル
+const burst = document.getElementById('burst')
+const pts = []
+for (let i = 0; i < 18; i++) {
+  const a = (Math.PI * 2 * i) / 18 - Math.PI / 2
+  const rr = i % 2 === 0 ? 58 : 40
+  pts.push(`${(250 + Math.cos(a) * rr).toFixed(1)},${(490 + Math.sin(a) * rr).toFixed(1)}`)
+}
+el('polygon', { points: pts.join(' '), fill: '#ffc928', stroke: INK, 'stroke-width': 5, 'stroke-linejoin': 'round' }, burst)
+// 出てきたカプセルは、アイコンと同じ「家の入ったカプセル」
+const BRAND = `<g transform="rotate(-16 32 32)"><path d="M6 32a26 26 0 0 0 52 0z" fill="#fff"/><path d="M6 32a26 26 0 0 1 52 0z" fill="#ffc928"/><path d="M12.5 23.5a21 21 0 0 1 6.5-8" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".9"/><path d="M21 23.5 32 13.5l11 10h-3V32H24v-8.5z" fill="#fff" stroke="#1f2430" stroke-width="3" stroke-linejoin="round"/><rect x="29.6" y="25" width="4.8" height="7" rx="1" fill="#1f2430"/><path d="M6 32h52" stroke="#1f2430" stroke-width="4"/><circle cx="32" cy="32" r="26" fill="none" stroke="#1f2430" stroke-width="5"/></g>`
+{ const r = 40, size = 64 * r / 26, out = document.getElementById('out'); const s = el('svg', { x: 214 - size / 2, y: 488 - size / 2, width: size, height: size, viewBox: '0 0 64 64' }, out); s.innerHTML = BRAND }
+
+document.fonts.load('92px "Mochiy Pop One"', '住む街ガチャ').then(() => document.fonts.load('900 64px "Zen Maru Gothic"', '住む街は、選べる。うちの家族なら子育てのお金は年いくら変わる？sumugacha.com')).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1' })
+</script>
+</body>
+</html>

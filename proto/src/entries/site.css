@@ -1,0 +1,7 @@
+/* 本番（sumugacha.com）用の CSS の入口。
+   本番ビルドは Vite の root が site/ なので、Tailwind が案Aのソースを自動では見に行かない。読む場所をここで明示する。 */
+@import '../index.css';
+@source '../variants/a';
+@source '../components';
+@source '../shared';
+@source '../lib';
