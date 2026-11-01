@@ -70,7 +70,7 @@ function FamilyStep({ input, set }: { input: FamilyInput; set: Setter }) {
           transition={{ duration: 0.2 }}
           className="rounded-[16px] border-[3px] border-dashed border-[var(--ink)]/40 bg-white/60 px-2 pb-2.5 pt-2.5"
         >
-          <div className="grid grid-cols-[124px_minmax(0,1fr)] items-start gap-2">
+          <div className="grid grid-cols-[132px_minmax(0,1fr)] items-start gap-2">
             <div className="flex justify-center">
               <Dial
                 key={sel.id}
@@ -79,7 +79,7 @@ function FamilyStep({ input, set }: { input: FamilyInput; set: Setter }) {
                 min={-1}
                 max={18}
                 value={sel.age}
-                size={122}
+                size={130}
                 onValueChange={(v) => {
                   const auto = v <= 2 && sel.age > 2
                   patchChild(sel.id, { age: v, nursery: v <= 2 ? (sel.age <= 2 ? sel.nursery : true) : false })
@@ -228,9 +228,9 @@ function IncomeStep({ input, set, onCoin }: { input: FamilyInput; set: Setter; o
             if (dragged.current || busy.current) return
             setIdx(idx + 1)
           }}
-          className="mt-2.5 grid touch-none place-items-center rounded-full disabled:opacity-40"
+          className="mt-2.5 grid touch-none place-items-center rounded-full"
         >
-          <Coin size={64} />
+          <Coin size={64} className={full ? 'opacity-40' : undefined} />
         </motion.button>
         <span className="mt-1 text-center text-[12px] font-bold leading-tight text-[var(--ink-soft)]">
           {full ? 'いちばん上です' : (

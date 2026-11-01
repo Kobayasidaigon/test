@@ -113,7 +113,7 @@ function Headline({ text }: { text: string }) {
     <>
       <span className="inline-block">{text.slice(0, i + 1)}</span>
       <br />
-      <span className="inline-block whitespace-nowrap">{text.slice(i + 1).trim()}</span>
+      <span className={cn('inline-block', /\d/.test(text.slice(i + 1)) && 'whitespace-nowrap')}>{text.slice(i + 1).trim()}</span>
     </>
   )
 }
@@ -453,7 +453,7 @@ export function Omake({ c }: { c: Comparison }) {
   const look = lookOf(city)
   const main: Pride | undefined = look.pride ?? city.pride[0]
   const rest = city.pride.filter((p) => p !== main)
-  const title = (p: Pride) => (isSharedPride(p) ? `${city.pref}の有名なもの` : `${city.name}の名物`)
+  const title = (p: Pride) => (isSharedPride(p) ? `${city.pref}の自慢` : p.kind === 'food' || p.kind === 'craft' ? `${city.name}の名物` : `${city.name}の自慢`)
   return (
     <section aria-labelledby="va-omake">
       <SectionTitle id="va-omake" color={look.capsule} sub={`カプセルに入っていた、${city.name}のおまけ。押すとゆれます。`}>

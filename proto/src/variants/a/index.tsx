@@ -291,6 +291,12 @@ export default function VariantA() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // 今の街を変えたら、行きたい街のカプセルから今の街をはずす
+  useEffect(() => {
+    const code = cityById(input.fromCityId).code
+    setPicksState((p) => (p.some((id) => cityById(id).code === code) ? p.filter((id) => cityById(id).code !== code) : p))
+  }, [input.fromCityId])
+
   // 働き方が通勤・パートになったら、全国の台は使えない
   useEffect(() => {
     if (pool === 'all' && !wideWork(input)) setPool('featured')
@@ -346,7 +352,13 @@ export default function VariantA() {
   }
 
   // フォーカス：問いが変わったら問いの見出しへ、回す画面ではハンドルへ、結果では見出しへ
+  // （URL で直接開いたときの最初の表示では動かさない）
+  const firstFocus = useRef(true)
   useEffect(() => {
+    if (firstFocus.current) {
+      firstFocus.current = false
+      return
+    }
     const t = window.setTimeout(() => {
       if (screen === 'input') {
         if (step === 'turn' && handleRef.current) handleRef.current.focus({ preventScroll: true })
@@ -485,7 +497,7 @@ export default function VariantA() {
                     : mode === 'pick' && step === 'work'
                       ? '移住支援金の条件に使います。'
                       : STEP_INFO[step].hint}
-                  {ANSWER_KEYS.includes(step) && sampleKeys.has(step) && <> さわると、あなたの答えになります。</>}
+                  {ANSWER_KEYS.includes(step) && sampleKeys.has(step) && <>さわると、あなたの答えになります。</>}
                 </p>
                 <div className="mt-4">
                   {/* 退場アニメは付けない（札の layoutId と mode="wait" の組み合わせで、次の問いが出なくなることがあったため） */}

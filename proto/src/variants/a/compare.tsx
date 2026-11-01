@@ -86,23 +86,25 @@ export function CompareShelf({ list, sel, onSelect }: { list: Comparison[]; sel:
                 onClick={() => onSelect(i)}
                 aria-pressed={on}
                 aria-label={`${c.to.pref}${c.to.name}：${w.main}${c.oneTime ? `。一度きり 最大 約${yenMan(c.oneTime, 0)}` : ''}${c.care ? '。災害への配慮あり' : ''}`}
-                className={cn('grid w-full grid-cols-[52px_minmax(0,1fr)] items-center gap-x-2.5 rounded-[14px] px-1.5 py-1.5 text-left transition-colors sm:grid-cols-[60px_minmax(0,200px)_minmax(0,1fr)]', on ? 'bg-[var(--yolk)] shadow-[0_0_0_3px_var(--ink)]' : 'hover:bg-white/70')}
+                className={cn('grid w-full grid-cols-[52px_minmax(0,1fr)] items-center gap-x-2.5 rounded-[14px] px-1.5 py-1 text-left transition-colors sm:grid-cols-[60px_minmax(0,230px)_minmax(0,1fr)]', on ? 'bg-[var(--yolk)] shadow-[0_0_0_3px_var(--ink)]' : 'hover:bg-white/70')}
               >
                 <span className="relative row-span-2 grid place-items-center sm:row-span-1">
                   <Capsule color={lookOf(c.to).capsule} level={c.to.level} size={50} />
                 </span>
                 <span className="min-w-0">
-                  <span className="flex flex-wrap items-center gap-1">
-                    <span className="text-[12px] font-bold text-[var(--ink-soft)]">{c.to.pref}</span>
+                  <span className="flex min-w-0 items-baseline gap-1.5">
+                    <span className="truncate text-[17px] font-black leading-tight">{c.to.name}</span>
+                    <span className="shrink-0 text-[12px] font-bold text-[var(--ink-soft)]">{c.to.pref}</span>
+                  </span>
+                  <span className="mt-0.5 flex flex-wrap items-center gap-1">
                     <LevelTag city={c.to} />
                     {c.care && <span className="rounded-full border-2 border-[var(--stay)] px-1.5 text-[12px] font-black leading-tight text-[var(--stay)]">配慮</span>}
+                    {r && r.to !== null && <span className="text-[12px] font-bold text-[var(--ink-soft)]">家賃の目安 月{(Math.round(r.to / 1000) / 10).toFixed(1)}万円</span>}
                   </span>
-                  <span className="block truncate text-[17px] font-black leading-tight">{c.to.name}</span>
-                  {r && r.to !== null && <span className="block text-[12px] font-bold text-[var(--ink-soft)]">家賃の目安 月{(Math.round(r.to / 1000) / 10).toLocaleString('ja-JP')}万円</span>}
                 </span>
-                <span className="col-start-2 min-w-0 sm:col-start-3">
+                <span className="col-start-2 mt-1 min-w-0 sm:col-start-3 sm:mt-0">
                   <Bar c={c} max={max} />
-                  <span className="mt-1 block text-[13.5px] font-black leading-snug">{w.main}</span>
+                  <span className="mt-0.5 block text-[13.5px] font-black leading-snug">{w.main}</span>
                   {w.sub && <span className="block text-[12px] font-bold text-[var(--ink-soft)]">{w.sub}</span>}
                   {c.oneTime > 0 && <span className="mt-0.5 inline-block rounded-full bg-[var(--ink)] px-1.5 text-[12px] font-black text-[var(--yolk)]">ほかに一度きり 最大 約{yenMan(c.oneTime, 0)}</span>}
                 </span>
@@ -194,7 +196,7 @@ export function CompareTable({ list }: { list: Comparison[] }) {
                   const r = rentOf(c)
                   return (
                     <td key={c.to.id} className="px-2 py-2 text-center font-bold">
-                      {r && r.to !== null ? `${(Math.round(r.to / 1000) / 10).toLocaleString('ja-JP')}万円` : 'データなし'}
+                      {r && r.to !== null ? `${(Math.round(r.to / 1000) / 10).toFixed(1)}万円` : 'データなし'}
                     </td>
                   )
                 })}

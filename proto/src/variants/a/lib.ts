@@ -95,7 +95,8 @@ export function lookOf(city: City): Look {
   const hit = lookCache.get(city.id)
   if (hit) return hit
   const hand = HAND[city.id]
-  const sw = hand ?? SWATCHES[hash(city.code ?? city.id) % SWATCHES.length]
+  // 被災した街は、落ち着いた水色と藍のインクにする
+  const sw = hand ?? (city.care?.level === 'hit' ? { capsule: '#9fdcef', ink: '#1d5fae' } : SWATCHES[hash(city.code ?? city.id) % SWATCHES.length])
   const own = city.pride.filter((p) => !isSharedPride(p))
   const pick = hand?.pride !== undefined ? city.pride[hand.pride] : own[0]
   const pride = pick && !isSharedPride(pick) ? pick : null
@@ -134,7 +135,7 @@ export const LEVEL_ORDER: DataLevel[] = ['detailed', 'pref', 'basic']
 export const LEVEL_LEGEND: Record<DataLevel, { tag: string; text: string }> = {
   detailed: { tag: 'くわしい', text: '市区町村の制度まで調べた街。色がしっかりついたカプセル' },
   pref: { tag: '県の制度', text: '都道府県の制度だけ分かる街。しま模様のカプセル' },
-  basic: { tag: '準備中', text: '国の制度だけ。すけたカプセルで、くわしいデータは準備中' },
+  basic: { tag: '準備中', text: '国の統計（医療費助成・家賃）だけ分かる街。すけたカプセル。保育料などは準備中' },
 }
 export const LEVEL_COUNT: Record<DataLevel, number> = {
   detailed: ALL_CITIES.filter((c) => c.level === 'detailed').length,
