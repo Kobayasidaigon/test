@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>この車、あと何年乗るのが一番得？</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: 携帯ゲーム機のような「画面＋ダッシュボード」が主役。広い画面では右に条件パネル、狭い画面では1列に積む */
+:root{
+  --bg:#e8edf3; --panel:#ffffff; --panel-2:#f2f5f9;
+  --ink:#121821; --ink-2:#465163; --ink-3:#6c788b; --line:#d3dbe5;
+  --sign:#1c5bb3; --sign-ink:#ffffff; --sign-tint:rgba(28,91,179,.08);
+  --warn:#f3c02d; --warn-edge:#a77d00; --warn-ink:#1b1504;
+  --keep:#eb6834; --swap:#2a78d6; --gain-fill:rgba(42,120,214,.16); --loss-fill:rgba(235,104,52,.16);
+  --bezel:#1b222d; --bezel-2:#252e3b; --bezel-ink:#eef2f7; --bezel-ink-2:#a8b3c4; --bezel-line:#3a465b;
+  --keep-hi:#f07a4a; --swap-hi:#5d9ee9;
+  --hud-bg:rgba(9,14,24,.62); --hud-ink:#ffffff;
+  --sky-top:#79b6e6; --sky-bot:#d6ecfa; --sun:#fff3c4; --mtn-far:#a6bfd6; --mtn-near:#7da78a;
+  --ground:#93bf83; --tree:#4f8a5b; --tree-2:#3d7449; --road:#4a515b; --road-line:#eef1f4;
+  --pole:#6b6157; --wire:rgba(40,40,40,.4); --smoke:rgba(110,114,120,.45); --glass:rgba(168,206,234,.95);
+  --night:0;
+  --font-display:"Dela Gothic One","Hiragino Sans","Noto Sans JP",sans-serif;
+  --font-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+  --font-hud:"DotGothic16","Osaka-Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c111a; --panel:#141b27; --panel-2:#1a2331;
+    --ink:#e7ecf3; --ink-2:#a6b1c3; --ink-3:#808ca0; --line:#283346;
+    --sign:#2f72cf; --sign-ink:#ffffff; --sign-tint:rgba(85,152,231,.13);
+    --warn:#f3c02d; --warn-edge:#9a7300; --warn-ink:#1b1504;
+    --keep:#d95926; --swap:#3987e5; --gain-fill:rgba(57,135,229,.22); --loss-fill:rgba(217,89,38,.22);
+    --bezel:#070a10; --bezel-2:#111723; --bezel-ink:#eef2f7; --bezel-ink-2:#a8b3c4; --bezel-line:#2a3446;
+    --keep-hi:#f07a4a; --swap-hi:#5d9ee9;
+    --hud-bg:rgba(4,8,16,.6); --hud-ink:#ffffff;
+    --sky-top:#060c1d; --sky-bot:#1b2a4a; --sun:#e9edf7; --mtn-far:#1a2741; --mtn-near:#173022;
+    --ground:#1b3424; --tree:#14301d; --tree-2:#10271a; --road:#262b33; --road-line:#aab2bd;
+    --pole:#3b3631; --wire:rgba(200,210,225,.18); --smoke:rgba(170,176,186,.32); --glass:rgba(58,80,112,.95);
+    --night:1;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c111a; --panel:#141b27; --panel-2:#1a2331;
+  --ink:#e7ecf3; --ink-2:#a6b1c3; --ink-3:#808ca0; --line:#283346;
+  --sign:#2f72cf; --sign-ink:#ffffff; --sign-tint:rgba(85,152,231,.13);
+  --warn:#f3c02d; --warn-edge:#9a7300; --warn-ink:#1b1504;
+  --keep:#d95926; --swap:#3987e5; --gain-fill:rgba(57,135,229,.22); --loss-fill:rgba(217,89,38,.22);
+  --bezel:#070a10; --bezel-2:#111723; --bezel-ink:#eef2f7; --bezel-ink-2:#a8b3c4; --bezel-line:#2a3446;
+  --keep-hi:#f07a4a; --swap-hi:#5d9ee9;
+  --hud-bg:rgba(4,8,16,.6); --hud-ink:#ffffff;
+  --sky-top:#060c1d; --sky-bot:#1b2a4a; --sun:#e9edf7; --mtn-far:#1a2741; --mtn-near:#173022;
+  --ground:#1b3424; --tree:#14301d; --tree-2:#10271a; --road:#262b33; --road-line:#aab2bd;
+  --pole:#3b3631; --wire:rgba(200,210,225,.18); --smoke:rgba(170,176,186,.32); --glass:rgba(58,80,112,.95);
+  --night:1;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.7}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sign);outline-offset:2px}
+
+.app{
+  max-width:1120px;margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:20px 56px;
+  display:flex;flex-direction:column;gap:18px;
+}
+@media (min-width:940px){
+  .app{display:grid;row-gap:18px;grid-template-columns:minmax(0,1fr) 340px;column-gap:24px;
+    grid-template-areas:"head head" "console setup" "result setup" "chart setup" "more more";}
+  .setup{grid-row:2 / span 3;align-self:start;position:sticky;top:16px}
+}
+.top{grid-area:head;display:grid;gap:6px;max-width:44em}
+.eyebrow{margin:0;font-family:var(--font-hud);font-size:13px;letter-spacing:.12em;color:var(--sign)}
+h1{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(24px,4.4vw,38px);line-height:1.25;text-wrap:balance;letter-spacing:.01em}
+.lede{margin:0;color:var(--ink-2);max-width:40em}
+
+/* ---- game console ---- */
+.console{grid-area:console;background:var(--bezel);border-radius:20px;padding:10px;display:grid;gap:10px;box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 10px 24px -14px rgba(0,0,0,.5)}
+.screen{position:relative;border-radius:12px;overflow:hidden;background:var(--sky-bot);line-height:0}
+#scene{display:block;width:100%;height:240px;touch-action:manipulation}
+.hud{position:absolute;top:8px;display:flex;gap:6px;line-height:1.2;font-family:var(--font-hud);color:var(--hud-ink);pointer-events:none}
+.hud-left{left:8px}
+.hud-right{right:8px}
+.chip{background:var(--hud-bg);border-radius:6px;padding:5px 8px;display:grid;gap:1px}
+.chip .k{font-size:10px;opacity:.75;letter-spacing:.08em}
+.chip .v{font-size:17px;font-variant-numeric:tabular-nums}
+.odo{display:flex;align-items:baseline;gap:4px}
+.odo-digits{display:flex;background:#0b0d10;border-radius:3px;padding:1px 2px;gap:1px}
+.odo-d{width:.72em;height:1.2em;overflow:hidden;font-size:17px;background:#16191f;border-radius:2px;text-align:center}
+.odo-d:last-child{color:#ffcf6b}
+.odo-strip{display:flex;flex-direction:column;will-change:transform}
+.odo-strip span{height:1.2em;line-height:1.2em}
+.odo .unit{font-size:11px;opacity:.8}
+@media (max-width:560px){
+  .hud{top:6px;gap:4px}
+  .hud-left{left:6px} .hud-right{right:6px}
+  .chip{padding:3px 6px}
+  .chip .k{font-size:9px}
+  .chip .v,.odo-d{font-size:14px}
+}
+
+.overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;line-height:1}
+.count{font-family:var(--font-display);font-size:clamp(48px,11vw,96px);color:#fff;-webkit-text-stroke:2px rgba(10,14,22,.85);paint-order:stroke;text-shadow:0 4px 0 rgba(10,14,22,.5);animation:pop .55s cubic-bezier(.2,1.6,.4,1) both}
+.warning{position:absolute;left:0;right:0;top:42%;display:grid;place-items:center;pointer-events:none;line-height:1.2}
+.warning-band{width:100%;padding:8px 12px;text-align:center;color:#fff;font-family:var(--font-display);font-size:clamp(15px,3vw,22px);letter-spacing:.06em;
+  background:repeating-linear-gradient(-45deg,#c9302c 0 14px,#a8221f 14px 28px);border-block:3px solid var(--warn);animation:warn 1.7s ease both}
+.warning-band small{display:block;font-family:var(--font-body);font-weight:700;font-size:12px;letter-spacing:0;opacity:.95}
+.stamp{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.stamp span{font-family:var(--font-display);font-size:clamp(34px,8vw,64px);color:#e0362e;border:6px solid #e0362e;border-radius:14px;padding:6px 20px;background:rgba(255,255,255,.88);transform:rotate(-10deg);line-height:1.1;animation:stamp .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes pop{0%{transform:scale(.3);opacity:0}60%{opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes warn{0%{transform:scaleY(0)}10%{transform:scaleY(1)}20%,40%,60%{opacity:1}30%,50%{opacity:.55}85%{opacity:1;transform:scaleY(1)}100%{opacity:0;transform:scaleY(.2)}}
+@keyframes stamp{0%{transform:rotate(-10deg) scale(2.4);opacity:0}100%{transform:rotate(-10deg) scale(1);opacity:1}}
+
+.dash{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:8px;color:var(--bezel-ink)}
+.cell{background:var(--bezel-2);border-radius:10px;padding:8px 10px;display:grid;gap:2px;min-width:0;align-content:start}
+.cell .k{font-size:11px;color:var(--bezel-ink-2);line-height:1.3}
+.cell .v{font-family:var(--font-display);font-size:clamp(17px,2.6vw,22px);line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cell .v[data-sign="neg"]{color:var(--keep-hi)}
+.cell .v[data-sign="pos"]{color:var(--bezel-ink)}
+.cell .s{font-size:11px;color:var(--bezel-ink-2);line-height:1.3}
+.meter{position:relative;height:14px;border-radius:4px;background:var(--bezel-line);margin-top:4px}
+.meter-bar{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--keep-hi);transition:width .25s ease}
+.meter-line{position:absolute;top:-4px;bottom:-4px;width:3px;margin-left:-1.5px;background:var(--swap-hi);border-radius:2px}
+.meter-legend{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--bezel-ink-2);line-height:1.3;margin-top:3px;flex-wrap:wrap}
+.meter-legend b{font-weight:700;color:var(--bezel-ink)}
+.meter-legend .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.over-flag{display:inline-block;font-size:11px;font-weight:700;color:#1b1504;background:var(--warn);border-radius:4px;padding:0 5px;margin-left:4px}
+@media (max-width:560px){
+  .dash{grid-template-columns:1fr 1fr}
+  .cell.meter-cell{grid-column:1 / -1;order:3}
+}
+
+.actions{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+.btn-go,.btn-sell{appearance:none;border:2px solid var(--warn-edge);background:var(--warn);color:var(--warn-ink);font-family:var(--font-display);font-size:18px;line-height:1.2;border-radius:12px;padding:12px 22px;box-shadow:0 4px 0 var(--warn-edge);cursor:pointer;transition:transform .06s, box-shadow .06s}
+.btn-go:active,.btn-sell:active{transform:translateY(3px);box-shadow:0 1px 0 var(--warn-edge)}
+.btn-sell{flex:1 1 220px;font-size:22px;display:grid;gap:2px;padding:12px 18px}
+.btn-sell small{font-family:var(--font-body);font-weight:700;font-size:12px;opacity:.8}
+.btn-sell:disabled{opacity:.55;cursor:default;transform:none;box-shadow:0 4px 0 var(--warn-edge)}
+.actions .btn-go{flex:1 1 200px}
+.btn-ghost{appearance:none;border:1.5px solid var(--bezel-line);background:transparent;color:var(--bezel-ink);border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer}
+.btn-ghost:hover{background:var(--bezel-2)}
+.btn-link{appearance:none;border:0;background:none;color:var(--bezel-ink-2);text-decoration:underline;text-underline-offset:3px;padding:10px 8px;cursor:pointer;font-weight:500}
+.hint-line{margin:0;color:var(--bezel-ink-2);font-size:12px;line-height:1.5;padding-inline:4px}
+.hint-line kbd{font-family:var(--font-hud);border:1px solid var(--bezel-line);border-radius:4px;padding:0 4px}
+
+/* ---- panels ---- */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.panel h2{margin:0;font-family:var(--font-display);font-weight:400;font-size:19px;line-height:1.3;text-wrap:balance}
+
+.setup{grid-area:setup}
+.setup fieldset{border:0;margin:0;padding:0;display:grid;gap:16px;min-width:0}
+.setup fieldset:disabled{opacity:.55}
+.setup legend{padding:0;margin-bottom:4px;font-family:var(--font-display);font-size:19px;line-height:1.3}
+.setup .note{margin:0;font-size:12px;line-height:1.5;color:var(--ink-3)}
+.field{display:grid;gap:6px}
+.field-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.label{font-weight:700;font-size:14px}
+.field output{font-family:var(--font-hud);font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
+input[type="range"]{width:100%;accent-color:var(--sign);margin:0;height:28px}
+.types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.opt{position:relative;cursor:pointer}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.type-card{display:grid;justify-items:center;gap:2px;border:1.5px solid var(--line);border-radius:10px;padding:6px 2px 6px;background:var(--panel-2);font-size:12px;font-weight:700;line-height:1.2}
+.type-card canvas{width:72px;height:34px;max-width:100%}
+.opt input:checked + .type-card{border-color:var(--sign);background:var(--sign-tint);box-shadow:0 0 0 1px var(--sign) inset}
+.opt input:focus-visible + .type-card,.opt input:focus-visible + .paint,.opt input:focus-visible + .seg-btn{outline:3px solid var(--sign);outline-offset:2px}
+.paints{display:flex;gap:10px;flex-wrap:wrap}
+.paint{display:block;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);box-shadow:0 0 0 2px var(--panel) inset}
+.opt input:checked + .paint{border-color:var(--sign);box-shadow:0 0 0 2px var(--panel) inset,0 0 0 2px var(--sign)}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:10px;padding:3px;gap:3px;background:var(--panel-2)}
+.seg-btn{display:block;text-align:center;border-radius:7px;padding:6px 4px;font-size:13px;font-weight:700;color:var(--ink-2)}
+.opt input:checked + .seg-btn{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.preview{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--panel-2);border-radius:10px;padding:10px 12px}
+.preview div{display:grid;gap:0;line-height:1.35}
+.preview span{font-size:11px;color:var(--ink-3)}
+.preview b{font-family:var(--font-display);font-weight:400;font-size:18px;font-variant-numeric:tabular-nums}
+.setup .btn-go{width:100%}
+@media (max-width:939px){ .app.is-playing .setup,.app.is-result .setup{display:none} }
+
+/* ---- result ---- */
+.result{grid-area:result;display:grid;gap:16px;scroll-margin-top:12px}
+.result-top{display:flex;gap:16px;align-items:center}
+.rank{flex:none;width:88px;height:88px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-size:50px;line-height:1;border:4px solid var(--ink);transform:rotate(-8deg);animation:rank .6s cubic-bezier(.2,1.7,.4,1) both}
+.rank[data-rank="S"],.rank[data-rank="A"]{background:var(--warn);color:var(--warn-ink);border-color:var(--warn-ink)}
+.rank[data-rank="B"],.rank[data-rank="C"],.rank[data-rank="D"]{background:var(--panel-2);color:var(--ink)}
+@keyframes rank{0%{transform:rotate(-30deg) scale(.2);opacity:0}100%{transform:rotate(-8deg) scale(1);opacity:1}}
+.result-head{display:grid;gap:2px;min-width:0}
+.result-kicker{margin:0;font-family:var(--font-hud);font-size:13px;color:var(--ink-3);letter-spacing:.08em}
+.result-title{margin:0;font-family:var(--font-display);font-size:24px;line-height:1.25}
+.result-score{margin:0;color:var(--ink-2)}
+.result-score b{font-family:var(--font-display);font-weight:400;font-size:22px;color:var(--ink)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0}
+.result-grid > div{background:var(--panel-2);border-radius:10px;padding:12px;display:grid;gap:2px;min-width:0}
+.result-grid dt{font-size:12px;color:var(--ink-3)}
+.result-grid dd{margin:0;font-family:var(--font-display);font-size:18px;line-height:1.3}
+.result-grid dd.sub{font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--ink-2)}
+.result-grid .best{box-shadow:0 0 0 2px var(--warn) inset}
+@media (max-width:420px){ .result-grid{grid-template-columns:1fr} }
+.why{margin:0;max-width:40em}
+.events{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.events li{display:grid;grid-template-columns:auto 4.2em 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.4}
+.events li:first-child{border-top:0}
+.events .yr{font-family:var(--font-hud);color:var(--ink-2)}
+.events .what{min-width:0}
+.events .what small{display:block;color:var(--ink-3);font-size:12px}
+.events .st{font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.events .st.paid{background:var(--loss-fill);color:var(--ink)}
+.events .st.saved{background:var(--gain-fill);color:var(--ink)}
+.badge{width:26px;height:26px;display:grid;place-items:center;font-size:11px;font-weight:700;line-height:1}
+.badge.shaken{background:#fff;border:2.5px solid var(--sign);border-radius:5px;color:#1c5bb3;font-family:var(--font-hud)}
+.badge.heavy,.badge.w18{background:#fff;border:3px solid #d23b33;border-radius:50%;color:#121821}
+.badge.parts{background:repeating-linear-gradient(0deg,#b0553b 0 6px,#d9c7b0 6px 7px);border-radius:3px;color:#fff;text-shadow:0 1px 0 #000}
+.result-actions{display:flex;gap:8px;flex-wrap:wrap}
+.result-actions .btn-ghost{border-color:var(--line);color:var(--ink)}
+.result-actions .btn-ghost:hover{background:var(--panel-2)}
+.copy-status{font-size:13px;color:var(--ink-2);align-self:center}
+#copyFallback{width:100%;min-height:90px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--ink);padding:8px;font:13px/1.5 var(--font-body)}
+.slot{border:1.5px dashed var(--line);border-radius:10px;padding:12px;color:var(--ink-3);font-size:13px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.slot b{color:var(--ink-2)}
+.slot .fake{border:1.5px solid var(--line);border-radius:8px;padding:6px 12px;font-weight:700;color:var(--ink-2)}
+
+/* ---- chart ---- */
+.chart{grid-area:chart;display:grid;gap:10px}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.chart-head p{margin:2px 0 0;font-size:12px;color:var(--ink-3)}
+.legend{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:18px;height:3px;border-radius:2px}
+.legend i.k{background:var(--keep)} .legend i.s{background:var(--swap)}
+.legend i.g{height:10px;width:14px;background:var(--gain-fill);border-radius:2px}
+.legend i.l{height:10px;width:14px;background:var(--loss-fill);border-radius:2px}
+.legend i.d{background:var(--ink)}
+.view-seg{display:inline-grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:10px;padding:3px;gap:3px;background:var(--panel-2)}
+.view-seg button{appearance:none;border:0;background:transparent;border-radius:7px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--ink-2);cursor:pointer}
+.view-seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.chart-tools{display:grid;gap:8px;justify-items:end}
+@media (max-width:560px){ .chart-tools{justify-items:start} }
+.chart-wrap{position:relative;min-width:0}
+#chart{display:block;width:100%;height:auto;overflow:visible}
+#chart .grid{stroke:var(--line);stroke-width:1}
+#chart .tick{fill:var(--ink-3);font-size:11px;font-family:var(--font-hud)}
+#chart .ln{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+#chart .ln.keep{stroke:var(--keep)} #chart .ln.swap{stroke:var(--swap)} #chart .ln.gapl{stroke:var(--ink)}
+#chart .zero{stroke:var(--ink-3);stroke-width:1.2}
+#chart .dot.gapd{fill:var(--ink)}
+#chart .ln.ghost{stroke-dasharray:4 5;stroke-width:2;opacity:.7}
+#chart .guide{fill:none;stroke:var(--swap);stroke-width:1.5;stroke-dasharray:3 5;opacity:.45}
+#chart .gain{fill:var(--gain-fill)} #chart .loss{fill:var(--loss-fill)}
+#chart .dot{stroke:var(--panel);stroke-width:2}
+#chart .dot.keep{fill:var(--keep)} #chart .dot.swap{fill:var(--swap)}
+#chart .lab{font-size:12px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+#chart .lab.muted{fill:var(--ink-2);font-weight:500}
+#chart .mk{stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:3 3}
+#chart .mk.best{stroke:var(--ink);stroke-dasharray:none;stroke-width:1.5}
+#chart .star{fill:var(--warn);stroke:var(--warn-ink);stroke-width:1.2}
+#chart .xh{stroke:var(--ink-3);stroke-width:1}
+.chart-msg{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);margin:0;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--ink-2);white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+.tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px;line-height:1.5;box-shadow:0 6px 18px -8px rgba(0,0,0,.35);min-width:170px;z-index:2}
+.tip b{font-family:var(--font-hud);font-weight:400;font-size:13px}
+.tip .row{display:flex;justify-content:space-between;gap:12px}
+.tip .row i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:5px;vertical-align:3px}
+.tip .diff{border-top:1px solid var(--line);margin-top:4px;padding-top:4px;font-weight:700}
+
+/* ---- details ---- */
+.more{grid-area:more;display:grid;gap:10px}
+details.panel{padding:0}
+details.panel summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style-position:inside}
+details.panel .inner{padding:0 18px 18px;display:grid;gap:10px}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+th,td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--panel)}
+thead th{font-size:12px;color:var(--ink-3);font-weight:700;background:var(--panel-2)}
+thead th:first-child{background:var(--panel-2)}
+tr.is-best td{background:var(--sign-tint)}
+tr.is-best td:first-child{background:var(--panel-2)}
+.src{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:13px;color:var(--ink-2)}
+.small{font-size:12px;color:var(--ink-3);margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (prefers-reduced-motion: reduce){
+  .count,.warning-band,.stamp span,.rank{animation:none}
+  .meter-bar{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app" lang="ja">
+
+  <header class="top">
+    <p class="eyebrow">売り時ゲーム ・ 愛車ロード</p>
+    <h1>この車、あと何年乗るのが一番得？</h1>
+    <p class="lede">条件を入れて出発すると、車が1年ずつ走り、かかったお金がグラフに伸びていきます。ここだと思った年に「売る」を押してください。あとで一番得な年と比べて採点します。</p>
+  </header>
+
+  <section class="console" aria-label="ゲーム画面">
+    <div class="screen" id="screen">
+      <canvas id="scene" role="img" aria-label="道路を走る車。看板は1年ごとの売却ポイント。車検や増税は道路上のイベントとして出てきます。"></canvas>
+      <div class="hud hud-left">
+        <div class="chip"><span class="k">年</span><span class="v" id="hudYear">2026</span></div>
+        <div class="chip"><span class="k">車齢</span><span class="v" id="hudAge">12年</span></div>
+      </div>
+      <div class="hud hud-right">
+        <div class="chip"><span class="k">走行距離</span><span class="odo"><span class="odo-digits" id="odo" aria-hidden="true"></span><span class="unit">km</span></span><span class="sr" id="odoText"></span></div>
+      </div>
+      <div class="overlay" id="countdown" hidden></div>
+      <div class="warning" id="warning" hidden></div>
+      <div class="stamp" id="stamp" hidden><span>売却！</span></div>
+    </div>
+
+    <div class="dash">
+      <div class="cell">
+        <span class="k">乗り換えた場合と比べて</span>
+        <span class="v" id="gapNow" data-sign="pos">±0円</span>
+        <span class="s" id="gapNowSub">ここまでの差</span>
+      </div>
+      <div class="cell meter-cell">
+        <span class="k" id="meterTitle">2027年にかかるお金（値下がり分も含む）</span>
+        <div class="meter" role="img" id="meter" aria-label=""><div class="meter-bar" id="meterBar"></div><div class="meter-line" id="meterLine"></div></div>
+        <div class="meter-legend">
+          <span><i class="sw" style="background:var(--keep-hi)"></i>この年 <b id="meterVal">0万円</b><span class="over-flag" id="overFlag" hidden>乗り換えより高い</span></span>
+          <span><i class="sw" style="background:var(--swap-hi)"></i>乗り換えライン <b id="meterEac">0万円</b></span>
+        </div>
+      </div>
+      <div class="cell">
+        <span class="k">いま売ると</span>
+        <span class="v" id="priceNow">0万円</span>
+        <span class="s">買取価格の目安</span>
+      </div>
+    </div>
+
+    <div class="actions" id="actionsSetup">
+      <button type="button" class="btn-go" id="goBtn">出発する</button>
+      <button type="button" class="btn-link" id="answerBtn">ゲームをせずに答えを見る</button>
+    </div>
+    <div class="actions" id="actionsPlay" hidden>
+      <button type="button" class="btn-sell" id="sellBtn">ここで売る！<small id="sellSub">次の看板で売却します</small></button>
+      <button type="button" class="btn-ghost" id="speedBtn" aria-pressed="false">早送り ×2</button>
+    </div>
+    <p class="hint-line" id="hintLine">青い看板が1年ごとの売却ポイントです。黄色い「車検」ゲートの手前で売れば、車検代はかかりません。<kbd>Space</kbd>キーでも売れます。</p>
+  </section>
+
+  <form class="setup panel" id="setupForm" autocomplete="off">
+    <fieldset id="setupFs">
+      <legend>あなたの車</legend>
+      <p class="note">例として入っています。あなたの車に合わせて変えてください。</p>
+
+      <div class="field">
+        <span class="label" id="typeLabel">車のタイプ</span>
+        <div class="types" role="radiogroup" aria-labelledby="typeLabel">
+          <label class="opt"><input type="radio" name="type" id="type-kei" value="kei"><span class="type-card"><canvas data-type="kei" width="144" height="68"></canvas>軽自動車</span></label>
+          <label class="opt"><input type="radio" name="type" id="type-compact" value="compact" checked><span class="type-card"><canvas data-type="compact" width="144" height="68"></canvas>コンパクト</span></label>
+          <label class="opt"><input type="radio" name="type" id="type-minivan" value="minivan"><span class="type-card"><canvas data-type="minivan" width="144" height="68"></canvas>ミニバン</span></label>
+          <label class="opt"><input type="radio" name="type" id="type-suv" value="suv"><span class="type-card"><canvas data-type="suv" width="144" height="68"></canvas>SUV</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label" id="paintLabel">色</span>
+        <div class="paints" role="radiogroup" aria-labelledby="paintLabel">
+          <label class="opt" title="白"><input type="radio" name="paint" id="paint-white" value="white" aria-label="白"><span class="paint" style="background:#f3f4f6"></span></label>
+          <label class="opt" title="赤"><input type="radio" name="paint" id="paint-red" value="red" aria-label="赤" checked><span class="paint" style="background:#cf3a31"></span></label>
+          <label class="opt" title="青"><input type="radio" name="paint" id="paint-blue" value="blue" aria-label="青"><span class="paint" style="background:#2b5ea6"></span></label>
+          <label class="opt" title="シルバー"><input type="radio" name="paint" id="paint-silver" value="silver" aria-label="シルバー"><span class="paint" style="background:#a7afb9"></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head"><label class="label" for="regYear">年式（初めて登録した年）</label><output id="regYearOut" for="regYear"></output></div>
+        <input type="range" id="regYear" min="2006" max="2025" step="1" value="2014">
+      </div>
+      <div class="field">
+        <div class="field-head"><label class="label" for="km">いまの走行距離</label><output id="kmOut" for="km"></output></div>
+        <input type="range" id="km" min="0" max="200000" step="1000" value="86000">
+      </div>
+      <div class="field">
+        <div class="field-head"><label class="label" for="annual">1年に走る距離</label><output id="annualOut" for="annual"></output></div>
+        <input type="range" id="annual" min="3000" max="20000" step="500" value="8000">
+      </div>
+      <div class="field">
+        <span class="label" id="swapLabel">乗り換えるなら</span>
+        <div class="seg" role="radiogroup" aria-labelledby="swapLabel">
+          <label class="opt"><input type="radio" name="swap" id="swap-new" value="new" checked><span class="seg-btn">同じタイプの新車</span></label>
+          <label class="opt"><input type="radio" name="swap" id="swap-used" value="used"><span class="seg-btn">3年落ちの中古</span></label>
+        </div>
+      </div>
+      <div class="preview" aria-live="polite">
+        <div><span>いま売ると</span><b id="pvPrice">0万円</b></div>
+        <div><span>乗り換えライン（1年あたり）</span><b id="pvEac">0万円</b></div>
+      </div>
+      <button type="submit" class="btn-go">この条件で出発</button>
+    </fieldset>
+  </form>
+
+  <section class="result panel" id="result" hidden aria-live="polite">
+    <div class="result-top" id="rankBlock">
+      <div class="rank" id="rank" data-rank="A">A</div>
+      <div class="result-head">
+        <p class="result-kicker" id="rKicker">結果</p>
+        <p class="result-title" id="rTitle"></p>
+        <p class="result-score" id="rScoreLine"><b id="rScore">0</b> 点 ・ <span id="rDir"></span></p>
+      </div>
+    </div>
+    <dl class="result-grid">
+      <div id="rYouBox"><dt>あなたの売り時</dt><dd id="rYou"></dd><dd class="sub" id="rYouGain"></dd></div>
+      <div class="best"><dt>一番得な売り時</dt><dd id="rBest"></dd><dd class="sub" id="rBestGain"></dd></div>
+    </dl>
+    <p class="why" id="rWhy"></p>
+    <div>
+      <h2 style="font-size:16px;margin-bottom:4px">道で起きたこと</h2>
+      <ol class="events" id="rEvents"></ol>
+    </div>
+    <div class="result-actions">
+      <button type="button" class="btn-go" id="againBtn">もう一度走る</button>
+      <button type="button" class="btn-ghost" id="editBtn">条件を変える</button>
+      <button type="button" class="btn-ghost" id="copyBtn">結果をコピー</button>
+      <span class="copy-status" id="copyStatus" aria-live="polite"></span>
+    </div>
+    <textarea id="copyFallback" readonly hidden aria-label="コピー用の結果テキスト"></textarea>
+    <div class="slot"><span><b>送客枠（デモ）</b>　買取の一括査定・カーリースへの案内がここに入ります。</span><span class="fake">いまの買取価格を確かめる</span></div>
+  </section>
+
+  <section class="chart panel" aria-labelledby="chartTitle">
+    <div class="chart-head">
+      <div>
+        <h2 id="chartTitle">乗り換えた場合と比べて、いくら得か</h2>
+        <p id="chartSub">線が一番高いところが売り時・単位は万円</p>
+      </div>
+      <div class="chart-tools">
+        <div class="view-seg" role="group" aria-label="グラフの見方">
+          <button type="button" id="viewGap" aria-pressed="true">得の推移</button>
+          <button type="button" id="viewCum" aria-pressed="false">累計</button>
+        </div>
+        <div class="legend" id="legendGap" aria-hidden="true">
+          <span><i class="d"></i>乗り続けた場合の得</span>
+          <span><i class="g"></i>得</span>
+          <span><i class="l"></i>損</span>
+        </div>
+        <div class="legend" id="legendCum" aria-hidden="true" hidden>
+          <span><i class="k"></i>乗り続ける</span>
+          <span><i class="s"></i>乗り換える</span>
+          <span><i class="g"></i>乗り続けて浮いた分</span>
+        </div>
+      </div>
+    </div>
+    <div class="chart-wrap" id="chartWrap">
+      <svg id="chart" role="img" aria-label="乗り続けた場合と乗り換えた場合の累計費用の折れ線グラフ"></svg>
+      <p class="chart-msg" id="chartMsg">出発すると線が伸びていきます</p>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+  </section>
+
+  <div class="more">
+    <details class="panel">
+      <summary>年ごとの内訳を表で見る</summary>
+      <div class="inner">
+        <div class="table-wrap"><table id="table"></table></div>
+        <p class="small">「値下がり」はその1年で買取価格が下がった分です。売らずに持ち続けると、この分を失ったことになります。</p>
+      </div>
+    </details>
+    <details class="panel">
+      <summary>計算の前提と出典</summary>
+      <div class="inner">
+        <ul class="src">
+          <li><b>自動車税（種別割）</b>：2019年10月以降に登録した車は引き下げ後の税率。初めての登録から13年を超えると約15%（軽自動車は約20%）重くなる。出典：総務省・各都道府県の税率表</li>
+          <li><b>自動車重量税</b>：エコカー減税なしの車の税額。13年経過・18年経過で上がる。出典：国土交通省「自動車重量税額について」</li>
+          <li><b>自賠責保険料（24か月）</b>：普通車17,650円・軽自動車17,540円。出典：損害保険料率算出機構（2023年4月改定の額）</li>
+          <li><b>車検</b>：新車は3年後、その後は2年ごと。整備費は車が古くなるほど少しずつ上がる想定</li>
+          <li><b>このデモの想定値</b>：買取価格の下がり方（1年で約17%ずつ、10万kmを超えると25%下がる）、修理費の増え方（5年目から増え、10年を超えると加速）、10万km・15万kmでの部品交換、燃費、ガソリン1Lあたり160円</li>
+          <li><b>乗り換えライン</b>：乗り換えた車を、一番安くなる年数だけ乗ったときの1年あたりの費用。購入時の諸費用（新車8%・中古10%）を含む</li>
+          <li><b>含めていないもの</b>：任意保険・駐車場代（どちらを選んでも同じとみなす）、エコカー減税、ハイブリッド車・電気自動車の扱い、ローンの金利</li>
+        </ul>
+        <p class="small">概算のデモです。実際の金額は車種・地域・整備内容で変わります。</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="sr" id="live" aria-live="polite"></p>
+</div>
+
+<script id="model">
+/* ===== 計算モデル（画面と切り離してテストできるように独立させている） ===== */
+var CarModel = (function(){
+  'use strict';
+  var START_YEAR = 2026, H = 12, GAS = 160;
+  var TYPES = {
+    kei:     {label:'軽自動車',  price:1700000, floor:30000, tax:{old:7200, now:10800, heavy:12900}, newFrom:2015, wtax:[6600,8200,8800],    shaken:42000, jibai:17540, maint:30000, parts:60000,  eff:20},
+    compact: {label:'コンパクト',price:2300000, floor:50000, tax:{old:34500,now:30500, heavy:39600}, newFrom:2020, wtax:[16400,22800,25200], shaken:50000, jibai:17650, maint:38000, parts:80000,  eff:18},
+    minivan: {label:'ミニバン',  price:3600000, floor:60000, tax:{old:39500,now:36000, heavy:45400}, newFrom:2020, wtax:[32800,45600,50400], shaken:60000, jibai:17650, maint:48000, parts:100000, eff:12.5},
+    suv:     {label:'SUV',       price:4000000, floor:60000, tax:{old:45000,now:43500, heavy:51700}, newFrom:2020, wtax:[41000,57000,63000], shaken:65000, jibai:17650, maint:52000, parts:110000, eff:12}
+  };
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function total(items){var s=0;for(var i=0;i<items.length;i++)s+=items[i].amt;return s;}
+  function ratio(a){return 0.9*Math.exp(-0.19*a);}
+  // 買取価格の目安。cliff=false にすると10万kmの値下がりを無視する（画面上で壁を越える前の表示用）
+  function carValue(T, age, km, cliff){
+    var f = clamp(1-(km-9000*age)/200000, 0.45, 1.15);
+    if(cliff!==false && km>=100000) f*=0.75;
+    return Math.max(T.floor, T.price*ratio(age)*f);
+  }
+  function baseTax(T, regYear){return regYear>=T.newFrom?T.tax.now:T.tax.old;}
+  function yearItems(T, regYear, Y, kmStart, annual, effModel){
+    var a=Y-regYear, items=[], heavy=a>=13;
+    items.push({k:'tax', label:heavy?'自動車税（13年超）':'自動車税', amt:heavy?T.tax.heavy:baseTax(T,regYear)});
+    if(a>=3 && (a-3)%2===0){
+      var lv=a>=18?2:(a>=13?1:0);
+      items.push({k:'shaken', label:'車検', lv:lv, wtax:T.wtax[lv], amt:Math.round(T.shaken*(1+0.05*Math.max(0,a-7))+T.jibai+T.wtax[lv])});
+    }
+    var kmF=1+Math.max(0,annual-10000)/20000;
+    items.push({k:'maint', label:'点検・修理・消耗品', amt:Math.round(T.maint*(1+0.10*Math.max(0,a-5)+0.035*Math.pow(Math.max(0,a-10),2))*kmF)});
+    var kmEnd=kmStart+annual, marks=[[100000,1,'10万kmの部品交換'],[150000,1.3,'15万kmの大きな修理']];
+    for(var j=0;j<marks.length;j++){
+      var th=marks[j][0];
+      if(kmStart<th && kmEnd>=th) items.push({k:'parts', label:marks[j][2], th:th, at:(th-kmStart)/annual, amt:Math.round(T.parts*marks[j][1])});
+    }
+    var eff=effModel*(1-0.004*a);
+    items.push({k:'fuel', label:'ガソリン代', amt:Math.round(annual/eff*GAS)});
+    return items;
+  }
+  function replacement(T, inp){
+    var used = inp.swap==='used', startAge = used?3:0;
+    var price = used ? T.price*ratio(3)*1.3 : T.price;
+    var fees = price*(used?0.10:0.08);
+    var reg = START_YEAR-startAge, kmS = used?27000:0;
+    var cum = price+fees, best=Infinity, bestN=0;
+    for(var n=1;n<=15;n++){
+      cum += total(yearItems(T, reg, START_YEAR+n, kmS+inp.annual*(n-1), inp.annual, T.eff));
+      var per = (cum - carValue(T, startAge+n, kmS+inp.annual*n))/n;
+      if(n>=3 && per<best){best=per;bestN=n;}
+    }
+    return {eac:best, n:bestN, price:price, fees:fees, used:used};
+  }
+  function simulate(inp){
+    var T=TYPES[inp.type], age0=START_YEAR-inp.regYear;
+    var effOld=T.eff*(1-0.012*age0);
+    var V=[carValue(T,age0,inp.km)], years=[];
+    for(var i=1;i<=H;i++){
+      var Y=START_YEAR+i, kmStart=inp.km+inp.annual*(i-1);
+      var items=yearItems(T, inp.regYear, Y, kmStart, inp.annual, effOld);
+      V[i]=carValue(T, age0+i, kmStart+inp.annual);
+      var run=total(items), dep=V[i-1]-V[i];
+      years.push({i:i, Y:Y, age:Y-inp.regYear, kmStart:kmStart, kmEnd:kmStart+inp.annual, items:items, run:run, dep:dep, marginal:run+dep});
+    }
+    var rep=replacement(T, inp), keep=[0], swap=[0], gap=[0];
+    for(i=1;i<=H;i++){keep[i]=keep[i-1]+years[i-1].marginal; swap[i]=rep.eac*i; gap[i]=swap[i]-keep[i];}
+    var best=0, minGap=0;
+    for(i=1;i<=H;i++){ if(gap[i]>gap[best]+1) best=i; if(gap[i]<minGap) minGap=gap[i]; }
+    var events=[];
+    years.forEach(function(y){
+      var sh=null;
+      y.items.forEach(function(it){ if(it.k==='shaken') sh=it; });
+      if(sh) events.push({kind:'shaken', i:y.i, Y:y.Y, pos:y.i-1+0.1, amt:sh.amt, lv:sh.lv, title:'車検', sub:'令和'+(y.Y-2018)+'年'});
+      if(y.age===13) events.push({kind:'heavy', i:y.i, Y:y.Y, pos:y.i-1+0.45, amt:T.tax.heavy-baseTax(T,inp.regYear), title:'13年超え', sub:'自動車税アップ'});
+      if(sh && sh.lv===2 && y.age-2<18) events.push({kind:'w18', i:y.i, Y:y.Y, pos:y.i-1+0.45, amt:T.wtax[2]-T.wtax[1], title:'18年超え', sub:'重量税アップ'});
+      y.items.forEach(function(it){
+        if(it.k==='parts') events.push({kind:'parts', i:y.i, Y:y.Y, th:it.th, pos:y.i-1+clamp(it.at,0.2,0.85), amt:it.amt, title:it.th===100000?'10万km':'15万km', sub:it.label});
+      });
+    });
+    events.sort(function(a,b){return a.pos-b.pos;});
+    return {inp:inp, T:T, age0:age0, V:V, years:years, rep:rep, keep:keep, swap:swap, gap:gap, best:best, minGap:minGap, events:events};
+  }
+  function score(sim, t){
+    var maxG=sim.gap[sim.best], minG=sim.minGap;
+    if(maxG-minG<5000) return 100;
+    return Math.round(clamp(100*(sim.gap[t]-minG)/(maxG-minG),0,100));
+  }
+  function rank(s){return s>=95?'S':s>=80?'A':s>=60?'B':s>=40?'C':'D';}
+  return {START_YEAR:START_YEAR, H:H, TYPES:TYPES, carValue:carValue, simulate:simulate, score:score, rank:rank, clamp:clamp};
+})();
+</script>
+
+<script>
+(function(){
+'use strict';
+var M = CarModel, H = M.H, START_YEAR = M.START_YEAR, clamp = M.clamp;
+var YEAR_SEC = 1.6;
+var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var PAINT = {white:'#f3f4f6', red:'#cf3a31', blue:'#2b5ea6', silver:'#a7afb9'};
+function $(s){return document.querySelector(s);}
+
+/* ---------- 表示用の書式 ---------- */
+function man(v){var a=Math.abs(v)/10000; return (a>=10?String(Math.round(a)):a.toFixed(1))+'万';}
+function yen(v){return Math.round(v).toLocaleString('ja-JP')+'円';}
+function signed(v){return (v>=0?'+':'−')+man(v)+'円';}
+function sellLabel(t){return t===0?'いますぐ':(START_YEAR+t)+'年末（あと'+t+'年）';}
+
+/* ---------- 状態 ---------- */
+var G = {state:'setup', p:0, sim:null, speedMul:1, sellTarget:null, fired:{}, scene:[], answerOnly:false,
+         particles:[], popups:[], shake:0, flash:0, time:0, vNow:0, warned:{}, sold:null};
+
+function readInputs(){
+  var f=$('#setupForm').elements;
+  return {type:f['type'].value, paint:f['paint'].value, regYear:+$('#regYear').value, km:+$('#km').value, annual:+$('#annual').value, swap:f['swap'].value};
+}
+
+/* ---------- テーマ（canvas用に CSS 変数を読む） ---------- */
+var C = {};
+function readTheme(){
+  var cs=getComputedStyle(document.documentElement);
+  ['sky-top','sky-bot','sun','mtn-far','mtn-near','ground','tree','tree-2','road','road-line','pole','wire','smoke','glass','sign','warn','warn-ink','keep','swap','night'].forEach(function(k){
+    C[k]=cs.getPropertyValue('--'+k).trim();
+  });
+  C.isNight = C.night==='1';
+  drawTypeCards();
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
+new MutationObserver(readTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+/* ---------- 車の形 ---------- */
+var SHAPES = {
+  kei:     {len:100, body:[[-50,-13],[-50,-58],[-46,-62],[37,-62],[43,-58],[49,-36],[50,-30],[50,-13]], win:[[-45,-56],[35,-56],[40,-39],[-45,-39]], pillars:[-8,17], wheels:[-31,31], r:11, wy:-11, light:[47,-31], tail:[-50,-42]},
+  compact: {len:114, body:[[-56,-14],[-56,-40],[-48,-56],[-40,-60],[13,-60],[31,-42],[52,-38],[57,-31],[57,-14]], win:[[-47,-54],[-39,-57],[12,-57],[27,-43],[-47,-43]], pillars:[-11], wheels:[-35,37], r:12, wy:-12, light:[53,-33], tail:[-56,-38]},
+  minivan: {len:134, body:[[-66,-14],[-66,-67],[-60,-72],[33,-72],[51,-48],[63,-44],[67,-37],[67,-14]], win:[[-60,-66],[31,-66],[45,-49],[-60,-49]], pillars:[-30,3], wheels:[-43,45], r:13, wy:-13, light:[63,-39], tail:[-66,-46]},
+  suv:     {len:128, body:[[-63,-19],[-63,-62],[-57,-68],[21,-68],[37,-50],[59,-46],[63,-39],[63,-19]], win:[[-57,-62],[19,-62],[32,-51],[-57,-51]], pillars:[-20], wheels:[-39,41], r:15, wy:-15, light:[59,-41], tail:[-63,-44], rack:true}
+};
+function shade(hex, amt){
+  var n=parseInt(hex.slice(1),16), r=n>>16, g=(n>>8)&255, b=n&255;
+  function f(c){return Math.round(amt<0?c*(1+amt):c+(255-c)*amt);}
+  return 'rgb('+f(r)+','+f(g)+','+f(b)+')';
+}
+function poly(ctx, pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(var i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath();}
+function drawCar(ctx, type, paint, x, y, carLen, opt){
+  var S=SHAPES[type], s=carLen/S.len; opt=opt||{};
+  ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+  if(opt.shadow!==false){ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.ellipse(0,1,S.len*0.5,4,0,0,Math.PI*2);ctx.fill();}
+  // 車体
+  poly(ctx,S.body); ctx.fillStyle=paint; ctx.fill();
+  ctx.save(); poly(ctx,S.body); ctx.clip();
+  ctx.fillStyle=shade(paint,-0.2); ctx.fillRect(-80,-26,160,20);
+  ctx.fillStyle='rgba(255,255,255,.18)'; ctx.fillRect(-80,-80,160,10);
+  // さび・汚れ（古いほど増える）
+  var rust=opt.rust||0;
+  for(var k=0;k<rust;k++){
+    var rx=S.body[0][0]+10+((k*37)%(S.len-20)), ry=-18-((k*13)%10);
+    ctx.fillStyle='rgba(120,62,24,.55)'; ctx.beginPath(); ctx.arc(rx,ry,2.2+(k%3),0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+  ctx.lineWidth=1.4/s*0.9; ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineJoin='round'; poly(ctx,S.body); ctx.stroke();
+  // 窓
+  poly(ctx,S.win); ctx.fillStyle=opt.glass||'rgba(168,206,234,.95)'; ctx.fill();
+  ctx.strokeStyle=paint; ctx.lineWidth=3.2;
+  S.pillars.forEach(function(px){ctx.beginPath();ctx.moveTo(px,S.win[0][1]-1);ctx.lineTo(px,S.win[S.win.length-1][1]+1);ctx.stroke();});
+  // ドアの線
+  ctx.strokeStyle='rgba(0,0,0,.22)'; ctx.lineWidth=1;
+  S.pillars.forEach(function(px){ctx.beginPath();ctx.moveTo(px,S.win[S.win.length-1][1]+2);ctx.lineTo(px,S.wy-S.r+2);ctx.stroke();});
+  if(S.rack){ctx.strokeStyle='#2a2d33';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(-52,-71);ctx.lineTo(14,-71);ctx.stroke();}
+  // ライト
+  ctx.fillStyle='#ffe9a6'; ctx.fillRect(S.light[0]-4,S.light[1]-3,5,6);
+  ctx.fillStyle='#e0362e'; ctx.fillRect(S.tail[0],S.tail[1]-4,3,9);
+  if(opt.headlights){
+    var gr=ctx.createLinearGradient(S.light[0],0,S.light[0]+120,0);
+    gr.addColorStop(0,'rgba(255,236,170,.45)'); gr.addColorStop(1,'rgba(255,236,170,0)');
+    ctx.fillStyle=gr; ctx.beginPath(); ctx.moveTo(S.light[0],S.light[1]-2); ctx.lineTo(S.light[0]+125,S.light[1]-16); ctx.lineTo(S.light[0]+125,S.light[1]+26); ctx.lineTo(S.light[0],S.light[1]+3); ctx.closePath(); ctx.fill();
+  }
+  // タイヤ
+  var ang=opt.wheel||0;
+  S.wheels.forEach(function(wx){
+    ctx.fillStyle=shade(paint,-0.55); ctx.beginPath(); ctx.arc(wx,S.wy,S.r+2.5,Math.PI,0); ctx.fill();
+    ctx.fillStyle='#1c1e22'; ctx.beginPath(); ctx.arc(wx,S.wy,S.r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#9aa1aa'; ctx.beginPath(); ctx.arc(wx,S.wy,S.r*0.5,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#5b6068'; ctx.lineWidth=1.6;
+    for(var q=0;q<5;q++){var a=ang+q*Math.PI*2/5; ctx.beginPath(); ctx.moveTo(wx,S.wy); ctx.lineTo(wx+Math.cos(a)*S.r*0.5,S.wy+Math.sin(a)*S.r*0.5); ctx.stroke();}
+  });
+  ctx.restore();
+  return {top:y+Math.min.apply(null,S.body.map(function(p){return p[1];}))*s, rear:x+S.body[0][0]*s, front:x+S.len*0.5*s, exhaustY:y+(S.wy-2)*s};
+}
+
+function drawTypeCards(){
+  var paint=PAINT[(document.querySelector('input[name="paint"]:checked')||{}).value||'red'];
+  document.querySelectorAll('.type-card canvas').forEach(function(cv){
+    var c=cv.getContext('2d'); c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,cv.width,cv.height);
+    c.setTransform(2,0,0,2,0,0);
+    drawCar(c, cv.dataset.type, paint, 36, 31, cv.dataset.type==='kei'?50:cv.dataset.type==='compact'?56:64, {shadow:true, glass:C.glass});
+  });
+}
+
+/* ---------- 場面（canvas） ---------- */
+var cv=$('#scene'), ctx=cv.getContext('2d'), CW=0, CH=0;
+function resize(){
+  var w=cv.parentElement.clientWidth; CW=w; CH=Math.round(clamp(w*0.44,210,330));
+  var dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.round(CW*dpr); cv.height=Math.round(CH*dpr); cv.style.height=CH+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  renderChart();
+}
+function geo(){
+  var horizon=CH*0.57, roadTop=CH*0.66, roadBot=CH*0.95;
+  return {horizon:horizon, roadTop:roadTop, roadBot:roadBot, lane:roadTop+(roadBot-roadTop)*0.8,
+          carX:CW*0.3, carLen:clamp(CW*0.21,92,165), yearPx:Math.max(CW*0.86,300), s:clamp(CH/250,0.8,1.3)};
+}
+var STARS=[]; for(var i=0;i<60;i++) STARS.push({x:Math.random(), y:Math.random()*0.5, r:Math.random()*1.2+0.3, ph:Math.random()*6});
+function h1(k){var x=Math.sin(k*127.1)*43758.5453; return x-Math.floor(x);}
+
+function kmAt(p){var sim=G.sim; return sim.inp.km+sim.inp.annual*p;}
+function tagValue(p){
+  var sim=G.sim, km=kmAt(p);
+  var cliffOn = sim.inp.km>=100000 || !!G.fired['parts100000'] || (G.state==='result');
+  return M.carValue(sim.T, sim.age0+p, km, cliffOn);
+}
+
+function drawScene(dt){
+  if(!CW || !G.sim) return;
+  var g=geo(), cam=G.p*g.yearPx, s=g.s, t=G.time, sim=G.sim;
+  ctx.save();
+  if(G.shake>0.3 && !RM) ctx.translate((Math.random()-0.5)*G.shake,(Math.random()-0.5)*G.shake);
+  // 空
+  var sky=ctx.createLinearGradient(0,0,0,g.horizon); sky.addColorStop(0,C['sky-top']); sky.addColorStop(1,C['sky-bot']);
+  ctx.fillStyle=sky; ctx.fillRect(-20,-20,CW+40,g.horizon+22);
+  if(C.isNight){
+    ctx.fillStyle='#ffffff';
+    STARS.forEach(function(st){ctx.globalAlpha=0.4+0.4*Math.sin(t*1.5+st.ph); ctx.beginPath(); ctx.arc(st.x*CW,st.y*g.horizon,st.r,0,Math.PI*2); ctx.fill();});
+    ctx.globalAlpha=1;
+  }
+  ctx.fillStyle=C.sun; ctx.beginPath(); ctx.arc(CW*0.8,CH*0.2,CH*0.065,0,Math.PI*2); ctx.fill();
+  if(C.isNight){ctx.fillStyle=C['sky-top']; ctx.beginPath(); ctx.arc(CW*0.8+CH*0.03,CH*0.2-CH*0.015,CH*0.06,0,Math.PI*2); ctx.fill();}
+  // 遠い山
+  ctx.fillStyle=C['mtn-far']; ctx.beginPath(); ctx.moveTo(-20,g.horizon);
+  for(var sx=-20; sx<=CW+20; sx+=8){var wx=sx+cam*0.1; var hh=(30+20*Math.sin(wx*0.006)+11*Math.sin(wx*0.017+1.3)+5*Math.sin(wx*0.043))*s; ctx.lineTo(sx,g.horizon-hh);}
+  ctx.lineTo(CW+20,g.horizon); ctx.fill();
+  // 近い丘
+  ctx.fillStyle=C['mtn-near']; ctx.beginPath(); ctx.moveTo(-20,g.horizon+2);
+  for(sx=-20; sx<=CW+20; sx+=8){wx=sx+cam*0.3; hh=(10+8*Math.sin(wx*0.011+2)+5*Math.sin(wx*0.029))*s; ctx.lineTo(sx,g.horizon-hh);}
+  ctx.lineTo(CW+20,g.horizon+2); ctx.fill();
+  // 地面
+  ctx.fillStyle=C.ground; ctx.fillRect(-20,g.horizon,CW+40,CH-g.horizon+20);
+  // 木
+  var tp=0.5, sp=64, k0=Math.floor((cam*tp-40)/sp), k1=Math.ceil((cam*tp+CW+40)/sp);
+  for(var k=k0;k<=k1;k++){
+    if(h1(k)<0.35) continue;
+    var tx=k*sp+h1(k+7)*30-cam*tp, ty=g.horizon+3+h1(k+3)*(g.roadTop-g.horizon-8), th=(12+h1(k+11)*12)*s;
+    ctx.fillStyle=h1(k+5)>0.5?C.tree:C['tree-2'];
+    if(h1(k+9)>0.5){ctx.beginPath();ctx.moveTo(tx,ty-th);ctx.lineTo(tx-th*0.38,ty);ctx.lineTo(tx+th*0.38,ty);ctx.closePath();ctx.fill();}
+    else {ctx.beginPath();ctx.arc(tx,ty-th*0.55,th*0.42,0,Math.PI*2);ctx.fill();ctx.fillRect(tx-1,ty-th*0.2,2,th*0.2);}
+  }
+  // 電柱と電線
+  var pp=0.9, pgap=230*s, poleH=CH*0.42, p0=Math.floor((cam*pp-60)/pgap), p1=Math.ceil((cam*pp+CW+60)/pgap), base=g.roadTop-1, prevTop=null;
+  ctx.lineWidth=1;
+  for(var q=p0;q<=p1;q++){
+    var px=q*pgap-cam*pp+40, top=base-poleH;
+    ctx.fillStyle=C.pole; ctx.fillRect(px-1.8,top,3.6,poleH); ctx.fillRect(px-11*s,top+6*s,22*s,2.4);
+    if(prevTop!==null){
+      ctx.strokeStyle=C.wire;
+      for(var wi=-1;wi<=1;wi+=2){ctx.beginPath();ctx.moveTo(prevTop+wi*9*s,top+7*s);ctx.quadraticCurveTo((prevTop+px)/2+wi*9*s,top+7*s+16*s,px+wi*9*s,top+7*s);ctx.stroke();}
+    }
+    prevTop=px;
+  }
+  // 道路
+  ctx.fillStyle=C.road; ctx.fillRect(-20,g.roadTop,CW+40,g.roadBot-g.roadTop);
+  ctx.fillStyle=C['road-line']; ctx.fillRect(-20,g.roadTop+3,CW+40,2); ctx.fillRect(-20,g.roadBot-5,CW+40,2);
+  var mid=g.roadTop+(g.roadBot-g.roadTop)*0.48, dash=34*s, off=cam%(dash*2);
+  for(var dx=-off-dash; dx<CW+dash; dx+=dash*2) ctx.fillRect(dx,mid-1.5,dash,3);
+
+  // 道の上のもの（奥側）
+  var near=[];
+  G.scene.forEach(function(e){
+    var ex=g.carX+(e.pos-G.p)*g.yearPx;
+    if(ex<-140||ex>CW+160) return;
+    if(e.kind==='year') drawYearSign(g,ex,e);
+    else if(e.kind==='shaken'){ drawGate(g,ex,e,false); near.push([e,ex]); }
+    else if(e.kind==='heavy'||e.kind==='w18') drawBoss(g,ex,e);
+    else if(e.kind==='parts' && !G.fired[e.id]) drawWall(g,ex,e);
+  });
+  // ゴールの星（結果で表示）
+  if(G.state==='result' && !G.answerOnly){
+    var bx=g.carX+(sim.best-G.p)*g.yearPx-22*s;
+    if(bx>-40 && bx<CW+40) drawStar(bx, g.roadTop-poleH*0.95, 9*s);
+  }
+  // 粒子（車の後ろ）
+  drawParticles(dt, g, false);
+  // 車
+  var ageNow=sim.age0+G.p, moving=G.state==='drive'||G.state==='stopping';
+  var amp=(1+Math.max(0,ageNow-10)*0.22)*(moving?1:0.35);
+  var bob=Math.sin(t*(moving?14:5))*amp*0.6 + (moving && ageNow>13 && Math.sin(t*3.1)>0.93 ? -2.2 : 0);
+  G.wheel=(G.wheel||0)+G.vNow*dt/(g.carLen*0.1);
+  var car=drawCar(ctx, sim.inp.type, PAINT[sim.inp.paint], g.carX, g.lane+bob, g.carLen, {rust:Math.round(clamp(ageNow-9,0,7)), headlights:C.isNight, wheel:G.wheel, glass:C.glass});
+  G.carBox=car;
+  // 値札
+  drawTag(g, car, tagValue(G.p));
+  // 煙（古いほど多い）
+  var rate=(0.6+Math.max(0,ageNow-8)*0.55)*(moving?1.4:0.7);
+  if(!RM && Math.random()<rate*dt*4) G.particles.push({kind:'smoke',x:car.rear-2,y:car.exhaustY,vx:-(G.vNow*0.35+18+Math.random()*12),vy:-10-Math.random()*8,r:3*s,life:1.4,max:1.4});
+  // 手前の柱
+  near.forEach(function(n){drawGate(g,n[1],n[0],true);});
+  drawParticles(dt, g, true);
+  drawPopups(dt, g, car);
+  if(G.flash>0){ctx.fillStyle='rgba(255,255,255,'+(G.flash*0.6)+')';ctx.fillRect(-20,-20,CW+40,CH+40);}
+  ctx.restore();
+}
+
+function drawYearSign(g, x, e){
+  var s=g.s, w=58*s, h=32*s, sx=x-26*s, top=g.roadTop-g.roadTop*0.62;
+  ctx.fillStyle='#8d949e'; ctx.fillRect(sx-1.5,top+h,3,g.roadTop-top-h);
+  var target = G.sellTarget===e.b && (G.state==='stopping'||G.state==='result');
+  if(target){ctx.fillStyle=C.warn; ctx.fillRect(sx-w/2-4,top-4,w+8,h+8);}
+  ctx.fillStyle=C.sign; ctx.fillRect(sx-w/2,top,w,h);
+  ctx.strokeStyle='#ffffff'; ctx.lineWidth=1.4; ctx.strokeRect(sx-w/2+3,top+3,w-6,h-6);
+  ctx.fillStyle='#ffffff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  if(e.b===0){ctx.font=(15*s)+'px '+fontHud(); ctx.fillText('いま',sx,top+h/2+1);}
+  else {ctx.font=(14*s)+'px '+fontHud(); ctx.fillText(String(START_YEAR+e.b),sx,top+h*0.4); ctx.font=(9*s)+'px '+fontHud(); ctx.fillText('年末',sx,top+h*0.76);}
+}
+function drawGate(g, x, e, nearSide){
+  var s=g.s, bw=78*s, bh=34*s, by=g.roadTop-CH*0.33;
+  if(!nearSide){
+    ctx.fillStyle='#7d838c'; ctx.fillRect(x-2.5,by+bh,5,g.roadTop+4-by-bh);
+    ctx.fillStyle=C.warn; ctx.fillRect(x-bw/2,by,bw,bh);
+    ctx.fillStyle='#1b1504';
+    for(var i=0;i<6;i++){ctx.beginPath();var sx0=x-bw/2+i*bw/6;ctx.moveTo(sx0,by+bh-5*s);ctx.lineTo(sx0+bw/12,by+bh-5*s);ctx.lineTo(sx0+bw/12-4,by+bh);ctx.lineTo(sx0-4,by+bh);ctx.closePath();ctx.fill();}
+    // 検査標章ふうのステッカー
+    var st=20*s, stx=x-bw/2+5*s, sty=by+5*s;
+    ctx.fillStyle='#ffffff'; ctx.fillRect(stx,sty,st,st*1.05); ctx.strokeStyle=C.sign; ctx.lineWidth=2; ctx.strokeRect(stx+1,sty+1,st-2,st*1.05-2);
+    ctx.fillStyle='#1c5bb3'; ctx.font=(8*s)+'px '+fontHud(); ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('R'+(e.Y-2018),stx+st/2,sty+st*0.55);
+    ctx.fillStyle='#1b1504'; ctx.font=(13*s)+'px '+fontDisplay(); ctx.textAlign='left'; ctx.fillText('車検',stx+st+5*s,by+bh*0.36);
+    ctx.font=(10*s)+'px '+fontHud(); ctx.fillText('−'+man(e.amt)+'円',stx+st+5*s,by+bh*0.66);
+  } else {
+    ctx.fillStyle='#8a9099'; ctx.fillRect(x-3,by+bh,6,g.roadBot+6-by-bh);
+    ctx.fillStyle='rgba(0,0,0,.25)'; ctx.fillRect(x+3,by+bh,2,g.roadBot+6-by-bh);
+  }
+}
+function drawBoss(g, x, e){
+  var s=g.s, r=17*s, cy=g.roadTop-CH*0.36, plateH=15*s;
+  ctx.fillStyle='#8d949e'; ctx.fillRect(x-1.5,cy,3,g.roadTop-cy);
+  ctx.fillStyle='#ffffff'; ctx.beginPath(); ctx.arc(x,cy,r,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#d23b33'; ctx.lineWidth=4*s; ctx.beginPath(); ctx.arc(x,cy,r-2*s,0,Math.PI*2); ctx.stroke();
+  ctx.fillStyle='#121821'; ctx.font=(12*s)+'px '+fontDisplay(); ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(e.kind==='heavy'?'13年':'18年',x,cy+1);
+  var pw=50*s; ctx.fillStyle='#d23b33'; ctx.fillRect(x-pw/2,cy+r+4*s,pw,plateH);
+  ctx.fillStyle='#ffffff'; ctx.font=(9*s)+'px '+fontHud(); ctx.fillText(e.kind==='heavy'?'税金UP':'重量税UP',x,cy+r+4*s+plateH/2+1);
+}
+function drawWall(g, x, e){
+  var s=g.s, wh=g.carLen*0.42, ww=14*s, by=g.lane+2, rows=6, bhh=wh/rows;
+  for(var r=0;r<rows;r++){
+    ctx.fillStyle='#d9c7b0'; ctx.fillRect(x-ww/2,by-(r+1)*bhh,ww,bhh);
+    ctx.fillStyle='#b0553b'; ctx.fillRect(x-ww/2+(r%2?0:1),by-(r+1)*bhh+1,ww-1,bhh-1.5);
+  }
+  var pw=50*s, ph=15*s, py=by-wh-ph-4*s;
+  ctx.fillStyle='#ffffff'; ctx.fillRect(x-pw/2,py,pw,ph); ctx.strokeStyle='#121821'; ctx.lineWidth=1.5; ctx.strokeRect(x-pw/2,py,pw,ph);
+  ctx.fillStyle='#121821'; ctx.font=(10*s)+'px '+fontHud(); ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(e.title,x,py+ph/2+1);
+}
+function drawTag(g, car, v){
+  var s=g.s, x=(car.rear+car.front)/2+4*s, y=car.top-22*s, txt=man(v)+'円';
+  ctx.font=(12*s)+'px '+fontHud(); var w=ctx.measureText(txt).width+16*s, h=19*s;
+  ctx.strokeStyle='rgba(20,20,20,.5)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x,car.top+2); ctx.lineTo(x-w*0.3,y+h); ctx.stroke();
+  ctx.fillStyle='#fffaf0'; ctx.beginPath();
+  ctx.moveTo(x-w/2+6*s,y); ctx.lineTo(x+w/2,y); ctx.lineTo(x+w/2,y+h); ctx.lineTo(x-w/2+6*s,y+h); ctx.lineTo(x-w/2,y+h/2); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#c99a2e'; ctx.lineWidth=1.2; ctx.stroke();
+  ctx.fillStyle='#121821'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(txt,x+3*s,y+h/2+1);
+}
+function drawStar(x, y, r){
+  ctx.fillStyle=C.warn; ctx.strokeStyle='#1b1504'; ctx.lineWidth=1.5; ctx.beginPath();
+  for(var i=0;i<10;i++){var a=-Math.PI/2+i*Math.PI/5, rr=i%2?r*0.45:r; ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);}
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+}
+function fontHud(){return '"DotGothic16", ui-monospace, monospace';}
+function fontDisplay(){return '"Dela Gothic One", "Hiragino Sans", sans-serif';}
+
+/* ---------- 粒子・ポップアップ ---------- */
+function coins(amt){
+  if(RM||!G.carBox) return;
+  var n=clamp(Math.round(amt/15000),3,18), car=G.carBox;
+  for(var i=0;i<n;i++) G.particles.push({kind:'coin',x:(car.rear+car.front)/2,y:car.top+6,vx:-40-Math.random()*130,vy:-120-Math.random()*90,r:4.5,life:2.6,max:2.6,landed:false,rot:Math.random()*6});
+}
+function bricks(x){
+  if(RM) return;
+  var g=geo();
+  for(var i=0;i<16;i++) G.particles.push({kind:'brick',x:x,y:g.lane-Math.random()*g.carLen*0.4,vx:40+Math.random()*160,vy:-80-Math.random()*140,w:7*g.s,h:4*g.s,rot:Math.random()*6,vr:(Math.random()-0.5)*12,life:2,max:2,landed:false,front:true});
+}
+function confetti(){
+  if(RM) return;
+  var cols=[C.keep,C.swap,C.warn,'#ffffff'];
+  for(var i=0;i<90;i++) G.particles.push({kind:'conf',x:Math.random()*CW,y:-10-Math.random()*CH*0.6,vx:(Math.random()-0.5)*40,vy:40+Math.random()*60,w:6,h:3,rot:Math.random()*6,vr:(Math.random()-0.5)*10,c:cols[i%4],life:4,max:4,front:true});
+}
+function drawParticles(dt, g, front){
+  var ground=g.lane+2;
+  for(var i=G.particles.length-1;i>=0;i--){
+    var p=G.particles[i];
+    if(!!p.front!==front) continue;
+    p.life-=dt; if(p.life<=0){G.particles.splice(i,1);continue;}
+    var a=clamp(p.life/p.max*1.6,0,1);
+    if(p.kind==='smoke'){
+      p.x+=p.vx*dt; p.y+=p.vy*dt; p.r+=10*dt;
+      ctx.fillStyle=C.smoke; ctx.globalAlpha=a*0.9; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+    } else if(p.kind==='coin'||p.kind==='brick'){
+      if(!p.landed){p.vy+=520*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.y>=ground){p.y=ground; if(Math.abs(p.vy)>90){p.vy*=-0.35;p.vx*=0.5;} else {p.landed=true;}}}
+      else p.x-=G.vNow*dt;
+      p.rot+=(p.vr||8)*dt;
+      ctx.globalAlpha=a;
+      if(p.kind==='coin'){
+        var sq=Math.abs(Math.cos(p.rot));
+        ctx.fillStyle='#f5c518'; ctx.strokeStyle='#9b7400'; ctx.lineWidth=1.2;
+        ctx.beginPath(); ctx.ellipse(p.x,p.y-p.r,p.r*Math.max(0.25,sq),p.r,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      } else {
+        ctx.save(); ctx.translate(p.x,p.y-p.h/2); ctx.rotate(p.rot); ctx.fillStyle='#b0553b'; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+      }
+      ctx.globalAlpha=1;
+    } else if(p.kind==='conf'){
+      p.x+=p.vx*dt; p.y+=p.vy*dt; p.rot+=p.vr*dt;
+      ctx.save(); ctx.globalAlpha=a; ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    }
+  }
+}
+function popup(title, amount, kind){
+  // 同時に出たポップアップは上に積む（最大3段）
+  var used={}; G.popups.forEach(function(p){ if(p.max-p.life<1.1) used[p.slot]=true; });
+  var slot=0; while(used[slot] && slot<2) slot++;
+  var life=kind==='boss'?2.2:1.7;
+  G.popups.push({title:title, amount:amount, kind:kind||'small', life:life, max:life, slot:slot});
+}
+function drawPopups(dt, g, car){
+  var s=g.s;
+  for(var i=G.popups.length-1;i>=0;i--){
+    var p=G.popups[i]; p.life-=dt; if(p.life<=0){G.popups.splice(i,1);continue;}
+    var age=p.max-p.life, rise=Math.min(age,1.2)*14, a=clamp(p.life/0.4,0,1), pop=Math.min(1,age/0.18);
+    var big=p.kind!=='small', fs=(big?14:11.5)*s*(0.6+0.4*pop), base=13*s*2.5;
+    var x=car.front+52*s, y=car.top-4*s-rise-p.slot*base;
+    x=clamp(x, 80*s, CW-80*s);
+    ctx.globalAlpha=a; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.lineJoin='round';
+    ctx.font=fs+'px '+(big?fontDisplay():fontHud());
+    ctx.lineWidth=4; ctx.strokeStyle='rgba(10,14,22,.85)'; ctx.strokeText(p.title,x,y); ctx.fillStyle='#ffffff'; ctx.fillText(p.title,x,y);
+    if(p.amount){ctx.font=(fs*1.05)+'px '+fontHud(); ctx.strokeText(p.amount,x,y+fs*1.2); ctx.fillStyle='#ffd34d'; ctx.fillText(p.amount,x,y+fs*1.2);}
+    ctx.globalAlpha=1;
+  }
+}
+function shake(n){if(!RM) G.shake=Math.max(G.shake,n);}
+function announce(t){$('#live').textContent=t;}
+
+/* ---------- イベント ---------- */
+function buildScene(sim){
+  var list=[];
+  for(var b=0;b<=H;b++) list.push({id:'y'+b, kind:'year', b:b, pos:b});
+  sim.events.forEach(function(e){ var o=Object.assign({},e); o.id=e.kind==='parts'?'parts'+e.th:e.kind+'_'+e.i; list.push(o); });
+  return list;
+}
+function fire(e){
+  var sim=G.sim;
+  if(e.kind==='year'){
+    if(e.b>=H) return;
+    var y=sim.years[e.b], base=0;
+    y.items.forEach(function(it){ if(it.k==='tax'||it.k==='maint'||it.k==='fuel') base+=it.amt; });
+    popup(y.Y+'年の維持費','−'+man(base)+'円','small'); coins(base);
+    announce(y.Y+'年。税金・修理・ガソリンで'+man(base)+'円。');
+  } else if(e.kind==='shaken'){
+    popup('車検'+(e.lv?'（重量税も高い）':''),'−'+man(e.amt)+'円','big'); coins(e.amt); shake(4);
+    announce(e.Y+'年、車検で'+man(e.amt)+'円。');
+  } else if(e.kind==='heavy'){
+    popup('13年超え！ 自動車税アップ','毎年 +'+yen(e.amt),'boss'); shake(10); G.flash=0.6;
+    announce('13年を超えて自動車税が毎年'+yen(e.amt)+'上がりました。');
+  } else if(e.kind==='w18'){
+    popup('18年超え！ 重量税アップ','車検ごとに +'+yen(e.amt),'boss'); shake(8); G.flash=0.5;
+    announce('18年を超えて重量税が上がりました。');
+  } else if(e.kind==='parts'){
+    var geoNow=geo(); bricks(geoNow.carX+geoNow.carLen*0.45);
+    popup(e.th===100000?'10万km！ 部品交換':'15万km！ 大きな修理','−'+man(e.amt)+'円'+(e.th===100000?'・買取ダウン':''),'big'); coins(e.amt); shake(7);
+    announce(e.sub+'で'+man(e.amt)+'円。'+(e.th===100000?'買取価格も下がりました。':''));
+  }
+}
+function showWarning(e){
+  if(RM) return;
+  var w=$('#warning');
+  w.innerHTML='<div class="warning-band">WARNING '+(e.kind==='heavy'?'13年超えの増税ゾーン':'18年超えの重量税ゾーン')+'<small>この先、'+(e.kind==='heavy'?'自動車税と重量税が上がります':'車検のたびの重量税がさらに上がります')+'</small></div>';
+  w.hidden=false; clearTimeout(showWarning.t); showWarning.t=setTimeout(function(){w.hidden=true;},1700);
+}
+
+/* ---------- ループ ---------- */
+var last=performance.now();
+function frame(now){
+  var dt=Math.min(0.05,(now-last)/1000); last=now; G.time+=dt;
+  update(dt);
+  drawScene(dt);
+  if(G.state==='drive'||G.state==='stopping'||G.state==='countdown'){updateDash(); renderChart();}
+  requestAnimationFrame(frame);
+}
+function update(dt){
+  G.shake*=Math.pow(0.02,dt); G.flash=Math.max(0,G.flash-dt*2);
+  var g=geo();
+  if(G.state==='countdown'){
+    G.cd+=dt; var step=Math.floor(G.cd/0.6), labels=['3','2','1','出発！'];
+    if(step!==G.cdStep && step<4){G.cdStep=step; var el=$('#countdown'); el.innerHTML='<span class="count">'+labels[step]+'</span>'; el.hidden=false;}
+    if(G.cd>=(RM?0.6:2.4)){
+      $('#countdown').hidden=true; G.state='drive';
+      $('#sellBtn').firstChild.nodeValue='ここで売る！'; $('#sellSub').textContent='次の看板で売却します';
+    }
+    G.vNow=0; return;
+  }
+  if(G.state==='drive'||G.state==='stopping'){
+    var v=G.speedMul/YEAR_SEC;
+    if(G.state==='stopping') v*=clamp((G.sellTarget-G.p)*2.4,0.14,1);
+    var prev=G.p, limit=G.state==='stopping'?G.sellTarget:H;
+    G.p=Math.min(G.p+v*dt,limit);
+    G.vNow=v*g.yearPx;
+    G.scene.forEach(function(e){
+      if(!G.fired[e.id] && e.pos>=prev && e.pos<G.p){G.fired[e.id]=true; fire(e);}
+      if((e.kind==='heavy'||e.kind==='w18') && !G.warned[e.id] && e.pos-G.p<0.75 && e.pos>G.p){G.warned[e.id]=true; showWarning(e);}
+    });
+    if(G.state==='stopping' && G.p>=G.sellTarget-1e-6){G.p=G.sellTarget; finish(G.sellTarget,false);}
+    else if(G.state==='drive' && G.p>=H){finish(H,true);}
+  } else {
+    G.vNow=0;
+  }
+}
+
+/* ---------- ダッシュボード ---------- */
+var ODO_N=6;
+(function buildOdo(){
+  var o=$('#odo'), html='';
+  for(var i=0;i<ODO_N;i++){html+='<span class="odo-d"><span class="odo-strip">'; for(var d=0;d<=10;d++) html+='<span>'+(d%10)+'</span>'; html+='</span></span>';}
+  o.innerHTML=html;
+})();
+function setOdo(km){
+  var strips=document.querySelectorAll('.odo-strip');
+  for(var k=0;k<ODO_N;k++){
+    // 下3桁は回り続ける。上の桁は、下の桁がすべて9から0に変わる瞬間だけ回る（本物のメーターと同じ）
+    var j=ODO_N-1-k, pow=Math.pow(10,j), v=km/pow, d=Math.floor(v)%10, frac;
+    if(j<3) frac=v-Math.floor(v);
+    else { var lower=km%pow; frac=lower>pow-100?(lower-(pow-100))/100:0; }
+    strips[k].style.transform='translateY('+(-(d+frac)*100/11)+'%)';
+  }
+  $('#odoText').textContent='走行距離 '+Math.round(km).toLocaleString('ja-JP')+'km';
+}
+function interp(arr,p){var i=Math.floor(p), f=p-i; if(i>=arr.length-1) return arr[arr.length-1]; return arr[i]+(arr[i+1]-arr[i])*f;}
+function updateDash(){
+  var sim=G.sim; if(!sim) return;
+  var p=G.p, yi=clamp(Math.ceil(p-1e-9),1,H), y=sim.years[yi-1];
+  var yearNow=START_YEAR+Math.ceil(p-1e-9);
+  $('#hudYear').textContent=yearNow;
+  $('#hudAge').textContent=(yearNow-sim.inp.regYear)+'年';
+  setOdo(kmAt(p));
+  var gNow = G.state==='setup'?0:interp(sim.gap,p);
+  var gEl=$('#gapNow'); gEl.textContent=G.state==='setup'?'±0円':signed(gNow); gEl.dataset.sign=gNow<0?'neg':'pos';
+  $('#gapNowSub').textContent = gNow<0?'乗り換えたほうが安かった':'乗り続けて浮いたお金';
+  var maxM=sim.rep.eac*1.6; sim.years.forEach(function(z){maxM=Math.max(maxM,z.marginal);}); maxM*=1.04;
+  $('#meterBar').style.width=(clamp(y.marginal/maxM,0,1)*100)+'%';
+  $('#meterLine').style.left=(clamp(sim.rep.eac/maxM,0,1)*100)+'%';
+  $('#meterTitle').textContent=y.Y+'年にかかるお金（値下がり分も含む）';
+  $('#meterVal').textContent=man(y.marginal)+'円';
+  $('#meterEac').textContent=man(sim.rep.eac)+'円';
+  $('#overFlag').hidden = !(y.marginal>sim.rep.eac);
+  $('#meter').setAttribute('aria-label', y.Y+'年にかかるお金は'+man(y.marginal)+'円。乗り換えた場合の1年あたりは'+man(sim.rep.eac)+'円。');
+  $('#priceNow').textContent=man(tagValue(p))+'円';
+}
+
+/* ---------- グラフ ---------- */
+function niceStep(max,n){var raw=max/n, p=Math.pow(10,Math.floor(Math.log10(raw))), ms=[1,2,2.5,5,10]; for(var i=0;i<ms.length;i++) if(ms[i]*p>=raw) return ms[i]*p; return 10*p;}
+var chartGeo=null;
+G.view='gap';
+function renderChart(){
+  var sim=G.sim; if(!sim) return;
+  var wrap=$('#chartWrap'), W=Math.max(280,wrap.clientWidth), Hh=W<520?236:280;
+  var m={l:42,r:14,t:26,b:28}, iw=W-m.l-m.r, ih=Hh-m.t-m.b;
+  var mode=G.state==='result'?'result':(G.state==='setup'?'setup':'drive');
+  var upto=mode==='result'?H:(mode==='setup'?0:G.p);
+  var gapView=G.view==='gap';
+  var lo, hi;
+  if(gapView){ lo=Math.min(0,Math.min.apply(null,sim.gap)); hi=Math.max(0,Math.max.apply(null,sim.gap)); }
+  else { lo=0; hi=Math.max(sim.keep[H],sim.swap[H]); }
+  lo/=10000; hi/=10000; if(hi-lo<1) hi=lo+1;
+  var step=niceStep(hi-lo,4), minV=Math.floor(lo/step+1e-9)*step, maxV=Math.ceil(hi/step-1e-9)*step;
+  if(maxV<=minV) maxV=minV+step;
+  function X(i){return m.l+iw*i/H;}
+  function Y(v){return m.t+ih*(1-((v/10000)-minV)/(maxV-minV));}
+  function f(n){return n.toFixed(1);}
+  function pts(a){return a.map(f).join(' ');}
+  function path(arr,from,to){var d='',n=Math.floor(to+1e-9); for(var j=from;j<=n;j++) d+=(j===from?'M':'L')+f(X(j))+' '+f(Y(arr[j])); if(to-n>1e-6){var vv=arr[n]+(arr[n+1]-arr[n])*(to-n); d+=(d?'L':'M')+f(X(to))+' '+f(Y(vv));} return d;}
+  var svg='', i, v;
+  for(v=minV; v<=maxV+1e-9; v+=step){
+    var yy=f(Y(v*10000)), isZero=gapView && Math.abs(v)<1e-9;
+    svg+='<line class="'+(isZero?'zero':'grid')+'" x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+yy+'" y2="'+yy+'"/><text class="tick" x="'+(m.l-6)+'" y="'+(+yy+4)+'" text-anchor="end">'+(Math.round(v*10)/10)+'</text>';
+  }
+  var xs=W<480?3:(W<700?2:1);
+  for(i=0;i<=H;i+=xs) svg+='<text class="tick" x="'+f(X(i))+'" y="'+(Hh-8)+'" text-anchor="middle">'+(i===0?'いま':START_YEAR+i)+'</text>';
+  var nSeg=Math.ceil(upto-1e-9);
+  if(gapView){
+    // 0 との間を塗る（上＝得、下＝損）
+    var Z=Y(0);
+    for(i=0;i<nSeg;i++){
+      var t1=Math.min(1,upto-i), g0=sim.gap[i], g1=g0+(sim.gap[i+1]-g0)*t1, x0=X(i), x1=X(i+t1);
+      if(g0*g1>=0){ svg+='<polygon class="'+((g0+g1)>=0?'gain':'loss')+'" points="'+pts([x0,Y(g0),x1,Y(g1),x1,Z,x0,Z])+'"/>'; }
+      else { var xc=x0+(x1-x0)*(g0/(g0-g1));
+        svg+='<polygon class="'+(g0>0?'gain':'loss')+'" points="'+pts([x0,Y(g0),xc,Z,x0,Z])+'"/>';
+        svg+='<polygon class="'+(g1>0?'gain':'loss')+'" points="'+pts([xc,Z,x1,Y(g1),x1,Z])+'"/>'; }
+    }
+    if(upto>0){
+      if(mode==='result' && !G.answerOnly && G.sold<H){
+        if(G.sold>0) svg+='<path class="ln gapl" d="'+path(sim.gap,0,G.sold)+'"/>';
+        svg+='<path class="ln gapl ghost" d="'+path(sim.gap,G.sold,H)+'"/>';
+      } else svg+='<path class="ln gapl" d="'+path(sim.gap,0,upto)+'"/>';
+    }
+    if(mode==='drive' && upto>0){
+      var gv=interp(sim.gap,upto), xe=X(upto), ye=Y(gv), right=xe<W-90;
+      svg+='<circle class="dot gapd" cx="'+f(xe)+'" cy="'+f(ye)+'" r="5"/>';
+      svg+='<text class="lab" x="'+f(right?xe+9:xe-9)+'" y="'+f(ye+(gv>=0?-9:17))+'" text-anchor="'+(right?'start':'end')+'">'+signed(gv)+'</text>';
+    }
+  } else {
+    for(i=0;i<nSeg;i++){
+      var u=Math.min(1,upto-i), k0=sim.keep[i], s0=sim.swap[i], k1=k0+(sim.keep[i+1]-k0)*u, s1=s0+(sim.swap[i+1]-s0)*u;
+      var a0=X(i), a1=X(i+u), d0=s0-k0, d1=s1-k1;
+      if(d0*d1>=0){ svg+='<polygon class="'+((d0+d1)>=0?'gain':'loss')+'" points="'+pts([a0,Y(k0),a1,Y(k1),a1,Y(s1),a0,Y(s0)])+'"/>'; }
+      else { var c=d0/(d0-d1), ac=a0+(a1-a0)*c, vc=k0+(k1-k0)*c;
+        svg+='<polygon class="'+(d0>0?'gain':'loss')+'" points="'+pts([a0,Y(k0),ac,Y(vc),a0,Y(s0)])+'"/>';
+        svg+='<polygon class="'+(d1>0?'gain':'loss')+'" points="'+pts([ac,Y(vc),a1,Y(k1),a1,Y(s1)])+'"/>'; }
+    }
+    svg+='<path class="guide" d="'+path(sim.swap,0,H)+'"/>';
+    if(upto>0){
+      svg+='<path class="ln swap" d="'+path(sim.swap,0,upto)+'"/>';
+      if(mode==='result' && !G.answerOnly && G.sold<H){
+        if(G.sold>0) svg+='<path class="ln keep" d="'+path(sim.keep,0,G.sold)+'"/>';
+        svg+='<path class="ln keep ghost" d="'+path(sim.keep,G.sold,H)+'"/>';
+      } else svg+='<path class="ln keep" d="'+path(sim.keep,0,upto)+'"/>';
+    }
+    if(mode==='drive' && upto>0){
+      var kv=interp(sim.keep,upto), sv=interp(sim.swap,upto), xk=X(upto), rt=xk<W-130, ky=Y(kv), sy=Y(sv), above=kv>=sv;
+      svg+='<circle class="dot swap" cx="'+f(xk)+'" cy="'+f(sy)+'" r="4.5"/><circle class="dot keep" cx="'+f(xk)+'" cy="'+f(ky)+'" r="4.5"/>';
+      svg+='<text class="lab" x="'+f(rt?xk+8:xk-8)+'" y="'+f(ky+(above?-8:16))+'" text-anchor="'+(rt?'start':'end')+'">乗り続ける '+man(kv)+'</text>';
+      svg+='<text class="lab muted" x="'+f(rt?xk+8:xk-8)+'" y="'+f(sy+(above?16:-8))+'" text-anchor="'+(rt?'start':'end')+'">乗り換える '+man(sv)+'</text>';
+    }
+  }
+  if(mode==='result'){
+    var b=sim.best, bx=X(b);
+    svg+='<line class="mk best" x1="'+f(bx)+'" x2="'+f(bx)+'" y1="'+m.t+'" y2="'+(Hh-m.b)+'"/>';
+    svg+=starPath(bx,m.t-11,8);
+    var bRight=bx<W-110;
+    svg+='<text class="lab" x="'+f(bRight?bx+13:bx-13)+'" y="'+(m.t-7)+'" text-anchor="'+(bRight?'start':'end')+'">ベスト '+(b>0?signed(sim.gap[b]):'いますぐ')+'</text>';
+    if(gapView) svg+='<circle class="dot gapd" cx="'+f(bx)+'" cy="'+f(Y(sim.gap[b]))+'" r="5"/>';
+    if(!G.answerOnly && G.sold!==b){
+      var ux=X(G.sold), uRight=ux<W-120;
+      svg+='<line class="mk" x1="'+f(ux)+'" x2="'+f(ux)+'" y1="'+(m.t+6)+'" y2="'+(Hh-m.b)+'"/>';
+      if(gapView) svg+='<circle class="dot gapd" cx="'+f(ux)+'" cy="'+f(Y(sim.gap[G.sold]))+'" r="4"/>';
+      svg+='<text class="lab muted" x="'+f(uRight?ux+6:ux-6)+'" y="'+(m.t+18)+'" text-anchor="'+(uRight?'start':'end')+'">あなた '+signed(sim.gap[G.sold])+'</text>';
+    }
+    svg+='<line class="xh" id="xh" x1="0" x2="0" y1="'+m.t+'" y2="'+(Hh-m.b)+'" visibility="hidden"/>';
+  }
+  var el=$('#chart'); el.setAttribute('viewBox','0 0 '+W+' '+Hh); el.setAttribute('width',W); el.setAttribute('height',Hh); el.innerHTML=svg;
+  el.setAttribute('aria-label', gapView?'乗り換えた場合と比べた得の推移の折れ線グラフ':'乗り続けた場合と乗り換えた場合の累計費用の折れ線グラフ');
+  chartGeo={X:X,Y:Y,m:m,W:W,Hh:Hh,iw:iw,mode:mode};
+  $('#chartMsg').hidden = mode!=='setup';
+}
+function setView(v){
+  G.view=v;
+  $('#viewGap').setAttribute('aria-pressed',v==='gap'?'true':'false');
+  $('#viewCum').setAttribute('aria-pressed',v==='cum'?'true':'false');
+  $('#legendGap').hidden=v!=='gap'; $('#legendCum').hidden=v!=='cum';
+  $('#chartTitle').textContent=v==='gap'?'乗り換えた場合と比べて、いくら得か':'いまから払うお金の累計';
+  $('#chartSub').textContent=v==='gap'?'線が一番高いところが売り時・単位は万円':'値下がり分も含む・単位は万円';
+  renderChart();
+}
+$('#viewGap').addEventListener('click',function(){setView('gap');});
+$('#viewCum').addEventListener('click',function(){setView('cum');});
+function starPath(x,y,r){var pts=[];for(var i=0;i<10;i++){var a=-Math.PI/2+i*Math.PI/5, rr=i%2?r*0.45:r; pts.push((x+Math.cos(a)*rr).toFixed(1)+','+(y+Math.sin(a)*rr).toFixed(1));} return '<polygon class="star" points="'+pts.join(' ')+'"/>';}
+
+function chartHover(ev){
+  if(!chartGeo||!G.sim||chartGeo.mode!=='result') return;
+  var rect=$('#chart').getBoundingClientRect(), x=ev.clientX-rect.left, sim=G.sim;
+  var i=clamp(Math.round((x-chartGeo.m.l)/chartGeo.iw*H),0,H);
+  var xh=$('#xh'); if(xh){xh.setAttribute('x1',chartGeo.X(i)); xh.setAttribute('x2',chartGeo.X(i)); xh.setAttribute('visibility','visible');}
+  var tip=$('#tip'), g=sim.gap[i];
+  tip.innerHTML='<b>'+(i===0?'いま売る':(START_YEAR+i)+'年末に売る（あと'+i+'年）')+'</b>'+
+    '<div class="row"><span><i style="background:var(--keep)"></i>乗り続けた累計</span><span>'+man(sim.keep[i])+'円</span></div>'+
+    '<div class="row"><span><i style="background:var(--swap)"></i>乗り換えた累計</span><span>'+man(sim.swap[i])+'円</span></div>'+
+    '<div class="row diff"><span>'+(g>=0?'乗り続けて得':'乗り換えたほうが得')+'</span><span>'+man(g)+'円</span></div>';
+  tip.hidden=false;
+  var tx=chartGeo.X(i)+12, tw=tip.offsetWidth; if(tx+tw>rect.width) tx=chartGeo.X(i)-12-tw;
+  tip.style.left=Math.max(0,tx)+'px'; tip.style.top='8px';
+}
+function chartLeave(){ $('#tip').hidden=true; var xh=$('#xh'); if(xh) xh.setAttribute('visibility','hidden'); }
+$('#chart').addEventListener('pointermove',chartHover);
+$('#chart').addEventListener('pointerleave',chartLeave);
+
+/* ---------- 表 ---------- */
+function renderTable(){
+  var sim=G.sim, rows='<thead><tr><th>年</th><th>車齢</th><th>走行距離</th><th>税金</th><th>車検</th><th>修理など</th><th>ガソリン</th><th>値下がり</th><th>その年の合計</th><th>乗り換えライン</th><th>累計の差</th></tr></thead><tbody>';
+  sim.years.forEach(function(y){
+    function pick(k){var s=0; y.items.forEach(function(it){ if(it.k===k) s+=it.amt; }); return s;}
+    rows+='<tr'+(y.i===sim.best?' class="is-best"':'')+'><td>'+y.Y+(y.i===sim.best?' ★売り時':'')+'</td><td>'+y.age+'年</td><td>'+Math.round(y.kmEnd/1000)+'千km</td><td>'+yen(pick('tax'))+'</td><td>'+(pick('shaken')?yen(pick('shaken')):'—')+'</td><td>'+yen(pick('maint')+pick('parts'))+'</td><td>'+yen(pick('fuel'))+'</td><td>'+yen(y.dep)+'</td><td>'+yen(y.marginal)+'</td><td>'+yen(sim.rep.eac)+'</td><td>'+signed(sim.gap[y.i])+'</td></tr>';
+  });
+  $('#table').innerHTML=rows+'</tbody>';
+}
+
+/* ---------- 設定の反映 ---------- */
+function refresh(){
+  var inp=readInputs();
+  G.sim=M.simulate(inp); G.scene=buildScene(G.sim);
+  $('#regYearOut').textContent=inp.regYear+'年式（車齢'+(START_YEAR-inp.regYear)+'年）';
+  $('#kmOut').textContent=(inp.km/10000).toFixed(1)+'万km';
+  $('#annualOut').textContent=inp.annual.toLocaleString('ja-JP')+'km';
+  $('#pvPrice').textContent=man(G.sim.V[0])+'円';
+  $('#pvEac').textContent=man(G.sim.rep.eac)+'円';
+  drawTypeCards(); updateDash(); renderChart(); renderTable();
+}
+function onSetupChange(){
+  if(G.state==='result') toSetup(false);
+  if(G.state==='setup') refresh();
+}
+['regYear','km','annual'].forEach(function(id){$('#'+id).addEventListener('input',onSetupChange);});
+document.querySelectorAll('#setupForm input[type="radio"]').forEach(function(r){r.addEventListener('change',onSetupChange);});
+
+/* ---------- 進行 ---------- */
+function setPlaying(on){
+  $('#app').classList.toggle('is-playing',on);
+  $('#app').classList.remove('is-result');
+  $('#setupFs').disabled=on;
+  $('#actionsSetup').hidden=on; $('#actionsPlay').hidden=!on;
+}
+function start(answerOnly){
+  clearTimeout(G.resultTimer);
+  refresh();
+  G.answerOnly=!!answerOnly; G.fired={}; G.warned={}; G.particles=[]; G.popups=[]; G.sellTarget=null; G.sold=null; G.speedMul=1;
+  $('#speedBtn').setAttribute('aria-pressed','false'); $('#speedBtn').textContent='早送り ×2';
+  $('#result').hidden=true; $('#stamp').hidden=true; $('#warning').hidden=true;
+  if(answerOnly){
+    G.p=G.sim.best; G.sellTarget=G.sim.best;
+    G.scene.forEach(function(e){ if(e.pos<G.p) G.fired[e.id]=true; });
+    finish(G.sim.best,false); return;
+  }
+  G.p=0; G.state='countdown'; G.cd=0; G.cdStep=-1;
+  setPlaying(true);
+  var sb=$('#sellBtn'); sb.disabled=false; sb.firstChild.nodeValue='いま売る！'; $('#sellSub').textContent='出発前なら、いますぐ売却';
+  $('#hintLine').hidden=false;
+  $('.console').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+  sb.focus({preventScroll:true});
+}
+function sell(){
+  if(G.state==='countdown'){ G.sellTarget=0; $('#countdown').hidden=true; finish(0,false); return; }
+  if(G.state!=='drive') return;
+  G.sellTarget=Math.max(1,Math.ceil(G.p-1e-9));
+  G.state='stopping';
+  var sb=$('#sellBtn'); sb.disabled=true; $('#sellSub').textContent=(START_YEAR+G.sellTarget)+'年末の看板で売却します';
+}
+function finish(t, auto){
+  var sim=G.sim;
+  G.state='result'; G.sold=t; G.sellTarget=t; G.p=t; G.vNow=0;
+  setPlaying(false); $('#actionsSetup').hidden=true;
+  $('#app').classList.add('is-result');
+  $('#sellBtn').disabled=true;
+  updateDash(); renderChart();
+  var sc=M.score(sim,t), rk=M.rank(sc);
+  if(!G.answerOnly){
+    $('#stamp').hidden=false; shake(9);
+    if(rk==='S'||rk==='A') setTimeout(confetti,350);
+  }
+  fillResult(t, sc, rk, auto);
+  clearTimeout(G.resultTimer);
+  G.resultTimer=setTimeout(function(){
+    $('#stamp').hidden=true;
+    $('#result').hidden=false; $('#actionsSetup').hidden=true;
+    renderChart();
+    $('#result').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+  }, G.answerOnly?0:1100);
+}
+function fillResult(t, sc, rk, auto){
+  var sim=G.sim, b=sim.best, ans=G.answerOnly;
+  $('#rankBlock').hidden=ans; $('#rYouBox').hidden=ans;
+  var titles={S:'売り時の達人',A:'かなりの目利き',B:'まずまずの判断',C:'もう一歩',D:'もったいない'};
+  $('#rank').textContent=rk; $('#rank').dataset.rank=rk;
+  $('#rKicker').textContent=auto?'最後まで乗りました':'ランク';
+  $('#rTitle').textContent=titles[rk];
+  $('#rScore').textContent=sc;
+  $('#rDir').textContent= t===b?'ぴったりです': (t<b?'もう少し乗り続けてもよかった':'売り時を少し過ぎていた');
+  $('#rYou').textContent=sellLabel(t);
+  $('#rYouGain').textContent='乗り換えた場合より '+signed(sim.gap[t]);
+  $('#rBest').textContent=sellLabel(b);
+  $('#rBestGain').textContent= b===0?'これ以上乗ると損が増える':'乗り換えた場合より '+signed(sim.gap[b]);
+  var eac=man(sim.rep.eac)+'円', why;
+  if(b===0) why='いますぐ売るのが一番得です。来年からは、毎年かかるお金が乗り換えた場合の1年あたり（'+eac+'）を上回ります。';
+  else if(b===H) why='この先'+H+'年は乗り続けるのが得です。毎年かかるお金が、乗り換えた場合の1年あたり（'+eac+'）より安いままです。';
+  else {
+    var nx=sim.years[b], sh=null; nx.items.forEach(function(it){ if(it.k==='shaken') sh=it; });
+    why = sh ? (nx.Y+'年の車検の前に売るのが一番得です。'+nx.Y+'年は車検代'+man(sh.amt)+'円を含めて'+man(nx.marginal)+'円かかり、乗り換えた場合の1年あたり（'+eac+'）を上回ります。')
+             : (nx.Y+'年からは、毎年かかるお金（'+man(nx.marginal)+'円）が乗り換えた場合の1年あたり（'+eac+'）を上回ります。修理代が増えていくためです。');
+  }
+  $('#rWhy').textContent=why;
+  var lim=ans?b+2:Math.max(t,b)+2, html='';
+  sim.events.filter(function(e){return e.i<=Math.min(H,lim);}).slice(0,8).forEach(function(e){
+    var paid=ans?(e.i<=b):(e.i<=t);
+    var badge=e.kind==='shaken'?'<span class="badge shaken">R'+(e.Y-2018)+'</span>':e.kind==='parts'?'<span class="badge parts">km</span>':'<span class="badge '+e.kind+'">'+(e.kind==='heavy'?'13':'18')+'</span>';
+    var what=e.kind==='shaken'?'車検 '+man(e.amt)+'円'+(e.lv===2?'<small>18年超えで重量税が最も高い</small>':e.lv===1?'<small>13年超えで重量税が高い</small>':'')
+            :e.kind==='heavy'?'自動車税が毎年 +'+yen(e.amt)+'<small>13年を超えた車は重くなる</small>'
+            :e.kind==='w18'?'重量税が車検ごとに +'+yen(e.amt)+'<small>18年を超えるとさらに上がる</small>'
+            :e.sub+' '+man(e.amt)+'円'+(e.th===100000?'<small>買取価格も約25%下がる</small>':'');
+    html+='<li>'+badge+'<span class="yr">'+e.Y+'年</span><span class="what">'+what+'</span><span class="st '+(paid?'paid':'saved')+'">'+(paid?(ans?'払う':'払った'):(ans?'売れば払わない':'払わずに済んだ'))+'</span></li>';
+  });
+  $('#rEvents').innerHTML=html||'<li><span></span><span class="yr">—</span><span class="what">大きなイベントはありませんでした</span><span></span></li>';
+  G.copyText='この車、あと何年乗るのが一番得？\n'+sim.T.label+'・'+sim.inp.regYear+'年式・'+(sim.inp.km/10000).toFixed(1)+'万km\n'+
+    (ans?'':'私の売り時：'+sellLabel(t)+'（'+sc+'点・ランク'+rk+'）\n')+'一番得な売り時：'+sellLabel(b)+(b>0?'（乗り換えより'+signed(sim.gap[b])+'）':'');
+}
+
+/* ---------- ボタン ---------- */
+$('#goBtn').addEventListener('click',function(){start(false);});
+$('#setupForm').addEventListener('submit',function(e){e.preventDefault(); start(false);});
+$('#answerBtn').addEventListener('click',function(){start(true);});
+$('#sellBtn').addEventListener('click',sell);
+$('#speedBtn').addEventListener('click',function(){G.speedMul=G.speedMul===1?2:1; this.setAttribute('aria-pressed',G.speedMul===2?'true':'false'); this.textContent=G.speedMul===2?'ふつうの速さ':'早送り ×2';});
+$('#againBtn').addEventListener('click',function(){start(false);});
+function toSetup(scroll){
+  clearTimeout(G.resultTimer);
+  G.state='setup'; G.p=0; G.sellTarget=null; G.sold=null; G.fired={}; G.particles=[]; G.popups=[]; G.answerOnly=false;
+  $('#result').hidden=true; $('#stamp').hidden=true; setPlaying(false); refresh();
+  if(scroll) $('#setupForm').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+}
+$('#editBtn').addEventListener('click',function(){toSetup(true);});
+$('#copyBtn').addEventListener('click',function(){
+  var txt=G.copyText||'', st=$('#copyStatus'), fb=$('#copyFallback');
+  function fallback(){fb.value=txt; fb.hidden=false; fb.focus(); fb.select(); st.textContent='自動でコピーできませんでした。下の文を選んでコピーしてください。';}
+  try{ navigator.clipboard.writeText(txt).then(function(){st.textContent='コピーしました'; fb.hidden=true;},fallback); }catch(e){fallback();}
+});
+document.addEventListener('keydown',function(e){
+  if(e.code==='Space' && (G.state==='drive'||G.state==='countdown')){
+    var tag=(document.activeElement||{}).tagName; if(tag==='INPUT'||tag==='TEXTAREA') return;
+    e.preventDefault(); sell();
+  }
+});
+
+/* ---------- 起動 ---------- */
+readTheme();
+refresh();
+resize();
+window.addEventListener('resize',resize);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){drawTypeCards(); renderChart();});
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
