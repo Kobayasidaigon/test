@@ -1,0 +1,47 @@
+{
+  "code": "272159",
+  "pref": "大阪府",
+  "name": "寝屋川市",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "公式サイトを開けなかったので、検索結果に出た公式PDFの抜粋・要約だけで書いた。それによると、4〜8月分は前年度、9〜3月分は当該年度の市町村民税所得割課税額により決定。3歳未満の階層表には「令和5年10月1日～適用」とあるとのことで、令和8年度に改定されたかは分からない。第2子以降無償化の案内は「令和8年6月版」の保育施設利用案内などにある。",
+  "tax_basis": "6%",
+  "tax_note": "政令市ではない（中核市）ので市町村民税所得割は6%。所得割の定義（税額控除前かどうか、調整控除の扱い、祖父母の扱いなど）は文書を開けず読めていない。",
+  "table": null,
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "検索結果の要約では、第2子以降の無償化の対象外の第1子は階層表の額（最上位の C21〔所得割397,000円以上〕で保育標準時間62,600円・保育短時間61,500円）。表の全行は読めていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "市独自の第2子以降の保育料無償化（検索結果に出た公式PDF fee_for_daycare.pdf の抜粋・要約による。文書そのものは開けていない）: 対象児童は「寝屋川市に住民登録があり、認可保育施設の０～２歳児クラスに在籍している第２子以降の児童」、対象施設は「認可保育施設（市内外は問いません。）」、所得制限なし。要約では兄姉の年齢制限もなく、同一世帯で最年長者以外の児童は0円（保護者の市町村民税額が不明な場合は適用しない）。原則申請不要で、住民登録上の別世帯に兄姉がいる場合だけ別居親族の申出書・戸籍全部事項証明書が必要。延長保育料や実費徴収の経費は対象外。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無償化に含まれる（数え方は第2子と同じ。検索結果の要約による）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "第2子以降の保育料無償化の案内（PDF、検索結果で見つけたが開けなかった。見出し「● 対象児童 寝屋川市に住民登録があり、認可保育施設の０～２歳児クラスに在籍している第２子以降の児童 ● 対象施設 認可保育施設（市内外は問いません。）」）",
+      "url": "https://www.city.neyagawa.osaka.jp/material/files/group/118/fee_for_daycare.pdf"
+    },
+    {
+      "label": "保育施設利用案内 令和8年6月版 寝屋川市こども部保育課（PDF、検索結果で見つけたが開けなかった）",
+      "url": "https://www.city.neyagawa.osaka.jp/material/files/group/118/hoikusiseturiyouannai8nen6.pdf"
+    },
+    {
+      "label": "幼児教育・保育の無償化|寝屋川市（検索結果に出たページ、開けなかった）",
+      "url": "https://www.city.neyagawa.osaka.jp/organization_list/kodomo/hoikuka/musyouka/21032.html"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べ（crawl）は一番上のページで失敗していて候補がなかった（OSError）",
+    "curl で https://www.city.neyagawa.osaka.jp/ を2回取ったが、どちらも HTTP 408 と「このページは表示できません。詳細については、サポートまでお問い合わせください。イベント ID: …」というエラーページ（サイト側の防御で止められている）。ヘッダーを足して取り直すことは、ボット対策をくぐる操作として止められたのでやめた",
+    "WebSearch（allowed_domains: city.neyagawa.osaka.jp）を2回使い、「保育料 令和8年度 3歳未満 第2子」「保育料 階層表 保育標準時間 保育短時間 所得割課税額 0～2歳児クラス」で公式PDFの URL と抜粋を得た",
+    "検索で見つけた https://www.city.neyagawa.osaka.jp/material/files/group/118/fee_for_daycare.pdf も HTTP 408 のエラーページで開けなかった",
+    "検索で見つけた例規集「寝屋川市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する規則」（www2.city.neyagawa.osaka.jp/reiki/reiki_honbun/k217RG00000804.html）を https で取ろうとしたが接続が切れた（http のみのサーバーらしい）"
+  ],
+  "notes": "公式サイトがこの環境からの取得を止めている（HTTP 408 のエラーページ）ため、保育料の表は読めず table は null。第2子以降無償化（0〜2歳児クラス、所得制限なし、同一世帯の最年長者以外は0円）は検索結果に出た公式PDFの抜粋と要約によるもので、文書そのものは確かめていない。検索結果の要約では、3歳未満の階層表は「令和5年10月1日～適用」で、PDFの文字が崩れていて全階層の額は読めなかったとのこと。人の手でブラウザから fee_for_daycare.pdf と hoikusiseturiyouannai8nen6.pdf を開いて表を書き写すと ok にできる。",
+  "read_at": "2026-11-01"
+}

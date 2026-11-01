@@ -1,0 +1,212 @@
+{
+  "code": "242055",
+  "pref": "三重県",
+  "name": "桑名市",
+  "status": "partial",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月〜8月分は令和7年度の市区町村民税の所得割額、9月〜翌年3月分は令和8年度の市区町村民税の所得割額で決める（令和8年度申込案内 p.6、表の定義欄「前年度市区町村民税（9月以降は当該年度市区町村民税）」）。料金表（月額）は年度を通じて同じ。2歳児クラスの子が年度の途中で満3歳になっても、その年度は2歳児クラスの保育料。公立・私立とも同額。",
+  "tax_basis": "6%",
+  "tax_note": "児童と生計を一にする扶養義務者（原則父母。父母以外はその者が家計の主宰者である場合に限る）の税額控除前の市区町村民税所得割額の合算。住宅借入金等特別控除（住宅ローン控除）等の税額控除は反映させない（申込案内のQ&A）。父母の収入合算額が103万円以下なら、同居の扶養義務者である祖父母等を家計の主宰者とする（住民票上世帯分離していても同じ）。税が未申告・税資料未提出で課税状況が確認できないときは最高階層。政令市ではないので税率6%で判定。",
+  "table": {
+    "title": "令和８年度　桑名市特定保育施設等利用者負担額表（月額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "2",
+        "lower": null,
+        "upper": null,
+        "condition": "市区町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "3−1",
+        "lower": null,
+        "upper": null,
+        "condition": "市区町村民税のうち所得割額が非課税世帯",
+        "monthly": 12300,
+        "monthly_second": null
+      },
+      {
+        "label": "3−2",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市区町村民税のうち所得割額課税額48,600円未満",
+        "monthly": 14400,
+        "monthly_second": null
+      },
+      {
+        "label": "4−1",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "48,600円以上57,700円未満",
+        "monthly": 20500,
+        "monthly_second": null
+      },
+      {
+        "label": "4−2",
+        "lower": 57700,
+        "upper": 77101,
+        "condition": "57,700円以上77,101円未満",
+        "monthly": 23400,
+        "monthly_second": null
+      },
+      {
+        "label": "4−3",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "77,101円以上97,000円未満",
+        "monthly": 26100,
+        "monthly_second": null
+      },
+      {
+        "label": "5−1",
+        "lower": 97000,
+        "upper": 118000,
+        "condition": "97,000円以上118,000円未満",
+        "monthly": 31700,
+        "monthly_second": null
+      },
+      {
+        "label": "5−2",
+        "lower": 118000,
+        "upper": 146000,
+        "condition": "118,000円以上146,000円未満",
+        "monthly": 35300,
+        "monthly_second": null
+      },
+      {
+        "label": "5−3",
+        "lower": 146000,
+        "upper": 169000,
+        "condition": "146,000円以上169,000円未満",
+        "monthly": 37500,
+        "monthly_second": null
+      },
+      {
+        "label": "6−1",
+        "lower": 169000,
+        "upper": 198000,
+        "condition": "169,000円以上198,000円未満",
+        "monthly": 42700,
+        "monthly_second": null
+      },
+      {
+        "label": "6−2",
+        "lower": 198000,
+        "upper": 260000,
+        "condition": "198,000円以上260,000円未満",
+        "monthly": 44500,
+        "monthly_second": null
+      },
+      {
+        "label": "6−3",
+        "lower": 260000,
+        "upper": 301000,
+        "condition": "260,000円以上301,000円未満",
+        "monthly": 46400,
+        "monthly_second": null
+      },
+      {
+        "label": "7−1",
+        "lower": 301000,
+        "upper": 338000,
+        "condition": "301,000円以上338,000円未満",
+        "monthly": 51200,
+        "monthly_second": null
+      },
+      {
+        "label": "7−2",
+        "lower": 338000,
+        "upper": 367000,
+        "condition": "338,000円以上367,000円未満",
+        "monthly": 52800,
+        "monthly_second": null
+      },
+      {
+        "label": "7−3",
+        "lower": 367000,
+        "upper": 397000,
+        "condition": "367,000円以上397,000円未満",
+        "monthly": 54400,
+        "monthly_second": null
+      },
+      {
+        "label": "8−1",
+        "lower": 397000,
+        "upper": 500000,
+        "condition": "397,000円以上500,000円未満",
+        "monthly": 56200,
+        "monthly_second": null
+      },
+      {
+        "label": "8−2",
+        "lower": 500000,
+        "upper": 600000,
+        "condition": "500,000円以上600,000円未満",
+        "monthly": 57200,
+        "monthly_second": null
+      },
+      {
+        "label": "8−3",
+        "lower": 600000,
+        "upper": null,
+        "condition": "600,000円以上",
+        "monthly": 58200,
+        "monthly_second": null
+      }
+    ],
+    "notes": "画像のPDF（文字の取れないPDF。Microsoft Print To PDF で作られ、文字が図形になっている）。https://www.city.kuwana.lg.jp/documents/883/riyousyahutangakuhyou.pdf を200dpiの画像にして目で読み、全19行を書き写した（pdftotext では取れない）。rows は「0歳〜2歳児クラス」の標準時間認定の列。短時間認定の月額: 1・2階層 0／3−1 12,100／3−2 14,200／4−1 20,200／4−2 23,000／4−3 25,700／5−1 31,200／5−2 34,700／5−3 36,900／6−1 42,000／6−2 43,700／6−3 45,600／7−1 50,300／7−2 51,900／7−3 53,500／8−1 55,200／8−2 56,200／8−3 57,200。3〜5歳児クラスは0円（無償化）。市のページでは「国が定めている8つの階層区分を19段階に細分化し、国の基準徴収額の3分の2程度に抑えている」と説明。表に第2子の列はない（2人目半額・3人目以降無料は申込案内の文章による）。ひとり親家庭・在宅障害者（児）世帯等は軽減されることがある（額は表に書かれていない）。3−2 の下限は表に書かれていないが、3−1（所得割が非課税）と分けるため lower=1 とした。4−2 と 4−3 の区切りは表のとおり 77,101円（「77,101円未満」「77,101円以上」）。保育料とは別に制服・通園バス代・学用品・絵本・給食費（主食代・副食代）・保護者会費などの実費がかかる（給食費は3歳児クラス以上が対象）。延長保育料は別。月の途中の日割りはない（毎月1日に在籍していれば1か月分）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜58,200円）。0円になるのは生活保護世帯等と市区町村民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "上から2人目は半額（第1子の額の半額。表に第2子の列はない）。令和8年度申込案内 p.6 に「多子世帯やひとり親世帯等は軽減となる場合があります。兄弟姉妹がいる場合、上から2人目の保育料が半額、3人目以降は無料です。」とある。数え方: 桑名市人口減少対策パッケージ（令和5年2月の資料4 p.16「《拡充》保育料多子軽減制限撤廃」、令和6年4月版でも《継続》）で、令和5年4月から保育施設に通うすべての世帯で0歳〜2歳児のきょうだいの保育料を第2子半額・第3子無料とし、「すべての子を第1子としてカウントする（小1以上もカウントする）」と説明（それまでは未就学の子だけを数え、年収や年齢の制限があった）。所得制限なし。上の子の年齢の上限（18歳までなど）や、別居・扶養の要件は読んだ資料には書かれていない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "上から3人目以降は無料（令和8年度申込案内 p.6）。数え方は第2子と同じ（令和5年4月から小1以上の上の子も数える。所得制限なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度桑名市特定保育施設等利用者負担額表（PDF：92KB、画像のPDF）",
+      "url": "https://www.city.kuwana.lg.jp/documents/883/riyousyahutangakuhyou.pdf"
+    },
+    {
+      "label": "子どもを保育施設にあずけたい／桑名市（2026年4月7日更新）",
+      "url": "https://www.city.kuwana.lg.jp/hoiku/kosodatekyouiku/kosodate/24-12154-231-813.html"
+    },
+    {
+      "label": "令和8年度保育施設入所（園）申込案内（全ページ）（PDF：8,584KB）p.6「4 保育料について」・p.38 Q&A",
+      "url": "https://www.city.kuwana.lg.jp/documents/883/r8mousikomiannai.pdf"
+    },
+    {
+      "label": "桑名市人口減少対策パッケージ 資料４（令和5年2月）p.16「保育料多子軽減制限撤廃」",
+      "url": "https://www.city.kuwana.lg.jp/documents/8822/4material050213.pdf"
+    },
+    {
+      "label": "令和６年度 桑名市人口減少対策パッケージ（2024年4月）「《継続》保育料多子軽減制限撤廃」",
+      "url": "https://www.city.kuwana.lg.jp/documents/11325/1.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs（子どもを保育施設にあずけたい・幼児教育・保育の無償化について・認可外の経過措置）に多子軽減の数え方の記載なし",
+    "令和8年度申込案内（40ページ）を pdftotext で読んだが、多くのページは文字が取れず（フォントの問題）、p.6 を画像にして読んだ。きょうだいの数え方の詳しい説明はなかった",
+    "よくある質問 https://www.city.kuwana.lg.jp/faq/kosodatekyouiku/kosodate/hoikuen/index.html は質問の一覧が静的HTMLに入っておらず、下調べで見つかった /hoiku/faq/... のURLは404",
+    "WebSearch（allowed_domains: city.kuwana.lg.jp、「桑名市 保育料 多子世帯 軽減 第2子 半額 同時入所 年齢制限」）で人口減少対策パッケージの資料を見つけ、数え方（令和5年4月から小1以上も数える）を確かめた"
+  ],
+  "notes": "status を partial にしたのは、料金表が画像のPDF（文字なし）で、200dpiの画像を目で読んで書き写したため（数字は2回見直した）。きょうだいの数え方は、申込案内の「上から2人目」と人口減少対策パッケージ（令和5年・令和6年）の説明で household とした（保育料のページそのものには数え方の説明がない）。cash・one_time はこのページを探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

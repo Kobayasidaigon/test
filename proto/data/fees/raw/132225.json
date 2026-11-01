@@ -1,0 +1,205 @@
+{
+  "code": "132225",
+  "pref": "東京都",
+  "name": "東久留米市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（0〜2歳児クラスは全員0円: 令和8年10月版『幼児教育・保育等の利用料制度のご案内』と無償化のページ〔令和8年10月2日更新〕。table は令和2年5月15日更新の保育料ページの基準額表で、年度の表示はない）",
+  "period_note": "0〜2歳児クラス（満3歳児クラスを含む）の保育料は東京都の補助（保育所等利用世帯負担軽減補助）で第1子も含め全員0円。申請は不要（令和8年10月1日現在）。3歳未満児は年度の初日の前日に3歳に達していない児童で、年度途中に3歳になってもその年度は3歳未満児とみなす。基準額表の階層は各月初日に在籍する子どもの世帯で決める（ご案内には「課税額の参照は9月で切り替わります」とある）。",
+  "tax_basis": "6%",
+  "tax_note": "住宅借入金等特別税額控除や寄付金税額控除が適用されている場合は控除前の税額で算定（基準額表の備考）。税額は保護者（例: 父母）の課税額の合算。政令市ではないので6%の税率の所得割（表に税率の注記はない）。0〜2歳児クラスは全員0円なので、所得は副食費（3〜5歳児クラス）の免除の判定などにだけ関係する。",
+  "table": {
+    "title": "認可保育所・小規模保育施設・家庭的保育施設・認定こども園（３号児）の利用者負担額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税課税（均等割額のみ）の世帯（ひとり親世帯等以外）",
+        "monthly": 3500,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 55200,
+        "condition": "市民税所得割額 55,200円未満の世帯（ひとり親世帯等以外）",
+        "monthly": 9900,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 55200,
+        "upper": 63600,
+        "condition": "市民税所得割額 63,600円未満の世帯（ひとり親世帯等以外）",
+        "monthly": 11100,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 63600,
+        "upper": 78000,
+        "condition": "市民税所得割額 78,000円未満の世帯（上記以外）",
+        "monthly": 15400,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 78000,
+        "upper": 105600,
+        "condition": "市民税所得割額 105,600円未満の世帯",
+        "monthly": 16100,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 105600,
+        "upper": 126000,
+        "condition": "〃 126,000円未満の世帯",
+        "monthly": 20200,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 126000,
+        "upper": 144000,
+        "condition": "〃 144,000円未満の世帯",
+        "monthly": 23000,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 144000,
+        "upper": 159600,
+        "condition": "〃 159,600円未満の世帯",
+        "monthly": 25800,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 159600,
+        "upper": 170100,
+        "condition": "〃 170,100円未満の世帯",
+        "monthly": 28500,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 170100,
+        "upper": 182100,
+        "condition": "〃 182,100円未満の世帯",
+        "monthly": 30500,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 182100,
+        "upper": 230100,
+        "condition": "〃 230,100円未満の世帯",
+        "monthly": 32100,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 230100,
+        "upper": 260900,
+        "condition": "〃 260,900円未満の世帯",
+        "monthly": 37400,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 260900,
+        "upper": 278900,
+        "condition": "〃 278,900円未満の世帯",
+        "monthly": 41000,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 278900,
+        "upper": 299900,
+        "condition": "〃 299,900円未満の世帯",
+        "monthly": 44000,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 299900,
+        "upper": 347900,
+        "condition": "〃 347,900円未満の世帯",
+        "monthly": 48600,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 347900,
+        "upper": 398900,
+        "condition": "〃 398,900円未満の世帯",
+        "monthly": 53200,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 398900,
+        "upper": null,
+        "condition": "〃 398,900円以上の世帯",
+        "monthly": 55400,
+        "monthly_second": null
+      }
+    ],
+    "notes": "参考: 東京都の補助で0〜2歳児クラスは全員0円になる前の基準額（認可保育施設の利用者負担額（保育料）のページ、令和2年5月15日更新のPDF）。rows は「ひとり親世帯等以外」の世帯の保育標準時間。保育短時間: C 3,400／D1 9,700／D2 10,900／D3 15,100／D4 15,800／D5 19,800／D6 22,600／D7 25,300／D8 28,000／D9 29,900／D10 31,500／D11 36,700／D12 40,300／D13 43,200／D14 47,700／D15 52,200／D16 54,400。ひとり親世帯等（標準/短時間）: C 1,750／1,700、D1 4,950／4,850、D2 5,550／5,450、D3（77,101円未満のひとり親世帯等）7,700／7,550。表に第2子の別の列はない（国の制度の「未就学児に限った兄弟姉妹関係に基づく第2子半額・第3子無料」）。D1 の下限は表に書かれていないが、C（均等割額のみ）と分けるため lower=1 とした。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "「0歳児クラスから2歳児クラス（満3歳児クラス含む）のお子さまは、東京都の保育料の補助が拡大し第1子についても無償化されます。これにより、0歳児クラスから2歳児クラス（満3歳児クラス含む）のお子さまは全員無料となります。」（幼児教育・保育等の無償化について、令和8年10月2日更新）。ご案内（令和8年10月版）p.13にも「【０～満３歳児クラス】保育料と給食費は無償化され、０円です。延長保育料、行事等の費用については無償化対象外です。」。対象は認可保育所・認定こども園・地域型保育事業（小規模保育・家庭的保育）で、申請不要。第1子の無償化がいつ始まったかは読んだ資料に書かれていない（since は null）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から0〜2歳児クラスの保育料が0円のため、きょうだいの数え方で額は変わらない（どう数えても0円）。household は「数え方に関係なく0円」という意味で置いた。国の制度としては未就学児に限った兄弟姉妹関係に基づく第2子半額・第3子無料（ご案内p.16）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円のため、第3子以降も0円（数え方は関係ない）。3〜5歳児クラスの副食費は、所得割57,700円以上（ひとり親等は77,101円以上）の世帯では未就学児かつ在園している子どもから数えて第3子以降が免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "幼児教育・保育等の無償化について 東久留米市（更新日：令和8年10月2日）",
+      "url": "https://www.city.higashikurume.lg.jp/kurashi/kosodate/1012296.html"
+    },
+    {
+      "label": "『幼児教育・保育等の利用料制度のご案内』（令和8年10月版、PDF）p.13〜16",
+      "url": "https://www.city.higashikurume.lg.jp/_res/projects/default_project/_page_/001/012/296/r8.10youjikyouikugoannai.pdf"
+    },
+    {
+      "label": "認可保育施設の利用者負担額（保育料） 東久留米市（更新日：令和2年5月15日）",
+      "url": "https://www.city.higashikurume.lg.jp/kurashi/kosodate/hoiku/1008244.html"
+    },
+    {
+      "label": "認可保育所・小規模保育施設・家庭的保育施設・認定こども園（３号児）の利用者負担額表（PDF）",
+      "url": "https://www.city.higashikurume.lg.jp/_res/projects/default_project/_page_/001/008/244/hoikuryo5.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "第1子無償化の開始時期: 無償化のページ、ご案内PDF（令和8年10月版）、令和9年度4月入所申し込みのページ（https://www.city.higashikurume.lg.jp/kurashi/kosodate/hoiku/1005391.html）を見たが書かれていなかった。"
+  ],
+  "notes": "東京都の市。0〜2歳児クラスは第1子から0円（東京都の補助の拡大による）。基準額表（2020年5月作成の1ページの文字の取れるPDF）は pdftotext で読み、画像にして列の並び（3歳未満 保育標準時間/保育短時間、C・D1・D2・D3はひとり親世帯等とそれ以外の2行）を確かめた。cash・one_time・給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

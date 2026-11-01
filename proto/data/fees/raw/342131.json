@@ -1,0 +1,191 @@
+{
+ "code": "342131",
+ "pref": "広島県",
+ "name": "廿日市市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "4月分〜8月分は前年度、9月分〜3月分は当年度の市町村民税所得割額で決定（4月上旬と9月上旬に保育料決定通知書）。年齢は年度当初（4月1日）の年齢。未申告の場合は最高階層。表の新保育料は令和6年度からの額で、令和8年度も同じ（市のページ 2026年5月20日更新からリンクの表、PDF作成 2026年5月19日）。令和9年度入園申し込みのご案内（2026年10月）の令和9年度の表も同じ額。",
+ "tax_basis": "6%",
+ "tax_note": "原則、父母の市町村民税所得割額の合計（父母が非課税の場合は同居の祖父母等で最も所得割の高い方を家計の主宰者として含める）。所得割額は寄付金税額控除や住宅借入金等特別税額控除等の税額控除適用前の金額。16歳未満の扶養児童が2人を超える場合、超えた児童1人につき19,800円を所得割額から差し引いて階層を決める（令和9年度の案内に記載）。政令市在住者の税率換算の注記は見当たらない（政令市ではないので6%とした）。",
+ "table": {
+  "title": "廿日市市保育料徴収基準額表（2号認定・3号認定）新保育料 0〜2歳児クラス",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "第1",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "第2",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": 0
+   },
+   {
+    "label": "第3-1",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税均等割額のみ課税世帯",
+    "monthly": 3850,
+    "monthly_second": 3850
+   },
+   {
+    "label": "第3-2",
+    "lower": 1,
+    "upper": 34600,
+    "condition": "市民税所得割額が34,600円未満",
+    "monthly": 5500,
+    "monthly_second": 5500
+   },
+   {
+    "label": "第3-3",
+    "lower": 34600,
+    "upper": 38900,
+    "condition": "38,900円未満",
+    "monthly": 6900,
+    "monthly_second": 6900
+   },
+   {
+    "label": "第3-4",
+    "lower": 38900,
+    "upper": 43600,
+    "condition": "43,600円未満",
+    "monthly": 8300,
+    "monthly_second": 8300
+   },
+   {
+    "label": "第3-5",
+    "lower": 43600,
+    "upper": 48600,
+    "condition": "48,600円未満",
+    "monthly": 9750,
+    "monthly_second": 9750
+   },
+   {
+    "label": "第4-1",
+    "lower": 48600,
+    "upper": 59100,
+    "condition": "59,100円未満",
+    "monthly": 11050,
+    "monthly_second": 11050
+   },
+   {
+    "label": "第4-2",
+    "lower": 59100,
+    "upper": 71500,
+    "condition": "71,500円未満",
+    "monthly": 12350,
+    "monthly_second": 12350
+   },
+   {
+    "label": "第4-3",
+    "lower": 71500,
+    "upper": 84100,
+    "condition": "84,100円未満",
+    "monthly": 13650,
+    "monthly_second": 13650
+   },
+   {
+    "label": "第4-4",
+    "lower": 84100,
+    "upper": 97000,
+    "condition": "97,000円未満",
+    "monthly": 15000,
+    "monthly_second": 15000
+   },
+   {
+    "label": "第5-1",
+    "lower": 97000,
+    "upper": 123400,
+    "condition": "123,400円未満",
+    "monthly": 17400,
+    "monthly_second": 17400
+   },
+   {
+    "label": "第5-2",
+    "lower": 123400,
+    "upper": 145600,
+    "condition": "145,600円未満",
+    "monthly": 19800,
+    "monthly_second": 19800
+   },
+   {
+    "label": "第5-3",
+    "lower": 145600,
+    "upper": 169000,
+    "condition": "169,000円未満",
+    "monthly": 22250,
+    "monthly_second": 22250
+   },
+   {
+    "label": "第6-1",
+    "lower": 169000,
+    "upper": 235000,
+    "condition": "235,000円未満",
+    "monthly": 26350,
+    "monthly_second": 26350
+   },
+   {
+    "label": "第6-2",
+    "lower": 235000,
+    "upper": 301000,
+    "condition": "301,000円未満",
+    "monthly": 28000,
+    "monthly_second": 28000
+   },
+   {
+    "label": "第7",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "397,000円未満",
+    "monthly": 30500,
+    "monthly_second": 30500
+   },
+   {
+    "label": "第8",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上",
+    "monthly": 31500,
+    "monthly_second": 31500
+   }
+  ],
+  "notes": "表は旧保育料（令和5年度まで）と新保育料（令和6年度から第1子の保育料が半額。第1子・第2子ともに新保育料の額）を並べたもの。rows は新保育料の標準（長）時間。monthly_second は第2子も同じ額なので同じ値を入れた。新保育料の短時間（8:30〜16:30）: 第3-1 3,750／第3-2 5,350／第3-3 6,750／第3-4 8,150／第3-5 9,600／第4-1 10,850／第4-2 12,100／第4-3 13,400／第4-4 14,750／第5-1 17,050／第5-2 19,400／第5-3 21,850／第6-1 25,850／第6-2 27,400／第7 29,850／第8 30,850（第1・第2は0）。旧保育料の標準時間は第3-1 7,700〜第8 63,000（新保育料はちょうどその半額）。年収約360万円未満相当の世帯は、これに加えて軽減措置の対象になる場合がある（詳細は問い合わせ）。0〜2歳児クラスの給食費は保育料に含まれる。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "令和6年4月から市独自に第1子の保育料を半額にした（表の新保育料）が、無料ではない（標準時間で月3,850〜31,500円）。",
+ "second_child": "other",
+ "second_count": "household",
+ "second_note": "第2子は国の制度の半額にあたるが、市独自で第1子も半額にしたため、第1子・第2子とも基準額表（新保育料）の同じ額。第2子だけの追加の軽減はない（monthly_second = monthly）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "令和7年4月から、認可保育所など（公立・私立保育所、私立認定こども園、小規模保育・事業所内保育。企業主導型は対象外）の保育料について、世帯の年収や兄姉の年齢、保育所などの利用にかかわらず、保護者と生計が同一の子を上から数えて第3子以降を無料。原則手続き不要、別居の子（同住所別世帯・住民票上別居を含む）がいる場合は申出書と住民票・仕送りの記録などを毎年度提出。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "廿日市市保育料徴収基準額表（PDF、2026年5月19日作成）",
+   "url": "https://www.city.hatsukaichi.hiroshima.jp/uploaded/attachment/93167.pdf"
+  },
+  {
+   "label": "廿日市市独自の保育料軽減に関して（2026年5月20日更新）",
+   "url": "https://www.city.hatsukaichi.hiroshima.jp/site/kosodate/121190.html"
+  },
+  {
+   "label": "令和9年度入園申し込みのご案内（PDF）p.15〜17「保育料や給食費について」「本市独自の保育料軽減措置」「令和9年度廿日市市保育料徴収基準額表」",
+   "url": "https://www.city.hatsukaichi.hiroshima.jp/uploaded/attachment/97882.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "基準額表のPDFは1ページで文字が取れ、画像で列の並び（旧保育料 短時間・標準、新保育料 短時間・標準）を確かめた。3-1 は均等割のみ（所得割0円）なので 3-2 の lower は1とした。3〜5歳の副食費は公立月4,500円（私立は施設ごと）。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

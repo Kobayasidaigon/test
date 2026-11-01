@@ -1,0 +1,267 @@
+{
+  "code": "131130",
+  "pref": "東京都",
+  "name": "渋谷区",
+  "status": "ok",
+  "fiscal_year": "令和7年9月1日現在の表（令和8年度も現行。保育料のページは2025年10月24日更新）",
+  "period_note": "令和7年9月から、認可保育所等の第1子保育料無償化を開始（所得にかかわらず全世帯）。月額保育料階層は、前期（4月〜8月）は前年度の住民税（前々年の所得）、後期（9月〜翌年3月）は当該年度の住民税（前年の所得）で決める。無償化後も延長保育料の算定などに保育料階層を使う。",
+  "tax_basis": "6%",
+  "tax_note": "保護者全員の区民税（市区町村民税）所得割額の合計。住宅借入金等特別税額控除、寄付金税額控除、配当控除、外国税額控除、配当割額・株式等譲渡所得割額控除で減税されている人は、その額を足し戻して計算（税額控除前）。令和6年9月〜令和7年8月の保育料は定額減税で控除された後の所得割額で決めた。",
+  "table": {
+    "title": "月額保育料【区立・私立保育園・区立幼保一元化施設（長時間）・認定こども園（長時間）・地域型保育】令和７年９月１日現在",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯、里親世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市区町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "市区町村民均等割のみの課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 5000,
+        "condition": "市区町村民税所得割額が 5,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 5000,
+        "upper": 20000,
+        "condition": "5,000 円以上 20,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 20000,
+        "upper": 50000,
+        "condition": "20,000 円以上 50,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 50000,
+        "upper": 80000,
+        "condition": "50,000 円以上 80,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 80000,
+        "upper": 110000,
+        "condition": "80,000 円以上 110,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 110000,
+        "upper": 140000,
+        "condition": "110,000 円以上 140,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 140000,
+        "upper": 165000,
+        "condition": "140,000 円以上 165,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 165000,
+        "upper": 190000,
+        "condition": "165,000 円以上 190,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 190000,
+        "upper": 215000,
+        "condition": "190,000 円以上 215,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 215000,
+        "upper": 240000,
+        "condition": "215,000 円以上 240,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 240000,
+        "upper": 265000,
+        "condition": "240,000 円以上 265,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 265000,
+        "upper": 290000,
+        "condition": "265,000 円以上 290,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 290000,
+        "upper": 310000,
+        "condition": "290,000 円以上 310,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 310000,
+        "upper": 330000,
+        "condition": "310,000 円以上 330,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 330000,
+        "upper": 350000,
+        "condition": "330,000 円以上 350,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 350000,
+        "upper": 360000,
+        "condition": "350,000 円以上 360,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 360000,
+        "upper": 370000,
+        "condition": "360,000 円以上 370,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 370000,
+        "upper": 420000,
+        "condition": "370,000 円以上 420,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D19",
+        "lower": 420000,
+        "upper": 470000,
+        "condition": "420,000 円以上 470,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D20",
+        "lower": 470000,
+        "upper": 520000,
+        "condition": "470,000 円以上 520,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D21",
+        "lower": 520000,
+        "upper": 620000,
+        "condition": "520,000 円以上 620,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D22",
+        "lower": 620000,
+        "upper": 840000,
+        "condition": "620,000 円以上 840,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D23",
+        "lower": 840000,
+        "upper": 1200000,
+        "condition": "840,000 円以上 1,200,000 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D24",
+        "lower": 1200000,
+        "upper": null,
+        "condition": "1,200,000 円以上",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows の monthly は表の「0〜2歳児クラス・軽減後保育料」（実際に払う額）で、すべての階層で0円（軽減率100%）。表の「基本保育料」（軽減前）は C 1,900／D1 3,300／D2 4,100／D3 4,700／D4 7,700／D5 9,500／D6 10,700／D7 11,800／D8 12,700／D9 13,700／D10 14,600／D11 15,500／D12 16,200／D13 17,100／D14 24,900／D15 26,000／D16 26,900／D17 28,000／D18 43,400／D19 48,900／D20 53,700／D21 57,500／D22 61,500／D23 65,800／D24 70,400。保育料は保育標準時間・保育短時間で共通。3〜5歳児クラスは0円。欄外: 「実際にお支払いいただくのは『軽減後保育料』の金額です。すべての階層で保育料は無償化となります。」「２人以上のお子さんがいる場合の２番目以降のお子さんの保育料は無料です。」D1 の下限は表にないが、C（均等割のみ＝所得割0円）と分けるため lower=1 とした。表に第2子の列はないので monthly_second は null。無償化の対象は月額保育料だけで、月極延長保育料・スポット延長保育料・日用品・文房具代・行事費等は対象外。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "「令和7年9月より、認可保育園等における第1子保育料無償化を開始しました。」対象施設は認可保育所・認定こども園（2号・3号認定）・小規模保育事業・居宅訪問型保育事業・幼保一元化施設（長時間保育）・区立保育室、対象は所得にかかわらず認可保育所等を利用する全ての世帯（保育料のページ、2025年10月24日更新）。令和9年度の入園申し込みのページ（2026年10月23日更新）にも「東京都の第一子無償化制度」の注記がある。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "表の欄外に「２人以上のお子さんがいる場合の２番目以降のお子さんの保育料は無料」とあり、第1子も無償なので、きょうだいの数え方で額は変わらない（どう数えても0円）。household は「数え方に関係なく0円」という意味で置いた。区のページに上の子の年齢などの数え方の説明は見当たらない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円のため、第3子以降も0円（数え方は関係ない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育料 | 保育料 | 渋谷区ポータル（2025年10月24日更新）",
+      "url": "https://www.city.shibuya.tokyo.jp/kodomo/hoiku/hoikuryo/hoikuryo.html"
+    },
+    {
+      "label": "保育園・認定こども園（長時間保育）・幼保一元化施設（長時間保育）の月額保育料階層表（PDF 345KB）渋谷区",
+      "url": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/32c02ff39e844de89ea25f48cdb854c9/getsugakuhoikuryou.pdf"
+    },
+    {
+      "label": "令和7年9月以前の保育料（PDF 536KB）渋谷区",
+      "url": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/468e43c1e3b64626b47b6d04c3704023/hoikuryo_kaisouhyou.pdf"
+    },
+    {
+      "label": "令和9年度保育園・認定こども園・幼保一元化施設（長時間保育）入園申し込みについて | 渋谷区ポータル（2026年10月23日更新）",
+      "url": "https://www.city.shibuya.tokyo.jp/kodomo/hoiku/hoikuen-nyuen/hoiku_boshu2027.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "特別区。下調べの候補（保育料のページ・月額保育料階層表PDF）で足りた。表PDFは1ページで文字が取れ、画像でも0〜2歳児クラスの「軽減後保育料」が全階層0円であることを確かめた（PDF作成日2025年9月30日）。令和8年度の日付の付いた料金表は出ていないが、保育料のページの表が今の表。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

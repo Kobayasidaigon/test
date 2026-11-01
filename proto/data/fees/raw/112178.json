@@ -1,0 +1,201 @@
+{
+  "code": "112178",
+  "pref": "埼玉県",
+  "name": "鴻巣市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月から8月までは令和7年度市民税額、9月から3月までは令和8年度市民税額で算出（毎年9月が切り替え）。月額の表は年度を通じて同じ。保育料は令和8年4月1日を基準日とした年齢で決め、年度の途中で満3歳になっても、その年度中は3号認定の保育料のまま（翌年度から無料）。利用者負担額は毎月1日に在籍している人がその月分を納める（日割りの記載なし）。令和9年度保育施設入所案内の表も同じ金額・区分。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（父母）の市町村民税所得割額の合計で階層を判定。所得割額には配当控除・外国税控除・住宅取得控除・寄付金控除（ふるさと納税）等の控除を適用しない（税額控除前）。保護者等が非課税で年間収入93万円未満（年間所得38万円未満）の場合は、同居の祖父母等の家計の主宰者の市民税額を合算。市民税が未申告等で不明の場合は最高の階層区分。政令市ではないので6%の税率の所得割（表に税率の注記はない）。",
+  "table": {
+    "title": "保育認定（２号認定及び３号認定）利用者負担額表（令和8年度保育施設入所案内 p.22）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法(昭和25年法律第144号)による被保護世帯(単給世帯を含む。)及び中国残留邦人等の円滑な帰国の促進及び永住帰国後の自立の支援に関する法律(平成6年法律第30号)による支援給付受給世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "当該年度分の市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "当該年度分の市町村民税が均等割の額のみの世帯",
+        "monthly": 6900,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 15000,
+        "condition": "15,000円未満",
+        "monthly": 7800,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 15000,
+        "upper": 35000,
+        "condition": "15,000円以上 35,000円未満",
+        "monthly": 8900,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 35000,
+        "upper": 56000,
+        "condition": "35,000円以上 56,000円未満",
+        "monthly": 9900,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 56000,
+        "upper": 64800,
+        "condition": "56,000円以上 64,800円未満",
+        "monthly": 11300,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 64800,
+        "upper": 74400,
+        "condition": "64,800円以上 74,400円未満",
+        "monthly": 13400,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 74400,
+        "upper": 97000,
+        "condition": "74,400円以上 97,000円未満",
+        "monthly": 16900,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 97000,
+        "upper": 114000,
+        "condition": "97,000円以上 114,000円未満",
+        "monthly": 22600,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 114000,
+        "upper": 134400,
+        "condition": "114,000円以上 134,400円未満",
+        "monthly": 29300,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 134400,
+        "upper": 154800,
+        "condition": "134,400円以上 154,800円未満",
+        "monthly": 36000,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 154800,
+        "upper": 169000,
+        "condition": "154,800円以上 169,000円未満",
+        "monthly": 41000,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 169000,
+        "upper": 194100,
+        "condition": "169,000円以上 194,100円未満",
+        "monthly": 44000,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 194100,
+        "upper": 214500,
+        "condition": "194,100円以上 214,500円未満",
+        "monthly": 48000,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 214500,
+        "upper": 273100,
+        "condition": "214,500円以上 273,100円未満",
+        "monthly": 51000,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 273100,
+        "upper": 333100,
+        "condition": "273,100円以上 333,100円未満",
+        "monthly": 53000,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 333100,
+        "upper": null,
+        "condition": "333,100円以上",
+        "monthly": 55000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「3号認定 3歳未満 保育標準時間」の列。2歳児クラス以下の保育料は施設区分にかかわらずこの表で決める。表に第2子の別の列はない。保育短時間: A・B 0／C 6,700／D1 7,600／D2 8,700／D3 9,700／D4 11,100／D5 13,100／D6 16,600／D7 22,200／D8 28,800／D9 35,300／D10 40,300／D11 43,200／D12 47,100／D13 50,100／D14 52,000／D15 54,000。2号認定（3歳以上）はすべて0円。2歳児クラス以下の給食費は月額の保育料に含まれる。時間外保育料は施設ごとに別。要保護世帯（ひとり親、身体障害者手帳・療育手帳の所持など）の軽減: 市民税が均等割のみなら免除、所得割77,101円未満なら第1子半額・第2子以降免除。D1 の下限は表に書かれていないが、C（均等割のみ）と分けるため lower=1 とした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "2歳児クラス以下の第1子は有料（令和8年度の表で月0〜55,000円）。0円は A（生活保護等）と B（市町村民税非課税）だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "多子世帯の軽減制度: ア 保育所や幼稚園等を利用している児童が2人以上いる場合、利用している児童を上から順に数えて2人目は半額・3人目以降は免除。イ 市町村民税所得割額57,700円未満の場合は第2子半額・第3子以降免除（この場合の数え方〔上の子の年齢を問わないか〕は案内に書かれていない）。要保護世帯で所得割77,101円未満は第1子半額・第2子以降免除。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "保育所や幼稚園等を利用している児童を上から数えて3人目以降は免除（国の多子軽減）。ほかに「鴻巣市多子世帯保育料軽減事業」（別途申請が必要）で第3子以降は全額免除とあるが、入所案内には第3子の数え方（上の子の年齢・同居など）の説明がなく、事業のページも見つけられなかった。",
+  "lunch_jh": {
+    "free": false,
+    "note": "市立中学校の学校給食費は、平成20年4月2日〜平成26年4月1日生まれ（令和8年度の高校3年生〜中学1年生の学年に相当）の子を3人以上養育している保護者の、3人目以降の生徒の分を申請により免除（多子世帯保護者負担軽減事業、令和8年4月〜令和9年3月分）。それ以外の生徒は保護者負担（給食費の額はこのページに書かれていない）。市立外の小・中学校等の通学者には申請により給食費相当分（上限あり）を支給。",
+    "source": {
+      "label": "【令和８年度】市立中学校の学校給食費の多子世帯保護者負担軽減事業のお知らせ（第３子が中学生の保護者対象） 鴻巣市（更新日：2026年2月5日）",
+      "url": "https://www.city.kounosu.saitama.jp/site/konosu-education/39107.html"
+    }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度保育施設入所案内 鴻巣市（ページ更新日：2025年9月1日）",
+      "url": "https://www.city.kounosu.saitama.jp/page/35342.html"
+    },
+    {
+      "label": "令和8年度保育施設入所案内（PDF）p.19〜23 利用者負担額等について・利用者負担額表",
+      "url": "https://www.city.kounosu.saitama.jp/uploaded/attachment/26187.pdf"
+    },
+    {
+      "label": "令和9年度保育施設入所案内（PDF、ページ更新日：2026年9月1日）",
+      "url": "https://www.city.kounosu.saitama.jp/uploaded/attachment/27875.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの候補（保育施設入所児童家庭状況表など）に保育料の表はなかったので、令和8年度保育施設入所案内のページからPDFを取った。",
+    "鴻巣市多子世帯保育料軽減事業の数え方: 幼稚園・保育施設の一覧ページ（https://www.city.kounosu.saitama.jp/life/2/12/54/）と各種届出書類のページ（https://www.city.kounosu.saitama.jp/page/2010.html）、令和9年度入所案内を見たが説明なし。WebSearch（allowed_domains: city.kounosu.saitama.jp、「鴻巣市 多子世帯保育料軽減事業 第3子」）でも事業のページは出ず、学校給食費の多子世帯軽減のページが出た。"
+  ],
+  "notes": "表は令和8年度保育施設入所案内（62ページ、文字の取れるPDF）の p.22 を pdftotext -layout で読み、画像にして列の並び（2号 標準/短時間・3号 標準/短時間）を確かめた。中学校給食は検索の途中で多子世帯の免除のページが目に入ったので lunch_jh に書いた。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

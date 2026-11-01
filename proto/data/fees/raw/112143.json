@@ -1,0 +1,169 @@
+{
+  "code": "112143",
+  "pref": "埼玉県",
+  "name": "春日部市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（保育施設等利用のてびき 令和8年度版の表。表の日付は令和7年10月1日現在）",
+  "period_note": "4〜8月分の保育料は前年度、9〜3月分は当該年度の市民税所得割課税額で算定（令和8年度は4〜8月が令和7年度市民税〔令和6年分収入〕、9〜3月が令和8年度市民税〔令和7年分収入〕）。年齢区分は入所した年度の4月1日時点のクラス年齢。日割り計算は原則しない。料金表（月額）は年度を通じて同じ。",
+  "tax_basis": "6%",
+  "tax_note": "世帯の市民税所得割課税額（父母とも所得割・均等割が非課税で同一住所に祖父母等がいる場合は、祖父母のうち市民税の高い方の所得割課税額）。配当控除・住宅借入金等特別税額控除・外国税額控除・寄付金税額控除等がある場合は控除前の税額。政令指定都市で課税されている人は所得割を6%相当に換算して決める。申告状況が確認できない場合は最高額。",
+  "table": {
+    "title": "【利用者負担額一覧】（令和７年１０月１日現在）２ 保育認定（２号・３号認定）の保育料について（保育施設等利用のてびき 令和8年度版）",
+    "kind": "3歳未満・第1子（月額。0〜2歳児クラス、保育標準時間・短時間の区別なし）",
+    "rows": [
+      {
+        "label": "第1階層",
+        "lower": null,
+        "upper": null,
+        "condition": "①生活保護世帯 ②中国残留邦人等…支援給付受給世帯 ③里親の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2階層",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3階層（均等割のみ）",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割のみ課税世帯",
+        "monthly": 11500,
+        "monthly_second": null
+      },
+      {
+        "label": "第3階層（所得割48,600円未満）",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "所得割課税額 48,600円未満",
+        "monthly": 11500,
+        "monthly_second": null
+      },
+      {
+        "label": "第4階層",
+        "lower": 48600,
+        "upper": 60000,
+        "condition": "所得割課税額 48,600円以上 60,000円未満",
+        "monthly": 17700,
+        "monthly_second": null
+      },
+      {
+        "label": "第5階層",
+        "lower": 60000,
+        "upper": 70000,
+        "condition": "所得割課税額 60,000円以上 70,000円未満",
+        "monthly": 21300,
+        "monthly_second": null
+      },
+      {
+        "label": "第6階層",
+        "lower": 70000,
+        "upper": 80000,
+        "condition": "所得割課税額 70,000円以上 80,000円未満",
+        "monthly": 25100,
+        "monthly_second": null
+      },
+      {
+        "label": "第7階層",
+        "lower": 80000,
+        "upper": 97000,
+        "condition": "所得割課税額 80,000円以上 97,000円未満",
+        "monthly": 28100,
+        "monthly_second": null
+      },
+      {
+        "label": "第8階層",
+        "lower": 97000,
+        "upper": 110000,
+        "condition": "所得割課税額 97,000円以上 110,000円未満",
+        "monthly": 32900,
+        "monthly_second": null
+      },
+      {
+        "label": "第9階層",
+        "lower": 110000,
+        "upper": 130000,
+        "condition": "所得割課税額 110,000円以上 130,000円未満",
+        "monthly": 36800,
+        "monthly_second": null
+      },
+      {
+        "label": "第10階層",
+        "lower": 130000,
+        "upper": 169000,
+        "condition": "所得割課税額 130,000円以上 169,000円未満",
+        "monthly": 41200,
+        "monthly_second": null
+      },
+      {
+        "label": "第11階層",
+        "lower": 169000,
+        "upper": 200000,
+        "condition": "所得割課税額 169,000円以上 200,000円未満",
+        "monthly": 48000,
+        "monthly_second": null
+      },
+      {
+        "label": "第12階層",
+        "lower": 200000,
+        "upper": 301000,
+        "condition": "所得割課税額 200,000円以上 301,000円未満",
+        "monthly": 54000,
+        "monthly_second": null
+      },
+      {
+        "label": "第13階層",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "所得割課税額 301,000円以上 397,000円未満",
+        "monthly": 60600,
+        "monthly_second": null
+      },
+      {
+        "label": "第14階層",
+        "lower": 397000,
+        "upper": null,
+        "condition": "所得割課税額 397,000円以上",
+        "monthly": 69600,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表の列は「0〜2歳児クラス」「3〜5歳児クラス（すべて0円）」だけで、保育標準時間・短時間の区別はない。第3階層は「均等割のみ課税世帯」と「所得割課税額48,600円未満」の2行（どちらも11,500円）。後者の下限は表にないが、均等割のみ（所得割0円）と分けるため lower=1 とした。表に第2子の列はないので monthly_second は null。ひとり親世帯・在宅障がい児（者）のいる世帯・要保護者等で所得割77,101円未満は、第3階層 5,250円、所得割48,600円以上77,101円未満 5,400円（3〜5歳児は0円）で、子が2人以上いて第2子以降が認可保育施設等を利用する場合は第2子以降0円。10円未満の端数は切り捨て。日割りは原則しない。同じ表は市の「保育認定（2号・3号認定）の保育料」のページ（2025年4月7日更新）にもある。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は有料（0〜2歳児クラスで月0〜69,600円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "第2〜14階層で、2人以上の就学前の子が認可保育施設・幼稚園・認定こども園・家庭的保育事業等・特別支援学校幼稚部等に入所、または企業主導型保育事業・児童デイサービスを利用している場合、1番上の就学前の子は表の額、上から2人目は半額、3人目以降は0円。例外: 所得割57,700円未満は、同一世帯に2人以上の子がいれば（就学前・在園を問わず数える）第2子半額・第3子以降0円。第2階層（非課税）は第2子0円。ひとり親世帯等で所得割77,101円未満は第2子以降0円。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2〜14階層で、同一世帯に3人以上の子がいる世帯のうち、第3子以降の0〜2歳児クラスの子が認可保育施設・家庭的保育事業等・認定こども園（保育利用）等を利用している場合は0円（上の子の年齢や在園を問わない。埼玉県の多子世帯保育料無償化支援事業と同じ内容。所得制限の記載なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育施設等利用のてびき(令和8年度版)（PDFファイル: 3.3MB）春日部市（15〜16ページ）",
+      "url": "https://www.city.kasukabe.lg.jp/material/files/group/27/20260116tebiki_12.pdf"
+    },
+    {
+      "label": "保育認定（2号・3号認定）の保育料／春日部市公式ホームページ（2025年4月7日更新）",
+      "url": "https://www.city.kasukabe.lg.jp/kosodate_kyoiku_bunka/kasukabecosodateoensite/kodomowoazukeru_hoikushisetsu_jidoclubnado/1/2/11016.html"
+    },
+    {
+      "label": "令和8年度保育施設の入所の申請受付／春日部市公式ホームページ（2026年10月8日更新）",
+      "url": "https://www.city.kasukabe.lg.jp/kosodate_kyoiku_bunka/kasukabecosodateoensite/kodomowoazukeru_hoikushisetsu_jidoclubnado/1/2/11124.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの候補は保育料のページ（HTMLの表）と減免基準表だけだった。令和8年度の入所の申請受付ページから「保育施設等利用のてびき(令和8年度版)」を開いて、15〜16ページの表と多子の決まりを読んだ。"
+  ],
+  "notes": "表は令和8年度版のてびき（39ページ、文字の取れるPDF）の17ページ目（印刷のページ番号15）を pdftotext -layout で読み、画像で列（0〜2歳児・3〜5歳児）を確かめた。市のHTMLの表と額は同じ。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

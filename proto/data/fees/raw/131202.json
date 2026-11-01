@@ -1,0 +1,39 @@
+{
+  "code": "131202",
+  "pref": "東京都",
+  "name": "練馬区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和7年9月1日から、国制度等の対象外だった0〜2歳児クラスの課税世帯の第1子保育料も無償化し、認可保育所・地域型保育事業・認定こども園の全ての児童の保育料が無料（「第1子の保育料無償化」のページは2026年4月1日更新で、令和8年度も同じ）。8月までは区で定める保育料だった。給食費は練馬区に住む世帯はすべて免除。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は全員無料のため、所得割による階層は保育料には影響しない（延長保育料などの扱いは今回確かめていない）。特別区（政令市ではない）なので特別区民税の6%のまま。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "令和7年9月1日から、0〜2歳児クラスの課税世帯の第1子保育料を無償化し、全ての児童が無償化の対象。認可保育所・地域型保育事業・認定こども園は全ての児童の保育料が無料で、新たな手続きは不要。延長保育料、園帽・行事費など各園が独自に集める実費は保護者負担。給食費は練馬区に住む世帯はすべて免除（区外在住者や他自治体の保育園を使う場合は別）。認可外保育施設（認証保育所を含む）は月額8万円まで無償（8月までは4万円まで）、練馬こども園（低年齢型）は月額4万2,000円まで無償（手続きが必要）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "全ての児童の保育料が無料のため、きょうだいの数え方や所得制限は保育料に関係しない（区内在住で認可保育所・地域型保育事業・認定こども園を使う子はすべて0円）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全員無料（第2子と同じ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "第1子の保育料無償化：練馬区公式ホームページ（更新日：2026年4月1日）",
+      "url": "https://www.city.nerima.tokyo.jp/kosodatekyoiku/kodomo/hoiku/dai1shimusyouka.html"
+    },
+    {
+      "label": "認可保育園等の保育料・副食費について：練馬区公式ホームページ",
+      "url": "https://www.city.nerima.tokyo.jp/kosodatekyoiku/kodomo/hoiku/hoikuen/zaien/hoikuryou/hoikuryou.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの index.json には保育料のページがなかった（介護保険のページと申請書のPDFだけ）"
+  ],
+  "notes": "特別区。保育課の組織ページ（kusei/soshiki/kodomokatei/hoikuka.html）→保育園（kosodatekyoiku/kodomo/hoiku/hoikuen/index.html）→在園に関すること→保育料→「認可保育園等の保育料・副食費について」の順に開き、関連リンクの「第1子の保育料無償化」も読んだ。「認可保育園等の保育料・副食費について」のページの更新日は2021年12月9日と表示されているが、本文は令和7年9月以降の無料化を書いている。全員無料のため表は入れていない（区の保育料表は今回読んでいない）。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

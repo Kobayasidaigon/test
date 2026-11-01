@@ -1,0 +1,167 @@
+{
+  "code": "092011",
+  "pref": "栃木県",
+  "name": "宇都宮市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "表は市の「教育・保育施設等の利用者負担額（保育料） 基準額」のページ（更新日：令和6年7月4日、「令和6年4月1日現在」）の「3号認定の保育料（月額）」PDF。令和9年度教育・保育施設等入所のご案内（2026年10月1日掲載）の「12．保育料基準額表（月額）※０～２歳児」も同じ表で、令和6年度から令和9年度入所の案内まで変わっていない（令和8年度と書いた表そのものは見ていない）。保育料は毎年9月に算定に使う税額年度が切り替わり、4〜8月分は前年度、9〜3月分は当該年度の市民税所得割額で算定（令和8年度なら4〜8月=令和7年度、9月〜=令和8年度）。階層区分（0〜2歳児の表を使うか）は当該年度の4月1日の年齢で決める。",
+  "tax_basis": "6%",
+  "tax_note": "父母それぞれの市町村民税所得割課税額を合算（父母の合計所得金額がそれぞれ42万円以下で同居の祖父母がいる場合は、祖父母のうち所得割課税額の高い人を含める）。住宅借入金等特別税額控除や寄附金控除など、調整控除以外の項目は減算しない（＝税額控除前所得割額−調整控除額。通知書の「所得割額計−調整控除額」）。税情報が確認できない間は仮に階層区分13の額。宇都宮市は中核市（政令市ではない）。",
+  "table": {
+    "title": "３号認定の利用者負担額（保育料）基準額表（月額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "2",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯（ひとり親世帯等）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "3",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯（一般世帯）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "5",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税所得割非課税世帯（一般世帯）",
+        "monthly": 6000,
+        "monthly_second": null
+      },
+      {
+        "label": "7",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市町村民税所得割課税額 48,600円未満（一般世帯）",
+        "monthly": 8000,
+        "monthly_second": null
+      },
+      {
+        "label": "8",
+        "lower": 48600,
+        "upper": 77100,
+        "condition": "市町村民税所得割課税額 77,100円未満",
+        "monthly": 13000,
+        "monthly_second": null
+      },
+      {
+        "label": "9",
+        "lower": 77100,
+        "upper": 97000,
+        "condition": "市町村民税所得割課税額 97,000円未満",
+        "monthly": 14000,
+        "monthly_second": null
+      },
+      {
+        "label": "10",
+        "lower": 97000,
+        "upper": 109000,
+        "condition": "市町村民税所得割課税額 109,000円未満",
+        "monthly": 20000,
+        "monthly_second": null
+      },
+      {
+        "label": "11",
+        "lower": 109000,
+        "upper": 169000,
+        "condition": "市町村民税所得割課税額 169,000円未満",
+        "monthly": 27000,
+        "monthly_second": null
+      },
+      {
+        "label": "12",
+        "lower": 169000,
+        "upper": 211200,
+        "condition": "市町村民税所得割課税額 211,200円未満",
+        "monthly": 37000,
+        "monthly_second": null
+      },
+      {
+        "label": "13",
+        "lower": 211200,
+        "upper": 301000,
+        "condition": "市町村民税所得割課税額 301,000円未満",
+        "monthly": 41000,
+        "monthly_second": null
+      },
+      {
+        "label": "14",
+        "lower": 301000,
+        "upper": 341000,
+        "condition": "市町村民税所得割課税額 341,000円未満",
+        "monthly": 54000,
+        "monthly_second": null
+      },
+      {
+        "label": "15",
+        "lower": 341000,
+        "upper": 397000,
+        "condition": "市町村民税所得割課税額 397,000円未満",
+        "monthly": 56000,
+        "monthly_second": null
+      },
+      {
+        "label": "16",
+        "lower": 397000,
+        "upper": null,
+        "condition": "市町村民税所得割課税額 397,000円以上",
+        "monthly": 67000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は保育標準時間（0〜2歳児）の一般世帯の額。表には世帯区分の別の行があり、ひとり親世帯等は 2（市町村民税非課税）0円、4（市町村民税所得割非課税）標準5,000円・短時間4,000円、6（市町村民税所得割課税額48,600円未満）標準7,000円・短時間6,000円（48,600円以上は一般世帯と同じ行）。保育短時間の額: 5 5,000／7 7,000／8 12,000／9 13,000／10 19,000／11 26,000／12 36,000／13 40,000／14 53,000／15 55,000／16 65,000（1〜3は0）。第2子の別の列はない（第2子以降は所得割にかかわらず無料なので monthly_second は null）。行7の下限は表に書かれていないが、所得割非課税（行5）と分けるため lower=1 とした。延長保育料は別。月の中途で退所しても月額分の保育料が必要。保育料減免基準表あり（申請が必要）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月0〜67,000円）。ひとり親世帯等で市町村民税所得割税額77,101円未満は第1子の保育料が半額。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和6年4月から、同一世帯で2人以上の児童を養育している場合、市町村民税所得割課税額にかかわらず第2子以降の保育料は無料（それまでは第3子以降が対象）。生計を同一にする子どもで、18歳に到達する年度まで（大学生等は22歳に達する年度まで、学生証などの写しが必要。第1子が障がい者手帳・療育手帳等を持つ場合は20歳に達する年度まで）の最年長の子を第1子として数える（上の子が保育施設に通っていなくてよい）。対象は認可保育所・認定こども園・地域型保育事業の0〜2歳児クラス（3号認定）。認可外保育施設・延長保育料は対象外。ひとり親世帯等で所得割77,101円未満は第1子の年齢を問わず第2子以降無料。両親世帯で所得割57,700円未満は第1子の年齢を問わず第2子半額・第3子以降無料（上の子が年齢上限を超えている場合の扱い）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第3子以降も無料（第2子と同じ数え方）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "教育・保育施設等の利用者負担額（保育料） 基準額｜宇都宮市公式Webサイト（更新日：令和6年7月4日、令和6年4月1日現在）",
+      "url": "https://www.city.utsunomiya.lg.jp/kosodate/kosodate/1035002/hoiku/nyusho/1003887.html"
+    },
+    {
+      "label": "3号認定の保育料（月額）（PDF）",
+      "url": "https://www.city.utsunomiya.lg.jp/_res/projects/default_project/_page_/001/003/887/3gouhoikuryou.pdf"
+    },
+    {
+      "label": "令和6年4月から第2子の保育料を無償化します（PDF）",
+      "url": "https://www.city.utsunomiya.lg.jp/_res/projects/default_project/_page_/001/003/887/dainisimusyouka.pdf"
+    },
+    {
+      "label": "令和9年度教育・保育施設等入所のご案内（PDF）P.22〜25「11．利用者負担額（保育料）について」「12．保育料基準額表（月額）」",
+      "url": "https://www.city.utsunomiya.lg.jp/_res/projects/default_project/_page_/001/041/483/202610nyuusyonogoannnai.pdf"
+    },
+    {
+      "label": "令和9年度教育・保育施設等の入所申込｜宇都宮市公式Webサイト（更新日：令和8年10月1日）",
+      "url": "https://www.city.utsunomiya.lg.jp/kosodate/kosodate/1035002/hoiku/nyusho/1041483.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "中核市。下調べの index.json の「3号認定の保育料（月額）」PDF と保育料基準額のページで分かり、令和9年度入所のご案内（2026年10月）で表と多子軽減が今も同じことを確かめた。表に年度の書いた「令和8年度」の文字はないが、令和6年4月1日現在の表と令和8年10月掲載のご案内の表が同じなので、令和8年度もこの表とした。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

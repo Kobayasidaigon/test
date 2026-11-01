@@ -1,0 +1,61 @@
+{
+  "code": "122165",
+  "pref": "千葉県",
+  "name": "習志野市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月〜8月分は令和7年度の市区町村民税（令和6年中の収入）、9月〜翌3月分は令和8年度の市区町村民税（令和7年中の収入）で算定するため、年度途中で保育料が変わることがある（料金表の月額は年度を通じて同じ）。年齢区分は毎年度4月1日時点の年齢（在籍クラス年齢）で、年度の途中で誕生日を迎えても変わらない。0〜2歳児クラスの給食費は保育料に含まれる。",
+  "tax_basis": "6%",
+  "tax_note": "原則、父母の市区町村民税所得割額の合算額で算定（父母とも非課税で祖父母と同居している場合は祖父母の税額のうち高い方のみ）。ひとり親家庭は戸籍謄本等で確認のうえ同居の保護者のみの税額。住宅借入金特別控除、配当控除、外国税額控除、寄付金控除等の税額控除（調整控除を除く）は控除しない（これらを控除する前の税額で算定）。政令指定都市から転入した方は、所得割額を本市の税率に適用させたうえで算定（＝6%の税率で判定）。税の未申告等で税額が確認できない場合は暫定的に最高階層。",
+  "table": {
+    "title": "習志野市 保育認定こどもの利用者負担額（２・３号保育施設利用）／習志野市保育所保育料徴収基準額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "均等割のみ課税", "monthly": 8440, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "所得割額 48,600円未満", "monthly": 9660, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 58200, "condition": "所得割額 58,200円未満", "monthly": 12140, "monthly_second": null },
+      { "label": "D2", "lower": 58200, "upper": 67900, "condition": "所得割額 67,900円未満", "monthly": 14290, "monthly_second": null },
+      { "label": "D3", "lower": 67900, "upper": 77600, "condition": "所得割額 77,600円未満", "monthly": 17180, "monthly_second": null },
+      { "label": "D4", "lower": 77600, "upper": 87300, "condition": "所得割額 87,300円未満", "monthly": 23090, "monthly_second": null },
+      { "label": "D5", "lower": 87300, "upper": 97000, "condition": "所得割額 97,000円未満", "monthly": 29850, "monthly_second": null },
+      { "label": "D6", "lower": 97000, "upper": 121000, "condition": "所得割額 121,000円未満", "monthly": 37210, "monthly_second": null },
+      { "label": "D7", "lower": 121000, "upper": 145000, "condition": "所得割額 145,000円未満", "monthly": 40880, "monthly_second": null },
+      { "label": "D8", "lower": 145000, "upper": 169000, "condition": "所得割額 169,000円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "D9", "lower": 169000, "upper": 195400, "condition": "所得割額 195,400円未満", "monthly": 50070, "monthly_second": null },
+      { "label": "D10", "lower": 195400, "upper": 221800, "condition": "所得割額 221,800円未満", "monthly": 56000, "monthly_second": null },
+      { "label": "D11", "lower": 221800, "upper": 248200, "condition": "所得割額 248,200円未満", "monthly": 57250, "monthly_second": null },
+      { "label": "D12", "lower": 248200, "upper": 274600, "condition": "所得割額 274,600円未満", "monthly": 57570, "monthly_second": null },
+      { "label": "D13", "lower": 274600, "upper": 301000, "condition": "所得割額 301,000円未満", "monthly": 57910, "monthly_second": null },
+      { "label": "D14", "lower": 301000, "upper": 333000, "condition": "所得割額 333,000円未満", "monthly": 58250, "monthly_second": null },
+      { "label": "D15", "lower": 333000, "upper": 365000, "condition": "所得割額 365,000円未満", "monthly": 63850, "monthly_second": null },
+      { "label": "D16", "lower": 365000, "upper": 397000, "condition": "所得割額 397,000円未満", "monthly": 65370, "monthly_second": null },
+      { "label": "D17", "lower": 397000, "upper": null, "condition": "所得割額 397,000円以上", "monthly": 71000, "monthly_second": null }
+    ],
+    "notes": "rows は「0歳児〜2歳児クラス」の括弧外（保育標準時間）。区分は上限だけの「〜円未満」の書き方なので、lower は1つ上の階層の上限とした（C2 は C1〔均等割のみ＝所得割0円〕と分けるため lower=1）。保育短時間（括弧内）: C1 8,290／C2 9,490／D1 11,930／D2 14,040／D3 16,880／D4 22,690／D5 29,340／D6 36,570／D7 40,180／D8 43,740／D9 49,210／D10 55,040／D11 56,270／D12 56,590／D13 56,920／D14 57,250／D15 62,760／D16 64,250／D17 69,790（A・B は0）。表に第2子の列はない: こどもが複数いる世帯は第2子は「半額」（10円未満切捨て）、第3子以降は「無料」。低所得のひとり親家庭や在宅障がい児（者）のいる世帯等（配偶者のない者で現に児童を扶養している世帯、障害者手帳等の交付を受けた者や特別児童扶養手当の支給対象児・障害基礎年金等の受給者がいる世帯、生活保護に準ずる程度に困窮していると市長が認めた世帯）は負担軽減後の階層: CH1 3,900（3,830）／CH2 4,450（4,370）／DH1 5,900（5,790）／DH2 6,940（6,820）／DH3〔D3のうち所得割額77,101円未満〕8,350（8,200）、この世帯の第2子以降は無料（こどもの年齢・利用施設の制限なし）。3歳児〜5歳児クラスは保育料無償。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜71,000円）。0円は生活保護世帯と非課税世帯。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "第2子は半額（10円未満切捨て）。何番目の子かは子ども・子育て支援法施行令に基づき税額で数え方が変わる: 所得割額が57,700円以上の世帯は、小学校就学前のこどものうち指定施設（認可保育所、幼稚園、認定こども園、地域型保育事業、特別支援学校幼稚部、児童心理治療施設通所部、児童発達支援、居宅訪問型児童発達支援、企業主導型保育事業）を利用するこどもの数で数える（認可外保育施設・一時預かり・プレ幼稚園・保育ルーム・誰でも通園制度は対象外。兄姉が私立幼稚園等を使っているときは在園証明書等を出す）。所得割額が57,700円未満の世帯は、こどもの年齢・利用施設の制限なしで数える。低所得のひとり親家庭等（CH1〜DH3）は第2子以降無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は無料。数え方は第2子と同じ（所得割額57,700円以上は就学前で指定施設を利用するこどもの中で数え、57,700円未満は年齢・利用施設の制限なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所保育料 基準額表（習志野市 保育認定こどもの利用者負担額、PDF）", "url": "https://www.city.narashino.lg.jp/material/files/group/136/ri.pdf" },
+    { "label": "保育所保育料｜習志野市ホームページ（2026年4月1日更新）", "url": "https://www.city.narashino.lg.jp/kosodate/hoikugakko/hoikusho/hoikusyohoikuryo.html" },
+    { "label": "令和8年度 認可保育施設入所・入園案内（PDF、20〜22ページに保育料と基準額表）", "url": "https://www.city.narashino.lg.jp/material/files/group/136/R8_nyusyoannai_ver2.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）はトップページしか読めていなかったので、トップ → 子育て・教育 → 保育・学校 → 保育所 → 保育所保育料 の順にページを開いた"
+  ],
+  "notes": "基準額表のPDF（ri.pdf）自体には年度の記載がない（PDFの作成日は2025年10月17日）が、令和8年度の入所案内（R8_nyusyoannai_ver2.pdf）22ページの「習志野市保育所保育料徴収基準額表」と金額・区分がすべて同じなので令和8年度の表とした。表は pdftotext -layout で読み、画像で列の並び（0歳児〜2歳児クラスの括弧外が標準時間、括弧内が短時間）を確かめた。cash・one_time・中学校給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

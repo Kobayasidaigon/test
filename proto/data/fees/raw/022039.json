@@ -1,0 +1,191 @@
+{
+  "code": "022039",
+  "pref": "青森県",
+  "name": "八戸市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月分〜8月分の保育料は令和7年度、令和8年9月分〜令和9年3月分は令和8年度の市民税額から算定。年齢は令和8年4月1日時点。月額表は年度を通じて同じ。令和8年4月から、保護者が扶養する第2子以降の0〜2歳児クラスの児童の保育料を無償化（手続き不要）。「令和7年青森県東方沖地震の被災者に対する保育料の減免について」の別ページがある（読んでいない）。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市民税額の合計から算定。市民税所得割の額は、寄附金税額控除・外国税額控除・配当控除・住宅借入金等特別税額控除を適用する前の額。父母の合計所得金額が96万円以下（ひとり親等は48万円以下、令和8年4〜8月の保育料）／116万円以下（ひとり親等は58万円以下、令和8年9月〜令和9年3月の保育料）で、同居祖父母等が家計の主宰者と判断されるときは、その市民税額を含めて算定。政令市ではないので6%。",
+  "table": {
+    "title": "令和8年度 保育料（利用者負担額） 保育 3歳未満（令和8年４月１日時点の年齢）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税均等割のみ",
+        "monthly": 17000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市民税所得割 48,600円未満",
+        "monthly": 19500,
+        "monthly_second": null
+      },
+      {
+        "label": "第5",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "48,600円以上 57,700円未満",
+        "monthly": 24000,
+        "monthly_second": null
+      },
+      {
+        "label": "第6",
+        "lower": 57700,
+        "upper": 65000,
+        "condition": "57,700円以上 65,000円未満",
+        "monthly": 24500,
+        "monthly_second": null
+      },
+      {
+        "label": "第7",
+        "lower": 65000,
+        "upper": 77101,
+        "condition": "65,000円以上 77,101円未満",
+        "monthly": 25000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "77,101円以上 97,000円未満",
+        "monthly": 25500,
+        "monthly_second": null
+      },
+      {
+        "label": "第9",
+        "lower": 97000,
+        "upper": 111000,
+        "condition": "97,000円以上 111,000円未満",
+        "monthly": 31000,
+        "monthly_second": null
+      },
+      {
+        "label": "第10",
+        "lower": 111000,
+        "upper": 125000,
+        "condition": "111,000円以上 125,000円未満",
+        "monthly": 35500,
+        "monthly_second": null
+      },
+      {
+        "label": "第11",
+        "lower": 125000,
+        "upper": 149000,
+        "condition": "125,000円以上 149,000円未満",
+        "monthly": 41000,
+        "monthly_second": null
+      },
+      {
+        "label": "第12",
+        "lower": 149000,
+        "upper": 169000,
+        "condition": "149,000円以上 169,000円未満",
+        "monthly": 41500,
+        "monthly_second": null
+      },
+      {
+        "label": "第13",
+        "lower": 169000,
+        "upper": 195000,
+        "condition": "169,000円以上 195,000円未満",
+        "monthly": 44000,
+        "monthly_second": null
+      },
+      {
+        "label": "第14",
+        "lower": 195000,
+        "upper": 219000,
+        "condition": "195,000円以上 219,000円未満",
+        "monthly": 44500,
+        "monthly_second": null
+      },
+      {
+        "label": "第15",
+        "lower": 219000,
+        "upper": 258000,
+        "condition": "219,000円以上 258,000円未満",
+        "monthly": 45000,
+        "monthly_second": null
+      },
+      {
+        "label": "第16",
+        "lower": 258000,
+        "upper": 301000,
+        "condition": "258,000円以上 301,000円未満",
+        "monthly": 47000,
+        "monthly_second": null
+      },
+      {
+        "label": "第17",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "301,000円以上 397,000円未満",
+        "monthly": 49000,
+        "monthly_second": null
+      },
+      {
+        "label": "第18",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 53500,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「保育 標準時間」「第１子」の「ひとり親世帯等以外」の列（基準額）。表は第1子だけで第2子の列はない（第2子以降は無償）。保育短時間（第1子・ひとり親世帯等以外）: 第1 0／第2 0／第3 16,800／第4 19,300／第5 23,600／第6 24,100／第7 24,600／第8 25,100／第9 30,500／第10 35,000／第11 40,400／第12 40,900／第13 43,300／第14 43,800／第15 44,300／第16 46,300／第17 48,200／第18 52,600。ひとり親世帯等（ひとり親世帯、在宅障がい児（者）のいる世帯等）の第3〜第7階層: 第3 8,000（短時間 7,900）、第4 9,000（短時間 9,000）、第5 9,000（短時間 9,000）、第6 9,000（短時間 9,000）、第7 9,000（短時間 9,000）。第8〜第18階層のひとり親世帯等は、ひとり親世帯等以外と同じ。第4階層の下限は第3階層（均等割のみ）と分けるため lower=1。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月17,000〜53,500円）。0円は生活保護世帯等と市民税非課税世帯。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和8年4月から、保護者が扶養する子どもにおいて第2子以降は無償（保護者の所得状況やきょうだいの年齢を問わない、手続き不要）。対象は認可保育所・認定こども園・小規模保育事業に入所している0〜2歳児クラス（令和5年4月2日以降に生まれた児童）の、保護者が現に扶養している第2子以降の児童。扶養している児童とは、父母及び祖父母等、世帯の構成員が所得税及び社会保険等で扶養の対象としている18歳未満の児童（18歳に達した日以後の最初の3月31日まで。主として世帯が扶養している大学生等は22歳に達した日以後の最初の3月31日まで。保護者が扶養している甥・姪も対象）。それまでは第3子以降の軽減を実施していた。市内の認可外保育施設に入所する第2子以降の0〜2歳児クラスの児童には月額上限42,000円の助成（申請・償還払い）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降無償に含まれる（数え方は第2子と同じ、扶養する18歳未満〔大学生等は22歳まで〕の子から数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "【令和8年度から】第2子以降の児童の保育料を無償化します／八戸市（更新日：2026年10月01日）",
+      "url": "https://www.city.hachinohe.aomori.jp/soshikikarasagasu/kodomomiraika/kosodate/1/hoikuriyou/25248.html"
+    },
+    {
+      "label": "R8保育料基準額表 (PDFファイル: 266.0KB)＝令和8年度 保育料（利用者負担額） 保育 3歳未満",
+      "url": "https://www.city.hachinohe.aomori.jp/material/files/group/34/R8-2hoikuryou.pdf"
+    },
+    {
+      "label": "令和8年度 認定こども園・幼稚園・保育所 利用案内／八戸市",
+      "url": "https://www.city.hachinohe.aomori.jp/soshikikarasagasu/kodomomiraika/kosodate/1/hoikuriyou/24538.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べ（crawl）の docs/08（第2子以降無償化のページ）と docs/09（令和8年度の保育料表PDF、文字の取れるPDF・1ページ、2026年7月作成）で読み、表は画像でも列（標準時間・短時間 × ひとり親世帯等以外・ひとり親世帯等）を確かめた。区切りは市独自の18階層。第2子以降無償化の財源の一部に「青森県学校給食費無償化等子育て支援市町村交付金」を使っているとページにある。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

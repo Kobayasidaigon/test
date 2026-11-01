@@ -1,0 +1,153 @@
+{
+  "code": "382019",
+  "pref": "愛媛県",
+  "name": "松山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "表は市の「利用者負担額（保育料）」のページ（更新日：2026年10月26日）の「3号認定こども利用者負担額（保育料）」PDF（2026年10月15日作成）。表そのものに年度の記載はなく「当該年度４月１日時点で３歳未満の子どもの保育料」とある（今掲載されている表を令和8年度の表とした）。保育料は子どもの年齢と世帯の市民税額をもとに毎年4月に決め、9月に切り替える: 令和8年度は4〜8月分が前年度（令和7年度）の市民税額（令和6年1〜12月の収入）、9〜3月分が当年度（令和8年度）の市民税額（令和7年1〜12月の収入）。年齢は当該年度4月1日時点。月単位で日割りはしない（月の初日に在籍していれば1か月分）。",
+  "tax_basis": "6%",
+  "tax_note": "住宅借入金等特別税額控除、配当割額控除、株式等譲渡所得割額控除、配当控除、外国税額控除、寄附金税額控除（ふるさと納税等）を差し引く前の市民税所得割額で決める（調整控除は書かれていない）。生計が父母の収入のみで成り立っていない場合は同居の親族のうち最も収入を得ている人を「家計の主宰者」として父母の税額と合算。市民税額が未確定（未申告など）の間は最高額で仮決定。松山市は中核市（政令市ではない）。",
+  "table": {
+    "title": "■３号認定子どもの利用者負担額（保育料）／月額",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税均等割世帯",
+        "monthly": 15000,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 56000,
+        "condition": "市民税所得割 56,000円未満",
+        "monthly": 17500,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 56000,
+        "upper": 63000,
+        "condition": "市民税所得割 63,000円未満",
+        "monthly": 21000,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 63000,
+        "upper": 74000,
+        "condition": "市民税所得割 74,000円未満",
+        "monthly": 25000,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 74000,
+        "upper": 111000,
+        "condition": "市民税所得割 111,000円未満",
+        "monthly": 29000,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 111000,
+        "upper": 119000,
+        "condition": "市民税所得割 119,000円未満",
+        "monthly": 34000,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 119000,
+        "upper": 164000,
+        "condition": "市民税所得割 164,000円未満",
+        "monthly": 38500,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 164000,
+        "upper": 201000,
+        "condition": "市民税所得割 201,000円未満",
+        "monthly": 44000,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 201000,
+        "upper": 210000,
+        "condition": "市民税所得割 210,000円未満",
+        "monthly": 52000,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 210000,
+        "upper": 342000,
+        "condition": "市民税所得割 342,000円未満",
+        "monthly": 54000,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 342000,
+        "upper": null,
+        "condition": "市民税所得割 342,000円以上",
+        "monthly": 57000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は保育標準時間の場合の額。保育短時間の場合: C1 14,700／C2 17,200／C3 20,600／C4 24,600／C5 28,500／C6 33,400／C7 37,800／C8 43,300／C9 51,100／C10 53,100／C11 56,000（A・Bは0円）。第2子の別の列はない（軽減は下の別表で、第2子は半額）。C2 の下限は表に書かれていないが、市民税均等割世帯（C1、所得割0円）と分けるため lower=1 とした。ひとり親世帯・在宅障がい児（者）のいる世帯等: C1〜C4 階層と、C5 階層のうち市民税所得割77,101円未満の世帯は、第1子5,500円・第2子以降無料。通園送迎費・行事費・延長保育料などは別途。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月0〜57,000円）。0円は生活保護世帯（A）と市民税非課税世帯（B）。ひとり親世帯等の C1〜C4（C5 は所得割77,101円未満まで）は第1子5,500円。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "多子世帯に対する減免で第2子は半額。C3（市民税所得割57,700円以上）〜C11 階層は、小学校就学前で特定教育・保育施設等および保育料軽減措置に該当する施設を同時に利用する子どもを、最年長から順に数える（兄・姉が軽減措置の対象施設に通う場合は、下の子の入園日以降に発行された在園証明書を出すと該当する場合がある）。C1〜C2 階層と C3 階層のうち所得割57,700円未満の世帯は、すべての子どもを最年長から数える。ひとり親世帯等（C1〜C4、C5 の所得割77,101円未満）は第2子以降無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は無料（数え方は第2子と同じ）。さらに C3（所得割57,700円以上）〜C11 階層では、18歳未満の児童が3人以上の世帯は、同居の有無を問わず3人目以降の3歳未満を半額にする（上の子が保育施設に通っていなくてもよい）。小学校就学前の範囲で第2子にも当たる場合は両方の減免が適用されて1/4額になる。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "3号認定こども利用者負担額（保育料）（PDF、2026年10月15日作成）松山市",
+      "url": "https://www.city.matsuyama.ehime.jp/kurashi/kosodate/boshi/hoikuichiran/sonota/hoikuryou.files/20261026.pdf"
+    },
+    {
+      "label": "利用者負担額（保育料） 松山市公式ホームページ（更新日：2026年10月26日）",
+      "url": "https://www.city.matsuyama.ehime.jp/kurashi/kosodate/boshi/hoikuichiran/sonota/hoikuryou.html"
+    },
+    {
+      "label": "令和８年度の利用者負担額のイメージ（PDF）",
+      "url": "https://www.city.matsuyama.ehime.jp/kurashi/kosodate/boshi/hoikuichiran/sonota/hoikuryou.files/r8hoikuryou.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "表に年度が書かれていないため、前の表（下調べで見つかった hoikuryou.files/hoikuryou2.pdf）を取ろうとしたが 404 で比べられなかった。入園申込みの書類のページ（R2nen4gatsu-shinki/hoikusyorui.html）にも料金表はなかった。"
+  ],
+  "notes": "中核市。下調べの index.json の「3号認定こども利用者負担額（保育料）」PDF と保育料のページで分かった。PDF を pdftotext と画像で読み、列の並び（保育標準時間・保育短時間）と2ページ目の軽減措置の表を確かめた。表に年度の記載がない点だけ注意（2026年10月に作り直したPDFで、ページは令和8年度と令和9年度の算定時期を説明している）。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

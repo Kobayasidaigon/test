@@ -1,0 +1,195 @@
+{
+ "code": "341002",
+ "pref": "広島県",
+ "name": "広島市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和8年4月分〜8月分は令和7年度分市町村民税額（令和6年中収入）、9月分〜令和9年3月分は令和8年度分市町村民税額（令和7年中収入）で決定。毎年9月に新しい市町村民税額で決め直す。表は「令和8年度保育料・副食費の額」で年度を通じて同じ（市のページに載っているのは「令和8年9月〜」版のお知らせだけ）。令和8年度中に3歳（2号認定）になっても年度末までは3歳未満児の保育料。",
+ "tax_basis": "6%",
+ "tax_note": "原則として同一生計の父母の市町村民税額の合算（父母が非課税で収入合算110万円未満かつ同居の祖父母等が課税なら祖父母等の税額。住民票が別でも同じ）。住宅借入金等特別控除や寄附金税額控除等の税額控除をする前の税額（注1）。政令市の税率変更（6%→8%）後も、所得割額は変更前（6%）の税率で算定（注5）。独自の注3: 16歳未満の扶養親族が3人以上いる世帯は、2人を超える1人につき22,800円を世帯の所得割合算額から控除した額で階層を認定。税額が判明しない場合は1年度前の税額、それもなければ収入額と世帯構成で福祉事務所長が認定。",
+ "table": {
+  "title": "令和８年度保育料・副食費の額について【保育料】（令和８年度保育料（公私立）・副食費（公私立共通部分）についてのお知らせ（令和８年９月～））",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法による被保護世帯等",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C1",
+    "lower": 0,
+    "upper": 39600,
+    "condition": "均等割額のみ又は所得割合算額が 39,600 円未満",
+    "monthly": 7200,
+    "monthly_second": null
+   },
+   {
+    "label": "C2",
+    "lower": 39600,
+    "upper": 44100,
+    "condition": "所得割合算額 39,600 円以上 44,100 円未満",
+    "monthly": 8000,
+    "monthly_second": null
+   },
+   {
+    "label": "C3",
+    "lower": 44100,
+    "upper": 48600,
+    "condition": "44,100 円以上 48,600 円未満",
+    "monthly": 9200,
+    "monthly_second": null
+   },
+   {
+    "label": "C4",
+    "lower": 48600,
+    "upper": 54000,
+    "condition": "48,600 円以上 54,000 円未満",
+    "monthly": 10700,
+    "monthly_second": null
+   },
+   {
+    "label": "C5",
+    "lower": 54000,
+    "upper": 59000,
+    "condition": "54,000 円以上 59,000 円未満",
+    "monthly": 12200,
+    "monthly_second": null
+   },
+   {
+    "label": "C6",
+    "lower": 59000,
+    "upper": 64000,
+    "condition": "59,000 円以上 64,000 円未満",
+    "monthly": 14250,
+    "monthly_second": null
+   },
+   {
+    "label": "C7",
+    "lower": 64000,
+    "upper": 79000,
+    "condition": "64,000 円以上 79,000 円未満",
+    "monthly": 18750,
+    "monthly_second": null
+   },
+   {
+    "label": "C8",
+    "lower": 79000,
+    "upper": 97000,
+    "condition": "79,000 円以上 97,000 円未満",
+    "monthly": 23850,
+    "monthly_second": null
+   },
+   {
+    "label": "C9",
+    "lower": 97000,
+    "upper": 114000,
+    "condition": "97,000 円以上 114,000 円未満",
+    "monthly": 29750,
+    "monthly_second": null
+   },
+   {
+    "label": "C10",
+    "lower": 114000,
+    "upper": 133000,
+    "condition": "114,000 円以上 133,000 円未満",
+    "monthly": 35800,
+    "monthly_second": null
+   },
+   {
+    "label": "C11",
+    "lower": 133000,
+    "upper": 151000,
+    "condition": "133,000 円以上 151,000 円未満",
+    "monthly": 41600,
+    "monthly_second": null
+   },
+   {
+    "label": "C12",
+    "lower": 151000,
+    "upper": 169000,
+    "condition": "151,000 円以上 169,000 円未満",
+    "monthly": 44500,
+    "monthly_second": null
+   },
+   {
+    "label": "C13",
+    "lower": 169000,
+    "upper": 205000,
+    "condition": "169,000 円以上 205,000 円未満",
+    "monthly": 49800,
+    "monthly_second": null
+   },
+   {
+    "label": "C14",
+    "lower": 205000,
+    "upper": 256000,
+    "condition": "205,000 円以上 256,000 円未満",
+    "monthly": 52450,
+    "monthly_second": null
+   },
+   {
+    "label": "C15",
+    "lower": 256000,
+    "upper": 301000,
+    "condition": "256,000 円以上 301,000 円未満",
+    "monthly": 55450,
+    "monthly_second": null
+   },
+   {
+    "label": "C16",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "301,000 円以上 397,000 円未満",
+    "monthly": 57250,
+    "monthly_second": null
+   },
+   {
+    "label": "C17",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000 円以上",
+    "monthly": 62400,
+    "monthly_second": null
+   }
+  ],
+  "notes": "rows は「3歳未満児（3号認定及び2号認定の一部）・標準時間」の列。短時間: C1 7,050／C2 7,850／C3 9,000／C4 10,500／C5 11,950／C6 14,000／C7 18,400／C8 23,400／C9 29,200／C10 35,150／C11 40,850／C12 43,700／C13 48,950／C14 51,550／C15 54,500／C16 56,250／C17 61,300。表に第2子の列はない（第2子は半額）。ひとり親世帯等（ひとり親家庭、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の所持者、特別児童扶養手当の支給対象児、障害基礎年金の受給者がいる世帯）で C1〜C7（所得割合算額77,101円未満）の第1子は、標準時間 C1 1,850／C2 2,090／C3 2,450／C4 3,210／C5 3,660／C6 4,270／C7 5,620（短時間 1,810／2,050／2,400／3,150／3,590／4,190／5,520）、第2子以降は無料。延長保育料は標準時間の保育料の12%（上限2,750円）。C1 は「均等割額のみ又は所得割合算額が39,600円未満」なので lower=0。区切りは「以上〜未満」でそのまま。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月7,200〜62,400円）。0円は生活保護世帯等（A）と市町村民税非課税世帯（B）。",
+ "second_child": "half",
+ "second_count": "household",
+ "second_note": "多子軽減（全世帯対象、所得制限なし）: 保育園等に入園している子のほかに、生計を同一にするきょうだい等（養子等も含む）を監護していれば、年齢にかかわらず第1子から数え、第2子なら保育料半額（副食費は半額にならない）。就学・療養等で別居していても、余暇にともに過ごし生活費などの送金がある場合は「生計を同一」とみなす（毎年度、申出書と確認書類が必要）。児童養護施設等に入所している子は対象にならない場合がある。所得割合算額77,101円未満のひとり親世帯等は第2子以降無料。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "生計を同一にするきょうだい等を年齢にかかわらず数えて第3子以降なら保育料・副食費とも無料（全世帯対象）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料・副食費｜広島市公式ウェブサイト",
+   "url": "https://www.city.hiroshima.lg.jp/living/kosodate/1021251/1025850/1003481.html"
+  },
+  {
+   "label": "令和8年度保育料（公私立）・副食費（公私立共通部分）についてのお知らせ（令和8年9月～）（PDF）",
+   "url": "https://www.city.hiroshima.lg.jp/_res/projects/default_project/_page_/001/003/481/20260824_1.pdf"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "政令市。表は文字の取れるPDF（2ページ目）を pdftotext -layout で読み、画像で列（3歳未満の標準時間・短時間、3歳以上は0）を確かめた。所得割の計算で、16歳未満の扶養親族が3人以上なら1人につき22,800円を差し引く独自の扱いがある（tax_note）。cash・one_time・給食は探していない。",
+ "read_at": "2026-11-01"
+}

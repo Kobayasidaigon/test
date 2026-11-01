@@ -1,0 +1,171 @@
+{
+  "code": "352012",
+  "pref": "山口県",
+  "name": "下関市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月から8月までの保育料は令和7年度市民税所得割課税額（令和6年の収入、所得）、9月から3月までは令和8年度市民税所得割課税額（令和7年の収入、所得）で決定。表の題名は「※令和8年度9月以降」（2026年8月31日作成）。令和8年4〜8月分の表は今の市のページには載っておらず、額が違うかは確かめられなかった。満3歳になった年度中は3号認定の保育料が続き、翌年度4月から無償。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市民税所得割課税額の合計で決定。寄附金税額控除・住宅借入金等特別税額控除・配当控除等の税額控除前の金額（適用を受けている場合はこれらを加算した額）。父母の所得の合計が58万円未満の場合は同居の直系親族（祖父母・曽祖父母）のうち所得が最も高い人の所得割を合算（育児休業給付金などの非課税所得を含めると基準額を上回る場合は父母のみ）。政令市ではない。",
+  "table": {
+    "title": "■ 下関市の保育料 ※令和８年度９月以降（（２）その他の世帯）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯、里親等",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "C2",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税所得割非課税（均等割のみ課税）",
+        "monthly": 13600,
+        "monthly_second": 0
+      },
+      {
+        "label": "D2",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市民税所得割課税額 48,600円 未満",
+        "monthly": 15600,
+        "monthly_second": 0
+      },
+      {
+        "label": "D4（その1）",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "57,700円 未満",
+        "monthly": 20200,
+        "monthly_second": 0
+      },
+      {
+        "label": "D4（その2）",
+        "lower": 57700,
+        "upper": 58800,
+        "condition": "58,800円 未満",
+        "monthly": 20200,
+        "monthly_second": 0
+      },
+      {
+        "label": "D6",
+        "lower": 58800,
+        "upper": 77101,
+        "condition": "77,101円 未満",
+        "monthly": 24900,
+        "monthly_second": 0
+      },
+      {
+        "label": "D7",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "97,000円 未満",
+        "monthly": 28000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D8",
+        "lower": 97000,
+        "upper": 108600,
+        "condition": "108,600円 未満",
+        "monthly": 32600,
+        "monthly_second": 0
+      },
+      {
+        "label": "D9",
+        "lower": 108600,
+        "upper": 169000,
+        "condition": "169,000円 未満",
+        "monthly": 40000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D10",
+        "lower": 169000,
+        "upper": 211201,
+        "condition": "211,201円 未満",
+        "monthly": 43600,
+        "monthly_second": 0
+      },
+      {
+        "label": "D11",
+        "lower": 211201,
+        "upper": 230100,
+        "condition": "230,100円 未満",
+        "monthly": 45400,
+        "monthly_second": 0
+      },
+      {
+        "label": "D12",
+        "lower": 230100,
+        "upper": 301000,
+        "condition": "301,000円 未満",
+        "monthly": 55000,
+        "monthly_second": 0
+      },
+      {
+        "label": "D13",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "397,000円 未満",
+        "monthly": 59400,
+        "monthly_second": 0
+      },
+      {
+        "label": "D14",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円 以上",
+        "monthly": 78000,
+        "monthly_second": 0
+      }
+    ],
+    "notes": "3号認定子ども（R5.4.2生〜、3歳未満児・保育園タイプ）の表。rows は「（２）その他の世帯」の額（A・B は「（１）」の表から）。monthly_second は表の「第2子以降」の列（すべて0円）。保育短時間・第1子: C2 13,400／D2 15,400／D4 19,900（2段とも）／D6 24,500／D7 27,600／D8 32,100／D9 39,400／D10 42,900／D11 44,700／D12 54,100／D13 58,500／D14 76,800。（１）要保護者等世帯（ひとり親世帯〔児童扶養手当の受給状況で判断〕、障害者手帳の交付を受けた方〔在宅〕がいる世帯等で、所得割77,101円未満）は C1（均等割のみ）・D1（48,600円未満）・D3（58,800円未満）・D5（77,101円未満）とも標準時間・短時間 6,000円、第2子以降0円。保育料には給食（材料）費が含まれる。市は国の基準額より低く設定していると説明。条件は「○円未満」だけが書かれており、下限は前の段の上限とした（D2 は C2 と分けるため lower=1）。D4 は2段あり月額は同じ。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜78,000円）。0円は生活保護世帯等と市民税非課税世帯・里親等。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和6年4月から、山口県と下関市の共同事業により、保育所等の同時利用や子どもの年齢に関わらず、生計を同一にしている子どものうち最年長者を第1子、その下の子を第2子と数え、第2子以降の保育料は無償（所得制限の記載なし）。認定申請書の世帯員欄の兄・姉の情報で判断し、申請は不要（確認の書類を求めることがある）。幼稚園・認定こども園などは施設ごとに対象・月額上限がある（施設別無償化対象チェック表）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降が無償なので第3子以降も0円（同一生計のきょうだいの全員を数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度保育料表（PDF、■下関市の保育料 ※令和8年度9月以降）下関市",
+      "url": "https://www.city.shimonoseki.lg.jp/uploaded/attachment/99994.pdf"
+    },
+    {
+      "label": "令和8年度下関市の保育料等について（PDF、令和8年9月）下関市",
+      "url": "https://www.city.shimonoseki.lg.jp/uploaded/attachment/99992.pdf"
+    },
+    {
+      "label": "下関市の保育料等について 下関市（2026年3月30日更新）",
+      "url": "https://www.city.shimonoseki.lg.jp/soshiki/45/4614.html"
+    },
+    {
+      "label": "第2子以降保育料無償化について 下関市（2024年3月28日更新）",
+      "url": "https://www.city.shimonoseki.lg.jp/soshiki/45/107925.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの docs/01（保育料等のページ）から令和8年度保育料表 PDF を取り、pdftotext と画像で列（第1子 標準時間・短時間、第2子以降、きょうだいの数え方）を確かめた。3〜5歳児クラスの給食費（主食費・副食費）は令和8年4月から市独自で無償（月額上限あり、市内居住者）。",
+  "read_at": "2026-11-01"
+}

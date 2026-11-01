@@ -1,0 +1,227 @@
+{
+ "code": "112453",
+ "pref": "埼玉県",
+ "name": "ふじみ野市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "保護者等の市民税の参照年度は9月に切り替わる（8月までは前年度、9月以降は当年度の市民税額）。年齢は4月1日現在。月額表は年度を通じて同じ。未申告の場合は最高階層（D19）とすることがある。世帯状況の変更は提出月の翌月分から。",
+ "tax_basis": "6%",
+ "tax_note": "原則として父母とみなされる方の市民税所得割額の合算（父母とみなされる方が非課税で同居の者がいる場合は家計の最多課税者の所得割額）。住宅ローン控除、寄付金控除、配当割額・株式等譲渡所得割額控除、配当控除、外国税額控除は適用しない（控除前の金額）。政令指定都市で課税されている方も旧税率（6%）で算出した所得割額を使う。",
+ "table": {
+  "title": "利用者負担額（月額）基準表（令和8年度ふじみ野市保育所利用のご案内 p.9）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護法による被保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "市民税非課税",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C",
+    "lower": null,
+    "upper": null,
+    "condition": "均等割のみ",
+    "monthly": 5000,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 10000,
+    "condition": "10,000円未満",
+    "monthly": 8900,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 10000,
+    "upper": 30000,
+    "condition": "30,000円未満",
+    "monthly": 10300,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 30000,
+    "upper": 48600,
+    "condition": "48,600円未満",
+    "monthly": 13100,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 48600,
+    "upper": 60000,
+    "condition": "60,000円未満",
+    "monthly": 15900,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 60000,
+    "upper": 97000,
+    "condition": "97,000円未満",
+    "monthly": 18700,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 97000,
+    "upper": 120000,
+    "condition": "120,000円未満",
+    "monthly": 21500,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 120000,
+    "upper": 169000,
+    "condition": "169,000円未満",
+    "monthly": 24400,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 169000,
+    "upper": 200000,
+    "condition": "200,000円未満",
+    "monthly": 30000,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 200000,
+    "upper": 220000,
+    "condition": "220,000円未満",
+    "monthly": 35600,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 220000,
+    "upper": 240000,
+    "condition": "240,000円未満",
+    "monthly": 41300,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 240000,
+    "upper": 260000,
+    "condition": "260,000円未満",
+    "monthly": 42700,
+    "monthly_second": null
+   },
+   {
+    "label": "D12",
+    "lower": 260000,
+    "upper": 280000,
+    "condition": "280,000円未満",
+    "monthly": 44100,
+    "monthly_second": null
+   },
+   {
+    "label": "D13",
+    "lower": 280000,
+    "upper": 301000,
+    "condition": "301,000円未満",
+    "monthly": 45500,
+    "monthly_second": null
+   },
+   {
+    "label": "D14",
+    "lower": 301000,
+    "upper": 310000,
+    "condition": "310,000円未満",
+    "monthly": 46900,
+    "monthly_second": null
+   },
+   {
+    "label": "D15",
+    "lower": 310000,
+    "upper": 330000,
+    "condition": "330,000円未満",
+    "monthly": 48300,
+    "monthly_second": null
+   },
+   {
+    "label": "D16",
+    "lower": 330000,
+    "upper": 350000,
+    "condition": "350,000円未満",
+    "monthly": 49700,
+    "monthly_second": null
+   },
+   {
+    "label": "D17",
+    "lower": 350000,
+    "upper": 370000,
+    "condition": "370,000円未満",
+    "monthly": 51100,
+    "monthly_second": null
+   },
+   {
+    "label": "D18",
+    "lower": 370000,
+    "upper": 397000,
+    "condition": "397,000円未満",
+    "monthly": 52600,
+    "monthly_second": null
+   },
+   {
+    "label": "D19",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上",
+    "monthly": 55600,
+    "monthly_second": null
+   }
+  ],
+  "notes": "表の区分の欄は各階層の上限（「〜円未満」）だけを書く形なので、lower は1つ上の行の上限とした。C は均等割のみ（所得割0円）なので D1 の lower は1。短時間認定の月額: C 4,800／D1 8,700／D2 10,100／D3 12,700／D4 15,500／D5 18,300／D6 20,900／D7 23,800／D8 29,100／D9 34,700／D10 40,400／D11 41,800／D12 43,200／D13 44,600／D14 46,000／D15 47,400／D16 48,800／D17 50,200／D18 51,700／D19 54,700（A・Bは0）。3歳以上児は無料。延長保育料・諸経費は保育所ごとに別。市の「認可保育施設の利用者負担額（保育料）」のページ（2026年10月29日更新）からリンクの「利用者負担額基準表」PDF（2019年作成）と同じ額。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児の第1子は有料（標準時間で月5,000〜55,600円）。0円は生活保護世帯・市民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "2人以上の児童が保育所等（認可保育所・幼稚園・認定こども園・小規模保育・事業所内保育・家庭的保育・特別支援学校幼稚部・児童心理治療施設通所部・企業主導型保育、児童発達支援等の利用を含む）に在籍している場合、同一世帯で保育所等に在籍している就学前の児童だけを数えて2人目は半額・3人目以降は無料。例外: 世帯の市民税所得割額の合計が57,700円未満は生計が同一の兄弟を年齢制限なし（別居でも可）で数えて第2子半額・第3子以降無料。ひとり親世帯・在宅障がい者世帯で77,101円未満は第1子半額・第2子以降無料（年齢制限なし）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "4月1日現在3歳未満（2歳児クラス以下）の第3子以降の児童は、生計が同一の子どもを年齢制限なし（別居でも可）で数えて無料（多子世帯保育料軽減申請書の申請が毎年度必要）。所得制限の記載はない。申請しない場合も、保育所等に同時在籍する就学前の子を数えて3人目以降は無料。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和8年度ふじみ野市保育所利用のご案内（PDF）p.9〜10「利用者負担額（保育料）等のご案内」",
+   "url": "https://www.city.fujimino.saitama.jp/material/files/group/26/R8_annai_.pdf"
+  },
+  {
+   "label": "認可保育施設の利用者負担額（保育料）／ふじみ野市（2026年10月29日更新）",
+   "url": "https://www.city.fujimino.saitama.jp/kurashinojoho/kosodate/hoikujo_hoikuservice/3930.html"
+  },
+  {
+   "label": "利用者負担額基準表（PDF）",
+   "url": "https://www.city.fujimino.saitama.jp/material/files/group/26/hoikuryou.pdf"
+  },
+  {
+   "label": "令和8年度保育所(園)入所申請書類／ふじみ野市",
+   "url": "https://www.city.fujimino.saitama.jp/soshikiichiran/hoikuka/hoikugakari/nyusho/15667.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表は案内の文字（pdftotext）と、利用者負担額基準表PDFの画像で列の順（標準時間認定・短時間認定）を確かめた。案内の軽減制度は「令和7年9月現在の軽減制度」と注記あり。令和9年度の案内（1annaiR9.pdf）は読んでいない。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

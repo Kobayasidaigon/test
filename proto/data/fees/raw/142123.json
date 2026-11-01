@@ -1,0 +1,229 @@
+{
+  "code": "142123",
+  "pref": "神奈川県",
+  "name": "厚木市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "前年度と当年度の保護者の市町村民税額（特別区民税を含む・保護者2人の合計額）に応じて、4月から8月までと9月から3月までの2回に分けて算定（令和8年度は4〜8月分が令和7年度、9〜3月分が令和8年度の市町村民税額）。4月1日の満年齢で算定し、年度の途中で2歳（3号認定）から3歳（2号認定）に切り替わっても当該年度中の保育料は変わらない。月額表は年度を通じて同じ。修正申告等で税額が変わったときは届出の翌月から変更（さかのぼらない）。申告がないときは最高額で仮算定し、税額が確認でき次第、年度内はさかのぼって決定。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（2人）の市町村民税所得割額の合計。寄附金税額控除、外国税額控除、配当割額または株式等譲渡所得割額の控除、配当控除、住宅借入金等特別税額控除、寄附金税額控除における特例控除及び申告特例控除があるときは、その金額を加算した額（税額控除前）。保護者が非課税の場合、保護者以外の扶養義務者（同居祖父母等）の税額で算定する場合がある。政令市ではないので6%。",
+  "table": {
+    "title": "月額保育料(利用者負担額)表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯、中国残留邦人等の円滑な帰国の促進並びに永住帰国した中国残留邦人等及び特定配偶者の自立の支援に関する法律による支援給付受給世帯、児童福祉法第6条の3第8項に規定する小規模住居型児童養育事業を行う者及び同法第6条の4に規定する里親である教育・保育給付認定保護者",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税均等割のみ（ひとり親世帯等以外の世帯）",
+        "monthly": 6500,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 24300,
+        "condition": "市町村民税所得割額 24,299円以下（ひとり親世帯等以外の世帯）",
+        "monthly": 8200,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 24300,
+        "upper": 48600,
+        "condition": "24,300円以上 48,599円以下（ひとり親世帯等以外の世帯）",
+        "monthly": 8800,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 48600,
+        "upper": 60700,
+        "condition": "48,600円以上 60,699円以下（ひとり親世帯等以外の世帯）",
+        "monthly": 11000,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 60700,
+        "upper": 72800,
+        "condition": "60,700円以上 72,799円以下（ひとり親世帯等以外の世帯）",
+        "monthly": 13100,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 72800,
+        "upper": 84900,
+        "condition": "72,800円以上 84,899円以下（77,100円以下であるひとり親世帯等以外の世帯）",
+        "monthly": 15400,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 84900,
+        "upper": 97000,
+        "condition": "84,900円以上96,999円以下",
+        "monthly": 18600,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "97,000円以上114,999円以下",
+        "monthly": 23100,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 115000,
+        "upper": 133000,
+        "condition": "115,000円以上132,999円以下",
+        "monthly": 29800,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 133000,
+        "upper": 151000,
+        "condition": "133,000円以上150,999円以下",
+        "monthly": 35400,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 151000,
+        "upper": 169000,
+        "condition": "151,000円以上168,999円以下",
+        "monthly": 40200,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 169000,
+        "upper": 202000,
+        "condition": "169,000円以上201,999円以下",
+        "monthly": 44400,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 202000,
+        "upper": 235000,
+        "condition": "202,000円以上234,999円以下",
+        "monthly": 47300,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 235000,
+        "upper": 268000,
+        "condition": "235,000円以上267,999円以下",
+        "monthly": 49000,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 268000,
+        "upper": 301000,
+        "condition": "268,000円以上300,999円以下",
+        "monthly": 50000,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 301000,
+        "upper": 333000,
+        "condition": "301,000円以上332,999円以下",
+        "monthly": 55400,
+        "monthly_second": null
+      },
+      {
+        "label": "C17",
+        "lower": 333000,
+        "upper": 365000,
+        "condition": "333,000円以上364,999円以下",
+        "monthly": 59800,
+        "monthly_second": null
+      },
+      {
+        "label": "C18",
+        "lower": 365000,
+        "upper": 397000,
+        "condition": "365,000円以上396,999円以下",
+        "monthly": 63300,
+        "monthly_second": null
+      },
+      {
+        "label": "C19",
+        "lower": 397000,
+        "upper": 504000,
+        "condition": "397,000円以上503,999円以下",
+        "monthly": 66700,
+        "monthly_second": null
+      },
+      {
+        "label": "C20",
+        "lower": 504000,
+        "upper": null,
+        "condition": "504,000円以上",
+        "monthly": 68400,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「3歳未満児クラス」の「保育標準時間」の列で、C1〜C6 は「ひとり親世帯等以外の世帯」の額。C1〜C6 の「ひとり親世帯等」（ひとり親世帯、在宅障がい児(者)のいる世帯等、要保護者の属する世帯）は0円（C6 は所得割77,100円以下であるひとり親世帯等が0円）。保育短時間: C1 6,300／C2 8,000／C3 8,600／C4 10,800／C5 12,800／C6 15,100／C7 18,200／C8 22,700／C9 29,200／C10 34,700／C11 39,500／C12 43,600／C13 46,400／C14 48,100／C15 49,100／C16 54,400／C17 58,700／C18 62,200／C19 65,500／C20 67,200（A・B・ひとり親世帯等の C1〜C6 は0円）。第2子の別の列はない（2人目は半額、3人目以降は無料）。3歳以上児クラスは0円（食費を除く）。C2 の下限は C1（均等割のみ）と分けるため lower=1。表は「以下」の書き方なので upper は右端＋1。表に年度の記載はないが、保育料のページの PDF（2024年6月作成）と保育のしおり詳細版（令和8年10月発行）p.10 の表は同じ額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月6,500〜68,400円）。0円は生活保護世帯・市町村民税非課税世帯と、所得割の低い（C1〜C6、C6は所得割77,100円以下）ひとり親世帯等。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "幼稚園、認定こども園、保育所、地域型保育事業、企業主導型保育事業（と特別支援学校幼稚部・児童発達支援など、在籍証明書を出すもの）を利用している小学校就学前のきょうだいを、年齢が上のこどもから順に数え、2人目は半額。小学1年生以上は数えない。認可外保育施設（企業主導型を除く）は対象外。例外: 年収360万円未満相当の世帯は、保護者と同一生計のこどもであれば年齢にかかわらず数え、第2子半額・第3子以降無料（ひとり親世帯等は第1子から無料）。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "3人目以降は無料。数え方は第2子と同じ（就学前で幼稚園・保育所等を利用するきょうだいを上から数える。年収360万円未満相当は同一生計の子を年齢にかかわらず数える）。3〜5歳児クラスの副食費も第3子以降は免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育料について／厚木市（健康こどもみらい部 保育課、更新日：2023年07月01日）",
+      "url": "https://www.city.atsugi.kanagawa.jp/soshiki/hoikuka/hoikusyonitsuite/20233.html"
+    },
+    {
+      "label": "月額保育料（利用者負担額）表 (PDFファイル: 80.4KB)",
+      "url": "https://www.city.atsugi.kanagawa.jp/material/files/group/26/hoikuryou_setumei.pdf"
+    },
+    {
+      "label": "保育のしおり詳細版（令和8年10月発行）p.9 保育料・p.10 月額保育料（利用者負担額）表・p.11 きょうだいで利用する場合の保育料の負担軽減",
+      "url": "https://www.city.atsugi.kanagawa.jp/material/files/group/26/2027hoikunoshiorisyousaibann.pdf"
+    },
+    {
+      "label": "保育のしおり《PDF版》／厚木市（更新日：2026年10月01日）",
+      "url": "https://www.city.atsugi.kanagawa.jp/kosodate_kyoiku/hoikuen_yochien/2/3/5/14841.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）は一番上のページで失敗していて候補がなかったので、公式サイトの一番上 → 子育て・教育 → 保育所・こども園・幼稚園 → 保育所 → 保育料 → 保育料について の順に開いた"
+  ],
+  "notes": "表は文字の取れるPDF（1ページ）を pdftotext -layout で読み、画像で列（3歳未満児クラスの保育短時間・保育標準時間、ひとり親世帯等の分かれ）を確かめた。区切りは国の基準より細かい市独自の22段階（A・B・C1〜C20）。保育のしおり詳細版は令和9年度入所の案内（令和8年10月発行）で、令和8年度のクラス年齢表も載っている。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

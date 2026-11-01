@@ -1,0 +1,275 @@
+{
+  "code": "131181",
+  "pref": "東京都",
+  "name": "荒川区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和7年9月1日から0〜2歳の第1子の認可保育園保育料を無償化し、これで認可保育園を利用するすべての世帯の保育料が無償（延長保育・延長スポット保育の利用料は無償化の対象外）。延長保育料の決定・運営費の算定・利用調整のため階層の判定は続ける。各年4月〜8月分の階層は前年度分の区市町村民税（区民税）で決める（9月〜3月分は当年度分）。「保育園の保育料」のページは2026年6月26日更新で今年度の内容。階層表PDF（2025年8月作成）自体には年度の記載がない。延長保育料は年度途中で変更がある。",
+  "tax_basis": "6%",
+  "tax_note": "保護者全員（父母）の住民税のうち区市町村民税（区民税）所得割額の合計。各種税額控除（住宅借入金特別控除、寄付金控除、配当控除、外国税額控除等）は適用しない（例: 父150,000円＋母120,000円＋ふるさと納税等の寄付金控除30,000円＝300,000円→D20）。父母が住民税非課税で祖父母と同居している場合は、祖父母のうち住民税が高い方の課税額で階層を決める。特別区（政令市ではない）なので6%のまま。",
+  "table": {
+    "title": "（４）階層および延長保育料（月額）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "住民税非課税",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "住民税均等割額",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 5000,
+        "condition": "区市町村民税所得割額合計額 1 ～ 4,999",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 5000,
+        "upper": 22700,
+        "condition": "区市町村民税所得割額合計額 5,000 ～ 22,699",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 22700,
+        "upper": 50400,
+        "condition": "区市町村民税所得割額合計額 22,700 ～ 50,399",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 50400,
+        "upper": 58800,
+        "condition": "区市町村民税所得割額合計額 50,400 ～ 58,799",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 58800,
+        "upper": 66600,
+        "condition": "区市町村民税所得割額合計額 58,800 ～ 66,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 66600,
+        "upper": 84600,
+        "condition": "区市町村民税所得割額合計額 66,600 ～ 84,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 84600,
+        "upper": 102600,
+        "condition": "区市町村民税所得割額合計額 84,600 ～ 102,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 102600,
+        "upper": 120600,
+        "condition": "区市町村民税所得割額合計額 102,600 ～ 120,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 120600,
+        "upper": 138600,
+        "condition": "区市町村民税所得割額合計額 120,600 ～ 138,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 138600,
+        "upper": 156600,
+        "condition": "区市町村民税所得割額合計額 138,600 ～ 156,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 156600,
+        "upper": 174600,
+        "condition": "区市町村民税所得割額合計額 156,600 ～ 174,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 174600,
+        "upper": 192600,
+        "condition": "区市町村民税所得割額合計額 174,600 ～ 192,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 192600,
+        "upper": 210600,
+        "condition": "区市町村民税所得割額合計額 192,600 ～ 210,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 210600,
+        "upper": 228600,
+        "condition": "区市町村民税所得割額合計額 210,600 ～ 228,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 228600,
+        "upper": 246600,
+        "condition": "区市町村民税所得割額合計額 228,600 ～ 246,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 246600,
+        "upper": 255600,
+        "condition": "区市町村民税所得割額合計額 246,600 ～ 255,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 255600,
+        "upper": 264600,
+        "condition": "区市町村民税所得割額合計額 255,600 ～ 264,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 264600,
+        "upper": 273600,
+        "condition": "区市町村民税所得割額合計額 264,600 ～ 273,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D19",
+        "lower": 273600,
+        "upper": 282600,
+        "condition": "区市町村民税所得割額合計額 273,600 ～ 282,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D20",
+        "lower": 282600,
+        "upper": 327600,
+        "condition": "区市町村民税所得割額合計額 282,600 ～ 327,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D21",
+        "lower": 327600,
+        "upper": 372600,
+        "condition": "区市町村民税所得割額合計額 327,600 ～ 372,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D22",
+        "lower": 372600,
+        "upper": 417600,
+        "condition": "区市町村民税所得割額合計額 372,600 ～ 417,599",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D23",
+        "lower": 417600,
+        "upper": 478400,
+        "condition": "区市町村民税所得割額合計額 417,600 ～ 478,399",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D24",
+        "lower": 478400,
+        "upper": 539200,
+        "condition": "区市町村民税所得割額合計額 478,400 ～ 539,199",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D25",
+        "lower": 539200,
+        "upper": 600000,
+        "condition": "区市町村民税所得割額合計額 539,200 ～ 599,999",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D26",
+        "lower": 600000,
+        "upper": null,
+        "condition": "区市町村民税所得割額合計額 600,000 ～",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "PDFの表は階層区分（A・B・C・D1〜D26）と区立・公設民営保育園の延長保育料だけで、保育料の列はない。保育料は「保育園の保育料」のページの本文（認可保育園を利用する全ての世帯の保育料を無償化）により全階層0円として monthly=0 とした。第2子の別の列はない。区切りは「〜」の両端を含む書き方（例: 1 ～ 4,999）なので upper は右端＋1。D1 の下限は1円（C は均等割のみ）。区立・公設民営保育園の延長保育料（月額、0〜2歳児クラス）: A 0／B 0／C・D1・D2 600／D3・D4・D5 900／D6 1,500／D7 1,900／D8 2,100／D9 2,300／D10 2,500／D11 2,700／D12 2,900／D13 3,100／D14 3,200／D15 3,400／D16 3,500／D17 3,700／D18 3,800／D19 4,000／D20 4,300／D21 4,800／D22 5,300／D23 5,700／D24 6,100／D25 6,500／D26 6,800。3歳児クラス: A・B 0／C〜D2 600／D3〜D5 900／D6〜D8 1,300／D9 1,500／D10 1,700／D11 1,800／D12 1,900／D13 2,000／D14 2,100／D15〜D23 2,200／D24 2,400／D25 2,500／D26 2,700。4・5歳児クラス: A・B 0／C〜D2 600／D3〜D5 900／D6〜D8 1,300／D9 1,500／D10 1,600／D11〜D23 1,800／D24 1,900／D25 2,000／D26 2,100。私立保育園・認定こども園の延長保育料は各園が定める。延長保育料は1か月単位（月途中で退園しても1か月分）。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "令和7年9月1日より0歳から2歳までの第1子の認可保育園保育料を無償化。これにより認可保育園を利用する全ての世帯の保育料が無償。延長保育・延長スポット保育の利用料は無償化の対象外。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無償のため、きょうだいの数え方や所得制限は保育料に関係しない（認可保育園を利用する全ての世帯が無償）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無償（第2子と同じ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育園の保育料／荒川区公式サイト（ページID：7426、更新日：2026年6月26日）",
+      "url": "https://www.city.arakawa.tokyo.jp/a037/kosodate/hoikuen/hoikuryo.html"
+    },
+    {
+      "label": "階層および延長保育料（PDF：217KB）",
+      "url": "https://www.city.arakawa.tokyo.jp/documents/7426/hoikuryokaisohyo.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "特別区。下調べ（crawl）の「保育園の保育料」ページ（docs/04）と「階層および延長保育料」PDF（docs/10、文字の取れるPDF・1ページ）で読んだ。PDFは画像でも見て、延長保育料の結合セル（C〜D2、D3〜D5 など）を確かめた。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

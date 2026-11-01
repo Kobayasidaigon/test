@@ -1,0 +1,173 @@
+{
+  "code": "242071",
+  "pref": "三重県",
+  "name": "鈴鹿市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月から8月分までの保育料は令和7年度、9月から3月分までの保育料は令和8年度の市町村民税で決める（算定表の注1）。月額の表は年度を通じて同じ。「3歳未満児」は、保育の利用の日の属する年度の初日の前日に3歳に達していない児童（注3）。海外居住で市町村民税が課税されていない場合は、収入の確認できる資料で課税相当額を出す。ひとり親世帯等の軽減の書類は令和9年3月31日までに出す（年度内に限る）。",
+  "tax_basis": "6%",
+  "tax_note": "扶養義務者の市民税額に応じて決める（保育所（園）・認定こども園案内のページ）。所得割額の計算では、住宅借入金等特別税額控除・配当控除・寄付金税額控除・外国税額控除・配当割額・株式等譲渡所得割額控除を適用しない（算定表の注4）。政令市ではない。",
+  "table": {
+    "title": "令和８年度 利用者負担額（保育料）算定表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）。ひとり親世帯等でない世帯の額",
+    "notes": "D1〜D13 は「Ａ階層を除き、市町村民税所得割課税世帯であってその額が次の区分に該当する世帯」。列は 3歳未満児（保育標準時間・保育短時間）と3歳以上児（0円）。保育短時間（3歳未満児）の月額: A・B 0／C 11,700／D1 14,700／D2 18,100／D3 19,600／D4 22,600／D5 28,500／D6 32,400／D7 35,300／D8 38,300／D9 41,200／D10 43,200／D11 45,200／D12 47,100／D13 49,100。ひとり親世帯等（児童扶養手当の認定、身体障害者手帳・療育手帳・精神障害者保健福祉手帳、特別児童扶養手当の支給対象、障害基礎年金等の受給者〔(2)〜(6)は在宅の方〕、生活保護法の要保護者等がいる世帯）の額: B 0、C・D1・D2・D3 は標準時間6,000円・短時間5,800円（D4 以上は区別なし）。D1 の下限は、C（所得割非課税）と分けるため1円とした。第2子・第3子の額は表の下の「多子軽減」の欄（second_note）。",
+    "rows": [
+      {
+        "label": "Ａ",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｂ",
+        "lower": null,
+        "upper": null,
+        "condition": "Ａ階層を除き、市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｃ",
+        "lower": null,
+        "upper": null,
+        "condition": "Ａ階層を除き、市町村民税均等割のみ課税世帯（所得割非課税世帯）",
+        "monthly": 12000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ１",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "48,600 円未満",
+        "monthly": 15000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ２",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "48,600 円以上 57,700 円未満",
+        "monthly": 18500,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ３",
+        "lower": 57700,
+        "upper": 77101,
+        "condition": "57,700 円以上 77,101 円未満",
+        "monthly": 20000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ４",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "77,101 円以上 97,000 円未満",
+        "monthly": 23000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ５",
+        "lower": 97000,
+        "upper": 121000,
+        "condition": "97,000 円以上 121,000 円未満",
+        "monthly": 29000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ６",
+        "lower": 121000,
+        "upper": 145000,
+        "condition": "121,000 円以上 145,000 円未満",
+        "monthly": 33000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ７",
+        "lower": 145000,
+        "upper": 169000,
+        "condition": "145,000 円以上 169,000 円未満",
+        "monthly": 36000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ８",
+        "lower": 169000,
+        "upper": 211201,
+        "condition": "169,000 円以上 211,201 円未満",
+        "monthly": 39000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ９",
+        "lower": 211201,
+        "upper": 256100,
+        "condition": "211,201 円以上 256,100 円未満",
+        "monthly": 42000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ10",
+        "lower": 256100,
+        "upper": 301000,
+        "condition": "256,100 円以上 301,000 円未満",
+        "monthly": 44000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ11",
+        "lower": 301000,
+        "upper": 338800,
+        "condition": "301,000 円以上 338,800 円未満",
+        "monthly": 46000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ12",
+        "lower": 338800,
+        "upper": 397000,
+        "condition": "338,800 円以上 397,000 円未満",
+        "monthly": 48000,
+        "monthly_second": null
+      },
+      {
+        "label": "Ｄ13",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000 円以上",
+        "monthly": 50000,
+        "monthly_second": null
+      }
+    ]
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月0〜50,000円）。0円は生活保護世帯等と市町村民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "多子軽減: 保護者と生計を一にする者の中で最年長の者から第1子と数え、生計を一にする者の中の第2子は表の額の半額。多子計算の対象者に年齢制限はない（保育所等に通っているかも問わない）が、保護者と生計を一にするこどもに限る。勤務・就学・療養などで別居していても、余暇に起居を共にするのが常例か、常に生活費・学資金・療養費などの送金があれば生計を一にする者として扱う。ひとり親世帯等（所得割77,101円未満の世帯に限る）は第2子も0円。所得制限はない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "保護者と生計を一にする者の中の第3子以降は0円（年齢制限なし、所得制限なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育 令和8年度利用者負担額（保育料）算定表（PDF）鈴鹿市",
+      "url": "https://www.city.suzuka.lg.jp/_res/projects/default_project/_page_/001/012/741/santeihyou.pdf"
+    },
+    {
+      "label": "保育所（園）・認定こども園案内｜鈴鹿市公式ウェブサイト（2026年10月1日更新）",
+      "url": "https://www.city.suzuka.lg.jp/kosodate/azukeru/1012741.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs にあった令和8年度の算定表PDFで足りた。PDFを取り直して pdftoppm で画像にし、3歳未満児の標準時間・短時間の列、ひとり親世帯等の段、多子軽減の欄を確かめた。"
+  ],
+  "notes": "算定表のPDFは2026年3月18日作成の1ページ。同じページに令和9年度の保育所（園）・認定こども園案内（15.5MB）もあるが、今回は開いていない。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

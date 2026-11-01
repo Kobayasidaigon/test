@@ -1,0 +1,291 @@
+{
+  "code": "131059",
+  "pref": "東京都",
+  "name": "文京区",
+  "status": "ok",
+  "fiscal_year": "令和7年9月以降の表（令和8年度も同じ。保育料のページは2026年4月1日更新）",
+  "period_note": "令和7年9月から、認可保育所等を利用するすべての子の基本保育料が無償（0円）。保育料階層は住民税の決定時期に合わせて毎年9月に切り替わり、4〜8月は前年度の課税額（前々年の収入）、9〜3月は当年度の課税額（前年の収入）で決める。無償化後も、副食費の負担区分と延長保育料を決めるため階層は決める。",
+  "tax_basis": "6%",
+  "tax_note": "区民税所得割額（年額）で階層を決める。住宅借入金等控除・配当控除等がある場合は控除前の税額を使う。定額減税により控除されるべき金額があるときは、定額減税反映後の区民税所得割額を使う。区の保育料階層計算シートは（総所得金額−所得控除額）×0.06−調整控除 で計算している。",
+  "table": {
+    "title": "保育料徴収金基準額表（PDFの文書名は「R7.9以降【保育料基準額表】」）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "被生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "区民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "区民税均等割のみ",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D0",
+        "lower": 1,
+        "upper": 48000,
+        "condition": "区民税所得割 48,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 48000,
+        "upper": 49000,
+        "condition": "区民税所得割 48,000 ～ 49,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 49000,
+        "upper": 58000,
+        "condition": "区民税所得割 49,000 ～ 58,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 58000,
+        "upper": 66000,
+        "condition": "区民税所得割 58,000 ～ 66,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 66000,
+        "upper": 85000,
+        "condition": "区民税所得割 66,000 ～ 85,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 85000,
+        "upper": 103000,
+        "condition": "区民税所得割 85,000 ～ 103,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 103000,
+        "upper": 121000,
+        "condition": "区民税所得割 103,000 ～ 121,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 121000,
+        "upper": 139000,
+        "condition": "区民税所得割 121,000 ～ 139,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 139000,
+        "upper": 157000,
+        "condition": "区民税所得割 139,000 ～ 157,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 157000,
+        "upper": 185000,
+        "condition": "区民税所得割 157,000 ～ 185,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 185000,
+        "upper": 221000,
+        "condition": "区民税所得割 185,000 ～ 221,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 221000,
+        "upper": 256000,
+        "condition": "区民税所得割 221,000 ～ 256,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 256000,
+        "upper": 280000,
+        "condition": "区民税所得割 256,000 ～ 280,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 280000,
+        "upper": 303000,
+        "condition": "区民税所得割 280,000 ～ 303,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 303000,
+        "upper": 324000,
+        "condition": "区民税所得割 303,000 ～ 324,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 324000,
+        "upper": 342000,
+        "condition": "区民税所得割 324,000 ～ 342,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 342000,
+        "upper": 360000,
+        "condition": "区民税所得割 342,000 ～ 360,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 360000,
+        "upper": 378000,
+        "condition": "区民税所得割 360,000 ～ 378,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 378000,
+        "upper": 468000,
+        "condition": "区民税所得割 378,000 ～ 468,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D19",
+        "lower": 468000,
+        "upper": 501000,
+        "condition": "区民税所得割 468,000 ～ 501,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D20",
+        "lower": 501000,
+        "upper": 546000,
+        "condition": "区民税所得割 501,000 ～ 546,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D21",
+        "lower": 546000,
+        "upper": 666000,
+        "condition": "区民税所得割 546,000 ～ 666,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D22",
+        "lower": 666000,
+        "upper": 890000,
+        "condition": "区民税所得割 666,000 ～ 890,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D23",
+        "lower": 890000,
+        "upper": 1220000,
+        "condition": "区民税所得割 890,000 ～ 1,220,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D24",
+        "lower": 1220000,
+        "upper": 1520000,
+        "condition": "区民税所得割 1,220,000 ～ 1,520,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D25",
+        "lower": 1520000,
+        "upper": null,
+        "condition": "区民税所得割 1,520,000円以上",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表の「月額保育料(円)」の欄は A〜D25 のすべてが「0（無料）」の1つの欄で、年齢（クラス）・標準/短時間・第1子/第2子の区別はない。欄外に「お子さまのご年齢・保護者の所得に関わらず、月額保育料は無料です。」とある。表の残りの列は延長保育料（月額。1・2歳クラスは A・B 0円、C・D0 600円、D1〜D3 900円、D4 1,500円 … D25 7,700円）。D0 の下限は表に書かれていないが、C（区民税均等割のみ＝所得割0円）と分けるため lower=1 とした。区の「保育料階層計算シート」（hoikuryokeisanr709~.xlsx）の data シートには C 1,900円・D0 2,400円 … D25 77,500円 の額が残っているが、何の額かは書かれておらず、シートの答えは「無償（0円）」と出る。副食費は保護者負担ではなく国か区で負担している（保育料のよくある質問）。延長保育料と実費（通園費用、行事費用など）は無償化の対象外。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "「令和7年9月より、認可保育所等を利用するすべてのお子さまの基本保育料が無償となります。」（保育料のページ、2026年4月1日更新）。無償化に伴う利用料の負担軽減のページにも「基本保育料は無償（0円）となります」。所得・年齢・きょうだいの順番に関係なく0円。延長保育料・実費は別。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から年齢・所得に関わらず基本保育料が0円のため、きょうだいの数え方で額は変わらない（どう数えても0円）。household は「数え方に関係なく0円」という意味で置いた。区のページに多子の数え方の説明はない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円のため、第3子以降も0円（数え方は関係ない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "【認可保育所等】保育料について | 文京区（2026年4月1日更新）",
+      "url": "https://www.city.bunkyo.lg.jp/b023/p001766.html"
+    },
+    {
+      "label": "保育料徴収金基準額表（PDF：49KB）文京区",
+      "url": "https://www.city.bunkyo.lg.jp/documents/1754/hoikuryokijungaku.pdf"
+    },
+    {
+      "label": "認可保育園・認定こども園（保育所部分）〔無償化に伴う利用料の負担軽減〕| 文京区（2025年8月27日更新）",
+      "url": "https://www.city.bunkyo.lg.jp/b023/p001704.html"
+    },
+    {
+      "label": "保育料階層決定のための資料 | 文京区（2026年10月14日更新）",
+      "url": "https://www.city.bunkyo.lg.jp/b023/p001798.html"
+    },
+    {
+      "label": "保育料（よくある質問）| 文京区（2026年2月9日更新）",
+      "url": "https://www.city.bunkyo.lg.jp/b023/p001802.html"
+    },
+    {
+      "label": "保育料階層計算シート（エクセル：17KB）文京区",
+      "url": "https://www.city.bunkyo.lg.jp/documents/1754/hoikuryokeisanr709~.xlsx"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "特別区。下調べの候補（保育料のページ・基準額表PDF・計算シート）だけで足りた。基準額表PDFは1ページで文字が取れ、画像でも「0（無料）」が A〜D25 の全行にかかることを確かめた。PDFの作成日は2025年8月1日で、年度の表示はない（文書名が「R7.9以降」）。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,143 @@
+{
+ "code": "062031",
+ "pref": "山形県",
+ "name": "鶴岡市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "令和8年9月1日から市独自の制度で0〜2歳児の保育料を完全無償化（全階層0円）。令和8年4〜8月は従来の表（県の保育料軽減交付事業で B3〜D3 階層は0円、D4 は軽減後の額）。4〜8月分は前年度、9〜3月分は当年度の市町村民税で階層を決める（国の通常の扱い。今回のページには明記なし）。",
+ "tax_basis": "6%",
+ "tax_note": "令和8年9月からは全階層0円のため階層の判定は保育料に影響しない。表の注記: 父母以外の児童の直系家族が生計中心者である場合、その生計中心者の税額で保育料算定と副食費免除判定をする場合がある。所得割の税額控除の扱い・政令市の税率換算は今回読んだ資料に書かれていない（政令市ではないので6%とした）。",
+ "table": {
+  "title": "令和8年度 鶴岡市保育料表（2・3号認定）適用日：令和8年9月1日",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯等",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B2",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B4",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税均等割のみ課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 48600,
+    "condition": "市町村民税所得割額 1円以上〜48,600円未満（母子・父子・障害者世帯以外）",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D21",
+    "lower": 48600,
+    "upper": 57700,
+    "condition": "48,600円以上〜57,700円未満（母子・父子・障害者世帯以外）",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D22",
+    "lower": 57700,
+    "upper": 70000,
+    "condition": "57,700円以上〜70,000円未満（母子・父子・障害者世帯以外）",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 70000,
+    "upper": 97000,
+    "condition": "70,000円以上〜77,101円未満（母子・父子・障害者世帯以外）／77,101円以上〜97,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 97000,
+    "upper": 169000,
+    "condition": "97,000円以上〜169,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 169000,
+    "upper": 250000,
+    "condition": "169,000円以上〜250,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 250000,
+    "upper": 301000,
+    "condition": "250,000円以上〜301,000円未満",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 301000,
+    "upper": null,
+    "condition": "301,000円以上",
+    "monthly": 0,
+    "monthly_second": null
+   }
+  ],
+  "notes": "令和8年9月1日からは全ての階層の0・1・2歳児の保育料が0円（標準・短時間とも。延長保育料、3歳児以上の副食費、各園の別途費用は対象外）。rows は母子・父子・障害者世帯以外の行（表の D3 は 70,000〜77,101円未満と 77,101〜97,000円未満の2行あり1行にまとめた。B1・B3・C1〜C3 は母子・父子・障害者世帯の行でいずれも0円）。令和8年4〜8月の額（標準／短時間）: A〜D3 は0円（県の保育料軽減交付事業、令和3年9月から）、D4 22,000／21,500（令和7年4月からの軽減、軽減前 35,000／34,000）、D5 43,000／42,000、D6 47,000／46,000、D7 52,000／51,000。表の（ ）内の軽減前の保育料（標準）: B3 7,500、B4 16,000、C1 8,000、D1 17,500、C2 8,000、D21 22,000、D22 22,000、C3 8,000、D3 27,000、D4 35,000。「入園のてびき11ページの保育料表は適用前のもの」との注記あり。"
+ },
+ "first_child_free": true,
+ "first_child_free_since": "2026年9月",
+ "first_child_free_note": "令和8年9月1日から、国の無償化の対象にならない0〜2歳児の保育料を市独自の制度で無償化（保育料完全無償化）。鶴岡市に住所がある人が対象で、保育所・認定こども園（保育園部分）・地域型保育事業所は手続き不要。届出保育施設等（認可外）は申請により上限額まで無償。0〜2歳児の主食費・副食費は保育料に含まれたうえで無償。延長保育料や各園が徴収する費用は対象外。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "令和8年9月からは第1子から全員0円のため、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。令和8年8月までの決まり: 兄弟姉妹で2人以上同時在園している場合は国の制度で2人目半額・3人目以降無料（小学校就学前の兄姉が福祉施設等に入園している場合も同様）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "令和8年9月からは全員0円。8月までも、年度当初に満18歳未満の子を3人以上養育している場合（兄姉が高校・中学・小学校・認定こども園・保育園・福祉施設等に通っている）、申請により3人目以降の0〜2歳児の保育料は無料（満18歳以上の兄姉を含めて第3子の場合は対象外）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "鶴岡市保育料表（令和8年9月適用）（PDF、2026年5月作成）",
+   "url": "https://www.city.tsuruoka.lg.jp/kyoiku/nyuen/adukeru/hoikuryoumusyouka.files/hoikuryouhyou.pdf"
+  },
+  {
+   "label": "保育料完全無償化について（令和8年9月開始） 鶴岡市（2026年7月15日更新）",
+   "url": "https://www.city.tsuruoka.lg.jp/kyoiku/nyuen/adukeru/hoikuryoumusyouka.html"
+  },
+  {
+   "label": "保育料完全無償化について（PDF、令和8年5月）",
+   "url": "https://www.city.tsuruoka.lg.jp/kyoiku/nyuen/adukeru/nyuuennmousikomi6-1.files/hoikuryoukannzennmusyouka.pdf"
+  },
+  {
+   "label": "第2子以降児童の保育料軽減について 鶴岡市（2026年3月27日更新）",
+   "url": "https://www.city.tsuruoka.lg.jp/kyoiku/nyuen/adukeru/kosodate01tasisetai.html"
+  },
+  {
+   "label": "保育料負担軽減事業について 鶴岡市（2025年4月1日更新）",
+   "url": "https://www.city.tsuruoka.lg.jp/kyoiku/nyuen/hutannkeigenn.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表は1ページのPDFで文字が取れ、画像で D4〜D7 の額が赤枠で「0円」になる表示であることを確かめた。2歳児クラスの1号認定の副食費は保護者負担。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

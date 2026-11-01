@@ -1,0 +1,305 @@
+{
+  "code": "131121",
+  "pref": "東京都",
+  "name": "世田谷区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和7年9月から、東京都の第1子保育料無償化にあわせて、認可保育施設に通う区内在住のすべての子の保育料を無償化（保育料の負担なし）。給食費（主食費・副食費）も令和7年9月から区内在住のすべての子で原則無償。保育料が0円でも、入園選考・延長保育料・国への報告のために保育料階層を決める。階層の決定は4月（年齢変更）と9月（税額年度の変更）の2回で、4月〜8月分は前年度、9月〜3月分は当年度の住民税所得割課税額による。「保育料及び給食費について」のページ（2026年9月18日更新）は令和8年度住民税に触れており今年度の内容。一覧のPDF自体には年度の記載がない。",
+  "tax_basis": "6%",
+  "tax_note": "世帯の住民税（区市町村民税）の所得割課税額。会社勤めの方は特別徴収税額の決定・変更通知書の特別区民税「④税額控除前所得割額」から調整控除額と定額減税額を引いた金額、自営業などの方は税額決定・納税通知書の特別区民税「③算出所得割額計」から「④調整控除額」と定額減税額を引いた金額。住宅借入金等控除・配当控除・外国税控除・寄附金控除等を適用しない税額。税資料の提出がなく税額が確認できない場合はD30と同じ（あとで提出すればその年度に限り4月にさかのぼって決め直す）。特別区（政令市ではない）なので特別区民税の6%のまま。",
+  "table": {
+    "title": "保育料・延長保育料一覧",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法（昭和２５年法律第１４４号）による被保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B1",
+        "lower": null,
+        "upper": null,
+        "condition": "Ａ階層を除き、所得割課税額が0円の世帯（均等割のみ課税世帯を含む）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 12000,
+        "condition": "Ａ階層を除き、所得割課税額が0円以外の世帯 所得割課税額が12,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 12000,
+        "upper": 37000,
+        "condition": "所得割課税額が12,000円以上37,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 37000,
+        "upper": 52000,
+        "condition": "所得割課税額が37,000円以上52,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 52000,
+        "upper": 82000,
+        "condition": "所得割課税額が52,000円以上82,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 82000,
+        "upper": 122000,
+        "condition": "所得割課税額が82,000円以上122,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 122000,
+        "upper": 162000,
+        "condition": "所得割課税額が122,000円以上162,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 162000,
+        "upper": 202000,
+        "condition": "所得割課税額が162,000円以上202,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 202000,
+        "upper": 220000,
+        "condition": "所得割課税額が202,000円以上220,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 220000,
+        "upper": 235000,
+        "condition": "所得割課税額が220,000円以上235,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 235000,
+        "upper": 250000,
+        "condition": "所得割課税額が235,000円以上250,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 250000,
+        "upper": 265000,
+        "condition": "所得割課税額が250,000円以上265,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 265000,
+        "upper": 280000,
+        "condition": "所得割課税額が265,000円以上280,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 280000,
+        "upper": 295000,
+        "condition": "所得割課税額が280,000円以上295,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 295000,
+        "upper": 310000,
+        "condition": "所得割課税額が295,000円以上310,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 310000,
+        "upper": 325000,
+        "condition": "所得割課税額が310,000円以上325,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 325000,
+        "upper": 340000,
+        "condition": "所得割課税額が325,000円以上340,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 340000,
+        "upper": 355000,
+        "condition": "所得割課税額が340,000円以上355,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 355000,
+        "upper": 370000,
+        "condition": "所得割課税額が355,000円以上370,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D19",
+        "lower": 370000,
+        "upper": 385000,
+        "condition": "所得割課税額が370,000円以上385,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D20",
+        "lower": 385000,
+        "upper": 400000,
+        "condition": "所得割課税額が385,000円以上400,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D21",
+        "lower": 400000,
+        "upper": 445000,
+        "condition": "所得割課税額が400,000円以上445,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D22",
+        "lower": 445000,
+        "upper": 490000,
+        "condition": "所得割課税額が445,000円以上490,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D23",
+        "lower": 490000,
+        "upper": 570000,
+        "condition": "所得割課税額が490,000円以上570,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D24",
+        "lower": 570000,
+        "upper": 650000,
+        "condition": "所得割課税額が570,000円以上650,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D25",
+        "lower": 650000,
+        "upper": 730000,
+        "condition": "所得割課税額が650,000円以上730,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D26",
+        "lower": 730000,
+        "upper": 840000,
+        "condition": "所得割課税額が730,000円以上840,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D27",
+        "lower": 840000,
+        "upper": 950000,
+        "condition": "所得割課税額が840,000円以上950,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D28",
+        "lower": 950000,
+        "upper": 1130000,
+        "condition": "所得割課税額が950,000円以上1,130,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D29",
+        "lower": 1130000,
+        "upper": 1310000,
+        "condition": "所得割課税額が1,130,000円以上1,310,000円未満である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D30",
+        "lower": 1310000,
+        "upper": null,
+        "condition": "所得割課税額が1,310,000円以上である世帯",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表の「保育料等の月額（１人につき）」は全階層0円（保育料は無償化）。monthly はこの列。第2子の別の列はない。表の別の列は区立保育園・区立認定こども園の延長保育料（保育標準時間、月額、1人につき、無償化の対象外）で、3歳未満児は A 0／B1 0／D1 900／D2 900／D3 900／D4 1,800／D5 2,300／D6 2,700／D7 2,900／D8 3,200／D9 3,500／D10 3,800／D11 4,000／D12 4,200／D13 4,500／D14 4,700／D15 5,000／D16 5,200／D17 5,300／D18 5,500／D19 5,700／D20 5,800／D21 6,100／D22 6,400／D23 6,700／D24 7,000／D25 7,300／D26 7,400／D27 7,600／D28 7,700／D29 7,800／D30 7,900（3歳児・4歳以上児は別の額）。区立以外の延長保育料は各施設が定める。教材費・行事費・延長保育料などは無償化の対象外。区外在住で区内の認可保育所等に通う子の保育料・給食費は住んでいる自治体による。D1の下限は「所得割課税額が0円以外」のため lower=1 とした。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "令和7年9月より、東京都の第1子保育料無償化にあわせて、認可保育施設に通う区内在住のすべてのお子さんの保育料を無償化（0〜2歳児クラスも第1子から0円）。給食費（主食費・副食費）も令和7年9月から原則無償。教材費・行事費・延長保育料などは自己負担。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無償のため、きょうだいの数え方や所得制限は保育料に関係しない（区内在住で認可保育施設に通う子はすべて0円）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無償（第2子と同じ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育料及び給食費について | 世田谷区公式ホームページ（更新日 2026年9月18日）",
+      "url": "https://www.city.setagaya.lg.jp/01044/1416.html"
+    },
+    {
+      "label": "保育料・延長保育料一覧（PDF：70KB）",
+      "url": "https://www.city.setagaya.lg.jp/documents/1416/hoikuryouitiran.pdf"
+    },
+    {
+      "label": "保育料 | 世田谷区公式ホームページ（更新日 2025年11月6日）",
+      "url": "https://www.city.setagaya.lg.jp/01044/22931.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの index.json には認可保育園の保育料のページがなかった（候補は認可外の補助・預かり保育の補助だけ）"
+  ],
+  "notes": "特別区。下調べで見つからなかったので「保育園に在園されている方へのご案内」の分類ページ（kodomokyouiku/hoikuen/category/13052.html）→「保育料」（/01044/22931.html）→「保育料及び給食費について」（/01044/1416.html）の順に開いた。一覧のPDFは文字の取れるPDF（1ページ）。階層はA・B1・D1〜D30。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

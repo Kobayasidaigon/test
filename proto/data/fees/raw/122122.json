@@ -1,0 +1,56 @@
+{
+  "code": "122122",
+  "pref": "千葉県",
+  "name": "佐倉市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月から8月までの保育料は前年度の市民税額、9月から3月までは当年度の市民税額で算定（料金表の月額は年度を通じて同じ）。年度当初の年齢で決まり、年度途中で3歳の誕生日を迎えてもその年度末までは「3号認定（2歳児）」の保育料。料金表は「令和8年8月時点のもの」と注記あり（佐倉市特定教育・保育施設及び特定地域型保育事業の利用者負担等に関する条例 別表第1）。",
+  "tax_basis": "6%",
+  "tax_note": "原則、父母が保育料算定上の扶養義務者（同居の祖父母などが扶養義務者となることがある。離婚している場合も、子と同居している方または親権を有する方）。国、地方公共団体等への寄付金税額控除・住宅借入金等特別税額控除・配当控除・外国税額控除などは控除の対象とならない（これらの税額控除を控除する前の税額で算定）。政令市ではないので税率6%で判定。",
+  "table": {
+    "title": "保育料料金表 ○佐倉市特定教育・保育施設及び特定地域型保育事業の利用者負担等に関する条例 別表第１ 保育料表(第３条関係) ２号･３号認定(０～２歳児クラス)",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等の支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "A 階層を除く、市町村民税所得割及び均等割の両方が非課税の世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C2", "lower": null, "upper": null, "condition": "A 階層から C1 階層までを除く、市町村民税所得割のみ非課税の世帯", "monthly": 10400, "monthly_second": null },
+      { "label": "D1", "lower": 100, "upper": 22000, "condition": "100 円以上 22,000 円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "D2", "lower": 22000, "upper": 48600, "condition": "22,000 円以上 48,600 円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "D3", "lower": 48600, "upper": 56000, "condition": "48,600 円以上 56,000 円未満", "monthly": 22800, "monthly_second": null },
+      { "label": "D4", "lower": 56000, "upper": 72000, "condition": "56,000 円以上 72,000 円未満", "monthly": 26900, "monthly_second": null },
+      { "label": "D5", "lower": 72000, "upper": 97000, "condition": "72,000 円以上 97,000 円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "D6", "lower": 97000, "upper": 112000, "condition": "97,000 円以上 112,000 円未満", "monthly": 37300, "monthly_second": null },
+      { "label": "D7", "lower": 112000, "upper": 138000, "condition": "112,000 円以上 138,000 円未満", "monthly": 42300, "monthly_second": null },
+      { "label": "D8", "lower": 138000, "upper": 169000, "condition": "138,000 円以上 169,000 円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "D9", "lower": 169000, "upper": 180000, "condition": "169,000 円以上 180,000 円未満", "monthly": 49200, "monthly_second": null },
+      { "label": "D10", "lower": 180000, "upper": 210000, "condition": "180,000 円以上 210,000 円未満", "monthly": 51000, "monthly_second": null },
+      { "label": "D11", "lower": 210000, "upper": 245000, "condition": "210,000 円以上 245,000 円未満", "monthly": 54300, "monthly_second": null },
+      { "label": "D12", "lower": 245000, "upper": 260000, "condition": "245,000 円以上 260,000 円未満", "monthly": 57200, "monthly_second": null },
+      { "label": "D13", "lower": 260000, "upper": 301000, "condition": "260,000 円以上 301,000 円未満", "monthly": 61000, "monthly_second": null },
+      { "label": "D14", "lower": 301000, "upper": null, "condition": "301,000 円以上", "monthly": 63500, "monthly_second": null }
+    ],
+    "notes": "rows は「保育標準時間」の列。D 階層の定義は「A 階層から C2 階層までを除き、市町村民税所得割課税世帯であって、その市町村民税所得割の額が次の区分に該当するもの」。D1 は表のとおり「100円以上」（所得割1〜99円の世帯がどの階層かは表に書かれていない）。保育短時間: C2 10,300／D1 15,800／D2 17,700／D3 22,500／D4 26,500／D5 29,500／D6 36,700／D7 41,600／D8 43,800／D9 48,400／D10 50,200／D11 53,400／D12 56,300／D13 60,000／D14 62,500（A・B は0）。C1（A・B 階層を除き、市町村民税所得割のみ非課税の世帯であって、在宅障害児(者)のいるもの又はひとり親のもの）: 標準 7,300／短時間 7,200。表に第2子の列はない（第2子半額・第3子以降無料、second_note 参照）。対象施設は保育園、認定こども園（保育園部分）、小規模保育事業、事業所内保育事業。保育標準時間は1月当たり平均275時間まで、保育短時間は平均200時間まで。PDFのファイル名は hoikuryouryoukinnhyou2027.pdf（令和9年度の入園受付に合わせて2026年9月27日に作られたもの）だが、表の欄外に「※保育料表は令和 8 年 8 月時点のものになります。」とある。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜63,500円）。0円は A（生活保護等）と B（市町村民税非課税）。ひとり親世帯や障害をお持ちの方がいる世帯で年収約360万円未満相当の世帯は第1子半額。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "2号・3号認定の方で、同一世帯に保育施設、幼稚園、認定こども園又は特別支援学校幼稚部などを利用されている上の子がいる場合、その範囲において第2子の保育料を半額。子が2人以上いる世帯で年収約360万円未満相当の世帯に限り、上の子の年齢の上限に関係なく第2子半額（ページには所得割の額での線引きは書かれていない）。ひとり親世帯や障害をお持ちの方がいる世帯で年収約360万円未満相当の世帯に限り、第1子半額・第2子以降無料。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "同一世帯で保育施設・幼稚園・認定こども園・特別支援学校幼稚部などを利用している上の子がいる場合、その範囲において第3子以降無料。年収約360万円未満相当の世帯は上の子の年齢の上限に関係なく第3子以降無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "佐倉市2号及び3号認定保育料金表（保育料料金表、条例別表第1、令和8年8月時点、PDF）", "url": "https://www.city.sakura.lg.jp/material/files/group/22/hoikuryouryoukinnhyou2027.pdf" },
+    { "label": "保育料／佐倉市（2026年10月1日更新）", "url": "https://www.city.sakura.lg.jp/soshiki/kodomohoikuka/7/4589.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べ（crawl）は9ページで止まっていて候補がなかった。保育園のページの一覧は JavaScript で読み込まれるので、そのページが読む index.tree.json（https://www.city.sakura.lg.jp/global/kosodatekyouiku/azukerumanabu/index.tree.json）を1回取って「保育料」のページ（4589.html）を見つけた"
+  ],
+  "notes": "表は文字の取れるPDF（1ページ）を pdftotext -layout で読み、画像で列（保育標準時間・保育短時間）と D1 の「100円以上」を確かめた。cash・one_time・中学校給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

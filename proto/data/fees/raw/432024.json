@@ -1,0 +1,33 @@
+{
+  "code": "432024",
+  "pref": "熊本県",
+  "name": "八代市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "公式サイトが読めず不明。",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "公式サイトが読めず不明。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "公式サイトが読めず不明。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl/432024/index.json）はトップページの取得で OSError、ページ0件。",
+    "curl で https://www.city.yatsushiro.lg.jp/ を2回（2026-11-01 15:08ごろと15:26ごろ）取ったが、どちらも HTTP 403（Incapsula のボット対策ページ「Request unsuccessful. Incapsula incident ID ...」）。ボット対策を回避する取り方はしていない。",
+    "WebFetch で https://www.city.yatsushiro.lg.jp/ を開こうとしたが、このセッションの許可されたネットワークの外で名前解決できず（getaddrinfo ENOTFOUND）。",
+    "WebSearch はこの市には使っていない（公式サイトのページを開けないため、検索で URL が分かっても読めない）。"
+  ],
+  "notes": "公式サイト（www.city.yatsushiro.lg.jp）が Incapsula のボット対策で curl からの取得を 403 で拒むため、保育料の表もきょうだいの決まりも読めなかった。別のネットワーク（ブラウザ）から読む必要がある。推測では埋めていない。",
+  "read_at": "2026-11-01"
+}

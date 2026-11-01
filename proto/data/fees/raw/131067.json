@@ -1,0 +1,287 @@
+{
+  "code": "131067",
+  "pref": "東京都",
+  "name": "台東区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "東京都が2025年9月から0〜2歳の第1子の保育料を無償化する支援を始めるのにあわせ、区独自に支援期間を拡充して2025年4月分から先行して、認可保育所・認定こども園（長時間）・地域型保育事業を利用する0〜2歳児クラスの利用料を無償化（区への申請は不要）。これで認可保育所などを利用する全児童の保育料が無償。延長保育料・行事費・通園送迎費などは無償化の対象外。延長保育料や施設への委託料を決めるため階層の判定は続け、4月分〜8月分は前年度、9月分以降は当該年度の区民税所得割額で決める。年齢区分は毎年4月1日現在の年齢。「保育料」のページ（2026年10月2日更新）に「令和8年4月以降の延長保育料負担額（月額）」として『保育利用のご案内』p.29・30 の表を案内している。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の区民税所得割額等で、税額控除（調整控除は除く）を適用する前の税額（「住宅借入金等特別控除」等の税額控除がある方は控除前の額）。住民税が未申告、または証明資料の提出が期限までにないときは最高階層（D27）。祖父母等と同居するひとり親世帯等で一定の条件を満たすときは、父母に加え祖父母等のうち収入が多い方の区民税所得割額を合算する。特別区（政令市ではない）なので6%のまま。",
+  "table": {
+    "title": "保育標準時間保育料表（月額）≪認可保育園・こども園（長時間）・地域型保育事業≫",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "区民税非課税",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "区民税均等割のみ",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 9500,
+        "condition": "区民税所得割額 9,500 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 9500,
+        "upper": 18700,
+        "condition": "区民税所得割額 9,500 円以上 18,700 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 18700,
+        "upper": 27900,
+        "condition": "区民税所得割額 18,700 円以上 27,900 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 27900,
+        "upper": 37100,
+        "condition": "区民税所得割額 27,900 円以上 37,100 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 37100,
+        "upper": 45900,
+        "condition": "区民税所得割額 37,100 円以上 45,900 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 45900,
+        "upper": 65800,
+        "condition": "区民税所得割額 45,900 円以上 65,800 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 65800,
+        "upper": 85900,
+        "condition": "区民税所得割額 65,800 円以上 85,900 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 85900,
+        "upper": 105900,
+        "condition": "区民税所得割額 85,900 円以上 105,900 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 105900,
+        "upper": 125800,
+        "condition": "区民税所得割額 105,900 円以上 125,800 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 125800,
+        "upper": 148700,
+        "condition": "区民税所得割額 125,800 円以上 148,700 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 148700,
+        "upper": 188800,
+        "condition": "区民税所得割額 148,700 円以上 188,800 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 188800,
+        "upper": 216200,
+        "condition": "区民税所得割額 188,800 円以上 216,200 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 216200,
+        "upper": 242100,
+        "condition": "区民税所得割額 216,200 円以上 242,100 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 242100,
+        "upper": 268200,
+        "condition": "区民税所得割額 242,100 円以上 268,200 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 268200,
+        "upper": 294200,
+        "condition": "区民税所得割額 268,200 円以上 294,200 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 294200,
+        "upper": 320100,
+        "condition": "区民税所得割額 294,200 円以上 320,100 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 320100,
+        "upper": 343500,
+        "condition": "区民税所得割額 320,100 円以上 343,500 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 343500,
+        "upper": 356500,
+        "condition": "区民税所得割額 343,500 円以上 356,500 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D19",
+        "lower": 356500,
+        "upper": 369400,
+        "condition": "区民税所得割額 356,500 円以上 369,400 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D20",
+        "lower": 369400,
+        "upper": 434500,
+        "condition": "区民税所得割額 369,400 円以上 434,500 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D21",
+        "lower": 434500,
+        "upper": 499500,
+        "condition": "区民税所得割額 434,500 円以上 499,500 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D22",
+        "lower": 499500,
+        "upper": 552900,
+        "condition": "区民税所得割額 499,500 円以上 552,900 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D23",
+        "lower": 552900,
+        "upper": 606300,
+        "condition": "区民税所得割額 552,900 円以上 606,300 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D24",
+        "lower": 606300,
+        "upper": 659700,
+        "condition": "区民税所得割額 606,300 円以上 659,700 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D25",
+        "lower": 659700,
+        "upper": 713100,
+        "condition": "区民税所得割額 659,700 円以上 713,100 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D26",
+        "lower": 713100,
+        "upper": 766500,
+        "condition": "区民税所得割額 713,100 円以上 766,500 円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D27",
+        "lower": 766500,
+        "upper": null,
+        "condition": "区民税所得割額 766,500 円以上",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "表の「保育料」の列は全階層・全年齢で0（結合セル）。第2子の別の列はない。表の「延長保育料」は区内区立保育園の額（3歳未満・保育標準時間、月額）: A 0／B 0／C 600／D1 600／D2 600／D3 900／D4 900／D5 900／D6 1,600／D7 2,000／D8 2,300／D9 2,500／D10 2,800／D11 3,000／D12 3,300／D13 3,500／D14 3,700／D15 4,000／D16 4,100／D17 4,400／D18 4,500／D19 4,800／D20 5,200／D21 5,900／D22 6,600／D23 7,100／D24 7,200／D25 7,200／D26 7,300／D27 7,400。保育短時間の延長保育料（3歳未満）: A 0／B 0／C 100／D1 100／D2 200／D3 400／D4 400／D5 500／D6 800／D7 1,000／D8 1,200／D9 1,300／D10 1,400／D11 1,600／D12 1,700／D13 1,800／D14 1,900／D15 2,000／D16 2,100／D17 2,200／D18 2,300／D19 2,400／D20 2,700／D21 3,000／D22 3,400／D23 3,600／D24 3,600／D25 3,700／D26 3,700／D27 3,700。東上野乳児保育園・ことぶきこども園・たいとうこども園、区内私立保育（こども）園、区内地域型保育事業、区外の保育園の延長保育料は各園または自治体が定める。延長保育料は承諾期間内は利用の有無にかかわらずかかり、日割りしない。副食費は全ての世帯で区が支援し、保護者からの徴収なし。D1 の下限は C（均等割のみ）と分けるため lower=1。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年4月",
+  "first_child_free_note": "区独自に2025年4月分から、認可保育所・認定こども園（長時間）・地域型保育事業を利用する0〜2歳児クラスの利用料を無償化（東京都の0〜2歳第1子無償化の支援〔2025年9月から〕を拡充して先行実施、申請不要）。認可保育所等を利用する全児童の保育料が無償。延長保育料・行事費等は対象外。副食費も全ての世帯で区が支援し徴収なし。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無償のため、きょうだいの数え方や所得制限は保育料に関係しない（認可保育所等を利用する全児童の保育料が無償）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無償（第2子と同じ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育料 台東区ホームページ（ページID：901049574、更新日：2026年10月2日）",
+      "url": "https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/hoiku_youjikyouiku/hoikutakuji/hoikuen/hoikuennyuen/hoikuryo.html"
+    },
+    {
+      "label": "認可保育所等の無償化 台東区ホームページ（ページID：761378178、更新日：2025年12月19日）",
+      "url": "https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/hoiku_youjikyouiku/hoikutakuji/youji_mushou/ninkamusyouka.html"
+    },
+    {
+      "label": "「保育利用のご案内」パンフレット（令和9年度版、PDF：6,359KB）p.29・30「21．保育料について」保育料表（月額）、p.35 台東区の保育施設の無償化について",
+      "url": "https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/hoiku_youjikyouiku/hoikutakuji/hoikuen/hoikuennyuen/panflet.files/shinR9hoikuriyounogoannai.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "特別区。下調べ（crawl）の「保育料」ページ（docs/01）から、「認可保育所等の無償化」のページと「保育利用のご案内」パンフレット（令和9年度版、2026年9月作成、44ページ、文字の取れるPDF）を開いた。パンフレットは令和9年度入園向けだが、保育料のページが令和8年4月以降の延長保育料としてこの p.29・30 を案内している。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。認証保育所・認可外は「認証保育所等保育料助成」で上乗せ補助あり（0〜2歳児クラスの課税世帯は月80,000円上限）。",
+  "read_at": "2026-11-01"
+}

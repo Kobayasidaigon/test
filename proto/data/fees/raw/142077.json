@@ -1,0 +1,203 @@
+{
+  "code": "142077",
+  "pref": "神奈川県",
+  "name": "茅ヶ崎市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "毎年9月に新年度の市民税額で算定し直す。令和8年4月〜8月分は令和7年度の市民税額（令和6年1〜12月の所得）、令和8年9月〜令和9年3月分は令和8年度の市民税額（令和7年1〜12月の所得）。表（月額）は令和元年10月1日改定のもので、令和8年度のしおり（令和7年9月11日発行）にも同じ額で載っており、年度の途中で変わらない。",
+  "tax_basis": "6%",
+  "tax_note": "保護者の市民税所得割額の合計（世帯合算額）で判定。しおりの式: 市民税所得割額＝税額控除前の市民税所得割額−（市民税調整控除額＋市民税税額調整額＋市民税定額減税額）。県民税は対象外。市民税額は住宅借入金等特別控除・配当控除等の控除を適用する前の税額。未申告などは仮算定で最高階層（D15）。単身赴任・離婚前の別居・内縁関係の同居なども保護者として合算。政令市ではない。",
+  "table": {
+    "title": "（２）0 歳児クラスから 2 歳児クラスの認可保育所等の保育料(利用者負担額)基準額表（保育所等のしおり 令和7年9月11日発行 31ページ）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "非課税／均等割のみ課税（要保護世帯）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割のみ課税",
+        "monthly": 6700,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "48,600円未満",
+        "monthly": 7800,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 48600,
+        "upper": 52000,
+        "condition": "48,600円以上52,000円未満",
+        "monthly": 12000,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 52000,
+        "upper": 57000,
+        "condition": "52,000円以上57,000円未満",
+        "monthly": 15200,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 57000,
+        "upper": 65000,
+        "condition": "57,000円以上65,000円未満",
+        "monthly": 17700,
+        "monthly_second": null
+      },
+      {
+        "label": "D5（その1）",
+        "lower": 65000,
+        "upper": 77101,
+        "condition": "65,000円以上77,101円未満",
+        "monthly": 19800,
+        "monthly_second": null
+      },
+      {
+        "label": "D5（その2）",
+        "lower": 77101,
+        "upper": 79000,
+        "condition": "77,101円以上79,000円未満",
+        "monthly": 19800,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 79000,
+        "upper": 97000,
+        "condition": "79,000円以上97,000円未満",
+        "monthly": 24800,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 97000,
+        "upper": 132000,
+        "condition": "97,000円以上132,000円未満",
+        "monthly": 31800,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 132000,
+        "upper": 169000,
+        "condition": "132,000円以上169,000円未満",
+        "monthly": 39300,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 169000,
+        "upper": 183000,
+        "condition": "169,000円以上183,000円未満",
+        "monthly": 41900,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 183000,
+        "upper": 214000,
+        "condition": "183,000円以上214,000円未満",
+        "monthly": 46900,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 214000,
+        "upper": 253000,
+        "condition": "214,000円以上253,000円未満",
+        "monthly": 49200,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 253000,
+        "upper": 301000,
+        "condition": "253,000円以上301,000円未満",
+        "monthly": 54300,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 301000,
+        "upper": 358000,
+        "condition": "301,000円以上358,000円未満",
+        "monthly": 56300,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 358000,
+        "upper": 397000,
+        "condition": "358,000円以上397,000円未満",
+        "monthly": 58300,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 72800,
+        "monthly_second": null
+      }
+    ],
+    "notes": "認可保育所等（2・3号認定）共通の表。市の保育料ページの「保育料（利用者負担額）基準額表（令和元年10月1日〜）」PDF と額は同じ（PDFでは D2〜D15 を 2〜15 と表記）。保育短時間（8H）: C 6,700／D1 7,600／D2 11,700／D3 14,900／D4 17,300／D5 19,400（2段とも）／D6 24,300／D7 31,200／D8 38,600／D9 41,100／D10 46,100／D11 48,300／D12 53,300／D13 55,300／D14 57,300／D15 71,500。太枠内の額＝ひとり親世帯等（ひとり親世帯、身体障害者手帳・療育手帳・精神障害者保健福祉手帳の交付を受けた方、特別児童扶養手当の支給対象児童、障害基礎年金の受給者のいる世帯等）の第1子の額: 標準時間 C 3,350／D1 3,900／D2 6,000／D3 7,600／D4 8,850／D5（65,000円以上77,101円未満）9,000、短時間 C 3,350／D1 3,800／D2 5,850／D3 7,450／D4 8,650／D5 9,000。ひとり親世帯等の第2子以降は無料。第2子は表の額（太枠を除く）の半額、第3子は無料。里親委託の児童は0円。D5 は所得割の区切りが2段あり、月額は同じ。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜72,800円）。0円は A（生活保護世帯等）と B（非課税・要保護世帯）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "所得割合算額57,700円以上（ひとり親世帯等は77,101円以上）の世帯: 認可保育所等・学校教育法第1条の幼稚園・認定こども園・地域型保育事業・企業主導型保育事業・特別支援学校幼稚部・居宅訪問型児童発達支援・児童心理治療施設・児童発達支援・医療型児童発達支援に在籍している就学前のきょうだいを上から順に数え、第2子は表の額（太枠を除く）の半額。それ以外の施設の在園児は数えない。例外: 所得割合算額57,700円未満の多子世帯（2・3号認定）は保護者と生計が同一の子等を年齢に関わらず上から数え、第2子は半額。ひとり親世帯等で所得割合算額77,101円未満は生計が同一の子等を年齢に関わらず数え、第2子以降無料。保育料が無償のきょうだいがいても数え方は変わらない。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "上記の施設に在籍している就学前のきょうだいの第3子以降は無料。所得割合算額57,700円未満（ひとり親世帯等は77,101円未満）の世帯は、生計が同一の子等を年齢に関わらず数えて第3子以降（ひとり親世帯等は第2子以降）無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育所等のしおり（令和7年9月11日発行、令和8年4月入所以降）（PDF）31〜33ページ 保育料基準額表・算定時期・市民税所得割額の確認方法 茅ヶ崎市",
+      "url": "https://www.city.chigasaki.kanagawa.jp/_res/projects/default_project/_page_/001/058/018/20250910hoikusyotounoshioriR70911.pdf"
+    },
+    {
+      "label": "保育料について 茅ヶ崎市（令和7年8月19日更新）",
+      "url": "https://www.city.chigasaki.kanagawa.jp/kosodate/1024751/hoikuen/1004734.html"
+    },
+    {
+      "label": "保育料（利用者負担額）基準額表（令和元年10月1日〜）（PDF）茅ヶ崎市",
+      "url": "https://www.city.chigasaki.kanagawa.jp/_res/projects/default_project/_page_/001/004/734/201910hoikuryo.pdf"
+    },
+    {
+      "label": "保育所等のしおりについて 茅ヶ崎市（令和8年10月20日更新）",
+      "url": "https://www.city.chigasaki.kanagawa.jp/kosodate/1024751/hoikuen/1058018.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの docs/01（令和元年10月1日〜の基準額表）を画像で確かめ、令和8年度用のしおり（令和7年9月11日発行、46ページ）の31ページの表と額がすべて同じことを確かめた。令和8年9月11日発行のしおり（令和9年度用）は読んでいない。D1 の下限は表に書かれていないが、C（均等割のみ＝所得割0円）と分けるため lower=1 とした。",
+  "read_at": "2026-11-01"
+}

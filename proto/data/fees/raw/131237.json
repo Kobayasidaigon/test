@@ -1,0 +1,259 @@
+{
+  "code": "131237",
+  "pref": "東京都",
+  "name": "江戸川区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和7年9月利用分から認可保育施設（認可保育園〔区立・私立〕、認定こども園〔2号・3号〕、地域型保育事業〔小規模保育・事業所内保育・家庭的保育・居宅訪問型保育〕）の基本保育料（利用者負担額）が第1子を含め無償（Q&A「認可保育施設の月額保育料は令和7年9月分からすべての児童が0円」）。利用者負担額（保育料）のページ（2026年3月26日更新）は令和8年度の区立延長保育料基準額表を案内。延長保育料と階層は4月分〜8月分は前年度、9月分〜翌年3月分は現年度の区市町村民税所得割額で決める。",
+  "tax_basis": "6%",
+  "tax_note": "特別区民税所得割額は寄附金税額控除、外国税額控除、配当控除、住宅借入金等特別税額控除等を適用する前の税額（保護者の合算）。政令指定都市で課税されている方は市民税所得割額に8分の6を乗じた額（旧税率6%）で計算。住民税の情報が確認できない場合は最高額で決定。",
+  "table": {
+    "title": "【令和8年度 区立延長保育料基準額表】",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "住民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "住民税均等割のみの世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 5000,
+        "condition": "特別区民税所得割額（保護者の合算） 5,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 5000,
+        "upper": 15000,
+        "condition": "特別区民税所得割額（保護者の合算） 5,000 円 ～ 15,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 15000,
+        "upper": 48600,
+        "condition": "特別区民税所得割額（保護者の合算） 15,000 円 ～ 48,600 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 48600,
+        "upper": 51600,
+        "condition": "特別区民税所得割額（保護者の合算） 48,600 円 ～ 51,600 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 51600,
+        "upper": 60000,
+        "condition": "特別区民税所得割額（保護者の合算） 51,600 円 ～ 60,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 60000,
+        "upper": 77101,
+        "condition": "特別区民税所得割額（保護者の合算） 60,000 円 ～ 77,101 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "特別区民税所得割額（保護者の合算） 77,101 円 ～ 97,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "特別区民税所得割額（保護者の合算） 97,000 円 ～ 115,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 115000,
+        "upper": 135000,
+        "condition": "特別区民税所得割額（保護者の合算） 115,000 円 ～ 135,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 135000,
+        "upper": 150000,
+        "condition": "特別区民税所得割額（保護者の合算） 135,000 円 ～ 150,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 150000,
+        "upper": 169000,
+        "condition": "特別区民税所得割額（保護者の合算） 150,000 円 ～ 169,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 169000,
+        "upper": 184000,
+        "condition": "特別区民税所得割額（保護者の合算） 169,000 円 ～ 184,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 184000,
+        "upper": 198000,
+        "condition": "特別区民税所得割額（保護者の合算） 184,000 円 ～ 198,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D14",
+        "lower": 198000,
+        "upper": 215000,
+        "condition": "特別区民税所得割額（保護者の合算） 198,000 円 ～ 215,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D15",
+        "lower": 215000,
+        "upper": 235000,
+        "condition": "特別区民税所得割額（保護者の合算） 215,000 円 ～ 235,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D16",
+        "lower": 235000,
+        "upper": 255000,
+        "condition": "特別区民税所得割額（保護者の合算） 235,000 円 ～ 255,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D17",
+        "lower": 255000,
+        "upper": 270000,
+        "condition": "特別区民税所得割額（保護者の合算） 255,000 円 ～ 270,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D18",
+        "lower": 270000,
+        "upper": 285000,
+        "condition": "特別区民税所得割額（保護者の合算） 270,000 円 ～ 285,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D19",
+        "lower": 285000,
+        "upper": 301000,
+        "condition": "特別区民税所得割額（保護者の合算） 285,000 円 ～ 301,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D20",
+        "lower": 301000,
+        "upper": 340000,
+        "condition": "特別区民税所得割額（保護者の合算） 301,000 円 ～ 340,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D21",
+        "lower": 340000,
+        "upper": 397000,
+        "condition": "特別区民税所得割額（保護者の合算） 340,000 円 ～ 397,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D22",
+        "lower": 397000,
+        "upper": 425000,
+        "condition": "特別区民税所得割額（保護者の合算） 397,000 円 ～ 425,000 円 未満の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "D23",
+        "lower": 425000,
+        "upper": null,
+        "condition": "特別区民税所得割額（保護者の合算） 425,000 円 以上の世帯",
+        "monthly": 0,
+        "monthly_second": null
+      }
+    ],
+    "notes": "この表は区立保育園の延長保育料の表で、基本保育料の列はない。基本保育料は令和7年9月から全階層・全児童が0円（第1子無償化）なので monthly はすべて0とした（延長保育料ではない）。第2子の別の列はない。区立保育園の延長保育料（月額、0〜2歳児クラス。保育標準時間・保育短時間ともに同額）: A・B 0／C・D1・D2 700／D3・D4・D5 900／D6 1,500／D7 1,900／D8 2,100／D9 2,300／D10 2,500／D11 2,700／D12 2,900／D13 3,100／D14 3,200／D15 3,400／D16 3,500／D17 3,700／D18 3,800／D19 4,000／D20 4,300／D21 4,800／D22 5,300／D23 5,700（結合セルは画像で確かめた）。3歳児クラス: A・B 0／C〜D2 700／D3〜D5 900／D6〜D8 1,400／D9 1,500／D10 1,700／D11 1,800／D12 1,900／D13 2,000／D14 2,100／D15〜D23 2,200。4〜5歳児クラス: A・B 0／C〜D2 700／D3〜D5 900／D6〜D8 1,400／D9 1,500／D10 1,600／D11〜D23 1,800。私立の保育施設の延長保育料は施設ごと。D1 の下限は表に書かれていないが、C（均等割のみ＝所得割0円）と分けるため lower=1 とした。令和7年8月までの保育料表（r6hoikuryohyo.pdf）は文字の取れない画像のPDFで読んでいない。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年9月",
+  "first_child_free_note": "令和7年9月利用分から保育料の第1子無償化。江戸川区民で認可保育施設を利用するすべての児童に適用、手続きなし。区外から通う場合は住所地の自治体が保育料を決める。延長保育料と、日用品・文房具・園服・おむつ・行事代など各施設で直接徴収する費用は対象外。Q&Aでは江戸川区民は給食費の自己負担もない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員0円のため、きょうだいの数え方や所得制限は保育料に関係しない（区のページにも数え方の記載はない）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員0円（第2子と同じ）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "利用者負担額（保育料） 江戸川区ホームページ（更新日 2026年3月26日）",
+      "url": "https://www.city.edogawa.tokyo.jp/e048/kosodate/kosodate/hoiku/nitijou/hoikuen/riyoushahutan.html"
+    },
+    {
+      "label": "【令和8年度 区立延長保育料基準額表】（PDF）",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/11713/r8_enchouhoikuryoukijungaku.pdf"
+    },
+    {
+      "label": "保育料の第1子無償化 江戸川区ホームページ（更新日 2026年8月7日）",
+      "url": "https://www.city.edogawa.tokyo.jp/e048/kosodate/kosodate/hoiku/azukeru/musyouka.html"
+    },
+    {
+      "label": "よくある問い合わせQ&A 保育料 江戸川区ホームページ（更新日 2025年9月1日）",
+      "url": "https://www.city.edogawa.tokyo.jp/e048/qa/kosodate/kosodate/hoiku/hoikuryo.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "特別区。下調べ（crawl）の docs/00（利用者負担額）・docs/04（第1子無償化）・docs/05（Q&A）・docs/06（令和8年度区立延長保育料基準額表、文字の取れるPDF・1ページ）で足りた。延長保育料表はPDFを取り直して画像でも見て、結合セル（A・B、C〜D2、D3〜D5 など）を確かめた。利用者負担額のページの更新日は HTML を1回取って確かめた。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。認証保育所・認可外は区の負担軽減補助金が別にある（今回は読んでいない）。",
+  "read_at": "2026-11-01"
+}

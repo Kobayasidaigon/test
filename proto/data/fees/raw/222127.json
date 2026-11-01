@@ -1,0 +1,53 @@
+{
+  "code": "222127",
+  "pref": "静岡県",
+  "name": "焼津市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度の保育料は、4月〜8月分は令和7年度市民税、9月〜3月分は令和8年度市民税で算定（令和8年度保育所等入所のご案内 p.10、入所手続きのページ）。料金表（月額）は年度を通じて同じ。保育料は児童の当該年度初日の前日時点の年齢で決まり、年度の途中で3歳になってもその年度は3号認定の保育料。施設の種別（保育所・小規模保育事業所・事業所内保育事業所）を問わず同じ保育料。",
+  "tax_basis": "6%",
+  "tax_note": "原則として父母の市民税所得割額を基礎とする。祖父母が子やその父母を税制上の扶養親族にしている場合や、父母の合計収入が103万円に満たない場合は、祖父母等のいずれか市民税所得割額が高い方を合算。階層区分認定の基礎となる課税額は、住宅借入金等特別税額控除・配当控除・外国税額控除・寄付金税額控除等を適用しない（税額控除前）。未申告で課税されない場合は最高額。政令市ではないので税率6%で判定。",
+  "table": {
+    "title": "令和8年度 焼津市保育所徴収金（保育料）基準額表 （２号・３号用概要版）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯及び中国残留邦人等の円滑な帰国の促進及び永住帰国後の自立の支援に関する法律による支援給付受給世帯又は支給認定保護者が児童福祉法第6条の4項第1項に規定する里親である世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": null, "upper": null, "condition": "市町村民税課税世帯（均等割のみ課税）", "monthly": 15000, "monthly_second": null },
+      { "label": "D1", "lower": 1, "upper": 48600, "condition": "市町村民税所得割額 ４８，６００円未満", "monthly": 17000, "monthly_second": null },
+      { "label": "D2", "lower": 48600, "upper": 57700, "condition": "市町村民税所得割額 ５７，７００円未満", "monthly": 20000, "monthly_second": null },
+      { "label": "D3", "lower": 57700, "upper": 69000, "condition": "市町村民税所得割額 ６９，０００円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "D4", "lower": 69000, "upper": 77101, "condition": "市町村民税所得割額 ７７，１０1円未満", "monthly": 27000, "monthly_second": null },
+      { "label": "D5", "lower": 77101, "upper": 97000, "condition": "市町村民税所得割額 ９７，０００円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "D6", "lower": 97000, "upper": 133000, "condition": "市町村民税所得割額 １３３，０００円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "D7", "lower": 133000, "upper": 169000, "condition": "市町村民税所得割額 １６９，０００円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "D8", "lower": 169000, "upper": 235000, "condition": "市町村民税所得割額 ２３５，０００円未満", "monthly": 50000, "monthly_second": null },
+      { "label": "D9", "lower": 235000, "upper": 301000, "condition": "市町村民税所得割額 ３０１，０００円未満", "monthly": 57000, "monthly_second": null },
+      { "label": "D10", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割額 ３９７，０００円未満", "monthly": 60000, "monthly_second": null },
+      { "label": "D11", "lower": 397000, "upper": null, "condition": "市町村民税所得割額 ３９７，０００円以上", "monthly": 72000, "monthly_second": null }
+    ],
+    "notes": "rows は「３歳未満児（３号認定）」の保育標準時間の列。表の各行は上限（未満）だけが書かれているので、lower は1つ上の行の上限とした。D1 の下限は表に書かれていないが、C（均等割のみ＝所得割0円）と分けるため lower=1 とした。保育短時間の月額: A・B 0／C 14,700／D1 16,700／D2 19,600／D3 23,500／D4 26,500／D5 29,400／D6 36,300／D7 43,200／D8 49,100／D9 56,000／D10 58,900／D11 70,700。C〜D4階層の母子世帯等及び障害児等扶養世帯は K階層（CK・D1K・D2K・D3K・D4K）で、標準時間・短時間とも 7,000円。3歳以上児（2号認定）は0円。備考: 第2子以降は全階層、保護者の所得や兄姉の年齢に関係なく0円（第1子が全額）。給食費・教材費等は無償化の対象外（0〜2歳児の給食費は保育料に含まれる）。同じ表（題名に「（案）」とある1ページ版、2026年9月4日作成）が https://www.city.yaizu.lg.jp/documents/7793/r8hoikuryo.pdf にもあり、額は同じ。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月0〜72,000円）。0円は A（生活保護等）と B（市町村民税非課税）だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "焼津市独自の支援策として令和6年4月から、世帯年収や第1子の年齢にかかわらず第2子以降の保育料を無料化（0〜2歳児クラス）。国の基準では小学生以上の子を数えないが、焼津市は第1子の年齢制限を撤廃し、小学生以上の上の子も第1子として数える。所得制限なし。上の子の年齢の上限や、別居・扶養の要件は読んだ資料には書かれていない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降が0円なので第3子以降も0円（数え方は第2子と同じ、第1子の年齢を問わない）。3〜5歳児の副食費は年収360万円未満相当の世帯と第3子以降が免除。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度保育所等入所のご案内（PDF：2,294KB）p.10「利用者負担額（保育料）について」・p.12「令和8年度 焼津市保育所徴収金（保育料）基準額表（２号・３号用概要版）」", "url": "https://www.city.yaizu.lg.jp/documents/531/r8hoikujyotounyuusyonogoannnai.pdf" },
+    { "label": "保育所等入所手続き（5月以降の入所）｜焼津市（2026年5月12日更新）", "url": "https://www.city.yaizu.lg.jp/child-edu/kodomo/mokuteki/day-care/hoiku/nyusho-tetsuzuki.html" },
+    { "label": "第2子以降の保育料無料化について｜焼津市（2024年4月1日更新）", "url": "https://www.city.yaizu.lg.jp/child-edu/kodomo/mokuteki/day-care/hoiku/aftersecondchild-muryo.html" },
+    { "label": "（保育料）基準額表（PDF：39KB）※題名に（案）とある1ページ版", "url": "https://www.city.yaizu.lg.jp/documents/7793/r8hoikuryo.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は文字の取れるPDF（令和8年度入所のご案内 p.12）を pdftotext -layout で読んだ。区切りは国の基準と違う市独自の区切り（69,000／133,000／235,000／397,000 など）。cash・one_time・中学校給食はこのページを探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

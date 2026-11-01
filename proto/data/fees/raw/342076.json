@@ -1,0 +1,215 @@
+{
+  "code": "342076",
+  "pref": "広島県",
+  "name": "福山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "2026年度（令和8年度）4月から8月分までは2025年度（令和7年度）市民税（2024年中の収入）、9月から3月分までは2026年度（令和8年度）市民税（2025年中の収入）で決める。年齢は2026年4月1日時点の年齢（学年年齢）で、年度内に誕生日を迎えても保育料は変わらない。月途中の入所・退所は日割り。表（月額）は年度を通じて同じ。表は「作成日時点のもので、変更等があった場合は別途お知らせ」と注記あり。",
+  "tax_basis": "6%",
+  "tax_note": "保護者（父及び母。ひとり親世帯はいずれか一人）の市町村民税の合算額で算定。所得割額は住宅借入金等特別控除・配当控除・外国税額控除・寄附金控除等の税額控除前の額（市民税所得割額Ⓐ）。年少扶養親族が3人以上のときは、合算額から19,800円×（年少扶養親族の数−2）を減算した額（市民税所得割額Ⓑ、減算前が1円以上なら0円以下にはしない）で階層を決める（表の C2〜C17 はⒷで判定）。政令指定都市で市民税が課税されている場合は、税額控除前の所得割額に8分の6を掛けた額で算定（6%に換算）。保護者の収入が、ふたり親世帯で非課税・ひとり親世帯で月10万円未満のときに同居の祖父母・曽祖父母等がいれば、最多所得者を算定に入れる。未申告は原則として仮の階層。",
+  "table": {
+    "title": "保育料表 2号・3号（保育所・認定こども園【保育(保育所)部分】保育料表）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "非課税",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割のみ課税",
+        "monthly": 12200,
+        "monthly_second": null
+      },
+      {
+        "label": "C2",
+        "lower": 1,
+        "upper": 4800,
+        "condition": "市民税所得割額Ⓑ 4,800円未満",
+        "monthly": 13900,
+        "monthly_second": null
+      },
+      {
+        "label": "C3",
+        "lower": 4800,
+        "upper": 48600,
+        "condition": "4,800円以上 48,600円未満",
+        "monthly": 15600,
+        "monthly_second": null
+      },
+      {
+        "label": "C4",
+        "lower": 48600,
+        "upper": 56800,
+        "condition": "48,600円以上 56,800円未満",
+        "monthly": 17600,
+        "monthly_second": null
+      },
+      {
+        "label": "C5",
+        "lower": 56800,
+        "upper": 65000,
+        "condition": "56,800円以上 65,000円未満",
+        "monthly": 19700,
+        "monthly_second": null
+      },
+      {
+        "label": "C6",
+        "lower": 65000,
+        "upper": 73000,
+        "condition": "65,000円以上 73,000円未満",
+        "monthly": 21800,
+        "monthly_second": null
+      },
+      {
+        "label": "C7",
+        "lower": 73000,
+        "upper": 81000,
+        "condition": "73,000円以上 81,000円未満",
+        "monthly": 24000,
+        "monthly_second": null
+      },
+      {
+        "label": "C8",
+        "lower": 81000,
+        "upper": 89000,
+        "condition": "81,000円以上 89,000円未満",
+        "monthly": 26500,
+        "monthly_second": null
+      },
+      {
+        "label": "C9",
+        "lower": 89000,
+        "upper": 97000,
+        "condition": "89,000円以上 97,000円未満",
+        "monthly": 30000,
+        "monthly_second": null
+      },
+      {
+        "label": "C10",
+        "lower": 97000,
+        "upper": 111400,
+        "condition": "97,000円以上 111,400円未満",
+        "monthly": 32500,
+        "monthly_second": null
+      },
+      {
+        "label": "C11",
+        "lower": 111400,
+        "upper": 125800,
+        "condition": "111,400円以上 125,800円未満",
+        "monthly": 34000,
+        "monthly_second": null
+      },
+      {
+        "label": "C12",
+        "lower": 125800,
+        "upper": 140200,
+        "condition": "125,800円以上 140,200円未満",
+        "monthly": 37500,
+        "monthly_second": null
+      },
+      {
+        "label": "C13",
+        "lower": 140200,
+        "upper": 154600,
+        "condition": "140,200円以上 154,600円未満",
+        "monthly": 39000,
+        "monthly_second": null
+      },
+      {
+        "label": "C14",
+        "lower": 154600,
+        "upper": 169000,
+        "condition": "154,600円以上 169,000円未満",
+        "monthly": 44500,
+        "monthly_second": null
+      },
+      {
+        "label": "C15",
+        "lower": 169000,
+        "upper": 301000,
+        "condition": "169,000円以上 301,000円未満",
+        "monthly": 57000,
+        "monthly_second": null
+      },
+      {
+        "label": "C16",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "301,000円以上 397,000円未満",
+        "monthly": 61200,
+        "monthly_second": null
+      },
+      {
+        "label": "C17",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 80000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "保育所・認定こども園（保育部分）・地域型保育事業は同じ計算方法。表の列は【第1子】3歳未満児の標準時間・短時間（3歳以上児は無償）。保育短時間: C1 12,000／C2 13,700／C3 15,400／C4 17,200／C5 19,300／C6 21,400／C7 23,600／C8 26,100／C9 29,600／C10 31,900／C11 33,400／C12 36,900／C13 38,400／C14 43,900／C15 56,100／C16 60,000／C17 78,400。表の横に「第2子以降の保育料は無償です。【条件】認可保育施設を利用しており、同一生計の上の子がいる。※原則手続不要（上の子が別居している場合などは、手続が必要な場合あり）」。C2 の下限は表に書かれていないが、C1（均等割のみ）と分けるため lower=1 とした。保育料表[特例]（ひとり親世帯／障がいのある人がいる世帯）: ①ひとり親と認定される世帯又は世帯員が障がい者手帳等を所持、②市民税所得割額Ⓐが77,101円未満、の両方を満たすと B@ 0円、C1@〜C7@ 4,800円（標準・短時間とも）。3歳未満児は主食を含む食事の費用が保育料に含まれる。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は有料（表で月12,200〜80,000円、特例は4,800円）。0円は生活保護世帯・非課税世帯だけ。保育料の決定方法のページに「第２子以降の保育料は無料のため、0歳児から2歳児までの第１子の場合のみ有償」とある。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "市独自に2024年（令和6年）9月から、所得制限・年齢制限を撤廃して第2子以降の保育料を無償化。保育施設の在籍の有無や子どもの年齢にかかわらず、同一生計の子どものうち最年長者を第1子とし、下の子を第2子と数える（第1子の年齢は問わない・所得制限なし）。対象は認可保育施設（公立・私立保育所、公立・私立認定こども園、地域型〔小規模・事業所内〕保育事業所）の0〜2歳児クラス。手続は原則不要（上の子が別居している場合などは同一生計申立書などが必要）。認可外保育施設・企業主導型などを使う0〜3歳（3歳になって最初の4月1日まで）の第2子以降は、保育が必要なら利用料を月最大45,700円（2026年10月1日利用分から。9月30日までは42,000円）まで給付（申請が必要）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降の無償化に含まれる（同一生計の子を年齢・施設を問わず数え、所得制限なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "2026年度（令和8年度）保育所等入所のご案内（PDF）福山市（P.24〜26 保育料及び副食費・保育料表 2号・3号）",
+      "url": "https://www.city.fukuyama.hiroshima.jp/uploaded/life/415521_2584281_misc.pdf"
+    },
+    {
+      "label": "2026年度（令和8年度）保育所等入所申し込みについて 福山市（2026年10月20日更新）",
+      "url": "https://www.city.fukuyama.hiroshima.jp/soshiki/hoikushisetsu/347755.html"
+    },
+    {
+      "label": "保育所・認定こども園【保育(保育所)部分】保育料表（PDF）福山市",
+      "url": "https://www.city.fukuyama.hiroshima.jp/uploaded/attachment/292402.pdf"
+    },
+    {
+      "label": "保育料の決定及び副食費の免除対象の決定方法 福山市（2024年10月24日更新）",
+      "url": "https://www.city.fukuyama.hiroshima.jp/soshiki/hoikushisetsu/204606.html"
+    },
+    {
+      "label": "第2子以降の保育料無償化 福山市（2026年9月18日更新）",
+      "url": "https://www.city.fukuyama.hiroshima.jp/soshiki/hoikushisetsu/326243.html"
+    },
+    {
+      "label": "第２子以降保育料無償化チラシ（PDF）福山市",
+      "url": "https://www.city.fukuyama.hiroshima.jp/uploaded/life/411397_2550358_misc.pdf"
+    },
+    {
+      "label": "第５回福山市保育サービスの利用と負担の適正化検討専門家会議を開催しました 福山市（2026年9月8日更新）",
+      "url": "https://www.city.fukuyama.hiroshima.jp/soshiki/hoikushisetsu/409729.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "中核市。保育料表PDF（1ページ、2024年10月作成、文字の取れるPDF）を pdftotext -layout で読み、画像で列（第1子・3歳未満児の標準・短時間）を確かめた。令和8年度の入所のご案内（2025年11月作成、70ページ）は文字コードが壊れていて文字が取れないため、P.24〜26 を画像にして読み、同じ額の表と算定のきまりを確かめた。C2〜C17 の範囲は切れ目・重なりなし。注意: 市は「保育サービスの利用と負担の適正化検討専門家会議」で「保育料等の適正な利用者負担と見直し案」を検討中（第5回は2026年8月10日、非公開）。令和9年度以降に保育料や第2子以降無償化が変わる可能性がある。cash・one_time・中学校給食は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

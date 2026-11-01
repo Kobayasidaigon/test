@@ -1,0 +1,219 @@
+{
+ "code": "112356",
+ "pref": "埼玉県",
+ "name": "富士見市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "保育料は児童の世帯にかかる住民税額（4月から8月までは前年度分、9月から3月までは当該年度分）に基づき、各月初日の世帯の階層で決める。住民税が未申告などで不明のときは最高額で仮決定。保育認定の種別と保育の必要量が同じなら、利用施設の種類にかかわらず同額。月額表は年度を通じて同じ（年度途中で変わる記載はない）。",
+ "tax_basis": "6%",
+ "tax_note": "市町村民税額は住宅借入金等特別税額控除・寄附金税額控除等の税額控除前の額。児童と生計を一にしている父母及びそれ以外の扶養義務者（家計の主宰者である場合に限る）の全員の課税額の合計で判定。住民票上は別世帯でも同一建物内に同居している場合は原則として生計を一にしているとみなす。表に税率（6%換算）の記載はない。富士見市は政令市ではないので6%とした。",
+ "table": {
+  "title": "【利用者負担金（保育料）基準額表（０～２歳児クラス）】（令和8年度保育施設入所案内 p.24）",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯等",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B",
+    "lower": null,
+    "upper": null,
+    "condition": "A階層を除き、当該年度分（4月から8月までにあっては前年度分。以下同じ。）の市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C",
+    "lower": null,
+    "upper": null,
+    "condition": "A階層を除き、当該年度分の市町村民税課税世帯のうち、均等割のみ課税されるもの",
+    "monthly": 8200,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 1,
+    "upper": 5000,
+    "condition": "所得割の額が 5,000円未満",
+    "monthly": 9300,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 5000,
+    "upper": 12000,
+    "condition": "所得割の額が 5,000円以上12,000円未満",
+    "monthly": 10100,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 12000,
+    "upper": 30000,
+    "condition": "所得割の額が 12,000円以上30,000円未満",
+    "monthly": 12600,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 30000,
+    "upper": 48000,
+    "condition": "所得割の額が 30,000円以上48,000円未満",
+    "monthly": 14000,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 48000,
+    "upper": 73000,
+    "condition": "所得割の額が 48,000円以上73,000円未満",
+    "monthly": 16400,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 73000,
+    "upper": 116000,
+    "condition": "所得割の額が 73,000円以上116,000円未満",
+    "monthly": 20600,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 116000,
+    "upper": 152000,
+    "condition": "所得割の額が 116,000円以上152,000円未満",
+    "monthly": 27200,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 152000,
+    "upper": 180000,
+    "condition": "所得割の額が 152,000円以上180,000円未満",
+    "monthly": 32300,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 180000,
+    "upper": 209000,
+    "condition": "所得割の額が 180,000円以上209,000円未満",
+    "monthly": 38000,
+    "monthly_second": null
+   },
+   {
+    "label": "D10",
+    "lower": 209000,
+    "upper": 239000,
+    "condition": "所得割の額が 209,000円以上239,000円未満",
+    "monthly": 43000,
+    "monthly_second": null
+   },
+   {
+    "label": "D11",
+    "lower": 239000,
+    "upper": 259000,
+    "condition": "所得割の額が 239,000円以上259,000円未満",
+    "monthly": 46000,
+    "monthly_second": null
+   },
+   {
+    "label": "D12",
+    "lower": 259000,
+    "upper": 289000,
+    "condition": "所得割の額が 259,000円以上289,000円未満",
+    "monthly": 47700,
+    "monthly_second": null
+   },
+   {
+    "label": "D13",
+    "lower": 289000,
+    "upper": 309000,
+    "condition": "所得割の額が 289,000円以上309,000円未満",
+    "monthly": 49400,
+    "monthly_second": null
+   },
+   {
+    "label": "D14",
+    "lower": 309000,
+    "upper": 335000,
+    "condition": "所得割の額が 309,000円以上335,000円未満",
+    "monthly": 50600,
+    "monthly_second": null
+   },
+   {
+    "label": "D15",
+    "lower": 335000,
+    "upper": 360000,
+    "condition": "所得割の額が 335,000円以上360,000円未満",
+    "monthly": 51700,
+    "monthly_second": null
+   },
+   {
+    "label": "D16",
+    "lower": 360000,
+    "upper": 378000,
+    "condition": "所得割の額が 360,000円以上378,000円未満",
+    "monthly": 53500,
+    "monthly_second": null
+   },
+   {
+    "label": "D17",
+    "lower": 378000,
+    "upper": 430000,
+    "condition": "所得割の額が 378,000円以上430,000円未満",
+    "monthly": 53900,
+    "monthly_second": null
+   },
+   {
+    "label": "D18",
+    "lower": 430000,
+    "upper": null,
+    "condition": "所得割の額が 430,000円以上",
+    "monthly": 54800,
+    "monthly_second": null
+   }
+  ],
+  "notes": "D階層は「A階層及びC階層を除き、当該年度分の市町村民税課税世帯であって、その所得割の額が次の区分に該当するもの」。C は均等割のみ（所得割0円）なので D1 の lower は1とした。保育短時間の月額: A 0／B 0／C 8,000／D1 9,100／D2 9,900／D3 12,300／D4 13,700／D5 16,100／D6 20,200／D7 26,700／D8 31,700／D9 37,300／D10 42,200／D11 45,200／D12 46,800／D13 48,500／D14 49,700／D15 50,800／D16 52,500／D17 52,900／D18 53,800。表に第2子の列はない（2人目は半額などの軽減は別に記載）。3〜5歳児クラスは保育料無償（給食費・行事費・延長保育料等は保護者負担）。ひとり親世帯等で所得割額の合計が77,101円未満は1人目半額（D6階層は9,000円）、2人目以降無料。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児クラスの第1子は有料（標準時間で月8,200〜54,800円）。無料は生活保護世帯・市町村民税非課税世帯（と第3子以降）。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "C階層からD階層までの世帯で、同一世帯から2人以上の就学前児童が保育所・幼稚園等に入所している場合、2人目は半額、3人目以降は無料。例外: 世帯の市民税所得割額の合計が57,700円未満の場合は上の子（兄・姉）の年齢条件がなくなり、2人目は半額、3人目以降は無料。ひとり親世帯等で所得割額の合計が77,101円未満は1人目半額（D6階層は9,000円）、2人目以降無料。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "保育所等に通う子の数にかかわらず、3人以上の児童が同居している世帯の第3子以降の児童は保育料が無料（埼玉県多子世帯保育料軽減事業が継続される場合に限る、と令和8年度入所案内に記載）。入所ページの基準額表PDF（令和2年作成のファイル）の注記では、保育所等に入所している児童と生計を一にする世帯のうち3人以上の児童が同居している世帯の第3子以降で、0歳児・1歳児クラス在籍の児童、または2歳児クラスで3歳の誕生日の前々日以前に入所した児童が対象。所得制限の記載はない。数える「児童」の年齢の上限は書かれていない。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和8年度保育施設入所案内（PDF、2025年10月3日修正版）p.23〜25「10 利用者負担金（保育料）」",
+   "url": "https://www.city.fujimi.saitama.jp/kosodate_kyoiku/kosodate_oen/yochien_hoikusho/hoikusho/hoikusyonyusyo/index.files/R8nyusyoannai1003.pdf"
+  },
+  {
+   "label": "保育所等保育施設の入所について | すくすく子育てFUJIMI",
+   "url": "https://www.city.fujimi.saitama.jp/kosodate_kyoiku/kosodate_oen/yochien_hoikusho/hoikusho/hoikusyonyusyo/index.html"
+  },
+  {
+   "label": "保育料基準額表（0～2歳児）（PDF）",
+   "url": "https://www.city.fujimi.saitama.jp/kosodate_kyoiku/kosodate_oen/yochien_hoikusho/hoikusho/hoikusyonyusyo/index.files/r2hoikuryoukijyungakuhyou.pdf"
+  },
+  {
+   "label": "保育施設 Q＆A よくある質問｜富士見市",
+   "url": "https://www.city.fujimi.saitama.jp/65faq/2010-0517-1726-150/2010-0510-1521-150.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "令和8年度保育施設入所案内は画像のPDF（文字が取れない）なので、p.23〜25を画像にして読んだ。表の額は入所ページからリンクされた「保育料基準額表（0～2歳児）」PDF（文字あり、ファイル名 r2…）と全行同じ。Q&Aに「0〜2歳児クラスの生活保護世帯、非課税世帯及び第3子以降…保育料が無料」とある。令和9年度の入所案内は読んでいない。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}
