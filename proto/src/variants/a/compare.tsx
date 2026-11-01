@@ -58,13 +58,12 @@ export function CompareShelf({ list, sel, onSelect }: { list: Comparison[]; sel:
     <div>
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
         <p className="text-[12.5px] font-bold text-[var(--ink-soft)]">押すと、そのカプセルの中身を下に開きます。</p>
-        <div role="radiogroup" aria-label="棚の並べ方" className="inline-flex rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--paper)] p-0.5">
+        <div role="group" aria-label="棚の並べ方" className="inline-flex rounded-full border-[2.5px] border-[var(--ink)] bg-[var(--paper)] p-0.5">
           {(['picked', 'gain'] as Order[]).map((o) => (
             <button
               key={o}
               type="button"
-              role="radio"
-              aria-checked={order === o}
+              aria-pressed={order === o}
               onClick={() => setOrder(o)}
               className={cn('min-h-[36px] rounded-full px-3 text-[12.5px] font-black', order === o ? 'bg-[var(--ink)] text-white' : '')}
             >

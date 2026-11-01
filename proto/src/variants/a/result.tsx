@@ -105,15 +105,26 @@ function CityChip({ city, tag }: { city: City; tag: string }) {
   )
 }
 
-// 見出しは「、」で2行にわけ、2行目は数字と単位の途中で折り返さない
+// 見出しは「、」で2行にわけ、2行目は数字と単位の途中で折り返さない。
+// 「…制度を確認中」のような長い2行目は、「確認中」の前で折れるようにする
 function Headline({ text }: { text: string }) {
   const i = text.indexOf('、')
   if (i < 0) return <>{text}</>
+  const second = text.slice(i + 1).trim()
+  const j = second.indexOf('確認中')
   return (
     <>
       <span className="inline-block">{text.slice(0, i + 1)}</span>
       <br />
-      <span className={cn('inline-block', /\d/.test(text.slice(i + 1)) && 'whitespace-nowrap')}>{text.slice(i + 1).trim()}</span>
+      {j > 0 ? (
+        <>
+          <span className="inline-block">{second.slice(0, j)}</span>
+          <wbr />
+          <span className="inline-block">{second.slice(j)}</span>
+        </>
+      ) : (
+        <span className={cn('inline-block', /\d/.test(second) && 'whitespace-nowrap')}>{second}</span>
+      )}
     </>
   )
 }
@@ -327,7 +338,7 @@ export function MainCapsule({ c, input, sample }: { c: Comparison; input: Family
         </p>
         <LevelTag city={c.to} />
       </div>
-      <h1 id="va-headline" tabIndex={-1} className="va-pop mt-1 text-center text-[24px] leading-snug outline-none [overflow-wrap:anywhere] [word-break:keep-all] focus-visible:outline-[3px] focus-visible:outline-[var(--ink)]" style={{ color }}>
+      <h1 id="va-headline" tabIndex={-1} className={cn('va-pop mt-1 text-center leading-snug outline-none [overflow-wrap:anywhere] [word-break:keep-all] focus-visible:outline-[3px] focus-visible:outline-[var(--ink)]', [...headline].length > 18 ? 'text-[21px]' : 'text-[24px]')} style={{ color }}>
         <Headline text={headline} />
       </h1>
       <p className="mt-1.5 text-center text-[13.5px] font-bold leading-relaxed text-[var(--ink-soft)] [overflow-wrap:anywhere] [word-break:keep-all]">{c.subline}</p>

@@ -13,7 +13,7 @@
  */
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ChevronRight, MapPin, Pencil, X } from 'lucide-react'
-import { useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { useId, useMemo, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { citiesInPref, cityById, distanceKm, nearbyCities, searchCities } from '@/shared'
 import type { City } from '@/shared/types'
 import { cn } from '@/lib/utils'
@@ -87,7 +87,7 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
 }) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '')
   const [q, setQ] = useState('')
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(-1) // -1 = まだどの候補も指していない（Enter なら1番目を選ぶ）
   const [open, setOpen] = useState(false)
   const from = fromId ? cityById(fromId) : undefined
   const results = useMemo(() => (q.trim() ? searchCities(q, 20) : []), [q])
@@ -98,7 +98,7 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
     onPick(c)
     setQ('')
     setOpen(false)
-    setActive(0)
+    setActive(-1)
   }
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'ArrowDown') {
@@ -109,9 +109,10 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
       e.preventDefault()
       setActive((i) => Math.max(i - 1, 0))
     } else if (e.key === 'Enter') {
-      if (results[active]) {
+      const target = results[Math.max(active, 0)]
+      if (target) {
         e.preventDefault()
-        pick(results[active])
+        pick(target)
       }
     } else if (e.key === 'Escape') {
       e.stopPropagation()
@@ -142,7 +143,7 @@ export function TownSearch({ onPick, exclude = [], fromId, label, placeholder = 
           onChange={(e) => {
             setQ(e.target.value)
             setOpen(true)
-            setActive(0)
+            setActive(-1)
           }}
           onFocus={() => setOpen(true)}
           onBlur={() => window.setTimeout(() => setOpen(false), 120)}
@@ -418,7 +419,6 @@ export function TownPicker({ picks, setPicks, fromId }: { picks: string[]; setPi
     setPicks((p) => (p.includes(c.id) ? p.filter((x) => x !== c.id) : p.length >= PICK_MAX ? p : [...p, c.id]))
   }
   const [note, setNote] = useState('')
-  const lastNote = useRef(0)
   const tryAdd = (c: City) => {
     if (isOut(c)) {
       setNote(`${c.name}は今の街です。ほかの街をえらんでね。`)
@@ -426,7 +426,6 @@ export function TownPicker({ picks, setPicks, fromId }: { picks: string[]; setPi
     }
     if (!has(c) && full) {
       setNote(`カプセル置き場は${PICK_MAX}個でいっぱいです。どれかをはずしてね。`)
-      lastNote.current = Date.now()
       return
     }
     setNote('')

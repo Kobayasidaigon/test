@@ -228,7 +228,7 @@ function PoolPicker({ pools, value, onChange, counts, caps }: { pools: Pool[]; v
   return (
     <div>
       <p className="mb-1.5 text-[13px] font-black">どの台を回す？</p>
-      <div role="radiogroup" aria-label="どの台を回すか" className={cn('grid gap-2', pools.length === 3 ? 'grid-cols-3' : 'grid-cols-2')}>
+      <div role="group" aria-label="どの台を回すか" className={cn('grid gap-2', pools.length === 3 ? 'grid-cols-3' : 'grid-cols-2')}>
         {pools.map((p) => {
           const on = p === value
           const empty = counts[p] === 0
@@ -236,8 +236,7 @@ function PoolPicker({ pools, value, onChange, counts, caps }: { pools: Pool[]; v
             <button
               key={p}
               type="button"
-              role="radio"
-              aria-checked={on}
+              aria-pressed={on}
               disabled={empty}
               onClick={() => onChange(p)}
               aria-label={`${POOL_INFO[p].name}の台（${counts[p].toLocaleString('ja-JP')}個。${POOL_INFO[p].note}）`}
@@ -375,7 +374,7 @@ export default function VariantA() {
       return
     }
     if (!c) return
-    setLive(isHit(c) ? `${c.to.name}のカプセル。${c.care?.note ?? ''}` : c.status === 'unknown' ? `${c.headline}。まだ比べられません` : `${c.headline}（${c.perYearLabel}）`)
+    setLive(isHit(c) ? `${c.to.name}のカプセル。${c.care?.note ?? ''}` : c.status === 'unknown' ? `${c.headline}。まだ比べられません` : `${c.headline}。${c.perYearLabel}の金額です`)
   }
 
   const onTurned = () => {

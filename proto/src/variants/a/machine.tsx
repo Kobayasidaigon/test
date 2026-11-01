@@ -109,14 +109,13 @@ export function NamedCapsuleG({ cap, r = 25 }: { cap: FrontCap; r?: number }) {
   )
 }
 
-export function Dome({ height = 150, jiggle = 0, shaking = false, mix = { detailed: 1 }, front, hideFront, dim = false, className }: {
+export function Dome({ height = 150, jiggle = 0, shaking = false, mix = { detailed: 1 }, front, dim = false, className }: {
   dim?: boolean
   height?: number
   jiggle?: number
   shaking?: boolean
   mix?: Mix
   front?: FrontCap[]
-  hideFront?: boolean
   className?: string
 }) {
   const W = DOME_W
@@ -158,8 +157,7 @@ export function Dome({ height = 150, jiggle = 0, shaking = false, mix = { detail
             </motion.g>
           </g>
         ))}
-        {!hideFront &&
-          front?.map((f, i) => (
+        {front?.map((f, i) => (
             <g key={f.id} transform={`translate(${spots[i].x} ${spots[i].y})`}>
               <motion.g custom={i + 3} animate={controls}>
                 <NamedCapsuleG cap={f} />
