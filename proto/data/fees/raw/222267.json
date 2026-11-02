@@ -11,17 +11,94 @@
     "title": "牧之原市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する条例施行規則 別表（第3条関係）",
     "kind": "3歳未満・保育標準時間・第1子（月額）",
     "rows": [
-      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等の円滑な帰国の促進並びに永住帰国した中国残留邦人等及び特定配偶者の自立の支援に関する法律による支援給付受給世帯並びに児童福祉法第6条の4に規定する里親", "monthly": 0, "monthly_second": null },
-      { "label": "第2階層", "lower": null, "upper": null, "condition": "第1階層を除き、市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
-      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "第1階層を除き、市町村民税所得割課税世帯 48,600円未満", "monthly": 15000, "monthly_second": null },
-      { "label": "第4階層", "lower": 48600, "upper": 67000, "condition": "67,000円未満", "monthly": 24000, "monthly_second": null },
-      { "label": "第5階層", "lower": 67000, "upper": 97000, "condition": "97,000円未満", "monthly": 26000, "monthly_second": null },
-      { "label": "第6階層", "lower": 97000, "upper": 133000, "condition": "133,000円未満", "monthly": 33000, "monthly_second": null },
-      { "label": "第7階層", "lower": 133000, "upper": 169000, "condition": "169,000円未満", "monthly": 35000, "monthly_second": null },
-      { "label": "第8階層", "lower": 169000, "upper": 235000, "condition": "235,000円未満", "monthly": 45000, "monthly_second": null },
-      { "label": "第9階層", "lower": 235000, "upper": 301000, "condition": "301,000円未満", "monthly": 49000, "monthly_second": null },
-      { "label": "第10階層", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 51000, "monthly_second": null },
-      { "label": "第11階層", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 60000, "monthly_second": null }
+      {
+        "label": "第1階層",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等の円滑な帰国の促進並びに永住帰国した中国残留邦人等及び特定配偶者の自立の支援に関する法律による支援給付受給世帯並びに児童福祉法第6条の4に規定する里親",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2階層",
+        "lower": null,
+        "upper": null,
+        "condition": "第1階層を除き、市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3階層",
+        "lower": 0,
+        "upper": 48600,
+        "condition": "第1階層を除き、市町村民税所得割課税世帯 48,600円未満",
+        "monthly": 15000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4階層",
+        "lower": 48600,
+        "upper": 67000,
+        "condition": "67,000円未満",
+        "monthly": 24000,
+        "monthly_second": null
+      },
+      {
+        "label": "第5階層",
+        "lower": 67000,
+        "upper": 97000,
+        "condition": "97,000円未満",
+        "monthly": 26000,
+        "monthly_second": null
+      },
+      {
+        "label": "第6階層",
+        "lower": 97000,
+        "upper": 133000,
+        "condition": "133,000円未満",
+        "monthly": 33000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7階層",
+        "lower": 133000,
+        "upper": 169000,
+        "condition": "169,000円未満",
+        "monthly": 35000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8階層",
+        "lower": 169000,
+        "upper": 235000,
+        "condition": "235,000円未満",
+        "monthly": 45000,
+        "monthly_second": null
+      },
+      {
+        "label": "第9階層",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "301,000円未満",
+        "monthly": 49000,
+        "monthly_second": null
+      },
+      {
+        "label": "第10階層",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "397,000円未満",
+        "monthly": 51000,
+        "monthly_second": null
+      },
+      {
+        "label": "第11階層",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 60000,
+        "monthly_second": null
+      }
     ],
     "notes": "別表の列は保育標準時間・保育短時間（第2子の列はない）。各行の下限は表に書かれていないので一つ上の行の上限とした。第3階層は令和2年度の表では「市町村民税課税世帯 48,600円未満」なので、均等割のみの世帯を含むと読んで lower を0にした。保育短時間: 第3 14,700／第4 23,500／第5 25,500／第6 32,400／第7 34,400／第8 44,200／第9 48,100／第10 50,100／第11 58,900（第1・第2は0円）。母子世帯等・在宅障害児（者）のいる世帯・要保護者に準ずる程度に困窮していると市長が認めた世帯で第3〜第5階層（所得割77,101円未満に限る）は標準時間7,000円・短時間6,850円で、特定被監護者等のうち最年長の子だけがこの額、それ以降は0円（備考4・5）。減額・免除（経済的困難・災害・全日欠席など、申請）あり。令和7年9月の台風15号で住家が全壊・半壊した世帯の減免もあった。"
   },
@@ -38,11 +115,26 @@
   "cash": [],
   "one_time": [],
   "sources": [
-    { "label": "牧之原市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する条例施行規則（例規集、別表）", "url": "https://www.city.makinohara.shizuoka.jp/reiki/reiki_honbun/r221RG00001054.html" },
-    { "label": "牧之原市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する条例（例規集）", "url": "https://www.city.makinohara.shizuoka.jp/reiki/reiki_honbun/r221RG00001029.html" },
-    { "label": "牧之原市保育料表（３号認定用）（PDF、令和２年度 牧之原市利用者負担額表）", "url": "https://www.city.makinohara.shizuoka.jp/uploaded/attachment/33080.pdf" },
-    { "label": "保育施設への入園・退園 - 牧之原市ホームページ", "url": "https://www.city.makinohara.shizuoka.jp/soshiki/14/1318.html" },
-    { "label": "令和９年度 保育園・認定こども園などの園児募集 - 牧之原市ホームページ（2026年8月20日更新）", "url": "https://www.city.makinohara.shizuoka.jp/site/makinohara-life/1327.html" }
+    {
+      "label": "牧之原市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する条例施行規則（例規集、別表）",
+      "url": "https://www.city.makinohara.shizuoka.jp/reiki/reiki_honbun/r221RG00001054.html"
+    },
+    {
+      "label": "牧之原市特定教育・保育施設及び特定地域型保育事業の利用者負担に関する条例（例規集）",
+      "url": "https://www.city.makinohara.shizuoka.jp/reiki/reiki_honbun/r221RG00001029.html"
+    },
+    {
+      "label": "牧之原市保育料表（３号認定用）（PDF、令和２年度 牧之原市利用者負担額表）",
+      "url": "https://www.city.makinohara.shizuoka.jp/uploaded/attachment/33080.pdf"
+    },
+    {
+      "label": "保育施設への入園・退園 - 牧之原市ホームページ",
+      "url": "https://www.city.makinohara.shizuoka.jp/soshiki/14/1318.html"
+    },
+    {
+      "label": "令和９年度 保育園・認定こども園などの園児募集 - 牧之原市ホームページ（2026年8月20日更新）",
+      "url": "https://www.city.makinohara.shizuoka.jp/site/makinohara-life/1327.html"
+    }
   ],
   "confidence": "確認済",
   "tried": [
@@ -51,5 +143,10 @@
     "WebSearch（allowed_domains: city.makinohara.shizuoka.jp）「牧之原市 保育料表 3号認定 令和8年度」→ 令和8年度の募集チラシ（attachment/47865.pdf、表なし）と例規集が見つかり、例規集の体系目次（第8編第1章第3節 児童・母子福祉）から利用者負担の条例施行規則の別表を読んだ"
   ],
   "notes": "市のホームページの保育料表は令和2年度のままなので、例規集（内容現在 令和8年7月1日。令和8年3月25日の条例も載っている）の現行の規則の別表で令和8年度の額を確かめた（最後の改正は令和6年4月1日施行。令和2年度の表と全階層同じ額）。cash・one_time・給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "なし（形の点検。抜き取りの読み直しの対象ではなく、元の文書の取り直しはしていない）。JSONとして読めること、必要な項目と列挙値、区切りが所得割の小さい順にすき間・重なりなくつながること（第3 48,600円未満〜第11 397,000円以上）、condition の数字と lower・upper が合うこと、月額が階層の順に下がらず0〜150,000円の範囲にあること、notes の保育短時間の額が標準時間以下であることを確かめ、問題なし。政令市ではなく 6%。"
+  }
 }

@@ -1,0 +1,43 @@
+{
+ "code": "113492",
+ "pref": "埼玉県",
+ "name": "ときがわ町",
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "保育料の額は町のサイトに載っていない（平保育園の概要のページでは保育料は「ときがわ町保育料徴収金基準額表を参照」とだけあり、表へのリンクはない）。令和9年度保育所入園申請のご案内（2026年10月19日更新）では、手引き・申請書を役場福祉課で配布するとあり、手引きはネットに載っていない。",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "町の資料で第2子の扱いは見つからなかった。",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "埼玉県の「多子世帯保育料無償化支援事業」（県のページ、掲載日2025年5月12日: 保育所等に入所する満3歳未満で第3子以降の児童の保育料を、最年長のこどもの年齢にかかわらず無償化する事業を「市町村と共同で実施」。県の実施要綱では実施主体は市町村、多子世帯は原則3人以上のこどもが同居している世帯）があるが、ときがわ町が実施しているかは町の資料で確かめられなかったので unknown。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [
+  {"label": "出産祝い金", "amount": 100000, "note": "町独自。祝い金10万円（一律）。対象は生まれた子を監護している母若しくは父又は養育者で、町内に住所を1年以上有し、町税等の滞納のない者（令和8年度版 補助・支援制度一覧）", "source": {"label": "令和８年度版ときがわ町の補助・支援制度一覧「妊娠・出産・子育て」（PDF）", "url": "https://www.town.tokigawa.lg.jp/div/00001/pdf/hojyo_sienseido/R8_1_hojyosienseido.pdf"}}
+ ],
+ "sources": [
+  {"label": "令和9年度保育所入園申請のご案内 - 埼玉県ときがわ町（更新日2026年10月19日）", "url": "https://www.town.tokigawa.lg.jp/info/2602"},
+  {"label": "平保育園概要 - 埼玉県ときがわ町（更新日2020年9月9日。「保育料 ときがわ町保育料徴収金基準額表を参照」）", "url": "https://www.town.tokigawa.lg.jp/Info/937"},
+  {"label": "令和８年度版ときがわ町の補助・支援制度について（更新日2026年10月19日）", "url": "https://www.town.tokigawa.lg.jp/info/3253"},
+  {"label": "多子世帯への保育料支援について - 埼玉県（掲載日2025年5月12日）", "url": "https://www.pref.saitama.lg.jp/b0616/hoiku-jinzai/tashisetai.html"}
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べ（docs なし）の「令和9年度保育所入園申請のご案内」（info/2602）: 申請書のPDFだけで、保育料の表や手引きのPDFはない（手引きは役場福祉課で配布）",
+  "保育園・認定こども園（info/185）、保育園とは（info/380）、令和7年度 年度途中の保育所入所申し込み（Info/886）、玉川保育園の概要（Info/2483）、平保育園概要（Info/937）: 保育料の表なし（平保育園概要は「ときがわ町保育料徴収金基準額表を参照」とだけ書いてある）",
+  "子育て支援パンフレット（令和8年度、スキャン画像のPDF、/div/101030/pdf/Kodomo_Kosodate/R8kosodateshienpanfureto.pdf）を画像で読んだ: 保育料の記載なし",
+  "令和８年度版ときがわ町の補助・支援制度一覧（妊娠・出産・子育て）: 保育料の軽減の項目なし",
+  "例規集: 町のトップ・町の概要・サイトマップ・リンク集に例規集へのリンクが見当たらず、/reiki/reiki_menu.html と /reiki_int/reiki_menu.html は 404",
+  "WebSearch（allowed_domains: town.tokigawa.lg.jp、「ときがわ町 保育料 3歳未満 第2子 階層」）: 保育料の表・多子軽減のページは出てこなかった",
+  "WebSearch（allowed_domains: pref.saitama.lg.jp）で埼玉県の多子世帯保育料無償化支援事業のページと実施要綱を読んだが、実施している市町村の一覧はなかった"
+ ],
+ "notes": "町内の保育施設は町立の玉川保育園（定員120名）・平保育園（60名）、私立のはなぞの保育園（90名）、幼稚園型認定こども園のひかりの村こども園。保育料は「ときがわ町保育料徴収金基準額表」で決まるが、表も手引きもネットに出ていない。役場福祉課（児童福祉担当、0493-65-0813）の窓口で手引きを入手するか、例規集（場所が分からなかった）で確かめる必要がある。",
+ "read_at": "2026-11-01"
+}

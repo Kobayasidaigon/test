@@ -1,0 +1,145 @@
+{
+  "code": "262129",
+  "pref": "京都府",
+  "name": "京丹後市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月〜8月分は令和7年度市町村民税額（令和6年中の収入）、9月〜3月分は令和8年度市町村民税額（令和7年中の収入）で算定する。料金表（月額）は年度を通じて同じ。市内の公立・私立の全保育所・認定こども園で保育料の基準は一律。",
+  "tax_basis": "6%",
+  "tax_note": "父と母の市町村民税額（所得割課税額）を合計して階層区分を決める（所得割課税額の合計が0円の場合は均等割の課税状況により第2〜3階層）。税額は住宅借入金等特別控除等の適用前の税額。税の申告がない場合は第12階層の保育料を徴収することがある。",
+  "table": {
+    "title": "３歳未満児（３号認定）■保育料徴収金基準額表①（R8hoikurryou-3gou.pdf）",
+    "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）。保育料徴収金基準額表①（ひとり親世帯・在宅障害児（者）のいる世帯等以外）",
+    "rows": [
+      {
+        "label": "第1階層",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯（単給世帯を含む。）及び中国残留邦人等支援給付受給世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2階層",
+        "lower": null,
+        "upper": null,
+        "condition": "第１階層を除き、市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3階層",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税課税世帯（所得割非課税世帯）",
+        "monthly": 13000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4階層",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "所得割課税額 48,600円未満",
+        "monthly": 17000,
+        "monthly_second": null
+      },
+      {
+        "label": "第5階層",
+        "lower": 48600,
+        "upper": 97000,
+        "condition": "所得割課税額 48,600円以上97,000円未満",
+        "monthly": 26000,
+        "monthly_second": null
+      },
+      {
+        "label": "第6階層",
+        "lower": 97000,
+        "upper": 133000,
+        "condition": "所得割課税額 97,000円以上133,000円未満",
+        "monthly": 32000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7階層",
+        "lower": 133000,
+        "upper": 169000,
+        "condition": "所得割課税額 133,000円以上169,000円未満",
+        "monthly": 38000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8階層",
+        "lower": 169000,
+        "upper": 235000,
+        "condition": "所得割課税額 169,000円以上235,000円未満",
+        "monthly": 45000,
+        "monthly_second": null
+      },
+      {
+        "label": "第9階層",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "所得割課税額 235,000円以上301,000円未満",
+        "monthly": 52000,
+        "monthly_second": null
+      },
+      {
+        "label": "第10階層",
+        "lower": 301000,
+        "upper": 349000,
+        "condition": "所得割課税額 301,000円以上349,000円未満",
+        "monthly": 60000,
+        "monthly_second": null
+      },
+      {
+        "label": "第11階層",
+        "lower": 349000,
+        "upper": 397000,
+        "condition": "所得割課税額 349,000円以上397,000円未満",
+        "monthly": 68000,
+        "monthly_second": null
+      },
+      {
+        "label": "第12階層",
+        "lower": 397000,
+        "upper": null,
+        "condition": "所得割課税額 397,000円以上",
+        "monthly": 77000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "短時間: 第3階層 12,000、第4階層 16,000、第5階層 25,000、第6階層 31,000、第7階層 37,000、第8階層 44,000、第9階層 51,000、第10階層 58,000、第11階層 66,000、第12階層 75,000（第1・2階層は0）。保育料徴収金基準額表②（ひとり親世帯、在宅障害児（者）のいる世帯等）: 第3階層 5,500、第4階層 7,500、第5階層（所得割48,600円以上77,101円未満）8,000（標準・短時間とも）。第3・4階層の第2子は無料、第5階層で77,101円未満は第2子以降無料。77,101円以上は表①のとおり。延長保育料（公立施設）は月500〜2,000円（第3子以降は無料）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子の0〜2歳児は階層に応じて月0〜77,000円（標準時間）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "同一世帯の2人の児童（年齢が高い順に第1子と第2子）が保育所等（幼稚園・認定こども園・保育所・特別支援学校幼稚部・情緒障害児短期治療施設通所部に入所、または児童発達支援・医療型児童発達支援を利用）に在籍している場合、第2子は徴収金基準額（月額）の半額。所得割課税額が57,700円未満の場合も第2子は半額（同時在籍でなくてよいと読める）。ひとり親世帯・在宅障害児（者）のいる世帯等は第3・4階層と、第5階層で所得割77,101円未満なら第2子は無料。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "保護者と生計を一にする子どもの第3子以降の入所（園）児童にかかる保育料は無料（上の子が保育所等に在籍していなくても数える。年齢の上限は書かれていない）。市独自に、認可外保育施設・企業主導型保育施設を使う住民税課税世帯の0〜2歳児クラスの第3子以降にも保育料の一部を補助（月額上限18,500円、保育料の1/2まで）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "３歳未満児（３号認定）保育料徴収金基準額表（R8hoikurryou-3gou.pdf）京丹後市",
+      "url": "https://www.city.kyotango.lg.jp/material/files/group/59/R8hoikurryou-3gou.pdf"
+    },
+    {
+      "label": "こども園・保育所の保育料について／京丹後市",
+      "url": "https://www.city.kyotango.lg.jp/top/kosodate_kyoiku/ikuji/2/22799.html"
+    },
+    {
+      "label": "令和8年度認可外保育施設等第3子以降保育料補助金／京丹後市",
+      "url": "https://www.city.kyotango.lg.jp/top/soshiki/kodomo/kodomomirai/2/2/22880.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの候補「3歳未満児（3号認定）」（R8hoikurryou-3gou.pdf、2ページ、文字の取れるPDF、2026年4月作成）を取り直して読んだ。"
+  ],
+  "notes": "表は pdftotext -layout で読み、1ページ目を画像にして列（標準時間・短時間）を確かめた。第3階層（所得割非課税＝均等割のみ）は lower・upper を null にし、第4階層の下限を1円とした。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

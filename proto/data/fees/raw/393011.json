@@ -1,0 +1,37 @@
+{
+  "code": "393011",
+  "pref": "高知県",
+  "name": "東洋町",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "不明（町のサイトを開けなかった）。",
+  "tax_basis": "unknown",
+  "tax_note": "町内の保育園は保育料無料とされている（検索結果の要約による・原文未確認）ので、所得割による階層の表は確かめていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "検索結果の要約による・原文未確認: WebSearch（allowed_domains: town.toyo.kochi.jp）の要約に、町の子育て支援のページの「保育料支援 · 町内にある保育園(銀杏・甲浦保育園)に通園する場合は保育料無料」（ページの更新日は不明）と、町議会の議会だより第141号（2018年6月1日発行）の「町内保育所の保育料を免除し、実質無料とする」が出た。町外の保育園に通う場合や、施設の種類（認可かどうか）・所得・住所などの条件は確かめていない。始めた年も不明（2018年にはあった）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "町内の保育園（銀杏・甲浦）なら第1子から無料とされている（原文未確認）ので、きょうだいの数え方は関係しない。町外の施設に通う場合は不明。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "町内の保育園なら第1子から無料とされている（原文未確認）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "東洋町のくらしの情報（WebSearch の結果に出たページ。開けなかった）", "url": "http://www.town.toyo.kochi.jp/contents/info0054.html" },
+    { "label": "東洋町議会 議会だより 第141号 2018年（平成30年）6月1日発行（WebSearch の結果に出たPDF。開けなかった）", "url": "http://www.town.toyo.kochi.jp/gikai-toyo/pbfile/m000081/pbf20180808160818.pdf" },
+    { "label": "保育改善計画 保育園名：東洋町立保育園 策定日：令和8年8月15日（WebSearch の結果に出たPDF。開けなかった）", "url": "http://town.toyo.kochi.jp/pbfile/m000803/pbf20260827163459_BdDVY7jWcW36.pdf" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べ: munis_by_pop.json の http://www.town.toyo.kochi.jp/ が OSError で、読めたページ0",
+    "https://www.town.toyo.kochi.jp/ 、https://town.toyo.kochi.jp/ 、新しいドメインの https://www.town.toyo.lg.jp/ は、どれも TLS の途中で Connection reset by peer（エージェントのプロキシの記録では ws_closed_mid_exchange。町のサイトは http だけで、https に対応していないとみられる。プロキシは HTTPS だけを通す）",
+    "WebSearch 1回（allowed_domains: town.toyo.kochi.jp、「東洋町 保育所 保育料 3歳未満 令和8年度」）: 3歳未満の保育料の額の表は見つからず、上の「保育料無料」の要約が出た",
+    "Internet Archive（web.archive.org）経由の取得はプロキシで通らない（同じグループの東白川村で確かめた）"
+  ],
+  "notes": "町のサイトを1ページも開けなかったので、内容はすべて検索結果の要約による（原文未確認）。要約では、町内の保育園は銀杏保育園・甲浦保育園で、銀杏保育園（東洋町立保育園）は不適切な保育の事案を受けて保育改善計画（令和8年度〜令和10年度）を作った。0〜2歳の受け入れの月齢・認可かどうか・町外の施設の扱いは未確認。高知県には0〜2歳の保育料を軽くする県の独自の制度は見つかっていない（pref-nursery-west.json）。",
+  "read_at": "2026-11-01"
+}

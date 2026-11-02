@@ -1,0 +1,37 @@
+{
+  "code": "432032",
+  "pref": "熊本県",
+  "name": "人吉市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "WebSearch の要約（原文未確認）: 「令和８年度 保育所・認定こども園・幼稚園入所のご案内」のページに、0歳から2歳までの児童の保育料は保護者の令和7年度・令和8年度市町村民税額で決定し、令和8年4月から8月分は令和7年度、令和8年9月から令和9年3月分は令和8年度の市町村民税額で決定、未申告の場合は「最高額」で算定、と書かれているとのこと。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料の表・所得割の定義の原文を読めていない。政令市ではないので、ふつうなら6%で判定する。",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度 保育所・認定こども園・幼稚園入所のご案内 / 人吉市（検索結果で見つけたが開けなかった）", "url": "https://www.city.hitoyoshi.lg.jp/kosodate_kyoiku/shussan_ikuji/hoikujyo_yochien/2312408" },
+    { "label": "保育所・幼稚園 / 人吉市（検索結果の要約では「特定教育・保育施設利用者負担金(保育料)基準額表」が載っているページ。開けなかった）", "url": "https://www.city.hitoyoshi.lg.jp/kosodate_kyoiku/shussan_ikuji/hoikujyo_yochien" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl/432032/index.json）は市のサイトの一番上で OSError、0ページ。",
+    "curl で https://www.city.hitoyoshi.lg.jp/ と https://www.city.hitoyoshi.lg.jp/kosodate_kyoiku/shussan_ikuji/hoikujyo_yochien/2312408 を取ると、どちらも HTTP 403（Incapsula〔Imperva〕の「Request unsuccessful」ページ。サイト側のボット対策による拒否）。ヘッダーを変えるなどのすり抜けはしていない。",
+    "WebFetch でも www.city.hitoyoshi.lg.jp は名前解決できず（このセッションの許可ドメイン外の扱い）。",
+    "web.archive.org の保存コピーを取ろうとしたが、このセッションの許可の判定で止められたので、それ以上は試していない。",
+    "WebSearch（allowed_domains: city.hitoyoshi.lg.jp）を2回: 「人吉市 保育料 令和8年度 3歳未満 基準額」→ 入所のご案内のページ（2312408）と保育所・幼稚園のページが見つかり、算定に使う税の年度だけ要約に出た。「人吉市 特定教育・保育施設利用者負担金 基準額表 3号認定 第2子 多子軽減 階層」→ 表の額・きょうだいの決まりは要約に出なかった。"
+  ],
+  "notes": "市の公式サイト（www.city.hitoyoshi.lg.jp）が Incapsula のボット対策で curl を 403 にするため、保育料の表もきょうだいの決まりも原文を読めていない（推測では埋めていない）。WebSearch の要約では、人吉市行財政健全化計画（平成30年度決算時点の資料）に保育料の「負担基準ルールの設定: 国基準の7割の負担」とあるとのこと（原文未確認、今年度の額には使っていない）。ブラウザで「保育所・幼稚園」のページ（https://www.city.hitoyoshi.lg.jp/kosodate_kyoiku/shussan_ikuji/hoikujyo_yochien）を開き、基準額表の PDF を保存してもらえれば読める見込み。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,38 @@
+{
+  "code": "142051",
+  "pref": "神奈川県",
+  "name": "藤沢市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": 330,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "市立中学校の給食は「選択制デリバリー方式」（給食と持参弁当を1日単位で選べる事前予約・前払い制。令和8年3月時点の平均喫食率41.8％）。令和8年度の金額は普通盛 1食330円（おかず等273円＋牛乳57円）、大盛400円、牛乳なしなら273円・343円。無償化や負担軽減の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "国からの給食費に対する財政支援を受け、令和8年度の小学校・特別支援学校小学部の給食費は無償化（口座振替の手続きも不要に）。特別支援学校中学部・高等部は月額5,200円（物価高騰分は公費負担で据え置き）。"
+  },
+  "no_lunch_jh": true,
+  "sources": [
+    {
+      "label": "藤沢市「学校給食費」（ページ番号17049、更新日 2026年6月29日）",
+      "url": "https://www.city.fujisawa.kanagawa.jp/gakko-k/kyoiku/kyoiku/kyushoku/kohkaikei/documents/kyusyokuhi.html"
+    },
+    {
+      "label": "藤沢市「藤沢市の中学校給食」（更新日 2026年10月15日。選択制デリバリー方式、令和8年度の金額）",
+      "url": "https://www.city.fujisawa.kanagawa.jp/gakko-k/kyoiku/kyoiku/kyushoku/chu/chukyushoku.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べは保育園のページばかりだったので、子育て・教育→学校給食→学校給食費とたどった"
+  ],
+  "notes": "中学校は選択制で、弁当を選べば給食費はかからない。給食を毎日頼んだ場合の負担は1食330円×給食日数。教育委員会は中学校給食センターの整備（全員制への移行の検討）を進めている。",
+  "read_at": "2026-11-01"
+}

@@ -33,5 +33,6 @@
   "WebSearch（allowed_domains: pref.kagawa.lg.jp）で香川県の第2子・多子の制度を探し、県の無償化のページ（2019年）と「出生数反転に向けた市町交付金について」（市町への一般的な交付金で、保育料の決まりではない）を curl で読んだ。"
  ],
  "notes": "公式サイトの証明書が切れているため、表もきょうだいの決まりも直接は読めていない。period_note・tax_note・first_child_free_note の市の説明は検索エンジンの要約から書いたもので、ページそのものでは確かめていない。証明書が直ったら、https://www.city.sanuki.kagawa.jp/life/childcare/entrance-3 のページと「保育認定子どもの利用者負担額基準表」（PDF 97KB）を読み直す必要がある。",
- "read_at": "2026-11-01"
+ "read_at": "2026-11-01",
+ "checked": {"at": "2026-11-01", "result": "ok", "changes": "なし（形の点検。status partial・confidence 仮置き・fiscal_year null・table null・きょうだい unknown で、読めていない所を推測で埋めていないことを確かめた。2026-11-01 の確かめで https://www.city.sanuki.kagawa.jp/life/childcare/entrance-3 を curl で取り直したが、まだ「SSL certificate problem: certificate has expired」（exit 60）で開けなかった（証明書の確認は外していない。https://city.sanuki.kagawa.jp/ も TLS でつながらない）。証明書が直ったら表ときょうだいの決まりの読み直しが必要なのは変わらない）"}
 }

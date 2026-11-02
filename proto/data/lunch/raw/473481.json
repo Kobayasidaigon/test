@@ -1,0 +1,40 @@
+{
+  "code": "473481",
+  "pref": "沖縄県",
+  "name": "与那原町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2026年4月",
+    "until": null,
+    "note": "令和8年4月1日から、町立小中学校に在籍するすべての児童・生徒の学校給食費を全額無償化（毎月の給食費の支払いを全額免除。申請不要）。令和7年度は町が給食費の半額を補助していた（令和7年度の改定後の中学校給食費は月5,800円×11か月＝年63,800円）。期限の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年4月1日から町立小中学校のすべての児童・生徒の給食費を全額無償化（申請不要）。令和7年度の改定後の小学校給食費は月5,200円×11か月＝年57,200円だった。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "与那原町「令和8年度の学校給食費の完全無償化について（お知らせ）」（更新日 2026年4月1日）",
+      "url": "https://www.town.yonabaru.okinawa.jp/site/kosodate/9081.html"
+    },
+    {
+      "label": "与那原町教育委員会「令和8年度の学校給食費の完全無償化について（お知らせ）」PDF（令和8年4月1日 事務連絡）",
+      "url": "https://www.town.yonabaru.okinawa.jp/uploaded/attachment/6075.pdf"
+    },
+    {
+      "label": "与那原町「令和7年度 学校給食費 改定額」PDF（小学校・中学校の月額・年額）",
+      "url": "https://www.town.yonabaru.okinawa.jp/uploaded/attachment/4468.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "町のページは財源（沖縄県の中学生給食費2分の1補助など）にはふれていない。小中とも申請不要の全額無償。",
+  "read_at": "2026-11-01"
+}

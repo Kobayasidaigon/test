@@ -1,0 +1,42 @@
+{
+  "code": "113417",
+  "pref": "埼玉県",
+  "name": "滑川町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2011年4月",
+    "until": null,
+    "note": "町の「令和8年度予算概要」で、町政の重点施策として「学校給食費の無償化事業」を続ける（給食用品費 1億3,052万5千円・給食委託料 1億1,628万1千円はほぼ一般財源、給食費無償化推進事業（学校等給食費補助金）298万4千円）。「子ども子育て応援ぶっく」（令和7年4月）では、平成23年4月から町独自に給食費の無償化事業を始め、対象は小中学生と、給食費等の負担がある幼稚園・保育園等。町内の学校は学校で一括申請、町外の小中学校に通う場合は各自で教育委員会に申請。期限の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "平成23年4月から町独自に小中学校の給食費を無償化（令和8年度予算概要でも重点施策として継続）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "滑川町「令和8年度 予算概要」PDF（重点施策：学校給食費の無償化事業。主要事業別概要：給食費無償化推進事業ほか）",
+      "url": "https://www.town.namegawa.saitama.jp/material/files/group/2/r8yosanngaiyou.pdf"
+    },
+    {
+      "label": "滑川町「財政等の状況」（更新日 2026年3月25日）",
+      "url": "https://www.town.namegawa.saitama.jp/soshikikarasagasu/somuseisakuka/gyozaisei/3/775.html"
+    },
+    {
+      "label": "滑川町福祉課「住まいるタウン滑川 子ども子育て応援ぶっく」PDF（令和7年4月。（4）給食費の無償化）",
+      "url": "https://www.town.namegawa.saitama.jp/material/files/group/1/kodomokosodateouennbook1.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "町のサイトの子育て・教育・教育委員会の一覧に給食費のページがなく、WebSearch（allowed_domains: town.namegawa.saitama.jp）で予算概要と応援ぶっくを見つけた"
+  ],
+  "notes": "保護者向けの給食費の専用ページはない。令和8年度も無償であることは予算概要の重点施策・事業名で確認。",
+  "read_at": "2026-11-01"
+}

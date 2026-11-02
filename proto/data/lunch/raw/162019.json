@@ -1,0 +1,40 @@
+{
+  "code": "162019",
+  "pref": "富山県",
+  "name": "富山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": 6800,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "全員の無償化はない。令和8年4月に中学校・義務教育学校後期課程の給食費を月額7,300円→8,300円に改定し、国の交付金を使った市の学校給食費負担軽減事業（令和4年度から）で月1,500円を市が負担、保護者の集金額は月額6,800円（4月〜1月の各月と2・3月で調整）。公費で給食費全額の補助をすでに受けている人は対象外。令和9年度は物価変動に応じて改定を検討。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度は国と県の交付金を使い、小学校・義務教育学校前期課程の給食費（改定後 月額7,100円）を無償化し、原則として集金なし。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "富山市「学校給食費改定のお知らせ」（更新日 2026年5月7日）",
+      "url": "https://www.city.toyama.lg.jp/kosodate/shochugakko/1010443/1007434.html"
+    },
+    {
+      "label": "富山市教育委員会「学校給食費改定のお知らせ（中学校・義務教育学校後期課程、幼稚園）」令和8年4月 PDF",
+      "url": "https://www.city.toyama.lg.jp/_res/projects/default_project/_page_/001/007/434/tyuugaku.pdf"
+    },
+    {
+      "label": "富山市教育委員会「令和8年度学校給食費について（小学校・義務教育学校前期課程）」令和8年4月 PDF",
+      "url": "https://www.city.toyama.lg.jp/_res/projects/default_project/_page_/001/007/434/shougaku.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "市の公式サイトのURLは city.toyama.lg.jp（一覧の city.toyama.toyama.jp から移っている）。下調べで集めた公式ページとPDFの文字で読んだ。",
+  "read_at": "2026-11-01"
+}

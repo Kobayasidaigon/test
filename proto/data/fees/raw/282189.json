@@ -1,0 +1,53 @@
+{
+  "code": "282189",
+  "pref": "兵庫県",
+  "name": "小野市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "階層区分は、4月から8月までは令和7年度分の市民税額、9月から翌年3月までは令和8年度分の市民税額により決定（基準額表の注記②、保育料のお知らせのページ）。年齢は4月1日現在の満年齢（令和8年4月1日現在で3〜5歳児は無償化で0円、副食費は別）。月額は年度の途中で変わらない。",
+  "tax_basis": "6%",
+  "tax_note": "階層区分を決定する税額は、住宅借入金等特別控除、配当控除、寄付金控除、株式等譲渡所得割額控除などの税額控除前の税額（注記③）。保護者等の市民税額で決定。",
+  "table": {
+    "title": "令和８年度小野市利用者負担額（保育料）基準額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税均等割のみ課税世帯", "monthly": 14000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "市民税所得割課税額48,600円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 64700, "condition": "48,600円以上64,700円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "D2", "lower": 64700, "upper": 80800, "condition": "64,700円以上80,800円未満", "monthly": 22000, "monthly_second": null },
+      { "label": "D3", "lower": 80800, "upper": 97000, "condition": "80,800円以上97,000円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "D4", "lower": 97000, "upper": 121000, "condition": "97,000円以上121,000円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "D5", "lower": 121000, "upper": 145000, "condition": "121,000円以上145,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "D6", "lower": 145000, "upper": 169000, "condition": "145,000円以上169,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "D7", "lower": 169000, "upper": 213000, "condition": "169,000円以上213,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "D8", "lower": 213000, "upper": 257000, "condition": "213,000円以上257,000円未満", "monthly": 46000, "monthly_second": null },
+      { "label": "D9", "lower": 257000, "upper": 301000, "condition": "257,000円以上301,000円未満", "monthly": 50000, "monthly_second": null },
+      { "label": "D10", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 52000, "monthly_second": null },
+      { "label": "D11", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 55000, "monthly_second": null }
+    ],
+    "notes": "rows は3歳未満児・標準時間の列。短時間: C1 13,800、C2 15,800、D1 18,700、D2 21,700、D3 24,600、D4 27,600、D5 32,500、D6 36,500、D7 41,300、D8 45,300、D9 49,200、D10 51,200、D11 54,100（A・Bは0）。第2子の額は表の列にはなく、注記④⑤の下表「第２子 基準額表に定める額×０．５（Ｂ階層は０円）、第３子以降 ０円」。C2の下限は表に書かれていないが、C1（均等割のみ＝所得割0円）と分けるため lower=1 とした。注記⑥: B〜D1階層及びD2階層で所得割77,101円未満の母子世帯等・在宅障害児（者）のいる世帯は3歳未満の標準時間 B 0、C1 6,500、C2・D1・D2 7,200（短時間 0／6,400／7,200）で、子どもの年齢に制限なく同一世帯の中で第2子以降なら無料。3歳以上児は無償化で0円（副食費は園に支払い。所得割57,700円未満の世帯などは副食費免除）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は表の額を負担（生活保護・市民税非課税は0円）。兵庫県の「ひょうご保育料軽減事業」（所得割57,700円未満の第1子の一部補助）を小野市で受けられるかは、市のページに記載がなく未確認。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "国の基準どおり。注記⑤: D1階層で所得割57,700円以上とD2〜D11階層は、同一世帯から2人以上の就学前児童が保育所・幼稚園・認定こども園・家庭的保育事業等・特別支援学校幼稚部などに入所または児童発達支援などを利用している場合、保育所等を利用している子どもの中で何番目かで判定し、第2子は基準額×0.5、第3子以降は0円（所得制限なし）。注記④: B〜C2階層とD1階層で所得割57,700円未満の場合は、子どもの年齢に制限なく同一世帯の子どもの中で何番目かで判定（第2子半額、B階層は0円、第3子以降0円）。注記⑥: 所得割77,101円未満の母子世帯等・在宅障害児（者）のいる世帯は年齢に制限なく第2子以降無料。兵庫県の「ひょうご保育料軽減事業」（第2子以降は所得割155,500円未満などで、国の多子軽減を受けていない子の保育料の一部を補助。無料にはならない）は小野市のページに記載がなく、ここには入れていない。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は0円（数え方は第2子と同じ。所得割57,700円未満は年齢に制限なく同一世帯の子どもの中で数える）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料のお知らせ／兵庫県小野市行政サイト（更新日2026年04月06日）", "url": "https://www.city.ono.hyogo.jp/kosodate_gakko/ikuji/hoikujo_kodomoen_yochien/3/6590.html" },
+    { "label": "令和8年度利用者負担額（保育料）基準額表（PDF）", "url": "https://www.city.ono.hyogo.jp/material/files/group/18/R8riyousyafutanngakukijyunnhyou.pdf" },
+    { "label": "保育所・認定こども園／兵庫県小野市行政サイト（更新日2026年09月15日）", "url": "https://www.city.ono.hyogo.jp/kosodate_gakko/ikuji/hoikujo_kodomoen_yochien/3/6586.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べ（crawl）の令和8年度基準額表PDFの文字を読み、元のPDFで注記⑥の表の続きも確かめた。",
+  "read_at": "2026-11-01"
+}

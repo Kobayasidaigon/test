@@ -1,0 +1,54 @@
+{
+  "code": "113417",
+  "pref": "埼玉県",
+  "name": "滑川町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和８年度滑川町保育施設利用申込みの手引き」〔2025年10月20日作成、画像のPDF〕p.19「令和８年度滑川町利用者負担額徴収基準額表」。「令和９年度滑川町保育所利用申込みの手引き」〔2026年9月17日作成〕p.16 の令和9年度の表も同じ額）",
+  "period_note": "令和8年4月〜8月分は令和7年度、令和8年9月〜令和9年3月分は令和8年度の市町村民税所得割額で算出（年2回決定）。毎月1日に在籍していればその月分の保育料がかかり、日割りしない。婚姻・離婚の場合は翌月から変更。認可保育所・認定こども園の保育園部分・地域型保育給付施設は町内・町外や公立・私立に関わらず同じ計算。",
+  "tax_basis": "6%",
+  "tax_note": "原則として父母（事実婚含む）の市町村民税所得割額の合計額。「税額は税額控除前所得割額（調整控除後）を基に算定」。父母ともに非課税で同居の祖父母（別世帯を含む）がいる場合は、祖父母のいずれか収入の大きい方の市町村民税を参照。政令市ではないので6%とした。",
+  "table": {
+    "title": "令和８年度滑川町利用者負担額徴収基準額表",
+    "kind": "3歳未満（3号認定）・標準時間・第1子（月額）",
+    "rows": [
+      { "label": "①", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "②", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "③", "lower": null, "upper": null, "condition": "市町村民税均等割課税のみ世帯", "monthly": 6000, "monthly_second": null },
+      { "label": "④", "lower": 1, "upper": 27000, "condition": "市町村民税所得割 27,000円未満", "monthly": 7000, "monthly_second": null },
+      { "label": "⑤", "lower": 27000, "upper": 48600, "condition": "市町村民税所得割 48,600円未満", "monthly": 9000, "monthly_second": null },
+      { "label": "⑥", "lower": 48600, "upper": 97000, "condition": "市町村民税所得割 97,000円未満", "monthly": 21000, "monthly_second": null },
+      { "label": "⑦", "lower": 97000, "upper": 133000, "condition": "市町村民税所得割 133,000円未満", "monthly": 31500, "monthly_second": null },
+      { "label": "⑧", "lower": 133000, "upper": 169000, "condition": "市町村民税所得割 169,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "⑨", "lower": 169000, "upper": 200000, "condition": "市町村民税所得割 200,000円未満", "monthly": 41200, "monthly_second": null },
+      { "label": "⑩", "lower": 200000, "upper": 301000, "condition": "市町村民税所得割 301,000円未満", "monthly": 42000, "monthly_second": null },
+      { "label": "⑪", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割 397,000円未満", "monthly": 46000, "monthly_second": null },
+      { "label": "⑫", "lower": 397000, "upper": null, "condition": "市町村民税所得割 397,000円以上", "monthly": 47000, "monthly_second": null }
+    ],
+    "notes": "表の列は「短時間・標準時間」の順（短時間が先。画像で確かめた）。②非課税世帯の欄は空白だが、※1で0〜2歳児クラスの住民税非課税世帯は無償化。短時間の月額: ①② 0円、③ 5,800円、④ 6,800円、⑤ 8,800円、⑥ 20,700円、⑦ 31,200円、⑧ 32,600円、⑨ 40,800円、⑩ 41,500円、⑪ 45,400円、⑫ 46,300円。3歳・4歳以上（2号認定）は幼児教育・保育無償化事業で無償。※5 ひとり親世帯等、在宅障害児（者）のいる世帯、特に生活に困窮していると町長が認めた世帯は、別途、階層区分に応じて減免となる場合がある（額は書かれていない）。給食費: 3〜5歳は副食費（月5,100円まで）を新制度で免除し、町の給食費無償化事業で主食費などを上限月5,100円まで補助。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月6,000〜47,000円）。0円は生活保護世帯と住民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "※3: 小学校就学前の範囲において、特定教育・保育施設等を同時に利用する最年長の子どもから順に2人目は表の額の半額。※4: 市町村民税所得割額が57,700円未満の世帯は、2人目は表の額の半額、3人目以降は0円（兄弟等の年齢の上限なし＝household）。所得制限は書かれていない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "※6: 階層区分、兄弟姉妹の年齢にかかわらず、第3子以降の0歳児・1歳児・2歳児は利用者負担額が0円（滑川町多子世帯利用者負担額軽減事業。別途申請が必要で、対象と思われる人に個別に申請書を送付）。※3: 同時に利用する就学前の子の3人目以降は、県の補助事業が継続していた場合に限り0円（埼玉県の多子世帯保育料無償化支援事業と同じ仕組み）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和８年度滑川町保育施設利用申込みの手引き（PDF、画像のみ、p.18〜20「保育料について」「令和８年度滑川町利用者負担額徴収基準額表」）", "url": "https://www.town.namegawa.saitama.jp/material/files/group/5/R8tebiki.pdf" },
+    { "label": "令和9年度滑川町保育所利用申込みの手引き（PDF、p.15〜17、令和9年度の表）", "url": "https://www.town.namegawa.saitama.jp/material/files/group/5/hoikuennriyoutebiki.pdf" },
+    { "label": "令和8年度 年度途中の入所申し込みについて／滑川町（R8tebiki.pdf のリンク元）", "url": "https://www.town.namegawa.saitama.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/4022.html" },
+    { "label": "令和9年度保育所入所のご案内／滑川町（更新日2026年10月1日）", "url": "https://www.town.namegawa.saitama.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/4021.html" },
+    { "label": "保育所について／滑川町（更新日2026年10月1日）", "url": "https://www.town.namegawa.saitama.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/4647.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "令和8年度の手引き（R8tebiki.pdf）は文字が取れない画像のPDFだったので、pdftoppm で画像にして p.18〜20 を読んだ。"
+  ],
+  "notes": "",
+  "read_at": "2026-11-01"
+}

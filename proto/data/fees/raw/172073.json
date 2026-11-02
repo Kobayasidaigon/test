@@ -1,0 +1,50 @@
+{
+  "code": "172073",
+  "pref": "石川県",
+  "name": "羽咋市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（市の「市内児童の保育料・給食費・医療費は無料です」ページ、更新日2026年2月26日。令和6年4月からの市独自の無償化が続いている）",
+  "period_note": "令和6年4月から、市独自に保育料と小中学校の給食費を無償化（それまでの子ども医療費の無償化に加えて）。子どもの年齢・人数・保護者の所得に関わらず、市内に住む児童全員が対象。「※制度によっては一部料金が助成対象外となる場合もございます」の注記あり（何が対象外かはページに書いていない）。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は所得に関係なく無料なので、基準額表と所得割の定義は読んでいない（政令市ではないので6%とした）。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "市の「市内児童の保育料・給食費・医療費は無料です」: 令和6年4月から保育料を無償化。子どもの年齢・人数・保護者の所得に関わらず市内在住の児童全員が対象。「子育てに関する各種手当・助成」のページも「市内児童の保育料・給食費・医療費は完全無償です。所得制限はありません。」。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から所得制限なしで0円なので、きょうだいの数え方に関係なく無料（household は「数え方に関係なく0円」の意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "令和6年4月から市独自に小中学校の給食費を無償化（年齢・人数・所得を問わず市内在住の児童全員）。",
+    "source": { "label": "市内児童の保育料・給食費・医療費は無料です／羽咋市公式ホームページ", "url": "https://www.city.hakui.lg.jp/soshiki/shiminfukushibu/kodomo/2/7/17037.html" }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "羽咋市子育て応援金（出生）",
+      "amount": 100000,
+      "note": "令和5年4月1日以降に出生し、初めて住民登録される市町村が羽咋市の子。第1子10万円、第2子20万円、第3子30万円、第4子40万円、第5子以降50万円（amount は第1子）。他市町から転入した小学校就学前の子は1人2万円。",
+      "source": { "label": "羽咋市子育て応援金／羽咋市公式ホームページ（更新日2025年4月1日）", "url": "https://www.city.hakui.lg.jp/soshiki/shiminfukushibu/kodomo/3_1/894.html" }
+    },
+    {
+      "label": "羽咋市入学祝金",
+      "amount": 30000,
+      "note": "4月1日に羽咋市に住所があり、小学校に新1年生として入学する児童1人につき3万円。",
+      "source": { "label": "羽咋市入学祝金／羽咋市公式ホームページ（更新日2025年4月1日）", "url": "https://www.city.hakui.lg.jp/soshiki/shiminfukushibu/kodomo/2/new_topix/15208.html" }
+    }
+  ],
+  "sources": [
+    { "label": "市内児童の保育料・給食費・医療費は無料です／羽咋市公式ホームページ（更新日2026年2月26日）", "url": "https://www.city.hakui.lg.jp/soshiki/shiminfukushibu/kodomo/2/7/17037.html" },
+    { "label": "子育てに関する各種手当・助成／羽咋市公式ホームページ", "url": "https://www.city.hakui.lg.jp/kenkou_fukushi_kosodate/kosodate/17602.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "保育園・認定こども園の一覧ページ（/kenkou_fukushi_kosodate/kosodate/3/index.html）に保育料の表のページはない。基準額表（例規集）は無料のため探していない。"
+  ],
+  "notes": "0〜2歳の認可保育所・認定こども園の保育料は、所得・人数に関係なく0円。",
+  "read_at": "2026-11-01"
+}

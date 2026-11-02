@@ -1,0 +1,40 @@
+{
+  "code": "232122",
+  "pref": "愛知県",
+  "name": "安城市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2023年9月",
+    "until": null,
+    "note": "「安城市立小中学校に在籍する児童生徒の給食費を無償化します。手続きは必要ありません」「安城市立小中学校で、給食を喫食する児童生徒から給食費の徴収は行っていません」（2026年4月30日更新のページ）。令和8年度の案内文（令和8年4月13日までの申請の記載あり）も同じ。食物アレルギー等で給食を恒常的に欠食する児童生徒には、欠食数×給食単価（中学生380円）の補助金（申請が必要）。市立以外の小中学校に通う市内在住の子にも、申請により実食数×単価（中学生380円）を補助（上限は市立校での支給額）。期間の終わりの記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "市立小学校も同じく無償（給食費の徴収なし）。欠食者・市立以外の学校の在籍者への補助の単価は小学生330円。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "安城市「小中学校児童生徒学校給食費無償化事業について」（更新日 2026年4月30日）",
+      "url": "https://www.city.anjo.aichi.jp/manabu/gakko/kyusyoku/mushoka202309.html"
+    },
+    {
+      "label": "安城市「給食費無償化のご案内（安城市立小中学校）」（令和8年度の案内PDF）",
+      "url": "https://www.city.anjo.aichi.jp/manabu/gakko/kyusyoku/documents/4gatsuikou-r8annai-shinai-.pdf"
+    },
+    {
+      "label": "安城市 よくある質問「口座名目が『給食費』の引き落としとは？」（更新日 2024年9月2日。令和5年9月から給食費を無償）",
+      "url": "https://www.city.anjo.aichi.jp/manabu/gakko/kyusyoku/situmonkyusyokuhi.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "since はよくある質問の「令和5年9月から給食費を無償としている」による。下調べで集めた市のページ・PDFを読んだ（新たな取得なし）。",
+  "read_at": "2026-11-01"
+}

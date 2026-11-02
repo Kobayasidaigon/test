@@ -1,0 +1,43 @@
+{
+  "code": "124109",
+  "pref": "千葉県",
+  "name": "横芝光町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "広報よこしばひかり令和8年4月号の「令和8年度予算の主な事業」に「学校給食事務費（うち学校給食費負担金助成金）7,612万円 保護者の負担する給食費を全額助成します」。町のPRページ（2026年2月13日更新）にも「学校給食費無償化 小中学生の給食費無料」。始まった時期・所得などの条件の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ（小中学生の給食費無料・保護者の負担する給食費を全額助成）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "広報よこしばひかり 令和8年4月号 8ページ「令和8年度予算の主な事業を紹介」PDF",
+      "url": "https://www.town.yokoshibahikari.chiba.jp/uploaded/attachment/30175.pdf"
+    },
+    {
+      "label": "広報よこしばひかり 令和8年4月号（ページ別PDFの一覧）",
+      "url": "https://www.town.yokoshibahikari.chiba.jp/site/kouhou/28294.html"
+    },
+    {
+      "label": "横芝光町「夢を育む町、横芝光。」（2026年2月13日更新）",
+      "url": "https://www.town.yokoshibahikari.chiba.jp/soshiki/3/25787.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べに給食費の候補なし",
+    "教育課のページ（給食費の案内なし）"
+  ],
+  "notes": "",
+  "read_at": "2026-11-01"
+}

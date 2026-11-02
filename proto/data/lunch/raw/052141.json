@@ -1,0 +1,45 @@
+{
+  "code": "052141",
+  "pref": "秋田県",
+  "name": "にかほ市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "中学校の給食費を全員無償にするという記載は見つからなかった。市の「令和8年度 予算編成の概要」は、諸収入の減少の理由を「公立小学校における給食費の抜本的な負担軽減への対応による学校給食費納付金の減少」とするだけで、中学校の給食費の支援は主な事業にない。令和8年度の就学援助のリーフレットでは、中学校も「給食費 実費」が支給の対象（全員無償なら要らない費目）。これらからの判断で、中学校の給食費の額は分からない。"
+  },
+  "elem": {
+    "free": null,
+    "monthly": null,
+    "note": "令和8年度は国の負担軽減で学校給食費納付金が減る（予算編成の概要）。保護者負担が0円かは書かれていない（就学援助のリーフレットでは小学校も「給食費 実費」）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "にかほ市「令和8年度 予算編成の概要」PDF",
+      "url": "https://www.city.nikaho.akita.jp/material/files/group/51/R8_yosangaiyo.pdf"
+    },
+    {
+      "label": "にかほ市「令和8年度就学援助費リーフレット」PDF",
+      "url": "https://www.city.nikaho.akita.jp/material/files/group/33/R08leaflet.pdf"
+    },
+    {
+      "label": "にかほ市「就学援助制度について」（2025年12月1日更新）",
+      "url": "https://www.city.nikaho.akita.jp/soshikikarasagasu/gakkokyoikuka/hojokin_joseikin/1684.html"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べに給食費の候補なし",
+    "育児（小中学生）・学校教育課・教育総務課のページに給食費の案内なし",
+    "令和8年度当初予算書（款項だけで給食費の明細なし）",
+    "WebSearch 1回（竹原市・三好市と一緒）で就学援助のページだけ"
+  ],
+  "notes": "給食費の額の案内ページは見つからなかった。",
+  "read_at": "2026-11-01"
+}

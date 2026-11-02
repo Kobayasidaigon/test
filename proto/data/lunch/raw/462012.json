@@ -1,0 +1,43 @@
+{
+  "code": "462012",
+  "pref": "鹿児島県",
+  "name": "鹿児島市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "市の令和8年度当初予算の概要に、新規の「中学校給食費物価高騰対応事業」（1億3,617万4千円）として「中学校保護者の負担軽減を図るため、国からの物価高騰対応重点支援地方創生臨時交付金を活用し、中学校給食費相当額の一部を支援する」とある（市長定例記者会見 2026年2月10日も同じ）。全員の無償化・多子の無償化の記載はない。保護者が払う額（1食・月額）は市のページで見つからなかった。"
+  },
+  "elem": {
+    "free": "partial",
+    "monthly": null,
+    "note": "令和8年度当初予算の新規「小学校給食費負担軽減事業」は「小学校給食費の保護者負担を大幅に軽減するため、国・県からの給食費負担軽減交付金を活用し、小学校給食費の一部を支援する」とあり、全額無償とは書かれていない。保護者負担が残るか、いくらかは未確認。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "鹿児島市「令和8年度当初予算の概要」（PDF。小学校給食費負担軽減事業・中学校給食費物価高騰対応事業）",
+      "url": "https://www.city.kagoshima.lg.jp/kikakuzaisei/zaisei/zaisei/shise/yosan/jokyo/r7/documents/r8yosanangaiyo.pdf"
+    },
+    {
+      "label": "鹿児島市「令和8年2月10日（火曜日）市長定例記者会見」",
+      "url": "https://www.city.kagoshima.lg.jp/soumu/shichoshitu/kouhou/shise/shicho/kaiken/h30shicho/r80210.html"
+    },
+    {
+      "label": "鹿児島市「就学援助制度」（更新日 2026年10月1日。令和8年度も給食費は保護者が負担する実費を援助）",
+      "url": "https://www.city.kagoshima.lg.jp/kyoiku/kanri/kysoumu/kosodate/gakko/jose/shugakuenjo.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "市の「小・中学校」「各種奨学金・補助制度」「保健体育課の担当ページ一覧」に給食費の額のページなし",
+    "WebSearch（city.kagoshima.lg.jp）「鹿児島市 学校給食費 令和8年度 中学校 小学校 無償化」"
+  ],
+  "notes": "confidence の確認済は「中学校は全員の無償化ではなく、物価高騰分の一部支援」という扱いについて。中学校・小学校の保護者負担の額は未確認。令和8年度から学校給食センター受配校と桜島学校の給食費を公会計化（自校方式校は学校ごとの会計とみられる）。",
+  "read_at": "2026-11-01"
+}

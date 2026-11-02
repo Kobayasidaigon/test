@@ -1,0 +1,36 @@
+{
+  "code": "131199",
+  "pref": "東京都",
+  "name": "板橋区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2023年9月",
+    "until": null,
+    "note": "区立小・中学校給食費補助金制度（給食費無償化）。区立の小・中学校に在籍し給食を受ける児童・生徒の保護者が対象で、学校給食費相当（中学生 月額7,400円）を区が学校に補助する。保護者の委任の手続き（原則電子申請、在籍中は1回）が必要で、手続きがないと保護者負担になることがある。要綱は令和8年1月9日に改正し令和8年4月1日施行。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ制度で区立小学校も無償（補助の月額 1・2年5,510円、3・4年5,890円、5・6年6,460円）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "板橋区「板橋区立小・中学校給食費補助金制度（給食費無償化）について」（更新日 2026年8月5日）",
+      "url": "https://www.city.itabashi.tokyo.jp/kyoikuiinkai/gakko/kyushoku/1047382.html"
+    },
+    {
+      "label": "板橋区立小・中学校給食費補助金交付要綱（令和8年1月9日一部改正、令和8年4月1日施行、PDF）",
+      "url": "https://www.city.itabashi.tokyo.jp/_res/projects/default_project/_page_/001/047/382/r8youkou.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "終わりの時期の記載はない。",
+  "read_at": "2026-11-01"
+}

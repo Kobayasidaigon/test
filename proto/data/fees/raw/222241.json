@@ -1,0 +1,52 @@
+{
+  "code": "222241",
+  "pref": "静岡県",
+  "name": "菊川市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月分〜8月分は令和7年度、9月分〜3月分は令和8年度の保護者の市民税所得割課税額で決定（毎年9月が切り替え時期。令和8年度の利用案内）。年齢は4月1日現在。保育料は月額で、欠席や月の途中の退園でも変わらない。令和9年度の利用案内（2026年8月作成）に「参考 令和８年度保育認定使用料（保育料（０歳から２歳））」として載る表で、額は令和7年度の表・2021年の保育認定使用料のPDFと同じ。",
+  "tax_basis": "6%",
+  "tax_note": "入所希望児童の保護者（父母等）の市民税所得割課税額の合算で算定。父母のいずれかに所得割があれば同住所の祖父母などは算入しない。父母に課税がなく祖父母と同居の場合は祖父母（最も収入がある方）の課税状況で算定。市民税額は配当控除、外国税額控除、住宅取得(等)特別控除、住宅耐震改修特別控除、配当割、株譲渡割及び寄付金控除が控除される前の金額を用いる。令和8年度の利用案内には「定額減税反映後の市民税額を用いて算定」とある。未申告は最高額。",
+  "table": {
+    "title": "令和８年度保育認定使用料（保育料（０歳から２歳））",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "第１", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第２", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第３", "lower": 0, "upper": 24300, "condition": "24,300円未満（市民税所得割課税額）", "monthly": 10600, "monthly_second": null },
+      { "label": "第４", "lower": 24300, "upper": 48600, "condition": "48,600円未満", "monthly": 11000, "monthly_second": null },
+      { "label": "第５", "lower": 48600, "upper": 72800, "condition": "72,800円未満", "monthly": 21900, "monthly_second": null },
+      { "label": "第６", "lower": 72800, "upper": 97000, "condition": "97,000円未満", "monthly": 22700, "monthly_second": null },
+      { "label": "第７", "lower": 97000, "upper": 133000, "condition": "133,000円未満", "monthly": 35000, "monthly_second": null },
+      { "label": "第８", "lower": 133000, "upper": 169000, "condition": "169,000円未満", "monthly": 36400, "monthly_second": null },
+      { "label": "第９", "lower": 169000, "upper": 235000, "condition": "235,000円未満", "monthly": 44400, "monthly_second": null },
+      { "label": "第10", "lower": 235000, "upper": 301000, "condition": "301,000円未満", "monthly": 46100, "monthly_second": null },
+      { "label": "第11", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 50000, "monthly_second": null },
+      { "label": "第12", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 55000, "monthly_second": null }
+    ],
+    "notes": "rows は保育標準時間（11時間）の列。保育短時間（8時間）: 第３ 10,500、第４ 10,900、第５ 21,600、第６ 22,400、第７ 34,500、第８ 35,800、第９ 43,700、第10 45,400、第11 49,200、第12 54,100。第５の標準時間は表では「21.900円」（区切りが点）を21,900円と読んだ。ひとり親家庭世帯等（ひとり親家庭世帯・生活保護世帯・在宅障害児（者）のいる世帯など。書類の提出が必要な場合あり）の列: 第３ 標準5,300／短時間5,250、第４ 5,500／5,450、第５（72,800円未満）と「ひとり親家庭世帯等 77,101円未満」は9,000円。第３は均等割のみ課税（所得割0円）の世帯も含むとみて lower=0 とした。第2子の額の列はない（多子軽減で2人目は半額＝second_note）。3〜5歳児クラスは無償（給食費・教材費等は園が別に徴収）。保育料は市の条例で定められ公立・私立同額。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は表の額を負担（生活保護・市民税非課税は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "国の基準どおり: 小学校入学前までの間で保育園等に通園している兄弟姉妹がいる場合、最年長の児童から順に2人目は半額（令和8年度の利用案内。令和9年度の利用案内は「小学校入学前の兄姉のいる第２子の保育認定使用料は半額」）。所得制限なし。市民税所得割課税額57,700円未満（ひとり親家庭世帯等は77,101円未満）の世帯（世帯年収約360万円未満）は小学生以上の兄弟等も数える。所得割77,101円未満のひとり親家庭世帯等は年齢に関わらず第1子は表のひとり親の額、第2子以降は無料。大学進学等で別居中の兄姉がいる場合はこども政策課に知らせる。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "菊川市独自の軽減: 第1子・第2子の年齢や保護者の所得に関わらず第3子以降の保育認定使用料が無料（所得制限なし、上の子が通園しているかを問わない）。ただし第1子・第2子が社会人の場合は該当しない（扶養内を除く）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "菊川市／令和9年度保育園・認定こども園（保育部）・小規模保育事業所の入園手続き（2026年10月30日更新）", "url": "https://www.city.kikugawa.shizuoka.jp/kodomoseisaku/reiwa9nenndo.html" },
+    { "label": "令和9年度保育園・認定こども園（保育部）・小規模保育事業所の利用案内（PDF、6〜7ページに令和８年度保育認定使用料）", "url": "https://www.city.kikugawa.shizuoka.jp/kodomoseisaku/documents/riyouannnai.pdf" },
+    { "label": "菊川市／令和8年度保育園・認定こども園（保育部）・小規模保育事業所の入園手続き（2026年4月10日更新）", "url": "https://www.city.kikugawa.shizuoka.jp/kodomoseisaku/reiwa8nenndohoikumousikomi.html" },
+    { "label": "令和8年度保育園・認定こども園（保育部）・小規模保育事業所の利用案内（PDF、保育料の算定時期と令和7年度の表）", "url": "https://www.city.kikugawa.shizuoka.jp/kodomoseisaku/documents/r8siori.pdf" },
+    { "label": "（0歳～2歳児）保育認定使用料（保育園、認定こども園（保育園部分）、小規模保育事業所保育料）（PDF、2021年8月作成、同じ額）", "url": "https://www.city.kikugawa.shizuoka.jp/yojikyoiku/documents/shinhoikuninnteisiyouryou.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの候補（保育認定使用料のPDF）は2021年8月作成で年度の記載がなかったため、令和8年度・令和9年度の入園手続きのページの利用案内PDFを開いて、令和8年度の表（額は同じ）を確かめた。",
+  "read_at": "2026-11-01"
+}

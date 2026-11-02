@@ -11,18 +11,102 @@
     "title": "2026年度（令和８年度）保育料徴収基準表（保育認定）・副食費減免について　単価表１（基本単価一覧）【未満児（３号認定）】",
     "kind": "3歳未満・保育標準時間・第1子（「1人保育」の列、月額）",
     "rows": [
-      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": 0 },
-      { "label": "B2", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": 0 },
-      { "label": "C1", "lower": null, "upper": null, "condition": "市民税が均等割のみの世帯等", "monthly": 8300, "monthly_second": 0 },
-      { "label": "D1-2", "lower": 1, "upper": 48600, "condition": "市民税所得割課税額48,600円未満で上記以外の世帯", "monthly": 9050, "monthly_second": 0 },
-      { "label": "D2", "lower": 48600, "upper": 57700, "condition": "市民税所得割課税額48,600円以上57,700円未満の世帯", "monthly": 12950, "monthly_second": 0 },
-      { "label": "D3", "lower": 57700, "upper": 73000, "condition": "市民税所得割課税額57,700円以上73,000円未満の世帯", "monthly": 25900, "monthly_second": 12950 },
-      { "label": "D4", "lower": 73000, "upper": 97000, "condition": "市民税所得割課税額73,000円以上97,000円未満の世帯", "monthly": 28000, "monthly_second": 14000 },
-      { "label": "D5", "lower": 97000, "upper": 123000, "condition": "市民税所得割課税額97,000円以上123,000円未満の世帯", "monthly": 39900, "monthly_second": 19950 },
-      { "label": "D6", "lower": 123000, "upper": 169000, "condition": "市民税所得割課税額123,000円以上169,000円未満の世帯", "monthly": 42000, "monthly_second": 21000 },
-      { "label": "D7", "lower": 169000, "upper": 268000, "condition": "市民税所得割課税額169,000円以上268,000円未満の世帯", "monthly": 53900, "monthly_second": 26950 },
-      { "label": "D8", "lower": 268000, "upper": 301000, "condition": "市民税所得割課税額268,000円以上301,000円未満の世帯", "monthly": 56000, "monthly_second": 28000 },
-      { "label": "D9", "lower": 301000, "upper": null, "condition": "市民税所得割課税額301,000円以上の世帯", "monthly": 57000, "monthly_second": 28500 }
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "B2",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "C1",
+        "lower": null,
+        "upper": null,
+        "condition": "市民税が均等割のみの世帯等",
+        "monthly": 8300,
+        "monthly_second": 0
+      },
+      {
+        "label": "D1-2",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市民税所得割課税額48,600円未満で上記以外の世帯",
+        "monthly": 9050,
+        "monthly_second": 0
+      },
+      {
+        "label": "D2",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "市民税所得割課税額48,600円以上57,700円未満の世帯",
+        "monthly": 12950,
+        "monthly_second": 0
+      },
+      {
+        "label": "D3",
+        "lower": 57700,
+        "upper": 73000,
+        "condition": "市民税所得割課税額57,700円以上73,000円未満の世帯",
+        "monthly": 25900,
+        "monthly_second": 12950
+      },
+      {
+        "label": "D4",
+        "lower": 73000,
+        "upper": 97000,
+        "condition": "市民税所得割課税額73,000円以上97,000円未満の世帯",
+        "monthly": 28000,
+        "monthly_second": 14000
+      },
+      {
+        "label": "D5",
+        "lower": 97000,
+        "upper": 123000,
+        "condition": "市民税所得割課税額97,000円以上123,000円未満の世帯",
+        "monthly": 39900,
+        "monthly_second": 19950
+      },
+      {
+        "label": "D6",
+        "lower": 123000,
+        "upper": 169000,
+        "condition": "市民税所得割課税額123,000円以上169,000円未満の世帯",
+        "monthly": 42000,
+        "monthly_second": 21000
+      },
+      {
+        "label": "D7",
+        "lower": 169000,
+        "upper": 268000,
+        "condition": "市民税所得割課税額169,000円以上268,000円未満の世帯",
+        "monthly": 53900,
+        "monthly_second": 26950
+      },
+      {
+        "label": "D8",
+        "lower": 268000,
+        "upper": 301000,
+        "condition": "市民税所得割課税額268,000円以上301,000円未満の世帯",
+        "monthly": 56000,
+        "monthly_second": 28000
+      },
+      {
+        "label": "D9",
+        "lower": 301000,
+        "upper": null,
+        "condition": "市民税所得割課税額301,000円以上の世帯",
+        "monthly": 57000,
+        "monthly_second": 28500
+      }
     ],
     "notes": "表の列は保育標準時間・保育短時間それぞれ「1人保育」「2人保育」「3人以上保育」で、表の右に「子どもの人数は世帯で数える」とある（全階層にかかる括弧。画像で確かめた）。monthly は1人保育、monthly_second は2人保育の列。3人以上保育は全階層0円。保育短時間の1人保育／2人保育: C1 8,000／0、D1-2 8,750／0、D2 12,500／0、D3 25,000／12,500、D4 27,000／13,500、D5 38,500／19,250、D6 40,500／20,250、D7 52,000／26,000、D8 54,000／27,000、D9 55,000／27,500（A・B2は0円）。単価表2（ひとり親・障害世帯、所得割77,100円以下）: 標準時間の1人保育 C1-1 3,800、D1-1 3,900、D2 4,050、D3 4,050、D4（所得割77,100円以下）4,200（短時間 3,700／3,800／3,950／3,950／4,100）、2人以上保育は0円。所得割77,101円以上のひとり親・障害世帯は単価表1のとおり。3歳未満児の副食費は保育料に含まれる。"
   },
@@ -39,10 +123,22 @@
   "cash": [],
   "one_time": [],
   "sources": [
-    { "label": "保育料・副食費徴収基準表（PDF、2026年度（令和８年度）保育料徴収基準表（保育認定）・副食費減免について）", "url": "https://www.city.komoro.lg.jp/material/files/group/41/R8hoikuryou.pdf" },
-    { "label": "令和9年度 保育園等入園の申し込みについて／小諸市オフィシャルサイト（2026年9月10日更新）", "url": "https://www.city.komoro.lg.jp/official/kurashi_tetsuzuki/kosodate/hoikuen_yochien/4734.html" },
-    { "label": "令和9年度保育園等入園申込のご案内（PDF）", "url": "https://www.city.komoro.lg.jp/material/files/group/41/R9nyuuennannnai.pdf" },
-    { "label": "【認可外保育施設】小諸市保育料減免事業費補助金について|小諸市オフィシャルサイト（2025年10月1日更新）", "url": "https://www.city.komoro.lg.jp/soshikikarasagasu/hokenfukushibu/kodomokateisienka/1/3/5/9630.html" }
+    {
+      "label": "保育料・副食費徴収基準表（PDF、2026年度（令和８年度）保育料徴収基準表（保育認定）・副食費減免について）",
+      "url": "https://www.city.komoro.lg.jp/material/files/group/41/R8hoikuryou.pdf"
+    },
+    {
+      "label": "令和9年度 保育園等入園の申し込みについて／小諸市オフィシャルサイト（2026年9月10日更新）",
+      "url": "https://www.city.komoro.lg.jp/official/kurashi_tetsuzuki/kosodate/hoikuen_yochien/4734.html"
+    },
+    {
+      "label": "令和9年度保育園等入園申込のご案内（PDF）",
+      "url": "https://www.city.komoro.lg.jp/material/files/group/41/R9nyuuennannnai.pdf"
+    },
+    {
+      "label": "【認可外保育施設】小諸市保育料減免事業費補助金について|小諸市オフィシャルサイト（2025年10月1日更新）",
+      "url": "https://www.city.komoro.lg.jp/soshikikarasagasu/hokenfukushibu/kodomokateisienka/1/3/5/9630.html"
+    }
   ],
   "confidence": "確認済",
   "tried": [
@@ -50,5 +146,10 @@
     "きょうだいの数え方の確認に WebSearch（allowed_domains: city.komoro.lg.jp）「小諸市 保育料 多子 第2子 兄弟 数え方 年齢」→ 認可外保育施設の保育料減免補助金のページ"
   ],
   "notes": "表は1枚もので、pdftotext -layout と画像（110dpi で左右に分けて切り出し）で確かめた。数え方は表の「子どもの人数は世帯で数える」と認可外の補助金のページから household とした（認可保育所向けに数え方を詳しく書いたページは見つからなかった）。cash・one_time・給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "なし（形の点検。抜き取りの読み直しの対象ではなく、元の文書の取り直しはしていない）。JSONとして読めること、必要な項目と列挙値、区切りが所得割の小さい順にすき間・重なりなくつながること（D1-2 1円〜48,600円未満〜D9 301,000円以上、均等割のみの C1 は範囲なし）、condition の数字と lower・upper が合うこと、月額が階層の順に下がらず0〜150,000円の範囲にあること、monthly_second（2人保育）が D3 以上で1人保育の半額・57,700円未満で0円であること、notes の保育短時間の額が標準時間以下であることを確かめ、問題なし。政令市ではなく 6%。"
+  }
 }

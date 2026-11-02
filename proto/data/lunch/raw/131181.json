@@ -1,0 +1,38 @@
+{
+  "code": "131181",
+  "pref": "東京都",
+  "name": "荒川区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "区の「教育費の保護者負担軽減事業」で、区立小中学校の学校給食費は保護者に代わって区が負担（公費負担）。補助教材費・校外学習・移動教室・修学旅行の費用も同じ事業の対象。令和8年度の就学援助のページにも、区立小中学校に通う子は給食費が保護者負担軽減補助事業の対象なので就学援助から支給しない、とある。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "区立小学校も同じ保護者負担軽減事業で学校給食費を区が負担。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "荒川区「教育費の保護者負担軽減事業」（ページID 40955、更新日 2025年6月18日。対象費用に学校給食費）",
+      "url": "https://www.city.arakawa.tokyo.jp/a048/kyouiku-seishounen/kyouikushien/hogoshafutankeigen.html"
+    },
+    {
+      "label": "荒川区「就学援助（義務教育費用の援助）」（ページID 1183、更新日 2026年5月1日。令和8年度の申請。給食費は保護者負担軽減補助事業の対象なので就学援助から支給しない）",
+      "url": "https://www.city.arakawa.tokyo.jp/a048/kyouiku-seishounen/kyouikushien/shuugakuennjyo.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの候補は保育園のページだけだったので、区の分類ページ（教育・青少年育成・若者支援→教育・就学の支援）からたどった"
+  ],
+  "notes": "負担軽減事業のページは2025年6月の更新で年度の記載はないが、終わりの記載はなく、令和8年度の就学援助のページ（2026年5月更新）で給食費が引き続き区の負担であることを確かめた。いつから無償かは区のページで確かめられなかった（since は null）。区のサイトは接続が時々切れる（curl が 000 を返す）ので、取り直しが必要。",
+  "read_at": "2026-11-01"
+}

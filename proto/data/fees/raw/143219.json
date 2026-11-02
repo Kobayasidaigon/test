@@ -1,0 +1,63 @@
+{
+  "code": "143219",
+  "pref": "神奈川県",
+  "name": "寒川町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和9年度保育所等入所案内〔2026年9月〕p.20 の「令和８年度実績を掲載しています」とある表。令和8年度入所案内に載る「令和７年度実績」の表と額は同じ）",
+  "period_note": "毎年9月が保育料の切り替え月。令和8年4月から8月までの保育料は令和6年中の所得等にもとづく市町村民税（令和7年度分）、令和8年9月から翌年8月の保育料は令和7年中の所得等にもとづく市町村民税（令和8年度分）。0〜2歳児クラスは満3歳に達した以後最初の3月31日まで。教育・保育無償化の対象は満3歳になった後に迎える4月（3歳児クラス）から。",
+  "tax_basis": "6%",
+  "tax_note": "保育料算定に用いる所得割額＝（前年の所得金額−所得控除額）×所得割の税率（町民税6%）−調整控除額−税額調整措置の額。配当控除・住宅借入金等特別税額控除・寄付金・外国税額控除額、配当割額・株式等譲渡所得割額控除額などは引かない（税額通知書の所得割額に住宅借入金等特別税額控除やふるさと納税による寄付金控除の控除額を加えた額で確認するよう案内）。政令指定都市で課税されている場合は政令市以外での課税額に再計算して算定。扶養義務者（父母・同居のパートナー・同居の祖父母）の世帯の市町村民税で決まる。",
+  "table": {
+    "title": "１３．利用者負担金（保育料）について 徴収金基準額（月額・円）0～2歳児クラス（令和８年度実績）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯・里親世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "均等割額のみの世帯", "monthly": 6100, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 24300, "condition": "24,300円未満", "monthly": 7700, "monthly_second": null },
+      { "label": "C3", "lower": 24300, "upper": 48600, "condition": "24,300円以上48,600円未満", "monthly": 9500, "monthly_second": null },
+      { "label": "C4（57,700円未満）", "lower": 48600, "upper": 57700, "condition": "48,600円以上57,700円未満", "monthly": 13200, "monthly_second": null },
+      { "label": "C4（57,700円以上）", "lower": 57700, "upper": 60700, "condition": "57,700円以上60,700円未満", "monthly": 13200, "monthly_second": null },
+      { "label": "C5", "lower": 60700, "upper": 72800, "condition": "60,700円以上72,800円未満", "monthly": 16100, "monthly_second": null },
+      { "label": "C6（77,101円未満）", "lower": 72800, "upper": 77101, "condition": "72,800円以上77,101円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "C6（77,101円以上）", "lower": 77101, "upper": 84900, "condition": "77,101円以上84,900円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "C7", "lower": 84900, "upper": 97000, "condition": "84,900円以上97,000円未満", "monthly": 22000, "monthly_second": null },
+      { "label": "C8", "lower": 97000, "upper": 115000, "condition": "97,000円以上115,000円未満", "monthly": 27200, "monthly_second": null },
+      { "label": "C9", "lower": 115000, "upper": 133000, "condition": "115,000円以上133,000円未満", "monthly": 31000, "monthly_second": null },
+      { "label": "C10", "lower": 133000, "upper": 151000, "condition": "133,000円以上151,000円未満", "monthly": 34800, "monthly_second": null },
+      { "label": "C11", "lower": 151000, "upper": 169000, "condition": "151,000円以上169,000円未満", "monthly": 38600, "monthly_second": null },
+      { "label": "C12", "lower": 169000, "upper": 213000, "condition": "169,000円以上213,000円未満", "monthly": 44800, "monthly_second": null },
+      { "label": "C13", "lower": 213000, "upper": 257000, "condition": "213,000円以上257,000円未満", "monthly": 49200, "monthly_second": null },
+      { "label": "C14", "lower": 257000, "upper": 301000, "condition": "257,000円以上301,000円未満", "monthly": 53600, "monthly_second": null },
+      { "label": "C15", "lower": 301000, "upper": 349000, "condition": "301,000円以上349,000円未満", "monthly": 56400, "monthly_second": null },
+      { "label": "C16", "lower": 349000, "upper": 397000, "condition": "349,000円以上397,000円未満", "monthly": 59200, "monthly_second": null },
+      { "label": "C17", "lower": 397000, "upper": 445000, "condition": "397,000円以上445,000円未満", "monthly": 63600, "monthly_second": null },
+      { "label": "C18", "lower": 445000, "upper": null, "condition": "445,000円以上", "monthly": 66400, "monthly_second": null }
+    ],
+    "notes": "列は「0〜2歳児クラス: 保育標準時間・保育短時間」（それぞれ赤太枠のひとり親世帯等の額つき）と「きょうだいの数え方」。rows は保育標準時間の通常の額。第2子の額の列はないので monthly_second は null（第2子は表の金額〔赤太枠を除く〕の半額、第3子以降は0円）。保育短時間: A・B 0円、C1 5,900円、C2 7,500円、C3 9,300円、C4 12,900円、C5 15,800円、C6 18,600円、C7 21,600円、C8 26,700円、C9 30,400円、C10 34,200円、C11 37,900円、C12 44,000円、C13 48,300円、C14 52,600円、C15 55,400円、C16 58,100円、C17 62,500円、C18 65,200円。赤太枠（ひとり親世帯等の第1子、所得割77,101円未満、標準時間／短時間）: C1 2,550円／2,450円、C2 3,350円／3,250円、C3 4,250円／4,150円、C4 6,600円／6,450円、C5 8,050円／7,900円、C6（77,101円未満）9,000円／9,000円。ひとり親世帯等＝ひとり親世帯、在宅障害児（者）のいる世帯、要保護者等特に困窮していると町長が認めた世帯（均等割のみ又は所得割77,100円以下）。表の階層の境目はC4が57,700円、C6が77,101円で2行に分かれる（きょうだいの数え方の境目）。C2 の lower は C1（均等割のみ＝所得割0円）と分けるため1にした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は保育料の負担がある（標準時間で月0〜66,400円）。0円は生活保護世帯・里親世帯と市町村民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "国の基準どおり。世帯年収360万円以上相当（多子世帯 所得割合算額57,700円以上、ひとり親世帯等 77,101円以上）の世帯は、保育所等（認可保育所、地域型保育事業、幼稚園、認定こども園、認可外保育施設、特別支援学校幼稚部、児童発達支援等）を利用している最年長の子どもから順に数え、第2子は表の金額（赤太枠を除く）の半額。360万円未満相当（所得割合算額57,700円未満）の世帯は同居・別居を問わず生計が同一の子どもや孫等について最年長の子どもから順に数え、第2子は半額。ひとり親世帯等（所得割合算額77,101円未満）は第1子が赤太枠の額、第2子以降は0円。町が保育料を算定する施設以外を利用している上の子を数えるには在園証明書等の提出が必要。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "第3子以降は0円。数え方は第2子と同じ（所得割合算額57,700円以上は保育所等を利用している子で数え、57,700円未満は生計が同一の子で数える）。町独自の拡充は読んだ資料に書かれていない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和9年度保育所等入所案内（p.18〜20 保育料について・利用者負担金（保育料）について〔令和８年度実績〕）", "url": "https://www.town.samukawa.kanagawa.jp/material/files/group/56/hoikusyotonyusyoannai03.pdf" },
+    { "label": "令和9年度保育所等関連書類一式／寒川町ホームページ（更新日2026年09月28日）", "url": "https://www.town.samukawa.kanagawa.jp/soshiki/manabi/hoikuyochien/hoikuyochien/info/hoikujyoyoutiennnado/hoikujyonado/hoikusyotoukannrennsyoruiissiki/20840.html" },
+    { "label": "令和8年度保育所等入所案内（p.18〜20、令和７年度実績の表）", "url": "https://www.town.samukawa.kanagawa.jp/material/files/group/56/hoikusyotonyusyoannai02.pdf" },
+    { "label": "保育料について／寒川町ホームページ（更新日2024年03月22日）", "url": "https://www.town.samukawa.kanagawa.jp/soshiki/manabi/hoikuyochien/hoikuyochien/info/hoikujyoyoutiennnado/hoikujyonado/13989.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "保育料のページ（13989.html）の表は画像（R6_hoikuryou.png、令和6年度のもの）で、ページの更新日も2024年3月なので使わなかった"
+  ],
+  "notes": "令和8年度入所案内は「令和８年度以降は現在未定のため、令和７年度実績を掲載」、令和9年度入所案内は「令和９年度以降は現在未定のため、令和８年度実績を掲載」としており、両方の表の額は同じ。表は画像にして階層の行の区切り（C4・C6が2行に分かれること）を確かめた。中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,46 @@
+{
+ "code": "294012",
+ "pref": "奈良県",
+ "name": "高取町",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "保育料の表を読めていないため不明。",
+ "tax_basis": "6%",
+ "tax_note": "検索結果の抜粋（町のページ「保育所・認定こども園への入所（園）について」）: 保育料は父母の市町村民税の合計額と児童の年齢区分により決定（父母の収入の合計が基準を超えない場合は、祖父母等の扶養義務者を含めて算定することがある）。税額控除の扱いは未確認。政令市ではないので6%。",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳の第1子の額は確かめられなかった。町のページは「保育料は、父母の市町村民税の合計額と児童の年齢区分により決定」とし、軽減は「第2子以降無償化」とあるので第1子は有料の可能性が高いが、表を見ていないので null のままにした。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "仮置き（公式資料を開けず、検索結果の抜粋だけで読んだ）: 「令和6年度 主要施策に関する説明」（町のPDF）に「きょうだい同時入所の場合、町独自の軽減策として第２子の保育料を無償化しているが、他のきょうだいの年齢にかかわらず９月分の保育料から第２子の保育料を無償化する」とあり、町の入所ページには「第2子以降無償化リーフレット」（leaflet.pdf）と「第2子保育料の無償化について」へのリンクがある。上の子の年齢の上限・所得制限・対象施設の条件は未確認。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "仮置き: 「第2子以降無償化」の名前から第3子以降も0円とみた（未確認）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育所・認定こども園への入所（園）について（高取町、開けず。検索結果で確認）",
+   "url": "https://www.town.takatori.nara.jp/contents_detail.php?co=kak&frmId=81"
+  },
+  {
+   "label": "令和６年度 主要施策に関する説明 高取町（PDF、開けず。検索結果の抜粋で確認）",
+   "url": "https://www.town.takatori.nara.jp/cmsfiles/contents/0000002/2101/R6shuyosesaku.pdf"
+  },
+  {
+   "label": "高取町保育料徴収規則（例規集、開けず）",
+   "url": "https://www.town.takatori.nara.jp/reiki_int/reiki_honbun/k428RG00000174.html"
+  }
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "munis_by_pop.json の https://www.town.takatori.nara.jp/ は 408（「このページは表示できません」）。15秒あけて2回取り直したが408、/sitemap.html は接続失敗。www.town.takatori.lg.jp は接続失敗",
+  "WebSearch（allowed_domains: town.takatori.nara.jp）2回: 保育料徴収規則（/reiki_int/reiki_honbun/k428RG00000174.html）、入所ページ（contents_detail.php?co=kak&frmId=81）、保育料月額表（getsugakuhyou.pdf）・第2子以降無償化リーフレット（leaflet.pdf）・令和6年度主要施策PDF の存在が分かった",
+  "見つかったURLを curl で取ると入所ページ・PDF・主要施策PDFは408（15秒あけても同じ）、例規集のパスは www で404、www なしは証明書の名前が合わない。WebFetch は名前解決できない（この環境のネットワーク設定の外）",
+  "月額表PDFの置き場所を CMS の形（/cmsfiles/contents/0000000/81/getsugakuhyou.pdf）から1回試したが408"
+ ],
+ "notes": "町のサイトがこの環境から開けない（ボット対策か国外からの接続制限とみられる）。保育料の表は未確認。検索結果の抜粋に出た保育料徴収規則（昭和62年3月27日規則第6号）の別表の額（第3階層 3歳未満 6,800円など）は「2人以上の児童」の欄の可能性があり年度も不明なので使っていない。町内の施設名も未確認。",
+ "read_at": "2026-11-01"
+}

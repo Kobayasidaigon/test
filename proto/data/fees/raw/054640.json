@@ -1,0 +1,64 @@
+{
+ "code": "054640",
+ "pref": "秋田県",
+ "name": "東成瀬村",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「令和8年度 保育施設利用申込みのご案内」〔2025年12月作成〕）",
+ "period_note": "案内「5．すこやか子育て支援事業 保育料・給食費助成について」: 「子育て家庭を経済的に支援するため、秋田県と村が協力し、保育料と副食費（おかず等）を助成しています。なお、保育を必要とする方については、県事業では所得制限があり助成の対象とならない方でも、村では所得制限を撤廃し、独自ですべての方を対象に利用料を全額助成しています。また、東成瀬村独自で、主食費（ごはん等）も全額助成しています。」",
+ "tax_basis": "6%",
+ "tax_note": "保育料が全額助成のため、所得割の階層は実際の負担に関係しない（基準額の表は案内に載っていない）。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": null,
+ "first_child_free_note": "秋田県のすこやか子育て支援事業（所得制限あり）に村が上乗せし、保育を必要とする子（2号・3号）は所得制限なしで利用料を全額助成。第何子の条件はない。助成の方法（最初から0円か、払ったあとに戻るか）といつからかは書かれていない。なるせ保育園以外の施設（村外）は広域利用。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から保育料が無料なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料（同上）。",
+ "lunch_jh": null,
+ "cash": [
+  {
+   "label": "在宅赤ちゃん応援手当",
+   "per_child_yearly": 60000,
+   "max_age": 1,
+   "note": "村内に住む乳児を養育する保護者（村の保育料助成の支援を受けていない人に限る）に、1歳の誕生日が属する月の前月分まで月額5,000円。保育所に入所した場合は入所日が属する月の前月分まで。per_child_yearly は月額×12の目安（実際は1歳になるまで）。",
+   "source": {
+    "label": "在宅赤ちゃん応援手当について | 東成瀬村役場",
+    "url": "https://vill.higashinaruse.lg.jp/villager/parenting/shussankosodate/post-1393/"
+   }
+  }
+ ],
+ "one_time": [
+  {
+   "label": "子育て支援金（出生時・小学校入学時・中学入学時）",
+   "amount": 30000,
+   "note": "平成27年4月2日以降に生まれた子: 第1・2子は出生時と小学校入学時に各3万円、中学入学時（15歳に達する日以降最初の4月2日）に5万円。第3子以降は出生時と小学校入学時に各20万円、中学入学時に30万円。amount は第1子の出生時の額。",
+   "source": {
+    "label": "子育て支援金について | 東成瀬村役場",
+    "url": "https://vill.higashinaruse.lg.jp/villager/parenting/shussankosodate/post-1371/"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "令和8年度 保育施設利用申込みのご案内（PDF）",
+   "url": "https://vill.higashinaruse.lg.jp/wp-content/uploads/2026/02/a9613e114d6ce33f60498c1d3087ccf2.pdf"
+  },
+  {
+   "label": "保育施設の利用申請について（入所申し込み） | 東成瀬村役場",
+   "url": "https://vill.higashinaruse.lg.jp/villager/parenting/shussankosodate/post-1227/"
+  },
+  {
+   "label": "なるせ保育園 | 東成瀬村役場",
+   "url": "https://vill.higashinaruse.lg.jp/page-23497/"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べは公式サイトのトップ1ページだけだった（munis_by_pop.json の www.higashinaruse.com は vill.higashinaruse.lg.jp に転送される）。サイトマップ → 「出産・子育て」の記事一覧 → 「保育施設の利用申請について」の案内PDFで確かめた。"
+ ],
+ "notes": "村内の保育施設はなるせ保育園（社会福祉法人なるせ保育会、0歳〜就学前、定員50名、7:00〜19:00〔延長保育を含む〕、令和8年8月1日現在34人）。基準額の表は見つからなかった（全額助成のため）。秋田県の事業の所得制限の中身は確かめていない。",
+ "read_at": "2026-11-01"
+}

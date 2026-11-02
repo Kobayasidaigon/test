@@ -1,0 +1,175 @@
+{
+  "code": "392065",
+  "pref": "高知県",
+  "name": "須崎市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "4月〜8月の保育料は前年度課税額を基準として4月に決定・通知し、9月〜3月の保育料は現年度の課税額を基準として9月に決定・通知（令和8年度は4〜8月が令和7年度、9〜3月が令和8年度の市町村民税額）。表は「令和９年度 保育所入所案内」（2026年10月1日掲載）11ページの「令和８年度 利用者負担額一覧（参考）」。未申告などで住民税額が未確定の場合は最高階層。",
+  "tax_basis": "6%",
+  "tax_note": "児童の保護者の市町村民税所得割課税額で決定。祖父母などが同居（世帯が別でも同一住所の場合は同居とみなす）し世帯の生計を支えていると認められる場合や、保護者が扶養控除・専従者控除の対象になっている場合は、祖父母などの所得割課税額も算入。住宅ローン控除などの税額控除の扱いは案内に書かれていない。",
+  "table": {
+    "title": "令和８年度 利用者負担額一覧（参考）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護受給世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税のうち、均等割のみの課税世帯",
+        "monthly": 12400,
+        "monthly_second": null
+      },
+      {
+        "label": "D1",
+        "lower": 1,
+        "upper": 16000,
+        "condition": "市町村民税所得割課税世帯 課税額 16,000円未満",
+        "monthly": 15400,
+        "monthly_second": null
+      },
+      {
+        "label": "D2",
+        "lower": 16000,
+        "upper": 32000,
+        "condition": "課税額 16,000円以上 32,000円未満",
+        "monthly": 17400,
+        "monthly_second": null
+      },
+      {
+        "label": "D3",
+        "lower": 32000,
+        "upper": 48600,
+        "condition": "課税額 32,000円以上 48,600円未満",
+        "monthly": 19400,
+        "monthly_second": null
+      },
+      {
+        "label": "D4",
+        "lower": 48600,
+        "upper": 65000,
+        "condition": "課税額 48,600円以上 65,000円未満",
+        "monthly": 23400,
+        "monthly_second": null
+      },
+      {
+        "label": "D5",
+        "lower": 65000,
+        "upper": 80600,
+        "condition": "課税額 65,000円以上 80,600円未満",
+        "monthly": 27400,
+        "monthly_second": null
+      },
+      {
+        "label": "D6",
+        "lower": 80600,
+        "upper": 97000,
+        "condition": "課税額 80,600円以上 97,000円未満",
+        "monthly": 30000,
+        "monthly_second": null
+      },
+      {
+        "label": "D7",
+        "lower": 97000,
+        "upper": 125000,
+        "condition": "課税額 97,000円以上 125,000円未満",
+        "monthly": 35400,
+        "monthly_second": null
+      },
+      {
+        "label": "D8",
+        "lower": 125000,
+        "upper": 150000,
+        "condition": "課税額 125,000円以上 150,000円未満",
+        "monthly": 39400,
+        "monthly_second": null
+      },
+      {
+        "label": "D9",
+        "lower": 150000,
+        "upper": 169000,
+        "condition": "課税額 150,000円以上 169,000円未満",
+        "monthly": 44400,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 169000,
+        "upper": 235000,
+        "condition": "課税額 169,000円以上 235,000円未満",
+        "monthly": 52000,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "課税額 235,000円以上 301,000円未満",
+        "monthly": 54400,
+        "monthly_second": null
+      },
+      {
+        "label": "D12",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "課税額 301,000円以上 397,000円未満",
+        "monthly": 55400,
+        "monthly_second": null
+      },
+      {
+        "label": "D13",
+        "lower": 397000,
+        "upper": null,
+        "condition": "課税額 397,000円以上",
+        "monthly": 57000,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「月額保育料（０～２歳児）・保育標準時間」の列。保育短時間: C 12,000、D1 15,000、D2 17,000、D3 19,200、D4 23,000、D5 27,000、D6 29,600、D7 34,800、D8 38,600、D9 43,800、D10 51,000、D11 53,400、D12 54,200、D13 56,000（A・Bは0円）。ひとり親世帯、在宅障害者（児）のいる世帯などで特別認定となる世帯のうち所得階層がD5以下（D5は課税額77,100円未満が対象）の世帯（標準時間／短時間）: C 5,700／5,500、D1 7,200／7,000、D2 8,200／8,000、D3〜D5（課税額32,000円以上80,600円未満）9,000／9,000。0〜2歳児の副食費は保育料に含む。延長保育料は別（短時間の早朝500円、居残り30分ごと500円など）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（市町村民税非課税世帯は0円）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "①2人以上の子が保育所など（小規模保育、事業所内保育、幼稚園、認定こども園、特別支援学校幼稚部、児童デイサービスなどを含む）を同時に利用している場合は、同時利用の子のうち2人目以降の保育料が無料。②①に当たらなくても、18歳未満（4月1日時点）の子を2人以上養育している場合は、最年長の子から2人目以降の保育所などに入所している児童の保育料を申請により免除（須崎市に住所があること、保護者が市税・保育料を滞納していないことが条件。利用者負担額決定通知の日から20日以内に年度ごとに申請、遅れると翌月から）。所得制限は書かれていない。上の子の年齢上限は18歳未満（4月1日時点）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降の免除と同じ決まり（同時利用の2人目以降は無料、18歳未満の子を数えて2人目以降は申請で免除）なので、第3子以降も無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和９年度 保育所入所の案内｜須崎市（2026年10月1日掲載）",
+      "url": "https://www.city.susaki.lg.jp/life/detail.php?hdnKey=6102"
+    },
+    {
+      "label": "令和９年度　保育所入所案内（PDF、11〜12ページに令和8年度利用者負担額一覧と第2子以降の保育料軽減）",
+      "url": "https://www.city.susaki.lg.jp/download/?t=LD&id=6102&fid=44177"
+    },
+    {
+      "label": "第2子以降の利用者負担額（保育料等）を軽減します｜須崎市（2021年7月19日掲載）",
+      "url": "https://www.city.susaki.lg.jp/life/detail.php?hdnKey=1980"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表の列（保育標準時間・保育短時間）は画像で確かめた。公立保育所は吾桑・安和、私立はおひさま・上分・浦ノ内・須崎・あゆみ乳児保育園（あゆみは施設で徴収）。3〜5歳児の副食費は、徴収対象の世帯も公立保育所では徴収せず、私立・市外の保育所では保護者に補助金を交付。",
+  "read_at": "2026-11-01"
+}

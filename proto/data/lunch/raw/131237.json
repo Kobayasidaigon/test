@@ -1,0 +1,40 @@
+{
+  "code": "131237",
+  "pref": "東京都",
+  "name": "江戸川区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2023年9月",
+    "until": null,
+    "note": "区教育委員会の令和8年4月のお知らせ「令和８年度学校給食の運営について」に「令和８年度についても小中学校の給食無償化を実施いたします」とある。対象は区立小・中学校に在籍する児童・生徒の保護者。補助の単価は中学校1食400円（標準188回）。病気などで給食を食べられない子には、令和7年11月から給食費相当分を補助金で支給する。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度も区立小学校の給食費は無償（補助の単価は1食 低学年315円・中学年335円・高学年355円、標準191回）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "江戸川区「区立小学校・中学校の給食費無償化」（令和5年9月1日から実施）",
+      "url": "https://www.city.edogawa.tokyo.jp/kosodate/kyoiku/kyouiku/oshirase/mushouka.html"
+    },
+    {
+      "label": "江戸川区教育委員会「令和８年度学校給食の運営について」（令和8年4月、PDF）",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/18957/r8kyushokuhinokaitei.pdf"
+    },
+    {
+      "label": "江戸川区「保護者の皆様へ（令和8年4月）」（PDF）",
+      "url": "https://www.city.edogawa.tokyo.jp/documents/18957/hogoshanominasamahe.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "無償化は「江戸川区立小中学校及び幼稚園給食費無償化事業補助金」として区が給食費相当額を補助するしくみ（保護者は学校長への委任状を出す）。終わりの時期の記載はない。",
+  "read_at": "2026-11-01"
+}

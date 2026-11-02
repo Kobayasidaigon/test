@@ -1,0 +1,42 @@
+{
+  "code": "182044",
+  "pref": "福井県",
+  "name": "小浜市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "",
+  "lunch_jh": {
+    "free": false,
+    "note": "令和8年4月から小浜市立小学校の学校給食費は完全無償化（市が全額負担、申請不要）。中学校は一部公費負担を継続: 1か月の食材料費6,766円のうち1,066円を公費で支援し、保護者負担は月額5,700円（令和8年4月から公会計化、口座振替）。",
+    "source": { "label": "令和8年4月より小学校の学校給食費の無償化および中学校の一部公費負担を継続します | 小浜市公式ホームページ（最終更新日2026年4月1日）", "url": "https://www1.city.obama.fukui.jp/kosodate-kyoiku/kyoiku/p007126.html" }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育・子育て | 小浜市公式ホームページ（子育て情報は子育て支援情報サイト「すくすくおばまっ子」で公開中、と案内）", "url": "https://www1.city.obama.fukui.jp/kosodate-kyoiku/hoiku-kosodate/index.html" },
+    { "label": "子育て支援情報サイト「すくすくおばまっ子」（2026-11-01 時点で「緊急メンテナンスのお知らせ」）", "url": "https://www1.city.obama.fukui.jp/obm/kosodate/" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl）: 本サイト90ページを読んだが、保育園・保育料のページは子育て支援情報サイト「すくすくおばまっ子」（/obm/kosodate/）にあり、下調べの時点から「緊急メンテナンスのお知らせ」で候補の文書は0件",
+    "https://www1.city.obama.fukui.jp/obm/kosodate/ を開き直した → 「緊急メンテナンスのお知らせ」（PHPに関する重大なセキュリティ上の問題への対応で、メンテナンス期間中は利用できない）",
+    "本サイトの 保育・子育て（/kosodate-kyoiku/hoiku-kosodate/index.html）と 子育て支援情報サイト（/kosodate-kyoiku/hoiku-kosodate/kosodate/index.html）・目的別「入園・入学」（/purpose/nyuen/index.html）を開いた → 保育料の記事・文書へのリンクはなく、「すくすくおばまっ子」への案内だけ",
+    "WebSearch（allowed_domains: city.obama.fukui.jp、「小浜市 保育料 3歳未満 令和8年度 階層」）→ すくすくおばまっ子の中の文書が出た: 保育料の算定方法について（お知らせ）/obm/kosodate/wp-content/uploads/2022/08/ea6ae0ed8a1006b99ae4dd8e97ad9a58-1.pdf、保育料の軽減措置について /obm/kosodate/wp-content/uploads/2022/08/e1569815c19ea54fa4232ebb411de971.pdf、【注意事項】保育料の算定・軽減 /obm/kosodate/wp-content/uploads/2023/09/9428f8f945584790faeed959cb28acff.pdf、世帯状況の様式 /obm/kosodate/wp-content/uploads/2025/08/1bebb8dccb2db967c62e995679c1ca0a.pdf、ページ「保育園・認定こども園」/obm/kosodate/4355、「令和８年度副食費の負担軽減について」/obm/kosodate/6949",
+    "上の PDF（2023/09 と 2025/08）とページ /obm/kosodate/6949 を開いた → どれも404（メンテナンス中で配信されていない）",
+    "本サイトのトップから例規集（https://www1.g-reiki.net/obama/reiki_menu.html、利用者負担額の規則の別表を見るため）を開いた → 403 Forbidden で読めなかった"
+  ],
+  "notes": "子育て支援情報サイトのメンテナンスが終われば、上の tried の PDF（とくに「保育料の算定方法について（お知らせ）」「保育料の軽減措置について」と、令和8年度の入園案内）を読み直すこと。参考（未確認）: 検索結果の抜粋では、2022年8月の資料に「保育料は父母等の市民税所得割額と利用時間（標準時間/短時間）によって0円から51,200円の範囲」「市町村民税所得割額が169,000円未満の世帯における第2子の保育料は無料」「市町村民税所得割額が57,700円以上の世帯における第3子以降の保育料も無料」「4月分から8月分までは前年度、9月分から翌年3月分までは当年度の市町村民税額」とあるが、ファイルを開けず年度も古いので、上の項目には入れていない。現金給付・祝い金は探していない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

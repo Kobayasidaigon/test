@@ -1,0 +1,40 @@
+{
+  "code": "272272",
+  "pref": "大阪府",
+  "name": "東大阪市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2023年4月",
+    "until": null,
+    "note": "市立中学校・義務教育学校（後期）の給食費は、給食費を実質負担している生徒の保護者を対象に令和5年4月から「恒久的に無償化」（市の中学校給食概要のページ、更新日 2026年4月1日。給食費は1食420円）。令和8年度に給食費を改定したが、市のQ&A（更新日 2026年8月24日）で小中学校全学年で無償化を実施しているため保護者負担はないとしている。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "市立小学校・義務教育学校（前期）は令和7年4月から恒久的に無償化（給食費は1食 低学年305円・中学年330円・高学年355円）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "東大阪市「中学校給食概要」（更新日 2026年4月1日）",
+      "url": "https://www.city.higashiosaka.lg.jp/kosodate/0000023851.html"
+    },
+    {
+      "label": "東大阪市「子どもファースト事業予算の活用による学校給食の充実について」（更新日 2026年8月24日）",
+      "url": "https://www.city.higashiosaka.lg.jp/kosodate/0000045000.html"
+    },
+    {
+      "label": "東大阪市「東大阪市小学校給食の実施状況」",
+      "url": "https://www.city.higashiosaka.lg.jp/kosodate/0000004691.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "中学校給食は全員喫食（家庭弁当との選択制ではない）。",
+  "read_at": "2026-11-01"
+}

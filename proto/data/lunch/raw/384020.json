@@ -1,0 +1,44 @@
+{
+ "code": "384020",
+ "pref": "愛媛県",
+ "name": "砥部町",
+ "status": "partial",
+ "fiscal_year": "令和8年度",
+ "jh": {
+  "free": null,
+  "monthly": null,
+  "per_meal": null,
+  "yearly": null,
+  "since": null,
+  "until": null,
+  "note": "令和8年度の施政方針（広報とべ2026年4月号）は「小学校給食費の無償化」だけを挙げ、中学校の給食費には触れていない。令和8年度負担金・補助金・交付金一覧表にも中学校の給食費の補助はない。中学校の給食費の額・無償化の有無を書いた町のページは見つからなかった（学校給食センター運営委員の募集に「給食費およびその徴収」の審議があり、給食費の徴収は続いている）。"
+ },
+ "elem": {
+  "free": "all",
+  "monthly": 0,
+  "note": "令和8年度の施政方針で、次世代を担う子どもたちのために小学校給食費の無償化を進めるとしている（広報とべ2026年4月号）。開始時期・中身の詳しい説明ページは見つからなかった。"
+ },
+ "no_lunch_jh": false,
+ "sources": [
+  {
+   "label": "広報とべ 2026年4月号（256号）「令和8年度 施政方針と予算概要」PDF",
+   "url": "https://www.town.tobe.ehime.jp/material/files/group/1/koho202604_00.pdf"
+  },
+  {
+   "label": "砥部町「令和8年度負担金・補助金・交付金一覧表」（令和8年2月、企画財政課）PDF",
+   "url": "https://www.town.tobe.ehime.jp/material/files/group/4/r8_hojoichiran.pdf"
+  },
+  {
+   "label": "砥部町「学校給食センター」（更新日 2026年4月28日）",
+   "url": "https://www.town.tobe.ehime.jp/soshikikarasagasu/gakkoukyouikuka/1/474.html"
+  }
+ ],
+ "confidence": "推定",
+ "tried": [
+  "下調べの候補は保育所・幼稚園のページだけだった",
+  "とべ子育て応援サイトの学校・中学生・就学援助・中学校に入学するときのページ、学校教育課の学校給食の一覧（給食センター・献立表）を見たが給食費の額はなし",
+  "WebSearch（この組の1回目）で広報とべ2026年4月号の施政方針を見つけた"
+ ],
+ "notes": "中学校が無償でないかどうかは公式ページで確かめられていないため jh.free は null。小学校の無償化は施政方針の記載のみ。",
+ "read_at": "2026-11-01"
+}

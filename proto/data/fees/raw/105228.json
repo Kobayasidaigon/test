@@ -1,0 +1,58 @@
+{
+  "code": "105228",
+  "pref": "群馬県",
+  "name": "明和町",
+  "status": "partial",
+  "fiscal_year": "令和8年度（「明和こども園入園の手引き」〔PDF、2026年4月作成。ページの更新日2026年4月1日。「令和8年度より以上児の給食費は無償化」と書かれている〕の「明和町立明和こども園 利用者負担額について ３号（３歳未満児）認定」）",
+  "period_note": "手引きには4〜8月分と9〜3月分で使う税の年度の注記はない。児童の年齢は、教育・保育が行われた日の属する年度の初日の前日を基準日とし、その年度中は変えない（手引きの備考）。",
+  "tax_basis": "6%",
+  "tax_note": "表の定義は「町民税所得割の額の区分が次の区分に該当する世帯」。税額控除の扱いなどの注記は手引きにない（例規集 g-reiki は403で読めなかった）。政令市ではない。",
+  "table": {
+    "title": "明和町立明和こども園 利用者負担額について ３号（３歳未満児）認定",
+    "kind": "3号認定（3歳未満児）・第1子（月額。表は「3歳未満児」の1列だけで、標準時間・短時間の区別はない）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": null, "upper": null, "condition": "均等割額のみ課税世帯", "monthly": 6700, "monthly_second": null },
+      { "label": "第4階層", "lower": 1, "upper": 48600, "condition": "町民税所得割の額の区分が次の区分に該当する世帯 48,600円未満", "monthly": 10000, "monthly_second": null },
+      { "label": "第5階層", "lower": 48600, "upper": 97000, "condition": "48,600円以上 97,000円未満", "monthly": 12600, "monthly_second": null },
+      { "label": "第6階層", "lower": 97000, "upper": 133000, "condition": "97,000円以上133,000円未満", "monthly": 15200, "monthly_second": null },
+      { "label": "第7階層", "lower": 133000, "upper": 169000, "condition": "133,000円以上169,000円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "第8階層", "lower": 169000, "upper": 235000, "condition": "169,000円以上235,000円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "第9階層", "lower": 235000, "upper": 301000, "condition": "235,000円以上301,000円未満", "monthly": 38000, "monthly_second": null },
+      { "label": "第10階層", "lower": 301000, "upper": 349000, "condition": "301,000円以上349,000円未満", "monthly": 40500, "monthly_second": null },
+      { "label": "第11階層", "lower": 349000, "upper": 397000, "condition": "349,000円以上397,000円未満", "monthly": 43000, "monthly_second": null },
+      { "label": "第12階層", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 45000, "monthly_second": null }
+    ],
+    "notes": "表の列は「月額徴収基準額 ３歳未満児」の1列だけ（pdftoppm で画像にして確かめた）。第4階層の lower 1 は第3階層（均等割額のみ）と分けるため。表に第2子の列や、きょうだい・ひとり親世帯の軽減の注記はない。0〜2歳の保育は町立明和こども園（幼稚園と保育園を統合した施設）。一時預かり保育料は3歳未満児1回2,500円（給食費・おやつ代を含む）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3歳未満児）は生活保護・非課税世帯が0円、ほかは階層により月6,700〜45,000円。",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "町の資料（入園の手引き・こども園のページ・移住定住サイト）に第2子の決まりは書かれていなかった。利用者負担の規則は例規集（g-reiki）にあるとみられるが403で読めなかった。国の決まり（政令）では、就学前の子が同時に保育所等を利用するときの2人目は半額が上限なので、少なくともそれは当たる。移住定住サイトは保育料無料を「3～5歳/0～2歳の第3子以降」とだけ書いており、第2子の町独自の無償化は書かれていない。",
+  "third_child": "free",
+  "third_count": "unknown",
+  "third_note": "町の移住定住サイト（明和町の取り組み・子育て支援）に「保育料無料 3～5歳/0～2歳の第3子以降」とある。第3子の数え方（上の子の年齢・同時在園の要件）、所得制限、申請の要否は書かれていない。群馬県の第3子以降3歳未満児保育料免除事業費補助金（扶養している児童等が3人以上いる世帯の3人目以降、兄姉の年齢制限は県では定めない）と同じ形とみられるが、町の決まりは確かめられていない。",
+  "lunch_jh": { "free": true, "note": "移住定住サイトに「給食費無料 こども園・小・中学校 完全無償化！」とある（こども園の3歳以上児の給食費は令和8年度から無償化、入園の手引き）。", "source": { "label": "移住定住サイト／群馬県明和町（明和町の取り組み・子育て支援）", "url": "https://www.town.meiwa.gunma.jp/ijyuteijyu/index.html" } },
+  "cash": [],
+  "one_time": [
+    { "label": "出産祝い金", "amount": null, "note": "移住定住サイトに「出産祝い金 最大30万円」とある（第何子でいくらかの内訳・要件は読んでいない）。", "source": { "label": "移住定住サイト／群馬県明和町（明和町の取り組み・妊娠・出産支援）", "url": "https://www.town.meiwa.gunma.jp/ijyuteijyu/index.html" } }
+  ],
+  "sources": [
+    { "label": "明和こども園入園の手引き／群馬県明和町（更新日2026年4月1日）", "url": "https://www.town.meiwa.gunma.jp/life/kosodate_kyoiku/6/4600.html" },
+    { "label": "明和こども園入園の手引き（PDF、p.2 利用者負担額について ３号（３歳未満児）認定）", "url": "https://www.town.meiwa.gunma.jp/material/files/group/12/meiwakodomoenntebiki.pdf" },
+    { "label": "移住定住サイト／群馬県明和町（保育料無料 3～5歳/0～2歳の第3子以降、給食費無料）", "url": "https://www.town.meiwa.gunma.jp/ijyuteijyu/index.html" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの docs は空。pages の「明和こども園入園の手引き」のページから手引き（PDF）を取り、保育料の表を読んだ。入園申込書・支給認定申請書（PDF）と「明和町立 明和こども園」のページにきょうだいの決まりはなかった。",
+    "子育て支援・こども支援・育児のサポートの一覧と子育てサイトのトップに、保育料の多子軽減のページはなかった。",
+    "公式サイトの例規集 https://www1.g-reiki.net/meiwa/reiki_menu.html は 403 Forbidden（ヘッダーを偽ってすり抜けることはしていない）。",
+    "WebSearch（town.meiwa.gunma.jp に限定、「明和町 こども園 保育料 第2子 第3子 無料 多子」）で移住定住サイトの「保育料無料 3～5歳/0～2歳の第3子以降」を見つけた。第2子の決まりは出てこなかった。",
+    "広報めいわ 令和8年9月号（9年度明和こども園入園希望の申し込み）と4月号に、保育料やきょうだいの決まりは書かれていなかった。"
+  ],
+  "notes": "表は令和8年度の手引きで読めたが、きょうだいの決まり（第2子）と第3子無料の数え方が町の資料で確かめられないので status は partial、confidence は推定。人の手で例規集（利用者負担の規則の別表と備考）を確かめる必要がある。",
+  "read_at": "2026-11-01"
+}

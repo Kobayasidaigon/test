@@ -1,0 +1,42 @@
+{
+ "code": "014877",
+ "pref": "北海道",
+ "name": "天塩町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（町のページ「天塩町認定こども園『おひさま』」、ページ更新日2026年04月08日、令和8年度の年間行事予定を掲載）",
+ "period_note": "町のページ「保育料」: 「0歳児～2歳児（令和4年4月より） 天塩町の独自施策として、子育て家庭の経済的負担の軽減と、子どもが健やかに生まれ育つ環境づくりのため、0歳児から2歳児までの保育料を無料としております。3歳児～5歳児（令和元年10月より） 国の制度により保育料が無償化されています。」",
+ "tax_basis": "6%",
+ "tax_note": "0〜2歳児の保育料が全員無料のため、所得割による階層は保育料に関係しない（保育料の表は掲載されていない）。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2022年4月",
+ "first_child_free_note": "町の独自施策（令和4年4月から）で0歳児から2歳児までの保育料を無料。認定こども園おひさまの入園条件は天塩町に住民登録があること・生後6か月から小学校就学前。所得制限・第何子の条件の記載はない。町内には雄信内へき地保育所もある（保育料の記載は見当たらない）。時間外保育（7時30分〜、18時30分まで）の料金の記載はない。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から0〜2歳児の保育料が無料なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料（同上）。",
+ "lunch_jh": {
+  "free": true,
+  "note": "天塩町 子ども・子育て応援ガイド（令和7年4月現在）の「03 小・中学生」に「給食費 無料」とある。令和8年度も続いているかは確かめていない。",
+  "source": {"label": "天塩町 子ども・子育て応援ガイド（PDF、令和7年4月現在）", "url": "https://www.teshiotown.hokkaido.jp/wp-content/uploads/2025/04/7831438575908b096a99e85d74a4a4a5.pdf"}
+ },
+ "cash": [],
+ "one_time": [
+  {"label": "出産準備金", "amount": 100000, "note": "子ども・子育て応援ガイド（令和7年4月現在）「01 妊娠・出産」。", "source": {"label": "天塩町 子ども・子育て応援ガイド（PDF、令和7年4月現在）", "url": "https://www.teshiotown.hokkaido.jp/wp-content/uploads/2025/04/7831438575908b096a99e85d74a4a4a5.pdf"}},
+  {"label": "出産祝金（第1子）", "amount": 300000, "note": "出産1年後に支給。第2子40万円、第3子以降50万円（子ども・子育て応援ガイド、令和7年4月現在）。", "source": {"label": "天塩町 子ども・子育て応援ガイド（PDF、令和7年4月現在）", "url": "https://www.teshiotown.hokkaido.jp/wp-content/uploads/2025/04/7831438575908b096a99e85d74a4a4a5.pdf"}},
+  {"label": "出産祝金（第2子）", "amount": 400000, "note": "出産1年後に支給（同上）。", "source": {"label": "天塩町 子ども・子育て応援ガイド（PDF、令和7年4月現在）", "url": "https://www.teshiotown.hokkaido.jp/wp-content/uploads/2025/04/7831438575908b096a99e85d74a4a4a5.pdf"}},
+  {"label": "出産祝金（第3子以降）", "amount": 500000, "note": "出産1年後に支給（同上）。", "source": {"label": "天塩町 子ども・子育て応援ガイド（PDF、令和7年4月現在）", "url": "https://www.teshiotown.hokkaido.jp/wp-content/uploads/2025/04/7831438575908b096a99e85d74a4a4a5.pdf"}},
+  {"label": "天塩高校 入学奨励金", "amount": 50000, "note": "子ども・子育て応援ガイド（令和7年4月現在）「04 高校生〜」。対象の条件は書かれていない。", "source": {"label": "天塩町 子ども・子育て応援ガイド（PDF、令和7年4月現在）", "url": "https://www.teshiotown.hokkaido.jp/wp-content/uploads/2025/04/7831438575908b096a99e85d74a4a4a5.pdf"}}
+ ],
+ "sources": [
+  {"label": "天塩町認定こども園「おひさま」 – 北海道天塩町（ページ更新日2026年04月08日）", "url": "https://www.teshiotown.hokkaido.jp/?page_id=715"},
+  {"label": "子ども・子育て応援ガイド – 北海道天塩町（ページ更新日2026年02月06日）", "url": "https://www.teshiotown.hokkaido.jp/?page_id=22854"},
+  {"label": "天塩町 子ども・子育て応援ガイド（PDF、令和7年4月現在）", "url": "https://www.teshiotown.hokkaido.jp/wp-content/uploads/2025/04/7831438575908b096a99e85d74a4a4a5.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "町内の施設は天塩町認定こども園「おひさま」（生後6か月から就学前、平常保育8時〜16時、時間外保育7時30分〜18時30分）と雄信内へき地保育所。0〜2歳児の保育料は令和4年4月から町独自に無料なので table は null。応援ガイドのPDFは日本語フォントが埋め込まれておらず pdftotext・pdftoppm では読めないため、pypdfium2 で画像にして読んだ。紙おむつ等ごみ袋支給（3歳未満）、子ども医療費無料（18歳まで）もガイドにある。",
+ "read_at": "2026-11-01"
+}

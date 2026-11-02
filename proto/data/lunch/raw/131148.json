@@ -1,0 +1,48 @@
+{
+  "code": "131148",
+  "pref": "東京都",
+  "name": "中野区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2024年4月",
+    "until": null,
+    "note": "区のページ（2026年5月19日更新）に「令和8年度は、保護者負担軽減のため、区が中野区立小・中学校に在籍する児童・生徒の保護者に対し、保護者が支払う学校給食費を補助しています」とある（令和8年度1食単価 中学校480円）。「全額」「無償」の文字はないが、(1) 令和8年度当初予算に「学校給食の保護者負担軽減」10億1,522万2千円（東京都公立学校給食費負担軽減事業で都が2分の1補助）、(2) 区立学校に在籍しない子や区立学校で給食を一切食べていない子の保護者に「令和8年度の給食費相当分」として中学生1人年86,000円（小学生68,000円）を給付、(3) 令和6年度予算案では「区立小・中学校の給食費を全額補助（保護者から給食費を徴収しません）」としていた、ことから保護者負担は0円と判断した。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "中学校と同じく令和8年度は区が保護者の学校給食費を補助（1食単価 低学年350円・中学年380円・高学年410円）。区立学校以外の小学生などへの給食費相当分の給付は年68,000円。0円の明記はなく中学校と同じ判断。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "中野区「中野区の学校給食について」（ページID 151749046、更新日 2026年5月19日。給食費）",
+      "url": "https://www.city.tokyo-nakano.lg.jp/kosodate/kosodatesite_ohirune/mokuteki/gakko/gakkou/gakkokyusyoku.html"
+    },
+    {
+      "label": "中野区「中野区私立学校等保護者支援給付金事業の実施」（ページID 855404259、更新日 2026年10月30日。令和8年度の給食費相当分の給付）",
+      "url": "https://www.city.tokyo-nakano.lg.jp/kosodate/kosodatesite_ohirune/nenreibetsu/kodomo/teate_zyosei/shiritugakkotoukyufukin_.html"
+    },
+    {
+      "label": "中野区「令和８年度（２０２６年度）予算説明書補助資料」（学校給食の保護者負担軽減 1,015,222千円、都補助 1/2、PDF）",
+      "url": "https://www.city.tokyo-nakano.lg.jp/kusei/zaisei/yosan/R8yosan.files/r8hojo_tosho2.pdf"
+    },
+    {
+      "label": "中野区「令和６（２０２４）年度中野区当初予算案 区長記者会見資料」（2024年2月1日。令和６年度は区立小・中学校の給食費を全額補助、保護者から給食費を徴収しない。PDF）",
+      "url": "https://www.city.tokyo-nakano.lg.jp/kusei/public/houdou/2024/yosanan.files/R6yosanankisyakaikensiryou.pdf"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの機械収集には給食費の候補がなかった。教育委員会の学校給食ページ（kyusyoku/index.html・kyusyoku.html）には給食費の記載がなく、子育てサイトの「中野区の学校給食について」で見つけた",
+    "学務課・教育委員会のお知らせ・就学援助のページ（令和8年度の就学援助では区立校の給食費も実費支給の費目に残っている）を見たが「全額」「無償」と書いたページは見つからなかった",
+    "WebSearch（allowed_domains: city.tokyo-nakano.lg.jp）を1回使い、令和8年度予算の補助資料を開いた（令和8年度当初予算の概要PDFには給食費の記載なし）"
+  ],
+  "notes": "保護者負担0円は複数の令和8年度の公式資料からの判断で、0円と書いた文は見つけていないため confidence は推定。区立学校の教育に関する費用負担補助（2026年3月6日更新）で令和8年度から教材費・校外活動費・移動教室費・修学旅行費も原則区が補助（給食費とは別の制度）。",
+  "read_at": "2026-11-01"
+}

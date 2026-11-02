@@ -1,0 +1,46 @@
+{
+  "code": "041009",
+  "pref": "宮城県",
+  "name": "仙台市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": 345,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "中学校・中等教育学校の給食費は令和2年4月改定の1食345円のまま（市のページで最新の改定は令和2年4月1日。令和4年度以降は物価上昇分を市が国の交付金も使って補填し、保護者負担を増やしていない）。令和8年度の完全無償化は小学校だけで、中学校の無償化・一部無償の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年4月から、国等から交付される額の不足分を市が負担して小学校（特別支援学校小学部を含む）の給食費を完全無償化。口座振替の手続きも不要。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "仙台市「令和8年度から市立小学校において学校給食費を完全無償化します」（更新日 2026年1月30日。これまでの学校給食費改定〈令和2年4月1日改定〉、物価上昇分の市の補填）",
+      "url": "https://www.city.sendai.jp/kyushokukanri/kyuusyokuhikaitei.html"
+    },
+    {
+      "label": "仙台市「小学校における学校給食費の完全無償化について」（PDF）",
+      "url": "https://www.city.sendai.jp/kyushokukanri/documents/20260130_musyouka.pdf"
+    },
+    {
+      "label": "仙台市教育委員会「学校給食費について（小・中・中等教育・特別支援学校用）」（令和2年3月。令和2年4月から中学校1食345円）",
+      "url": "https://www.city.sendai.jp/kyushokukanri/documents/syoutyuusyuuti.pdf"
+    },
+    {
+      "label": "仙台市「学校給食の概要」（更新日 2026年8月31日。令和8年5月1日現在、中学校64校で完全給食）",
+      "url": "https://www.city.sendai.jp/kyushokune/kurashi/manabu/kyoiku/inkai/kanren/kyushoku/kyushoku/gaiyo.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの機械収集は保育のページだけで給食の候補がなかったので、トップ→仙台市教育委員会→学校教育関連情報の順に開いた"
+  ],
+  "notes": "中学校の1食345円は令和2年3月の通知の額で、令和8年度の額として書いたページはない（市のページで令和2年4月より後の改定はなく、物価上昇分は市が補填と説明）。月額・年額の記載はない。",
+  "read_at": "2026-11-01"
+}

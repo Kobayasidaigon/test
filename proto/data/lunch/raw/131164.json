@@ -1,0 +1,36 @@
+{
+  "code": "131164",
+  "pref": "東京都",
+  "name": "豊島区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": 0,
+    "since": "2023年9月",
+    "until": null,
+    "note": "令和5年9月以降、区立小・中学校に在籍する児童・生徒の学校給食費（食材費）を無償化（保護者の申請は不要）。2026年10月13日更新の区のページで現在も無償化していると記載。区立以外の小中学校に通う就学援助の認定者には実費相当額を支給。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和5年9月以降、区立小学校の学校給食費（食材費）も無償（申請不要）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "豊島区「学校給食の概要」（学校給食費の無償化。更新日 2026年10月13日）",
+      "url": "https://www.city.toshima.lg.jp/354/kosodate/gakko/sho-chu/kyushoku/003915.html"
+    },
+    {
+      "label": "豊島区「就学援助費・奨励費」（区立小中学校給食費無償化に伴い給食費の支給なし。更新日 2026年8月3日）",
+      "url": "https://www.city.toshima.lg.jp/353/kosodate/gakko/teate/005900.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "ページに「令和8年度」の文字はないが、2026年10月に更新された区のページが無償化の継続を現在形で書いている。東京都の給食費負担軽減事業の対象区。",
+  "read_at": "2026-11-01"
+}

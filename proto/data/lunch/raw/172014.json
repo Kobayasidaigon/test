@@ -1,0 +1,38 @@
+{
+  "code": "172014",
+  "pref": "石川県",
+  "name": "金沢市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": 293,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "全員の無償化はない。中学校の保護者負担は1食293円（平成26年4月から据え置き。令和4年度から食材費の高騰分を市が全額負担）。年間分（1食の額×年間喫食予定数）を5期に分けて口座振替。就学援助・生活保護の認定者は市が負担。中学校は家庭の弁当と学校給食を選べる選択制。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度1学期（2026年4月）から市立小学校の給食費を無償化。国・県の交付金の基準額を上回る食材費を市が負担し、児童分の給食費をすべて公費でまかなう。"
+  },
+  "no_lunch_jh": true,
+  "sources": [
+    {
+      "label": "金沢市「学校給食費について」（教育総務課。小学校の無償化、中学校の給食費の一部助成）",
+      "url": "https://www4.city.kanazawa.lg.jp/soshikikarasagasu/kyoikusomuka/gyomuannai/2_1/18233.html"
+    },
+    {
+      "label": "金沢市「金沢市の学校給食について」PDF（令和8年4月1日現在。1食あたり単価 小学校0円・中学校293円、中学校は選択制）",
+      "url": "https://www4.city.kanazawa.lg.jp/material/files/group/83/R8kyusyoku.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "給食費のページには中学校の1食の額がなく、「金沢市の学校給食とは」のページのPDFで額を確認"
+  ],
+  "notes": "no_lunch_jh は、中学校が弁当との選択制（完全給食の実施率は100％）のため true にした。年額は年間喫食予定数が分からないので null。",
+  "read_at": "2026-11-01"
+}

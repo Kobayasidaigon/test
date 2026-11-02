@@ -1,0 +1,40 @@
+{
+  "code": "382019",
+  "pref": "愛媛県",
+  "name": "松山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": 6900,
+    "per_meal": 300,
+    "yearly": null,
+    "since": "2026年9月",
+    "until": "2026年10月",
+    "note": "全員の無償化はない（市のQ&A「今回の無償化の対象は小学校のみ」）。令和8年度の中学校の学校給食費は1食390円のうち保護者負担300円（食材価格の上昇分90円を国の重点支援地方交付金などで市が負担し、令和5年度から据え置き）。毎月23食分の定額 6,900円を第1〜6期に徴収し、第7〜9期で提供食数に合わせて精算。期間限定で、令和8年9月分（第4期）と10月分（第5期）の2か月だけ中学校給食費を無償化（国の令和8年度補正予算で追加交付された重点支援地方交付金を使う市独自の措置、手続き不要、2か月で約18,000円の軽減）。since・until はこの2か月の無償の期間。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年4月から、国と県の交付金（基準額 月5,200円）に市独自の支援を加えて、市立小学校の学校給食費を完全無償化。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "松山市「学校給食費について」（更新日 2026年10月19日）",
+      "url": "https://www.city.matsuyama.ehime.jp/kurashi/kosodate/kyuusyoku/gakkoukyuusyokuhi.html"
+    },
+    {
+      "label": "松山市「中学校の給食費を2カ月無償にします」（チラシ、PDF）",
+      "url": "https://www.city.matsuyama.ehime.jp/kurashi/kosodate/kyuusyoku/gakkoukyuusyokuhi.files/chugakumusyouka.pdf"
+    },
+    {
+      "label": "松山市 給食費無償化に関するQ&A（PDF）",
+      "url": "https://www.city.matsuyama.ehime.jp/kurashi/kosodate/kyuusyoku/gakkoukyuusyokuhi.files/qa.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "",
+  "read_at": "2026-11-01"
+}

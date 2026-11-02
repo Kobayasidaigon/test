@@ -1,0 +1,42 @@
+{
+  "code": "131075",
+  "pref": "東京都",
+  "name": "墨田区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": 0,
+    "since": "2023年10月",
+    "until": null,
+    "note": "物価高騰対策と子どもの育ちの支援として、墨田区立小・中学校に通う児童・生徒の学校給食費の徴収を令和5年10月分から「当面の間」免除（手続き不要）。令和8年度の就学援助の支給費目一覧でも給食費は「学校給食費徴収免除のため支給なし」。私立・国立などに通う子には令和8年度も1人あたり小学生5万円・中学生6万円の私立学校就学者等支援金がある（令和8年10月1日に区に住民登録がある人）。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "区立小学校も令和5年10月分から給食費の徴収を免除（当面の間、手続き不要）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "墨田区「学校給食費の徴収免除」（令和5年10月分から当面の間。更新日 2023年10月2日）",
+      "url": "https://www.city.sumida.lg.jp/kosodate_kyouiku/kyouiku/school/gk/gktou/choushumenjo.html"
+    },
+    {
+      "label": "墨田区「支給費目一覧（令和8年度）」（就学援助。給食費は学校給食費徴収免除のため支給なし）",
+      "url": "https://www.city.sumida.lg.jp/kosodate_kyouiku/kyouiku/school/syuugaku_enjo/shuugakuennjo.files/88888888888888888888888888.pdf"
+    },
+    {
+      "label": "墨田区「私立学校就学者等支援金」（令和8年度。更新日 2026年8月24日）",
+      "url": "https://www.city.sumida.lg.jp/kosodate_kyouiku/kyouiku/school/gk/gktou/shiritsu.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの機械巡回では見つからず（放射性物質検査のページばかり）。子育て・教育＞教育＞学校教育＞学校給食＞学校給食費等からたどった"
+  ],
+  "notes": "免除のページ自体は2023年のものだが「当面の間」とあり、令和8年度の就学援助の資料で免除が続いていることを確かめた。",
+  "read_at": "2026-11-01"
+}

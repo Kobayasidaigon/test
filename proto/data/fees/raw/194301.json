@@ -1,0 +1,36 @@
+{
+  "code": "194301",
+  "pref": "山梨県",
+  "name": "富士河口湖町",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "富士河口湖町公式ホームページ（2026-11-01 時点で「ただいまメンテナンス中です」、すべてのページが同じ表示）", "url": "https://www.town.fujikawaguchiko.lg.jp/" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl）はトップページ1枚だけで、候補の文書は0件",
+    "https://www.town.fujikawaguchiko.lg.jp/ を開いた → 「メンテナンスのお知らせ」（システムの安全向上およびセキュリティ対応のため公開を一時停止、ウェブサイトの閲覧およびすべての関連サービスが利用できない）。/robots.txt などほかのパスもトップに転送されて同じ表示",
+    "旧ドメイン https://www.town.fujikawaguchiko.yamanashi.jp/ → 接続できなかった",
+    "WebSearch（allowed_domains: town.fujikawaguchiko.lg.jp、「富士河口湖町 保育料 3歳未満 階層 所得割」）→ 候補: ふじかわぐちこ子育て応援事業について /ka/info.php?if_id=6510、【子育て支援】保育所・幼稚園・認定こども園の利用について /ka/info.php?if_id=6144、保育所等の申請に関するよくある質問 Q&A /ka/info.php?if_id=6321、幼児教育・保育の無償化について /ka/info.php?if_id=5675、町内保育所・保育施設のご案内 /info/info.php?if_id=549、子育て支援課 /ka/list.php?ka_id=27、ほいくしょガイド 平成31年度版 /upload/file/hoikusho%20guide%202019-1.pdf",
+    "/ka/info.php?if_id=6510 を開いた → トップに転送されてメンテナンスの表示"
+  ],
+  "notes": "町のサイトのメンテナンスが終われば、tried の候補ページ（とくに「ふじかわぐちこ子育て応援事業について」if_id=6510 と「保育所・幼稚園・認定こども園の利用について」if_id=6144）から保育料表ときょうだいの決まりを読み直すこと。参考（未確認）: 検索結果の抜粋では、0〜2歳児クラスの保育料は保護者と家計の主宰者の町民税所得割課税額等で階層を決め、4〜8月は前年度・9月以降は現年度の住民税が基礎。町は2023年4月から「3歳未満児かつ第2子以降の児童（町民税所得割課税額169,000円以上の世帯）」も保育料を無料にしている（県の やまなし子育て応援事業〔169,000円未満〕を広げた形と読める）とあるが、ページを開けず確かめていないので、上の項目には入れていない。中学校給食・現金給付・祝い金も読めていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,46 @@
+{
+  "code": "342076",
+  "pref": "広島県",
+  "name": "福山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": 290,
+    "yearly": 55100,
+    "since": null,
+    "until": null,
+    "note": "全員の無償化はない。2026年度の中学校・義務教育学校後期課程の給食費は1食290円（物価高騰による食材費の値上げ分を市が補填して令和7年度と同額に据え置き）。年間予定は1・2年生190食で55,100円、3年生175食で50,750円。7月から年9回の口座振替（1・2年生は1〜8期 各6,200円＋9期で調整、3年生は各5,700円＋調整）。月額の定めはないので monthly は null。就学援助・生活保護の受給者は支払い不要。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "2026年4月から市立小学校・義務教育学校前期課程の給食費を無償化（国の給食費負担軽減交付金と市の補填。手続き不要）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "福山市「福山市学校給食費について」（掲載日 2026年4月1日更新。2026年度の学校給食費について）",
+      "url": "https://www.city.fukuyama.hiroshima.jp/soshiki/gakkohoken/357960.html"
+    },
+    {
+      "label": "福山市教育委員会「学校給食費に関するお知らせ（2026年度）」中学校新1〜3年生向けPDF",
+      "url": "https://www.city.fukuyama.hiroshima.jp/uploaded/life/397667_2454693_misc.pdf"
+    },
+    {
+      "label": "福山市教育委員会「小学校給食費の無償化のお知らせ」小学校新2〜6年生向けPDF",
+      "url": "https://www.city.fukuyama.hiroshima.jp/uploaded/life/397667_2454692_misc.pdf"
+    },
+    {
+      "label": "福山市「福山市の学校給食の概要」（掲載日 2026年4月1日更新。給食費 幼稚園255円・中学校290円）",
+      "url": "https://www.city.fukuyama.hiroshima.jp/site/kyoiku/119037.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの候補は学校給食の概要のページだけだったので、学校教育のページ（life/1/13/78/）から給食費のページをたどった"
+  ],
+  "notes": "yearly は中学1・2年生の年間予定総額。3年生は50,750円。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,51 @@
+{
+  "code": "192074",
+  "pref": "山梨県",
+  "name": "韮崎市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年度入所案内 p.18: 保育料・給食費は毎年4月・9月に算定。令和8年4月〜8月分は令和7年度の市民税所得割額、9月〜令和9年3月分は令和8年度の市民税所得割額で算定（課税年度の変更に伴い9月分から変わる場合がある。きょうだいの進級に伴い4月分から変わる場合がある）。料金表は年度を通じて1つ。修正申告や月の途中の認定区分・保育の必要量の変更は翌月の保育料から変わることがある。",
+  "tax_basis": "6%",
+  "tax_note": "児童と生計が同一である世帯の父母または家計の主宰者の市民税所得割額の合計で階層を判定（父母のみの世帯は父＋母の合算。ひとり親で家計の主宰者が別にいる世帯は父または母＋家計の主宰者）。寄附金控除、外国税額控除、配当控除、住宅借入金等特別税額控除等、一部の税額控除は控除される前の所得割額で算定（会社員は特別徴収税額決定通知書の「税額控除前所得割額」）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "韮崎市保育料徴収基準表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "市民税均等割のみの世帯", "monthly": 8800, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "市民税所得割48,600円未満", "monthly": 11000, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 61000, "condition": "市民税所得割48,600円以上61,000円未満", "monthly": 16200, "monthly_second": null },
+      { "label": "6", "lower": 61000, "upper": 97000, "condition": "市民税所得割61,000円以上97,000円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "7", "lower": 97000, "upper": 137000, "condition": "市民税所得割97,000円以上137,000円未満", "monthly": 26000, "monthly_second": null },
+      { "label": "8", "lower": 137000, "upper": 169000, "condition": "市民税所得割137,000円以上169,000円未満", "monthly": 34200, "monthly_second": null },
+      { "label": "9", "lower": 169000, "upper": 301000, "condition": "市民税所得割169,000円以上301,000円未満", "monthly": 39900, "monthly_second": null },
+      { "label": "10", "lower": 301000, "upper": 397000, "condition": "市民税所得割301,000円以上397,000円未満", "monthly": 42300, "monthly_second": null },
+      { "label": "11", "lower": 397000, "upper": null, "condition": "市民税所得割397,000円以上", "monthly": 55000, "monthly_second": null }
+    ],
+    "notes": "表は「階層 × 認定区分（標準時間／短時間）」の2列で、0〜2歳の保育料（3〜5歳は無償化で0円）。rows は標準時間（最大11時間）の列。短時間（最大8時間）: 1・2階層 0円、3階層 8,600円、4階層 10,800円、5階層 15,900円、6階層 22,600円、7階層 25,500円、8階層 33,600円、9階層 39,200円、10階層 41,500円、11階層 54,000円。備考: 100円未満の端数は切り捨て。軽減（ひとり親世帯・同一世帯に障がいのある方がいる世帯）: 市民税非課税世帯は0円、市民税所得割77,100円以下は基準表の階層に応じた額の半額（第2子以降は無料）。0〜2歳児の給食費は保育料に含まれる。3階層（均等割のみ＝所得割0円）と分けるため4階層の lower を1にした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月0〜55,000円）。0円は生活保護世帯と市民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "【韮崎市独自制度】保育所・認定こども園・幼稚園に通っている第2子以降は保育料・給食費（主食費・副食費）を無料（所得制限の記載なし）。「第2子」とは児童と生計を同一にするきょうだい（兄・姉）がいる子。生計を同一にするきょうだいの中で年齢の高い順に数え、第1子の年齢は問わない（例: 小5・保育園5歳児・保育園0歳児なら0歳児は第3子で無料）。第1子が住民票を移していても生計を一にしていれば対象になる場合がある。認可外保育施設等の利用や給付認定を受けていない子は対象外。県の「やまなし子育て応援事業」（第2子以降3歳未満児無料・所得割169,000円未満）を市が所得制限なしに広げた形。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降すべて無料（生計を同一にするきょうだいを年齢の高い順に数える。第1子の年齢は問わない）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度入所案内について（韮崎市こども子育て課、p.15〜18 保育料（利用者負担額）・韮崎市保育料徴収基準表・韮崎市独自制度）", "url": "https://www.city.nirasaki.lg.jp/material/files/group/22/R8nyuusyoannnai.pdf" },
+    { "label": "【令和8年度】保育所、認定こども園、幼稚園等への入所申込みについて／韮崎市", "url": "https://www.city.nirasaki.lg.jp/kosodate_kyoiku/8/10528.html" },
+    { "label": "保育料について／韮崎市（更新日2026年04月01日）", "url": "https://www.city.nirasaki.lg.jp/kosodate_kyoiku/8/9394.html" },
+    { "label": "保育料（利用者負担額）・給食費（主食費・副食費）について（保育料についてのPDF）", "url": "https://www.city.nirasaki.lg.jp/material/files/group/22/hoikuryou2025.pdf" },
+    { "label": "幼児教育・保育施設の保育料／韮崎市", "url": "https://www.city.nirasaki.lg.jp/soshikiichiran/kodomokosodateka/kosodateguide/azukeru/nichijouazukari/9016.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "令和8年度入所案内（2025年9月作成）p.17 の表を pdftoppm で画像にして列（標準時間／短時間）を確かめた。「保育料について」ページの PDF（hoikuryou2025.pdf）にも同じ額の表がある。給食費の無料上限は案内では副食費年間57,600円（月4,800円）、子育てガイドのページでは年間58,800円（月4,900円）と書かれている。中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,55 @@
+{
+ "code": "353442",
+ "pref": "山口県",
+ "name": "平生町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "period_note": "「令和８年度 保育園入園のしおり」（PDF、2025年11月10日更新。「保育園にはいるとき」のページ〔更新日2025年11月13日〕に掲載）の4ページ目「保育園保育料一覧」。同じページの「保育料一覧表」PDF（2025年3月作成）も同じ額。4月から8月分は前年度の町民税課税額、9月から翌年3月分は当該年度の町民税課税額で決める。",
+ "tax_basis": "6%",
+ "tax_note": "保護者（父母）の町民税所得割課税額の合計で階層を決める。町民税課税額は税額控除（配当控除、住宅借入金等特別控除及び寄付金控除等）前の額（表の注記）。",
+ "table": {
+  "title": "保育園保育料一覧",
+  "kind": "3歳未満児・保育標準時間・第1子（月額）",
+  "rows": [
+   { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+   { "label": "B1", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+   { "label": "B2", "lower": null, "upper": null, "condition": "町民税均等割のみの世帯", "monthly": 15000, "monthly_second": null },
+   { "label": "B3", "lower": 1, "upper": 48600, "condition": "町民税所得割課税額 48,600円未満", "monthly": 18000, "monthly_second": null },
+   { "label": "B4", "lower": 48600, "upper": 57700, "condition": "町民税所得割課税額 57,700円未満", "monthly": 22000, "monthly_second": null },
+   { "label": "C1", "lower": 57700, "upper": 59000, "condition": "町民税所得割課税額 59,000円未満", "monthly": 22000, "monthly_second": null },
+   { "label": "C2", "lower": 59000, "upper": 77101, "condition": "町民税所得割課税額 77,101円未満", "monthly": 25000, "monthly_second": null },
+   { "label": "C3", "lower": 77101, "upper": 79000, "condition": "町民税所得割課税額 79,000円未満", "monthly": 25000, "monthly_second": null },
+   { "label": "C4", "lower": 79000, "upper": 97000, "condition": "町民税所得割課税額 97,000円未満", "monthly": 30000, "monthly_second": null },
+   { "label": "C5", "lower": 97000, "upper": 133000, "condition": "町民税所得割課税額 133,000円未満", "monthly": 35000, "monthly_second": null },
+   { "label": "C6", "lower": 133000, "upper": 169000, "condition": "町民税所得割課税額 169,000円未満", "monthly": 40000, "monthly_second": null },
+   { "label": "C7", "lower": 169000, "upper": 235000, "condition": "町民税所得割課税額 235,000円未満", "monthly": 50000, "monthly_second": null },
+   { "label": "C8", "lower": 235000, "upper": 301000, "condition": "町民税所得割課税額 301,000円未満", "monthly": 55000, "monthly_second": null },
+   { "label": "C9", "lower": 301000, "upper": 397000, "condition": "町民税所得割課税額 397,000円未満", "monthly": 69000, "monthly_second": null },
+   { "label": "C10", "lower": 397000, "upper": null, "condition": "町民税所得割課税額 397,000円以上", "monthly": 81000, "monthly_second": null }
+  ],
+  "notes": "表の区分は「○○円未満」だけなので、下限は1つ上の行の上限とした（B3は所得割がかかる世帯）。保育短時間: A・B1 0円、B2 14,700円、B3 17,700円、B4 21,600円、C1 21,600円、C2 24,600円、C3 24,600円、C4 29,500円、C5 34,400円、C6 39,300円、C7 49,200円、C8 54,100円、C9 67,800円、C10 79,600円。「上記のうちひとり親世帯等」（ひとり親世帯、特別児童扶養手当の支給対象児のいる世帯及び在宅障害児（者）のいる世帯）は標準/短時間で B2 7,000/6,800円、B3・B4 8,000/7,700円、C1・C2 9,000/8,700円。3歳以上児は全階層0円。注記「多子世帯の保育料軽減について　保護者と生計を一にする子どもを最年長として、２人目以降は無料とします。」表は画像で列の並び（3歳未満児 保育標準時間・保育短時間、3歳以上児 保育標準時間・保育短時間）を確かめた。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "3歳未満児の第1子は表の額（生活保護・町民税非課税世帯は0円）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "「令和6年9月から認可保育所等を利用する第2子以降の児童について、保育料が無償化されました。（第2子以降とは、保護者と生計を一にする子どもを最年長として、2人目以降の子どもをいいます。）」（町のページ）。表の注記も「保護者と生計を一にする子どもを最年長として、２人目以降は無料」。所得制限の記載はない。上の子の年齢の上限は書かれていない（山口県の「第2子以降の3歳未満児の保育料無償化」と同じ時期）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第2子以降が無料なので第3子以降も無料。数え方は第2子と同じ（保護者と生計を一にする子どもを最年長として数える）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [
+  { "label": "令和8年度平生町子育て応援給付金（物価高騰対策）", "amount": 5000, "note": "令和8年度限り。平成20年4月2日から令和8年9月1日までに生まれ、令和8年9月1日に平生町に住民登録のある児童1人あたり5千円（児童手当受給者には10月30日支給予定）。毎年の制度ではない。", "source": { "label": "令和8年度平生町子育て応援給付金について（平生町、2026年10月8日更新）", "url": "https://www.town.hirao.lg.jp/soshiki/chomin/kodomo/assist/3490.html" } }
+ ],
+ "sources": [
+  { "label": "令和８年度 保育園入園のしおり（PDF、平生町、4ページ目に保育園保育料一覧）", "url": "https://www.town.hirao.lg.jp/material/files/group/20/nyuuen-no-siori_2026.pdf" },
+  { "label": "保育料一覧表（PDF、平生町）", "url": "https://www.town.hirao.lg.jp/material/files/group/20/hoikuryou-ichiranhyou.pdf" },
+  { "label": "保育園にはいるとき（平生町、2025年11月13日更新）", "url": "https://www.town.hirao.lg.jp/soshiki/chomin/kodomo/hoiku/1454053488706.html" }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "町内の認可保育所は佐賀保育園（公立）、つばさ保育園・ひらお保育園（私立）。区切りは切れ目・重なりなし、月額は階層の順に下がらない。中学校給食・現金給付は探す途中で目に入らなかった（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

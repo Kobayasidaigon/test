@@ -1,0 +1,33 @@
+{
+ "code": "393860",
+ "pref": "高知県",
+ "name": "いの町",
+ "status": "not_found",
+ "fiscal_year": null,
+ "jh": {
+  "free": null,
+  "monthly": null,
+  "per_meal": null,
+  "yearly": null,
+  "since": null,
+  "until": null,
+  "note": "公式ページで令和8年度の中学校給食費の扱いを確認できなかった。WebSearch の結果には町の例規集の「いの町給食費徴収金規則」（令和8年4月30日教委規則第8号で改正、学校ごとに1食あたりの額と月額を定める）が出たが、例規集は www2.town.ino.kochi.jp（http のみ）にあり https で開けず、中身は読めていない。"
+ },
+ "elem": {
+  "free": null,
+  "monthly": null,
+  "note": "未確認。"
+ },
+ "no_lunch_jh": null,
+ "sources": [],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べの候補は「小学校・中学校の入学・転校等」（就学援助の説明のみ）だけだった",
+  "町の学校・教育、いの町の教育、妊娠・出産・子育て支援（各種助成）の一覧はページ一覧がJSで読み込まれ中身が取れなかった",
+  "広報いの 2026年3月・4月・5月・6月号のPDFに給食費の記載なし",
+  "町のサイト内検索はGoogleの検索（JS）で使えなかった",
+  "WebSearch（この組の1回目）で例規集の「いの町給食費徴収金規則」を見つけたが、https://www2.town.ino.kochi.jp/reiki2/reiki_honbun/r037RG00001365.html は SSL 接続エラー（15秒あけて取り直しても同じ）"
+ ],
+ "notes": "例規集（いの町給食費徴収金規則、令和8年4月30日改正）が読めれば中学校の1食・月額が分かるはず。",
+ "read_at": "2026-11-01"
+}

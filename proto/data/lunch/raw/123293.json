@@ -1,0 +1,44 @@
+{
+  "code": "123293",
+  "pref": "千葉県",
+  "name": "栄町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": 5100,
+    "per_meal": 300,
+    "yearly": null,
+    "since": "2019年4月（第3子以降の無償化）",
+    "until": null,
+    "note": "令和8年度の中学生の給食費保護者負担金は月額5,100円（口座振替。8月を除く11か月分を引き落とし、計算上は年56,100円）。給食を停止したときは1食300円で日割り。第3子以降の無償化：保護者が子ども3人以上を扶養し、出生の早い順で第3子以降の子が町立小中学校の給食を受けている場合、その子の給食費を免除（平成31年4月から。毎年申請が必要。第1子・第2子が扶養から外れていると数えない。給食費・町税の滞納世帯、生活保護・就学援助受給世帯は対象外）。中学生の減免額は月5,100円。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年4月から令和9年3月までの小学生給食費は無償（国の学校給食費の抜本的な負担軽減。申請不要）。それまでの小学校給食費は月4,500円だった。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "栄町教育委員会「学校給食費」（更新日 2026年4月30日）",
+      "url": "https://www.town.sakae.chiba.jp/kyouikuiinkai/kyuusyoku-center/page002338.html"
+    },
+    {
+      "label": "栄町学校給食センター「令和8年度給食費及び給食の変更申込について」PDF（中学生 月額5,100円）",
+      "url": "https://www.town.sakae.chiba.jp/data/doc/1775101225_doc_176_0.pdf"
+    },
+    {
+      "label": "栄町教育委員会「栄町第3子以降学校給食費の無償化の申請について」",
+      "url": "https://www.town.sakae.chiba.jp/kyouikuiinkai/kyuusyoku-center/page004021.html"
+    },
+    {
+      "label": "栄町「栄町第3子以降学校給食費無償化制度について」PDF（令和8年4月17日までに申請）",
+      "url": "https://www.town.sakae.chiba.jp/data/doc/1775099149_doc_176_0.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "全員の無償化は小学校だけ。中学校は第3子以降だけ0円。",
+  "read_at": "2026-11-01"
+}

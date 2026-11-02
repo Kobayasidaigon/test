@@ -1,0 +1,39 @@
+{
+  "code": "012190",
+  "pref": "北海道",
+  "name": "紋別市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2021年10月",
+    "until": null,
+    "note": "市の「学校給食費無料化のお知らせ」（2021年9月）：2021年10月1日から市立小中学校に通う児童生徒の保護者の給食費を全額助成（申請不要。生活保護・就学援助の認定世帯は従来の制度で支給、教職員など児童生徒以外は従来どおり負担）。市の「紋別市 子育て 令和8年度版」PDF（2026年4月掲載）でも「義務教育費無償化」の項目に、市立小中学校の学用品費・修学旅行費・宿泊研修費と並んで学校給食費の助成がある（他の制度で給付を受けている人は対象外）。いずれも市のサイトがボット対策で取得できず、検索結果の要約で読んだ。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "2021年10月から市立小中学校の給食費を全額助成（令和8年度版の子育て冊子の「義務教育費無償化」にも掲載）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "紋別市「学校給食費無料化のお知らせ」（学校給食センター、2021年）",
+      "url": "https://mombetsu.jp/soshiki/kyouiku/kyusyoku_kyouiku_soshiki/news/kyuusyoku_20211001.html"
+    },
+    {
+      "label": "紋別市「紋別市 子育て 令和8年度版」PDF（義務教育費無償化）",
+      "url": "https://mombetsu.jp/assets/images/content/content_20260424_101438.pdf"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "市の公式サイト（mombetsu.jp）は curl で 503（Incapsula のボット対策）になり、トップページ・PDFとも読めなかった。対策をすり抜けることはしていない",
+    "WebSearch（allowed_domains: mombetsu.jp）の結果の要約で内容を確認"
+  ],
+  "notes": "ページ本文を直接は読めていないので confidence は推定。令和8年度版の子育て冊子に載っていることから、令和8年度も小中学校の給食費の全額助成が続いているとみられる。",
+  "read_at": "2026-11-01"
+}

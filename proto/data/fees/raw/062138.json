@@ -1,0 +1,51 @@
+{
+ "code": "062138",
+ "pref": "山形県",
+ "name": "南陽市",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "公式サイトを開けず、令和8年度の表・決まりは読めていない。検索結果の要約では、令和7年度の「保育料等段階的負担軽減助成金」の判定は、令和7年8月までは令和6年度、9月以降は令和7年度の所得割額（4〜8月は前年度、9〜3月は当年度の市町村民税で判定する形）。令和6年度の「保育料（利用者負担）徴収金額表」PDFがサイトにある（中身は読めていない）。",
+ "tax_basis": "6%",
+ "tax_note": "検索結果の要約（保育料等段階的負担軽減助成金のページ、令和7年度）: 父母の市町村民税所得割額の合計で判定し、所得割額は配当控除、住宅借入金等特別税額控除、寄附金税額控除、外国税額控除、配当・株式等譲渡所得割等の税額控除適用前の金額。公式ページそのものは読めていないので未確認。政令市ではないので6%を置いた。",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "令和8年度は分からない。検索結果の要約では、令和7年度は、山形県の「保育料無償化に向けた段階的負担軽減交付金」を使った市の「保育料等段階的負担軽減助成金」で、0〜2歳児クラスの国の無償化の対象外の子のうち、父母の所得割額の合計が169,000円未満の世帯の保育料を助成（97,000円未満は支払った保育料の半額、97,000円以上169,000円未満は4分の1、いずれも上限あり。認可外保育施設などの上限は月21,000円／10,500円）。全世帯の無料ではなかった。山形県内では令和8年度から全階層を無償にした町村もあるので、令和8年度の南陽市は確かめが必要。",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "第2子の決まりは読めていない（検索結果の要約では、3人っ子ハッピーサポートは第3子以降が対象で、第2子は対象外）。",
+ "third_child": "free",
+ "third_count": "unknown",
+ "third_note": "検索結果の要約（「３人っ子ハッピーサポート事業」のページ）: 所得に関係なく、第1子から数えて第3子以降の満3歳未満児の保育料を助成し、認可保育所などは全額助成。上の子の年齢の上限など数え方は読めていない。公式ページそのものは開けず未確認。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "保育料等段階的負担軽減助成金（南陽市、検索結果で見た。ページは開けず）",
+   "url": "http://www.city.nanyo.yamagata.jp/kosodatekosodatesien/6411"
+  },
+  {
+   "label": "３人っ子ハッピーサポート事業 南陽市（検索結果で見た。ページは開けず）",
+   "url": "http://www.city.nanyo.yamagata.jp/kosodatekosodatesien/1224"
+  },
+  {
+   "label": "令和６年度（２０２４年度）南陽市 保育料（利用者負担）徴収金額表（PDF、検索結果で見た。開けず）",
+   "url": "http://www.city.nanyo.yamagata.jp/up/files/%E3%81%99%E3%81%93%E3%82%84%E3%81%8B/hoikumusyou/%E3%80%87R6%E4%BF%9D%E8%82%B2%E6%96%99%EF%BC%88%E5%88%A9%E7%94%A8%E8%80%85%E8%B2%A0%E6%8B%85%EF%BC%89%E5%BE%B4%E5%8F%8E%E9%87%91%E9%A1%8D%E8%A1%A8.pdf"
+  },
+  {
+   "label": "幼児教育・保育の無償化について（南陽市、検索結果で見た）",
+   "url": "http://www.city.nanyo.yamagata.jp/seikatuhoikuen/2969"
+  }
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べ（crawl/062138）は公式サイトの一番上（http://www.city.nanyo.yamagata.jp/）で OSError になり、0ページ。",
+  "curl で https://www.city.nanyo.yamagata.jp/ → TLS の証明書が合わない（サーバーが Akamai の既定の証明書 CN=a248.e.akamai.net を返し、www.city.nanyo.yamagata.jp の名前が入っていない）。証明書の確認は外さなかった。",
+  "http:// のままでは名前が引けない（Could not resolve host）。https://city.nanyo.yamagata.jp/ は接続リセット、https://www.city.nanyo.lg.jp/ と https://city.nanyo.lg.jp/ はプロキシの 502（別のドメインへの移転は見つからない）。",
+  "WebFetch で https://www.city.nanyo.yamagata.jp/kosodatekosodatesien/6411 → getaddrinfo ENOTFOUND（このセッションの許可ドメインの外か、名前が引けない）。",
+  "WebSearch（allowed_domains=city.nanyo.yamagata.jp）3回:「南陽市 保育料 3歳未満 利用者負担額 令和8年度」「南陽市 保育料等段階的負担軽減助成金 令和8年度 所得割額 3人っ子ハッピーサポート 第2子」「令和８年度 南陽市 保育料（利用者負担）徴収金額表 0～2歳」。令和6年度の徴収金額表PDF、令和7年度の段階的負担軽減助成金、3人っ子ハッピーサポート事業、幼児教育・保育の無償化のページが出たが、令和8年度の表や決まりは見つからなかった。"
+ ],
+ "notes": "公式サイトに https でつながらないため、検索結果の要約だけで書いた（公式の文書は1つも読めていない）。令和8年度の保育料の表・第2子の決まり・段階的負担軽減の令和8年度の内容は不明。サイトに https でつながるようになったら、「保育料等段階的負担軽減助成金」（kosodatekosodatesien/6411）、「３人っ子ハッピーサポート事業」（1224）、/up/files/すこやか/hoikumusyou/ にある保育料の徴収金額表（令和8年度版があればそれ）を読み直すこと。",
+ "read_at": "2026-11-01"
+}

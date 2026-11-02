@@ -1,0 +1,39 @@
+{
+  "code": "012238",
+  "pref": "北海道",
+  "name": "根室市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "令和8年度の教育行政方針に「学校給食については、児童生徒の学校給食費の無償化を継続する」。令和4〜7年度の教育行政方針にも同じ「無償化を継続」があり、令和4年度より前から続いている（始まった時期は未確認）。所得などの条件の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ教育行政方針（児童生徒の学校給食費の無償化を継続）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "根室市教育委員会「令和8年度 教育行政方針」PDF（教育行政方針のページ 2026年2月24日更新）",
+      "url": "https://www.city.nemuro.hokkaido.jp/material/files/group/31/r8kyoikugyosei.pdf"
+    },
+    {
+      "label": "根室市「教育行政方針」（令和2〜8年度の一覧）",
+      "url": "https://www.city.nemuro.hokkaido.jp/lifeinfo/kakuka/kyoikuiinkai/kyoikusomu1/gyomuannnai/kyouiku/5109.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べに給食費の候補なし",
+    "教育委員会・教育総務課・子育てサイトの小・中学生のページに給食費のページなし"
+  ],
+  "notes": "市のサイトに給食費の案内ページは見つからず、教育行政方針（教育長の方針）で確かめた。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,50 @@
+{
+ "code": "283657",
+ "pref": "兵庫県",
+ "name": "多可町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「令和８年度 利用者負担額（保育料）基準額表（案）」PDF作成2025年9月22日。入園のしおりに「金額は令和８年度当初予定基準額です」。令和9年度の基準額表（案）〔2026年9月29日作成〕も同じ額）",
+ "period_note": "「４月分から８月分までの保育料・・・令和７年度（令和６年中）市町村民税額」「９月分から翌年３月分までの保育料・・・令和８年度（令和７年中）市町村民税額」。保育料は4月1日付の年齢で決め、年度内に誕生日を迎えても変わらない。保育料は各施設とも同じ。",
+ "tax_basis": "6%",
+ "tax_note": "「保育料算定上の市町村民税所得割額には、つぎの税額控除は適用されませんので、通常の市町村民税所得割額に加えて計算します。・住宅借入金等特別税額控除 ・配当控除 ・配当割額控除 ・株式等譲渡所得割額控除 ・寄付金税額控除 ・外国税額控除」。お子さんの父母もしくは扶養義務者、または家計の主宰者の市町村民税額を合算した額で決める。政令市ではない。",
+ "table": {
+  "title": "令和８年度 利用者負担額（保育料）基準額表（案） 保育園部",
+  "kind": "3歳児未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {"label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単世帯を含む）", "monthly": 0, "monthly_second": null},
+   {"label": "2", "lower": null, "upper": null, "condition": "市町村民税 非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "3", "lower": 0, "upper": 48600, "condition": "市町村民税所得割課税額 48,600円未満", "monthly": 17500, "monthly_second": null},
+   {"label": "4（その1）", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満", "monthly": 25000, "monthly_second": null},
+   {"label": "4（その2）", "lower": 57700, "upper": 73000, "condition": "57,700円以上 73,000円未満", "monthly": 25000, "monthly_second": null},
+   {"label": "5", "lower": 73000, "upper": 97000, "condition": "73,000円以上 97,000円未満", "monthly": 27000, "monthly_second": null},
+   {"label": "6", "lower": 97000, "upper": 133000, "condition": "97,000円以上 133,000円未満", "monthly": 38000, "monthly_second": null},
+   {"label": "7", "lower": 133000, "upper": 169000, "condition": "133,000円以上 169,000円未満", "monthly": 40000, "monthly_second": null},
+   {"label": "8", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 52900, "monthly_second": null},
+   {"label": "9", "lower": 301000, "upper": null, "condition": "301,000円以上", "monthly": 72000, "monthly_second": null}
+  ],
+  "notes": "表は画像で確かめた（列は 3歳児未満 標準時間・短時間、3・4・5歳児 標準時間・短時間 の順）。保育短時間は 3 16,500円、4 24,000円、5 26,000円、6 37,000円、7 39,000円、8 51,900円、9 71,000円。3・4・5歳児は0円。多子軽減【注2】: 第1子全額・第2子半額・第3子無料。ひとり親・在宅障がい児（者）のいる世帯等で市町村民税額77,101円未満の場合は、階層3〜5が8,300円（短時間7,800円）、第2子以降は年齢制限なく無料。表の右の年収は参考（3 〜約330万、4 〜約350万／〜約470万、5 〜約470万、6 〜約540万、7 〜約640万、8 〜約930万、9 約930万〜）。給食費等は実費（主食費は町が助成）。未婚のひとり親の寡婦（夫）控除みなし適用は申請が必要。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳の第1子は有料（住民税課税世帯の0〜2歳児は「対象外」、非課税世帯は無償）。",
+ "second_child": "half",
+ "second_count": "together",
+ "second_note": "「同一世帯から２人以上の子どもが教育・保育施設等に入園されている場合、入園されている子どもの最年長の子どもを第１子、その下の子を第２子、第３子・・・と数え、第２子は半額、第３子以降は無料です。」基準額表の注2: 第4階層内57,700円以上〜第9階層は「幼稚園、保育施設等に在籍している児童の中で算定」（就学前児童の中で数える）、第3階層〜第4階層内57,700円未満は「子どもの年齢に制限なく算定」。所得割77,101円未満のひとり親等世帯は年齢制限なく第2子以降無料。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "第3子以降は無料。数え方は第2子と同じ（所得割57,700円以上は幼稚園・保育施設等に在籍する就学前児童の中で数える。57,700円未満は年齢制限なし）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和8年度教育・保育施設（こども園等）入園申込み | 多可町", "url": "https://www.town.taka.lg.jp/category_guide/detail/id=40664"},
+  {"label": "令和８年度 利用者負担額（保育料）基準額表（案）（PDF）", "url": "https://www.town.taka.lg.jp/files/user/xls/(%E6%96%B0)R8%E4%BF%9D%E8%82%B2%E6%96%99%E5%9F%BA%E6%BA%96%E9%A1%8D%E8%A1%A8%E3%80%90%E6%A1%88%E3%80%91.pdf"},
+  {"label": "令和8年度教育・保育施設入園のしおり（PDF）p.11〜14 保育料等について・保育料軽減", "url": "https://www.town.taka.lg.jp/files/user/xls/%E2%98%85R8%E6%95%99%E8%82%B2%EF%BD%A5%E4%BF%9D%E8%82%B2%E6%96%BD%E8%A8%AD%E5%85%A5%E5%9C%92%E3%81%AE%E3%81%97%E3%81%8A%E3%82%8A%E3%80%90%E5%90%8D%E7%B0%BF%E3%81%AA%E3%81%97%E3%80%91.pdf"},
+  {"label": "令和9年度利用者負担額（保育料）基準額表（案）（PDF、同じ額）", "url": "https://www.town.taka.lg.jp/files/user/xls/(%E6%96%B0)R9%E4%BF%9D%E8%82%B2%E6%96%99%E5%9F%BA%E6%BA%96%E9%A1%8D%E8%A1%A8%E3%80%90%E6%A1%88%E3%80%91.pdf"},
+  {"label": "幼児教育・保育の無償化（令和8年10月～） | 多可町", "url": "https://www.town.taka.lg.jp/category_guide/detail/id=43173"}
+ ],
+ "confidence": "確認済",
+ "tried": ["下調べは町のサイトの証明書の中間CAが送られてこないため失敗していた（curl: unable to get local issuer certificate）。証明書のAIAにある中間CA（FujiSSL RSA Domain Validation Secure Server CA 2）を crt.sh から https で取り、信頼済みのルート（Sectigo R46）で検証できることを確かめたうえで、CAバンドルに足して取得した（検証は無効にしていない）"],
+ "notes": "表の題名は「（案）」だが、入園のしおりに「金額は令和８年度当初予定基準額です」とあり、令和9年度の（案）とも同じ額。",
+ "read_at": "2026-11-01"
+}

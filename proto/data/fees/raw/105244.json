@@ -11,23 +11,142 @@
     "title": "利用者負担額料金表（月額）　3歳未満で保育標準時間（保育園、認定こども園、地域型保育事業利用者）",
     "kind": "3歳未満・保育標準時間・第1子（月額）",
     "rows": [
-      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": 0 },
-      { "label": "第2", "lower": null, "upper": null, "condition": "市区町村民税非課税", "monthly": 0, "monthly_second": 0 },
-      { "label": "第3", "lower": null, "upper": null, "condition": "均等割のみ課税", "monthly": 7800, "monthly_second": 3900 },
-      { "label": "第4", "lower": 1, "upper": 48600, "condition": "所得割額48,600円未満", "monthly": 9800, "monthly_second": 4900 },
-      { "label": "第5", "lower": 48600, "upper": 59000, "condition": "所得割額59,000円未満", "monthly": 14000, "monthly_second": 7000 },
-      { "label": "第6", "lower": 59000, "upper": 71000, "condition": "所得割額71,000円未満", "monthly": 16000, "monthly_second": 8000 },
-      { "label": "第7", "lower": 71000, "upper": 83000, "condition": "所得割額83,000円未満", "monthly": 19000, "monthly_second": 9500 },
-      { "label": "第8", "lower": 83000, "upper": 97000, "condition": "所得割額97,000円未満", "monthly": 22000, "monthly_second": 11000 },
-      { "label": "第9", "lower": 97000, "upper": 121000, "condition": "所得割額121,000円未満", "monthly": 26000, "monthly_second": 13000 },
-      { "label": "第10", "lower": 121000, "upper": 145000, "condition": "所得割額145,000円未満", "monthly": 30000, "monthly_second": 15000 },
-      { "label": "第11", "lower": 145000, "upper": 169000, "condition": "所得割額169,000円未満", "monthly": 34000, "monthly_second": 17000 },
-      { "label": "第12", "lower": 169000, "upper": 196000, "condition": "所得割額196,000円未満", "monthly": 38000, "monthly_second": 19000 },
-      { "label": "第13", "lower": 196000, "upper": 233000, "condition": "所得割額233,000円未満", "monthly": 42000, "monthly_second": 21000 },
-      { "label": "第14", "lower": 233000, "upper": 301000, "condition": "所得割額301,000円未満", "monthly": 46000, "monthly_second": 23000 },
-      { "label": "第15", "lower": 301000, "upper": 351000, "condition": "所得割額351,000円未満", "monthly": 50000, "monthly_second": 25000 },
-      { "label": "第16", "lower": 351000, "upper": 397000, "condition": "所得割額397,000円未満", "monthly": 54000, "monthly_second": 27000 },
-      { "label": "第17", "lower": 397000, "upper": null, "condition": "所得割額397,000円以上", "monthly": 59000, "monthly_second": 29500 }
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "第2",
+        "lower": null,
+        "upper": null,
+        "condition": "市区町村民税非課税",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "第3",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割のみ課税",
+        "monthly": 7800,
+        "monthly_second": 3900
+      },
+      {
+        "label": "第4",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "所得割額48,600円未満",
+        "monthly": 9800,
+        "monthly_second": 4900
+      },
+      {
+        "label": "第5",
+        "lower": 48600,
+        "upper": 59000,
+        "condition": "所得割額59,000円未満",
+        "monthly": 14000,
+        "monthly_second": 7000
+      },
+      {
+        "label": "第6",
+        "lower": 59000,
+        "upper": 71000,
+        "condition": "所得割額71,000円未満",
+        "monthly": 16000,
+        "monthly_second": 8000
+      },
+      {
+        "label": "第7",
+        "lower": 71000,
+        "upper": 83000,
+        "condition": "所得割額83,000円未満",
+        "monthly": 19000,
+        "monthly_second": 9500
+      },
+      {
+        "label": "第8",
+        "lower": 83000,
+        "upper": 97000,
+        "condition": "所得割額97,000円未満",
+        "monthly": 22000,
+        "monthly_second": 11000
+      },
+      {
+        "label": "第9",
+        "lower": 97000,
+        "upper": 121000,
+        "condition": "所得割額121,000円未満",
+        "monthly": 26000,
+        "monthly_second": 13000
+      },
+      {
+        "label": "第10",
+        "lower": 121000,
+        "upper": 145000,
+        "condition": "所得割額145,000円未満",
+        "monthly": 30000,
+        "monthly_second": 15000
+      },
+      {
+        "label": "第11",
+        "lower": 145000,
+        "upper": 169000,
+        "condition": "所得割額169,000円未満",
+        "monthly": 34000,
+        "monthly_second": 17000
+      },
+      {
+        "label": "第12",
+        "lower": 169000,
+        "upper": 196000,
+        "condition": "所得割額196,000円未満",
+        "monthly": 38000,
+        "monthly_second": 19000
+      },
+      {
+        "label": "第13",
+        "lower": 196000,
+        "upper": 233000,
+        "condition": "所得割額233,000円未満",
+        "monthly": 42000,
+        "monthly_second": 21000
+      },
+      {
+        "label": "第14",
+        "lower": 233000,
+        "upper": 301000,
+        "condition": "所得割額301,000円未満",
+        "monthly": 46000,
+        "monthly_second": 23000
+      },
+      {
+        "label": "第15",
+        "lower": 301000,
+        "upper": 351000,
+        "condition": "所得割額351,000円未満",
+        "monthly": 50000,
+        "monthly_second": 25000
+      },
+      {
+        "label": "第16",
+        "lower": 351000,
+        "upper": 397000,
+        "condition": "所得割額397,000円未満",
+        "monthly": 54000,
+        "monthly_second": 27000
+      },
+      {
+        "label": "第17",
+        "lower": 397000,
+        "upper": null,
+        "condition": "所得割額397,000円以上",
+        "monthly": 59000,
+        "monthly_second": 29500
+      }
     ],
     "notes": "表の列は第1子・第2子・第3子（第3子は全階層0円）。各行の下限は表に書かれていないので一つ上の行の上限とした（第4は均等割のみの第3と分けるため1円から）。3歳未満で保育短時間の第1子／第2子: 第3 7,700／3,900、第4 9,700／4,900、第5 13,800／6,900、第6 15,800／7,900、第7 18,700／9,400、第8 21,700／10,900、第9 25,600／12,800、第10 29,500／14,800、第11 33,500／16,800、第12 37,400／18,700、第13 41,300／20,700、第14 45,300／22,700、第15 49,200／24,600、第16 53,100／26,600、第17 58,000／29,000。母子・父子世帯および在宅障害児（者）のいる世帯で第3〜第7階層（所得割77,101円未満に限る）は、第1子3,000円、第2子以降無料。3歳以上（1号認定は満3歳から）の保育料は無料。災害・保護者の死亡などによる減免あり（申請）。"
   },
@@ -43,16 +162,30 @@
   "lunch_jh": {
     "free": true,
     "note": "令和7年4月から町立小中学校の学校給食費を無償化（申請不要）。特別支援学校や町外の小中学校に就学している町内在住の児童生徒、アレルギー等で給食を止めている児童生徒には学校給食費相当額給付金（上限: 中学校年68,640円、小学校年60,500円、年度ごとに申請）。",
-    "source": { "label": "学校給食費の無償化についてお知らせします｜大泉町（2026年4月10日更新）", "url": "https://www.town.oizumi.gunma.jp/s028/kosodate/030/111/20250313171537.html" }
+    "source": {
+      "label": "学校給食費の無償化についてお知らせします｜大泉町（2026年4月10日更新）",
+      "url": "https://www.town.oizumi.gunma.jp/s028/kosodate/030/111/20250313171537.html"
+    }
   },
   "cash": [],
   "one_time": [],
   "sources": [
-    { "label": "幼稚園、保育園などの利用者負担額｜大泉町（2026年3月24日更新）", "url": "https://www.town.oizumi.gunma.jp/s030/kosodate/010/010/040/20200728192627.html" },
-    { "label": "学校給食費の無償化についてお知らせします｜大泉町", "url": "https://www.town.oizumi.gunma.jp/s028/kosodate/030/111/20250313171537.html" }
+    {
+      "label": "幼稚園、保育園などの利用者負担額｜大泉町（2026年3月24日更新）",
+      "url": "https://www.town.oizumi.gunma.jp/s030/kosodate/010/010/040/20200728192627.html"
+    },
+    {
+      "label": "学校給食費の無償化についてお知らせします｜大泉町",
+      "url": "https://www.town.oizumi.gunma.jp/s028/kosodate/030/111/20250313171537.html"
+    }
   ],
   "confidence": "確認済",
   "tried": [],
   "notes": "下調べの「幼稚園、保育園などの利用者負担額」のページ（HTMLの表）で読めた。ページを取り直して更新日（2026年3月24日）を確かめた。表に年度の記載はないが、町の現行の料金表。給食のページは下調べのページ一覧で目に入ったので1回だけ開いた。cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "なし（形の点検。抜き取りの読み直しの対象ではなく、元の文書の取り直しはしていない）。JSONとして読めること、必要な項目と列挙値、区切りが所得割の小さい順にすき間・重なりなくつながること（第4 1円〜48,600円未満〜第17 397,000円以上、均等割のみの第3は範囲なし）、condition の数字と lower・upper が合うこと、月額が階層の順に下がらず0〜150,000円の範囲にあること、monthly_second（第2子）が第1子の半額で階層の順に増えること、notes の保育短時間の額が標準時間以下であることを確かめ、問題なし。政令市ではなく 6%。"
+  }
 }

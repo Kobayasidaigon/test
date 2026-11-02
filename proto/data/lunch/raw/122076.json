@@ -1,0 +1,40 @@
+{
+  "code": "122076",
+  "pref": "千葉県",
+  "name": "松戸市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": null,
+    "per_meal": 371,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "全員の無償化はない。令和8年度の中学生の1食単価は給食費361円＋牛乳71.77円。令和8年度中は国の物価高騰対応重点支援地方創生臨時交付金を使い、第1・2子は1食62円の減額（申請不要）、第3子以降は無償化（扶養の順で数える。令和8年度として申請が必要）。per_meal は第1・2子が払う額（361円＋71.77円−62円＝370.77円）を丸めたもの。弁当持参の日には第1・2子に1食62円、第3子以降に給食費相当額を支給。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度は市立小学校の学校給食費を無償化（申請不要、給食費の納入通知書の発送なし）。国の学校給食費の抜本的な負担軽減と臨時交付金を使う。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "松戸市教育委員会「学校給食費の支援について（中学校）」（更新日 2026年6月25日）",
+      "url": "https://www.city.matsudo.chiba.jp/kyouiku/gakkoukyouiku/kenkokyoiku/kyuushoku/tyuugaku.html"
+    },
+    {
+      "label": "松戸市教育委員会「学校給食費に関する支援について（小学校）」（更新日 2026年4月6日）",
+      "url": "https://www.city.matsudo.chiba.jp/kyouiku/gakkoukyouiku/kenkokyoiku/kyuushoku/syougaku.html"
+    },
+    {
+      "label": "松戸市教育委員会「学校給食」（令和8年度 学校給食費（1食単価）の表）",
+      "url": "https://www.city.matsudo.chiba.jp/kyouiku/gakkoukyouiku/kenkokyoiku/kyuushoku/index.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "以前の調べで、千葉日報に「第1、2子も給食費ゼロに 第3子以降無償の松戸市、来年1月から3カ月間 3歳－中3、国交付金で補正提案」という見出しがあるとされた。日付が分からず、市のページ（2026年6月25日更新）には記載がないため、令和9年1〜3月に中学校が全員0円になるかは未確認。",
+  "read_at": "2026-11-01"
+}

@@ -38,10 +38,11 @@
   "sources": [
     { "label": "教育・保育にかかる利用者負担額（保育料）：寒河江市公式サイト（2026年4月1日更新）", "url": "https://www.city.sagae.yamagata.jp/kosodatekyoiku/kosodatehoiku/hoiku/hoikusisetu/hoikuryo.html" },
     { "label": "令和8年度寒河江市保育所利用者負担額一覧（PDF）", "url": "https://www.city.sagae.yamagata.jp/kosodatekyoiku/kosodatehoiku/hoiku/hoikusisetu/hoikuryo.files/R8.4hoikuryo.pdf" },
-    { "label": "令和9年度版 認可保育施設 利用のしおり（PDF）5〜6ページ「保育料（利用者負担額）」", "url": "https://www.city.sagae.yamagata.jp/kosodatekyoiku/kosodatehoiku/hoiku/hoikusisetu/hoiku_uketsuke.files/2026siori.pdf" }
+    { "label": "令和9年度版 認可保育施設 利用のしおり（PDF）6〜7ページ「５ 保育料（利用者負担額）」", "url": "https://www.city.sagae.yamagata.jp/kosodatekyoiku/kosodatehoiku/hoiku/hoikusisetu/hoiku_uketsuke.files/2026siori.pdf" }
   ],
   "confidence": "確認済",
   "tried": [],
   "notes": "下調べの index.json の保育料のページと「令和8年度寒河江市保育所利用者負担額一覧」PDFを読み、令和9年度 認可保育施設の利用申請受付のページ（2026年8月17日更新）の利用のしおりで多子の決まりを確かめた。3歳以上児クラスの副食費は市の助成で無料（施設の金額によっては実費あり）。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {"at": "2026-11-01", "result": "fixed", "changes": "値の直しはなし（表の区切り・月額・税率・きょうだいの決まり・年度は読み直して全部一致。抜き取りの読み直しの3市の1つで、組の真ん中）。直したのは sources の令和9年度版 利用のしおりのページ番号だけ: 「5〜6ページ「保育料（利用者負担額）」」→「6〜7ページ「５ 保育料（利用者負担額）」」（5 は章の番号で、印刷のページ番号は保育料の章が6ページ、多子世帯の保育料の減免事業が7ページ）。教育・保育にかかる利用者負担額（保育料）のページ（更新日2026年4月1日）、令和8年度寒河江市保育所利用者負担額一覧PDF（R8.4hoikuryo.pdf、2ページ、2026年3月26日作成）、令和9年度版 利用のしおりPDF（2026siori.pdf、10ページ、2026年8月5日作成）を取り直し、pdftotext -layout で読み直した: A・B・C（範囲なし）・D1〜D5（表でも1行で0円、lower=1）・D6〜D10 の9行の区切り（97,000／133,000／169,000／235,000／301,000）と標準時間の月額（0／15,000／19,500／22,200／26,700／29,000）、notes の短時間の額と県・市の軽減の説明、tax_basis 6%（政令市でない。寄付金・外国税・配当・住宅借入金等の税額控除前）、4〜8月は前年度・9〜3月は当該年度の市町村民税、きょうだい（同時入所の2番目の0〜2歳児クラスは無料、同時入所以外〔就学している兄弟がいる場合〕も2番目は半額、3番目以降は同時入所にかかわらず無料）が記録と同じだった。令和8年度 認可保育施設の利用申請受付のページの「令和８年度版 利用のしおり」（R8siori.pdf、2025年8月5日作成）も見た: 7ページの多子世帯の保育料の減免事業は令和9年度版と同じ文言だが、6ページの税額の年度の表が令和6・7年度のまま（前の版の文言が残っている）なので sources には足していない。表の裏面の「未就学児のうち…同時利用している子どもの範囲」との書き方の違いは残るので、上の子の年齢の上限は要確認のまま。"}
 }

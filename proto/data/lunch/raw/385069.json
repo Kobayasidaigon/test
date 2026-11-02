@@ -1,0 +1,39 @@
+{
+  "code": "385069",
+  "pref": "愛媛県",
+  "name": "愛南町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "町の「子育て応援BOOK」（令和8年7月）の「8-3 小学校・中学校給食費無償化」に「愛南町では教育に関する保護者の負担を軽減するため、町内小・中学生の給食費を無償化しています」（問い合わせ 学校教育課）。期間の限定・所得制限の記載はない。いつから無償かは書かれていない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ子育て応援BOOKの「小学校・中学校給食費無償化」（町内小・中学生の給食費を無償化）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "愛南町「子育て応援BOOK」PDF（令和8年7月。8-3 小学校・中学校給食費無償化）",
+      "url": "https://www.town.ainan.ehime.jp/kurashi/kenko/kosodate/kosodate/files/20260702_kosodateouennbook.pdf"
+    },
+    {
+      "label": "愛南町「子育て支援（子育て応援BOOK掲載ページ）」（2026年07月03日更新）",
+      "url": "https://www.town.ainan.ehime.jp/kurashi/kenko/kosodate/kosodate/kosodatenavi.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べに給食費の候補なし",
+    "学校給食のページ（お知らせ1件のみ）・小中学校のお知らせ・令和8年度総合教育会議の資料に給食費の記載なし"
+  ],
+  "notes": "町のウェブページに学校給食費だけの案内ページはなく、子育て応援BOOK（PDF）で確かめた。同じBOOKで町立幼稚園の給食費も無償。",
+  "read_at": "2026-11-01"
+}

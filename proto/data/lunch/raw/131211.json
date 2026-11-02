@@ -1,0 +1,44 @@
+{
+  "code": "131211",
+  "pref": "東京都",
+  "name": "足立区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2023年4月",
+    "until": null,
+    "note": "区のページ「学校給食費について」に、令和5年4月から区立中学校、令和5年10月から区立小学校の給食費無償化を実施とある（更新日 2024年9月18日、終わりの記載なし）。令和8年度の就学援助費支給明細表（区教育委員会）に「給食費及び修学旅行費は、区の教育費負担軽減事業の補助対象になりますので、就学援助の支給はありません」とあり、令和8年度も区が給食費を負担している。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和5年10月から区立小学校も無償化。令和8年度の就学援助費支給明細表でも給食費は区の教育費負担軽減事業の補助対象。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "足立区「学校給食費について」（公開日 2023年4月22日、更新日 2024年9月18日）",
+      "url": "https://www.city.adachi.tokyo.jp/gakumu/k-kyoiku/kyoiku/gakko-kyushokuhi.html"
+    },
+    {
+      "label": "足立区教育委員会「令和８年度 就学援助費支給明細表」（PDF）",
+      "url": "https://www.city.adachi.tokyo.jp/documents/1381/r8_shugaku_shikyumeisai.pdf"
+    },
+    {
+      "label": "足立区「就学援助・就学奨励」（更新日 2026年9月1日）",
+      "url": "https://www.city.adachi.tokyo.jp/gakumu/k-kyoiku/shochu/tetsuzuki-shugaku.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "足立区「小・中学校」「学校に関する手続き」「子育て・教育」「おいしい給食」の一覧ページ（給食費のページへのリンクなし）",
+    "足立区「令和8年度所管事務概要」（PDF。給食費の無償化の記載なし）",
+    "WebSearch（city.adachi.tokyo.jp）「足立区 学校給食費 無償 令和8年度 区立中学校」で「学校給食費について」のページを見つけた"
+  ],
+  "notes": "無償化のページ自体は2024年の更新だが、令和8年度の公式資料（就学援助費支給明細表）で給食費が区の負担軽減事業の対象であることを確かめた。毎日「完全弁当」を持参する子の保護者には学校給食費を上限とする補助金がある。",
+  "read_at": "2026-11-01"
+}

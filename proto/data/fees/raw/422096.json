@@ -1,0 +1,48 @@
+{
+ "code": "422096",
+ "pref": "長崎県",
+ "name": "対馬市",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「令和8年度施設利用のご案内」〔PDF、2025年12月15日作成〕9ページの「６ 保育料（利用者負担額）」。入園のページ〔更新日2025年12月15日〕から別に載っている「保育料（利用者負担額）基準表」PDFも同じ額）",
+ "period_note": "令和8年度施設利用のご案内10ページ「利用者負担額の算定」: 初期算定（4月中旬に通知）は4〜8月分で前年度課税額（前々年分所得で決定）、本算定（9月中旬に通知）は9〜3月分で本年度課税額（前年分所得で決定）。階層は4月1日現在の年齢と支給認定区分（保育必要量）で判定。2歳児は年度途中で2号認定に切り替わるが、満3歳になった後の4月1日までは無償化の対象にならない。",
+ "tax_basis": "6%",
+ "tax_note": "父母の市町村民税の合計額で階層区分を判定（ご案内9ページ）。税額控除前か・調整控除などの所得割の定義は書かれていない。政令市ではないので6%とした。",
+ "table": {
+  "title": "６ 保育料（利用者負担額）【３号認定】［０～２歳児 保育園等の児童］",
+  "kind": "3歳未満・保育標準時間・第1子（月額）。ひとり親等世帯以外（その他の世帯）の行",
+  "rows": [
+   {"label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null},
+   {"label": "2", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "3-A", "lower": 0, "upper": 24300, "condition": "市民税均等割のみ課税世帯及び市民税所得割課税額 24,300 未満世帯（その他の世帯）", "monthly": 14500, "monthly_second": null},
+   {"label": "3-B", "lower": 24300, "upper": 48600, "condition": "市民税所得割課税額 48,600 未満世帯（その他の世帯）", "monthly": 17600, "monthly_second": null},
+   {"label": "4-A", "lower": 48600, "upper": 77101, "condition": "市民税所得割課税世帯 77,101円未満（その他の世帯）", "monthly": 22300, "monthly_second": null},
+   {"label": "4-B", "lower": 77101, "upper": 97000, "condition": "97,000円未満（その他の世帯）", "monthly": 27000, "monthly_second": null},
+   {"label": "5", "lower": 97000, "upper": 169000, "condition": "169,000円未満", "monthly": 31200, "monthly_second": null},
+   {"label": "6", "lower": 169000, "upper": 301000, "condition": "301,000円未満", "monthly": 42700, "monthly_second": null},
+   {"label": "7", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 56000, "monthly_second": null},
+   {"label": "8", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 72800, "monthly_second": null}
+  ],
+  "notes": "列は3号認定の保育標準時間・保育短時間。保育短時間（その他の世帯）: 1・2 0円、3-A 14,300円、3-B 17,300円、4-A 22,000円、4-B 26,600円、5 30,600円、6 41,900円、7 55,000円、8 71,500円。ひとり親等世帯（3-A・3-B・4-A・4-B）: 標準6,700円、短時間6,600円（表では4-B〔97,000円未満〕にもひとり親等世帯6,700円の欄がある）。第2子の列はない（欄外: きょうだいで利用する場合、最年長（18歳に達した年度まで）の児童から順に2人目は半額、3人目は無料）。1号・2号認定（3〜5歳児）は無償化で負担なし。へき地保育所は利用者の負担なし。3-A の lower は均等割のみ（所得割0円）を含むので0にした。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子の0〜2歳児は生活保護・市民税非課税世帯だけ0円（へき地保育所は全員負担なし）。課税世帯は月14,500〜72,800円（保育標準時間）、ひとり親等世帯は所得割97,000円未満で6,700円。",
+ "second_child": "half",
+ "second_count": "household",
+ "second_note": "ご案内9ページ・基準表の欄外: 「きょうだいで利用する場合、最年長（18歳に達した年度まで）の児童から順に2人目は半額、3人目は無料となります」。18歳に達した年度までの上の子から数える書き方なので household とした（上の子が保育所等を利用していることが要るかは文面からははっきりしない）。所得制限の記載はない。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "同じ欄外の注記で3人目は無料（最年長〔18歳に達した年度まで〕から数える）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和8年度施設利用のご案内（PDF、2025年12月15日作成、9〜10ページ）", "url": "https://www.city.tsushima.nagasaki.jp/material/files/group/17/R8goannai.pdf"},
+  {"label": "保育料（利用者負担額）基準表（PDF）", "url": "https://www.city.tsushima.nagasaki.jp/material/files/group/17/hoikuryoukijyun.pdf"},
+  {"label": "幼稚園、こども園、保育所（園）への入園／対馬市（更新日2025年12月15日）", "url": "https://www.city.tsushima.nagasaki.jp/gyousei/kosodate/kosodateshien/3742.html"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "公立の認可保育所・こども園のほかに、利用者負担のないへき地保育所がある。中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない。",
+ "read_at": "2026-11-01"
+}

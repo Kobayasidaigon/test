@@ -1,0 +1,42 @@
+{
+  "code": "192066",
+  "pref": "山梨県",
+  "name": "大月市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2025年4月",
+    "until": null,
+    "note": "市の「令和８年度当初予算新規及び主要事業一覧」：学校給食経理事業（75,525千円）「令和７年度より全学年の給食費を無償化し、Ｒ８年度も引き続き実施することで保護者の負担軽減を図る」。令和7年度当初予算概要にも「令和7年度より小学生、中学生の全学年の給食費の無償化を行う」。所得などの条件の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ（令和7年度から小中学生の全学年を無償化）。令和8年度は財源に県支出金32,604千円（国の負担軽減分）が入る。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "大月市「令和８年度当初予算新規及び主要事業一覧」PDF",
+      "url": "https://www.city.otsuki.yamanashi.jp/shisei/jyohokokai/images/R08_shinki.shuyou.pdf"
+    },
+    {
+      "label": "大月市「令和８年度当初予算概要」PDF（学校給食経理事業）",
+      "url": "https://www.city.otsuki.yamanashi.jp/shisei/jyohokokai/images/R08_yosangaiyou.pdf"
+    },
+    {
+      "label": "大月市「令和７年度当初予算概要」PDF（令和7年度より小学生、中学生の全学年の給食費の無償化）",
+      "url": "https://www.city.otsuki.yamanashi.jp/shisei/jyohokokai/files/R7tousyoyosangaiyou.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "学校教育・学校教育課のページに給食費の案内なし（「学校給食担当」の見出しだけ）"
+  ],
+  "notes": "財源の学校給食費負担金14,076千円は令和7・8年度で同額（無償化後も残る分。教職員などの分とみられるが内訳は書かれていない）。",
+  "read_at": "2026-11-01"
+}

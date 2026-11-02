@@ -1,0 +1,40 @@
+{
+  "code": "221309",
+  "pref": "静岡県",
+  "name": "浜松市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": 346,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "令和8年度の市立中学校の給食費（食材費）は1食481円に見直したが、国の物価高騰対応重点支援地方創生臨時交付金で1食135円を支援し、保護者負担は1食346円（令和7年度3学期の364円から18円減額）。全員の無償化・一部無償の記載はない。4月〜3月を10期に分けて口座振替か納付書で納める。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度、国の給食費負担軽減交付金と物価高騰対応の臨時交付金で市立小学校の給食費を無償化（保護者負担0円。食材費は1食389円）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "浜松市「学校給食費」（更新日 2026年4月1日。一食あたりの学校給食費 小学校0円・中学校346円）",
+      "url": "https://www.city.hamamatsu.shizuoka.jp/kenkou/kyushokukeihi.html"
+    },
+    {
+      "label": "浜松市教育委員会「令和8年度の学校給食について」（令和8年3月、PDF）",
+      "url": "https://www.city.hamamatsu.shizuoka.jp/documents/9585/gakkoukyushokuhi.pdf"
+    },
+    {
+      "label": "浜松市「浜松市の学校給食」（更新日 2026年4月14日。中学校48校で自校調理方式・学校給食センター方式）",
+      "url": "https://www.city.hamamatsu.shizuoka.jp/kenkou/hamamatsunogakkoukyusyoku.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "月額・年額の記載はない（喫食状況に応じて10期で請求）。市立中学校48校すべてで自校調理方式か学校給食センター方式で給食を実施（「浜松市の学校給食」2026年4月14日更新）。",
+  "read_at": "2026-11-01"
+}

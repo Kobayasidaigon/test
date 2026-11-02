@@ -1,0 +1,40 @@
+{
+  "code": "131067",
+  "pref": "東京都",
+  "name": "台東区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2023年1月",
+    "until": null,
+    "note": "区が物価高騰対策として令和5年1月から給食食材の調達を全面的に支援（姉妹都市大崎市産の米を区が購入して配布し、その他の食材費も学校へ支援）し、区立小中学校の給食費の保護者負担は無し。令和6年度以降も継続。以前の中学校の月額は5,900円（令和4年）。令和8年度の就学援助の案内でも、区立小中学校の在籍者の給食費は「別事業にて支援しているため対象外」。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "区立小学校も令和5年1月から保護者負担なし（以前の月額は低学年4,600円・中学年5,000円・高学年5,400円）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "台東区「区立小中学校給食への支援について」（更新日 2024年5月31日。令和6年度以降も支援を継続、給食費の保護者負担が無し）",
+      "url": "https://www.city.taito.lg.jp/kosodatekyouiku/kyoiku/kyoikuiinkai/oshirase/kinkyushien0501.html"
+    },
+    {
+      "label": "台東区「台東区の学校給食」（更新日 2024年5月31日。給食費について：令和5年1月以降 保護者負担なし0円）",
+      "url": "https://www.city.taito.lg.jp/kosodatekyouiku/kuritsushocyugakko/gakkoukyoikujujitu/gakkohokenkyushoku/gakkokyushoku.html"
+    },
+    {
+      "label": "台東区「就学援助費案内【参考】」（令和8年度、PDF。給食費は区立小中学校在籍者は別事業で支援しているため対象外）",
+      "url": "https://www.city.taito.lg.jp/kosodatekyouiku/kuritsushocyugakko/nyugakutugaku/syugakuenjo/enjo.files/R8_syuugakuennjoannnai.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "給食費のページは2024年5月の更新だが終わりの記載はなく、令和8年度の就学援助の案内（区の公式PDF）で給食費が区の別事業で支援されていることを確かめた。",
+  "read_at": "2026-11-01"
+}

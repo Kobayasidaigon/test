@@ -1,0 +1,52 @@
+{
+  "code": "294497",
+  "pref": "奈良県",
+  "name": "十津川村",
+  "status": "partial",
+  "fiscal_year": null,
+  "period_note": "村のサイトがボット対策の「このページは表示できません」（HTTP 408）を返して本文を読めなかった。中身は WebSearch（allowed_domains: vill.totsukawa.lg.jp）の結果の要約による（原文未確認・掲載年度未確認）。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料は全額無償とされているので所得割で負担は変わらないとみられる。検索結果の要約では村の子育てページに「保育料徴収基準額表」があるが、読めていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "検索結果の要約による・原文未確認: 村の「窓口・手続き（入園・入学）」のページは、子育て世帯の負担軽減と定住促進のため、村立保育所の保育料と給食費を全額無償にしていると説明（延長保育料も無償。ただし利用基準があり各保育所に確認）。子育てのページにも「保育料無償化」「給食費無償化」の項目がある。いつからかは分からない。3歳未満の入所は、花園保育所が1歳6か月から、ほかの保育所は2歳（4月1日時点）から（両親が就労などで保育に欠ける場合）。0歳〜1歳5か月の子が入れる村内の保育所は見つからなかった。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "保育料は第1子から全額無償とされているので、きょうだいの数え方は関係しない（household は「数え方に関係なく0円」の意味で置いた。検索結果の要約による）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無償とされているので第3子以降も0円（検索結果の要約による）。",
+  "lunch_jh": {
+    "free": true,
+    "note": "検索結果の要約による・原文未確認: 村の「十津川村女性活躍・男女共同参画プラン」に、保育所から中学校までの給食費・保育料の無償化が村の施策として紹介されている。",
+    "source": {
+      "label": "十津川村女性活躍・男女共同参画プラン（PDF、検索結果の要約で見た）",
+      "url": "https://www.vill.totsukawa.lg.jp/administration/gyousei/pdf/plan/jyumin01.pdf"
+    }
+  },
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "十津川村 窓口・手続き（入園・入学）（検索結果の要約で見た。本文は408で開けず）",
+      "url": "https://www.vill.totsukawa.lg.jp/life/guidance/school/index.html"
+    },
+    {
+      "label": "十津川村 子育て（くらし＞子育て。検索結果の要約で見た）",
+      "url": "https://www.vill.totsukawa.lg.jp/life/child/kosodate/"
+    },
+    {
+      "label": "十津川村 移住情報 子育て（検索結果の要約で見た）",
+      "url": "https://www.vill.totsukawa.lg.jp/iju/kosodate/index4.html"
+    }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べは18ページだけで、子育て（/iju/kosodate/）や入園・入学（/life/guidance/school/）のページは OSError で取れていなかった",
+    "村のトップページは1回目は200で取れたが、続けて開いた /iju/kosodate/ が「このページは表示できません。」（HTTP 408、インシデントID付き）になり、15秒・50秒・60秒あけて /iju/kosodate/、/iju/kosodate/index.html、/life/child/kosodate/、/life/guidance/school/index.html、トップページを取り直しても同じだった（ヘッダーを偽ってすり抜けることはしていない）",
+    "WebSearch（allowed_domains: vill.totsukawa.lg.jp）を2回使った（「十津川村 保育所 保育料 無料 3歳未満」「十津川村 窓口・手続き 入園 保育所 保育料 給食費 全額無償 延長保育料」）。結果の要約から、村立保育所の保育料・給食費・延長保育料が無償、3歳未満は1歳6か月（花園保育所）または2歳から、と読んだ"
+  ],
+  "notes": "検索結果の要約による村立保育所: 上野地・小原・みどり・花園の4か所（別のページでは「3つの保育所」とあり食い違う）。保育時間は平日8:00〜16:00、延長保育は7:45〜8:00と16:00〜18:00。新年度の入所申込みは毎年1月中頃または2月中頃に福祉事務所か各保育所で受付。認可保育所かへき地保育所かは確かめられていない。村のサイトを人の手で開ける環境で、子育てのページの本文と「保育料徴収基準額表」、無償化の開始時期、令和8年度も続いているかを確かめる必要がある。cash・one_time は読めていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

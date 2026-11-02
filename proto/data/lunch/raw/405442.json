@@ -1,0 +1,40 @@
+{
+  "code": "405442",
+  "pref": "福岡県",
+  "name": "広川町",
+  "status": "partial",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": null,
+    "monthly": null,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "中学校の令和8年度の給食費（額・無償化の有無）は町のページで見つからなかった。就学援助のページ（2026年4月1日更新）には小学校の無償化だけが書かれ、中学校の給食費は就学援助の支給費目（給食費）に入ったまま。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "就学援助制度のお知らせ（更新日 2026年4月1日）に「国の『学校給食費の抜本的な負担軽減』による交付金を活用することにより、町立小学校の給食費無償化を実施します。そのため、就学援助費からの支給はありません」とある。"
+  },
+  "no_lunch_jh": null,
+  "sources": [
+    {
+      "label": "広川町「就学援助制度のお知らせ」（小学校、更新日 2026年4月1日）",
+      "url": "https://www.town.hirokawa.fukuoka.jp/kosodate_kyoiku/gakko/1/5473.html"
+    },
+    {
+      "label": "広川町「就学援助制度のお知らせ」（中学校、更新日 2026年4月1日）",
+      "url": "https://www.town.hirokawa.fukuoka.jp/kosodate_kyoiku/gakko/3/5474.html"
+    }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "学校教育・小学校・中学校・子育ての一覧に給食費のページなし",
+    "令和8年度広川町教育施策PDFに給食費の記載なし",
+    "予算のページは令和7年度予算書までで令和8年度はまだ載っていない"
+  ],
+  "notes": "小学校だけ令和8年度の無償化を確認。中学校は未確認。",
+  "read_at": "2026-11-01"
+}

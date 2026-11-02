@@ -1,0 +1,39 @@
+{
+  "code": "163422",
+  "pref": "富山県",
+  "name": "入善町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2026年4月",
+    "until": null,
+    "note": "広報入善2026年4月号（令和8年度予算の特集）：「給食費については、新たに小学校での国・県の支援を超える部分の全額、中学校では町独自の支援で、完全無償化を実現」「小・中学校の給食費を補助 8614万円 ▷小中学校の給食費を完全無償化」。町の令和8年度当初予算の概要にも「小中学校給食費無償化事業（86,143千円）」（令和7年度の概要にはない）。所得などの条件の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "国・県の支援を超える部分を町が全額負担して完全無償化（2026年4月から）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "広報入善 2026年4月号 テキスト版",
+      "url": "https://www.town.nyuzen.toyama.jp/gyosei/chosei/koho_kocho/2/1/2/2026/6772.html"
+    },
+    {
+      "label": "入善町「令和8年度当初予算の概要について」PDF",
+      "url": "https://www.town.nyuzen.toyama.jp/material/files/group/3/R8yosangaiyou.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べに給食費の候補なし",
+    "学校教育・子育てサイト（小学生以上）に給食費のページなし"
+  ],
+  "notes": "",
+  "read_at": "2026-11-01"
+}

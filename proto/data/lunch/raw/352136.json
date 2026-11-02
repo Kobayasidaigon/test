@@ -1,0 +1,40 @@
+{
+ "code": "352136",
+ "pref": "山口県",
+ "name": "美祢市",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "jh": {
+  "free": "none",
+  "monthly": null,
+  "per_meal": 310,
+  "yearly": null,
+  "since": null,
+  "until": null,
+  "note": "令和8年度教育要覧：中学校の給食費は、昨年度に引き続き市が物価高騰分にかかる食材費を支援（保護者負担の増額を抑える）。全員・多子の無償化の記載はない。保護者から徴収する単価は中学校1食310円（教育要覧の「給食費の変遷」で平成27年度から310円、令和7年度の「学校給食の手続」ページでも310円。物価高騰補助金分を上乗せした単価で給食を提供）。支払いは5月から3月までの年11回。"
+ },
+ "elem": {
+  "free": "all",
+  "monthly": 0,
+  "note": "令和8年度から国・県の交付金（1人月5,200円×11か月）と市の物価高騰支援で市内小学校の給食費を完全無償化（所得制限なし。令和7年度までは月5,000円・1食270円）。"
+ },
+ "no_lunch_jh": false,
+ "sources": [
+  {
+   "label": "美祢市「令和8年度教育要覧」PDF（給食調理場管理運営事業・給食費の変遷）",
+   "url": "https://www2.city.mine.lg.jp/material/files/group/28/R8_kyouikuyourann.pdf"
+  },
+  {
+   "label": "美祢市「小学校の学校給食費を無償化します」（更新日 2026年5月14日）と「小学校給食費無償化のお知らせ」PDF",
+   "url": "https://www2.city.mine.lg.jp/soshiki/kyoiku/kyoikusomuka/kyuusyoku/13398.html"
+  },
+  {
+   "label": "美祢市「学校給食の手続」（更新日 2025年3月27日。給食費単価 小学校270円・中学校310円）",
+   "url": "https://www2.city.mine.lg.jp/soshiki/kyoiku/kyoikusomuka/kyuusyoku/12018.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "中学校の月額・年額はどのページにもなく1食の額だけ。1食310円は令和8年度の教育要覧の表（平成27年度～）と令和7年度のページから読んだ（令和8年度に改定した記載はない）。小学校無償化のお知らせPDFは画像なので画像にして読んだ。",
+ "read_at": "2026-11-01"
+}

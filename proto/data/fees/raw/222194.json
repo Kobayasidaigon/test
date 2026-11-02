@@ -1,0 +1,179 @@
+{
+  "code": "222194",
+  "pref": "静岡県",
+  "name": "下田市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "毎年9月が保育料の切替え時期。4〜8月は前年度の市民税額、9〜3月は当年度の市民税額に基づき算定（令和8年度は4〜8月が令和7年度、9〜3月が令和8年度課税額）。納付書は前期（4〜8月分）・後期（9〜3月分）で配布。「保育園・こども園について」のページの利用者負担額（PDF）は「令和８年４月時点のもの」で、令和9年度入園案内（2026年9月）8ページの「令和9年度（令和9年4月〜令和10年3月）の利用者負担額」の表と同じ額。市民税が確認できない場合は該当年齢の最高額で仮算定。",
+  "tax_basis": "6%",
+  "tax_note": "保育料算出基礎の市民税額は、税控除（住宅取得控除、配当控除、外国税控除等）する前の税額を用いる。目安は「税額控除前所得割」から「調整控除」を引いた額（住宅借入金等特別税額控除・寄附金税額控除・配当控除・株式等譲渡所得割額控除を受けている場合は所得割額にこれらを加えた額）。父母両方の市民税で確認。祖父母と生計が同一（祖父母が児童を扶養に取っている場合、父母に専従者給与を支払っている場合等）の場合は祖父母の資料も必要。",
+  "table": {
+    "title": "３号認定利用者（０～２歳児）負担額表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯、里親世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2",
+        "lower": null,
+        "upper": null,
+        "condition": "非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3",
+        "lower": null,
+        "upper": null,
+        "condition": "均等割のみ課税世帯",
+        "monthly": 10600,
+        "monthly_second": null
+      },
+      {
+        "label": "第4",
+        "lower": 1,
+        "upper": 24300,
+        "condition": "所得割課税額 24,300円未満の世帯",
+        "monthly": 13400,
+        "monthly_second": null
+      },
+      {
+        "label": "第5",
+        "lower": 24300,
+        "upper": 48600,
+        "condition": "所得割課税額 48,600円未満の世帯",
+        "monthly": 16200,
+        "monthly_second": null
+      },
+      {
+        "label": "第6",
+        "lower": 48600,
+        "upper": 60700,
+        "condition": "所得割課税額 60,700円未満の世帯",
+        "monthly": 19000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7",
+        "lower": 60700,
+        "upper": 72800,
+        "condition": "所得割課税額 72,800円未満の世帯",
+        "monthly": 21700,
+        "monthly_second": null
+      },
+      {
+        "label": "第8",
+        "lower": 72800,
+        "upper": 84900,
+        "condition": "所得割課税額 84,900円未満の世帯",
+        "monthly": 24300,
+        "monthly_second": null
+      },
+      {
+        "label": "第9",
+        "lower": 84900,
+        "upper": 97000,
+        "condition": "所得割課税額 97,000円未満の世帯",
+        "monthly": 26900,
+        "monthly_second": null
+      },
+      {
+        "label": "第10",
+        "lower": 97000,
+        "upper": 115800,
+        "condition": "所得割課税額 115,800円未満の世帯",
+        "monthly": 33000,
+        "monthly_second": null
+      },
+      {
+        "label": "第11",
+        "lower": 115800,
+        "upper": 138400,
+        "condition": "所得割課税額 138,400円未満の世帯",
+        "monthly": 38800,
+        "monthly_second": null
+      },
+      {
+        "label": "第12",
+        "lower": 138400,
+        "upper": 169000,
+        "condition": "所得割課税額 169,000円未満の世帯",
+        "monthly": 38800,
+        "monthly_second": null
+      },
+      {
+        "label": "第13",
+        "lower": 169000,
+        "upper": 205900,
+        "condition": "所得割課税額 205,900円未満の世帯",
+        "monthly": 48500,
+        "monthly_second": null
+      },
+      {
+        "label": "第14",
+        "lower": 205900,
+        "upper": 301000,
+        "condition": "所得割課税額 301,000円未満の世帯",
+        "monthly": 54900,
+        "monthly_second": null
+      },
+      {
+        "label": "第15",
+        "lower": 301000,
+        "upper": 308600,
+        "condition": "所得割課税額 308,600円未満の世帯",
+        "monthly": 57200,
+        "monthly_second": null
+      },
+      {
+        "label": "第16",
+        "lower": 308600,
+        "upper": null,
+        "condition": "所得割課税額 308,600円以上の世帯",
+        "monthly": 58800,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「利用者負担額・保育標準時間」の列。保育短時間: 第3 10,400、第4 13,100、第5 15,900、第6 18,600、第7 21,300、第8 23,800、第9 26,400、第10 32,400、第11 38,100、第12 38,100、第13 47,600、第14 53,900、第15 56,200、第16 57,800（第1・第2は0円）。表の定義は上限だけを書いた形（「○円未満の世帯」）なので、lower は1つ上の行の上限とした（第4の lower=1 は均等割のみの第3と分けるため）。第11と第12は同じ額（表のとおり）。ひとり親等で市民税所得割課税額77,100円以下の世帯は第1子4,500円、第2子以降無料。0〜2歳児の給食費は保育料に含まれる。3歳以上児は保育料無料（給食費は1号月2,800円・2号月3,500円）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児の第1子は表の額（非課税世帯・生活保護世帯・里親世帯は0円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "子どもが2人いる世帯: 市民税所得割課税額57,700円以上（第6階層の一部〜第16階層）は小学校就学前までのきょうだいのうち第2子半額（入園案内6ページでは「子どもが2人（2人とも園に在籍）…第2子半額」）。57,700円未満（第3階層〜第6階層の一部）は保護者と生計を一にしている子どものうち第2子半額（年齢を問わない）。子どもが3人以上いる世帯は、保護者と生計を一にしている子どものうち階層・所得や兄姉の年齢に関係なく第2子半額（このときは上の子の年齢を問わない数え方）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "子どもが3人以上いる世帯（年齢関係なく）は、保護者と生計を一にしている子どものうち階層に関係なく第3子以降無料。所得制限なし。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "保育園・こども園について | 下田市（2026年9月10日更新、利用者負担額は令和8年4月時点）",
+      "url": "https://www.city.shimoda.shizuoka.jp/category/230200hoiku_youtien/159347.html"
+    },
+    {
+      "label": "利用者負担額（PDF、3号認定利用者（0〜2歳児）負担額表と保育料の軽減措置）",
+      "url": "https://www.city.shimoda.shizuoka.jp/file/%E5%88%A9%E7%94%A8%E8%80%85%E8%B2%A0%E6%8B%85%E9%A1%8D.pdf"
+    },
+    {
+      "label": "令和9年度保育園・認定こども園 入園手続きについて | 下田市（2026年9月24日更新）",
+      "url": "https://www.city.shimoda.shizuoka.jp/category/240100hoiku_youtien/159505.html"
+    },
+    {
+      "label": "R9入園案内（PDF、6〜9ページに保育料・利用者負担額・市民税の見方）",
+      "url": "https://www.city.shimoda.shizuoka.jp/file/r%EF%BC%99%E5%85%A5%E5%9C%92%E6%A1%88%E5%86%85.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は画像（文字の取れない表）なので、利用者負担額PDFとR9入園案内8ページを画像で読み、両方の額が同じことを確かめた。市内の施設は下田認定こども園（公立）、稲生沢こども園、ひかり保育園。保育料は毎月20日までに口座振替または納付書（稲生沢こども園は園に納入、算定は市）。",
+  "read_at": "2026-11-01"
+}

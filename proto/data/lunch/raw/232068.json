@@ -1,0 +1,44 @@
+{
+  "code": "232068",
+  "pref": "愛知県",
+  "name": "春日井市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": null,
+    "per_meal": 285,
+    "yearly": 53010,
+    "since": null,
+    "until": null,
+    "note": "令和8年度の中学校の給食費は1食385円（前年度から35円値上げ）で、市が100円を負担し保護者負担は1食285円に据え置き。一部無償：春日井市立中学校に同時に通う生徒が2人以上いる世帯は、2人目以降の給食費を無償（申請不要、毎月市が確認）。月ごとの請求額は食べた日数で変わり（後払い）、令和8年度の予定は月3,420〜6,270円、4月〜3月の11か月で計53,010円（186日）。就学援助の認定者は就学援助費から納付。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度、小学校の給食費（1食335円）は国や県の交付金を活用して保護者負担を無償。1か月まったく給食を注文しない児童の保護者には月5,200円を支援（生活保護世帯を除く）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "春日井市「学校給食費」（更新日 令和8年4月2日）",
+      "url": "https://www.city.kasugai.lg.jp/kosodate/kyouiku/kyushoku/1012060.html"
+    },
+    {
+      "label": "春日井市「(中学校)令和8年度の学校給食費について(ご案内)」（PDF）",
+      "url": "https://www.city.kasugai.lg.jp/_res/projects/default_project/_page_/001/012/060/R8_chu_HP.pdf"
+    },
+    {
+      "label": "春日井市「令和8年度学校給食費及び納期限」（PDF。月ごとの中学校の額）",
+      "url": "https://www.city.kasugai.lg.jp/_res/projects/default_project/_page_/001/012/060/R8_koza_HP.pdf"
+    },
+    {
+      "label": "春日井市「(小学校)令和8年度の学校給食費について(ご案内)」（PDF）",
+      "url": "https://www.city.kasugai.lg.jp/_res/projects/default_project/_page_/001/012/060/R8_sho_HP.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "monthly は月ごとに額が変わるため null。yearly は市の「令和8年度学校給食費及び納期限」の中学校の11か月分（4月分〜3月分）の合計（1食285円×186日）。2人目以降無償の多子世帯は、1人目だけがこの額。",
+  "read_at": "2026-11-01"
+}

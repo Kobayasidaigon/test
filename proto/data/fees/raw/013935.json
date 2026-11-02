@@ -1,0 +1,45 @@
+{
+ "code": "013935",
+ "pref": "北海道",
+ "name": "黒松内町",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "町の公式サイト（www.kuromatsunai.com）は http でしか公開されておらず、https では開けなかったため、町の保育料の表・案内は読めていない。分かったのは北海道のまとめ（令和7年4月1日現在）の一文だけ。",
+ "tax_basis": "unknown",
+ "tax_note": "町の資料を読めていないため不明（政令市ではないので、国の基準どおりなら市町村民税所得割6%で判定）。検索結果の要約では、町の児童福祉のページに「保育料はお子さんの年齢や各家庭の所得税額などに応じて決定します」とあるが、ページそのものは開けていない。",
+ "table": null,
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "北海道「道内市町村における子ども・子育て等への支援状況」各市町村の主な取組（令和7年4月1日現在）に「第１子目の保育料引き下げ及び第2子以降の保育料無償化」とある。第1子は無料ではなく引き下げ（額・下げ幅は不明）。",
+ "second_child": "free",
+ "second_count": "unknown",
+ "second_note": "道のまとめ（令和7年4月1日現在）に「第2子以降の保育料無償化」とある。数え方（同時入所か、上の子の年齢を問わないか）・所得制限・対象年齢（3歳未満か）は書かれておらず、町の資料で確かめられていない。北海道の多子世帯の保育料軽減支援事業（第2子以降の3歳未満児の無償化に道が補助、所得割169,000円未満が補助の対象）を使っているとみられるが未確認。",
+ "third_child": "free",
+ "third_count": "unknown",
+ "third_note": "道のまとめの「第2子以降の保育料無償化」による。数え方は不明。",
+ "lunch_jh": {
+  "free": null,
+  "note": "道のまとめ（令和7年4月1日現在）の黒松内町の主な取組に「学校給食費の無償化」とある。中学校を含むか・いまも続いているかは町の資料で確かめていない。",
+  "source": {
+   "label": "北海道「道内市町村における子ども・子育て等への支援状況」各市町村の主な取組（令和7年4月1日現在、ページ更新 2026年5月18日）",
+   "url": "https://www.pref.hokkaido.lg.jp/hf/kms/178410.html"
+  }
+ },
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "北海道「道内市町村における子ども・子育て等への支援状況」各市町村の主な取組（令和7年4月1日現在、ページ更新 2026年5月18日。黒松内町「第１子目の保育料引き下げ及び第2子以降の保育料無償化」）",
+   "url": "https://www.pref.hokkaido.lg.jp/hf/kms/178410.html"
+  }
+ ],
+ "confidence": "推定",
+ "tried": [
+  "munis_by_pop.json の http://www.kuromatsunai.com/ を https にして取ろうとしたが、TLS の「unrecognized name」で失敗（サーバーが https の証明書を持っていない。下調べも OSError で0ページ）",
+  "https://kuromatsunai.com/、https://www.town.kuromatsunai.hokkaido.jp/（プロキシが接続を拒否）、https://www.town.kuromatsunai.lg.jp/、https://town.kuromatsunai.lg.jp/、https://www.kuromatsunai.lg.jp/ を1回ずつ試したがどれも開けなかった",
+  "WebSearch（allowed_domains: kuromatsunai.com、「黒松内町 保育料 第1子 第2子 無償化 保育所 3歳未満」）: 児童福祉のページ http://www.kuromatsunai.com/townlife/fukushi/file002/ などが出たが、どれも http のURLで https では開けないので読めなかった（検索の要約: 黒松内保育園 定員60名、保育料は年齢や所得税額などに応じて決定）",
+  "北海道のまとめ（pref.hokkaido.lg.jp、令和7年4月1日現在）で黒松内町の取組の一文を読んだ"
+ ],
+ "notes": "町の保育所は黒松内保育園（定員60名、検索結果の要約による）。町のサイトが https で開けるようになったら、児童福祉のページ（/townlife/fukushi/file002/）と保育園の入園案内で表・数え方・所得制限を読み直す必要がある。",
+ "read_at": "2026-11-01"
+}

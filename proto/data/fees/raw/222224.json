@@ -1,0 +1,48 @@
+{
+  "code": "222224",
+  "pref": "静岡県",
+  "name": "伊豆市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「こども園・保育園の利用と保育料について」ページ〔更新日2026年10月30日〕の現行の「階層区分ごとの保育料一覧」。表そのものに年度の表示はない。同じページに令和8年度 口座振替日一覧）",
+  "period_note": "4〜8月分は前年度課税額（令和7年度の市民税）、9〜3月分は現年度課税額（令和8年度の市民税）を基に算定。原則、月の初日で入園・末日で退園のため日割り計算はしない。",
+  "tax_basis": "6%",
+  "tax_note": "父母の市民税の合計額で階層を決める。父母どちらとも市民税が非課税の世帯で同居の祖父母等がいる場合は、家計の主宰者と判断し主宰者の課税額を含めて判定（国の指針に準じる）。寄附金税額控除、外国税額控除、配当割額又は株式等譲渡所得割額の控除、配当控除、住宅借入金等特別控除は適用しない（税額控除前の所得割額）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "階層区分ごとの保育料一覧",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市民税（均等割額）非課税・市民税（所得割額）非課税", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": null, "upper": null, "condition": "市民税（均等割額）課税・市民税（所得割額）非課税", "monthly": 7000, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "市民税（均等割額）課税・市民税（所得割額）48,600円未満", "monthly": 11700, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 57700, "condition": "市民税（均等割額）課税・市民税（所得割額）57,700円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "6", "lower": 57700, "upper": 77101, "condition": "市民税（均等割額）課税・市民税（所得割額）77,101円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "7", "lower": 77101, "upper": 97000, "condition": "市民税（均等割額）課税・市民税（所得割額）97,000円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "8", "lower": 97000, "upper": 169000, "condition": "市民税（均等割額）課税・市民税（所得割額）169,000円未満", "monthly": 26700, "monthly_second": null },
+      { "label": "9", "lower": 169000, "upper": 301000, "condition": "市民税（均等割額）課税・市民税（所得割額）301,000円未満", "monthly": 36600, "monthly_second": null },
+      { "label": "10", "lower": 301000, "upper": 397000, "condition": "市民税（均等割額）課税・市民税（所得割額）397,000円未満", "monthly": 48000, "monthly_second": null },
+      { "label": "11", "lower": 397000, "upper": null, "condition": "市民税（均等割額）課税・市民税（所得割額）397,000円以上", "monthly": 62400, "monthly_second": null }
+    ],
+    "notes": "表（HTML）の列は「階層区分（父母合算）・市民税（均等割額）・市民税（所得割額）・保育料：0歳児.1歳児.2歳児（標準）・保育料：0歳児.1歳児.2歳児（短時間）」。rows は標準。短時間: 1・2階層 0円、3階層 5,000円、4階層 8,500円、5〜7階層 13,000円、8階層 19,400円、9階層 26,600円、10階層 34,900円、11階層 45,300円。所得割額の欄は上限（○○円未満）だけが書かれているので、lower は1つ上の行の上限とした。3階層（所得割非課税＝均等割のみ）と分けるため4階層の lower を1にした。公立園・私立園とも共通の保育料。3歳児以上は幼児教育・保育の無償化で無料。「その他、世帯の状況により軽減措置があります」（内容は書かれていない）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は全額負担（標準で月0〜62,400円）。0円は生活保護世帯と市民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "令和5年4月から、保育園・こども園（市内外問わず）を利用している0〜2歳の伊豆市民の園児の第2子以降の保育料を無償化（それまでは第2子半額・第3子以降無償）。第2子のカウントは市独自の基準で、第1子の年齢や保護者の所得による制限はない。申請不要。給食費や延長保育料などの実費徴収分は対象外。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降すべて無償（第1子の年齢・所得の制限なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "こども園・保育園の利用と保育料について／伊豆市 公式ポータルサイト（更新日2026年10月30日、階層区分ごとの保育料一覧）", "url": "https://www.city.izu.shizuoka.jp/kosodate_kyoiku/2/1/3181.html" },
+    { "label": "第2子の保育料が無料になりました／伊豆市 公式ポータルサイト（更新日2023年04月18日）", "url": "https://www.city.izu.shizuoka.jp/kosodate_kyoiku/2/1/5726.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表はページの HTML の table（caption「階層区分ごとの保育料一覧」）をセルごとに読んで列を確かめた。同じ内容のページが「くらしの検索」側（/kurashinokensaku/kosodateshien/1/2176.html）にもある。中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

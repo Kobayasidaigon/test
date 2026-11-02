@@ -1,0 +1,36 @@
+{
+  "code": "132063",
+  "pref": "東京都",
+  "name": "府中市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": 0,
+    "since": "2023年10月",
+    "until": null,
+    "note": "物価高騰等の影響を受ける子育て世帯の負担軽減のため、令和5年10月から市立小・中学校の給食費を無償（公費負担）にし、令和6年度以降も「当分の間」継続。2026年11月1日更新の「府中市私立小中学校等給食費助成金」でも、市立小・中学校の給食費無償化の取組を拡大して市立以外の学校に通う子などへ給食費相当額を助成するとしている。参考：給食費の月額（公費負担の基準）は中学生5,200円（1食321円）。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "市立小学校も令和5年10月から無償（当分の間継続）。参考月額は小1・2年4,300円、小3・4年4,500円、小5・6年4,700円。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "府中市「府中市の学校給食費について」（学校給食費の公費負担の継続。最終更新日 2025年8月5日）",
+      "url": "https://www.city.fuchu.tokyo.jp/kosodate/kyoiku/shochugakko/kyushokuhi-kohi.html"
+    },
+    {
+      "label": "府中市「府中市私立小中学校等給食費助成金」（市立小・中学校の給食費無償化等の取組を拡大。最終更新日 2026年11月1日）",
+      "url": "https://www.city.fuchu.tokyo.jp/kosodate/kyoiku/shogakukin/shiritsutou_josei.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "",
+  "read_at": "2026-11-01"
+}

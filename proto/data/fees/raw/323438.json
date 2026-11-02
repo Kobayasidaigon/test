@@ -1,0 +1,31 @@
+{
+  "code": "323438",
+  "pref": "島根県",
+  "name": "奥出雲町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「奥出雲町は保育料完全無償化！」のページ〔最終更新日2026年3月26日〕と「令和９年度 保育所等入所申込みについて」のページ〔最終更新日2026年10月30日〕の「6 保育料」で、令和5年1月分から0〜2歳児の保育料を無料にしたことが今も続いていると書かれている）",
+  "period_note": "令和5年1月分の保育料から、国の無償化の対象とならない0〜2歳児の保育料を町が無料にし、すべての子どもの保育料を完全無償化。",
+  "tax_basis": "6%",
+  "tax_note": "保育料は全員0円なので、所得割の定義は額に関係しない（町のページに所得割の注記はない）。政令市ではない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2023年1月",
+  "first_child_free_note": "町独自。令和5年1月分の保育料から、国の無償化の対象とならない0〜2歳児の保育料を無料にし、すべての子どもの保育料を完全無償化（所得制限なし）。対象は奥出雲町に住所を有する方。園に支払う延長保育料や教材費などはこれまでどおり自己負担。主食費・副食費も町が無償化している。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から0〜2歳児の保育料が無料なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から無料なので第3子以降も無料（数え方に関係なく0円）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "奥出雲町は保育料完全無償化！ | 奥出雲町（最終更新日2026年3月26日）", "url": "https://www.town.okuizumo.shimane.jp/kosodate-kyoiku/shussan-kosodate/kosodateshien/1672212058200.html" },
+    { "label": "令和９年度 保育所等入所申込みについて | 奥出雲町（最終更新日2026年10月30日、「6 保育料」）", "url": "https://www.town.okuizumo.shimane.jp/kosodate-kyoiku/shussan-kosodate/kosodateshien/1761100019748_1.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "町内の施設は布勢幼児園・三成幼児園・布勢幼児園亀嵩分園・阿井幼児園（「幼児園」は保育所を経営基盤とする町独自の児童福祉施設）とよこたこども園。基準となる保育料の表は、無償なので探していない。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

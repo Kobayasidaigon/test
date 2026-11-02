@@ -1,0 +1,44 @@
+{
+  "code": "282031",
+  "pref": "兵庫県",
+  "name": "明石市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2020年度",
+    "until": null,
+    "note": "明石市の「Seven Free（明石独自の7つの無料化）〜すべて保護者の所得制限なし〜」の一つで、中学校給食が無償（教育費がふくらむ中学生のいる家庭の負担軽減）。令和8年度施政方針でも「国に先立って本市独自で実施している中学校給食の無償化も継続します」。令和2年度から中学校給食費を無償化している（市の意見への回答、令和7年5月）。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度施政方針：国が4月以降に保護者負担の軽減に取り組むのに加え、国の基準を超える給食材料費も保護者に負担を求めず市が負担して、小学校給食を完全無償化。「明石で子育て」（2026年5月12日更新）でも「小学校給食が無料」。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "明石市「明石で子育て〜子育てするならやっぱり明石！〜」（ページ番号36732、更新日 2026年5月12日。Seven Free ⑤小学校給食が無料・⑥中学校給食が無料）",
+      "url": "https://www.city.akashi.lg.jp/shise/koho/citysales/taneakashi-child.html"
+    },
+    {
+      "label": "明石市「施政方針・所信表明」（更新日 2026年2月19日。2026年度施政方針 学校給食）",
+      "url": "https://www.city.akashi.lg.jp/seisaku/seisaku_shitsu/shise/shicho/shise.html"
+    },
+    {
+      "label": "明石市「令和７年５月 意見の要旨と回答」（更新日 2025年7月28日。令和２年度より中学校給食費の無償化）",
+      "url": "https://www.city.akashi.lg.jp/seisaku/soudan_shitsu/ikenntokaitou/r705.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの機械収集は幼稚園・保育の給食ページだけだった",
+    "中学校給食のページは教育委員会のサイト（www.edi.akashi.hyogo.jp）にあるが、https で接続が切られて開けなかった（http には直さなかった）",
+    "WebSearch（allowed_domains: city.akashi.lg.jp）を1回使い、出てきた市の施政方針・子育てページ・意見への回答を開いて確かめた"
+  ],
+  "notes": "since は「令和２年度より」とだけあり月は書かれていないため「2020年度」とした。給食費の額（1食単価など）は市のサイトでは見つけていない。",
+  "read_at": "2026-11-01"
+}

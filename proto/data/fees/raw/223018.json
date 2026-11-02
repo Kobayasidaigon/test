@@ -1,0 +1,42 @@
+{
+  "code": "223018",
+  "pref": "静岡県",
+  "name": "東伊豆町",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "令和7年度のなぎる保育園申し込み要綱（令和6年10月17日時点）: 「子ども・子育て支援法の規定により、各家庭の前年度の所得割額（祖父母等を含む場合もあります。）及び入所された月の１日付の年齢で決定される保育料を納付いただきます」。額の表は載っていない。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料の表が見つからないため不明（政令市ではないので、表があれば6%で判定のはず）。",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "保育料の表も無償化の案内も見つからなかった。町の第２期総合戦略（令和7年3月改訂）に「今までできなかった保育や給食の無償化について実施していきます」とあるが、実施されたかどうかは確かめられていない。",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "きょうだいの軽減の決まりは見つからなかった。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "",
+  "lunch_jh": { "free": false, "note": "令和8年度 東伊豆町教育委員会自己点検・評価報告書（令和7年度分、2026年10月作成）: 学校給食費は令和6年度から幼稚園児月額3,160円、児童4,930円、生徒5,670円に改定し、町が児童生徒1人につき月額1,000円を補助（幼稚園児は全額補助）。令和7年度は物価高騰対策として12月から3月までの4か月間だけ児童・生徒の給食費を全額補助した。通年の無償化ではない。", "source": { "label": "令和8年度 東伊豆町教育委員会自己点検・評価報告書（令和7年度分）", "url": "https://www.town.higashiizu.lg.jp/material/files/group/6/reiwa8nenndohigashiizutyoukyouikuiinnkaijikotennkennhyoukahoukokusyo.pdf" } },
+  "cash": [],
+  "one_time": [
+    { "label": "東伊豆町子宝祝金", "amount": 50000, "note": "第1子50,000円、第2子100,000円、第3子200,000円、第4子以降300,000円（平成27年度から。以前の出産祝金は1人50,000円）。出産によって子の父又は母となり、出産の日に東伊豆町に居住し住民登録されている方が対象。出産日の翌日から6か月以内に申請。", "source": { "label": "「子宝祝金」制度について|東伊豆町（2024年12月2日更新）", "url": "https://www.town.higashiizu.lg.jp/kosodate_kyoiku/ninshin_shussan/1301.html" } }
+  ],
+  "sources": [
+    { "label": "保育所・こども園／東伊豆町（令和6年度・令和7年度の保育施設入所のご案内だけが載っている）", "url": "https://www.town.higashiizu.lg.jp/kosodate_kyoiku/hoiku_kodomoen/index.html" },
+    { "label": "令和7年度保育所入所について／東伊豆町（2024年12月2日更新）", "url": "https://www.town.higashiizu.lg.jp/kosodate_kyoiku/hoiku_kodomoen/hoiku_nyusyo_r7/1945.html" },
+    { "label": "令和7年度 申し込み要綱（なぎる保育園）", "url": "https://www.town.higashiizu.lg.jp/material/files/group/1/jum_hoikuennyuusyo_R7mousikomiyouryou_nagiruhoikuen_R6.pdf" },
+    { "label": "「子宝祝金」制度について|東伊豆町", "url": "https://www.town.higashiizu.lg.jp/kosodate_kyoiku/ninshin_shussan/1301.html" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl/223018）は82ページを読んだが候補の文書は0件。町の「保育所・こども園」には令和6年度・令和7年度の入所案内しかなく、令和8年度・令和9年度のページはない（hoiku_nyusyo_r8/、hoiku_nyusyo_r9/ は404）。",
+    "令和7年度の申し込み要綱（なぎる保育園、認定こども園 保育園部）を読んだが、保育料は「前年度の所得割額…で決定される」とだけあり、表はない。東伊豆認定こども園・なぎる保育園・町内保育施設一覧のページにも保育料の記載はない。",
+    "例規集（https://www1.g-reiki.net/town.higashiizu.shizuoka/reiki_menu.html）は 403 Forbidden（数分あけて取り直しても同じ。ヘッダーを偽ってすり抜けることはしていない）。",
+    "WebSearch（allowed_domains: town.higashiizu.lg.jp）を2回使った（「東伊豆町 保育料 利用者負担額 3歳未満 第2子」「東伊豆町 保育料 無償化 0歳 1歳 2歳 東伊豆認定こども園 なぎる保育園」）。保育料の表や無償化のページは見つからなかった。",
+    "子ども・子育て支援事業計画（令和2年3月）、第２期総合戦略（令和7年3月改訂）、令和8年度の教育委員会自己点検・評価報告書の文字を探したが、0〜2歳の保育料の額やきょうだいの決まりはなかった。",
+    "東伊豆認定こども園の運営法人のサイト（http://inatorihoikuen.com/ → https）はつながらなかった。"
+  ],
+  "notes": "町内の保育施設は、東伊豆認定こども園（社会福祉法人たちばな童園、定員90名、生後6か月から）、なぎる保育園（同法人の小規模保育所、定員10名、生後6か月〜2歳）、家庭的保育（利用者負担額は世帯の所得によって異なると案内）。保育料の表は、例規集（g-reiki、ここからは403）か町の住民福祉課子育て支援係（0557-95-6204）で確かめる必要がある。",
+  "read_at": "2026-11-01"
+}

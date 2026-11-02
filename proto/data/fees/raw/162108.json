@@ -69,5 +69,6 @@
     "WebSearch（allowed_domains city.nanto.toyama.jp）「南砺市 保育園 入園申込 保育料 月額 令和8年度」: 料金表なし。出てきた移住サイト「南砺市の子育て補助関係 支援制度」 https://kurashi.city.nanto.toyama.jp/support/parenting はトップへ転送されて読めなかった"
   ],
   "notes": "0〜2歳児の保育料の表（所得割の階層と月額）は市の公式サイト・子育て支援ガイドのどちらにも見つからなかった（入園申込は前年度10月、申込書は9月下旬から各保育園で配布とあり、表は紙の入園案内だけの可能性）。きょうだいの決まりは すこやか の文で分かった。tax_basis の 6% は政令市でないことからの見込み。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {"at": "2026-11-01", "result": "ok", "changes": "なし（形の点検と、読み取り係が保存した南砺市子育て支援ガイド すこやか の「子どもを預けたい」ページ〔work/162108/nursey.html〕の文との突き合わせ）。表が見つかっていないので status partial・table null・fiscal_year null・first_child_free null・confidence 推定は形として合っている。second_note・third_note のもとの文「多子軽減により、養育されている２２歳までの範囲で最年長のお子さんから順に２人目の保育料が半額」「３人目以降のお子さんの保育料は無料」と、副食費（1人目・2人目半額、3人目以降無料）が文と一致。status は not_found ではないので、別の探し方はしていない。tax_basis 6% は政令市でないことからの見込み（tax_note にそう書いてある）。"}
 }

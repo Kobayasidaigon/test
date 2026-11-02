@@ -1,0 +1,73 @@
+{
+  "code": "063231",
+  "pref": "山形県",
+  "name": "朝日町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「朝日町子どものための教育・保育に関する利用者負担額等を定める条例施行規則」別表第１（令和８年３月16日規則第６号で改正、令和８年４月１日以後の利用者負担額から適用。例規集の内容現在 令和8年3月16日）は第1〜第9階層すべて0円（保育標準時間・短時間とも）。「朝日町子育てガイドブック（令和8年度版）」（2026年7月23日作成）18ページ: 「朝日町では子どもの健やかな成長を応援し、子育て世帯の負担軽減を図るために、保育料を無償化しています（午後６時以降の延長保育料は１回200円）。」階層の認定は、4〜8月は前々年度、9〜3月は前年度の町民税課税額（規則第2条第2項）。別表第1では4〜8月分は前年度分、9〜3月分は当該年度分の市町村民税の額と書かれている。",
+  "tax_basis": "6%",
+  "tax_note": "別表第１備考5: 保護者と同一世帯に属する者の市町村民税の額を合算。所得割は地方税法第314条の7（寄附金税額控除）・第314条の8（配当控除）・第314条の9、附則第5条第3項（住宅借入金等特別税額控除）などを適用しないで計算し、指定都市に住所がある人は指定都市以外に住所があるとみなす（6%で計算）。父母が非課税で、家計の主宰者である扶養義務者と生計を一にする場合はその人の課税額で算定（備考3）。",
+  "table": {
+    "title": "別表第１（第３条関係）利用者負担額（月額）（朝日町子どものための教育・保育に関する利用者負担額等を定める条例施行規則）",
+    "kind": "満3歳未満保育認定子ども・保育標準時間（月額）。全階層0円（短時間も0円）",
+    "rows": [
+      { "label": "第１階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む。）、中国残留邦人等支援給付受給世帯、里親である保護者の世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第２階層", "lower": null, "upper": null, "condition": "非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第３階層", "lower": 0, "upper": 48600, "condition": "市町村民税所得割合算額 48,600円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第４階層", "lower": 48600, "upper": 69500, "condition": "市町村民税所得割合算額 48,600円以上 69,500円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第５階層", "lower": 69500, "upper": 81600, "condition": "市町村民税所得割合算額 69,500円以上 81,600円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第６階層", "lower": 81600, "upper": 97000, "condition": "市町村民税所得割合算額 81,600円以上 97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第７階層", "lower": 97000, "upper": 169000, "condition": "市町村民税所得割合算額 97,000円以上 169,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第８階層", "lower": 169000, "upper": 301000, "condition": "市町村民税所得割合算額 169,000円以上 301,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第９階層", "lower": 301000, "upper": null, "condition": "市町村民税所得割合算額 301,000円以上", "monthly": 0, "monthly_second": null }
+    ],
+    "notes": "保育標準時間・保育短時間とも全階層0円。備考1: 第1子・第2子等は年齢にかかわらず最年長から数える。備考2: 年度途中で3歳になっても、3歳の誕生日後の最初の3月31日まではこの表の額。備考6: 第7〜第9階層の2人目は表の額の1/2、3人目以降0円（表の額が0円なので実質の意味はない）。別表第２: 延長保育料は1日200円（1か月18日を超えると3,500円が上限）。ガイドブック: 一時保育は3歳未満児3,000円/日、給食は米飯を含めた完全給食で無償。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "施行規則の別表第１は全階層0円（最後の改正は令和8年3月16日規則第6号、令和8年4月1日以後の利用者負担額から適用）。いつから全階層0円になったか（改正前の額）は確かめていない。所得制限なし。町内の保育施設は町立あさひ保育園（朝日町に住所のある生後6か月からの子を預かる）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員0円なので第2子も0円（きょうだいの数え方は額に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員0円なので第3子以降も0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "子育てガイドブック（令和8年度版）25ページ: 「教育にかかる負担軽減として、小中学校の給食費を無償化しています。」（教育文化課 学校教育係）",
+    "source": { "label": "朝日町子育てガイドブック（令和8年度版、PDF）", "url": "https://www.town.asahi.yamagata.jp/material/files/group/5/080723gaidobuttuku.pdf" }
+  },
+  "cash": [
+    {
+      "label": "朝日町未満児家庭保育応援金（保育施設等に入所せず家庭で保育する世帯）",
+      "per_child_yearly": 120000,
+      "max_age": 3,
+      "note": "月額最大10,000円（per_child_yearly は12か月分の最大）。朝日町に住所があり現に居住する、満7か月から3歳に達し最初の3月31日を迎えるまでの子を家庭で保育し、同居・監護し生計を共にしている保護者。保育施設等に入所していないこと（一時保育の利用は対象）。支払は8月・12月・4月、支払月の前月に申請。保育園に通う子は対象外なので、保育料の比較とは別の制度。",
+      "source": { "label": "朝日町子育てガイドブック（令和8年度版）20ページ", "url": "https://www.town.asahi.yamagata.jp/material/files/group/5/080723gaidobuttuku.pdf" }
+    }
+  ],
+  "one_time": [
+    {
+      "label": "すこやかあさひっこ祝品・祝金",
+      "amount": 70000,
+      "note": "新生児1人につき7万円（祝品と祝金の合計。祝品は町内事業者のギフトカタログから約3万円分を選び、4か月健診時に贈呈。祝金は出生届時に申請して振込）。",
+      "source": { "label": "朝日町子育てガイドブック（令和8年度版）9ページ", "url": "https://www.town.asahi.yamagata.jp/material/files/group/5/080723gaidobuttuku.pdf" }
+    },
+    {
+      "label": "はばたくあさひ応援金（高校入学にあたる年齢の子を養育する世帯）",
+      "amount": 100000,
+      "note": "高校入学にあたる年齢の子ども1人につき10万円。",
+      "source": { "label": "朝日町子育てガイドブック（令和8年度版）25ページ", "url": "https://www.town.asahi.yamagata.jp/material/files/group/5/080723gaidobuttuku.pdf" }
+    }
+  ],
+  "sources": [
+    { "label": "朝日町子どものための教育・保育に関する利用者負担額等を定める条例施行規則（朝日町例規集、内容現在 令和8年3月16日）", "url": "https://www.town.asahi.yamagata.jp/section/d1w_reiki/H427902100009/H427902100009_j.html" },
+    { "label": "朝日町子育てガイドブック（令和8年度版、PDF、2026年7月23日作成）", "url": "https://www.town.asahi.yamagata.jp/material/files/group/5/080723gaidobuttuku.pdf" },
+    { "label": "子育てガイドブック／朝日町ホームページ", "url": "https://www.town.asahi.yamagata.jp/portal/lifemenu/childcare/2/5024.html" },
+    { "label": "朝日町子どものための教育・保育に関する利用者負担額を定める条例（朝日町例規集）", "url": "https://www.town.asahi.yamagata.jp/section/d1w_reiki/H427901010008/H427901010008_j.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べはトップページ1枚だけで止まっていた（トップの中身は /portal/ 以下にある）。portal → 育児・子育て → 子育てガイドブック（令和8年度版）で無償化を見つけ、例規集（/section/d1w_reiki/、福祉 > 社会福祉）の施行規則で全階層0円の別表を確かめた。あさひ保育園のページ（/portal/lifemenu/admission/7501.html）は園の紹介だけで保育料の記載はない。",
+  "read_at": "2026-11-01"
+}

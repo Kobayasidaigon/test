@@ -1,0 +1,53 @@
+{
+  "code": "432041",
+  "pref": "熊本県",
+  "name": "荒尾市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（表に年度の表示はないが、令和9年度の入所申込みのページにある「利用者負担額(保育料)について(0・1・2歳児)」PDF〔2026年9月作成〕の現行の表。子ども・子育て支援新制度のページ〔2024年6月公開〕の表と額は同じ）",
+  "period_note": "毎年4月から8月までは前年度の市町村民税額、9月から翌3月までは当年度の市町村民税額で判定。市町村民税の申告をしていないなど税額が公簿で確認できない場合は、申告までの期間はD11階層（最高額）となり、第2子以降の無償化も申告手続の翌月分からの適用（遡らない）。",
+  "tax_basis": "6%",
+  "tax_note": "住宅借入金等特別控除、寄付控除（ふるさと納税控除等）、配当控除、外国税額控除などがある場合は控除前の額で計算。算定対象は原則子どもの父母で、父母の合計所得金額の合計額が市で定めた金額未満で祖父母等と同居しているときは、同居者のうち合計所得金額が最も高い人を算定対象者に追加。政令市ではないので6%で判定。",
+  "table": {
+    "title": "【２・３号認定（０～２歳児）の利用者負担額表（荒尾市基準）】",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C", "lower": null, "upper": null, "condition": "均等割の額のみ", "monthly": 13400, "monthly_second": null },
+      { "label": "D1", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税世帯 48,600円未満", "monthly": 16100, "monthly_second": null },
+      { "label": "D2", "lower": 48600, "upper": 63900, "condition": "48,600円 以上 63,900円未満", "monthly": 19900, "monthly_second": null },
+      { "label": "D3", "lower": 63900, "upper": 75900, "condition": "63,900円 以上 75,900円未満", "monthly": 22400, "monthly_second": null },
+      { "label": "D4", "lower": 75900, "upper": 97000, "condition": "75,900円 以上 97,000円未満", "monthly": 25400, "monthly_second": null },
+      { "label": "D5", "lower": 97000, "upper": 110700, "condition": "97,000円 以上 110,700円未満", "monthly": 30900, "monthly_second": null },
+      { "label": "D6", "lower": 110700, "upper": 138900, "condition": "110,700円 以上 138,900円未満", "monthly": 35400, "monthly_second": null },
+      { "label": "D7", "lower": 138900, "upper": 169000, "condition": "138,900円 以上 169,000円未満", "monthly": 37200, "monthly_second": null },
+      { "label": "D8", "lower": 169000, "upper": 220800, "condition": "169,000円 以上 220,800円未満", "monthly": 38500, "monthly_second": null },
+      { "label": "D9", "lower": 220800, "upper": 301000, "condition": "220,800円 以上 301,000円未満", "monthly": 40200, "monthly_second": null },
+      { "label": "D10", "lower": 301000, "upper": 397000, "condition": "301,000円 以上 397,000円未満", "monthly": 43500, "monthly_second": null },
+      { "label": "D11", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 46500, "monthly_second": null }
+    ],
+    "notes": "列は「利用者負担額（月額）: 保育標準時間・保育短時間」。第2子の列はないので monthly_second は null（市独自の多子世帯子育て支援事業で第2子以降は0円）。保育短時間: A・B 0円、C 13,200円、D1 15,900円、D2 19,600円、D3 22,100円、D4 25,000円、D5 30,400円、D6 34,800円、D7 36,600円、D8 37,900円、D9 39,600円、D10 42,800円、D11 45,800円。ひとり親世帯・在宅障がい者（児）のいる世帯等で所得割77,101円未満は、1人目6,500円、2人目以降0円。D1 の lower は C（均等割のみ＝所得割0円）と分けるため1にした。0〜2歳児クラスの給食費は利用者負担額に含まれる。3歳児クラスからは無償（給食費は実費）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は保育料の負担がある（標準時間で月0〜46,500円）。0円は生活保護世帯等と市町村民税非課税世帯だけ。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "荒尾市多子世帯子育て支援事業（市独自、令和6年4月から）: 生計を同一にしている18歳未満のこどものうち最年長者を第1子、その下を第2子と順に数え、第2子以降の保育料が世帯の収入に関係なく無償（0円）。対象施設は特定教育・保育施設（保育所・認定こども園）と特定地域型保育事業。原則申請不要（第1子が就学や療養等で別居しているときは生計同一を確認できる書類が必要な場合あり）。国の制度（小学校就学前の範囲で2人目半額、所得割57,700円未満は年齢を問わず数える）より広い。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第2子以降すべて無償（18歳未満で数える）。熊本県の制度で18歳未満の子を3人以上扶養する世帯の第3子以降は無償（D10・D11階層は県の制度の対象外のため市の制度で無償化）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "利用者負担額(保育料)について(0・1・2歳児)（2026年9月作成）", "url": "https://www.city.arao.lg.jp/fs/2/7/7/3/1/4/_/________________0_1_2___.pdf" },
+    { "label": "幼稚園、保育所、認定こども園、地域型保育事業所の入所申込みについて - 荒尾市", "url": "https://www.city.arao.lg.jp/kosodate/hoikuen/hoikusho/page21009.html" },
+    { "label": "令和6年4月から保育料無償化の対象が第2子以降に拡大します。【市独自】 - 荒尾市（公開日2024年4月4日）", "url": "https://www.city.arao.lg.jp/kosodate/hoikuen/hoikusho/8485.html" },
+    { "label": "子ども・子育て支援新制度について - 荒尾市（公開日2024年6月10日）", "url": "https://www.city.arao.lg.jp/kosodate/shien/page21231.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "利用者負担額の PDF は令和9年度の入所申込みのページ（受付は令和8年11月）からリンクされ、2026年9月11日作成。中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない。",
+  "read_at": "2026-11-01"
+}

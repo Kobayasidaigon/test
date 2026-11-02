@@ -11,28 +11,140 @@
     "title": "令和８年度 氷見市保育料",
     "kind": "0歳児（4月1日時点で0歳の児童）・保育標準時間・第1子（月額）。1歳以上児は無料",
     "rows": [
-      { "label": "A", "lower": null, "upper": null, "condition": "生活保護", "monthly": 0, "monthly_second": null },
-      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税", "monthly": 0, "monthly_second": null },
-      { "label": "C01", "lower": null, "upper": null, "condition": "市町村民税均等割のみ", "monthly": 9400, "monthly_second": null },
-      { "label": "C02", "lower": 1, "upper": 24300, "condition": "市町村民税所得割課税額 24,300 円未満", "monthly": 11200, "monthly_second": null },
-      { "label": "C03", "lower": 24300, "upper": 48600, "condition": "市町村民税所得割課税額 24,300 円以上 48,600 円未満", "monthly": 12900, "monthly_second": null },
-      { "label": "D01", "lower": 48600, "upper": 62800, "condition": "市町村民税所得割課税額 48,600 円以上 62,800 円未満", "monthly": 18300, "monthly_second": null },
-      { "label": "D02", "lower": 62800, "upper": 77101, "condition": "市町村民税所得割課税額 62,800 円以上 77,101 円未満", "monthly": 23600, "monthly_second": null },
-      { "label": "D03", "lower": 77101, "upper": 97000, "condition": "市町村民税所得割課税額 77,101 円以上 97,000 円未満", "monthly": 27300, "monthly_second": null },
-      { "label": "D04", "lower": 97000, "upper": 115000, "condition": "市町村民税所得割課税額 97,000 円以上 115,000 円未満", "monthly": 30400, "monthly_second": null },
-      { "label": "D05", "lower": 115000, "upper": 133000, "condition": "市町村民税所得割課税額 115,000 円以上 133,000 円未満", "monthly": 33200, "monthly_second": null },
-      { "label": "D06", "lower": 133000, "upper": 151000, "condition": "市町村民税所得割課税額 133,000 円以上 151,000 円未満", "monthly": 35800, "monthly_second": null },
-      { "label": "D07", "lower": 151000, "upper": 169000, "condition": "市町村民税所得割課税額 151,000 円以上 169,000 円未満", "monthly": 37900, "monthly_second": null },
-      { "label": "D08", "lower": 169000, "upper": 211201, "condition": "市町村民税所得割課税額 169,000 円以上 211,201 円未満", "monthly": 40000, "monthly_second": null },
-      { "label": "D09", "lower": 211201, "upper": 301000, "condition": "市町村民税所得割課税額 211,201 円以上 301,000 円未満", "monthly": 42100, "monthly_second": null },
-      { "label": "D10", "lower": 301000, "upper": 397000, "condition": "市町村民税所得割課税額 301,000 円以上 397,000 円未満", "monthly": 44400, "monthly_second": null },
-      { "label": "D11", "lower": 397000, "upper": null, "condition": "市町村民税所得割課税額 397,000 円以上", "monthly": 46700, "monthly_second": null }
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "C01",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税均等割のみ",
+        "monthly": 9400,
+        "monthly_second": null
+      },
+      {
+        "label": "C02",
+        "lower": 1,
+        "upper": 24300,
+        "condition": "市町村民税所得割課税額 24,300 円未満",
+        "monthly": 11200,
+        "monthly_second": null
+      },
+      {
+        "label": "C03",
+        "lower": 24300,
+        "upper": 48600,
+        "condition": "市町村民税所得割課税額 24,300 円以上 48,600 円未満",
+        "monthly": 12900,
+        "monthly_second": null
+      },
+      {
+        "label": "D01",
+        "lower": 48600,
+        "upper": 62800,
+        "condition": "市町村民税所得割課税額 48,600 円以上 62,800 円未満",
+        "monthly": 18300,
+        "monthly_second": null
+      },
+      {
+        "label": "D02",
+        "lower": 62800,
+        "upper": 77101,
+        "condition": "市町村民税所得割課税額 62,800 円以上 77,101 円未満",
+        "monthly": 23600,
+        "monthly_second": null
+      },
+      {
+        "label": "D03",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "市町村民税所得割課税額 77,101 円以上 97,000 円未満",
+        "monthly": 27300,
+        "monthly_second": null
+      },
+      {
+        "label": "D04",
+        "lower": 97000,
+        "upper": 115000,
+        "condition": "市町村民税所得割課税額 97,000 円以上 115,000 円未満",
+        "monthly": 30400,
+        "monthly_second": null
+      },
+      {
+        "label": "D05",
+        "lower": 115000,
+        "upper": 133000,
+        "condition": "市町村民税所得割課税額 115,000 円以上 133,000 円未満",
+        "monthly": 33200,
+        "monthly_second": null
+      },
+      {
+        "label": "D06",
+        "lower": 133000,
+        "upper": 151000,
+        "condition": "市町村民税所得割課税額 133,000 円以上 151,000 円未満",
+        "monthly": 35800,
+        "monthly_second": null
+      },
+      {
+        "label": "D07",
+        "lower": 151000,
+        "upper": 169000,
+        "condition": "市町村民税所得割課税額 151,000 円以上 169,000 円未満",
+        "monthly": 37900,
+        "monthly_second": null
+      },
+      {
+        "label": "D08",
+        "lower": 169000,
+        "upper": 211201,
+        "condition": "市町村民税所得割課税額 169,000 円以上 211,201 円未満",
+        "monthly": 40000,
+        "monthly_second": null
+      },
+      {
+        "label": "D09",
+        "lower": 211201,
+        "upper": 301000,
+        "condition": "市町村民税所得割課税額 211,201 円以上 301,000 円未満",
+        "monthly": 42100,
+        "monthly_second": null
+      },
+      {
+        "label": "D10",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "市町村民税所得割課税額 301,000 円以上 397,000 円未満",
+        "monthly": 44400,
+        "monthly_second": null
+      },
+      {
+        "label": "D11",
+        "lower": 397000,
+        "upper": null,
+        "condition": "市町村民税所得割課税額 397,000 円以上",
+        "monthly": 46700,
+        "monthly_second": null
+      }
     ],
-    "notes": "表は保育料基準額（月額）の「0歳児（4/1時点で0歳の児童）」の列だけ（標準時間・短時間）。1歳以上児の列はない（市独自の制度で無料）。短時間: C01 9,200／C02 11,000／C03 12,600／D01 17,900／D02 23,100／D03 26,800／D04 29,800／D05 32,600／D06 35,100／D07 37,200／D08 39,300／D09 41,300／D10 43,600／D11 45,900。第2子の列はない（同時入所の2人目は半額のルール）。ひとり親世帯・在宅障害児（者）のいる世帯・要保護者に準ずる程度に困窮している世帯で所得割77,101円未満は第1子から無料。3号認定の保育料には給食費を含む。月の途中の入所・退所は日割計算。一時預かり・延長保育は別途。"
+    "notes": "表は保育料基準額（月額）の「0歳児（4/1時点で0歳の児童）」の列だけ（標準時間・短時間）。1歳以上児の列はない（市独自の制度で無料）。短時間: C01 9,200／C02 11,000／C03 12,600／D01 17,900／D02 23,100／D03 26,800／D04 29,800／D05 32,600／D06 35,100／D07 37,200／D08 39,300／D09 41,300／D10 43,600／D11 45,900。第2子の列はない（同時入所の2人目は半額のルール）。ひとり親世帯・在宅障害児（者）のいる世帯・要保護者に準ずる程度に困窮している世帯で所得割77,101円未満は第1子から無料。3号認定の保育料には給食費を含む。月の途中の入所・退所は日割計算。一時預かり・延長保育は別途。 軽減(6)の後半（令和8年度・令和9年度ガイドとも同じ文言）: 保護者と生計を一にする児童のうち、父母の合算した市町村民税所得割額が57,700円未満の場合は「第１子は半額徴収、第２子以降は無料」。きょうだいの人数の条件は書かれていないので、子が1人の世帯の0歳児も半額と読める（C01〜C03 と、D01 のうち所得割57,700円未満が対象）。rows の月額は表の基準額のままで、この半額は入れていない。"
   },
   "first_child_free": false,
   "first_child_free_since": null,
-  "first_child_free_note": "令和5年度から市独自の制度で1歳以上児（4月1日時点の年齢）の保育料は第1子から無料（所得制限の記載なし）。保育料がかかるのは4月1日時点で0歳の児童だけで、年度途中で1歳になっても年度末まで0歳児の保育料を納付。つまり0〜2歳児クラスのうち有料は0歳児クラスだけ。",
+  "first_child_free_note": "令和5年度から市独自の制度で1歳以上児（4月1日時点の年齢）の保育料は第1子から無料（所得制限の記載なし）。保育料がかかるのは4月1日時点で0歳の児童だけで、年度途中で1歳になっても年度末まで0歳児の保育料を納付。つまり0〜2歳児クラスのうち有料は0歳児クラスだけ。 ただし父母の所得割の合計が57,700円未満の世帯は、第1子も表の額の半額（ガイドの保育料の軽減(6)。子が1人の世帯も含むと読める）。",
   "second_child": "half",
   "second_count": "together",
   "second_note": "保護者と生計を一にする2人以上の児童が、保育所の他に幼稚園・認定こども園・特別支援学校幼稚部・情緒障害児短期治療施設通所部に入所または児童発達支援・医療型児童発達支援を利用している場合も含めて同時に入所している場合、最も年齢の高い児童は全額、次に年齢の高い児童は半額、それ以外は無料。生計を一にする児童のうち合算した所得割額が57,700円未満の世帯は、第1子は半額、第2子以降は無料。実際に保育料がかかるのは0歳児だけなので、半額は0歳児が2人目以降のとき。",
@@ -43,13 +155,30 @@
   "cash": [],
   "one_time": [],
   "sources": [
-    { "label": "令和9年度保育所・認定こども園ガイド（PDF、「令和８年度 氷見市保育料」はP14）", "url": "https://www.city.himi.toyama.jp/material/files/group/14/R9guide.pdf" },
-    { "label": "令和8年度保育所・認定こども園ガイド（PDF、保育料はP13〜14）", "url": "https://www.city.himi.toyama.jp/material/files/group/14/R8guide.pdf" },
-    { "label": "2026年度保育所・認定こども園の入所申し込みについて／氷見市", "url": "https://www.city.himi.toyama.jp/gyosei/soshiki/kosodate/1/2/14571.html" },
-    { "label": "2027年度保育所・認定こども園の入所申し込みについて／氷見市（2026年10月1日更新）", "url": "https://www.city.himi.toyama.jp/gyosei/soshiki/kosodate/1/2/15243.html" }
+    {
+      "label": "令和9年度保育所・認定こども園ガイド（PDF、「令和８年度 氷見市保育料」はP14）",
+      "url": "https://www.city.himi.toyama.jp/material/files/group/14/R9guide.pdf"
+    },
+    {
+      "label": "令和8年度保育所・認定こども園ガイド（PDF、保育料はP13〜14）",
+      "url": "https://www.city.himi.toyama.jp/material/files/group/14/R8guide.pdf"
+    },
+    {
+      "label": "2026年度保育所・認定こども園の入所申し込みについて／氷見市",
+      "url": "https://www.city.himi.toyama.jp/gyosei/soshiki/kosodate/1/2/14571.html"
+    },
+    {
+      "label": "2027年度保育所・認定こども園の入所申し込みについて／氷見市（2026年10月1日更新）",
+      "url": "https://www.city.himi.toyama.jp/gyosei/soshiki/kosodate/1/2/15243.html"
+    }
   ],
   "confidence": "確認済",
   "tried": [],
   "notes": "要注意: 氷見市は1歳以上児が無料なので、0〜2歳のうち保育料がかかるのは4月1日時点で0歳の子だけ（rows はその0歳児の月額）。下調べの候補は減免のページなどで表はなかったので、2026年度・2027年度の入所申し込みのページのHTMLを1回ずつ取り、ガイドPDFを見つけた。表は pdftotext -layout と画像（R9ガイドP15）で確かめた。市には「0歳児おむつ無償化事業」のページもある（現物の支援なので cash には入れていない、中身は読んでいない）。cash・one_time・給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "fixed",
+    "changes": "table.notes と first_child_free_note に1文ずつ追記（rows の区切り・月額、税率、きょうだいの列挙値は変更なし）: ガイドの「保育料の決定、軽減について」(6)の後半「保護者と生計を一にする児童のうち、所得割額が57,700円未満である場合の保育料は、第１子は半額徴収、第２子以降は無料」が second_note にしか書かれておらず、rows の月額だけでは子が1人の低所得世帯（C01〜C03、D01 のうち57,700円未満）の0歳児が全額に見えるため。読み直し（抜き取りの3市の1つ）: 2027年度保育所・認定こども園の入所申し込みのページ（15243.html、更新日2026年10月1日）、令和9年度ガイドPDF（2026年8月13日作成）、令和8年度ガイドPDF（2025年8月6日作成）を取り直して読んだ: 「令和８年度 氷見市保育料」（0歳児〔4/1時点で0歳〕の列）の A・B（0円）、C01（均等割のみ 9,400）、C02 24,300円未満〜D11 397,000円以上の区切りと標準時間・短時間の月額、令和5年度から1歳以上児は市独自で無料・4月1日時点の年齢を使うこと、税額控除適用前（調整控除以外の控除はなかったものとし、指定都市の住所は氷見市とみなす、6%）、4〜8月は前年度・9〜3月は現年度の税、(4) 生計を一にする児童のうち第3子以降は無料、(5) ひとり親等77,101円未満は第1子から無料、(6) 同時入所の2人目半額が一致。令和8年度ガイドの「令和７年度 氷見市保育料」も全行同額で、(6) の文言も同じ。"
+  }
 }

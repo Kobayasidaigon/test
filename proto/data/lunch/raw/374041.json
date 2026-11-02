@@ -1,0 +1,32 @@
+{
+  "code": "374041",
+  "pref": "香川県",
+  "name": "多度津町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2026年4月",
+    "until": null,
+    "note": "「令和8年4月より町立幼稚園及び小中学校における学校給食費を無償化」（2026年3月27日更新）。対象は町立幼稚園・小中学校に在籍する児童等の保護者で、申請は不要。私立・国立など町立以外の学校は対象外。令和8年度は国の重点支援地方交付金を使うとあるが、終わりの時期の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ（令和8年4月から町立小学校も無償。国の給食費負担軽減交付金の創設を受けたもの）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "多度津町「多度津町立幼稚園及び小中学校の学校給食費の無償化について」（2026年3月27日更新）",
+      "url": "https://www.town.tadotsu.kagawa.jp/kosodate_kyoiku/kyoiku_gakko/gakkokyushoku/3117.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べで集めたページ（2026-11-01取得）を読んだ。財源が令和8年度の交付金なので、令和9年度以降も続くかは未確認。",
+  "read_at": "2026-11-01"
+}

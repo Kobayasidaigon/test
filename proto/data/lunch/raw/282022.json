@@ -1,0 +1,40 @@
+{
+  "code": "282022",
+  "pref": "兵庫県",
+  "name": "尼崎市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": 3000,
+    "per_meal": 181,
+    "yearly": 33123,
+    "since": null,
+    "until": "2027年3月",
+    "note": "全員の無償化はない。令和8年度は中学校の給食費（1食362円、本来の月額6,100円・年額66,246円）の半額を、国の物価高騰対応重点支援地方創生臨時交付金で公費負担し、保護者負担は1食181円・月額3,000円・年額33,123円（年183回で計算、4〜2月は定額、3月で調整）。半額の公費負担は令和8年度の措置として示されている。特別支援学校中学部は1食168円・月額2,800円。牛乳なしの場合は1食142円・月額2,400円。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度は国の給食費負担軽減交付金を使い、小学校・特別支援学校小学部の給食費（1食312円・月額5,200円）を全額公費負担。市は、国の基準額が毎年見直されるため令和9年度以降に一部保護者負担を求める可能性があるとしている。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "尼崎市「学校給食費の改定及び保護者負担の軽減（令和8年度 2026年度）」（更新日 2026年4月22日）",
+      "url": "https://www.city.amagasaki.hyogo.jp/kosodate-kyoiku/school/primary/lunch/1043395.html"
+    },
+    {
+      "label": "尼崎市「令和8年度学校給食費についてのお知らせ（通知）」（2026年4月7日、保護者向けPDF）",
+      "url": "https://www.city.amagasaki.hyogo.jp/_res/projects/default_project/_page_/001/043/395/R8tuuti.pdf"
+    },
+    {
+      "label": "尼崎市「学校給食費と各種手続きについて」（更新日 2026年5月18日）",
+      "url": "https://www.city.amagasaki.hyogo.jp/kosodate-kyoiku/school/primary/1020072.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "中学校の半額は臨時交付金を使った令和8年度の措置なので、jh.free を partial、until を2027年3月とした（令和9年度の扱いは未確認）。第3子以降の無償化などの記載は給食費のページになかった。",
+  "read_at": "2026-11-01"
+}

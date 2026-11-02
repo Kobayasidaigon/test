@@ -1,0 +1,40 @@
+{
+  "code": "372013",
+  "pref": "香川県",
+  "name": "高松市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": null,
+    "per_meal": 304,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "全員の通年の無償化はない。令和8年度の中学校給食費は1食404円に改定したが、保護者負担は第1学期（4〜7月）は0円、第2学期（9月）以降は改定前の1食304円に据え置き、差額を市が負担。令和7年度第3学期（2026年1〜3月）も物価高騰対策で小・中学校とも無償だった。第3子以降は無償：平成26年4月1日以前に生まれた子を3人以上扶養し、上から3番目以降の子が市立中学校で給食を受けている場合、2026年9月〜2027年3月の給食費を無償（申請が必要、生活保護・就学援助で給食費の支援を受けている人を除く）。年間納付予定額は保護者への通知書で知らせるとあり、月額は公表されていない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度は国の負担軽減を受け、国の支援額で足りない分を市が負担して小学校の給食費を無償化（1食単価 低学年298円・中学年340円・高学年375円、請求なし）。小学校の第3子以降無償化事業は令和8年度は実施しない（全員無償のため）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "高松市「令和8年度の学校給食費及び保護者負担額について（お知らせ）」（更新日 2026年5月12日）",
+      "url": "https://www.city.takamatsu.kagawa.jp/kurashi/kosodate/shouchugakkou/kyushoku/hotai_up20260512.html"
+    },
+    {
+      "label": "高松市「『高松市立中学校第3子以降学校給食費無償化制度』について」（更新日 2026年8月25日）",
+      "url": "https://www.city.takamatsu.kagawa.jp/kurashi/kosodate/shouchugakkou/kyushoku/kyusyokutetuduki/daisanshimusyouka.html"
+    },
+    {
+      "label": "高松市「令和7年度第3学期分の学校給食費無償化について」（更新日 2025年12月25日）",
+      "url": "https://www.city.takamatsu.kagawa.jp/kurashi/kosodate/shouchugakkou/kyushoku/r8kyuusyokuhi.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "中学校は1学期だけ全員0円、2学期以降は1食304円（第3子以降は0円）なので jh.free を partial にした。since/until は全員0円の期間を表す欄なので空にし、期間は note に書いた。",
+  "read_at": "2026-11-01"
+}

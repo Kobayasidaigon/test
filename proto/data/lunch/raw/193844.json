@@ -1,0 +1,39 @@
+{
+  "code": "193844",
+  "pref": "山梨県",
+  "name": "昭和町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "町の令和8年度一般会計当初予算概要（子ども達への教育の充実）に「学校給食費無償化事業（給食材料費、児童及び生徒分）106,686千円」。予算・決算のページにも「学校給食費・副食費無償化事業」とある。ほかに「学校給食費助成金 10,074千円」があるが、対象（町外の学校に通う子など）は未確認。始まった時期・所得などの条件の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ（学校給食費無償化事業の対象は児童及び生徒分）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "昭和町「令和8年度一般会計当初予算概要」PDF",
+      "url": "https://www.town.showa.yamanashi.jp/uploaded/attachment/7770.pdf"
+    },
+    {
+      "label": "昭和町「予算・決算 令和8年度」（2026年9月25日更新）",
+      "url": "https://www.town.showa.yamanashi.jp/soshiki/4/13811.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "こども・教育のページの「昭和町学校給食費助成金支給制度」へのリンク先は404",
+    "給食のカテゴリ・学校教育課・給食センターのページに給食費の案内なし"
+  ],
+  "notes": "給食費の案内ページはなく、予算の資料で確かめた。",
+  "read_at": "2026-11-01"
+}

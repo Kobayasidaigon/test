@@ -1,0 +1,40 @@
+{
+  "code": "151009",
+  "pref": "新潟県",
+  "name": "新潟市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": 8100,
+    "per_meal": 379,
+    "yearly": 72768,
+    "since": null,
+    "until": null,
+    "note": "令和8年度の中学校・中等教育学校（前期）・特別支援学校中学部の保護者負担は1食379円（食材費448円のうち69円を物価高騰対策臨時交付金で支援し、昨年度と同額に据え置き）。徴収月額は第1〜8期が各8,100円で、第9期（3月）に年間の実施回数で精算。市の計算例は379円×192回（標準回数）＝72,768円。無償化・一部無償の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度、小学校・特別支援学校小学部は国の「学校給食費の抜本的な負担軽減」（1食298円相当）と物価高騰対策臨時交付金（82円）で保護者負担0円。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "新潟市「令和8年度 学校給食費について」（最終更新日 2026年10月1日）",
+      "url": "https://www.city.niigata.lg.jp/kosodate/gakko/sho_chu_school/kyushoku/kyushokuhi/R7kyusyokutanka.html"
+    },
+    {
+      "label": "新潟市教育委員会「令和8年度 学校給食費単価について（お知らせ）」（令和8年4月、PDF）",
+      "url": "https://www.city.niigata.lg.jp/kosodate/gakko/sho_chu_school/kyushoku/kyushokuhi/R7kyusyokutanka.files/r8kyusyokuhiosirase.pdf"
+    },
+    {
+      "label": "新潟市「令和8年度学校給食費徴収月額」（PDF）",
+      "url": "https://www.city.niigata.lg.jp/kosodate/gakko/sho_chu_school/kyushoku/kyushokuhi/R7kyusyokutanka.files/R8kyuusyokuhigetsugaku.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "yearly は市の計算例（標準192回）の額。実際の回数は学校ごとに違い、第9期で精算する。",
+  "read_at": "2026-11-01"
+}

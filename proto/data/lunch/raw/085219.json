@@ -1,0 +1,40 @@
+{
+ "code": "085219",
+ "pref": "茨城県",
+ "name": "八千代町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "jh": {
+  "free": "all",
+  "monthly": 0,
+  "per_meal": null,
+  "yearly": null,
+  "since": "2024年4月",
+  "until": null,
+  "note": "町立小中学校に通う児童・生徒の給食費を令和6年4月から無償化（物価高騰に伴う経済支援策の一つ、手続き不要）。令和8年度作成の町の子育て支援チラシにも「町内の小中学校に通うすべての児童・生徒の学校給食費 無料」とある。所得・人数の条件の記載はない。"
+ },
+ "elem": {
+  "free": "all",
+  "monthly": 0,
+  "note": "小学校も令和6年4月から無償（町の無償化事業。令和8年度作成のチラシでも無料）。"
+ },
+ "no_lunch_jh": false,
+ "sources": [
+  {
+   "label": "八千代町「小中学校給食費無償化事業」（2024年4月1日）",
+   "url": "https://www.town.ibaraki-yachiyo.lg.jp/page/page008041.html"
+  },
+  {
+   "label": "八千代町「八千代町子育て支援チラシ」（2026年10月22日更新）の「子育てチラシ（R8作成）」PDF",
+   "url": "https://www.town.ibaraki-yachiyo.lg.jp/data/doc/1792635192_doc_162_0.pdf"
+  },
+  {
+   "label": "八千代町「給食費について」（2024年9月18日）",
+   "url": "https://www.town.ibaraki-yachiyo.lg.jp/page/page004155.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "無償化の事業ページ自体は2024年4月の掲載だが、2026年10月更新のページにある令和8年度作成チラシで無料が続いていることを確かめた。給食は町の学校給食センターで小中学校とも実施。",
+ "read_at": "2026-11-01"
+}

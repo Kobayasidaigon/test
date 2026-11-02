@@ -1,0 +1,33 @@
+{
+ "code": "016616",
+ "pref": "北海道",
+ "name": "釧路町",
+ "status": "not_found",
+ "fiscal_year": null,
+ "period_note": "",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": null,
+ "first_child_free_since": null,
+ "first_child_free_note": "",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [],
+ "confidence": "仮置き",
+ "tried": [
+  "https://www.town.kushiro.lg.jp/ は TLS の段階で「tlsv1 unrecognized name」（アラート112）を返して開けない（SNIあり・なしとも）。町のサイトは http でしか公開されていないとみられ、http は使わない決まりのため読めなかった",
+  "https://town.kushiro.lg.jp/（プロキシが接続を拒否）、https://www.town.kushiro.hokkaido.jp/（つながらない）も試した",
+  "WebSearch（allowed_domains: town.kushiro.lg.jp、「釧路町 保育料 令和8年度 3歳未満 保育園」）で、保育料の案内は「保育所等への入所条件・入所手続き」 http://www.town.kushiro.lg.jp/living-guide/30801/00007/230956150312.html にあり、同じページに「令和8年度版 釧路町保育所入所申込みのしおり」PDFがあると分かったが、http のため取得できず、金額は確かめていない",
+  "https://web.archive.org/ の保存版も、プロキシのトンネルが切れて取れなかった"
+ ],
+ "notes": "検索結果の要約では、保育料は世帯の収入・児童の年齢・市町村民税所得割課税額で決まり、町立保育所3か所・私立保育園3か所・私立認定こども園・私立小規模保育事業所がある、とされる（公式ページ本文は未確認）。関連ページの候補: 「令和8年度母子保健・子育て支援のしおり」 http://www.town.kushiro.lg.jp/information/32703/00048/263024410316.html 、「学校給食費の保護者負担軽減（無償化）」 http://www.town.kushiro.lg.jp/living-guide/52400/00013/244828140310.html （どちらも未読）。",
+ "read_at": "2026-11-01"
+}

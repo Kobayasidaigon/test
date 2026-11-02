@@ -1,0 +1,53 @@
+{
+  "code": "044211",
+  "pref": "宮城県",
+  "name": "大和町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度大和町認可保育施設利用児童の募集について」のページ〔更新日2026年10月30日〕の「12.保育所等利用料と副食費の減免について」に載る「大和町特定教育・保育施設等の保育所等利用料基準額表」〔PDF、2025年9月作成〕。令和9年度の募集ページの基準額表も同じ額）",
+  "period_note": "令和8年度の募集ページ: 0〜2歳児クラスの保育所等利用料は、前期分（4〜8月分）は令和7年度市町村民税所得割額（令和6年1〜12月の収入）、後期分（9〜3月分）は令和8年度市町村民税所得割額（令和7年1〜12月の収入）で決める。基準額表の注1も同じ。注3: 子どもの父母の課税額の合計で算定するほか、同居の祖父母など父母以外の扶養義務者の課税額を合計する場合がある。私的理由の長期欠席中も利用料が発生。",
+  "tax_basis": "6%",
+  "tax_note": "基準額表の注2: 市町村民税所得割課税額を計算する際、調整控除以外の税額控除（配当控除、住宅借入金等特別税額控除、寄付金税額控除等）は適用しない。父母等が指定都市に住む場合は指定都市以外の市町村に住むものとみなす（＝6%の税率で計算）。",
+  "table": {
+    "title": "大和町特定教育・保育施設等の保育所等利用料基準額表",
+    "kind": "0〜2歳児クラス（保育認定）・保育標準時間・第1子（月額）。第2子の別の列はない",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護世帯，里親等", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "第１階層を除き市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 12000, "condition": "市町村民税課税世帯であって、その所得割の額が 12,000円未満", "monthly": 10000, "monthly_second": null },
+      { "label": "第4階層", "lower": 12000, "upper": 24000, "condition": "12,000円以上 24,000円未満", "monthly": 15000, "monthly_second": null },
+      { "label": "第5階層", "lower": 24000, "upper": 48600, "condition": "24,000円以上 48,600円未満", "monthly": 19000, "monthly_second": null },
+      { "label": "第6階層", "lower": 48600, "upper": 77101, "condition": "48,600円以上 77,101円未満", "monthly": 24000, "monthly_second": null },
+      { "label": "第7階層", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "第8階層", "lower": 97000, "upper": 124000, "condition": "97,000円以上 124,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "第9階層", "lower": 124000, "upper": 169000, "condition": "124,000円以上 169,000円未満", "monthly": 44000, "monthly_second": null },
+      { "label": "第10階層", "lower": 169000, "upper": 211200, "condition": "169,000円以上 211,200円未満", "monthly": 49000, "monthly_second": null },
+      { "label": "第11階層", "lower": 211200, "upper": 301000, "condition": "211,200円以上 301,000円未満", "monthly": 54000, "monthly_second": null },
+      { "label": "第12階層", "lower": 301000, "upper": 350000, "condition": "301,000円以上 350,000円未満", "monthly": 57000, "monthly_second": null },
+      { "label": "第13階層", "lower": 350000, "upper": 397000, "condition": "350,000円以上 397,000円未満", "monthly": 60000, "monthly_second": null },
+      { "label": "第14階層", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 63000, "monthly_second": null }
+    ],
+    "notes": "表は保育標準時間・保育短時間の2列（PDFの画像で確かめた）。3〜5歳児クラスは国の無償化で0円なので、この表は0〜2歳児クラスの額。第3階層「12,000円未満」は課税世帯で所得割が12,000円未満（均等割のみの世帯を含むと読んで lower=0）。保育短時間: 第3 9,800円、第4 14,700円、第5 18,600円、第6 23,500円、第7 29,400円、第8 36,300円、第9 43,200円、第10 48,100円、第11 53,000円、第12 56,000円、第13 58,900円、第14 61,900円。注5: ひとり親世帯等（ひとり親世帯、在宅障害児（者）がいる世帯、要保護者等特に困窮していると町が認めた世帯）で所得割合算額77,101円未満（生活保護・非課税世帯を除く）は保育標準時間5,000円・保育短時間4,900円、第2子以降0円（戸籍謄本などの提出が必要）。注6: このほか各施設で教材費や行事費などの実費徴収・上乗せ徴収がある場合がある。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳児クラスの第1子は表の額（標準時間で月10,000〜63,000円）。0円は生活保護世帯・里親等と市町村民税非課税世帯だけ。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "基準額表の注4（多子軽減）: 小学校就学前の範囲で、特定教育・保育施設等（保育所以外は在園証明書等の提出が必要）を同時に利用する最年長の子どもから順に2人目は利用料の半額、第2階層の2人目と3人目以降は0円（10円未満切捨て、給付単価が限度）。ただし市町村民税所得割合算額57,700円未満（ひとり親世帯等は77,101円未満）の世帯は「小学校就学前の範囲」を撤廃（上の子の年齢を問わない）。ひとり親世帯等で77,101円未満は第2子以降0円。町独自の第2子無料化の記載はない（認可外の企業主導型保育施設には町の多子世帯保育料軽減補助事業がある）。",
+  "third_child": "free",
+  "third_count": "together",
+  "third_note": "同時に利用する小学校就学前の子の最年長から数えて3人目以降は0円（所得割57,700円未満〔ひとり親世帯等は77,101円未満〕は就学前の範囲を撤廃）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度大和町認可保育施設利用児童の募集について／大和町", "url": "https://www.town.taiwa.miyagi.jp/soshiki/kodomokatei/hoikushien/4326.html" },
+    { "label": "大和町特定教育・保育施設等の保育所等利用料基準額表（令和8年度のページのPDF）", "url": "https://www.town.taiwa.miyagi.jp/material/files/group/13/R8riyoukijyunngakuhyou.pdf" },
+    { "label": "令和9年度大和町認可保育施設利用児童の募集について／大和町", "url": "https://www.town.taiwa.miyagi.jp/soshiki/kodomokatei/hoikushien/4940.html" },
+    { "label": "大和町特定教育・保育施設等の保育所等利用料基準額表（令和9年度のページのPDF、同じ額）", "url": "https://www.town.taiwa.miyagi.jp/material/files/group/13/R9_hoiku_hoikusyotouriyouryoukijyunhyou.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "0〜2歳の保育料は町独自の14階層。きょうだいは国の基準どおり（同時利用の2人目半額・3人目以降0円、低所得は年齢の範囲を撤廃）。",
+  "read_at": "2026-11-01"
+}

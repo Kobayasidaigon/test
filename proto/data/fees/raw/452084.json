@@ -1,0 +1,38 @@
+{
+  "code": "452084",
+  "pref": "宮崎県",
+  "name": "西都市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "公式サイトが緊急メンテナンスで停止中のため確かめられなかった。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "公式サイトが緊急メンテナンスで停止中のため確かめられなかった。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "西都市公式サイト（2026年11月1日は「緊急メンテナンスのお知らせ」だけを表示。PHP脆弱性対策のシステムメンテナンスで2026年10月21日23時頃から一時的に利用できない、終了は未定）", "url": "https://www.city.saito.lg.jp/" },
+    { "label": "【令和８年度の入園】利用者負担額(保育料)について（開けず〔404〕。検索結果の題名と要約で存在だけ確認）", "url": "https://www.city.saito.lg.jp/kenko_kyoiku/5_10.html" },
+    { "label": "多子世帯・ひとり親等世帯の利用者負担額(保育料)負担軽減制度について（開けず〔404〕。検索結果の題名だけ）", "url": "https://www.city.saito.lg.jp/kenko_kyoiku/0206_1703310000000004.html" },
+    { "label": "令和６年度 西都市利用者負担額（保育料）一覧表（PDF、開けず〔404〕。検索結果の題名だけ）", "url": "https://www.city.saito.lg.jp/pdf/R6%E4%BF%9D%E8%82%B2%E6%96%99.pdf" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl/452084/index.json）は「緊急メンテナンスのお知らせ」の1ページだけ。https://www.city.saito.lg.jp/ を取り直しても同じメンテナンスの表示（2026年10月21日23時頃〜未定）。",
+    "/sitemap.html・/robots.txt や、検索で見つけた /kenko_kyoiku/5_10.html・/kenko_kyoiku/0206_1703310000000004.html・/pdf/R6保育料.pdf は、どれも 404 Not Found（メンテナンス中は中のページを出していない）。",
+    "WebSearch（allowed_domains: city.saito.lg.jp）を1回使った: 「西都市 保育料 3歳未満 利用者負担額 第2子」。ページの題名・URLは分かったが、開けなかった。",
+    "web.archive.org の保存コピー（2026年4月15日の /kenko_kyoiku/5_10.html があると archive.org の API で確認）は、接続がリセットされて取れなかった（2回）。それ以上は試していない。"
+  ],
+  "notes": "公式サイト全体がメンテナンスで止まっていて、保育料の表・きょうだいの決まりとも原文を読めていないので、すべて null／unknown のまま（推測で埋めていない）。手がかり（未確認・構造化した欄には使っていない）: 検索結果では、令和6年度の一覧表PDFの題名が「令和６年度 西都市利用者負担額（保育料）一覧表 ●２号・３号認定（保育）※保育料は第１子のみ（２子目以降無料）」。検索の要約では、令和8年度の入園のページに「国及び西都市の保育料無償化・軽減制度により、以下に該当する児童の保育料は無償となります。」とあり、令和5年度から市独自の取り組みとして所得に関係なく第2子以降（年長者から数えて2番目以降）の保育料を無料にしている、とされていた。4〜8月分は前年度、9〜3月分は当年度の市民税額（世帯）で計算。サイトが戻ったら、/kenko_kyoiku/5_10.html と多子世帯の軽減のページを読むとよい。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,51 @@
+{
+ "code": "372072",
+ "pref": "香川県",
+ "name": "東かがわ市",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「教育・保育に関する利用者負担額一覧表(幼児教育・保育の無償化)」のページ〔更新日2026年4月1日、口座振替日一覧表（令和8年度）と並べて掲載〕の「3号認定利用者負担額」PDF〔2026年3月作成〕。表に年度の表示はない）",
+ "period_note": "表の定義: 「A階層を除き、入所日の属する年度において、8月以前に入所の場合は前年度分を9月以降の入所の場合は現年度の市民税の額の区分が次の区分に該当する世帯」（4〜8月は前年度、9〜3月は現年度の市民税）。",
+ "tax_basis": "6%",
+ "tax_note": "表は市民税の所得割の額で区分（C は課税世帯で所得割の額のない世帯）。税額控除前か・調整控除などの定義は表やページに書かれていない。政令市ではないので6%で判定。",
+ "table": {
+  "title": "東かがわ市子どものための教育・保育に関する利用者負担額一覧表 ３号認定 保育所・認定こども園３歳未満児＜保育標準時間または保育短時間＞（法第19条第１項第３号の認定を受けた小学校就学前子どもの利用者負担額基準額表）",
+  "kind": "3歳未満（1・2歳児）・保育標準時間・第1子（月額）。0歳児の額は notes",
+  "rows": [
+   {"label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯(単給世帯を含む。)及び中国残留邦人等の円滑な帰国の促進及び永住帰国後の自立の支援に関する法律による支援給付受給世帯", "monthly": 0, "monthly_second": null},
+   {"label": "B", "lower": null, "upper": null, "condition": "非課税世帯", "monthly": 0, "monthly_second": null},
+   {"label": "C", "lower": null, "upper": null, "condition": "課税世帯 所得割の額のない世帯", "monthly": 12000, "monthly_second": null},
+   {"label": "D1", "lower": 1, "upper": 13000, "condition": "所得割の額が 1円以上 13,000円未満", "monthly": 16000, "monthly_second": null},
+   {"label": "D2", "lower": 13000, "upper": 26000, "condition": "所得割の額が 13,000円以上 26,000円未満", "monthly": 17000, "monthly_second": null},
+   {"label": "D3", "lower": 26000, "upper": 48600, "condition": "所得割の額が 26,000円以上 48,600円未満", "monthly": 18000, "monthly_second": null},
+   {"label": "D4", "lower": 48600, "upper": 97000, "condition": "所得割の額が 48,600円以上 97,000円未満", "monthly": 24000, "monthly_second": null},
+   {"label": "D5", "lower": 97000, "upper": 114000, "condition": "所得割の額が 97,000円以上 114,000円未満", "monthly": 31000, "monthly_second": null},
+   {"label": "D6", "lower": 114000, "upper": 169000, "condition": "所得割の額が 114,000円以上 169,000円未満", "monthly": 36000, "monthly_second": null},
+   {"label": "D7", "lower": 169000, "upper": 188000, "condition": "所得割の額が 169,000円以上 188,000円未満", "monthly": 43000, "monthly_second": null},
+   {"label": "D8", "lower": 188000, "upper": 301000, "condition": "所得割の額が 188,000円以上 301,000円未満", "monthly": 50000, "monthly_second": null},
+   {"label": "D9", "lower": 301000, "upper": null, "condition": "所得割の額が 301,000円以上", "monthly": 54000, "monthly_second": null}
+  ],
+  "notes": "列は 0歳児（保育標準時間・保育短時間）と 1、2歳児（保育標準時間・保育短時間）。rows は 1、2歳児の保育標準時間。1、2歳児の保育短時間: A・B 0円、C 12,000円、D1 15,800円、D2 16,700円、D3 17,600円、D4 23,600円、D5 30,500円、D6 35,400円、D7 42,300円、D8 49,200円、D9 53,100円。0歳児（標準／短時間）: A・B 0円、C 12,000円（標準・短時間とも）、D1 16,000／15,800円、D2 18,000／17,700円、D3 19,000／18,600円、D4 27,000／26,500円、D5 34,000／33,400円、D6 40,000／39,400円、D7 46,000／45,300円、D8 53,000／52,200円、D9 60,000／59,100円。備考: 1 現に扶養する子が2人以上いる世帯で、保育所若しくは認定こども園に入所若しくは入園又は地域型保育を利用する第2子の子どもの利用者負担額を2分の1とする。2 現に扶養する子が3人以上いる世帯で、同じく第3子以降の子どもの利用者負担額を免除する。3 ひとり親世帯等である場合、C階層からD4階層までの区分に該当する場合は、第1子の利用者負担額を2分の1とし、第2子以降の利用者負担額を無料とする。ただし、D3階層の第1子はD2階層の利用者負担額の2分の1、D4階層の第1子は9,000円。4 10円未満の端数は切り捨て。※ひとり親世帯等＝母子・父子家庭（生計を一にする同居の親族がいる場合を除く）、在宅障害児のいる世帯等。第2子の列はない（備考1で1/2）。C は所得割0円の課税世帯なので lower・upper は null、D1 の lower は1。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "第1子の0〜2歳児は生活保護・非課税世帯だけ0円。課税世帯は1・2歳児で月12,000〜54,000円、0歳児で月12,000〜60,000円（保育標準時間）。ひとり親世帯等は C〜D4 で第1子半額（D4は9,000円）。",
+ "second_child": "half",
+ "second_count": "household",
+ "second_note": "市独自の第2子以降 保育料「完全半額化」（令和5年10月から）: 国の制度の年齢・所得制限をなくし、現に扶養する子が2人以上いる世帯で保育所・認定こども園・地域型保育を利用する第2子の利用者負担額を1/2（上の子の年齢・通園を問わない。10円未満切り捨て）。ひとり親世帯等で C〜D4 階層は第2子以降無料（平成28年度から）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "市独自の第3子以降 保育料「完全無償化」（平成28年度から）: 現に扶養する子が3人以上いる世帯の第3子以降は年齢・所得制限なしで免除。副食費（3歳以上）も第3子以降は年齢基準を撤廃して完全免除（令和元年10月から）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "3号認定利用者負担額（PDF、2026年3月作成）", "url": "https://www.higashikagawa.jp/material/files/group/29/riyou.pdf"},
+  {"label": "教育・保育に関する利用者負担額一覧表(幼児教育・保育の無償化)／東かがわ市（更新日2026年4月1日）", "url": "https://www.higashikagawa.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/2304.html"},
+  {"label": "保育料等の負担軽減について／東かがわ市（更新日2023年10月1日）", "url": "https://www.higashikagawa.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/3018.html"},
+  {"label": "保育料基準額（PDF、同じ表）", "url": "https://www.higashikagawa.jp/material/files/group/29/hoikuryou.pdf"}
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "表は0歳児と1、2歳児で額が違う（0歳児が高い）。rows は1、2歳児。中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない。",
+ "read_at": "2026-11-01"
+}

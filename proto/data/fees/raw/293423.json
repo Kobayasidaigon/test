@@ -1,0 +1,33 @@
+{
+ "code": "293423",
+ "pref": "奈良県",
+ "name": "平群町",
+ "status": "partial",
+ "fiscal_year": null,
+ "period_note": "町の「物価高騰に伴う子育て世帯支援として令和8年11月と12月の保育料無償化を実施します」（更新日2026年11月1日）: 平群町在住で平群町内のこども園に在園中の0歳児から2歳児クラスの保育料を、令和8年11月と12月の2か月間だけ無償化（延長保育料は対象外）。",
+ "tax_basis": "unknown",
+ "tax_note": "",
+ "table": null,
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児クラスの保育料は有料とみられる（令和8年11月・12月の2か月だけ物価高騰対策として無償化する、という町の案内があるため）。保育料の表は読めていない。",
+ "second_child": "unknown",
+ "second_count": "unknown",
+ "second_note": "",
+ "third_child": "unknown",
+ "third_count": "unknown",
+ "third_note": "",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "物価高騰に伴う子育て世帯支援として令和8年11月と12月の保育料無償化を実施します - 平群町ホームページ（更新日 2026年11月1日）", "url": "https://www.town.heguri.nara.jp/soshiki/19/18588.html"}
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べは失敗していた。トップページと上の無償化のページ（soshiki/19/18588.html）は開けたが、続けて開いた こども支援課の一覧（soshiki/19/）・こども園の分類一覧（life/1/6/18/）・子育てPR（soshiki/18/12728.html）は「このページは表示できません」（HTTP 408）になり、その後はトップページを含めサイト全体が同じ応答になった（15秒以上・約10分・約20分あけて取り直しても同じ。最後の確認は2026-11-01 20:55 UTC）",
+  "WebSearch（allowed_domains: town.heguri.nara.jp、「平群町 保育料 令和8年度 こども園 利用者負担額 3歳未満」）で、令和8年度町内認定こども園（保育認定）入園申込みのご案内 https://www.town.heguri.nara.jp/soshiki/19/16348.html 、令和9年度の同ページ https://www.town.heguri.nara.jp/soshiki/19/18462.html 、平群町の子育て応援情報 https://www.town.heguri.nara.jp/soshiki/19/1006.html 、幼児教育・保育の無償化について(認定) https://www.town.heguri.nara.jp/soshiki/19/12477.html が見つかったが、どれも408で読めなかった"
+ ],
+ "notes": "次に読むときは、上の 16348.html（令和8年度入園申込み）とその添付の入園案内PDFを最初に開き、間をあけて必要なページだけを取る（このサイトは数ページ続けて取ると全体が408になる）。検索結果の要約では、広報の令和8年度当初予算の記事に「保護者負担金の無償化 7,651万円」とあるが、対象（保育料か学校給食費か）は読めていない。町立ゆめさとこども園で令和8年4月からこども誰でも通園制度（一般世帯 1時間300円）。",
+ "read_at": "2026-11-01"
+}

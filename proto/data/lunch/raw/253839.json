@@ -1,0 +1,32 @@
+{
+ "code": "253839",
+ "pref": "滋賀県",
+ "name": "日野町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "jh": {
+  "free": "none",
+  "monthly": 4200,
+  "per_meal": null,
+  "yearly": null,
+  "since": null,
+  "until": null,
+  "note": "中学校の学校給食費は月額4,200円（納付書または口座振替で納付）。全員・多子・所得条件の無償化の記載はない。"
+ },
+ "elem": {
+  "free": "all",
+  "monthly": 0,
+  "note": "小学校の給食費は国の「学校給食費の抜本的な負担軽減」措置により令和8年度から徴収していない。"
+ },
+ "no_lunch_jh": false,
+ "sources": [
+  {
+   "label": "日野町「学校給食」（公開日・更新日 2026年9月14日）",
+   "url": "https://www.town.shiga-hino.lg.jp/0000000130.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "各小中学校に給食調理場を置く自校方式。年額・1食の額はページにない（月額だけ）。",
+ "read_at": "2026-11-01"
+}

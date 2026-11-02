@@ -1,0 +1,32 @@
+{
+  "code": "063410",
+  "pref": "山形県",
+  "name": "大石田町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和6年4月から保育料の完全無償化を実施（令和8年度保育園入所案内のページ、2026年9月4日更新）。「令和８年度保育所入所案内」PDF（2025年11月作成、4ページ）の「14 保育料（利用者負担額）」: 大石田町に住所があり、大石田町から保育認定を受けたお子さんの保育料は無料。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が全員無料のため、所得割による階層の説明は案内にない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "町の施策として0〜2歳の保育料も無料（「幼児教育・保育の無償化が始まりました」のページ、2026年9月4日更新）。対象は大石田町に住所があり大石田町から保育認定を受けた子。所得制限・きょうだいの条件の記載なし。送迎バス代・保護者会費・延長保育料・災害保険料などは保護者負担。1〜2歳の副食費はすでに無料、3〜5歳の副食費も国の免除にならない子を町が助成（上限あり）して全て無料。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無料なので第2子も0円（きょうだいの数え方は額に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無料なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度保育園入所案内（大石田町公式ウェブサイト、更新日 2026年9月4日）", "url": "https://www.town.oishida.yamagata.jp/life/kekkokosodatekyouiku/koikuenjidoukan/r3hoikuennnyuusyo.html" },
+    { "label": "令和８年度保育所入所案内（PDF、画像のPDF 4ページ）", "url": "https://www.town.oishida.yamagata.jp/life/kekkokosodatekyouiku/koikuenjidoukan/r3hoikuennnyuusyo.files/nyushoannnaiR8.pdf" },
+    { "label": "幼児教育・保育の無償化が始まりました（更新日 2026年9月4日）", "url": "https://www.town.oishida.yamagata.jp/life/kekkokosodatekyouiku/koikuenjidoukan/jidou-musyou.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "入所案内PDFはスキャン画像のため、pdftoppm で画像にして読んだ。町内の保育所は町立 大石田保育園（募集20）と私立 ふたば保育園（募集15）。募集は0歳児（概ね満4か月以上）から就学前まで。延長保育料は1日30分以内50円など（月の上限あり）、一時保育は3歳未満日額2,200円。cash・one_time・中学校給食は目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

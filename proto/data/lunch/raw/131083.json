@@ -1,0 +1,36 @@
+{
+  "code": "131083",
+  "pref": "東京都",
+  "name": "江東区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2023年10月",
+    "until": null,
+    "note": "区立小学校・中学校・義務教育学校の給食費無償化（対象期間 令和5年10月分から、終わりの記載なし。区のページ 更新日 2026年6月4日）。令和8年度の就学援助の援助の内容（区のページ 更新日 2026年10月22日）にも給食費は入っていない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "同じ制度で区立小学校も無償。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "江東区「学校給食費の無償化」（更新日 2026年6月4日）",
+      "url": "https://www.city.koto.lg.jp/581103/kyuusyoku/musyouka.html"
+    },
+    {
+      "label": "江東区「就学援助制度」（更新日 2026年10月22日。令和8年度の援助の内容）",
+      "url": "https://www.city.koto.lg.jp/581101/kodomo/gakko/enjo/shugaku/6154.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "無償化のページには令和8年度と明記されていないが、2026年6月に更新され終了の記載がなく、令和8年度の就学援助の費目にも給食費がないことから令和8年度も無償と判断した。",
+  "read_at": "2026-11-01"
+}

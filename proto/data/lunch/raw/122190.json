@@ -1,0 +1,31 @@
+{
+  "code": "122190",
+  "pref": "千葉県",
+  "name": "市原市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "jh": {
+    "free": null,
+    "monthly": null,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "令和8年度の中学校の給食費は分からなかった。"
+  },
+  "elem": {
+    "free": null,
+    "monthly": null,
+    "note": "未確認。2026年4月からは国の学校給食費の負担軽減（月5,200円×11か月が基準）の対象だが、市原市で保護者負担が0円かは公式で確かめていない。"
+  },
+  "no_lunch_jh": null,
+  "sources": [],
+  "confidence": "仮置き",
+  "tried": [
+    "市の公式サイト（https://www.city.ichihara.chiba.jp/）はJavaScriptで中身を読み込む作りで、curlではページの枠（app-root）しか取れず、本文が読めない（下調べの機械巡回も1ページで終わっていた）",
+    "サイトが内部で使う読み出しの仕組みを調べて直接読む方法は、ボット対策のすり抜けにあたるおそれがあるため、やめた",
+    "WebSearch（水戸市と合わせて1回、city.ichihara.chiba.jp に限定、「学校給食費 令和8年度 中学校 無償 保護者負担 月額」）：市原市の結果は0件"
+  ],
+  "notes": "ブラウザで開けば読める可能性が高い（教育委員会の学校給食・給食費のページ、令和8年度当初予算の資料）。次に調べるときは、ブラウザで描画できる道具を使うか、市の公開PDF（予算の概要など）のURLを別の方法で見つける。",
+  "read_at": "2026-11-01"
+}

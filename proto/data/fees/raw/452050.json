@@ -11,23 +11,142 @@
     "title": "小林市保育料一覧表（令和7年9月）　※認可保育園、認定こども園（保育）の利用に係る保育料　小林市の基準",
     "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）",
     "rows": [
-      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯（単給世帯を含む）及び中国残留邦人等の円滑な帰国の促進及び永住帰国後の自立の支援に関する法律による支援給付受給世帯", "monthly": 0, "monthly_second": 0 },
-      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": 0 },
-      { "label": "C01", "lower": null, "upper": null, "condition": "市町村民税所得割非課税世帯", "monthly": 15000, "monthly_second": 4850 },
-      { "label": "C02", "lower": 1, "upper": 48600, "condition": "市町村民税所得割課税額48,600円未満", "monthly": 18000, "monthly_second": 4850 },
-      { "label": "D1", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満", "monthly": 22000, "monthly_second": 7500 },
-      { "label": "D01", "lower": 57700, "upper": 61600, "condition": "57,700円以上 61,600円未満", "monthly": 22000, "monthly_second": 7500 },
-      { "label": "D02", "lower": 61600, "upper": 74600, "condition": "61,600円以上 74,600円未満", "monthly": 24000, "monthly_second": 7500 },
-      { "label": "D03", "lower": 74600, "upper": 77101, "condition": "74,600円以上 77,101円未満", "monthly": 27000, "monthly_second": 7500 },
-      { "label": "D04", "lower": 77101, "upper": 97000, "condition": "77,101円以上97,000円未満", "monthly": 27000, "monthly_second": 7500 },
-      { "label": "E01", "lower": 97000, "upper": 121900, "condition": "97,000円以上121,900円未満", "monthly": 33000, "monthly_second": 11100 },
-      { "label": "E02", "lower": 121900, "upper": 151700, "condition": "121,900円以上151,700円未満", "monthly": 38000, "monthly_second": 11100 },
-      { "label": "E03", "lower": 151700, "upper": 169000, "condition": "151,700円以上169,000円未満", "monthly": 43000, "monthly_second": 11100 },
-      { "label": "F01", "lower": 169000, "upper": 205800, "condition": "169,000円以上205,800円未満", "monthly": 50000, "monthly_second": 15250 },
-      { "label": "F02", "lower": 205800, "upper": 253600, "condition": "205,800円以上253,600円未満", "monthly": 54000, "monthly_second": 15250 },
-      { "label": "F03", "lower": 253600, "upper": 301000, "condition": "253,600円以上301,000円未満", "monthly": 55000, "monthly_second": 15250 },
-      { "label": "G", "lower": 301000, "upper": 397000, "condition": "301,000円以上397,000円未満", "monthly": 60000, "monthly_second": 20000 },
-      { "label": "H", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 65000, "monthly_second": 26000 }
+      {
+        "label": "A",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護法による被保護世帯（単給世帯を含む）及び中国残留邦人等の円滑な帰国の促進及び永住帰国後の自立の支援に関する法律による支援給付受給世帯",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "B",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": 0
+      },
+      {
+        "label": "C01",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税所得割非課税世帯",
+        "monthly": 15000,
+        "monthly_second": 4850
+      },
+      {
+        "label": "C02",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市町村民税所得割課税額48,600円未満",
+        "monthly": 18000,
+        "monthly_second": 4850
+      },
+      {
+        "label": "D1",
+        "lower": 48600,
+        "upper": 57700,
+        "condition": "48,600円以上 57,700円未満",
+        "monthly": 22000,
+        "monthly_second": 7500
+      },
+      {
+        "label": "D01",
+        "lower": 57700,
+        "upper": 61600,
+        "condition": "57,700円以上 61,600円未満",
+        "monthly": 22000,
+        "monthly_second": 7500
+      },
+      {
+        "label": "D02",
+        "lower": 61600,
+        "upper": 74600,
+        "condition": "61,600円以上 74,600円未満",
+        "monthly": 24000,
+        "monthly_second": 7500
+      },
+      {
+        "label": "D03",
+        "lower": 74600,
+        "upper": 77101,
+        "condition": "74,600円以上 77,101円未満",
+        "monthly": 27000,
+        "monthly_second": 7500
+      },
+      {
+        "label": "D04",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "77,101円以上97,000円未満",
+        "monthly": 27000,
+        "monthly_second": 7500
+      },
+      {
+        "label": "E01",
+        "lower": 97000,
+        "upper": 121900,
+        "condition": "97,000円以上121,900円未満",
+        "monthly": 33000,
+        "monthly_second": 11100
+      },
+      {
+        "label": "E02",
+        "lower": 121900,
+        "upper": 151700,
+        "condition": "121,900円以上151,700円未満",
+        "monthly": 38000,
+        "monthly_second": 11100
+      },
+      {
+        "label": "E03",
+        "lower": 151700,
+        "upper": 169000,
+        "condition": "151,700円以上169,000円未満",
+        "monthly": 43000,
+        "monthly_second": 11100
+      },
+      {
+        "label": "F01",
+        "lower": 169000,
+        "upper": 205800,
+        "condition": "169,000円以上205,800円未満",
+        "monthly": 50000,
+        "monthly_second": 15250
+      },
+      {
+        "label": "F02",
+        "lower": 205800,
+        "upper": 253600,
+        "condition": "205,800円以上253,600円未満",
+        "monthly": 54000,
+        "monthly_second": 15250
+      },
+      {
+        "label": "F03",
+        "lower": 253600,
+        "upper": 301000,
+        "condition": "253,600円以上301,000円未満",
+        "monthly": 55000,
+        "monthly_second": 15250
+      },
+      {
+        "label": "G",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "301,000円以上397,000円未満",
+        "monthly": 60000,
+        "monthly_second": 20000
+      },
+      {
+        "label": "H",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 65000,
+        "monthly_second": 26000
+      }
     ],
     "notes": "表の3号認定（3歳未満）の「上記以外の世帯」の第1子・第2子（保育標準時間）。B階層の3号は表に7,000円とあるが「令和元年10月の幼児教育・保育の無償化により新たに0円となった階層」の色が付いているので0円にした。保育短時間の第1子／第2子: C01 14,700／4,800、C02 17,600／4,800、D1 21,500／7,400、D01 21,500／7,400、D02 23,500／7,400、D03 26,400／7,400、D04 26,400／7,400、E01 32,300／10,950、E02 37,200／10,950、E03 42,100／10,950、F01 49,000／15,000、F02 52,900／15,000、F03 53,900／15,000、G 58,800／19,700、H 63,700／25,600。ひとり親等の世帯（母子世帯、父子世帯、障がい者世帯等）の3号はC01〜D03階層で第1子7,000円（短時間も7,000円）、第2子0円。表の右側に国の基準（第2〜第8階層、3号標準時間で9,000〜104,000円）も載っていて、差額は小林市が負担。第2子の額は令和7年9月から国基準第1子の概ね4分の1に軽減（以前は市基準第1子の半額）。各階層の課税額は住宅借入金等特別税額控除・配当控除・外国税額控除・寄附金税額控除等の適用前。"
   },
@@ -44,13 +163,30 @@
   "cash": [],
   "one_time": [],
   "sources": [
-    { "label": "小林市保育料一覧（令和7年9月）（PDF）", "url": "https://www.city.kobayashi.lg.jp/material/files/group/13/20250814-2.pdf" },
-    { "label": "保育料等の算定について／宮崎県小林市公式ホームページ（2026年9月1日更新）", "url": "https://www.city.kobayashi.lg.jp/soshikikarasagasu/kenkofukushibukosodateshienka/hoikuyoutien/7498.html" },
-    { "label": "令和8年度保育所･認定こども園･幼稚園・小規模保育事業所の入園申込みのしおり（PDF）", "url": "https://www.city.kobayashi.lg.jp/material/files/group/13/hoikusioriR8.pdf" },
-    { "label": "保育所・認定こども園・幼稚園・小規模保育事業所の入園申込みについて／小林市", "url": "https://www.city.kobayashi.lg.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/6412.html" }
+    {
+      "label": "小林市保育料一覧（令和7年9月）（PDF）",
+      "url": "https://www.city.kobayashi.lg.jp/material/files/group/13/20250814-2.pdf"
+    },
+    {
+      "label": "保育料等の算定について／宮崎県小林市公式ホームページ（2026年9月1日更新）",
+      "url": "https://www.city.kobayashi.lg.jp/soshikikarasagasu/kenkofukushibukosodateshienka/hoikuyoutien/7498.html"
+    },
+    {
+      "label": "令和8年度保育所･認定こども園･幼稚園・小規模保育事業所の入園申込みのしおり（PDF）",
+      "url": "https://www.city.kobayashi.lg.jp/material/files/group/13/hoikusioriR8.pdf"
+    },
+    {
+      "label": "保育所・認定こども園・幼稚園・小規模保育事業所の入園申込みについて／小林市",
+      "url": "https://www.city.kobayashi.lg.jp/kosodate_kyoiku/ikuji_mishugakuji/hoikujo_kodomoen_yochien/6412.html"
+    }
   ],
   "confidence": "確認済",
   "tried": [],
   "notes": "下調べの「保育料等の算定について」のページと「小林市保育料一覧（令和7年9月）」PDFで読めた。表はExcel由来の1枚もので pdftotext の列が崩れるため、画像（110dpi、3歳未満の列と階層の列を切り出し）で全行を確かめた。令和8年度・令和9年度のしおりの軽減のまとめも同じ内容。cash・one_time・給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "なし（形の点検と、読み取り係が切り出した表の画像〔work/452050/crop_tl.png・crop_bl.png〕との突き合わせ。元の文書の取り直しはしていない）。3号認定・上記以外の世帯の第1子／第2子（標準時間・短時間）の C01〜H の区切りと月額が一致。D1とD01（22,000円）、D03とD04（27,000円）が同額なのも表のとおり。B階層の3号の7,000円が「無償化により新たに0円となった階層」の色の枠の中にあり0円とした読みも画像で確かめた。区切りのすき間・重なりなし、月額・第2子の額は階層の順に下がらない。政令市ではなく 6%。"
+  }
 }

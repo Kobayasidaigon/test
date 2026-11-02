@@ -1,0 +1,40 @@
+{
+  "code": "142123",
+  "pref": "神奈川県",
+  "name": "厚木市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2024年4月",
+    "until": null,
+    "note": "令和6年4月から市立小・中学校の学校給食費（食材費）を公費で負担し、給食費は徴収しない（手続き不要）。経費の一部に物価高騰対応重点支援地方創生臨時交付金を使っている。食物アレルギー等で学期を通して給食を停止している子や、私立・特別支援学校等に通う子の保護者には、市立学校の学年ごとの給食費年額を上限に「学校給食費相当額給付金」を支給（令和8年度も手続きを案内）。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "市立小学校も令和6年4月から無償（同じページ）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "厚木市「学校給食費の無償化について」（ページID 41261／40404、公開日 2024年3月26日、更新日 2026年3月16日）",
+      "url": "https://www.city.atsugi.kanagawa.jp/kosodate_kyoiku/sho_chugakko/3/5/41261.html"
+    },
+    {
+      "label": "厚木市「学校給食費相当額給付金の制度について」（ページID 42763、更新日 2026年10月26日）",
+      "url": "https://www.city.atsugi.kanagawa.jp/soshiki/gakkokyushokuka/2/5_2/42763.html"
+    },
+    {
+      "label": "厚木市「学校給食費相当額の給付について」（ページID 42611。令和8年度学校給食費相当額給付金の手続き関係の案内）",
+      "url": "https://www.city.atsugi.kanagawa.jp/soshiki/gakkokyushokuka/2/5_2/index.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べで集めた市の公式ページの文字で確認した。無償化のページに「令和8年度」の文字はないが、2026年3月に更新され終わりの記載がなく、令和8年度の給付金の手続きも案内されている。中学校は市立中学校で給食を提供している（給食の申込み・停止の手続きがある）。",
+  "read_at": "2026-11-01"
+}

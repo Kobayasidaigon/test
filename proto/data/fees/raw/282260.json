@@ -11,17 +11,94 @@
     "title": "(参考)令和８年度 利用者負担額(保育料)徴収基準額表【１号認定：教育認定、2号認定・3号認定：保育認定】（淡路市）",
     "kind": "3歳未満（1・2歳児）・保育標準時間・第1子（月額）。乳児（0歳児）の額は notes",
     "rows": [
-      { "label": "第1", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
-      { "label": "第2", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
-      { "label": "第3", "lower": null, "upper": null, "condition": "市町村民税所得割非課税世帯 ※均等割課税世帯", "monthly": 12000, "monthly_second": null },
-      { "label": "第4", "lower": 1, "upper": 48600, "condition": "市町村民税所得割の額の区分が次の区分に該当する世帯 48,600円未満", "monthly": 19500, "monthly_second": null },
-      { "label": "第5", "lower": 48600, "upper": 97000, "condition": "48,600円以上 97,000円未満", "monthly": 30000, "monthly_second": null },
-      { "label": "第6", "lower": 97000, "upper": 133000, "condition": "97,000円以上 133,000円未満", "monthly": 35000, "monthly_second": null },
-      { "label": "第7", "lower": 133000, "upper": 169000, "condition": "133,000円以上 169,000円未満", "monthly": 40000, "monthly_second": null },
-      { "label": "第8", "lower": 169000, "upper": 235000, "condition": "169,000円以上 235,000円未満", "monthly": 45500, "monthly_second": null },
-      { "label": "第9", "lower": 235000, "upper": 301000, "condition": "235,000円以上 301,000円未満", "monthly": 50500, "monthly_second": null },
-      { "label": "第10", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 56000, "monthly_second": null },
-      { "label": "第11", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 67500, "monthly_second": null }
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯等",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税非課税世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3",
+        "lower": null,
+        "upper": null,
+        "condition": "市町村民税所得割非課税世帯 ※均等割課税世帯",
+        "monthly": 12000,
+        "monthly_second": null
+      },
+      {
+        "label": "第4",
+        "lower": 1,
+        "upper": 48600,
+        "condition": "市町村民税所得割の額の区分が次の区分に該当する世帯 48,600円未満",
+        "monthly": 19500,
+        "monthly_second": null
+      },
+      {
+        "label": "第5",
+        "lower": 48600,
+        "upper": 97000,
+        "condition": "48,600円以上 97,000円未満",
+        "monthly": 30000,
+        "monthly_second": null
+      },
+      {
+        "label": "第6",
+        "lower": 97000,
+        "upper": 133000,
+        "condition": "97,000円以上 133,000円未満",
+        "monthly": 35000,
+        "monthly_second": null
+      },
+      {
+        "label": "第7",
+        "lower": 133000,
+        "upper": 169000,
+        "condition": "133,000円以上 169,000円未満",
+        "monthly": 40000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8",
+        "lower": 169000,
+        "upper": 235000,
+        "condition": "169,000円以上 235,000円未満",
+        "monthly": 45500,
+        "monthly_second": null
+      },
+      {
+        "label": "第9",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "235,000円以上 301,000円未満",
+        "monthly": 50500,
+        "monthly_second": null
+      },
+      {
+        "label": "第10",
+        "lower": 301000,
+        "upper": 397000,
+        "condition": "301,000円以上 397,000円未満",
+        "monthly": 56000,
+        "monthly_second": null
+      },
+      {
+        "label": "第11",
+        "lower": 397000,
+        "upper": null,
+        "condition": "397,000円以上",
+        "monthly": 67500,
+        "monthly_second": null
+      }
     ],
     "notes": "表の3号認定は「乳児」と「1.2歳児」の2列で、各欄の上段（）が保育短時間、下段が保育標準時間（画像で確かめた）。rows は1.2歳児の標準時間。1.2歳児の短時間: 第3 11,000／第4 18,000／第5 28,000／第6 33,000／第7 38,000／第8 43,500／第9 48,500／第10 54,000／第11 65,500。乳児（0歳児）の標準時間（短時間）: 第1・第2 0、第3 12,000（11,000）、第4 19,500（18,000）、第5 30,000（28,000）、第6 38,000（36,000）、第7 44,500（42,500）、第8 51,000（49,000）、第9 57,500（55,500）、第10 64,000（62,000）、第11 78,000（76,000）。母子・父子世帯や児童・保護者が障害をお持ちの世帯（乳児・1.2歳児とも、標準／短時間）: 第2 0、第3 5,500／5,000、第4（48,600円未満）9,000／8,500、第5（77,101円未満）9,000／9,000。表に第2子の列はない（軽減のルールで半額など）。3歳未満児の給食費（副食費）は保育料に含まれる。"
   },
@@ -38,13 +115,30 @@
   "cash": [],
   "one_time": [],
   "sources": [
-    { "label": "令和9年度淡路市内の保育所（園）・認定こども園等入所のご案内　入所案内（PDF、(参考)令和8年度の基準額表はP6〜7）", "url": "https://www.city.awaji.lg.jp/uploaded/life/57495_197195_misc.pdf" },
-    { "label": "令和8年度淡路市内の保育所（園）・認定こども園等入所のご案内　入所案内（PDF）", "url": "https://www.city.awaji.lg.jp/uploaded/life/57481_197092_misc.pdf" },
-    { "label": "令和8年度淡路市内の保育所（園）・認定こども園等入所のご案内 - 淡路市ホームページ（2026年4月1日更新）", "url": "https://www.city.awaji.lg.jp/soshiki/kosodate/39575.html" },
-    { "label": "令和9年度淡路市内の保育所（園）・認定こども園等入所のご案内 - 淡路市ホームページ（2026年9月14日更新）", "url": "https://www.city.awaji.lg.jp/soshiki/kosodate/57255.html" }
+    {
+      "label": "令和9年度淡路市内の保育所（園）・認定こども園等入所のご案内　入所案内（PDF、(参考)令和8年度の基準額表はP6〜7）",
+      "url": "https://www.city.awaji.lg.jp/uploaded/life/57495_197195_misc.pdf"
+    },
+    {
+      "label": "令和8年度淡路市内の保育所（園）・認定こども園等入所のご案内　入所案内（PDF）",
+      "url": "https://www.city.awaji.lg.jp/uploaded/life/57481_197092_misc.pdf"
+    },
+    {
+      "label": "令和8年度淡路市内の保育所（園）・認定こども園等入所のご案内 - 淡路市ホームページ（2026年4月1日更新）",
+      "url": "https://www.city.awaji.lg.jp/soshiki/kosodate/39575.html"
+    },
+    {
+      "label": "令和9年度淡路市内の保育所（園）・認定こども園等入所のご案内 - 淡路市ホームページ（2026年9月14日更新）",
+      "url": "https://www.city.awaji.lg.jp/soshiki/kosodate/57255.html"
+    }
   ],
   "confidence": "確認済",
   "tried": [],
   "notes": "下調べは文書の候補がなかったが、ページ一覧に令和8年度・令和9年度の入所のご案内のページがあったので、HTMLを1回ずつ取って入所案内PDFを見つけた。表は pdftotext -layout と画像（R9案内P6）で確かめた。淡路市（兵庫県）の多子世帯の補助は条件・額が案内にないので数に入れていない。cash・one_time・給食は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
-  "read_at": "2026-11-01"
+  "read_at": "2026-11-01",
+  "checked": {
+    "at": "2026-11-01",
+    "result": "ok",
+    "changes": "なし（読み直して全部一致。抜き取りの読み直しの3市の1つ）。令和9年度 入所のご案内のページ（57255.html）、入所案内PDF（57495_197195_misc.pdf、10ページ、2026年8月25日作成）、令和8年度の入所案内PDF（57481_197092_misc.pdf、2026年3月31日作成）を取り直して読んだ: P6〜7「(参考)令和８年度 利用者負担額(保育料)徴収基準額表」を pdftotext と画像（80dpi）で読み、乳児と1.2歳児の列の取り違えがないこと、第1〜第11階層の区切り（第4 48,600円未満／97,000／133,000／169,000／235,000／301,000／397,000円以上）と1.2歳児の標準時間の月額（12,000〜67,500）、notes の短時間と乳児の額、ひとり親等の表（第3 5,500、第4・第5 9,000）が一致。軽減制度（同時入所の2人目半額・3人目以降無料、所得割57,700円未満の3号は生計同一の子を年齢に関わらず数えて第2子半額・第3子以降無料、ひとり親等77,101円未満、市独自の3歳未満児2割軽減、県と市の多子世帯補助は条件・額の記載なし）、税の定義（配当控除・住宅借入金等特別税額控除・寄付金税額控除・外国税額控除などを適用しない、6%）、4〜8月は前年度・9〜3月は当年度の税も一致。令和8年度の入所案内の「(参考)令和７年度」の表も数字が全部同じ。"
+  }
 }

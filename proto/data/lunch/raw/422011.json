@@ -1,0 +1,40 @@
+{
+  "code": "422011",
+  "pref": "長崎県",
+  "name": "長崎市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": 4400,
+    "per_meal": null,
+    "yearly": 48400,
+    "since": null,
+    "until": null,
+    "note": "全員の無償化はない。令和8年度の中学校の保護者負担額は年額48,400円（教職員等は年額74,490円）。差額の物価高騰分は国の物価高騰対応重点支援地方創生臨時交付金で市が公費負担。5月〜翌3月の11回で分割して納付（8月も納付）なので、月あたり4,400円（年額÷11）。就学援助の支給決定までは保護者が納付し、決定後に還付。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "国の給食費負担軽減交付金と物価高騰対応の臨時交付金を使い、令和8年度は市立小学校の給食費を無償（教職員等の負担額は年額62,980円）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "長崎市「学校給食費の金額と納期」（更新日 2026年4月20日）",
+      "url": "https://www.city.nagasaki.lg.jp/page/4447.html"
+    },
+    {
+      "label": "長崎市「学校給食費に関するQ＆A」（令和8年度は小学校無償、中学校は全11回で納付）",
+      "url": "https://www.city.nagasaki.lg.jp/page/4452.html"
+    },
+    {
+      "label": "長崎市「（令和8年度）学校給食費 納期カレンダー」PDF",
+      "url": "https://www.city.nagasaki.lg.jp/uploaded/attachment/59944.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "monthly は年額48,400円を11回に分けた1回分（市のQ&Aで全11回の分割納付とある）。下調べで集めた市の公式ページの文字で読んだ。",
+  "read_at": "2026-11-01"
+}

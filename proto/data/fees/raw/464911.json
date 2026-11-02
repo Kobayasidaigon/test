@@ -1,0 +1,31 @@
+{
+  "code": "464911",
+  "pref": "鹿児島県",
+  "name": "南大隅町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "「保育利用料の無償化についてのお知らせ」（更新日 2026年4月7日）: 国の制度による3歳以上の保育料無償に加えて0歳から2歳児の保育料も無償化し、南大隅町に住む子どもの保育料を完全に無償化。「保育園児募集について」（更新日 2024年12月19日）: 保育料は世帯の町民税額に基づいて算出されるが、令和5年4月分より無償化。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が全員無償のため、所得割による階層の表は公開されていない（本来は世帯の町民税額で算出）。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2023年4月",
+  "first_child_free_note": "対象: 南大隅町に住所を有する保育所入所児童の扶養義務者（保護者）。町外の施設に入所する児童も対象。町税等（町に支払うべき税・料金等）の滞納があると無償化の対象にならない。所得制限・きょうだいの条件の記載なし。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無償なので第2子も0円（きょうだいの数え方は額に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無償なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "鹿児島県南大隅町／保育利用料の無償化についてのお知らせ（更新日 2026年4月7日）", "url": "https://www.town.minamiosumi.lg.jp/kaigohukushi/kurashi/kosodate/hoikuryoumusyouka.html" },
+    { "label": "鹿児島県南大隅町／保育園児募集について（更新日 2024年12月19日）", "url": "https://www.town.minamiosumi.lg.jp/kaigohukushi/kurashi/kosodate/hoikuen/tetsuduki/boshu.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json のページ一覧（文書の候補はなし）から、無償化のお知らせと園児募集のページを開いて読んだ。担当は介護福祉課福祉係。新年度の入所申し込みは毎年1月。副食費・延長保育料などの扱い、中学校給食・祝い金は確かめていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,38 @@
+{
+  "code": "434281",
+  "pref": "熊本県",
+  "name": "高森町",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "町のサイトを開けなかったので確かめられていない。参考（検索エンジンの結果に出ていた題名で、本文は読めていない）: 町の「妊娠・出産・育児」ページ（https://www.town.takamori.kumamoto.jp/kurashi/ikuji/）と「保育所」ページ（https://www.town.takamori.kumamoto.jp/chosha/fukushi/sp/hoikusho.html）に「保育完全無償化について（2024.11.11更新）」という項目がある。0〜2歳が対象か、町内在住などの条件があるかは不明。",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "未確認（公式サイトを開けなかった）。熊本県の多子世帯子育て支援事業（第3子以降の3歳未満児の保育料を軽減・無料にする市町村に県が1/2以内を補助、所得割301,000円以上は対象外）を町が使っているかも未確認。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "未確認（公式サイトを開けなかった）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "妊娠・出産・育児|くらしの情報|熊本県 高森町（検索結果で題名だけ確認、本文は開けず）", "url": "https://www.town.takamori.kumamoto.jp/kurashi/ikuji/" },
+    { "label": "保育所｜住民福祉課｜高森町行政サイト（検索結果で題名だけ確認、本文は開けず）", "url": "https://www.town.takamori.kumamoto.jp/chosha/fukushi/sp/hoikusho.html" },
+    { "label": "町内保育園・認定こども園一覧（2024年11月、検索結果で題名だけ確認）", "url": "https://www.town.takamori.kumamoto.jp/chosha/fukushi/2024/11/post-78.html" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl）はトップページで OSError になり、ページも文書も0件だった",
+    "curl で https://www.town.takamori.kumamoto.jp/ と https://town.takamori.kumamoto.jp/ を開こうとしたが、プロキシが CONNECT に 502 を返した（15秒あけて取り直しても同じ）。https://www.town.takamori.lg.jp/ も同じく 502",
+    "WebFetch で https://www.town.takamori.kumamoto.jp/kurashi/ikuji/ を開こうとしたが、名前解決できなかった（ENOTFOUND）",
+    "WebSearch（allowed_domains: town.takamori.kumamoto.jp）で「高森町 保育料 無償化 3歳未満 保育園」「高森町 保育完全無償化について 保育料 0歳から 町内在住」を検索。「保育完全無償化について（2024.11.11更新）」という項目があることだけ分かり、本文は出なかった",
+    "WebSearch（allowed_domains: pref.kumamoto.jp, town.takamori.kumamoto.jp）で「高森町 保育料 完全無償化 0歳 令和6年 熊本県 阿蘇」を検索。県の資料（こどもまんなか熊本・実現計画 参考資料 275483.pdf）を開いたが、高森町は人口の表に出てくるだけだった"
+  ],
+  "notes": "公式サイトにこの環境からつながらない（プロキシの CONNECT が 502、WebFetch では名前解決できない）ため、保育料の表もきょうだいの決まりも読めていない（推測で埋めていない）。参考（検索エンジンの要約で、自分では確かめていない）: 町内の保育施設は公立の色見保育園（定員20人）・高森東保育園、私立の高森保育園（定員70人）、認定こども園高森幼稚園。サイトにつながるようになったら、「保育完全無償化について」の項目（妊娠・出産・育児のページ）と保育所のページを読めば、0〜2歳も無料かどうかが分かるはず。この環境では www.town.takamori.kumamoto.jp への接続を許可してもらう必要があるかもしれない。",
+  "read_at": "2026-11-01"
+}

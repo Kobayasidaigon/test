@@ -1,0 +1,32 @@
+{
+  "code": "452041",
+  "pref": "宮崎県",
+  "name": "日南市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和8年4月から市独自に0歳児から2歳児までの保育料を無償化（3〜5歳児は国の制度で無償）。令和9年度入所申し込みのしおりにも「令和８年４月より、完全無償化となりました」「保育料は、無料です」。年度の途中で所得の年度が変わっても保育料は0円のまま。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が完全無償化のため、0〜2歳の保育料に所得割の階層表はない（令和8年度の階層表は公開されていない）。1号・2号（3歳以上）の副食費は施設が定め、収入に応じて免除の場合あり。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2026年4月",
+  "first_child_free_note": "「令和8年4月から保育料の無償化を実施します」: 日南市の独自施策として0歳児から2歳児までの保育料を無償化。対象は子どもおよび子どもと生計を一にする保護者が市内に住所を有し居住していること。他市町村（広域）の施設を利用する子どもも対象。所得制限の記載なし（入所申し込みのしおりは「完全無償化」）。対象は保育所（園）・認定こども園・小規模保育事業所の認可施設（認可外保育施設は各施設に直接申込みで、この無償化の対象かは記載なし）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から0円なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年4月から保育料の無償化を実施します／日南市ホームページ（更新日2026年04月02日）", "url": "https://www.city.nichinan.lg.jp/kosodate_kyoiku/hoikusho_kodomoen_yochien/2622.html" },
+    { "label": "令和9年度保育所(園)・認定こども園入所申し込み／日南市ホームページ（更新日2026年10月29日）", "url": "https://www.city.nichinan.lg.jp/kosodate_kyoiku/hoikusho_kodomoen_yochien/5805.html" },
+    { "label": "R9入所申し込みのしおり（PDF）", "url": "https://www.city.nichinan.lg.jp/material/files/group/63/R9shiori.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "市の公式ページで、令和8年4月から0〜2歳児の保育料が完全無償化（市独自）と確認。病児保育・産後ケアの利用料も無償化のページがある（今回は読んでいない）。",
+  "read_at": "2026-11-01"
+}

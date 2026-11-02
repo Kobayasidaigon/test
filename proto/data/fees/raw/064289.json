@@ -1,0 +1,151 @@
+{
+  "code": "064289",
+  "pref": "山形県",
+  "name": "庄内町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "保育料は毎年9月に変わる。4〜8月分は令和7年度市町村民税所得割課税額（令和6年の所得）、9〜3月分は令和8年度市町村民税所得割課税額（令和7年の所得）で算定。クラス年齢は年度途中に誕生日を迎えても変わらない。令和9年度保育料表（2026年9月掲載）も3歳未満児の額は同じ。",
+  "tax_basis": "6%",
+  "tax_note": "所得割課税額を計算する場合には、寄附金税額控除、外国税額控除、配当割額又は株式等譲渡所得割額の控除、配当所得の控除、住宅借入金等特別税額控除を適用しない（税額控除前の額）。",
+  "table": {
+    "title": "令和８年度　庄内町特定教育・保育施設及び特定地域型保育事業の保育料表",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      {
+        "label": "第1",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第2",
+        "lower": null,
+        "upper": null,
+        "condition": "生活保護世帯を除く市町村民税非課税世帯（市町村民税所得割非課税世帯を含む。）",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3A",
+        "lower": 1,
+        "upper": 24000,
+        "condition": "市町村民税所得割課税額 24,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第3B",
+        "lower": 24000,
+        "upper": 48600,
+        "condition": "市町村民税所得割課税額 24,000円以上48,600円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第4A",
+        "lower": 48600,
+        "upper": 77101,
+        "condition": "市町村民税所得割課税額 48,600円以上77,101円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第4B",
+        "lower": 77101,
+        "upper": 97000,
+        "condition": "市町村民税所得割課税額 77,101円以上97,000円未満",
+        "monthly": 0,
+        "monthly_second": null
+      },
+      {
+        "label": "第5A",
+        "lower": 97000,
+        "upper": 133000,
+        "condition": "市町村民税所得割課税額 97,000円以上133,000円未満",
+        "monthly": 13050,
+        "monthly_second": null
+      },
+      {
+        "label": "第5B",
+        "lower": 133000,
+        "upper": 169000,
+        "condition": "市町村民税所得割課税額 133,000円以上169,000円未満",
+        "monthly": 15600,
+        "monthly_second": null
+      },
+      {
+        "label": "第6A",
+        "lower": 169000,
+        "upper": 235000,
+        "condition": "市町村民税所得割課税額 169,000円以上235,000円未満",
+        "monthly": 37000,
+        "monthly_second": null
+      },
+      {
+        "label": "第6B",
+        "lower": 235000,
+        "upper": 301000,
+        "condition": "市町村民税所得割課税額 235,000円以上301,000円未満",
+        "monthly": 42700,
+        "monthly_second": null
+      },
+      {
+        "label": "第7A",
+        "lower": 301000,
+        "upper": 349000,
+        "condition": "市町村民税所得割課税額 301,000円以上349,000円未満",
+        "monthly": 49400,
+        "monthly_second": null
+      },
+      {
+        "label": "第7B",
+        "lower": 349000,
+        "upper": 397000,
+        "condition": "市町村民税所得割課税額 349,000円以上397,000円未満",
+        "monthly": 56000,
+        "monthly_second": null
+      },
+      {
+        "label": "第8",
+        "lower": 397000,
+        "upper": null,
+        "condition": "階層区分第1から第7までに属さない世帯",
+        "monthly": 72800,
+        "monthly_second": null
+      }
+    ],
+    "notes": "rows は「保育料月額・3歳未満児・保育標準時間」の列に表示されている額。表の注記: 山形県の保育料無償化に向けた段階的負担軽減事業に町で上乗せし、3歳未満児の保育料を第3・4階層は無料、第5階層は半額（令和7年度より）。保育短時間: 第5A 12,850、第5B 15,350、第6A 36,400、第6B 42,100、第7A 48,700、第7B 55,200、第8 71,700（第1〜第4Bは無料）。3歳児・4歳以上児は無料。PDFの文字の層には「無料」の枠の下に軽減前とみられる額（標準時間: 第3A 10,000、第3B 13,700、第4A 17,400、第4B 21,000、第5A 26,100、第5B 31,200）が残っているが、表に見える額を rows にした。ひとり親などの特定世帯の額は表に書かれていない（減額の申請: 災害、保護者の死亡、事故・疾病による離職で所得が著しく減少、婚姻歴のないひとり親で寡婦（寡夫）控除の対象とならなかった者）。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "3歳未満児の第1子も、第1〜第4階層（市町村民税所得割課税額97,000円未満）は無料、第5階層（97,000円以上169,000円未満）は半額（山形県の段階的負担軽減事業に町が上乗せ、令和7年度から）。169,000円以上は表の額。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "多子軽減: 子どもを2人以上養育している世帯で、0〜2歳児は軽減対象年齢「制限なし」（上の子の年齢を問わず数える）で第2子半額。所得制限の記載なし。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "多子軽減: 0〜2歳児は軽減対象年齢「制限なし」で第3子以降無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    {
+      "label": "令和8年度保育所・認定こども園等への入所申込について：庄内町公式ホームページ",
+      "url": "https://www.town.shonai.lg.jp/kurashi/kosodate/hoikuen/kosodate0120250918135420190.html"
+    },
+    {
+      "label": "「令和8年度保育料表」（PDF）",
+      "url": "https://www.town.shonai.lg.jp/kurashi/kosodate/hoikuen/kosodate0120250918135420190.files/2_R8hoikuen_hoikuryo.pdf"
+    },
+    {
+      "label": "「令和9年度保育料表」（PDF）",
+      "url": "https://www.town.shonai.lg.jp/kurashi/kosodate/hoikuen/kosodate0120260910094331088.files/R9_2_hoikuryo.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表の列（3歳未満児・3歳児・4歳以上児 × 標準時間・短時間）と「無料」の枠の範囲（第3A〜第4B）は画像で確かめた。保育料は口座振替（毎月末日、12月は27日）。認定こども園は園の納付方法による。",
+  "read_at": "2026-11-01"
+}

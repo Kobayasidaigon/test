@@ -63,5 +63,6 @@
   "保育施設入所後に関するQ&A（https://www.city.higashimatsuyama.lg.jp/soshiki/58/28292.html）は 3106.html へのリンクだけ"
  ],
  "notes": "令和8年度の表が読めないため、公式の令和9年度の表を入れて status を partial、confidence を推定とした（令和8年度の額が同じかは未確認）。表は2ページのPDF（文字あり）の1ページ目を pdftotext -layout と画像（pdftoppm）で確かめた。lunch_jh・cash・one_time は探す途中で目に入らなかった（なしという意味ではない）。",
- "read_at": "2026-11-01"
+ "read_at": "2026-11-01",
+ "checked": {"at": "2026-11-01", "result": "ok", "changes": "なし（形の点検と、読み取り係が保存した令和9年度の表〔work/112127/r9table.pdf〕と下調べの文字〔crawl/112127/docs/01.txt、第2子以降無料化制度のページ〕との突き合わせ。元の文書の取り直しはしていない。抜き取りの読み直しの対象ではない）。区切りはすき間・重なりなし、月額は階層の順に増え0〜150,000円の範囲。0,1,2歳児クラス・標準時間の22行の区切りと月額、（ ）内の短時間、第2子以降無料化制度の要件が一致した。下調べの index.json の候補にも令和8年度の表はなかったので、status=partial・confidence=推定・fiscal_year=令和9年度のままとした。"}
 }

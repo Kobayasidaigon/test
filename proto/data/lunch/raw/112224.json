@@ -1,0 +1,44 @@
+{
+  "code": "112224",
+  "pref": "埼玉県",
+  "name": "越谷市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": 4850,
+    "per_meal": 289,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "全員の無償化はない（市のQ&A「中学生は対象となりません」）。令和7年度から市独自に保護者負担額の一部を公費負担しており、完全喫食の保護者負担は月額4,850円・日額289円（令和8年9月に学校給食費を月7,400円・日額461円へ改定したが、差額は当面公費負担で保護者負担は変わらない）。期間限定の半額：国の重点支援地方交付金と市の一般財源で、令和8年10月分から令和9年3月分まで保護者負担額を約半額の月額2,500円に引き下げる（時限措置、手続き不要）。0円になる人はいない。第3子以降などの一部無償の記載は見当たらない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "国の交付金（給食費負担軽減交付金・物価高騰対応地方創生臨時交付金）を活用し、令和8年度の市立小学校の学校給食費は全額公費で保護者負担なし（手続き不要）。令和9年度以降の対応は未定と市のQ&Aにある。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "越谷市「中学校給食費の保護者負担額の時限的な引き下げについて」（更新日 2026年10月1日、ページ番号123897）",
+      "url": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/syotyugakkou/gakkokyushoku/koshigaya_contents_kyushoku_kyushokuhi_futankeigen2026.html"
+    },
+    {
+      "label": "越谷市「令和8年度学校給食のしおり（令和8年8月改訂）」（PDF。11 中学校の学校給食費 日額・月額の表）",
+      "url": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/syotyugakkou/gakkokyushoku/files/kaitei_shiori_.pdf"
+    },
+    {
+      "label": "越谷市「学校給食費の改定について」（更新日 2026年8月7日。令和8年9月分から改定、差額は当面公費負担）",
+      "url": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/syotyugakkou/gakkokyushoku/koshigaya_contents_kyushoku_kyushokuhi2026.html"
+    },
+    {
+      "label": "越谷市「市立小学校の令和８年度学校給食費を「無償化」します」（更新日 2026年3月25日）",
+      "url": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/kosodate/syotyugakkou/gakkokyushoku/mushoka_kyushoku2026.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "free を partial にしたのは、令和8年10月〜令和9年3月の期間限定で約半額にする措置があるため（全額0円の期間はないので since・until は空にした）。monthly は通常の月額4,850円。納付は10期（第1期は4・5月分の2か月分、第1〜9期は固定額、第10期で精算）。令和8年度の年額の目安は4〜9月分4,850円×5か月＋10〜3月分2,500円×6か月＝39,250円（第10期の精算で前後するため yearly には入れていない）。時限措置が終わったあとの令和9年4月以降の額は書かれていない（参考：月4,850円×11か月なら53,350円）。",
+  "read_at": "2026-11-01"
+}

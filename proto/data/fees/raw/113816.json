@@ -1,0 +1,61 @@
+{
+  "code": "113816",
+  "pref": "埼玉県",
+  "name": "美里町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度保育所等入所申込みの手引」〔PDF、2025年10月作成〕p.7「美里町保育料(保育認定の利用者負担額)表」。「保育施設への入所について」のページの「美里町保育料（利用者負担額）表」〔PDF〕も全部同じ額）",
+  "period_note": "4月分から8月分の保育料は前年度の市町村民税額、9月分から3月分の保育料は当該年度の市町村民税額で算定。年度当初4月1日時点のクラス年齢で算定し、年度途中に誕生月を迎えてもクラス年齢は変わらない。",
+  "tax_basis": "6%",
+  "tax_note": "保育料算定の基となる市町村民税は、住宅借入金等（取得）特別控除、配当控除、寄付金税額控除等を控除する前の税額の合計額で計算（手引 p.7）。政令市ではない。",
+  "table": {
+    "title": "美里町保育料(保育認定の利用者負担額)表",
+    "kind": "3歳未満児・保育標準時間（11時間）・第1子（月額）",
+    "rows": [
+      { "label": "A（第1階層）", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯(単給世帯を含む。)及び中国残留邦人等の円滑な帰国の促進並びに永住帰国した中国残留邦人等及び特定配偶者の自立の支援に関する法律による支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B（第2階層）", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C（第3階層）", "lower": null, "upper": null, "condition": "市町村民税均等割の額のみの世帯（市町村民税所得割の額のない世帯）", "monthly": 8000, "monthly_second": null },
+      { "label": "D1（第4階層）", "lower": 1, "upper": 16000, "condition": "市町村民税所得割の額 16,000円未満", "monthly": 10000, "monthly_second": null },
+      { "label": "D2（第5階層）", "lower": 16000, "upper": 32000, "condition": "32,000円未満", "monthly": 12000, "monthly_second": null },
+      { "label": "D3（第6階層）", "lower": 32000, "upper": 48600, "condition": "48,600円未満", "monthly": 14000, "monthly_second": null },
+      { "label": "D4（第7階層）", "lower": 48600, "upper": 57700, "condition": "57,700円未満", "monthly": 15100, "monthly_second": null },
+      { "label": "D5（第8階層）", "lower": 57700, "upper": 60700, "condition": "60,700円未満", "monthly": 15100, "monthly_second": null },
+      { "label": "D6（第9階層）", "lower": 60700, "upper": 72800, "condition": "72,800円未満", "monthly": 19400, "monthly_second": null },
+      { "label": "D7（第10階層）", "lower": 72800, "upper": 77101, "condition": "77,101円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "D8（第11階層）", "lower": 77101, "upper": 97000, "condition": "97,000円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "D9（第12階層）", "lower": 97000, "upper": 114800, "condition": "114,800円未満", "monthly": 28400, "monthly_second": null },
+      { "label": "D10（第13階層）", "lower": 114800, "upper": 135000, "condition": "135,000円未満", "monthly": 30000, "monthly_second": null },
+      { "label": "D11（第14階層）", "lower": 135000, "upper": 169000, "condition": "169,000円未満", "monthly": 32000, "monthly_second": null },
+      { "label": "D12（第15階層）", "lower": 169000, "upper": 185900, "condition": "185,900円未満", "monthly": 34500, "monthly_second": null },
+      { "label": "D13（第16階層）", "lower": 185900, "upper": 207000, "condition": "207,000円未満", "monthly": 36900, "monthly_second": null },
+      { "label": "D14（第17階層）", "lower": 207000, "upper": 228200, "condition": "228,200円未満", "monthly": 39900, "monthly_second": null },
+      { "label": "D15（第18階層）", "lower": 228200, "upper": 283200, "condition": "283,200円未満", "monthly": 42100, "monthly_second": null },
+      { "label": "D16（第19階層）", "lower": 283200, "upper": 301000, "condition": "301,000円未満", "monthly": 47000, "monthly_second": null },
+      { "label": "D17（第20階層）", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 51000, "monthly_second": null },
+      { "label": "D18（第21階層）", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 54000, "monthly_second": null }
+    ],
+    "notes": "monthly は「保育標準時間（11時間）・3歳未満児」。表は各階層の上限だけを書いているので、lower は1つ上の行の上限とした（D1 の lower 1 は C〔所得割の額のない世帯〕と分けるため）。保育短時間（8時間）・3歳未満児: A・B 0、C 7,900、D1 9,800、D2 11,800、D3 13,800、D4 14,800、D5 14,800、D6 19,100、D7 22,600、D8 22,600、D9 27,900、D10 29,500、D11 31,500、D12 33,900、D13 36,300、D14 39,200、D15 41,400、D16 46,200、D17 50,100、D18 53,100。D4とD5、D7とD8は同じ額。3歳児・4歳以上児は全階層0円。表に第2子の列はない（きょうだいは別の決まりで半額・無料）。ひとり親世帯等（配偶者のいない者で現に児童を扶養している世帯、障害者手帳等の交付を受けている者・特別児童扶養手当の支給対象児・障害基礎年金受給者がいる世帯、特に困窮していると町長が認めた世帯）で所得割77,101円未満（C〜D7）: 標準時間 C〜D3 4,000円、D4〜D7 6,000円（短時間 3,900円・5,900円）、第2子以降は年齢に関わらず数えて無料。表は pdftoppm で画像にして列（保育標準時間・保育短時間 × 3歳未満児・3歳児・4歳以上児）を確かめた。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3歳未満児）は生活保護・非課税世帯が0円、ほかは階層により月8,000〜54,000円（標準時間）。",
+  "second_child": "half",
+  "second_count": "household",
+  "second_note": "所得割57,700円未満（C〜D4）: 多子世帯（2人以上の子がいる世帯）は第2子半額。保護者が監護し生計が同一の子は年齢に関わらず数える。所得割57,700円以上（D5〜D18）: 町独自の「美里町多子世帯保育料負担軽減補助事業」で第2子の保育料の半額を補助（子どもの年齢は問わない。第2子以降が保育所等に入所していること・保育料を全て納付していることが条件。申請が必要で、補助額分を減額した保育料を口座引き落とし。第1子が保育所等に入所していて第2子が既に減額されている人は対象外）。入所児童の兄姉が保育所や幼稚園等を利用している場合は第2子が保育料表の半額（国の決まり）。別居の兄弟姉妹も生計を一にすると認められれば同一世帯とみなす。所得制限なし。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "所得割57,700円未満は年齢に関わらず数えて第3子以降無料。所得割57,700円以上は町の多子世帯保育料負担軽減補助事業で第3子以降の保育料の全額を補助（子どもの年齢は問わない、申請）。兄姉が保育所・幼稚園等を利用している場合も第3子以降無料。埼玉県の多子世帯保育料無償化支援事業（0〜2歳の第3子以降を最年長の子の年齢にかかわらず無償化）と同じ形。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育施設への入所について | 埼玉県児玉郡美里町（更新日2024年11月6日）", "url": "https://www.town.saitama-misato.lg.jp/0000000234.html" },
+    { "label": "令和8年度保育所等入所申込みの手引（PDF、p.7 保育料表・p.8 ひとり親世帯等と多子世帯の軽減・p.9 多子世帯保育料負担軽減補助）", "url": "https://www.town.saitama-misato.lg.jp/cmsfiles/contents/0000000/234/R8tebiki.pdf" },
+    { "label": "美里町保育料（利用者負担額）表（PDF）", "url": "https://www.town.saitama-misato.lg.jp/cmsfiles/contents/0000000/234/hoiku-futan.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの docs（保育料表のPDF）に年度の表示がなかったので、同じページの「令和8年度保育所等入所申込みの手引」（PDF）を読み、同じ表と多子世帯・ひとり親世帯等の軽減を確かめた。"
+  ],
+  "notes": "町内の保育施設はみざくら保育園・松久保育園・みさと保育園・ようりん保育園（いずれも私立）と幼保連携型認定こども園美里さくら幼稚園。私立保育所の保育料は口座振替、公立保育所・認定こども園・地域型保育施設は施設に納める。lunch_jh・cash・one_time は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

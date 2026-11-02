@@ -1,0 +1,40 @@
+{
+  "code": "342033",
+  "pref": "広島県",
+  "name": "竹原市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": "2026年4月",
+    "until": null,
+    "note": "「市では、子育て世帯の暮らしを応援するため、令和8年4月から市立小・中・義務教育学校の児童生徒の学校給食費を無償化しました」。中学校・義務教育学校（後期課程）は「竹原市独自の支援策として、給食食材費の全額を市が負担して無償化」（2026年6月8日更新）。手続きは不要。無償化に伴い就学援助の給食費分の支給はなくなる。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "国の「学校給食費の抜本的な負担軽減」の支援と実際の給食食材費との差額を市が負担して無償化（令和8年4月から）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "竹原市「市立小・中・義務教育学校の学校給食費を無償化しました」（2026年6月8日更新）",
+      "url": "https://www.city.takehara.lg.jp/soshikikarasagasu/somugakujika/gyomuannai/2/2/1/8344.html"
+    },
+    {
+      "label": "竹原市「学校給食」（総務学事課）",
+      "url": "https://www.city.takehara.lg.jp/soshikikarasagasu/somugakujika/gyomuannai/2/2/1/index.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "子育て・教育＞教育委員会の学校給食のページ（献立などだけ）",
+    "補助金・助成金（小・中学生向け）",
+    "WebSearch 1回（3市まとめて）で総務学事課のページを見つけた"
+  ],
+  "notes": "案内は組織から探す（総務学事課）の下にあり、子育て・教育の下の学校給食のページからはたどれなかった。",
+  "read_at": "2026-11-01"
+}

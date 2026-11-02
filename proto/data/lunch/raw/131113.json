@@ -1,0 +1,36 @@
+{
+  "code": "131113",
+  "pref": "東京都",
+  "name": "大田区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": "2027年3月",
+    "note": "令和7年度に引き続き、令和8年度（令和8年4月分から令和9年3月分）も区立小中学校の学校給食費を無償化。無償化の対象となる給食費は月額で中学校5,350円（平成29年4月改定の額）。年度ごとに実施しており、いつから無償かはこのページに書かれていない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "区立小学校も令和8年度は無償（給食費は月額 低学年4,100円・中学年4,500円・高学年4,950円）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "大田区「学校給食」（更新日 2026年4月24日。区立小中学校の学校給食費の無償化：令和8年4月分から令和9年3月分）",
+      "url": "https://www.city.ota.tokyo.jp/kyouiku/gakukyou/kyusyoku.html"
+    },
+    {
+      "label": "大田区「【令和8年度】食物アレルギー等により給食の提供を受けず弁当を持参する児童・生徒への補助について」（PDF）",
+      "url": "https://www.city.ota.tokyo.jp/kyouiku/gakukyou/kyusyoku.files/08musyouka2.pdf"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "until は令和8年度分として示された期間の終わり（令和9年度以降は年度ごとの判断とみられ、未確認）。区立小・中学校は各学校の給食室で調理して提供。",
+  "read_at": "2026-11-01"
+}

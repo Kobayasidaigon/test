@@ -1,0 +1,37 @@
+{
+ "code": "015750",
+ "pref": "北海道",
+ "name": "壮瞥町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「令和8年度 保育所入所のしおり」〔認定こども園そうべつ保育所、2026年8月作成〕）",
+ "period_note": "しおり「7 保育料・給食費」: 「壮瞥町の子育て支援策として、令和6年4月1日より、保育料・給食費は全額無償です。」",
+ "tax_basis": "6%",
+ "tax_note": "保育料が全額無償のため、所得割の階層は関係しない（保育料の表はしおりに載っていない）。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": "2024年4月",
+ "first_child_free_note": "町独自。町の認定こども園そうべつ保育所（そうべつ子どもセンター内。保育は生後6か月〔0歳児〕から、未満児の定員は原則0歳児3名・1歳児6名・2歳児12名）の保育料・給食費は令和6年4月1日から全額無償。所得制限・第何子の条件は書かれていない。町外の施設を使う場合の扱いは書かれていない。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から保育料が無料なので、きょうだいの数え方や所得制限は保育料に関係しない（household は「数え方に関係なく0円」の意味で置いた）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料（同上）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和8年度 保育所入所のしおり（認定こども園そうべつ保育所、PDF）",
+   "url": "https://www.town.sobetsu.lg.jp/uploads/R8_shiori_hoikusyo.pdf"
+  },
+  {
+   "label": "子育て支援体制｜北海道壮瞥町ホームページ",
+   "url": "https://www.town.sobetsu.lg.jp/kurashi/kenko/kosodateshien.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "町内の保育施設は認定こども園そうべつ保育所（開所7:30〜18:30、保育短時間は8:30〜16:30、土曜保育あり）。しおりの保育料の欄は無償の一文だけで、基準額の表は載っていない。cash・one_time は探していない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

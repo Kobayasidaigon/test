@@ -1,0 +1,34 @@
+{
+ "code": "325058",
+ "pref": "島根県",
+ "name": "吉賀町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（町のページ「保育所保育料」。ページに日付・年度の表示はないが、HTTP の最終更新は2025年8月22日で、2026年11月1日に公開中）",
+ "period_note": "「保育所に入所しているお子さんの、保育所利用料（保育料）は無料です。」とだけ書かれ、適用の期間や年齢の区切りはない（0〜2歳も含めて無料と読める）。",
+ "tax_basis": "6%",
+ "tax_note": "保育料が無料のため、所得割による階層は町の保育料に関係しない。町の保育料（利用者負担額）の表は公式サイトで見つけていない。政令市ではない。",
+ "table": null,
+ "first_child_free": true,
+ "first_child_free_since": null,
+ "first_child_free_note": "町のページ「保育所保育料」（暮らし＞福祉＞子育て支援、暮らし＞ライフイベント＞子育ての2か所に同じ文）: 「保育所に入所しているお子さんの、保育所利用料（保育料）は無料です。」所得制限・第何子の条件・年齢の条件は書かれていない。いつから無料かは分からなかった。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "第1子から保育料が無料なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味で置いた）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第1子から無料のため0円。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "水とすむまち 吉賀町:保育所保育料（暮らし＞福祉＞子育て支援）", "url": "https://www.town.yoshika.lg.jp/kurashi/fukushi/kosodateshien/hoikuryo.html"},
+  {"label": "水とすむまち 吉賀町:保育所保育料（暮らし＞ライフイベント＞子育て）", "url": "https://www.town.yoshika.lg.jp/kurashi/lifeevent/kosodate/hoikuryo.html"},
+  {"label": "水とすむまち 吉賀町:保育所への入所", "url": "https://www.town.yoshika.lg.jp/kurashi/lifeevent/kosodate/hoikunyusyo.html"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "例規集（g-reiki.net の吉賀町例規集）で保育料の規則といつから無料かを確かめようとしたが、403 で開けなかった。"
+ ],
+ "notes": "町内の認可保育所は私立の双葉保育所・六日市保育所・七光保育所・かきのき保育所の4か所（町の「保育所への入所」ページ）。休日保育・一時預かり・病後児保育は別ページ（料金は見ていない）。中学校給食・現金給付・祝い金は探していない（なしという意味ではない）。",
+ "read_at": "2026-11-01"
+}

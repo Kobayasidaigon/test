@@ -1,0 +1,40 @@
+{
+  "code": "141003",
+  "pref": "神奈川県",
+  "name": "横浜市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": 330,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "中学校・義務教育学校（後期）は保護者負担1食330円（フルセット：ごはん・おかず・汁物・牛乳）。物価高騰分は市独自補助（国の重点支援地方交付金を活用）。令和8年度から中学校給食を選択制のデリバリー方式から全員制に変更。第3子以降などの一部無償の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度は保護者負担0円（国の負担軽減に、国の基準額を超える分を市が独自補助）。支払手続きも不要。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "横浜市「学校給食費（小学校・中学校・特別支援学校）」（最終更新日 2026年10月7日）",
+      "url": "https://www.city.yokohama.lg.jp/kosodate-kyoiku/kyoiku/sesaku/kyusyoku/kyushokuhi.html"
+    },
+    {
+      "label": "横浜市「令和８年度の小学校給食費を実質無償化します！」",
+      "url": "https://www.city.yokohama.lg.jp/kosodate-kyoiku/kyoiku/sesaku/kyusyoku/syogakko-shiengakko/musho.html"
+    },
+    {
+      "label": "横浜市「横浜市学校給食費の管理に関する条例施行規則の一部改正」（8年度から中学校給食を全員制へ）",
+      "url": "https://www.city.yokohama.lg.jp/kosodate-kyoiku/kyoiku/sesaku/kyusyoku/tyuugakko/kisoku.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "月額・年額の記載はなく1食の額だけ（中学校の給食費は日額×提供日数で毎月納付。9月を除く5月〜翌3月）。条例の上限は中学校日額330円。",
+  "read_at": "2026-11-01"
+}

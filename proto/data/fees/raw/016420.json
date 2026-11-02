@@ -1,0 +1,47 @@
+{
+  "code": "016420",
+  "pref": "北海道",
+  "name": "広尾町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "令和6年9月から保育園（所）の保育料を完全無償化（認定こども園・保育所のページ。令和9年度の申込受付〔令和8年11月2日〜30日〕の案内が載っている現行のページ）。ひろお保育園の「令和８年度 重要事項説明書」の「７ 利用料等（令和８年４月現在）」でも、0〜2歳児クラスの月額保育料は住民税非課税世帯・課税世帯とも「無償」。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が全員無償のため、所得割による階層の表は公開されていない。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": "2024年9月",
+  "first_child_free_note": "対象児童: 広尾町で保育園（所）を利用している満3歳未満の児童、広尾町で保育園を利用している幼稚園部門の児童。申請手続きは原則不要。所得制限・きょうだいの条件の記載なし。町内の施設は認定こども園ひろお保育園（定員165名、0歳は生後6か月以上）と町立豊似保育所（定員30名、0〜2歳は2歳児のみ）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無償なので第2子も0円（きょうだいの数え方は額に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無償なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [
+    {
+      "label": "広尾町在宅育児支援金（保育園等に入園せず在宅で育児する世帯）",
+      "per_child_yearly": 60000,
+      "max_age": 3,
+      "note": "令和6年9月から。対象児童1人につき月額5,000円（per_child_yearly は12か月分）。生後6か月に達する日の翌月から3歳に達する日の年度末までの児童で、保育園等に入園していないこと。保護者と児童が広尾町に住所を有すること。町税等の滞納がある世帯は対象外。該当世帯に申請案内を送付。保育園を使う子は対象外なので、保育料の比較とは別の制度。",
+      "source": { "label": "在宅育児支援金 | 各種手当・助成 | 広尾町", "url": "https://www.town.hiroo.lg.jp/kurashi/shussan-kosodate/teate/zaitakuikujisienkin/" }
+    }
+  ],
+  "one_time": [
+    {
+      "label": "広尾町出産祝い金",
+      "amount": 100000,
+      "note": "第1子100,000円、第2子100,000円、第3子以降150,000円。令和8年度から祝い金の一部は地域ポイント「サプリ」で支給。出生日と町の住民となった日が同一の児童が対象で、保護者は町に連続6か月以上住所があること（転入後の出生は6か月経過後）。町税等の滞納がある世帯は対象外。",
+      "source": { "label": "出産祝い金 | 各種手当・助成 | 広尾町", "url": "https://www.town.hiroo.lg.jp/kurashi/shussan-kosodate/teate/syussanniwaikinn/" }
+    }
+  ],
+  "sources": [
+    { "label": "認定こども園・保育所 | 妊娠・出産・子育て | くらしの情報 | 広尾町（保育料の完全無償化）", "url": "https://www.town.hiroo.lg.jp/kurashi/shussan-kosodate/hoikusho/" },
+    { "label": "ひろお保育園重要事項説明書（令和8年度、Word）", "url": "https://www.town.hiroo.lg.jp/output/contents/file/release/244/25661/hiroo.doc" },
+    { "label": "令和９年度 入園（所）申込みてびき（令和８年１０月作成）", "url": "https://www.town.hiroo.lg.jp/output/contents/file/release/244/3032/hoikusho.mousikominotebiki.pdf" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json には文書の候補がなかったので、認定こども園・保育所のページを開いて読んだ。重要事項説明書（.doc）は LibreOffice でテキストにして読んだ。令和８年度の重要事項説明書によると、3〜5歳の副食費も無償、3〜5歳のめん代は1食63円、預かり保育は無償、延長保育の実施なし。0〜2歳児は完全給食。中学校給食は目に入らなかったので書いていない。",
+  "read_at": "2026-11-01"
+}

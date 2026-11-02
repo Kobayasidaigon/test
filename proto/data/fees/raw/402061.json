@@ -28,5 +28,6 @@
  "confidence": "確認済",
  "tried": ["下調べ（crawl）はトップページ（https://www.joho.tagawa.fukuoka.jp/）の meta refresh で止まり1ページしか読めていなかった。default.html → 「保育所（園）・幼稚園」の一覧（list00616.html）→ 入所申込のページと完全無償化のページ、の順に必要なページだけ開いた。"],
  "notes": "表がない（全員0円）ので table は null。cash・one_time・lunch_jh は目に入らなかったので書いていない（なしという意味ではない）。",
- "read_at": "2026-11-01"
+ "read_at": "2026-11-01",
+ "checked": {"at": "2026-11-01", "result": "ok", "changes": "なし（形の点検。first_child_free が true で table が null、第2子・第3子が free で矛盾がないことを確かめた。読み取り係が保存したページ〔work/402061/kiji0032838.html（最終更新日 2025年12月1日）・kiji0032852.html（最終更新日 2023年9月26日）〕で「田川市では独自に平成31年4月から児童の年齢、収入によらず保育料の完全無償化を実施しています」の文言を確かめた。ネットワークでの取り直しはしていない）"}
 }

@@ -1,0 +1,34 @@
+{
+  "code": "342157",
+  "pref": "広島県",
+  "name": "江田島市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "",
+  "tax_basis": "unknown",
+  "tax_note": "",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "公式サイトが緊急メンテナンス中で読めず、分からない。",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "江田島市公式ホームページ（臨時の簡易サイト）", "url": "https://www.city.etajima.hiroshima.jp/" }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "https://www.city.etajima.hiroshima.jp/ は「公式ホームページのセキュリティ対策として、緊急でメンテナンスを実施しております。これにより、公式ホームページの閲覧を停止し、簡易サイトを表示しております。復旧の目途は、現在分かっておりません」という臨時の簡易サイト（2026-11-01）。新着情報（index2.html）は入札の案内1件だけで、保育の情報はない。",
+    "/cms/articles/show/6740（幼児教育・保育の無償化について）と /cms/reiki/ は 500（15秒あけて取り直しても500）、/reiki/reiki_menu.html は 404。下調べ（crawl）もトップページ1枚だけ。",
+    "WebSearch（allowed_domains: city.etajima.hiroshima.jp、「江田島市 保育料 3歳未満 利用者負担額 令和8年度」）: 「幼児教育・保育の無償化について」（/cms/articles/show/6740）や「平成27年4月からスタート！子ども・子育て支援新制度」（/cms/s/articles/show/2117）などのページは出たが、0〜2歳の保育料の表は出ず、ページ本体も500で開けない。"
+  ],
+  "notes": "サイトの復旧後に、子育て支援課（電話0823-42-2852）のページで保育料の表・入園の案内を読み直す必要がある。",
+  "read_at": "2026-11-01"
+}

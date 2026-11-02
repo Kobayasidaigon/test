@@ -1,0 +1,52 @@
+{
+  "code": "406252",
+  "pref": "福岡県",
+  "name": "みやこ町",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和9年度 保育施設入所のご案内〔PDF作成 2026年9月11日、入所手続きページ 2026年10月1日更新〕8ページの「令和８年度 みやこ町保育料（２号・３号保育認定）」）",
+  "period_note": "4月〜8月は前年度の市町村民税額、9月〜3月は当年度の市町村民税額に基づく（子どもの年齢は毎年4月1日が基準）。令和6年4月分から、みやこ町に住民票がある児童の保育料を町独自に完全無償化（0〜2歳児。3〜5歳児は国の無償化）。保育料は原則無料だが、階層区分を決めるために所得の申告や課税証明書の提出を求めることがある。",
+  "tax_basis": "6%",
+  "tax_note": "案内: 階層区分の基礎となる課税額は、配当控除、住宅借入金等特別税額控除、寄附金税額控除、外国税額控除、配当割額控除及び株式等譲渡所得割額控除を適用しない。区切り（48,600円・97,000円・169,000円・301,000円・397,000円）は国の基準と同じ。政令市ではない。",
+  "table": {
+    "title": "令和８年度 みやこ町保育料（２号・３号保育認定）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）。表の3歳未満の欄は第1・第2階層が0、第3〜第8階層は「みやこ町独自の保育無償化の対象です。」（＝0円）",
+    "rows": [
+      { "label": "第1階層", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第2階層", "lower": null, "upper": null, "condition": "第１階層を除く市町村民税非課税世帯（表では「保育無償化の対象です。」）", "monthly": 0, "monthly_second": null },
+      { "label": "第3階層", "lower": 0, "upper": 48600, "condition": "第１階層を除く市町民税所得割額が 0 円～48,600 円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第4階層", "lower": 48600, "upper": 97000, "condition": "48,600 円～97,000 円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第5階層", "lower": 97000, "upper": 169000, "condition": "97,000 円～169,000 円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第6階層", "lower": 169000, "upper": 301000, "condition": "169,000 円～301,000 円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第7階層", "lower": 301000, "upper": 397000, "condition": "301,000 円～397,000 円未満", "monthly": 0, "monthly_second": null },
+      { "label": "第8階層", "lower": 397000, "upper": null, "condition": "397,000 円以上", "monthly": 0, "monthly_second": null }
+    ],
+    "notes": "保育短時間も同じく0円。母子等の特定世帯の行（非課税〔母子等〕、0円〜48,600円未満〔母子等〕、48,600円〜77,101円未満〔母子等〕）も0円・無償化の対象。3歳以上は国の保育無償化の対象。町の規則（みやこ町特定教育・保育施設及び特定地域型保育事業の保育料に関する規則、令和6年規則21号、令和6年4月1日施行）第3条で、1号・2号・3号認定の保育料はいずれも0円。延長保育料・送迎代・早朝保育料などは自己負担。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2024年4月",
+  "first_child_free_note": "町独自の無償化。対象は、みやこ町に住所があり居住する子どもで、保育所・認定こども園（保育園部）に通う「保育の必要性」の認定を受けた0〜2歳児。町外の施設を利用する子も対象。申請は不要。所得制限なし（規則で3号認定の保育料を一律0円と定める）。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から0円なので、きょうだいの数え方で額は変わらない（household は「数え方に関係なく0円」の意味）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円なので第3子以降も0円。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    { "label": "みやこ町出産祝金", "amount": 100000, "note": "第1子・第2子・第3子は各10万円、第4子以降は20万円。出産日の前から町内に住所があり引き続き居住して子を養育する父または母（令和7年3月31日以前の出産は出産日以前から1年以上の居住が必要）。町への支払いに滞納がないこと。申請期間は出産日から1年を超えた日から6か月未満。", "source": { "label": "みやこ町出産祝金 - みやこ町役場（2025年4月1日更新）", "url": "https://www.town.miyako.lg.jp/kosodatekennkoushiennka3/kodomo/iwai/shusan_iwae_2.html" } }
+  ],
+  "sources": [
+    { "label": "令和9年度 保育施設入所のご案内（PDF。8ページに「令和８年度 みやこ町保育料（２号・３号保育認定）」）", "url": "https://www.town.miyako.lg.jp/kosodatekennkoushiennka3/kodomo/hoiku/documents/R9nyuusoannnai.pdf" },
+    { "label": "保育所（園）の入所手続きについて - みやこ町役場（2026年10月1日更新）", "url": "https://www.town.miyako.lg.jp/kosodatekennkoushiennka3/kodomo/hoiku/nyusyo_tetsuduki.html" },
+    { "label": "保育料の無償化および副食費の補助 - みやこ町役場", "url": "https://www.town.miyako.lg.jp/kosodatekennkoushiennka3/musyoukahojo.html" },
+    { "label": "みやこ町特定教育・保育施設及び特定地域型保育事業の保育料に関する規則（docx）", "url": "https://www.town.miyako.lg.jp/kosodatekennkoushiennka3/documents/hoikuryokisoku.docx" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの index.json の「保育料の無償化および副食費の補助」ページとチラシ、規則（docx）を読んだ",
+    "入所手続きページ（令和9年度募集、2026年10月1日更新）から令和9年度の入所案内PDFを取り、8ページの令和8年度保育料表を画像で確かめた"
+  ],
+  "notes": "0〜2歳児の保育料は令和6年4月から町独自に完全無償化（第1子から0円、所得制限なし）。3歳以上の副食費は、国の免除（所得割57,700円未満は全員、それ以外は就学前の第3子）にならない人に町が月4,700円まで補助。",
+  "read_at": "2026-11-01"
+}

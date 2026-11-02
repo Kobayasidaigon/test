@@ -1,0 +1,36 @@
+{
+ "code": "342157",
+ "pref": "広島県",
+ "name": "江田島市",
+ "status": "not_found",
+ "fiscal_year": null,
+ "jh": {
+  "free": null,
+  "monthly": null,
+  "per_meal": null,
+  "yearly": null,
+  "since": null,
+  "until": null,
+  "note": "市の公式ホームページがセキュリティ対策の緊急メンテナンスで閲覧停止中（簡易サイトのみ。復旧の目途は未定と表示）で、給食費のページを読めなかった。"
+ },
+ "elem": {
+  "free": null,
+  "monthly": null,
+  "note": "未確認。"
+ },
+ "no_lunch_jh": null,
+ "sources": [
+  {
+   "label": "江田島市公式ホームページ（臨時）：緊急メンテナンスのお知らせ",
+   "url": "https://www.city.etajima.hiroshima.jp/"
+  }
+ ],
+ "confidence": "仮置き",
+ "tried": [
+  "下調べの機械収集は https://www.city.etajima.hiroshima.jp/cms/ で失敗（OSError）",
+  "2026-11-01 に /cms/ を開くと HTTP 500。サイトの一番上は臨時の簡易サイトで、新着情報は入札の1件だけ（給食の情報なし）",
+  "市が管理する他のホームページも閲覧停止の可能性ありと表示されている"
+ ],
+ "notes": "公式サイトの復旧後に調べ直す必要がある。",
+ "read_at": "2026-11-01"
+}

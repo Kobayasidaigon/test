@@ -1,0 +1,32 @@
+{
+  "code": "062014",
+  "pref": "山形県",
+  "name": "山形市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "none",
+    "monthly": null,
+    "per_meal": 305,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "全員の無償化はない。令和8年度の中学校の学校給食費は保護者負担1食305円。物価高騰で増えた食材費等の一部を、国の物価高騰対応重点支援地方創生臨時交付金等を使って市が負担し、保護者負担を増やしていない。月額・年額の記載はない。このページに第3子以降などの一部無償の記載はない。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度の小学校は保護者負担なし（令和8年度から始まった国の支援制度を活用）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "山形市「学校給食について」（ページ番号1002291、更新日 令和8年5月1日。令和8年度 学校給食費）",
+      "url": "https://www.city.yamagata-yamagata.lg.jp/kosodatekyoiku/school/1006636/1002291.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "完全給食（主食・おかず・牛乳）。おかずは学校給食センターで調理し配送。月額・年額は給食回数しだいなので null。",
+  "read_at": "2026-11-01"
+}

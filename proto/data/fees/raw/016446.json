@@ -1,0 +1,58 @@
+{
+ "code": "016446",
+ "pref": "北海道",
+ "name": "池田町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（「令和８年度 保育所入所案内」〔PDF、2025年10月作成〕p.7の【池田町保育料表】。案内の本文に「令和８年４月～８月分」「令和８年９月～令和９年３月分」の税の年度が書かれている。「令和９年度 保育所入所案内」〔PDF、2026年9月作成〕の表も全部同じ額）",
+ "period_note": "入所案内: 令和８年４月～８月分は「前年度」の市町村民税所得割額（令和６年１月～１２月の所得）、令和８年９月～令和９年３月分は「当年度」の市町村民税所得割額（令和７年１月～１２月の所得）。9月前・9月以降で保育料が変わる場合がある。クラスは令和8年4月1日時点の年齢で決まる。保育短時間で利用可能時間を超えると30分につき50円。",
+ "tax_basis": "6%",
+ "tax_note": "入所案内・町のページ「保育園の保育料」: 保育料は世帯の所得に応じて算定した市町村民税（所得割額）を用いて町が決定する。税額控除（住宅借入金等特別税額控除など）を足し戻すかどうかや、指定都市の8%の扱いは案内に書かれていない（町なので6%とした）。",
+ "table": {
+  "title": "【池田町保育料表】標準時間の場合 ※国・北海道・池田町独自の保育料軽減措置を適用後",
+  "kind": "3歳未満（0〜2歳児クラス）・保育標準時間・1人目（月額）。monthly_second は同じ表の「２人目以降」の額",
+  "rows": [
+   {"label": "1階層", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": 0},
+   {"label": "2階層", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": 0},
+   {"label": "3A", "lower": null, "upper": null, "condition": "市町村民税均等割課税世帯", "monthly": 5300, "monthly_second": 0},
+   {"label": "3B", "lower": 1, "upper": 5000, "condition": "市町村民税所得割額 5,000円未満", "monthly": 9100, "monthly_second": 0},
+   {"label": "3C", "lower": 5000, "upper": 48600, "condition": "市町村民税所得割額 5,000円以上48,600円未満", "monthly": 10800, "monthly_second": 0},
+   {"label": "4A", "lower": 48600, "upper": 67000, "condition": "市町村民税所得割額 48,600円以上67,000円未満", "monthly": 13600, "monthly_second": 0},
+   {"label": "4B", "lower": 67000, "upper": 77101, "condition": "市町村民税所得割額 67,000円以上77,101円未満", "monthly": 15000, "monthly_second": 0},
+   {"label": "4C", "lower": 77101, "upper": 97000, "condition": "市町村民税所得割額 77,101円以上97,000円未満", "monthly": 16400, "monthly_second": 0},
+   {"label": "5A", "lower": 97000, "upper": 133000, "condition": "市町村民税所得割額 97,000円以上133,000円未満", "monthly": 20400, "monthly_second": 0},
+   {"label": "5B", "lower": 133000, "upper": 169000, "condition": "市町村民税所得割額 133,000円以上169,000円未満", "monthly": 24000, "monthly_second": 0},
+   {"label": "6A", "lower": 169000, "upper": 211200, "condition": "市町村民税所得割額 169,000円以上211,200円未満", "monthly": 28500, "monthly_second": 0},
+   {"label": "6B", "lower": 211200, "upper": 241000, "condition": "市町村民税所得割額 211,200円以上241,000円未満", "monthly": 30500, "monthly_second": 0},
+   {"label": "6C", "lower": 241000, "upper": 301000, "condition": "市町村民税所得割額 241,000円以上301,000円未満", "monthly": 32500, "monthly_second": 0},
+   {"label": "7A", "lower": 301000, "upper": 364000, "condition": "市町村民税所得割額 301,000円以上364,000円未満", "monthly": 37700, "monthly_second": 0},
+   {"label": "7B", "lower": 364000, "upper": 397000, "condition": "市町村民税所得割額 364,000円以上397,000円未満", "monthly": 42300, "monthly_second": 0},
+   {"label": "8", "lower": 397000, "upper": null, "condition": "市町村民税所得割額 397,000円以上", "monthly": 52000, "monthly_second": 0}
+  ],
+  "notes": "表は「国・北海道・池田町独自の保育料軽減措置を適用後」の額。保育短時間の1人目: 1・2階層 0円、3A 5,200円、3B 8,900円、3C 10,600円、4A 13,300円、4B 14,700円、4C 16,100円、5A 20,000円、5B 23,500円、6A 28,000円、6B 29,900円、6C 31,900円、7A 37,000円、7B 41,500円、8 51,100円。２人目以降は全階層0円（標準・短時間とも）。ひとり親世帯等（母子・父子世帯、在宅障がい児（者）世帯等）で所得割77,101円未満は、1子目は半額、生計が同一の子の範囲で最年長から数えて第2子以降は0円（町のページ「第２子以降の保育料を無償化します！」）。表の額がひとり親世帯等の半額を含むかは書かれていないので、rows は一般世帯の額として扱った。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳児クラスの1人目は有料（標準時間で月5,300〜52,000円）。0円は生活保護世帯と市町村民税非課税世帯だけ（ひとり親世帯等で所得割77,101円未満は1子目が半額）。",
+ "second_child": "free",
+ "second_count": "household",
+ "second_note": "町独自（令和7年度から）: 世帯の所得に関係なく、入所児童から中学3年生までの範囲で数えて第2子以降の保育料は無償（入所案内「（町）所得に関わらず、第2子以降の保育料無料（中3の子までをカウント）」）。北海道の制度: 市町村民税所得割額169,000円未満の世帯は、入所児童から生計が同一の子どもの範囲（上の子の年齢を問わない）で第2子以降無料。上の子が保育園に通っている必要はない。所得割169,000円以上の世帯で、上の子が中学校を卒業している場合（16歳以上など）は町の数え方では数えられない（入所案内は「他の細かな要件により、上記に該当していても軽減措置対象にならないことがある」とする）。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "第2子以降が無料なので第3子以降も無料（数え方は第2子と同じ）。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {"label": "令和８年度 保育所入所案内（PDF、2025年10月作成）", "url": "https://www.town.hokkaido-ikeda.lg.jp/files/00014000/00014066/%E4%BF%9D%E8%82%B2%E6%89%80%E5%85%A5%E6%89%80%E6%A1%88%E5%86%85.pdf"},
+  {"label": "令和８年度 池田保育園入所募集｜北海道池田町", "url": "https://www.town.hokkaido-ikeda.lg.jp/kodomo/hoikuen/hoikuen/11550.html"},
+  {"label": "令和９年度 保育所入所案内（PDF、2026年9月作成）", "url": "https://www.town.hokkaido-ikeda.lg.jp/files/00015200/00015248/R9%E7%94%B3%E8%BE%BC%E6%A1%88%E5%86%85.pdf"},
+  {"label": "保育園の保育料｜北海道池田町", "url": "https://www.town.hokkaido-ikeda.lg.jp/kodomo/hoikuen/hoikuen/11507.html"},
+  {"label": "第２子以降の保育料を無償化します！｜北海道池田町", "url": "https://www.town.hokkaido-ikeda.lg.jp/kodomo/jidoteate/teate-josei/7901.html"}
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べ（crawl/016446）の「保育園の保育料」「第２子以降の保育料を無償化します！」のページを読み、保育料の表は「令和８年度 池田保育園入所募集」のページの入所案内（PDF）で見つけた。"
+ ],
+ "notes": "町内の認可保育所は池田保育園（認可定員120名）。0歳児クラスは原則生後6か月以降を受け入れ。町のページに「保育園・幼稚園の給食費を無償化します！」の記事がある（読んでいない）。",
+ "read_at": "2026-11-01"
+}

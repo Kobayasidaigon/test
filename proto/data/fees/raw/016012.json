@@ -1,0 +1,60 @@
+{
+  "code": "016012",
+  "pref": "北海道",
+  "name": "日高町",
+  "status": "ok",
+  "fiscal_year": "表に年度の表示はない（「保育所のご案内」のページ〔更新日2024年12月17日〕に今も載っている現行の「日高町保育所利用者負担額表」〔Excel、2024年11月28日掲載〕。同じ表のPDF〔利用者負担額のページ、更新日2024年12月2日〕の題は「令和元年度 日高町保育所利用者負担額表 R1.10.1現在」で、額は全部同じ。令和8年度も現行と判断）",
+  "period_note": "表には「Aを除き、前年度分又は当該年度分の市町村民税課税額が次の区分に該当する世帯」とだけあり、4〜8月分と9〜3月分で使う年度の注記は見つからなかった。",
+  "tax_basis": "6%",
+  "tax_note": "階層は市町村民税の所得割額で区分（表の定義「前年度分又は当該年度分の市町村民税課税額」）。税額控除の扱いなどの注記は表にない。政令市ではない。",
+  "table": {
+    "title": "日高町保育所利用者負担額表",
+    "kind": "3歳未満児（第3号認定）・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護法に基づく被保護世帯（単給世帯を含む。）及び中国残留邦人等の円滑な帰国の促進並びに永住帰国した中国残留邦人等及び特定配偶者の自立の支援に関する法律に基づく支援給付受給世帯", "monthly": 0, "monthly_second": null },
+      { "label": "B", "lower": null, "upper": null, "condition": "市町村民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "均等割のみ課税", "monthly": 15000, "monthly_second": null },
+      { "label": "C2", "lower": 1, "upper": 48600, "condition": "所得割 48,600円未満", "monthly": 16000, "monthly_second": null },
+      { "label": "D1", "lower": 48600, "upper": 57700, "condition": "所得割 48,600円以上57,700円未満", "monthly": 22000, "monthly_second": null },
+      { "label": "D2", "lower": 57700, "upper": 77101, "condition": "所得割 57,700円以上77,101円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "D3", "lower": 77101, "upper": 97000, "condition": "所得割 77,101円以上97,000円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "D4", "lower": 97000, "upper": 121000, "condition": "所得割 97,000円以上121,000円未満", "monthly": 29000, "monthly_second": null },
+      { "label": "D5", "lower": 121000, "upper": 145000, "condition": "所得割 121,000円以上145,000円未満", "monthly": 33000, "monthly_second": null },
+      { "label": "D6", "lower": 145000, "upper": 169000, "condition": "所得割 145,000円以上169,000円未満", "monthly": 37000, "monthly_second": null },
+      { "label": "D7", "lower": 169000, "upper": 260000, "condition": "所得割 169,000円以上260,000円未満", "monthly": 40500, "monthly_second": null },
+      { "label": "D8", "lower": 260000, "upper": 280000, "condition": "所得割 260,000円以上280,000円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "D9", "lower": 280000, "upper": 301000, "condition": "所得割 280,000円以上301,000円未満", "monthly": 50500, "monthly_second": null },
+      { "label": "D10", "lower": 301000, "upper": 397000, "condition": "所得割 301,000円以上397,000円未満", "monthly": 70000, "monthly_second": null },
+      { "label": "D11", "lower": 397000, "upper": null, "condition": "所得割 397,000円以上", "monthly": 80000, "monthly_second": null }
+    ],
+    "notes": "monthly は「３歳未満児（第3号認定）・標準時間」。表に第2子の列はない（きょうだいは表の下の決まりで0.5倍・0.0倍）。C2 の lower 1 は、C1（均等割のみ課税）と分けるため。保育短時間: A・B 0、C1 14,700、C2 15,700、D1 21,600、D2 22,600、D3 24,500、D4 28,500、D5 32,400、D6 36,300、D7 39,800、D8 43,700、D9 49,600、D10 68,800、D11 78,600。母子・父子・在宅障害児（者）世帯（C1〜D2の各下段）: B 0、C1 6,500、C2 6,500、D1 9,000、D2 9,000（標準時間・短時間とも同じ額）。３歳児・４歳以上児（第2号認定）は全階層0円。表はExcel（セル G6「標準時間」・H6「短時間」が G5「３歳未満児（第3号認定）」の下）で列を確かめ、同じ表のPDFとも額が合うことを確かめた。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子（3歳未満児）は生活保護・非課税世帯が0円、ほかは階層により月15,000〜80,000円（標準時間）。",
+  "second_child": "other",
+  "second_count": "household",
+  "second_note": "階層で違う（表の下の「一般世帯における多子軽減」）。C1〜D6階層（所得割169,000円未満、均等割のみを含む）で3歳未満児が保育を利用する世帯: 第1子の判定を年齢制限なしにしたうえで、第2子が3歳未満児なら保育料は表の額×0.0（「3歳未満児第2子無料（所得制限有）」）。D7〜D11階層（所得割169,000円以上）: 第2子は表の額×0.5（第2子半額）で、第1子の判定は小学校就学前までの子に限る（表に「施設を利用している子」という条件は書かれていない）。C1〜D1階層の第1子判定には年齢制限がない。母子・父子・在宅障害児（者）世帯（C1〜D2の各下段）は第1子の判定に年齢制限なしで第2子以降無料。所得割169,000円未満で無料にする部分は北海道の「多子世帯の保育料軽減支援事業」（第2子以降の3歳未満児の無償化に道が補助）の範囲と同じ。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第3子以降は表の額×0.0（第3子以降は無料。所得制限なし）。第1子・第2子の判定はD2〜D11階層では小学校就学前までの子に限り、C1〜D1階層は年齢制限なし。ただしC1〜D6階層（所得割169,000円未満）で3歳未満児の第3子以降は、第1子等の判定を年齢制限なしにしたうえで無料（「3歳未満児第3子以降無料（所得制限有）」）。所得割169,000円以上の世帯では上の子は小学校就学前の子だけを数える。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [
+    { "label": "エンゼル祝金（出産祝金）", "amount": 50000, "note": "新たに町民となった新生児1人につき、第1子50,000円、第2子100,000円、第3子200,000円、第4子から300,000円。amount は第1子の額。ページの更新日は2026年1月8日。", "source": { "label": "エンゼル祝金（出産祝金）｜北海道日高町", "url": "https://www.town.hidaka.hokkaido.jp/education/?content=733" } }
+  ],
+  "sources": [
+    { "label": "保育所のご案内｜保育所｜北海道日高町（利用者負担額表 [Excel｜20.3KB]、更新日2024年12月17日）", "url": "https://www.town.hidaka.hokkaido.jp/education/?content=448" },
+    { "label": "日高町保育所利用者負担額表（Excel）", "url": "https://www.town.hidaka.hokkaido.jp/assets/images/content/content_20241128_164656.xlsx" },
+    { "label": "子ども・子育て支援新制度の利用者負担額について｜北海道日高町（更新日2024年12月2日）", "url": "https://www.town.hidaka.hokkaido.jp/education/?content=649" },
+    { "label": "令和元年度 日高町保育所利用者負担額表（PDF、R1.10.1現在）", "url": "https://www.town.hidaka.hokkaido.jp/assets/images/content/content_20241202_164532.pdf" },
+    { "label": "幼児教育・保育の無償化について｜北海道日高町（更新日2024年12月5日）", "url": "https://www.town.hidaka.hokkaido.jp/education/?content=665" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの docs（利用者負担額のページ）から負担額表のPDFを取り、「保育所のご案内」のページの利用者負担額表（Excel）を openpyxl で読んで同じ額であることを確かめた。",
+    "保育所のカテゴリのページ（?category=31）と子育てガイド（/kosodate/）に、令和8年度の表や第2子無償化の別の案内がないか見たが、なかった。入所の申込みは「4月1日入所希望の児童については広報にてご案内」とあり、令和8年度の入所案内は町のページでは見つからなかった。"
+  ],
+  "notes": "表に年度の表示がなく、令和8年度と書かれた資料では確かめていないので confidence は推定。町内の認可施設は日高保育所・門別わかば保育所・厚賀すずらん保育所・認定こども園富川ひばり幼稚園。lunch_jh・cash は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

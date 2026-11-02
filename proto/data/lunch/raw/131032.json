@@ -1,0 +1,42 @@
+{
+  "code": "131032",
+  "pref": "東京都",
+  "name": "港区",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "all",
+    "monthly": 0,
+    "per_meal": null,
+    "yearly": 0,
+    "since": "2023年9月",
+    "until": null,
+    "note": "令和5年9月から区独自の負担軽減策で区立小中学校等の給食費を徴収していない。令和6年度以降も保護者負担を継続的に軽減するため不徴収を継続（期間の終わりの記載なし）。令和8年度も、食物アレルギー等で給食を受けない区立小・中学校の子に給食代替者補助金（1食単価）を出し、私立小・中学校等に通う子には給食費相当額給付金（中学生1人あたり5月1日分32,000円・10月1日分32,000円・1月1日分24,000円）を支給。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "区立小学校も令和5年9月から給食費を徴収していない（令和6年度以降も継続）。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "港区「学校給食費」（区立小中学校の学校給食費の負担軽減について：令和6年度以降も不徴収を継続。更新日 2024年4月1日）",
+      "url": "https://www.city.minato.tokyo.jp/hokenkyushoku/kodomo/gakko/kyushoku/kyushokuhi.html"
+    },
+    {
+      "label": "港区「港区立小中学校給食代替者補助金について」（令和8年度。更新日 2026年7月7日）",
+      "url": "https://www.city.minato.tokyo.jp/hokenkyushoku/kodomo/gakko/kyushoku/hojokin.html"
+    },
+    {
+      "label": "港区「港区私立学校就学者等給食費相当額給付金」（令和8年度。更新日 2026年10月30日）",
+      "url": "https://www.city.minato.tokyo.jp/kyouikushomu/kyushoku.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べの機械巡回は338件の接続エラーで給食費のページに届かず。子育て・教育＞区立小・中学校からたどった"
+  ],
+  "notes": "給食費のページは2024年4月更新だが、不徴収は期限なしで継続とあり、令和8年度の代替者補助金・私立向け給付金のページ（2026年7月・10月更新）とも合う。",
+  "read_at": "2026-11-01"
+}

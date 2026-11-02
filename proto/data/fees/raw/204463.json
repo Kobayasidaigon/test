@@ -1,0 +1,206 @@
+{
+ "code": "204463",
+ "pref": "長野県",
+ "name": "麻績村",
+ "status": "ok",
+ "fiscal_year": "令和8年度（麻績保育園「令和８年度 入園のご案内」PDF〔2025年10月30日作成、入園のページ 2025年10月31日更新〕の「麻績村徴収金基準額表（2号・3号認定）」）",
+ "period_note": "令和8年4月〜8月分は令和7年度市町村民税（令和6年中の所得）、令和8年9月〜令和9年3月分は令和8年度市町村民税（令和7年中の所得）で算定（案内の表は4月からの期間を「令和9年3月まで」と書いているが、「村民税額の増減による保育料の改定は9月分から行います」とある）。保育料は月額で、日割りはしない。",
+ "tax_basis": "6%",
+ "tax_note": "保護者（父・母）の市町村民税所得割課税額の合計額で決める（入園のご案内）。海外赴任などで非課税になったときは課税相当額を推計する。税額控除などの扱いの注記は見つからなかった。政令市ではないので6%。",
+ "table": {
+  "title": "麻績村徴収金基準額表（2号・3号認定）（麻績村教育・保育に関する利用者負担額を定める条例第2条関係による規則別表）",
+  "kind": "3歳未満（3号認定）・保育標準時間・第1子（月額）。表の基準額に、村の保育料負担軽減事業「第1子半額」（規則別表の備考1、10円未満切り捨て）を当てた額",
+  "rows": [
+   {
+    "label": "1",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯等",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "2",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "3(1)",
+    "lower": null,
+    "upper": null,
+    "condition": "村民税均等割りのみ（基準額18,700円×0.5）",
+    "monthly": 9350,
+    "monthly_second": null
+   },
+   {
+    "label": "3(2)",
+    "lower": 1,
+    "upper": 48600,
+    "condition": "村民税所得割課税世帯 所得割 48,600円未満（基準額19,500円×0.5）",
+    "monthly": 9750,
+    "monthly_second": null
+   },
+   {
+    "label": "4(1)",
+    "lower": 48600,
+    "upper": 64600,
+    "condition": "64,600円未満（基準額28,800円×0.5）",
+    "monthly": 14400,
+    "monthly_second": null
+   },
+   {
+    "label": "4(2)",
+    "lower": 64600,
+    "upper": 80600,
+    "condition": "80,600円未満（基準額29,400円×0.5）",
+    "monthly": 14700,
+    "monthly_second": null
+   },
+   {
+    "label": "4(3)",
+    "lower": 80600,
+    "upper": 97000,
+    "condition": "97,000円未満（基準額30,000円×0.5）",
+    "monthly": 15000,
+    "monthly_second": null
+   },
+   {
+    "label": "5(1)",
+    "lower": 97000,
+    "upper": 121000,
+    "condition": "121,000円未満（基準額40,600円×0.5）",
+    "monthly": 20300,
+    "monthly_second": null
+   },
+   {
+    "label": "5(2)",
+    "lower": 121000,
+    "upper": 145000,
+    "condition": "145,000円未満（基準額42,900円×0.5）",
+    "monthly": 21450,
+    "monthly_second": null
+   },
+   {
+    "label": "5(3)",
+    "lower": 145000,
+    "upper": 169000,
+    "condition": "169,000円未満（基準額44,500円×0.5）",
+    "monthly": 22250,
+    "monthly_second": null
+   },
+   {
+    "label": "6",
+    "lower": 169000,
+    "upper": 301000,
+    "condition": "301,000円未満（基準額46,600円×0.5）",
+    "monthly": 23300,
+    "monthly_second": null
+   },
+   {
+    "label": "7",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "397,000円未満（基準額47,300円×0.5）",
+    "monthly": 23650,
+    "monthly_second": null
+   },
+   {
+    "label": "8",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上（基準額48,000円×0.5）",
+    "monthly": 24000,
+    "monthly_second": null
+   }
+  ],
+  "notes": "monthly は表の基準額（3歳未満・保育標準時間）に村の「第1子半額」を当てた額。表そのものの基準額（標準時間）: 3(1) 18,700、3(2) 19,500、4(1) 28,800、4(2) 29,400、4(3) 30,000、5(1) 40,600、5(2) 42,900、5(3) 44,500、6 46,600、7 47,300、8 48,000。保育短時間の基準額（表の左の列。画像で列の並びを確かめた）: 3(1) 10,300、3(2) 11,100、4(1) 20,400、4(2) 21,000、4(3) 21,600、5(1) 32,200、5(2) 34,500、5(3) 36,100、6 38,200、7 38,900、8 39,600（これも第1子は半額）。規則別表の備考1: 児童の属する世帯の全ての子においての第1子＝基準額×0.5、第2子＝基準額×0.5、それ以外（第3子以降）＝0円（10円未満切り捨て）。3歳以上児は無料、2号認定は副食費も免除（令和4年度から副食費無料）。ひとり親などの特定世帯の別の額は案内に書かれていない。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "3歳未満の第1子は有料だが、村の保育料負担軽減事業で所得にかかわらず基準額の半額（標準時間で月9,350円〜24,000円）。0円は生活保護世帯等と市町村民税非課税世帯。",
+ "second_child": "other",
+ "second_count": "household",
+ "second_note": "第2子も基準額の半額（規則別表の備考1）で、第1子（村の第1子半額の後）と同じ額になる。市町村民税所得割57,700円未満の世帯（長野県保育料軽減事業の低所得世帯）は第2子無償。数え方は「児童の属する世帯の全ての子」の中での順番（上の子が保育園に通っているか・上の子の年齢は問わない書き方）。長野県の事業も国の同時入園の要件にかかわらず数える。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "世帯の全ての子のうち第3子以降は0円（規則別表の備考1「上記以外の児童 0円」、長野県保育料軽減事業《多子世帯》第3子無償）。所得の条件なし。",
+ "lunch_jh": {
+  "free": true,
+  "note": "「令和６年度から小・中学校の給食無償化 麻績村立 麻績小学校 麻績村立 筑北中学校」（子育てガイド）",
+  "source": {
+   "label": "麻績村 子育てガイド（PDF、2026年4月1日掲載）",
+   "url": "https://www.vill.omi.nagano.jp/files/kyoiku/%E9%BA%BB%E7%B8%BE%E6%9D%91%E3%80%80%E5%AD%90%E8%82%B2%E3%81%A6%E3%82%AC%E3%82%A4%E3%83%89.pdf"
+  }
+ },
+ "cash": [
+  {
+   "label": "育児支援金（第1子）",
+   "per_child_yearly": 10000,
+   "max_age": 3,
+   "note": "各児について3歳に達するまでの3年間、各年1回（1歳から3歳の誕生日の前後1か月までに毎年申請）。3年以内に村外へ転出すると全額返還。村税などの滞納がないこと。",
+   "source": {
+    "label": "出産祝金・育児支援金｜麻績村（2022年4月25日更新）",
+    "url": "https://www.vill.omi.nagano.jp/kurashi/ninshin_shussan_kosodate/shien/hoken445.html"
+   }
+  },
+  {
+   "label": "育児支援金（第2子）",
+   "per_child_yearly": 50000,
+   "max_age": 3,
+   "note": "第2子は各年5万円。要件は第1子と同じ。",
+   "source": {
+    "label": "出産祝金・育児支援金｜麻績村（2022年4月25日更新）",
+    "url": "https://www.vill.omi.nagano.jp/kurashi/ninshin_shussan_kosodate/shien/hoken445.html"
+   }
+  },
+  {
+   "label": "育児支援金（第3子以上）",
+   "per_child_yearly": 100000,
+   "max_age": 3,
+   "note": "第3子以上は各年10万円。要件は第1子と同じ。",
+   "source": {
+    "label": "出産祝金・育児支援金｜麻績村（2022年4月25日更新）",
+    "url": "https://www.vill.omi.nagano.jp/kurashi/ninshin_shussan_kosodate/shien/hoken445.html"
+   }
+  }
+ ],
+ "one_time": [
+  {
+   "label": "出産祝金",
+   "amount": null,
+   "note": "第1子5万円、第2子5万円、第3子以上10万円（各児1回）。出生から1年以内に村外へ転出すると全額返還。子育てガイド（2026年）にも同じ額。",
+   "source": {
+    "label": "出産祝金・育児支援金｜麻績村（2022年4月25日更新）",
+    "url": "https://www.vill.omi.nagano.jp/kurashi/ninshin_shussan_kosodate/shien/hoken445.html"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "麻績保育園 令和８年度 入園のご案内（PDF。保育料・保育料軽減制度・徴収金基準額表）",
+   "url": "https://www.vill.omi.nagano.jp/files/kyoiku/%E5%85%A5%E5%9C%92%E8%AA%AC%E6%98%8E%E4%BC%9A%E3%81%AE%E3%81%97%E3%81%8A%E3%82%8A.pdf"
+  },
+  {
+   "label": "麻績保育園の入園について｜麻績村（2025年10月31日更新）",
+   "url": "https://www.vill.omi.nagano.jp/kurashi/kyoiku/kyoiku1275.html"
+  },
+  {
+   "label": "麻績村子育てガイド｜麻績村（2026年4月1日更新）",
+   "url": "https://www.vill.omi.nagano.jp/kurashi/ninshin_shussan_kosodate/kyoiku2871.html"
+  },
+  {
+   "label": "出産祝金・育児支援金｜麻績村",
+   "url": "https://www.vill.omi.nagano.jp/kurashi/ninshin_shussan_kosodate/shien/hoken445.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べの候補は社会福祉法人等利用者負担軽減の申請書（xls）だけだったので、下調べのページ一覧の「麻績保育園の入園について」から令和8年度の入園のご案内PDFを開いた",
+  "表の列の並び（保育短時間が左、保育標準時間が右）は pdftoppm で画像にして確かめた"
+ ],
+ "notes": "長野県保育料軽減事業（入園のご案内に記載）: 《多子世帯》市町村民税57,700円以上の世帯は第3子無償・第2子半額、《低所得世帯》57,700円未満の世帯は第2子無償・第1子半額。村はこれに加えて村の事業で第1子を半額にしている。村内の認可保育所は麻績保育園（定員90人、生後8か月から就学まで）。",
+ "read_at": "2026-11-01"
+}

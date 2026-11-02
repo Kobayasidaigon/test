@@ -1,0 +1,53 @@
+{
+  "code": "022098",
+  "pref": "青森県",
+  "name": "つがる市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（「令和8年度保育所・認定こども園等の利用案内」〔PDF、2025年11月作成〕p.6の「利用者負担額の階層表（令和８年４月～令和９年３月）」）",
+  "period_note": "利用案内p.5: 利用者負担額は毎年9月に市民税額の年度変更に伴って切り替わる。令和8年度利用は4〜8月が令和7年度の市民税額等（令和6年1〜12月の収入）、9〜3月が令和8年度の市民税額等（令和7年1〜12月の収入）。年齢は4月1日現在が基準で、満3歳になった年度中は3号の負担額のまま。父母の市民税額を合算し、父母の収入が合わせて103万円未満で祖父母と同居している場合は祖父母のうち家計の主宰者の市民税額も合算することがある。ただし令和5年度からすべての子の保育料が全額助成されるので、表の額は助成の額を決めるためのもの。",
+  "tax_basis": "6%",
+  "tax_note": "表は「所得割合算額」で判定（父母の合算）。税額控除の扱い（住宅ローン控除等）の注記は利用案内に見当たらない。政令市ではないので6%で判定と読んだ（6%・8%の注記はない）。",
+  "table": {
+    "title": "３．利用者負担額の階層表（令和８年４月～令和９年３月）〇誕生日が令和５年４月２日以後の認定子ども",
+    "kind": "3号（0〜2歳児）・保育標準時間・ひとり親世帯等以外の世帯（月額）。第2子の別の列はない",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "市町村民税非課税", "monthly": 0, "monthly_second": null },
+      { "label": "3-1", "lower": null, "upper": null, "condition": "市町村民税均等割額のみ課税", "monthly": 10000, "monthly_second": null },
+      { "label": "3-2", "lower": 1, "upper": 48600, "condition": "所得割合算額 48,600円未満", "monthly": 14000, "monthly_second": null },
+      { "label": "4-1", "lower": 48600, "upper": 57700, "condition": "所得割合算額 48,600円以上 57,700円未満", "monthly": 15500, "monthly_second": null },
+      { "label": "4-2", "lower": 57700, "upper": 60000, "condition": "所得割合算額 57,700円以上 60,000円未満", "monthly": 15500, "monthly_second": null },
+      { "label": "4-3", "lower": 60000, "upper": 77101, "condition": "所得割合算額 60,000円以上 77,101円未満", "monthly": 18500, "monthly_second": null },
+      { "label": "4-4", "lower": 77101, "upper": 85000, "condition": "所得割合算額 77,101円以上 85,000円未満", "monthly": 18500, "monthly_second": null },
+      { "label": "4-5", "lower": 85000, "upper": 97000, "condition": "所得割合算額 85,000円以上 97,000円未満", "monthly": 21500, "monthly_second": null },
+      { "label": "5-1", "lower": 97000, "upper": 134000, "condition": "所得割合算額 97,000円以上 134,000円未満", "monthly": 22500, "monthly_second": null },
+      { "label": "5-2", "lower": 134000, "upper": 169000, "condition": "所得割合算額 134,000円以上 169,000円未満", "monthly": 23500, "monthly_second": null },
+      { "label": "6-1", "lower": 169000, "upper": 199000, "condition": "所得割合算額 169,000円以上 199,000円未満", "monthly": 25000, "monthly_second": null },
+      { "label": "6-2", "lower": 199000, "upper": 301000, "condition": "所得割合算額 199,000円以上 301,000円未満", "monthly": 27000, "monthly_second": null },
+      { "label": "7", "lower": 301000, "upper": 397000, "condition": "所得割合算額 301,000円以上 397,000円未満", "monthly": 28500, "monthly_second": null },
+      { "label": "8", "lower": 397000, "upper": null, "condition": "所得割合算額 397,000円以上", "monthly": 32000, "monthly_second": null }
+    ],
+    "notes": "表は「標準時間」「短時間」の2列で、階層2〜4-3は「ひとり親世帯等」と「ひとり親世帯等以外の世帯」の2行（PDFの画像で確かめた）。rows は「ひとり親世帯等以外の世帯」の標準時間。保育短時間: 1・2 0円、3-1 9,500円、3-2 13,500円、4-1・4-2 15,000円、4-3・4-4 18,000円、4-5 21,000円、5-1 22,000円、5-2 23,000円、6-1 24,500円、6-2 26,500円、7 28,000円、8 31,500円。ひとり親世帯等: 2 0円、3-1 3,150円（短時間2,900円）、3-2〜4-3 6,300円（6,050円）。誕生日が令和5年4月1日以前の子と1号認定の子は階層にかかわらず0円。ただし市の保育料無償化支援助成事業で表の額も全額助成される（下記）。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2023年4月",
+  "first_child_free_note": "つがる市保育料無償化支援助成事業（令和5年度新規事業）: 平成27年度から第2子以降の保育料・副食費を助成してきたが、令和5年度から保育所・認定こども園等を利用するすべての子の保育料（所得額から算定した額）と副食費（月額上限4,900円）を全額助成。対象はつがる市に住所があり、つがる市から保育・教育支給認定を受けて市内・市外の保育施設を利用する子。所得制限の記載なし。入所決定後に送られる申請書兼委任状の提出が必要。令和8年度の利用案内と申し込みページ（受付時期 令和8年5月〜令和9年3月入所申込）にも「保育料は全額助成されます」とある。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全額助成で0円なので、きょうだいの数え方に関係なく無料（household は「数え方に関係なく0円」の意味で置いた）。助成の前の表には第2子の別の列や多子軽減の記載はない。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全額助成で0円（数え方に関係なし）。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育所・認定こども園の申し込みについて／つがる市", "url": "https://www.city.tsugaru.aomori.jp/soshiki/fukushi/kosodatekenkou/jidoufukushi/hoikusho/6479.html" },
+    { "label": "令和8年度保育所・認定こども園等の利用案内（PDF、p.4 利用者負担額（保育料）無償化について、p.5〜6 利用者負担額の階層表）", "url": "https://www.city.tsugaru.aomori.jp/material/files/group/49/riyouannai.pdf" },
+    { "label": "つがる市保育料無償化支援助成事業について（令和5年度新規事業）／つがる市", "url": "https://www.city.tsugaru.aomori.jp/soshiki/fukushi/kosodatekenkou/jidoufukushi/hoikusho/7795.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "保育料・副食費は市の助成で0円（申請書兼委任状が必要）。表の額は助成額を決めるためのもの。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,165 @@
+{
+ "code": "453820",
+ "pref": "宮崎県",
+ "name": "国富町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（新着情報「令和８年度保育所・認定こども園利用申込のご案内」投稿日2025年12月1日の「利用者負担額.pdf」〔2025年11月17日作成〕。令和7年度用のPDF〔2024年11月作成〕と同じ額）",
+ "period_note": "「令和８年４月～８月の保育料は、令和７年度の住民税で決定」「令和８年９月～令和９年８月の保育料は、令和８年度の住民税で決定」（保育所入所案内R8）。保育料は9月に切り替え、4月にさかのぼっての変更はしない。年齢は4月1日現在の満年齢で、年度途中に誕生日を迎えても年齢区分は変わらない。",
+ "tax_basis": "6%",
+ "tax_note": "父母の税額の合算（祖父母等が家計の主宰者である場合は祖父母等の税額も合算）。住宅ローン控除などの税額控除の扱いは書かれていない。「国富町ではB階層を除くすべての階層で国の定める基準額に対し軽減措置を行っています。」政令市ではない。",
+ "table": {
+  "title": "２・３号認定（保育認定）保育料（認可保育所および認定こども園の２・３号認定者） 3歳未満児",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "A",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "B2",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税非課税世帯 その他の世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "C1",
+    "lower": 0,
+    "upper": 1,
+    "condition": "市町村民税均等割のみ課税世帯",
+    "monthly": 13000,
+    "monthly_second": null
+   },
+   {
+    "label": "C2",
+    "lower": 1,
+    "upper": 20000,
+    "condition": "市町村民税所得割 20,000円未満",
+    "monthly": 14800,
+    "monthly_second": null
+   },
+   {
+    "label": "C3",
+    "lower": 20000,
+    "upper": 48600,
+    "condition": "20,000円以上 48,600円未満",
+    "monthly": 16800,
+    "monthly_second": null
+   },
+   {
+    "label": "D1",
+    "lower": 48600,
+    "upper": 65000,
+    "condition": "48,600円以上 65,000円未満",
+    "monthly": 19900,
+    "monthly_second": null
+   },
+   {
+    "label": "D2",
+    "lower": 65000,
+    "upper": 80000,
+    "condition": "65,000円以上 80,000円未満",
+    "monthly": 25700,
+    "monthly_second": null
+   },
+   {
+    "label": "D3",
+    "lower": 80000,
+    "upper": 97000,
+    "condition": "80,000円以上 97,000円未満",
+    "monthly": 30000,
+    "monthly_second": null
+   },
+   {
+    "label": "D4",
+    "lower": 97000,
+    "upper": 133000,
+    "condition": "97,000円以上 133,000円未満",
+    "monthly": 34000,
+    "monthly_second": null
+   },
+   {
+    "label": "D5",
+    "lower": 133000,
+    "upper": 169000,
+    "condition": "133,000円以上 169,000円未満",
+    "monthly": 37000,
+    "monthly_second": null
+   },
+   {
+    "label": "D6",
+    "lower": 169000,
+    "upper": 235000,
+    "condition": "169,000円以上 235,000円未満",
+    "monthly": 40000,
+    "monthly_second": null
+   },
+   {
+    "label": "D7",
+    "lower": 235000,
+    "upper": 301000,
+    "condition": "235,000円以上 301,000円未満",
+    "monthly": 41000,
+    "monthly_second": null
+   },
+   {
+    "label": "D8",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "301,000円以上 397,000円未満",
+    "monthly": 42000,
+    "monthly_second": null
+   },
+   {
+    "label": "D9",
+    "lower": 397000,
+    "upper": null,
+    "condition": "397,000円以上",
+    "monthly": 44000,
+    "monthly_second": null
+   }
+  ],
+  "notes": "表は画像で確かめた（列は 3歳未満児国基準 標準・短時間、町の3歳未満児 標準・短時間、3歳以上国基準、3歳以上児 の順。rows は町の額）。保育短時間は C1 12,700円、C2 14,500円、C3 16,500円、D1 19,500円、D2 25,200円、D3 29,400円、D4 33,400円、D5 36,300円、D6 39,300円、D7 40,300円、D8 41,200円、D9 43,200円。表の下に「※２人以上の児童が入所している場合、２人目以降は無料です。（１人目の児童が幼稚園等の場合も同様）」。ひとり親世帯等（母子家庭・父子家庭・両親のいない家庭・世帯内に障がい者のいる家庭）で所得割合算額77,101円未満の場合は、第1子は3号認定で「１／４額負担」、第2子以降は無料（B1 ひとり親・障がい者の世帯等の非課税世帯は0円）。年収約360万円未満相当（所得割合算額57,700円未満）の多子世帯は、多子と判断する際の子どもの年齢制限を撤廃（生計同一者に限る）。3歳以上児は0円。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳の第1子は有料（生活保護・非課税世帯は0円）。",
+ "second_child": "free",
+ "second_count": "together",
+ "second_note": "「２人以上の児童が入所している場合、２人目以降は無料です。（１人目の児童が幼稚園等の場合も同様）」（所得制限の記載なし）。所得割合算額57,700円未満の多子世帯は子どもの年齢制限なし（生計同一者に限る）、77,101円未満のひとり親世帯等も第2子以降無料。それ以外の世帯で上の子が入所していない（小学生以上など）場合は第1子の扱いになると読んだ。",
+ "third_child": "free",
+ "third_count": "together",
+ "third_note": "2人目以降は無料なので3人目以降も無料。数え方は第2子と同じ。",
+ "lunch_jh": null,
+ "cash": [],
+ "one_time": [],
+ "sources": [
+  {
+   "label": "令和８年度保育所・認定こども園利用申込のご案内 - 宮崎県国富町ホームページ（投稿日 2025年12月01日）",
+   "url": "https://www.town.kunitomi.miyazaki.jp/main/info/page002117.html"
+  },
+  {
+   "label": "利用者負担額.pdf（令和8年度申込みページ掲載、2025年11月17日作成）",
+   "url": "https://www.town.kunitomi.miyazaki.jp/main/info/56a4867359abef6c70d3ac7f3c9c62db.pdf"
+  },
+  {
+   "label": "保育所入所案内R８.docx（保育料の決定・切替時期）",
+   "url": "https://www.town.kunitomi.miyazaki.jp/main/info/154122a35445e61f3c03e89f891cb3cc.docx"
+  },
+  {
+   "label": "保育所・認定こども園の入所基準、入所案内 - 宮崎県国富町ホームページ（令和7年度の申込み案内のまま）",
+   "url": "https://www.town.kunitomi.miyazaki.jp/main/health/children_welfare/page000453.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べはトップページだけ（子育て・移住サイト sousei.town.kunitomi.miyazaki.jp は https に対応しておらず取れない）。行政サイト /main/ → 児童福祉 の入所案内ページは令和7年度のままだった。WebSearch（town.kunitomi.miyazaki.jp）で新着情報の「令和８年度保育所・認定こども園利用申込のご案内」を見つけた"
+ ],
+ "notes": "本庄西部保育所・国富東保育園は令和8年度から認定こども園へ移行予定（入所案内R8）。",
+ "read_at": "2026-11-01"
+}

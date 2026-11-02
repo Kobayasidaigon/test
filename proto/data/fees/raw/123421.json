@@ -1,0 +1,49 @@
+{
+  "code": "123421",
+  "pref": "千葉県",
+  "name": "神崎町",
+  "status": "ok",
+  "fiscal_year": null,
+  "period_note": "町の子育て支援サイト「なないろパレット」の「保育所について」（HTTPの最終更新 2024年10月29日）: 「町内にある保育所の保育料は０歳児から無料です。」「子育てするなら神崎町で」（最終更新 2022年1月21日）にも町独自の子育て支援制度として「0歳児から保育料無料」。どのページにも令和8年度の日付はなく、無料化の始まった時期も書かれていない。",
+  "tax_basis": "unknown",
+  "tax_note": "保育料が全員無料のため、所得割による階層の表は公開されていない。例規集（g-reiki）は 403 で読めなかった。",
+  "table": null,
+  "first_child_free": true,
+  "first_child_free_since": null,
+  "first_child_free_note": "町内にある保育所（公立の神崎保育所・米沢保育所の2か所）の保育料は0歳児から無料。給食（完全給食）も無料（町外の管外受託児童の給食費は有料）。町外の保育所等に通う場合の扱い、所得制限・申請の要否は書かれていない。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "第1子から全員無料なので第2子も0円（きょうだいの数え方は額に関係しない。household は「数え方に関係なく0円」という意味で置いた）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から全員無料なので第3子以降も0円。",
+  "lunch_jh": {
+    "free": true,
+    "note": "神崎町学校給食費助成制度（平成24年度から）: 町立小学校・中学校に就学する児童生徒の給食費の全額を助成（小学生月額4,400円、中学生月額5,000円）。前年度分までの給食費を滞納していないこと、準要保護・就学援助の認定児童生徒は除く。申請・委任状は学校経由。",
+    "source": { "label": "給食費全額助成 | なないろパレット | 神崎町子育て支援サイト", "url": "https://www.town.kozaki.chiba.jp/nanapale/support/jido/shochu_kyushoku.html" }
+  },
+  "cash": [],
+  "one_time": [
+    {
+      "label": "神崎町子育て支援費（出産時・小学校入学時）",
+      "amount": 50000,
+      "note": "第1子・第2子出産時5万円、第3子以降出産時10万円。小学校入学時は第1子・第2子2万円、第3子以降5万円。神崎町に住民登録があり現に居住している、出産した父母または児童を養育する父母など。保健福祉課へ申請（該当者には申請書を送付）。",
+      "source": { "label": "子育て支援費 | なないろパレット | 神崎町子育て支援サイト", "url": "https://www.town.kozaki.chiba.jp/nanapale/support/jido/kosodateshien.html" }
+    }
+  ],
+  "sources": [
+    { "label": "保育所について | なないろパレット | 神崎町子育て支援サイト", "url": "https://www.town.kozaki.chiba.jp/nanapale/childcare/hoikujo/hoikujo.html" },
+    { "label": "子育てするなら神崎町で | なないろパレット | 神崎町子育て支援サイト", "url": "https://www.town.kozaki.chiba.jp/nanapale/aboutus/index.html" },
+    { "label": "保育所利用のご案内（Word、2024年10月作成。保育料の記載なし）", "url": "https://www.town.kozaki.chiba.jp/nanapale/childcare/hoikujo/files/goannnai.docx" }
+  ],
+  "confidence": "推定",
+  "tried": [
+    "下調べの docs（家庭環境調査表などの様式）には保育料の記載がなかった",
+    "例規集 https://www1.g-reiki.net/kozaki/reiki_menu.html は 403 Forbidden で読めなかった（ヘッダーを偽ってすり抜けることはしていない）",
+    "町のサイトの「教育・保育」一覧と「未就学児に関するサポート」ページに、令和8年度の日付のある保育料の記載は見つからなかった",
+    "広報「こうざき」令和8年4月号の予算特集（4〜5ページ、画像のPDF https://www.town.kozaki.chiba.jp/profile/koho/r8/files/r804/P4-5.pdf）の「令和８年度の主な事業」に保育料の記載はなかった",
+    "WebSearch はこの組の3回を高森町に使ったので、神崎町には使っていない"
+  ],
+  "notes": "保育所のページの記載は現在のもの（2026年3月のこども誰でも通園制度のページもある、更新されているサイト）だが、令和8年度の日付のある資料で無料が続いていることは確かめられなかったので confidence は推定にした。",
+  "read_at": "2026-11-01"
+}

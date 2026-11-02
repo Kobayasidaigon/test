@@ -1,0 +1,32 @@
+{
+  "code": "064033",
+  "pref": "山形県",
+  "name": "飯豊町",
+  "status": "not_found",
+  "fiscal_year": null,
+  "period_note": "町の公式サイト（https://www.town.iide.yamagata.jp/）が、2026年11月1日の作業中ずっと 502 Server Error を返し、保育料の表を読めなかった。",
+  "tax_basis": "unknown",
+  "tax_note": "未確認。WebSearch の結果の文では「3歳未満児については、保護者の住民税所得割額の合算額より保育料を算定」（飯豊すくすくこども園のページ）とあるが、ページを開いて確かめていない。",
+  "table": null,
+  "first_child_free": null,
+  "first_child_free_since": null,
+  "first_child_free_note": "未確認。",
+  "second_child": "unknown",
+  "second_count": "unknown",
+  "second_note": "未確認（町のページが読めなかった）。WebSearch（allowed_domains: town.iide.yamagata.jp）の結果の文では、町の「飯豊町の主な暮らしの支援 施策一覧 ＜子育てに関すること＞」に「3歳未満児の方で、きょうだいが同時に入所している第2番目のお子さんは保育料無料」とあるとされるが、ページを開いて確かめていない。山形県の「保育料無償化に向けた段階的負担軽減」（所得割97,000円未満は国基準の1/2、169,000円未満は1/4を県が交付）が町の額に関わる可能性がある（県の制度の調べ）。",
+  "third_child": "unknown",
+  "third_count": "unknown",
+  "third_note": "未確認。WebSearch の結果の文では、同じ施策一覧に「18歳以下のお子さんを最年長として数え、第3番目以降のお子さんは保育料無料」とあるとされるが、ページを開いて確かめていない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [],
+  "confidence": "仮置き",
+  "tried": [
+    "下調べ（crawl）は OSError で0ページ。公式サイト https://www.town.iide.yamagata.jp/ と /index.html を curl で何度も取り直した（19:40〜20:10ごろ、30秒あけた再試行を含む）が、すべて HTTP 502（Server Error）。",
+    "新しいドメイン https://www.town.iide.lg.jp/ は名前が引けなかった（接続できず）。",
+    "WebSearch 2回（allowed_domains: town.iide.yamagata.jp、「飯豊町 保育料 3歳未満 令和8年度」「飯豊町幼保連携型認定こども園費用徴収規則 別表 保育料徴収基準月額 3歳未満児 所得割額」）で、候補のURLを見つけた: 例規集の飯豊町幼保連携型認定こども園費用徴収規則 https://www.town.iide.yamagata.jp/reiki_int/reiki_honbun/c433RG00000705.html （結果の文では2026年2月24日改正・令和8年4月1日施行、別表に保育料徴収基準月額。生活保護・町民税非課税は0円）、飯豊すくすくこども園 https://www.town.iide.yamagata.jp/007/hoikusisetu.html 、町内保育施設等の入園申込み https://www.town.iide.yamagata.jp/007/hoikusisetu_enjiboshuu.html 、子育て施策一覧 https://www.town.iide.yamagata.jp/001/teijyuu_kekkonkosodate.html 。これらも curl で 502、WebFetch では名前が引けず、どれも開けなかった。検索結果の文にも所得割ごとの金額は出てこなかった。"
+  ],
+  "notes": "町のサイトが502で読めず、表もきょうだいの決まりも公式のページで確かめられなかったため not_found とした。second_note・third_note の多子の決まりは検索結果の文からの未確認の情報で、値には入れていない。サイトが戻ったら、例規集の飯豊町幼保連携型認定こども園費用徴収規則（令和8年4月1日施行の別表）と子育て施策一覧のページを読むこと。",
+  "read_at": "2026-11-01"
+}

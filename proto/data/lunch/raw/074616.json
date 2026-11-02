@@ -1,0 +1,36 @@
+{
+ "code": "074616",
+ "pref": "福島県",
+ "name": "西郷村",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "jh": {
+  "free": "all",
+  "monthly": 0,
+  "per_meal": null,
+  "yearly": null,
+  "since": null,
+  "until": null,
+  "note": "「西郷村学校給食費補助金」で、村内に住所がある村立中学校生徒の保護者は給食費を全額補助（実質、全額無償。村独自の財源）。村外に住み村立中学校に通う生徒（区域外就学）は食材高騰分のみ補助。村に住み村立以外の中学校に通う生徒にも、1食あたりの額（その学校と村の低い方）×食べた回数を学期ごとに補助する。給食に代えて弁当を持参する場合（食物アレルギー等）も村の1食の額×回数を補助。"
+ },
+ "elem": {
+  "free": "all",
+  "monthly": 0,
+  "note": "国の給食費負担軽減交付金に村が不足分を上乗せして無償化（村立小学校、区域外就学児童を含む）。"
+ },
+ "no_lunch_jh": false,
+ "sources": [
+  {
+   "label": "西郷村「学校給食費の無償化及び補助について」（更新日 2026年10月30日）",
+   "url": "https://www.vill.nishigo.fukushima.jp/kosodate_kyoiku/gakkokyoiku/gakkokyushoku/4502.html"
+  },
+  {
+   "label": "西郷村「学校給食費の無償化及び補助について」（同じ内容の別の場所のページ）",
+   "url": "https://www.vill.nishigo.fukushima.jp/purpose/gakkokyoiku/kyusyoku/6026.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "中学校の無償化がいつ始まったかはページに書かれていない（since は null）。給食費の1食の額もページにない。補助は給食費に未納があると交付されない、就学援助を受けている分は除く。",
+ "read_at": "2026-11-01"
+}

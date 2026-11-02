@@ -1,0 +1,155 @@
+{
+ "code": "336238",
+ "pref": "岡山県",
+ "name": "奈義町",
+ "status": "ok",
+ "fiscal_year": "令和8年度（奈義町例規集〔内容現在 令和8年6月11日〕の「奈義町立こども園に関する条例施行規則」別表〔令和5年規則第15号、令和6年4月1日施行、改正なし〕。令和9年度なぎっ子こども園入園のご案内〔2026年10月23日作成〕の令和9年度保育料（3歳未満）も同じ額。町のページ「奈義町子育て応援宣言」〔最終更新2026年5月22日〕の「保育料設定・多子軽減」とも一致）",
+ "period_note": "0〜2歳の保育料は保護者の所得、4月1日現在の児童の年齢、認定される時間、家庭状況で算定。4〜8月は前年度（前々年中の所得）、9月〜翌3月は今年度（前年中の所得）の市町村民税所得割額で階層を決める（令和9年度の入園のご案内の書き方による）。保育料の年齢は年度の初日の前日の年齢で、その年度中は変わらない（規則第12条第2項）。3歳から5歳の保育料（1号・2号認定）は0円。",
+ "tax_basis": "6%",
+ "tax_note": "「所得割課税額」で階層を決める。税額控除の扱い・指定都市の扱いは規則にも案内にも書かれていない。3号認定の保育料は「国の徴収基準額の55パーセント」（規則第12条第1項第3号）で、町のページでは「国の基準額の約半額」。",
+ "table": {
+  "title": "奈義町立こども園に関する条例施行規則 別表（第12条関係） 保育料（月額） 3号認定",
+  "kind": "3歳未満・保育標準時間・第1子（月額）",
+  "rows": [
+   {
+    "label": "①",
+    "lower": null,
+    "upper": null,
+    "condition": "生活保護世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "②",
+    "lower": null,
+    "upper": null,
+    "condition": "市町村民税額非課税世帯",
+    "monthly": 0,
+    "monthly_second": null
+   },
+   {
+    "label": "③",
+    "lower": 0,
+    "upper": 48600,
+    "condition": "所得割課税額48,600円未満",
+    "monthly": 10700,
+    "monthly_second": null
+   },
+   {
+    "label": "④",
+    "lower": 48600,
+    "upper": 97000,
+    "condition": "所得割課税額97,000円未満",
+    "monthly": 16500,
+    "monthly_second": null
+   },
+   {
+    "label": "⑤",
+    "lower": 97000,
+    "upper": 169000,
+    "condition": "所得割課税額169,000円未満",
+    "monthly": 24400,
+    "monthly_second": null
+   },
+   {
+    "label": "⑥",
+    "lower": 169000,
+    "upper": 301000,
+    "condition": "所得割課税額301,000円未満",
+    "monthly": 33500,
+    "monthly_second": null
+   },
+   {
+    "label": "⑦",
+    "lower": 301000,
+    "upper": 397000,
+    "condition": "所得割課税額397,000円未満",
+    "monthly": 44000,
+    "monthly_second": null
+   },
+   {
+    "label": "⑧",
+    "lower": 397000,
+    "upper": null,
+    "condition": "所得割課税額397,000円以上",
+    "monthly": 57200,
+    "monthly_second": null
+   }
+  ],
+  "notes": "保育短時間（月額）: ③ 10,600円、④ 16,200円、⑤ 24,100円、⑥ 33,000円、⑦ 43,300円、⑧ 56,300円（①②は0円）。表の「保育料多子軽減」の欄: 「子どもの数は、年齢の高い順に数える。（同一世帯に18歳から園児までがいる場合）1：全額 2：半額 3：免除」（規則第14条第1項第2号・第2項: 満18歳に達する日以後の最初の3月31日までの者が2人以上いる世帯は、出生の最も早い者から数えて2人目は半額、3人目以降は全額を減額。書面の提出が必要）。表に第2子の額の列はない。ひとり親世帯等・在宅障害児（者）のいる世帯・特に困窮していると町長が認めた世帯は、第3階層の第1子が4,900円（標準・短時間とも）・第2子以降無料。第4階層のうち年収約360万円未満相当の世帯（同じ欄外の注記の続き）の第1子も4,900円・第2子以降無料。③の「48,600円未満」は均等割のみの世帯の行が別にないので lower=0 とした。額は国の徴収基準額の55%（標準時間は国の額×0.55と一致）。給食費（主食費・副食費）は無償（規則第20条）。"
+ },
+ "first_child_free": false,
+ "first_child_free_since": null,
+ "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月10,700〜57,200円。国の基準額の55%）。0円は生活保護世帯と市町村民税非課税世帯だけ。",
+ "second_child": "half",
+ "second_count": "household",
+ "second_note": "町独自の多子軽減: 「対象の子どもの数は同一世帯の18歳から保育園児までを数え、第２子半額、第３子以降は免除」（子育て応援宣言のページ）。規則では満18歳に達する日以後の最初の3月31日までの者が2人以上いる世帯で、年齢の高い順に数えて2人目は半額。上の子がこども園に通っているかは問わない（上の子は18歳の年度末まで数える）。所得制限なし。減免を受けるには書面の提出が必要。",
+ "third_child": "free",
+ "third_count": "household",
+ "third_note": "同一世帯の18歳（18歳の年度末）までの子を年齢の高い順に数えて3人目以降は保育料を全額減額（免除）。所得制限なし。",
+ "lunch_jh": {
+  "free": true,
+  "note": "「こども園・小学校・中学校の給食費（主食・副食）の無償化を行っています。」小中学校の教材費も無償化。",
+  "source": {
+   "label": "奈義町子育て応援宣言（奈義町、最終更新2026年5月22日）",
+   "url": "https://www.town.nagi.okayama.jp/gyousei/kosodate_kyouiku_bunka/ninshin_shussan_kosodate/kosodate/kosodate_ouensengen.html"
+  }
+ },
+ "cash": [
+  {
+   "label": "在宅育児支援手当",
+   "per_child_yearly": 180000,
+   "max_age": 4,
+   "note": "満7か月児から満4歳（満4歳になった後の最初の3月31日まで）の児童で、保育園等に入園していない児童を養育している方に、児童一人につき月額15,000円（年額は月額×12で計算）。こども園に通う子は対象外。",
+   "source": {
+    "label": "奈義町子育て応援宣言",
+    "url": "https://www.town.nagi.okayama.jp/gyousei/kosodate_kyouiku_bunka/ninshin_shussan_kosodate/kosodate/kosodate_ouensengen.html"
+   }
+  },
+  {
+   "label": "高等学校等就学支援",
+   "per_child_yearly": 240000,
+   "max_age": 18,
+   "note": "生徒1人に年額240,000円を3年を限度として支給（所得などの条件はこのページに書かれていない）。",
+   "source": {
+    "label": "奈義町子育て応援宣言",
+    "url": "https://www.town.nagi.okayama.jp/gyousei/kosodate_kyouiku_bunka/ninshin_shussan_kosodate/kosodate/kosodate_ouensengen.html"
+   }
+  }
+ ],
+ "one_time": [
+  {
+   "label": "出産祝い金",
+   "amount": 100000,
+   "note": "お子様のご誕生に際して、一律10万円を交付。",
+   "source": {
+    "label": "奈義町子育て応援宣言",
+    "url": "https://www.town.nagi.okayama.jp/gyousei/kosodate_kyouiku_bunka/ninshin_shussan_kosodate/kosodate/kosodate_ouensengen.html"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "奈義町立こども園に関する条例施行規則（奈義町例規集、内容現在 令和8年6月11日）",
+   "url": "https://www.town.nagi.okayama.jp/reiki_int/reiki_honbun/m267RG00000953.html"
+  },
+  {
+   "label": "奈義町子育て応援宣言（奈義町、最終更新2026年5月22日）",
+   "url": "https://www.town.nagi.okayama.jp/gyousei/kosodate_kyouiku_bunka/ninshin_shussan_kosodate/kosodate/kosodate_ouensengen.html"
+  },
+  {
+   "label": "令和9年度なぎっ子こども園入園のご案内（PDF、2026年10月23日作成）",
+   "url": "https://www.town.nagi.okayama.jp/gyousei/kosodate_kyouiku_bunka/kyouiku/kodomoen/documents/r9annnai.pdf"
+  },
+  {
+   "label": "令和9年度なぎっ子こども園の園児を募集します！（奈義町、最終更新2026年10月26日）",
+   "url": "https://www.town.nagi.okayama.jp/gyousei/kosodate_kyouiku_bunka/kyouiku/kodomoen/r9kodomoennennjibosyuu.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [
+  "下調べはトップ1ページだけ（トップは画像のボタンだけ）。くらしのサイト（/gyousei/index.html）からこども園の募集ページと子育て応援宣言のページへ進み、例規集（/reiki_int/）の五十音目次「こ」でこども園の規則を読んだ。令和8年度の入園のご案内は町のサイトに残っていない（r8annnai.pdf は 404）。"
+ ],
+ "notes": "町内の認可施設は町立の幼保連携型認定こども園「なぎっ子こども園」（令和6年4月に奈義保育園・中央東幼稚園・滝川つくし幼稚園を統合、定員250人、0歳児は生後満6か月から）。一時預かりは1日1,800円。延長保育料は規則で別に定める（額は見ていない）。",
+ "read_at": "2026-11-01"
+}

@@ -1,0 +1,52 @@
+{
+  "code": "162094",
+  "pref": "富山県",
+  "name": "小矢部市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "注⑤: 階層区分は、4月分から8月分までは前年度の税額（令和7年度の市民税）、9月分から翌年3月分までは当該年度の税額（令和8年度の市民税）により決定。注⑥: 3歳未満の児童がその年度の途中で3歳に達した場合も、その年度中に限り3歳未満児とみなす。料金表は年度を通じて1つ。",
+  "tax_basis": "6%",
+  "tax_note": "教育・保育認定児童と同一世帯に属して生計を一にしている父母及びそれ以外の扶養義務者（家計の主宰者である場合に限る）の市民税所得割課税額等を合計した額で階層を決める。配当控除、住宅借入金等特別控除及び外国税額控除等の税額控除適用前の税額で決定。同居の祖父母等の所得は原則対象外だが、祖父母が家計の主宰者のときは算定の対象になることがある（よくある質問 Q8）。政令市ではないので6%で判定。",
+  "table": {
+    "title": "令和8年度小矢部市利用者負担額表（2号及び3号認定保育料表）",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "A", "lower": null, "upper": null, "condition": "生活保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "B1", "lower": null, "upper": null, "condition": "市民税非課税世帯（その他）", "monthly": 0, "monthly_second": null },
+      { "label": "C1", "lower": null, "upper": null, "condition": "市民税が均等割のみの世帯（その他）", "monthly": 4250, "monthly_second": null },
+      { "label": "C3", "lower": 1, "upper": 11000, "condition": "市民税所得割課税額11,000円未満の世帯（その他）", "monthly": 5500, "monthly_second": null },
+      { "label": "C5", "lower": 11000, "upper": 48600, "condition": "市民税所得割課税額11,000円以上48,600円未満の世帯（その他）", "monthly": 6550, "monthly_second": null },
+      { "label": "D2", "lower": 48600, "upper": 63000, "condition": "市民税所得割課税額48,600円以上63,000円未満の世帯（その他）", "monthly": 7750, "monthly_second": null },
+      { "label": "D4", "lower": 63000, "upper": 77101, "condition": "市民税所得割課税額63,000円以上77,100円以下の世帯（その他）", "monthly": 19300, "monthly_second": null },
+      { "label": "D5", "lower": 77101, "upper": 97000, "condition": "〃 77,101円以上 97,000円未満の世帯", "monthly": 25800, "monthly_second": null },
+      { "label": "D6", "lower": 97000, "upper": 135000, "condition": "〃 97,000円以上135,000円未満の世帯", "monthly": 32000, "monthly_second": null },
+      { "label": "D7", "lower": 135000, "upper": 169000, "condition": "〃 135,000円以上169,000円未満の世帯", "monthly": 36900, "monthly_second": null },
+      { "label": "D8", "lower": 169000, "upper": 301000, "condition": "〃 169,000円以上301,000円未満の世帯", "monthly": 41100, "monthly_second": null },
+      { "label": "D9", "lower": 301000, "upper": 397000, "condition": "〃 301,000円以上397,000円未満の世帯", "monthly": 44300, "monthly_second": null },
+      { "label": "D10", "lower": 397000, "upper": null, "condition": "〃 397,000円以上の世帯", "monthly": 46300, "monthly_second": null }
+    ],
+    "notes": "列は「3歳未満児（保育標準時間／保育短時間）・3歳以上児（保育標準時間／保育短時間）」。rows は3歳未満児・保育標準時間の「その他」の行。3歳未満児・保育短時間: A・B1 0円、C1 3,250円、C3 4,500円、C5 5,550円、D2 6,750円、D4 17,300円、D5 23,800円、D6 30,000円、D7 34,900円、D8 39,100円、D9 42,300円、D10 44,300円。母子世帯等の行（B0・C0・C2・C4・D1・D3、所得割77,100円以下）は標準・短時間とも0円（rows には入れていない）。3歳以上児は全階層0円（給食費は別途）。注②〜④はきょうだいの軽減（second_note・third_note）。C1（均等割のみ＝所得割0円）と分けるため C3 の lower を1にした。D4 は「77,100円以下」なので upper を77,101にした。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は有料（標準時間で月0〜46,300円）。0円は生活保護世帯・市民税非課税世帯と、所得割77,100円以下の母子世帯等。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "注②: 同一世帯で2人以上の児童が同時に入所している場合、最も年齢の高い児童は利用者負担額を徴収し、次に年齢の高い児童が半額、その他の児童が無料（同時に入所している子だけを数える）。注③: C1・C3・C5・D2 の階層（市民税均等割のみ〜所得割63,000円未満）では第2子の利用者負担額は無料（保育料軽減に係る確認書に出生順位〔第1位〜第5位〕で子を書く欄があり、出生順位で数えると読める。上の子の年齢の上限は資料に書かれていない）。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "注④: 第3子以降の児童は、注②（同時入所）に関係なく利用者負担額は無料（所得制限の記載なし）。保育料軽減に係る確認書は「出生順位第2位以降である児童」と第1位〜第5位の子の氏名・生年月日を書かせる様式で、出生順位で数える。上の子の年齢の上限は資料に書かれていない。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和8年度小矢部市利用者負担額表（1号認定保育料表／2号及び3号認定保育料表）", "url": "https://www.city.oyabe.toyama.jp/_res/projects/default_project/_page_/001/003/317/hoikuryour8.pdf" },
+    { "label": "保育料のご案内｜小矢部市公式ホームページ（更新日2026年4月3日）", "url": "https://www.city.oyabe.toyama.jp/kosodatekyoiku/1004459/1002682/1003317.html" },
+    { "label": "保育料軽減に係る確認書（Excel）", "url": "https://www.city.oyabe.toyama.jp/_res/projects/default_project/_page_/001/007/263/hoikuryoukeigenn.xls" },
+    { "label": "保育所・認定こども園に関するよくある質問｜小矢部市公式ホームページ", "url": "https://www.city.oyabe.toyama.jp/kosodatekyoiku/1004459/1002682/1002687.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "表は pdftoppm で画像にして列（3歳未満児・3歳以上児 × 標準時間・短時間）と母子世帯等の行を確かめた。同じ令和8年度の表が3つのページ（保育料のご案内・入園申し込み・令和9年度入園申し込み）に載っていて中身は同じ。中学校給食・現金給付・祝い金は探す途中で目に入らなかったので書いていない（なしという意味ではない）。",
+  "read_at": "2026-11-01"
+}

@@ -1,0 +1,59 @@
+{
+  "code": "202134",
+  "pref": "長野県",
+  "name": "飯山市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（市の「保育料等について」のページ〔2024年11月5日更新〕にある「飯山市保育料徴収基準額表（令和5年度から）」。令和9年度入園案内〔2026年10月〕の表も同じ額で、令和5年度から変わっていない）",
+  "period_note": "4〜8月は前年度の市民税額、9〜3月は当該年度の市民税額で決定（令和9年度の案内: 4〜8月は令和8年度市民税額、9〜3月は令和9年度市民税額）。年齢区分は当該年度の4月1日時点の年齢。年度の途中で満3歳になって2号認定に当たっても、その年度中は3号認定の額。令和5年4月から3歳未満児の給食費無償化で、給食費相当額7,500円が保育料から減額された（表は令和5年度からのもの）。",
+  "tax_basis": "6%",
+  "tax_note": "父母等の市民税課税状況と市民税額（所得割）で決定。父母の合計所得が38万円未満の場合や、父母以外の人が入所児童または父母を税金・健康保険等の扶養にしている場合は、父母以外の人の税額を加算（住民票が別でも同一住所地内の親族等は対象）。所得割の定義（税額控除の扱い）は案内に書かれていない。未申告は最高額になる場合がある。政令市ではない。",
+  "table": {
+    "title": "飯山市保育料徴収基準額表（令和9年度入園案内 7(1)、市のページの表は「令和5年度から」）",
+    "kind": "3歳未満（3号）・保育標準時間・第1子（月額）。保育短時間の額は notes に",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯等", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "第１階層を除き、当該年度分の市町村民税の区分が次の区分に該当する世帯 非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": 0, "upper": 1, "condition": "第１階層を除き、当該年度分の市町村民税の区分が次の区分に該当する世帯 所得割非課税世帯", "monthly": 4900, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 48600, "condition": "第１階層を除き、当該年度分の市町村民税所得割の額の区分が次の区分に該当する世帯 48,600円未満", "monthly": 10100, "monthly_second": null },
+      { "label": "5", "lower": 48600, "upper": 63000, "condition": "63,000円未満", "monthly": 13300, "monthly_second": null },
+      { "label": "6", "lower": 63000, "upper": 77100, "condition": "77,100円未満", "monthly": 16400, "monthly_second": null },
+      { "label": "7", "lower": 77100, "upper": 97000, "condition": "97,000円未満", "monthly": 19500, "monthly_second": null },
+      { "label": "8", "lower": 97000, "upper": 118000, "condition": "118,000円未満", "monthly": 22400, "monthly_second": null },
+      { "label": "9", "lower": 118000, "upper": 142000, "condition": "142,000円未満", "monthly": 25300, "monthly_second": null },
+      { "label": "10", "lower": 142000, "upper": 169000, "condition": "169,000円未満", "monthly": 28100, "monthly_second": null },
+      { "label": "11", "lower": 169000, "upper": 211200, "condition": "211,200円未満", "monthly": 30500, "monthly_second": null },
+      { "label": "12", "lower": 211200, "upper": 255000, "condition": "255,000円未満", "monthly": 32900, "monthly_second": null },
+      { "label": "13", "lower": 255000, "upper": 301000, "condition": "301,000円未満", "monthly": 35200, "monthly_second": null },
+      { "label": "14", "lower": 301000, "upper": 348000, "condition": "348,000円未満", "monthly": 37900, "monthly_second": null },
+      { "label": "15", "lower": 348000, "upper": 397000, "condition": "397,000円未満", "monthly": 40600, "monthly_second": null },
+      { "label": "16", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 44500, "monthly_second": null }
+    ],
+    "notes": "保育短時間: 階層1・2 0円、3 4,700円、4 9,900円、5 12,900円、6 16,000円、7 19,100円、8 21,800円、9 24,700円、10 27,500円、11 29,600円、12 32,000円、13 34,300円、14 36,700円、15 39,400円、16 42,900円。2号（3歳以上）は全階層0円。表の額は基準額で、(2)保育料の軽減等で次のとおり減る: ②市民税所得割57,700円未満の世帯（第3〜第5階層、第5階層は所得割合算額57,700円未満の場合だけ）は第1子（生計同一の子のうち最年長の子）50%軽減（半額）、第2子・第3子以降100%軽減（無料）。③57,700円以上（第5〜16階層）は第1子 軽減なし、第2子 半額、第3子以降 無料。①所得割77,101円未満の要保護世帯（ひとり親世帯、在宅障がい者のいる世帯等）の3号は第1子が第2・3階層0円、第4階層 標準300円・短時間200円、第5〜7階層1,500円（第7階層は所得割合算額77,101円未満の場合だけ）、第2子以降0円。延長保育料（30分）は全月800円・半月400円・1日100円。休日保育料（日額）は3号の標準時間1,600円・短時間1,200円。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "第1子は有料（3歳未満の保育標準時間で月0〜44,500円）。ただし市民税所得割57,700円未満の世帯（第3〜第5階層）の第1子は50%軽減（半額）で、表の額の半分になる。0円は生活保護世帯と市民税非課税世帯（要保護世帯は第3階層も0円）。",
+  "second_child": "other",
+  "second_count": "household",
+  "second_note": "数え方は「生計同一の子のうち、最年長の子から数えて２番目の子」（上の子の年齢・在園を問わない）。市民税所得割57,700円以上（第5〜16階層）は第2子50%軽減（半額）、57,700円未満（第3〜第5階層）は第2子100%軽減（無料）。所得割77,101円未満の要保護世帯（ひとり親世帯等）は第2子以降0円。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "全階層で第3子以降（生計同一の子のうち、最年長の子から数えて3番目以降の子）は100%軽減（無料）。市のページ「第3子以降の保育料無料化について」（平成23年4月から）: 保護者と児童が飯山市内に住民票がある世帯で、兄弟姉妹のうち第3子（3人目）以降の児童の保育園の月額保育料を無料化（保育料に未納がないこと、申請が必要。延長保育料・休日保育料などは対象外）。所得制限なし。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和9年度入園案内（PDF、飯山市子ども育成課、2026年10月。7 保育料等について）", "url": "https://www.city.iiyama.nagano.jp/assets/files/R9%20hoiku%20nyuen%20annai.pdf" },
+    { "label": "保育料等について／飯山市（2024年11月5日更新）", "url": "https://www.city.iiyama.nagano.jp/soshiki/kodomo/kosodate/hoikuen/37453/hoikuen_03" },
+    { "label": "飯山市保育料徴収基準額表（令和5年度から）（Word、ファイル名 R6hoikuryoukijyunngaku.docx）", "url": "https://www.city.iiyama.nagano.jp/assets/files/kodomo/kosodateshien/R6hoikuryoukijyunngaku.docx" },
+    { "label": "第3子以降の保育料無料化について／飯山市", "url": "https://www.city.iiyama.nagano.jp/soshiki/kodomo/kosodate/hoikuen/37453/daisansimuryouka" },
+    { "label": "令和9年度保育園新規入園申込みの受付を開始します／飯山市（2026年10月6日更新）", "url": "https://www.city.iiyama.nagano.jp/soshiki/kodomo/kosodate/news/shinki_nyuen" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べは相対リンクの解決に失敗して5ページだけだった（ページに <base href> がある）。「出産・子育て」ページから子育て支援係 → 飯山市内 保育園について → 保育料等について の順に開いた",
+    "保育料等についてのページの基準額表（Word）と、令和9年度保育園新規入園申込みのページの令和9年度入園案内 PDF（3ページ目を画像で確認）を読み、同じ額であることを確かめた"
+  ],
+  "notes": "市独自の16階層の表（国の基準より低い額、保育標準時間・短時間で別の額）。市内の保育園の入所は満1歳から（私立めぐみ保育園は6か月程度から）。第2子は生計同一の子で数えて半額（所得割57,700円未満は無料）、第3子以降は無料。所得割57,700円未満の世帯は第1子も半額。",
+  "read_at": "2026-11-01"
+}

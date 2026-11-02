@@ -1,0 +1,36 @@
+{
+ "code": "234460",
+ "pref": "愛知県",
+ "name": "美浜町",
+ "status": "ok",
+ "fiscal_year": "令和8年度",
+ "jh": {
+  "free": "partial",
+  "monthly": null,
+  "per_meal": 350,
+  "yearly": null,
+  "since": null,
+  "until": null,
+  "note": "令和8年4月から学校給食費を改定（中学校1食400円）したが、改定増額分50円を町が負担（国の物価高騰対応重点支援地方創生臨時交付金を活用）し、中学校の保護者負担はこれまでどおり1食350円。「美浜町学校給食費多子世帯減免制度」（令和5年9月から、町独自）も継続：小学1年生から中学3年生までの義務教育期間の子を2人以上養育する保護者は、2人目の給食費を半額、3人目以降を全額減免（口座振替前に減免、申請不要。町立以外の小中学校に通う兄弟姉妹も人数に数える特例あり）。"
+ },
+ "elem": {
+  "free": "all",
+  "monthly": 0,
+  "note": "小学校は改定後1食350円だが、国の学校給食費の抜本的な負担軽減と町の改定増額分の負担で実質無償化（令和8年度から）。"
+ },
+ "no_lunch_jh": false,
+ "sources": [
+  {
+   "label": "美浜町「学校給食の献立」ページ内「令和8年4月から学校給食費改定について」",
+   "url": "https://www.town.aichi-mihama.lg.jp/kosodate-kyoiku/shochugakko/gakkokyushoku/1475.html"
+  },
+  {
+   "label": "美浜町「学校給食費多子世帯減免制度」（更新日 2025年1月31日）",
+   "url": "https://www.town.aichi-mihama.lg.jp/kosodate-kyoiku/shochugakko/gakkokyushoku/1622.html"
+  }
+ ],
+ "confidence": "確認済",
+ "tried": [],
+ "notes": "月額・年額の記載はなく1食の額だけ。多子減免の何人目かの数え方（年齢順か）はページに書かれていない。町の学校給食センターで小中学校とも給食を実施。",
+ "read_at": "2026-11-01"
+}

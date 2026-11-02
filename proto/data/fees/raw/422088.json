@@ -1,0 +1,54 @@
+{
+  "code": "422088",
+  "pref": "長崎県",
+  "name": "松浦市",
+  "status": "ok",
+  "fiscal_year": "令和8年度（令和7年4月から市独自の「保育料完全無償化」で0〜2歳児の保育料は0円。表は「参考（令和7年3月までの3歳未満児クラスの保育料）」として載っている「保育所等利用者負担金（保育料）について【令和２年度以降】」）",
+  "period_note": "令和6年度 保育所入所のしおり: 4〜8月分保育料は4月15日までに決定、8〜9月に見直して9月15日までに9〜3月分を決定（4〜8月分は前年度、9〜3月分は当年度の課税所得）。今は0〜2歳児の保育料が無償なので、利用者の負担はない。",
+  "tax_basis": "6%",
+  "tax_note": "参考の表は市民税所得割額で階層を分けている（控除の扱いの注記はない）。政令市ではないので6%で判定と読んだ。",
+  "table": {
+    "title": "保育所等利用者負担金（保育料）について【令和２年度以降】（２）３歳未満児クラス 標準世帯 松浦市負担金額",
+    "kind": "3歳未満・保育標準時間・第1子（月額）の、無償化前の市の基準（令和7年3月まで）。令和7年4月から市独自事業で所得制限なく0円",
+    "rows": [
+      { "label": "第１", "lower": null, "upper": null, "condition": "生活保護等世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第２", "lower": null, "upper": null, "condition": "市民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "第３", "lower": null, "upper": null, "condition": "市民税所得割非課税", "monthly": 13000, "monthly_second": null },
+      { "label": "第４", "lower": 1, "upper": 48600, "condition": "市民税所得割額（以下同じ）48,600円未満", "monthly": 18000, "monthly_second": null },
+      { "label": "第５", "lower": 48600, "upper": 57700, "condition": "57,700円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "第６", "lower": 57700, "upper": 77101, "condition": "77,101円未満", "monthly": 23000, "monthly_second": null },
+      { "label": "第７", "lower": 77101, "upper": 97000, "condition": "97,000円未満", "monthly": 28000, "monthly_second": null },
+      { "label": "第８", "lower": 97000, "upper": 137000, "condition": "137,000円未満", "monthly": 35000, "monthly_second": null },
+      { "label": "第９", "lower": 137000, "upper": 169000, "condition": "169,000円未満", "monthly": 41000, "monthly_second": null },
+      { "label": "第１０", "lower": 169000, "upper": 301000, "condition": "301,000円未満", "monthly": 44500, "monthly_second": null },
+      { "label": "第１１", "lower": 301000, "upper": 397000, "condition": "397,000円未満", "monthly": 49000, "monthly_second": null },
+      { "label": "第１２", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 63000, "monthly_second": null }
+    ],
+    "notes": "表は令和7年3月までの参考で、今は払わない額（市のページ「参考（令和7年3月までの3歳未満児クラスの保育料）」）。列は国基準（階層・保育標準時間・保育短時間）と松浦市（階層・保育標準時間・保育短時間）で、rows は松浦市の保育標準時間（PDFを画像にして確かめた）。松浦市の保育短時間: 第３ 11,500円、第４ 16,500円、第５・第６ 21,500円、第７ 26,500円、第８ 33,500円、第９ 39,500円、第１０ 43,000円、第１１ 47,000円、第１２ 61,000円。表の区分は年収360万円未満（第１〜第５）と年収360万円以上（第６以上）。各階層の条件は上限だけが書かれているので、下限は一つ上の行の上限とした。ひとり親等世帯の松浦市の額（標準/短時間）: 第１〜第３ 0円、第４ 8,000/7,250円、第５・第６ 9,000/8,250円、第７以上は標準世帯と同じ。当時の第２子以降: 所得割57,700円未満は年齢の制限無く最年長から2番目の子が半額（非課税世帯は0円）・3番目以降0円、57,700円以上は小学校就学前の範囲で最年長から2番目が半額・3番目以降0円（市の減免でさらに軽くしていた。チラシの表では令和7年3月までも第1子が就学前の第2子は市の制度で無償化）。"
+  },
+  "first_child_free": true,
+  "first_child_free_since": "2025年4月",
+  "first_child_free_note": "「保育料の完全無償化の実施について」: 令和7年4月から、松浦市の独自事業として0歳児から2歳児においても保育料を完全無償化。チラシ: 「３歳未満の第１子から保育料が無料！（所得制限なし）」。対象施設は認可保育所・認定こども園・地域型保育事業所、対象者は松浦市に住所を有し子どもが対象施設を利用している方（他市町〔広域〕の施設を利用している子どもも対象）。手続きは不要。保育料以外の費用（特別保育事業など）は自己負担。",
+  "second_child": "free",
+  "second_count": "household",
+  "second_note": "0〜2歳は第1子から0円なので、きょうだいの数え方に関係なく無料（household は「数え方に関係なく0円」の意味で置いた）。チラシの表でも令和7年4月からの市の制度は第2子・第3子以降すべて「無償化」。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "第1子から0円なので、第3子以降も無料。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "保育料の完全無償化の実施について／松浦市", "url": "https://www.city-matsuura.jp/top/soshikikarasagasu/kosodate_kodomoka/kosodateshiengakari/1/6/8321.html" },
+    { "label": "令和7年4月から「保育料完全無償化」を実施します（チラシ）", "url": "https://www.city-matsuura.jp/material/files/group/39/chirashimushouka.pdf" },
+    { "label": "保育料（保育所等利用者負担金）一覧表【令和２年度以降】（令和7年3月までの参考）", "url": "https://www.city-matsuura.jp/material/files/group/40/r2hoikuryou.pdf" },
+    { "label": "幼児教育・保育の無償化について／松浦市（3歳以上の副食費を月4,500円まで市が助成）", "url": "https://www.city-matsuura.jp/top/kosodate_kyoiku/nyuen_nyugaku/hoikujo/6226.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [
+    "下調べのページ（保育所の入所基準・無償化・子育てパンフレット〔2024年7月〕）には0〜2歳の額や完全無償化の記載がなかった。入所基準のページのしおりは令和6年度のままで、額の表はない。",
+    "WebSearch（allowed_domains: city-matsuura.jp、「松浦市 保育料 徴収基準額 3歳未満児 所得割」）で「保育料の完全無償化の実施について」のページを見つけ、本体を取って読んだ。"
+  ],
+  "notes": "このページは組織（子育て・こども課 子育て支援係）の下にあり、子育て・教育のメニュー（下調べがたどった保育所のページ）からはリンクされていなかった。3歳以上の副食費は市が月4,500円を上限に助成。",
+  "read_at": "2026-11-01"
+}

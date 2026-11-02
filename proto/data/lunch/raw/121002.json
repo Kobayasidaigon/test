@@ -1,0 +1,40 @@
+{
+  "code": "121002",
+  "pref": "千葉県",
+  "name": "千葉市",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "jh": {
+    "free": "partial",
+    "monthly": 5527,
+    "per_meal": 320,
+    "yearly": 60800,
+    "since": null,
+    "until": null,
+    "note": "令和8年度の中学校・中等教育学校の給食費は1食415円に改定したが、国の重点支援交付金（95円）を使い保護者負担は1食320円に据え置き（市の目安：月額5,527円＝320円×190日÷11か月、年額60,800円）。全員の無償化はない。第3子以降の無償化あり：平成26年4月1日以前に生まれた子を3人以上扶養し、上から3番目以降の子が市立中学校等で給食を受けている場合、その子の給食費が無償（毎年度の申請が必要。生活保護・就学援助で給食費の支援を受けていないこと、滞納がないことが条件。所得制限の記載はない）。令和9年度の保護者負担は未定。"
+  },
+  "elem": {
+    "free": "all",
+    "monthly": 0,
+    "note": "令和8年度、小学校（第二養護学校を含む）は国の給食費負担軽減交付金（1食301円）と重点支援交付金で保護者負担0円（改定後の給食費は1食350円・374円）。令和9年度以降は未定で、将来は負担をお願いすることもあると市が説明。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "千葉市「保護者の皆さまへ 令和8年度学校給食費を改定します」（PDF。令和8年度の保護者負担：小学校0円、中学校等320円据え置き、第三子以降無償化の措置）",
+      "url": "https://www.city.chiba.jp/kyoiku/gakkokyoiku/hokentaiiku/kyusyoku/documents/r8kyuusyokuhikaiteikakutei.pdf"
+    },
+    {
+      "label": "千葉市「令和８年度学校給食費を改定します」",
+      "url": "https://www.city.chiba.jp/kyoiku/gakkokyoiku/hokentaiiku/kyusyoku/r8kyuusyokuhikaitei.html"
+    },
+    {
+      "label": "千葉市「第3子以降の学校給食費無償化について」（更新日 2026年4月1日）",
+      "url": "https://www.city.chiba.jp/kyoiku/gakkokyoiku/hokentaiiku/03-3ikoukyusyokuhimusyou.html"
+    }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "monthly・yearly は市の資料の目安（年190日、月額は11か月で割った値で、1回の口座振替額とは違う）。口座振替は6月から。",
+  "read_at": "2026-11-01"
+}

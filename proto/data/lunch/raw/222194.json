@@ -1,0 +1,40 @@
+{
+  "code": "222194",
+  "pref": "静岡県",
+  "name": "下田市",
+  "status": "not_found",
+  "fiscal_year": null,
+  "jh": {
+    "free": null,
+    "monthly": null,
+    "per_meal": null,
+    "yearly": null,
+    "since": null,
+    "until": null,
+    "note": "令和8年度の中学校給食費の額・無償化の有無は市のページで見つからなかった。市の「下田市の子育て支援」一覧（2026年9月18日更新）に給食費の無償化・補助の項目はない。就学援助（2026年4月8日更新）の支給費目には学校給食費が入っている。"
+  },
+  "elem": {
+    "free": null,
+    "monthly": null,
+    "note": "小学校の令和8年度の扱いも市のページでは見つからなかった。"
+  },
+  "no_lunch_jh": false,
+  "sources": [
+    {
+      "label": "下田市「下田市の子育て支援」（更新日 2026年9月18日）",
+      "url": "https://www.city.shimoda.shizuoka.jp/category/040200kosodate_ouen/155004.html"
+    },
+    {
+      "label": "下田市「就学援助制度について」（更新日 2026年4月8日）",
+      "url": "https://www.city.shimoda.shizuoka.jp/category/240200gakkou/121916.html"
+    }
+  ],
+  "confidence": "仮置き",
+  "tried": [
+    "下田市立学校給食センターのページ（献立・物資納入業者募集だけ）",
+    "学校教育・子育ての一覧",
+    "令和8年度予算説明資料PDF（総括表だけで事業名なし）。令和8年度予算書（一般会計 4.4MB）は読んでいない"
+  ],
+  "notes": "市は令和8年度に学校徴収金システムを公募しており、給食費を集める仕組みは続いているとみられるが、額・無償化の有無は未確認。",
+  "read_at": "2026-11-01"
+}

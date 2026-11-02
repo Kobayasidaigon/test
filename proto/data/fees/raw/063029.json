@@ -1,0 +1,53 @@
+{
+  "code": "063029",
+  "pref": "山形県",
+  "name": "中山町",
+  "status": "ok",
+  "fiscal_year": "令和8年度",
+  "period_note": "表の題名は「令和8年度 保育料徴収金基準額表」（PDFは2026年8月26日作成。令和9年度の申込みページ〔2026年8月26日更新〕に「保育料について令和8年度の基準額表は添付のとおりです。今後制度の改正等により変更される場合があります」とある）。令和7年度の表（nanahoikuryou.pdf）と文字の上では同じ。4〜8月分と9〜3月分で市町村民税の年度を切り替えるかどうかの注記は、表・利用案内にない。",
+  "tax_basis": "6%",
+  "tax_note": "表の注記1「町民税所得割の額には、調整控除を除く『税額控除』は適用されません。」（税額控除前の所得割額）。注記2「ただし、給付単価を限度とする。」政令市ではないので6%。",
+  "table": {
+    "title": "令和8年度 保育料徴収金基準額表【中山町】",
+    "kind": "3歳未満・保育標準時間・第1子（月額）",
+    "rows": [
+      { "label": "1", "lower": null, "upper": null, "condition": "生活保護法による被保護世帯", "monthly": 0, "monthly_second": null },
+      { "label": "2", "lower": null, "upper": null, "condition": "町民税非課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "3", "lower": 0, "upper": 1, "condition": "均等割課税世帯", "monthly": 0, "monthly_second": null },
+      { "label": "4", "lower": 1, "upper": 24300, "condition": "町民税所得割課税 24,300円未満", "monthly": 0, "monthly_second": null },
+      { "label": "5", "lower": 24300, "upper": 48600, "condition": "24,300円以上 48,600円未満", "monthly": 0, "monthly_second": null },
+      { "label": "6-1", "lower": 48600, "upper": 57700, "condition": "48,600円以上 57,700円未満", "monthly": 0, "monthly_second": null },
+      { "label": "6-2", "lower": 57700, "upper": 72800, "condition": "57,700円以上 72,800円未満", "monthly": 0, "monthly_second": null },
+      { "label": "7-1", "lower": 72800, "upper": 77101, "condition": "72,800円以上 77,101円未満", "monthly": 0, "monthly_second": null },
+      { "label": "7-2", "lower": 77101, "upper": 97000, "condition": "77,101円以上 97,000円未満", "monthly": 0, "monthly_second": null },
+      { "label": "8", "lower": 97000, "upper": 130000, "condition": "97,000円以上 130,000円未満", "monthly": 15400, "monthly_second": null },
+      { "label": "9", "lower": 130000, "upper": 169000, "condition": "130,000円以上 169,000円未満", "monthly": 22300, "monthly_second": null },
+      { "label": "10", "lower": 169000, "upper": 301000, "condition": "169,000円以上 301,000円未満", "monthly": 53000, "monthly_second": null },
+      { "label": "11", "lower": 301000, "upper": 397000, "condition": "301,000円以上 397,000円未満", "monthly": 57500, "monthly_second": null },
+      { "label": "12", "lower": 397000, "upper": null, "condition": "397,000円以上", "monthly": 60000, "monthly_second": null }
+    ],
+    "notes": "列は「3歳未満児」の「標準時間」「短時間」の順（画像で確かめた）。短時間: 1〜7-2 0円、8 15,200円、9 22,000円、10 52,200円、11 56,600円、12 59,100円。階層2〜12の定義は「1階層を除き、市町村民税所得割の額の区分が次の区分に該当する世帯」。3歳以上児は幼児教育無償化で0円。ひとり親世帯などの別の額の表はない（多子世帯軽減一覧では77,101円以上の「一般」「ひとり親等」が同じ扱い）。所得割97,000円未満が0円なのは山形県の「保育料無償化に向けた段階的負担軽減」（所得割97,000円未満は令和3年9月から、169,000円未満は令和7年4月から県が交付金）と関係するとみられるが、表には書かれていない。8・9階層の額に県の軽減が入っているかは分からない。対象施設は町立なかやま保育園と学校法人長崎児玉学園ぴーすこども園。"
+  },
+  "first_child_free": false,
+  "first_child_free_since": null,
+  "first_child_free_note": "0〜2歳の第1子は町民税所得割97,000円未満（1〜7-2階層）と生活保護・非課税世帯は0円。所得割97,000円以上は有料（標準時間で月15,400〜60,000円）。",
+  "second_child": "half",
+  "second_count": "together",
+  "second_note": "表の「多子世帯軽減一覧」: 住民税所得割77,101円以上（一般・ひとり親等）の第2子は「上記表のとおり（※施設同時入所の場合は、上記表から半額）」。施設同時入所とは、同一世帯から2人以上の就学前児童が保育所・幼稚園・認定こども園・特別支援学校幼稚部・知的障害児通所施設・難聴幼児通園施設・肢体不自由児施設通園部・児童心理治療施設通所部に入所、又は児童発達支援・医療型児童発達支援を利用している場合。上の子が小学生以上などで同時に入所していなければ第1子と同じ額。所得割77,101円未満はもともと0円。",
+  "third_child": "free",
+  "third_count": "household",
+  "third_note": "表の「多子世帯軽減一覧」: 第3子以降は「0円（第1子の年齢制限なし）」。町の「第3子以降保育無料化補助金」のページ（2023年9月1日更新）: 「なかやま保育園などの認可施設については第3子以降の児童の保育料は無料としております」。生計を同一にする第3子以降の児童が私立幼稚園・届出保育施設等（認可外）に入所している場合は、保育料・給食費などを補助（上限 私立幼稚園 年35万円、届出保育施設等 年44万4千円）。所得制限の記載なし。",
+  "lunch_jh": null,
+  "cash": [],
+  "one_time": [],
+  "sources": [
+    { "label": "令和9年度保育所等の新規利用申し込みを受け付けます／中山町ホームページ（更新日：2026年08月26日）", "url": "https://www.town.nakayama.yamagata.jp/soshiki/kenkou_fukushi/kosodateshien/HoikuenYouchien/3156.html" },
+    { "label": "令和8年度保育料基準額表（令和8年度 保育料徴収金基準額表、PDF）", "url": "https://www.town.nakayama.yamagata.jp/material/files/group/7/kijunngakuhyou.pdf" },
+    { "label": "令和8年度保育所等の利用について（PDF）", "url": "https://www.town.nakayama.yamagata.jp/material/files/group/7/hoikusyotouriyou.pdf" },
+    { "label": "第3子以降保育無料化補助金／中山町ホームページ（更新日：2023年09月01日）", "url": "https://www.town.nakayama.yamagata.jp/kosodate_kyoiku/kosodateshienjoho/832.html" }
+  ],
+  "confidence": "確認済",
+  "tried": [],
+  "notes": "下調べの index.json の「令和8年度保育料基準額表」PDFを、pdftotext と画像（-r 110）で読んだ（文字だけだと階層の区切りが崩れるので画像で確かめた）。令和9年度の申込手続きのPDF（nyuusyotetuduki.pdf）には保育料の記載がなかった。cash・one_time・中学校給食は探していない。",
+  "read_at": "2026-11-01"
+}
