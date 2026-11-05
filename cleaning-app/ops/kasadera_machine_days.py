@@ -9,7 +9,8 @@
   中番の「フロア・マシン清掃」が開く machine エリア。
   この店の machine はもう【月・木】【火・金】【水・土】で区分が分かれていて、
   区分名に曜日が入っていれば、その曜日だけ画面に出る（他の日は下の1行から開ける）。
-  そこへ「A 有酸素【月・木】」のような区分を9つ足し、1台1行で入れる。
+  曜日ごとに種類を分ける（daigoさんの指定）: 月・木=ウェイトスタック、火・金=有酸素、
+  水・土=フリーウェイト。区分を3つ足し、1台1行で入れる。
 
 隠すもの（消さない。記録はそのまま残る）:
   新しい行と中身が重なる、今の大まかな行。やり方の説明は新しい行へ写す。
@@ -32,37 +33,30 @@ KINDS = [('cardio', '有酸素'), ('free', 'フリーウェイト'), ('stack', '
 
 # ★ idは一度入れたら変えない（記録はこのidで結び付く）
 PLAN = {
-    'A': {
-        'cardio': [('kmd_a_tm14', 'トレッドミル 1〜4番')],
-        'free': [('kmd_a_lowrow', 'ローロー'), ('kmd_a_latpull', 'ラットプルダウン'),
-                 ('kmd_a_widechest', 'ワイドチェストプレス'),
-                 ('kmd_a_declinechest', 'デクラインチェストプレス')],
-        'stack': [('kmd_a_cable', 'ケーブル'), ('kmd_a_tricep', 'トライセプスプレス'),
-                  ('kmd_a_bicep', 'バイセプスカール'),
-                  ('kmd_a_latrow', 'ラットプル・シーテッドロー'),
-                  ('kmd_a_pecfly', 'ペックフライ'), ('kmd_a_shoulder', 'ショルダープレス')],
-    },
-    'B': {
-        'cardio': [('kmd_b_tm58', 'トレッドミル 5〜8番'), ('kmd_b_stairs', '階段')],
-        'free': [('kmd_b_legpress', 'レッグプレス'), ('kmd_b_hack', 'ハックスクワット'),
-                 ('kmd_b_vertbench', 'バーティカルベンチプレス'),
-                 ('kmd_b_shoulder', 'ショルダープレス')],
-        'stack': [('kmd_b_chest', 'チェストプレス'), ('kmd_b_lateral', 'ラテラルレイズ'),
-                  ('kmd_b_seatedrow', 'シーテッドロー'), ('kmd_b_chindip', 'チン・ディップス'),
-                  ('kmd_b_hip', 'ヒップアダクター・アブダクター'),
-                  ('kmd_b_abcrunch', 'アブドミナルクランチ')],
-    },
-    'C': {
-        'cardio': [('kmd_c_cross', 'クロストレーナー（2台）'),
-                   ('kmd_c_recumbent', 'リカンベントバイク（2台）'),
-                   ('kmd_c_aero', 'エアロバイク（2台）')],
-        'free': [('kmd_c_powerrack', 'パワーラック（2台）'), ('kmd_c_smith', 'スミスマシン'),
-                 ('kmd_c_preacher', 'プリチャー台'), ('kmd_c_bench', 'ベンチ')],
-        'stack': [('kmd_c_backext', 'バックエクステンション'),
-                  ('kmd_c_rotary', 'ロータリートルソー'), ('kmd_c_legpress', 'レッグプレス'),
-                  ('kmd_c_legext', 'レッグエクステンション'),
-                  ('kmd_c_legcurl', 'シーテッドレッグカール')],
-    },
+    # 月・木 = ウェイトスタック
+    'A': {'stack': [
+        ('kmd_a_cable', 'ケーブル'), ('kmd_a_tricep', 'トライセプスプレス'),
+        ('kmd_a_bicep', 'バイセプスカール'), ('kmd_a_latrow', 'ラットプル・シーテッドロー'),
+        ('kmd_a_pecfly', 'ペックフライ'), ('kmd_a_shoulder', 'ショルダープレス'),
+        ('kmd_b_chest', 'チェストプレス'), ('kmd_b_lateral', 'ラテラルレイズ'),
+        ('kmd_b_seatedrow', 'シーテッドロー'), ('kmd_b_chindip', 'チン・ディップス'),
+        ('kmd_b_hip', 'ヒップアダクター・アブダクター'), ('kmd_b_abcrunch', 'アブドミナルクランチ'),
+        ('kmd_c_backext', 'バックエクステンション'), ('kmd_c_rotary', 'ロータリートルソー'),
+        ('kmd_c_legpress', 'レッグプレス'), ('kmd_c_legext', 'レッグエクステンション'),
+        ('kmd_c_legcurl', 'シーテッドレッグカール')]},
+    # 火・金 = 有酸素（今の「B 有酸素・マシン【火・金】」と同じ曜日）
+    'B': {'cardio': [
+        ('kmd_a_tm14', 'トレッドミル 1〜4番'), ('kmd_b_tm58', 'トレッドミル 5〜8番'),
+        ('kmd_b_stairs', '階段'), ('kmd_c_cross', 'クロストレーナー（2台）'),
+        ('kmd_c_recumbent', 'リカンベントバイク（2台）'), ('kmd_c_aero', 'エアロバイク（2台）')]},
+    # 水・土 = フリーウェイト（今の「C フリーウェイト・整頓【水・土】」と同じ曜日）
+    'C': {'free': [
+        ('kmd_a_lowrow', 'ローロー'), ('kmd_a_latpull', 'ラットプルダウン'),
+        ('kmd_a_widechest', 'ワイドチェストプレス'), ('kmd_a_declinechest', 'デクラインチェストプレス'),
+        ('kmd_b_legpress', 'レッグプレス'), ('kmd_b_hack', 'ハックスクワット'),
+        ('kmd_b_vertbench', 'バーティカルベンチプレス'), ('kmd_b_shoulder', 'ショルダープレス'),
+        ('kmd_c_powerrack', 'パワーラック（2台）'), ('kmd_c_smith', 'スミスマシン'),
+        ('kmd_c_preacher', 'プリチャー台'), ('kmd_c_bench', 'ベンチ')]},
 }
 
 # 隠す行（新しい行と中身が重なるもの）
@@ -169,7 +163,7 @@ def build_machine_days(kv, added_at=None):
     for d, _ in DAYS:
         for kind, klabel in KINDS:
             sec = section_name(d, klabel)
-            for iid, title in PLAN[d][kind]:
+            for iid, title in PLAN[d].get(kind, []):
                 if iid in have:
                     report['same'].append((sec, iid, title))
                     continue
@@ -187,7 +181,7 @@ def build_machine_days(kv, added_at=None):
     secs = jload(secs_raw, [])
     if ssrc != 'みせべつ' or not isinstance(secs, list):
         raise SystemExit('::error::%s の machine の区分一覧が読めません' % STORE)
-    new_secs = [section_name(d, k) for d, _ in DAYS for _, k in KINDS]
+    new_secs = [section_name(d, k) for d, _ in DAYS for kk, k in KINDS if kk in PLAN[d]]
     secs_out = list(secs) + [s for s in new_secs if s not in secs]
     if secs_out != secs:
         writes['sdef_%s_customSections_%s' % (STORE, AREA)] = json.dumps(secs_out, ensure_ascii=False)
@@ -199,7 +193,7 @@ def build_machine_days(kv, added_at=None):
     if osrc == 'みせべつ' and isinstance(order, list) and order:
         o2 = list(order)
         for d, dname in DAYS:
-            mine = [section_name(d, k) for _, k in KINDS if section_name(d, k) not in o2]
+            mine = [section_name(d, k) for kk, k in KINDS if kk in PLAN[d] and section_name(d, k) not in o2]
             if not mine:
                 continue
             at = None
