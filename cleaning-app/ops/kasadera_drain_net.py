@@ -92,3 +92,67 @@ def build_add(kv, today):
                        'after': report['before'][at - 1] if at > 0 else None,
                        'rows': add, 'count': (len(rows), len(out))}
     return writes, report
+
+
+# ======================================================================
+# もう一つの形（2026-11-10 daigoさん「他のシャワーとサウナのやつを参考に」）:
+#   朝番の「シャワー清掃」と同じく、遅番の1行を開くと中でチェックする形。
+#   - 笠寺だけのエリア drainnet（排水溝ネット交換、hidden＝タブには出さない）を足す
+#     ※ shower_ で始めると進み具合の数から外れる（isShowerArea）ので使わない
+#   - その中に 男シャワー・女シャワー・男サウナ・女サウナ の4項目
+#   - 遅番の ban_trashbin_clean の下に、drainnet につながる1行
+# ======================================================================
+AREA_KEY = 'drainnet'                      # ★ 一度入れたら変えない
+AREA = {'key': AREA_KEY, 'name': '排水溝ネット交換', 'icon': 'shower-head', 'hidden': True}
+AREA_SECTION = '排水溝ネット交換'
+AREA_ITEMS = [
+    {'id': 'drainnet_shower_m', 'title': '男シャワー'},
+    {'id': 'drainnet_shower_w', 'title': '女シャワー'},
+    {'id': 'drainnet_sauna_m', 'title': '男サウナ'},
+    {'id': 'drainnet_sauna_w', 'title': '女サウナ'},
+]
+ROW = {'id': 'ban_drainnet', 'title': '排水溝ネット交換', 'desc': '', 'link': AREA_KEY}
+
+
+def build_area(kv, today):
+    writes, report = {}, {}
+    ak = 'sdef_%s_customAreas' % STORE
+    ik = 'sdef_%s_customItems_%s' % (STORE, AREA_KEY)
+    bk = 'sdef_%s_%s' % (STORE, KEY)
+    for k in (ak, bk):
+        if kv.get(k) is None:
+            raise SystemExit('::error::%s がありません' % k)
+    areas = jload(kv[ak], None)
+    rows = jload(kv[bk], None)
+    if not isinstance(areas, list) or not areas or not isinstance(rows, list) or not rows:
+        raise SystemExit('::error::エリア一覧か遅番が読めません')
+    have_area = any(isinstance(a, dict) and a.get('key') == AREA_KEY for a in areas)
+    have_row = any(isinstance(r, dict) and r.get('id') == ROW['id'] for r in rows)
+    have_items = kv.get(ik) is not None
+    if have_area and have_row and have_items:
+        report['same'] = True
+        return writes, report
+    if have_area or have_row or have_items:
+        raise SystemExit('::error::一部だけ入っています。人が確かめてください')
+    if kv.get('customItems_' + AREA_KEY) is not None:
+        raise SystemExit('::error::共通の customItems_%s があります' % AREA_KEY)
+    # 遅番に4行案の行が入っていたら止める（2つの形が混ざらないように）
+    if any(isinstance(r, dict) and str(r.get('id', '')).startswith('ban_drainnet_') for r in rows):
+        raise SystemExit('::error::4行案の行がもう入っています')
+
+    new_areas = list(areas) + [dict(AREA)]
+    items = [{'id': it['id'], 'section': AREA_SECTION, 'title': it['title'], 'desc': '',
+              'addedAt': today} for it in AREA_ITEMS]
+    at, sec = where(rows)
+    row = dict(ROW, section=sec, addedAt=today)
+    out = list(rows[:at]) + [row] + list(rows[at:])
+    # ---- 念のための確かめ ----
+    if new_areas[:-1] != areas or [r for r in out if r is not row] != rows:
+        raise SystemExit('::error::いまある中身が変わります')
+    writes[ak] = json.dumps(new_areas, ensure_ascii=False)
+    writes[ik] = json.dumps(items, ensure_ascii=False)
+    writes[bk] = json.dumps(out, ensure_ascii=False)
+    report['added'] = {'area': AREA, 'items': items, 'row': row,
+                       'after': (rows[at - 1].get('id'), rows[at - 1].get('title')),
+                       'areas': (len(areas), len(new_areas)), 'ban': (len(rows), len(out))}
+    return writes, report
