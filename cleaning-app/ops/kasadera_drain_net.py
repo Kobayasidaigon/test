@@ -29,7 +29,7 @@ ITEMS = [
     {'id': 'ban_drainnet_sauna_m', 'title': '排水溝ネット交換（男サウナ）'},
     {'id': 'ban_drainnet_sauna_w', 'title': '排水溝ネット交換（女サウナ）'},
 ]
-ANCHOR_ID = None   # 下見で並びを見てから決める
+ANCHOR_ID = 'ban_trashbin_clean'   # シャワールーム・サウナルームのゴミ箱の清掃。この直後に入れる
 HINTS = ('シャワー', 'サウナ', '排水')
 
 
