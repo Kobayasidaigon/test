@@ -2449,6 +2449,18 @@ function sectionIsOtherDay(section, dateStr) {
 function sectionFoldedToday(section, dateStr) {
   return !showOtherDays && sectionIsOtherDay(section, dateStr);
 }
+// 今日の曜日に出すぶんの項目だけ。件数・残り・「◯回空き」はこれで数える。
+// たたんだ「他の曜日のぶん」まで数えると、今日のぶんを全部終えても
+// 「14/45」のように終わっていない数が出て、残りのバッジも消えない（現場から言われた所）。
+// 開いて見ている（showOtherDays）ときも数には入れない。開くのは前の日の抜けを拾うためで、
+// 今日やることが増えたわけではないため。
+function viewDateStr() {
+  return (typeof dateInput !== 'undefined' && dateInput && dateInput.value) || todayStr();
+}
+function todayAreaItems(areaKey) {
+  const dstr = viewDateStr();
+  return getGroups(areaKey).filter(g => !sectionIsOtherDay(g.section, dstr)).flatMap(g => g.items);
+}
 function otherDaysLineHtml(n) {
   if (!n) return '';
   return '<div class="other-days">'
@@ -3931,7 +3943,8 @@ function isNonDailyArea(key) { return isRoutineArea(key) || key === 'machine_men
 let _areaCompCache = null; // 1回の描画内でのキャッシュ（render/renderTabs冒頭でクリア）
 function areaCompletionToday(areaKey) {
   if (_areaCompCache && _areaCompCache[areaKey]) return _areaCompCache[areaKey];
-  const ids = areaItems(areaKey).map(i => i.id);
+  const allIds = areaItems(areaKey).map(i => i.id);
+  const ids = todayAreaItems(areaKey).map(i => i.id);   // 今日の曜日のぶんだけ数える
   const date = recDate(areaKey);
   const doneSet = new Set();
   if (currentStore) {
@@ -3947,7 +3960,8 @@ function areaCompletionToday(areaKey) {
       } catch (e) {}
     }
   }
-  const res = { done: ids.filter(id => doneSet.has(id)).length, total: ids.length };
+  // all はエリアに項目があるか（今日のぶんが0件でも「使っていないエリア」と区別する）
+  const res = { done: ids.filter(id => doneSet.has(id)).length, total: ids.length, all: allIds.length };
   if (_areaCompCache) _areaCompCache[areaKey] = res;
   return res;
 }
@@ -3959,7 +3973,9 @@ function linkedStatus(item, fromArea) {
   // fromArea（開いている時間帯）ごとに別々に数える
   const parts = keys.map(k => ({ key: k, area: getArea(k), c: areaCompletionToday(scopedArea(k, fromArea)) }));
   const label = parts.map(p => (p.area ? p.area.name : p.key) + ' ' + p.c.done + '/' + p.c.total).join('、');
-  const firstIncomplete = parts.find(p => !(p.c.total > 0 && p.c.done === p.c.total));
+  // 今日の曜日のぶんが1つも無いエリア（項目はある）は、今日やることが無い＝済みとして扱う
+  const partDone = p => p.c.total > 0 ? p.c.done === p.c.total : p.c.all > 0;
+  const firstIncomplete = parts.find(p => !partDone(p));
   const doneSum = parts.reduce((s, p) => s + p.c.done, 0);
   const totalSum = parts.reduce((s, p) => s + p.c.total, 0);
   // 項目に linkAny を付けると「どれか1つ以上やれば完了」になる。
@@ -3967,7 +3983,7 @@ function linkedStatus(item, fromArea) {
   // 全部そろわないと完了にしないと やることリストが永久に終わらないため。
   const complete = item.linkAny
     ? doneSum > 0
-    : parts.every(p => p.c.total > 0 && p.c.done === p.c.total);
+    : parts.every(partDone);
   return { complete: complete, label: label, done: doneSum, total: totalSum, jumpTo: firstIncomplete ? firstIncomplete.key : parts[0].key };
 }
 // 項目の実効的な完了判定（連動項目はリンク先の完了、通常項目は自分の記録）
@@ -3996,7 +4012,7 @@ function renderTabs() {
   tabsEl.innerHTML = '';
   tabsRoutineEl.innerHTML = '';
   const makeTab = (area, el) => {
-    const items = areaItems(area.key);
+    const items = todayAreaItems(area.key);   // 他の曜日のぶんは残りに数えない
     // その日その店舗で「実際に済んでいる分」を数える（担当者を切り替えても数が動かないように）。
     // 中の一覧・進捗バーも同じ合算を見ているので、タブの数字とズレなくなる。
     // 今日やる定期清掃（plus α）はここには足さない。定期清掃タブに自前のバッジがあるため。
@@ -4951,8 +4967,11 @@ function scheduledGap(lastDate, group, today) {
 // cyclic は、その回数を出したのが曜日わけの項目かどうか（言い回しを変えるため）。
 function areaWorstGapInfo(areaKey, staleMap) {
   const base = baseArea(areaKey);
-  const items = areaItems(base);
-  if (!items.length) return { gap: -1, cyclic: false };   // 項目が無いエリアは数えない
+  if (!areaItems(base).length) return { gap: -1, cyclic: false };   // 項目が無いエリアは数えない
+  // 「◯回空き」も今日の曜日のぶんだけで見る。他の曜日の項目は、その曜日になれば
+  // 今日のぶんとして出てきて、飛ばしていればそこで空きが付く。
+  const items = todayAreaItems(base);
+  if (!items.length) return { gap: 0, cyclic: false };     // 今日やるものが無い
   const dayGroups = itemDayGroups(base);
   let worst = -1, cyclic = false;
   for (let i = 0; i < items.length; i++) {
@@ -5847,11 +5866,13 @@ function render() {
   };
   checklist.appendChild(resetLink);
 
-  const doneCount = items.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
-  const total = items.length;
+  // 進み具合と残りは今日の曜日のぶんだけで数える（たたんだ他の曜日のぶんは入れない）
+  const todayItems = groups.filter(g => !sectionIsOtherDay(g.section, dateInput && dateInput.value)).flatMap(g => g.items);
+  const doneCount = todayItems.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
+  const total = todayItems.length;
   setProgress(doneCount, total, area.name);
 
-  const undone = items.filter(i => !itemEffectiveDone(currentArea, i, rec));
+  const undone = todayItems.filter(i => !itemEffectiveDone(currentArea, i, rec));
   const summary = document.getElementById('summary');
   if (undone.length === 0 && total > 0) {
     summary.style.display = 'block';
