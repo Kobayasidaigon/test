@@ -49,8 +49,8 @@ export function DataSection() {
               </li>
             ))}
           </ul>
-          <p className="mt-6 text-[14.5px]">
-            <Link to="/privacy" className="font-bold underline decoration-2 underline-offset-[6px] hover:decoration-shift-tomato">
+          <p className="mt-4 text-[14.5px]">
+            <Link to="/privacy" className="inline-flex min-h-11 items-center font-bold underline decoration-2 underline-offset-[6px] hover:decoration-shift-tomato">
               プライバシーポリシーを読む
             </Link>
           </p>

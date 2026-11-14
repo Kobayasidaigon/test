@@ -45,7 +45,7 @@ export function Hero() {
               希望休と必要な人数を入れてボタンを押すと、来月のシフトのたたき台ができます。希望休は今までどおり紙や LINE で集めて、できた表は印刷して貼るだけです。
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3">
-              <Button asChild size="lg" className="w-full text-[17px] sm:w-auto">
+              <Button asChild size="lg" className="w-full text-[17px] max-[359px]:px-3 max-[359px]:text-[15px] sm:w-auto">
                 <Link to="/app">
                   自分の店で使う（無料）
                   <ArrowRight aria-hidden strokeWidth={3} />

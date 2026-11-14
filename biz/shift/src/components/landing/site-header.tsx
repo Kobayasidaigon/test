@@ -93,7 +93,8 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
           <Logo className="text-[1.1rem] md:text-[1.2rem]" />
         </Link>
         <div className="hidden items-center lg:flex lg:flex-1">{LP_LINKS.map((l) => item(l, linkClass))}</div>
-        <Button asChild size="sm" className="shrink-0">
+        {/* とてもせまい画面（幅 360px 未満）では、ここに入りきらないので、メニューの中に出す */}
+        <Button asChild size="sm" className="shrink-0 max-[359px]:hidden">
           <Link to="/app">道具を開く</Link>
         </Button>
         <Button size="icon" variant="outline" className="shrink-0 lg:hidden" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-controls="site-menu" aria-label={open ? 'メニューを閉じる' : 'メニューを開く'}>
@@ -104,7 +105,10 @@ export function SiteHeader({ landing = false }: { landing?: boolean }) {
       {/* せまい画面のメニュー。ナビのすぐ下に出す */}
       <div id="site-menu" hidden={!open} className="absolute inset-x-0 top-full border-b-2 border-ink bg-paper shadow-[0_6px_0_0_rgb(27_36_82/0.12)] lg:hidden">
         <div className="mx-auto grid max-w-[1360px] gap-1 px-4 pb-4 pt-2">
-          {LP_LINKS.map((l) => item(l, 'flex min-h-12 items-center rounded-md border-b border-line px-2 text-base font-bold last:border-b-0'))}
+          {LP_LINKS.map((l) => item(l, 'flex min-h-12 items-center rounded-md border-b border-line px-2 text-base font-bold'))}
+          <Button asChild className="mt-3 w-full">
+            <Link to="/app">道具を開く（無料）</Link>
+          </Button>
         </div>
       </div>
     </header>

@@ -10,12 +10,12 @@ import { LogoMark } from '@/components/logo'
 import { LP_LINKS } from './site-header'
 
 export function SiteFooter({ landing = false }: { landing?: boolean }) {
-  const linkClass = 'inline-flex min-h-11 w-max items-center text-[14.5px] font-medium text-paper underline-offset-4 hover:underline md:min-h-8'
+  const linkClass = 'inline-flex min-h-11 w-max min-w-11 items-center text-[14.5px] font-medium text-paper underline-offset-4 hover:underline md:min-h-8'
   return (
     <footer className="no-print border-t-2 border-ink bg-ink text-paper">
       <div className="mx-auto grid max-w-[1360px] grid-cols-6 gap-x-6 gap-y-8 px-4 py-10 md:px-6 md:py-14">
         <div className="col-span-6 flex flex-col gap-4 md:col-span-3">
-          <Link to="/" className="flex w-max items-center gap-2.5 rounded-md" aria-label={`${site.name}のトップページ`}>
+          <Link to="/" className="flex min-h-11 w-max items-center gap-2.5 rounded-md" aria-label={`${site.name}のトップページ`}>
             {/* 紺の地の上では、印の輪郭線が見えなくなるので、地の色の板にのせる */}
             <span className="grid size-10 place-items-center rounded-lg bg-paper">
               <LogoMark className="size-7" />

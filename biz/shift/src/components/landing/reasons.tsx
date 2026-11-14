@@ -33,8 +33,8 @@ export function Reasons() {
 
   return (
     <LpSection id="reasons" tone="ink">
-      <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
-        <div>
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
+        <div className="min-w-0">
           <LpHeading
             id="reasons"
             onDark
@@ -65,7 +65,7 @@ export function Reasons() {
         </div>
 
         {/* 道具の画面と同じ組み立ての、点検の結果 */}
-        <div className="rounded-xl border-2 border-paper bg-paper p-3 text-ink shadow-[5px_5px_0_0_var(--shift-egg)] md:p-5" aria-live="polite">
+        <div className="min-w-0 rounded-xl border-2 border-paper bg-paper p-3 text-ink shadow-[5px_5px_0_0_var(--shift-egg)] md:p-5" aria-live="polite">
           <p className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-0.5 text-sm font-bold">
             <span>
               {plan.storeName}　<span className="font-num">{formatMonth(plan.year, plan.month)}</span>
@@ -126,7 +126,7 @@ export function Reasons() {
               <p className="mt-1 text-[13.5px] leading-relaxed">{fix.intro}</p>
               <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg border-2 border-ink bg-card px-3 py-2">
                 <span className="min-w-0 flex-1 basis-64 text-sm font-bold leading-relaxed">{fix.text}</span>
-                <Button variant="outline" size="sm" onClick={() => setFixed(true)}>
+                <Button variant="outline" size="sm" className="max-w-full whitespace-normal text-left leading-snug" onClick={() => setFixed(true)}>
                   この条件にして、組み直した表にする
                 </Button>
               </div>

@@ -44,7 +44,7 @@ export default function Landing() {
                 登録はいりません。スタッフ<span className="font-num">{site.pricing.free.staffLimit}</span>人までは、無料のまま使い続けられます。
               </p>
             </div>
-            <Button asChild size="lg" variant="dark" className="w-full shrink-0 text-[17px] shadow-[4px_4px_0_0_#fff] sm:w-auto">
+            <Button asChild size="lg" variant="dark" className="w-full shrink-0 text-[17px] shadow-[4px_4px_0_0_#fff] max-[359px]:px-3 max-[359px]:text-[15px] sm:w-auto">
               <Link to="/app">
                 自分の店で使う（無料）
                 <ArrowRight aria-hidden strokeWidth={3} />

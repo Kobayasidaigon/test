@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 //
 // もとの部品から残したもの:
 // - 入力欄にフォーカスを置いたまま、aria-activedescendant で候補を指す作り（依存ライブラリなし）。
-// - ↓↑ で候補を動かし、Enter で決め、Esc で閉じる。マウスを乗せると、指す候補が動く。外側を押すと閉じる。
+// - ↓↑ で候補を動かし、Enter で決め、Esc で閉じる。マウスを動かすと、指す候補が動く。外側を押すと閉じる。
 //
 // 変えたもの:
 // - もとは「ボタンを押すと開く箱の中に、絞り込みの欄がある」形。ここでは、欄そのものをいつも見せて
@@ -64,6 +64,9 @@ export function Combobox({
   const [open, setOpen] = useState(false)
   const [idx, setIdx] = useState(0)
   const wrap = useRef<HTMLDivElement>(null)
+  // マウスが最後にいた場所。候補の一覧が、止まっているマウスの下に開いたときに、
+  // マウスの下の候補を「指した」ことにしないために使う（下の pointAt を参照）。
+  const lastMouse = useRef<{ x: number; y: number } | null>(null)
   const uid = useId()
   const total = options.length + (extra ? 1 : 0)
   const hasQuery = query.trim() !== ""
@@ -99,6 +102,20 @@ export function Combobox({
       wrap.current?.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
     }
   }, [shown, total, uid])
+
+  // 一覧を開き直すたびに、マウスの場所を忘れる。
+  useEffect(() => {
+    if (!shown) lastMouse.current = null
+  }, [shown])
+
+  // マウスを実際に動かしたときだけ、その下の候補を指す。
+  // mouseenter で指すと、キーボードで打っている人のマウスが、たまたま一覧の出る場所に止まっていたときに、
+  // 指す候補がいちばん上から勝手に動き、Enter で、選ぶつもりのない候補（「一覧にない項目として足す」など）が選ばれてしまう。
+  const pointAt = (i: number, e: { clientX: number; clientY: number }) => {
+    const last = lastMouse.current
+    lastMouse.current = { x: e.clientX, y: e.clientY }
+    if (last && (last.x !== e.clientX || last.y !== e.clientY)) setIdx(i)
+  }
 
   const pick = (i: number) => {
     if (i < options.length) onSelect(options[i])
@@ -181,7 +198,7 @@ export function Combobox({
                 e.preventDefault()
                 pick(i)
               }}
-              onMouseEnter={() => setIdx(i)}
+              onMouseMove={(e) => pointAt(i, e)}
               className={cn(
                 "flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[2px] px-2.5 py-1.5 text-[15px] leading-snug",
                 idx === i ? "bg-marker-soft" : "bg-transparent",
@@ -202,7 +219,7 @@ export function Combobox({
                 e.preventDefault()
                 pick(options.length)
               }}
-              onMouseEnter={() => setIdx(options.length)}
+              onMouseMove={(e) => pointAt(options.length, e)}
               className={cn(
                 "flex min-h-11 cursor-pointer items-center gap-2 rounded-[2px] px-2.5 py-1.5 text-sm leading-snug",
                 options.length > 0 && "mt-1 border-t border-rule pt-2",
