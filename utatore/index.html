@@ -40,7 +40,7 @@ canvas{width:100%;height:220px;display:block;border-radius:10px;background:#0d0f
 </head>
 <body>
 <header>
-  <h1>歌トレ<small>試作版</small></h1>
+  <h1>歌トレ<small>試作版 v3</small></h1>
   <div class="row"><span id="micState">マイク未接続</span><span id="lvl"><i id="lvlIn"></i></span><button id="micBtn" class="pri">マイクを使う</button></div>
 </header>
 <nav>
@@ -157,6 +157,7 @@ canvas{width:100%;height:220px;display:block;border-radius:10px;background:#0d0f
 </section>
 
 </main>
+<div id="dbg" class="sub" style="max-width:640px;margin:0 auto;padding:0 16px 24px;font-size:11px;word-break:break-all">診断: マイク未接続</div>
 <script>
 /*PITCH-START*/
 // 正規化自己相関（McLeod法の簡易版）で基本周波数を求める。声が無い・不明瞭なら null。
@@ -244,6 +245,9 @@ $('micBtn').onclick = function(){
       var src = ctx.createMediaStreamSource(stream);
       analyser = ctx.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = 0;
       src.connect(analyser);
+      // iOS Safariは出力につながっていない経路を処理しないことがあるので、無音の出口につなぐ
+      var sink = ctx.createGain(); sink.gain.value = 0; analyser.connect(sink); sink.connect(ctx.destination);
+      if (ctx.state !== 'running') ctx.resume();
       analyser2 = ctx.createAnalyser(); analyser2.fftSize = 4096; analyser2.smoothingTimeConstant = 0; src.connect(analyser2);
       micOn = true; $('micState').textContent = 'マイク接続中'; $('micBtn').style.display = 'none';
       requestAnimationFrame(loop);
@@ -260,7 +264,10 @@ $('micBtn').onclick = function(){
   };
 });
 
-var lastT = 0, miss = 0;
+var lastT = 0, miss = 0, dbgT = 0;
+// 許可ダイアログや画面切り替えのあとに音声処理が止まることがあるので、触れたら再開する
+['touchend', 'click'].forEach(function(ev){ document.addEventListener(ev, function(){ if (ctx && ctx.state !== 'running') ctx.resume(); }); });
+document.addEventListener('visibilitychange', function(){ if (ctx && !document.hidden && ctx.state !== 'running') ctx.resume(); });
 function loop(){
   requestAnimationFrame(loop);
   analyser.getFloatTimeDomainData(buf);
@@ -270,6 +277,11 @@ function loop(){
   var lv = 0; for (var i = 0; i < buf.length; i += 4) lv += buf[i] * buf[i];
   lv = Math.sqrt(lv / (buf.length / 4));
   $('lvlIn').style.width = Math.min(100, Math.max(0, (20 * Math.log10(lv + 1e-6) + 60) / 60 * 100)) + '%';
+  if (now - dbgT > 0.25 || now < dbgT) {
+    dbgT = now;
+    $('dbg').textContent = '診断: 状態=' + ctx.state + ' / ' + ctx.sampleRate + 'Hz / 入力=' + (20 * Math.log10(lv + 1e-6)).toFixed(0) + 'dB / 声らしさ=' + (p ? p.clarity.toFixed(2) : '-') + ' / 検出=' + (p ? p.freq.toFixed(0) + 'Hz' : 'なし');
+    $('micState').textContent = ctx.state === 'running' ? 'マイク接続中' : '画面をタップして再開';
+  }
   // 一瞬の途切れ（約0.15秒まで）は直前の音程を保つ
   if (p) { recent.push(f2m(p.freq)); if (recent.length > 5) recent.shift(); miss = 0; }
   else if (++miss > 9) recent = [];
