@@ -33,16 +33,28 @@ section{display:none}section.on{display:block}
 .dots span{height:34px;border-radius:8px;background:var(--line);font-size:11px;display:flex;align-items:center;justify-content:center}
 canvas{width:100%;height:220px;display:block;border-radius:10px;background:#0d0f14}
 .note{font-size:12px;color:var(--sub);margin-top:8px}
-#micState{font-size:12px;color:var(--sub)}
-#lvl{display:inline-block;width:48px;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+#rec{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 16px 10px;max-width:640px;margin:0 auto}
+#micBtn{width:100%;font-size:18px;padding:14px}
+#micBtn.on{background:transparent;color:var(--bad);border-color:var(--bad)}
+#recState{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:8px;color:var(--sub)}
+#recState .dot{width:12px;height:12px;border-radius:50%;background:#555;flex:none}
+#rec.listen #recState{color:var(--tx)}
+#rec.listen .dot{background:var(--bad);animation:pulse 1s infinite}
+#rec.voice .dot{background:var(--ac);animation:none}
+#rec.voice #recText{color:var(--ac)}
+@keyframes pulse{50%{opacity:.25}}
+#lvl{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
 #lvl i{display:block;height:100%;width:0;background:var(--ac)}
 </style>
 </head>
 <body>
 <header>
-  <h1>歌トレ<small>試作版 v3</small></h1>
-  <div class="row"><span id="micState">マイク未接続</span><span id="lvl"><i id="lvlIn"></i></span><button id="micBtn" class="pri">マイクを使う</button></div>
+  <h1>歌トレ<small>試作版 v4</small></h1>
 </header>
+<div id="rec">
+  <button id="micBtn" class="pri">🎤 音を取る</button>
+  <div id="recState"><span class="dot"></span><span id="recText">止まっています</span><span id="lvl"><i id="lvlIn"></i></span></div>
+</div>
 <nav>
   <button data-tab="pitch" class="on">音程</button>
   <button data-tab="range">音域</button>
@@ -234,26 +246,42 @@ function click(when, accent){
   o.connect(g); g.connect(c.destination); o.start(when); o.stop(when + 0.06);
 }
 
-$('micBtn').onclick = function(){
-  if (micOn) return;
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    $('micState').textContent = 'この環境ではマイクが使えません（HTTPSで開いてください）'; return;
-  }
-  ensureCtx();
+var stream = null, srcNode = null, recMode = '';
+function setRec(mode, text){
+  if (mode !== recMode) { recMode = mode; $('rec').className = mode; }
+  if ($('recText').textContent !== text) $('recText').textContent = text;
+}
+function startMic(){
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { setRec('', 'この環境ではマイクが使えません（HTTPSで開いてください）'); return; }
+  ensureCtx(); setRec('', '準備中…'); $('micBtn').disabled = true;
   navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } })
-    .then(function(stream){
-      var src = ctx.createMediaStreamSource(stream);
+    .then(function(st){
+      stream = st; srcNode = ctx.createMediaStreamSource(st);
       analyser = ctx.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = 0;
-      src.connect(analyser);
+      srcNode.connect(analyser);
       // iOS Safariは出力につながっていない経路を処理しないことがあるので、無音の出口につなぐ
       var sink = ctx.createGain(); sink.gain.value = 0; analyser.connect(sink); sink.connect(ctx.destination);
       if (ctx.state !== 'running') ctx.resume();
-      analyser2 = ctx.createAnalyser(); analyser2.fftSize = 4096; analyser2.smoothingTimeConstant = 0; src.connect(analyser2);
-      micOn = true; $('micState').textContent = 'マイク接続中'; $('micBtn').style.display = 'none';
+      analyser2 = ctx.createAnalyser(); analyser2.fftSize = 4096; analyser2.smoothingTimeConstant = 0; srcNode.connect(analyser2);
+      micOn = true; lastT = 0; recent = []; miss = 0;
+      $('micBtn').disabled = false; $('micBtn').textContent = '■ 止める'; $('micBtn').className = 'on';
+      setRec('listen', '聞いています — 声を出してください');
       requestAnimationFrame(loop);
     })
-    .catch(function(){ $('micState').textContent = 'マイクが許可されませんでした'; });
-};
+    .catch(function(){ $('micBtn').disabled = false; setRec('', 'マイクが許可されませんでした'); });
+}
+function stopMic(){
+  micOn = false;
+  if (stream) stream.getTracks().forEach(function(t){ t.stop(); });
+  if (srcNode) try { srcNode.disconnect(); } catch (e) {}
+  stream = srcNode = null; rh = null; $('rhStart').disabled = false;
+  if (sg) sg.running = false; $('sgStart').textContent = 'スタート'; mx.rec = null; rgOn = false; $('rgStart').textContent = '測定を始める';
+  $('micBtn').textContent = '🎤 音を取る'; $('micBtn').className = 'pri';
+  $('lvlIn').style.width = '0'; $('dbg').textContent = '診断: 停止中';
+  setRec('', '止まっています');
+  updPitch(null, 0); $('rgCur').textContent = '--'; $('mxVal').textContent = '--';
+}
+$('micBtn').onclick = function(){ if (micOn) stopMic(); else startMic(); };
 
 [].forEach.call(document.querySelectorAll('nav button'), function(b){
   b.onclick = function(){
@@ -269,6 +297,7 @@ var lastT = 0, miss = 0, dbgT = 0;
 ['touchend', 'click'].forEach(function(ev){ document.addEventListener(ev, function(){ if (ctx && ctx.state !== 'running') ctx.resume(); }); });
 document.addEventListener('visibilitychange', function(){ if (ctx && !document.hidden && ctx.state !== 'running') ctx.resume(); });
 function loop(){
+  if (!micOn) return;
   requestAnimationFrame(loop);
   analyser.getFloatTimeDomainData(buf);
   var now = ctx.currentTime, dt = lastT ? now - lastT : 0; lastT = now;
@@ -280,12 +309,14 @@ function loop(){
   if (now - dbgT > 0.25 || now < dbgT) {
     dbgT = now;
     $('dbg').textContent = '診断: 状態=' + ctx.state + ' / ' + ctx.sampleRate + 'Hz / 入力=' + (20 * Math.log10(lv + 1e-6)).toFixed(0) + 'dB / 声らしさ=' + (p ? p.clarity.toFixed(2) : '-') + ' / 検出=' + (p ? p.freq.toFixed(0) + 'Hz' : 'なし');
-    $('micState').textContent = ctx.state === 'running' ? 'マイク接続中' : '画面をタップして再開';
   }
   // 一瞬の途切れ（約0.15秒まで）は直前の音程を保つ
   if (p) { recent.push(f2m(p.freq)); if (recent.length > 5) recent.shift(); miss = 0; }
   else if (++miss > 9) recent = [];
   if (recent.length >= 2) { var s = recent.slice().sort(function(a, b){ return a - b; }); midi = s[s.length >> 1]; }
+  if (ctx.state !== 'running') setRec('', '止まっています — 画面をタップして再開');
+  else if (midi != null) setRec('listen voice', '声を拾っています');
+  else setRec('listen', '聞いています — 声を出してください');
   if (tab === 'pitch') updPitch(midi, dt);
   else if (tab === 'range') updRange(midi, dt);
   else if (tab === 'rhythm') updRhythm(now);
@@ -327,7 +358,7 @@ function showHist(){
 }
 showHist();
 $('rgStart').onclick = function(){
-  if (!micOn) { $('rgCur').textContent = 'マイクを先に'; return; }
+  if (!micOn) { $('rgCur').textContent = '音を取るを押す'; return; }
   rgOn = !rgOn;
   if (rgOn) { rgLo = rgHi = null; $('rgLow').textContent = $('rgHigh').textContent = $('rgSpan').textContent = '--'; }
   this.textContent = rgOn ? '測定を止める' : '測定を始める';
@@ -358,7 +389,7 @@ function updRange(midi, dt){
 var RH_N = 16, rh = null, env = 0, lastOn = 0;
 (function(){ var h = ''; for (var i = 0; i < RH_N; i++) h += '<span></span>'; $('rhDots').innerHTML = h; })();
 $('rhStart').onclick = function(){
-  if (!micOn) { $('rhState').textContent = 'マイクを先に接続してください'; return; }
+  if (!micOn) { $('rhState').textContent = '先に上の「音を取る」を押してください'; return; }
   var bpm = Math.max(50, Math.min(180, +$('bpm').value || 90)), iv = 60 / bpm, t0 = ctx.currentTime + 0.4, i;
   rh = { iv: iv, beats: [], onsets: [], start: t0, comp: (ctx.outputLatency || 0) + (+$('lat').value || 0) / 1000 };
   for (i = 0; i < 4; i++) click(t0 + i * iv, true);
@@ -421,7 +452,7 @@ function buildSong(){
 }
 $('sgStart').onclick = function(){
   if (sg && sg.running) { sg.running = false; this.textContent = 'スタート'; return; }
-  if (!micOn) { $('sgScore').textContent = 'マイクを先に'; return; }
+  if (!micOn) { $('sgScore').textContent = '音を取るを押す'; return; }
   sg = buildSong(); sg.trace = []; sg.running = true;
   var t0 = ctx.currentTime + 0.3, i;
   for (i = 0; i < 4; i++) click(t0 + i * sg.iv, i === 0);
@@ -534,7 +565,7 @@ $('mxDown').onclick = function(){ if (mx.base > 40) { mx.base--; mxReset(); } };
 $('mxUp').onclick = function(){ if (mx.base < 84) { mx.base++; mxReset(); } };
 $('mxPlay').onclick = function(){ tone(mx.base, ensureCtx().currentTime + 0.05, 1.5); };
 function mxStartRec(kind){
-  if (!micOn) { $('mxMsg').textContent = 'マイクを先に接続してください'; return; }
+  if (!micOn) { $('mxMsg').textContent = '先に上の「音を取る」を押してください'; return; }
   mx.rec = { kind: kind, frames: [], until: ctx.currentTime + 8 };
   $('mxMsg').textContent = (kind === 'c' ? '地声' : '裏声') + 'で ' + kName(mx.base) + ' を伸ばしてください…';
 }
