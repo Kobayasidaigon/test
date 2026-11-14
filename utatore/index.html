@@ -27,7 +27,7 @@ section{display:none}section.on{display:block}
 .sub{color:var(--sub);font-size:13px}
 .center{text-align:center}
 .meter{position:relative;height:38px;border-radius:8px;background:linear-gradient(90deg,var(--bad),var(--warn) 30%,var(--ac) 45%,var(--ac) 55%,var(--warn) 70%,var(--bad));margin:14px 0 4px;opacity:.9}
-.meter i{position:absolute;top:-5px;bottom:-5px;width:4px;margin-left:-2px;background:#fff;border-radius:2px;left:50%;transition:left .08s linear}
+.meter i{position:absolute;top:-5px;bottom:-5px;width:4px;margin-left:-2px;background:#fff;border-radius:2px;left:50%;transition:left .2s linear}
 .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--sub)}
 .dots{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:10px}
 .dots span{height:34px;border-radius:8px;background:var(--line);font-size:11px;display:flex;align-items:center;justify-content:center}
@@ -44,12 +44,12 @@ canvas{width:100%;height:220px;display:block;border-radius:10px;background:#0d0f
 #rec.voice #recText{color:var(--ac)}
 @keyframes pulse{50%{opacity:.25}}
 #lvl{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
-#lvl i{display:block;height:100%;width:0;background:var(--ac)}
+#lvl i{display:block;height:100%;width:0;background:var(--ac);transition:width .15s linear}
 </style>
 </head>
 <body>
 <header>
-  <h1>歌トレ<small>試作版 v4</small></h1>
+  <h1>歌トレ<small>試作版 v5</small></h1>
 </header>
 <div id="rec">
   <button id="micBtn" class="pri">🎤 音を取る</button>
@@ -292,7 +292,7 @@ $('micBtn').onclick = function(){ if (micOn) stopMic(); else startMic(); };
   };
 });
 
-var lastT = 0, miss = 0, dbgT = 0;
+var lastT = 0, miss = 0, dbgT = 0, lvShow = 0, smMidi = null, txtT = 0;
 // 許可ダイアログや画面切り替えのあとに音声処理が止まることがあるので、触れたら再開する
 ['touchend', 'click'].forEach(function(ev){ document.addEventListener(ev, function(){ if (ctx && ctx.state !== 'running') ctx.resume(); }); });
 document.addEventListener('visibilitychange', function(){ if (ctx && !document.hidden && ctx.state !== 'running') ctx.resume(); });
@@ -305,7 +305,9 @@ function loop(){
   // 入力レベル表示
   var lv = 0; for (var i = 0; i < buf.length; i += 4) lv += buf[i] * buf[i];
   lv = Math.sqrt(lv / (buf.length / 4));
-  $('lvlIn').style.width = Math.min(100, Math.max(0, (20 * Math.log10(lv + 1e-6) + 60) / 60 * 100)) + '%';
+  var lvPct = Math.min(100, Math.max(0, (20 * Math.log10(lv + 1e-6) + 60) / 60 * 100));
+  lvShow = lvPct > lvShow ? lvPct : lvShow + (lvPct - lvShow) * Math.min(1, dt / 0.6);
+  $('lvlIn').style.width = lvShow + '%';
   if (now - dbgT > 0.25 || now < dbgT) {
     dbgT = now;
     $('dbg').textContent = '診断: 状態=' + ctx.state + ' / ' + ctx.sampleRate + 'Hz / 入力=' + (20 * Math.log10(lv + 1e-6)).toFixed(0) + 'dB / 声らしさ=' + (p ? p.clarity.toFixed(2) : '-') + ' / 検出=' + (p ? p.freq.toFixed(0) + 'Hz' : 'なし');
@@ -317,7 +319,10 @@ function loop(){
   if (ctx.state !== 'running') setRec('', '止まっています — 画面をタップして再開');
   else if (midi != null) setRec('listen voice', '声を拾っています');
   else setRec('listen', '聞いています — 声を出してください');
-  if (tab === 'pitch') updPitch(midi, dt);
+  if (midi == null) smMidi = null;
+  else if (smMidi == null || Math.abs(midi - smMidi) > 0.8) smMidi = midi;
+  else smMidi += (midi - smMidi) * Math.min(1, dt / 0.35);
+  if (tab === 'pitch') updPitch(smMidi, dt, now);
   else if (tab === 'range') updRange(midi, dt);
   else if (tab === 'rhythm') updRhythm(now);
   else if (tab === 'song') updSong(midi, now);
@@ -331,20 +336,22 @@ $('tgDown').onclick = function(){ if (target > 36) target--; showTarget(); };
 $('tgUp').onclick = function(){ if (target < 84) target++; showTarget(); };
 $('tgPlay').onclick = function(){ tone(target, ensureCtx().currentTime + 0.05, 1.5); };
 showTarget();
-function updPitch(midi, dt){
+function updPitch(midi, dt, now){
   if (midi == null) {
     $('curName').textContent = '--'; $('curHint').textContent = '声を出すと表示されます';
     holdNow = 0; $('holdNow').textContent = '0.0秒'; return;
   }
   var cents = (midi - target) * 100;
-  $('curName').textContent = noteName(midi);
   $('needle').style.left = (50 + Math.max(-50, Math.min(50, cents))) + '%';
   var ab = Math.abs(cents);
+  if (ab <= 20) { holdNow += dt; if (holdNow > holdBest) holdBest = holdNow; } else holdNow = 0;
+  $('holdNow').textContent = holdNow.toFixed(1) + '秒'; $('holdBest').textContent = holdBest.toFixed(1) + '秒';
+  if (now != null && Math.abs(now - txtT) < 0.3) return; // 文字は0.3秒ごとに更新
+  txtT = now || 0;
+  $('curName').textContent = noteName(midi);
   $('curHint').textContent = ab <= 20 ? 'ぴったり（' + (cents >= 0 ? '+' : '') + cents.toFixed(0) + 'セント）'
     : ab < 100 ? (cents > 0 ? '少し高い ' : '少し低い ') + cents.toFixed(0) + 'セント'
     : (cents > 0 ? '半音' + Math.round(ab / 100) + 'つ分 高い' : '半音' + Math.round(ab / 100) + 'つ分 低い');
-  if (ab <= 20) { holdNow += dt; if (holdNow > holdBest) holdBest = holdNow; } else holdNow = 0;
-  $('holdNow').textContent = holdNow.toFixed(1) + '秒'; $('holdBest').textContent = holdBest.toFixed(1) + '秒';
 }
 
 /* ---------- 音域 ---------- */
@@ -595,7 +602,7 @@ function updMix(midi, p, now, dt){
     }
     if (mx.model) {
       var s = mixScore(mx.model, x);
-      mx.ema = mx.ema == null ? s : mx.ema * 0.75 + s * 0.25; val = mx.ema;
+      mx.ema = mx.ema == null ? s : mx.ema + (s - mx.ema) * Math.min(1, dt / 0.4); val = mx.ema;
     }
   } else if (midi != null) val = mx.ema;
   else mx.ema = null;
