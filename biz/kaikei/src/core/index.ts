@@ -1,0 +1,16 @@
+// src/core の入口。画面からは、ここから読み込む（import { ... } from '@/core'）。
+// browser.ts だけは、ブラウザの機能（document など）に触る。ほかは、どこで呼んでも安全。
+export * from './types'
+export * from './money'
+export * from './dates'
+export * from './templates'
+export * from './calc'
+export * from './book'
+export * from './carry'
+export * from './reports'
+export * from './file'
+export * from './storage'
+export * from './browser'
+export * from './sample'
+export * from './sources'
+export { checkYearChain, isSafeId, type ParsedBook } from './validate'

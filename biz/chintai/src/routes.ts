@@ -27,11 +27,12 @@ export const routes: Route[] = [
     load: () => import('./pages/Tool'),
   },
   {
-    path: '/tokushoho',
-    title: '特定商取引法にもとづく表記 | みつもり点検',
-    description: '特定商取引法にもとづく表記。',
+    // 有料版がないので、特定商取引法にもとづく表記（/tokushoho）のかわりに、このページを置く。
+    path: '/about',
+    title: 'このサイトについて | みつもり点検',
+    description: 'みつもり点検の運営者、広告で運営していること、免責、相談先について。',
     ssr: true,
-    load: () => import('./pages/Tokushoho'),
+    load: () => import('./pages/About'),
   },
   {
     path: '/privacy',

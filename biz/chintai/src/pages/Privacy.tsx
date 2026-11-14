@@ -1,8 +1,11 @@
 import { Link } from '@/router'
 import { site } from '@/site.config'
 
-// プライバシーポリシー。このひな形は「入力した内容はブラウザの中だけに保存し、サーバーに送らない」前提で書いてある。
-// アクセス解析や広告を入れるときは、その内容を書き足すこと。
+// プライバシーポリシー。
+// 「入力した内容はブラウザの中だけに保存し、サーバーに送らない」「有料版はなく、決済もしない」前提で書いてある。
+// 土台にあった、決済（Stripe）とライセンスキーの段落は、このサービスには当てはまらないので消した。
+// 【仮の形】文は本物だが、見た目はページの担当（③）が LP に合わせて作り直す。
+// 広告の枠（src/offers.ts）に実際のリンクを入れるときは、提携先の決まりに合わせて、「広告について」の段落を見直すこと。
 export default function Privacy() {
   const contact = site.operator.email || site.contact || '（公開前に記入します）'
   return (
@@ -12,20 +15,26 @@ export default function Privacy() {
       <div className="mt-8 space-y-8 text-sm leading-7 text-muted-foreground">
         <section>
           <h2 className="text-base font-bold text-foreground">入力した内容の扱い</h2>
-          <p className="mt-2">{site.name}に入力した内容は、お使いのブラウザの中（そのパソコンやスマートフォンの中）だけに保存されます。運営者のサーバーには送られず、運営者が見ることもできません。</p>
-          <p className="mt-2">ブラウザの履歴やサイトのデータを消すと、入力した内容も消えます。大切なデータは、画面の「書き出し」でファイルに保存してください。</p>
+          <p className="mt-2">{site.name}に入力した内容（家賃、見積書の項目と金額、お名前、物件名など）は、お使いのブラウザの中（そのパソコンやスマートフォンの中）だけに保存されます。運営者のサーバーには送られず、運営者が見ることもできません。</p>
+          <p className="mt-2">ブラウザの履歴やサイトのデータを消すと、入力した内容も消えます。残しておきたいときは、道具の画面の「ファイルに書き出す」で、ファイルに保存してください。</p>
         </section>
         <section>
-          <h2 className="text-base font-bold text-foreground">お支払いのときにお預かりする情報</h2>
-          <p className="mt-2">有料プランの決済は Stripe のページで行います。カード番号などの情報は Stripe が受け取り、運営者には届きません。運営者は、ライセンスキーをお送りするためのメールアドレスとお名前（または団体名・店名）をお預かりします。</p>
+          <h2 className="text-base font-bold text-foreground">会員登録とお支払い</h2>
+          <p className="mt-2">{site.name}は無料で、会員登録はありません。お支払いの情報をお預かりすることもありません。</p>
         </section>
         <section>
-          <h2 className="text-base font-bold text-foreground">お預かりした情報の使いみち</h2>
-          <p className="mt-2">ライセンスキーの送付、お問い合わせへの返信、サービスの大事なお知らせにだけ使います。法令にもとづく場合を除いて、ご本人の同意なく第三者に渡しません。</p>
+          <h2 className="text-base font-bold text-foreground">広告について</h2>
+          <p className="mt-2">このサイトは、広告の収入で運営します。広告には、必ず「広告」と表示します。広告は、ほかのサイトへのリンクです。リンク先のサイトでの情報の扱いは、そのサイトの決まりによります。</p>
+          <p className="mt-2">このサイトには、アクセス解析や広告配信のためのプログラム（タグ）を入れていません。</p>
+        </section>
+        <section>
+          {/* index.html が Google Fonts を読み込んでいるあいだは、この段落が要る。書体を自分のサーバーから配る形に変えたら、消すこと。 */}
+          <h2 className="text-base font-bold text-foreground">書体の読み込み</h2>
+          <p className="mt-2">文字の書体を表示するために、Google Fonts（Google のサーバー）から書体のデータを読み込みます。このとき、お使いの端末の IP アドレスなどが、Google に送られます。入力した内容が送られることはありません。</p>
         </section>
         <section>
           <h2 className="text-base font-bold text-foreground">お問い合わせ</h2>
-          <p className="mt-2">お預かりした情報の確認・訂正・削除のご希望は、次の宛先までご連絡ください。<br />{contact}</p>
+          <p className="mt-2">このページの内容についてのお問い合わせは、次の宛先までご連絡ください。<br />{contact}</p>
         </section>
       </div>
     </main>

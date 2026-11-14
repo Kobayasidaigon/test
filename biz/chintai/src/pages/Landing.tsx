@@ -12,7 +12,7 @@ export default function Landing() {
       </div>
       <section id="pricing" className="mt-[120vh]"><h2 className="text-2xl font-bold">料金</h2></section>
       <footer className="mt-24 flex gap-4 text-sm text-muted-foreground">
-        <Link to="/tokushoho">特定商取引法にもとづく表記</Link>
+        <Link to="/about">このサイトについて</Link>
         <Link to="/privacy">プライバシーポリシー</Link>
       </footer>
     </main>
