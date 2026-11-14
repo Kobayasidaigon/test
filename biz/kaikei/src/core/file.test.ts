@@ -64,14 +64,15 @@ describe('書き出して、読み込む', () => {
     expect(parseBookFile('﻿' + serializeBook(filled(), NOW)).ok).toBe(true)
   })
   it('知らない項目が入っていても読める。読んだあとの帳簿には持ち込まない', () => {
-    const text = tamper(filled(), (f) => {
+    const book = filled()
+    const text = tamper(book, (f) => {
       f.extra = 'x'
       f.book.futureField = { a: 1 }
       f.book.years[0].transactions[0].memo = 'y'
     })
     const r = parseBookFile(text)
     expect(r.ok).toBe(true)
-    if (r.ok) expect(r.book).toEqual(filled())
+    if (r.ok) expect(r.book).toEqual(book)
   })
 })
 
@@ -362,8 +363,9 @@ describe('buildBookFile（保存する中身を作って、その場で確かめ
 
 describe('openBookFile（利用者が選んだファイルを読む）', () => {
   it('ひきつぎファイルを読める', async () => {
-    const r = await openBookFile(new Blob([serializeBook(filled(), NOW)], { type: 'application/json' }))
-    expect(r.ok && r.book).toEqual(filled())
+    const book = filled()
+    const r = await openBookFile(new Blob([serializeBook(book, NOW)], { type: 'application/json' }))
+    expect(r.ok && r.book).toEqual(book)
   })
   it('大きすぎるファイルは、読む前に断る', async () => {
     const r = await openBookFile(new Blob([new Uint8Array(LIMITS.maxFileBytes + 1)]))

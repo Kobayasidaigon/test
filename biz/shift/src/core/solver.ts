@@ -441,8 +441,10 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
   // ---- 3. 入れ替えで良くする ----
   const cells = S * D
   // 試す回数は、表の大きさ（人数 × 日数）で決める。時間では決めない（同じ入力なら同じ結果にするため）。
-  // 20人 × 31日 で 62万回。手元の計測では 0.2 秒ほどで、遅い端末でも数秒に収まる見込み。
-  const iterations = freeCells.length === 0 ? 0 : Math.round(effort * Math.min(900_000, Math.max(100_000, cells * 1000)))
+  // 20人 × 31日 までは 60万回、30人 × 31日 で 90万回。手元の計測では 0.2〜0.4 秒ほど。
+  // 小さい店でも回数を減らさないのは、回数が少ないと「本当は埋まるのに1人足りない」案で止まることがあったため
+  // （サンプルの飲食店で確かめた。25万回では 5% ほど、60万回では 1% 未満）。
+  const iterations = freeCells.length === 0 ? 0 : Math.round(effort * Math.min(900_000, Math.max(600_000, cells * 1000)))
   const undoI: number[] = []
   const undoV: number[] = []
   function put(s: number, d: number, b: number): void {
@@ -520,9 +522,11 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
           put(s, d, t)
           return true
         }
-        // そのままでは置けない（日数の上限や連勤）。ほかの日の勤務を1つ外して、ここへ回す
-        const d2 = rint(D)
-        if (d2 === d || x[s * D + d2] < 0 || lock[s * D + d2] !== UNLOCKED) return false
+        // そのままでは置けない（日数の上限や連勤）。ほかの日の勤務を1つ外して、ここへ回す。
+        // 連勤が理由のときは近くの日を外さないと効かないので、半分は近くの日から選ぶ
+        const near = maxC !== NO_LIMIT && rng() < 0.5
+        const d2 = near ? d - maxC + rint(2 * maxC + 1) : rint(D)
+        if (d2 < 0 || d2 >= D || d2 === d || x[s * D + d2] < 0 || lock[s * D + d2] !== UNLOCKED) return false
         put(s, d2, OFF)
         if (!canPut(s, d, t)) return false
         put(s, d, t)
