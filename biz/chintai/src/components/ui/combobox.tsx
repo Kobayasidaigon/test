@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode, type Ref } from "react"
 import { SearchIcon } from "lucide-react"
 
+import { prefersReducedMotion } from "@/lib/scroll"
 import { cn } from "@/lib/utils"
 
 // halaska-studio の Combobox（21st.dev）をもとにした、「打って探して、選ぶ」欄。
@@ -87,6 +88,18 @@ export function Combobox({
     document.getElementById(`${uid}-opt-${idx}`)?.scrollIntoView({ block: "nearest" })
   }, [idx, shown, uid])
 
+  // 候補の一覧が、画面の下にはみ出すときは、欄を画面の上のほうへ動かして、候補が見えるようにする
+  // （スマホでは、キーボードの分だけ見える範囲がせまいので、visualViewport の高さで比べる）。
+  useEffect(() => {
+    if (!shown) return
+    const list = document.getElementById(`${uid}-list`)
+    if (!list) return
+    const visible = window.visualViewport?.height ?? window.innerHeight
+    if (list.getBoundingClientRect().bottom > visible - 8) {
+      wrap.current?.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+    }
+  }, [shown, total, uid])
+
   const pick = (i: number) => {
     if (i < options.length) onSelect(options[i])
     else if (extra) extra.onSelect()
@@ -95,7 +108,7 @@ export function Combobox({
   }
 
   return (
-    <div ref={wrap} className={cn("relative", className)}>
+    <div ref={wrap} className={cn("relative scroll-mt-24", className)}>
       <SearchIcon aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-ink-soft" />
       <input
         ref={inputRef}
@@ -141,7 +154,7 @@ export function Combobox({
           }
         }}
         className={cn(
-          "h-12 w-full rounded-sm border border-input border-b-ink/70 bg-paper pe-3 ps-10 text-base text-ink transition-[border-color] placeholder:text-ink-soft/75 hover:border-ink/60 focus-visible:border-ring",
+          "h-12 w-full rounded-sm border border-input border-b-ink/70 bg-paper pe-3 ps-10 text-base text-ink transition-[border-color] placeholder:text-placeholder hover:border-ink/60 focus-visible:border-ring",
           inputClassName,
         )}
       />

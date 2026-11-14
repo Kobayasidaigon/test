@@ -42,6 +42,18 @@ function getStorage(): StorageLike | null {
   }
 }
 
+/** どの画面（タブ）を開いていたかを覚えておく場所の名前（このタブを閉じるまで）。 */
+export const TAB_STORAGE = `${site.slug}:tab`
+
+/** 開いていた画面を忘れる。新しい帳簿を始めたとき・ファイルを開いたときは、いつも「入力」の画面から始めるため。 */
+function forgetTab(): void {
+  try {
+    window.sessionStorage.removeItem(TAB_STORAGE)
+  } catch {
+    // 覚えていなくても困らない
+  }
+}
+
 /** このブラウザに入れてあるライセンスキー（use-license.ts が保存したもの）。なければ空。 */
 export function storedLicenseKey(): string {
   try {
@@ -97,6 +109,11 @@ export type Workspace = Store & {
   /** ファイルに保存する（ダウンロードが始まる） */
   saveFile: () => void
   unsaved: UnsavedInfo
+  /**
+   * ファイルに保存したほうがよいか（まだ保存していない、または、保存してから変更がある）。
+   * 何も変えていないサンプルは、保存をすすめない（見本なので、残さなくてよい）
+   */
+  dirty: boolean
   isSample: boolean
   isPro: boolean
 }
@@ -184,6 +201,7 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
   }, [bookKey, licenseReady, prelaunch, activeLicense, activate])
 
   const startWith = useCallback((book: Book) => {
+    forgetTab()
     setStateRaw(stateFromNewBook(book))
     setYearId(latestYear(book).id)
     setNotice(null)
@@ -193,6 +211,7 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
   const openFile = useCallback(async (file: Blob): Promise<string | null> => {
     const r = await openBookFile(file)
     if (!r.ok) return r.message
+    forgetTab()
     setStateRaw(stateFromFile(r.book, r.savedAt))
     setYearId(latestYear(r.book).id)
     setChangedElsewhere(false)
@@ -203,6 +222,7 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
   const reset = useCallback(() => {
     const storage = getStorage()
     if (storage) clearLocal(storage)
+    forgetTab()
     lastWritten.current = null
     setStateRaw(null)
     setYearId(null)
@@ -275,6 +295,8 @@ export function useWorkspaceValue(store: ReturnType<typeof useStore>, state: Loc
     )
   }, [setState])
 
+  const unsaved = unsavedInfo(state)
+  const isSample = isSampleBook(book)
   return {
     ...store,
     state,
@@ -285,8 +307,9 @@ export function useWorkspaceValue(store: ReturnType<typeof useStore>, state: Loc
     setYearId,
     apply,
     saveFile,
-    unsaved: unsavedInfo(state),
-    isSample: isSampleBook(book),
+    unsaved,
+    dirty: !(isSample && book.revision === 0) && (unsaved.neverSaved || unsaved.count > 0),
+    isSample,
     isPro: license.isPro,
   }
 }

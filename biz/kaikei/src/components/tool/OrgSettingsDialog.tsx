@@ -87,7 +87,7 @@ export function OrgSettingsDialog({ open, onOpenChange }: { open: boolean; onOpe
           <DialogTitle>団体の設定</DialogTitle>
           <DialogDescription>資料に出る、団体の名前・年度・役員の名前を決めます。役員の名前は、空のままでもかまいません（署名欄には、線だけが出ます）。</DialogDescription>
         </DialogHeader>
-        <DialogBody className="grid gap-6">
+        <DialogBody className="grid grid-cols-1 gap-6">
           <Field label="団体の名前">{(p) => <Input {...p} value={orgName} maxLength={LIMITS.nameLength} onChange={(e) => setOrgName(e.target.value)} />}</Field>
 
           <fieldset className="grid gap-3" disabled={locked}>
@@ -100,11 +100,17 @@ export function OrgSettingsDialog({ open, onOpenChange }: { open: boolean; onOpe
             </Field>
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
-                <Label htmlFor="org-start">始まりの日</Label>
                 {firstYear && !locked ? (
-                  <DateField id="org-start" className="mt-1.5" text={startText} onTextChange={setStartText} placeholder="例: 2026/4/1" />
+                  <>
+                    <Label htmlFor="org-start">始まりの日</Label>
+                    <DateField id="org-start" className="mt-1.5" text={startText} onTextChange={setStartText} placeholder="例: 2026/4/1" />
+                  </>
                 ) : (
-                  <p className="mt-1.5 flex min-h-12 items-center rounded-lg border border-border bg-muted px-3">{formatWareki(year.startDate)}</p>
+                  <>
+                    {/* 変えられないときは入力欄がないので、ラベルではなく、ただの見出しにする */}
+                    <p className="text-[0.94rem] font-bold leading-snug">始まりの日</p>
+                    <p className="mt-1.5 flex min-h-12 items-center rounded-lg border border-border bg-muted px-3">{formatWareki(year.startDate)}</p>
+                  </>
                 )}
                 {!firstYear && !locked && <p className="mt-1 text-[0.84rem] leading-snug text-muted-foreground">前の年度の終わりの次の日に、決まっています。</p>}
               </div>

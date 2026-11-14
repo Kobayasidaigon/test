@@ -121,7 +121,7 @@ const handle = startSolve(plan, {
   onProgress: (p) => setProgress(p),           // { phase: 'greedy' | 'improve' | 'finish', ratio: 0〜1 }
   onResult: (result) => {                      // 表ができた
     setPlan({ ...plan, schedule: result.schedule })
-    setReport(result.check)                    // 点検結果。result.check.summary は、そのまま出せる文
+    setReport(result.check)                    // 点検結果。result.check.summary は、そのまま出せる文（調子つきは summaryItems）
   },
   onSuggestions: (s) => setSuggestions(s),     // 足りないところがあるときだけ、後から届く。なければ null
   onError: (message) => show(message),
@@ -140,6 +140,7 @@ handle.cancel()                                // やめる（画面を離れる
 const options = cellOptions(plan, plan.schedule, staffId, day)   // 休み + 勤務の種類。条件に当たるものには notes が付く
 const schedule = setCell(plan.schedule, staffId, day, shiftId)   // null なら休み。押して変えたマスは固定になる
 const report = checkPlan({ ...plan, schedule })                  // 直すたびに点検し直す（速い）
+report.summaryItems                                              // まとめの文に、調子（'ok' | 'bad' | 'note'）を付けたもの。画面で印と色を出し分ける
 const marks = violationsByCell(report)                           // キーは `${staffId}:${day}`、値は違反の文
 ```
 

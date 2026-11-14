@@ -269,6 +269,26 @@ describe('点検: なるべく満たす条件', () => {
     expect(r.summary).toEqual(['必ず守る条件（休み希望、定休日、連勤の上限など）の違反は、0件です。', '必要な人数は、すべての日でそろっています（不足は0件）。'])
     expect(r.missingTotal).toBe(0)
   })
+
+  it('まとめの文には、調子（問題なし・直したほうがよい・知らせるだけ）が付く', () => {
+    // 何も足りない表: 違反は0件（ok）、人数は足りない（bad）
+    const empty = checkPlan(tinyPlan())
+    expect(empty.summaryItems[0].tone).toBe('ok')
+    expect(empty.summaryItems[1].tone).toBe('bad')
+    // 文は summary と同じ並び・同じ中身
+    expect(empty.summaryItems.map((x) => x.text)).toEqual(empty.summary)
+
+    // 休み希望の日に入れると、違反（bad）
+    const wished = tinyPlan({ wishes: { st1: { '3': { kind: 'off' } } } })
+    expect(checkPlan(wished, st1Works([3])).summaryItems[0].tone).toBe('bad')
+
+    // 勤務日数の下限に届かないのは、知らせるだけ（note）
+    const min = tinyPlan({ needs: { weekly: { sh1: [0, 0, 0, 0, 0, 0, 0], sh2: [0, 0, 0, 0, 0, 0, 0] }, overrides: {}, roleMins: [] } })
+    min.staff[0].minDays = 5
+    const r = checkPlan(min)
+    expect(r.summaryItems.map((x) => x.tone)).toEqual(['ok', 'ok', 'note'])
+    expect(r.summaryItems[2].text).toContain('下限')
+  })
 })
 
 describe('violationsByCell', () => {

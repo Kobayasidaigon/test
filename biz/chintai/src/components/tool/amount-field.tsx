@@ -45,6 +45,8 @@ export const AmountField = forwardRef<HTMLInputElement, AmountFieldProps>(functi
   }, [value])
 
   const invalid = text.trim() !== '' && parseAmountInput(text) === null
+  // 見積書の値引きは「−5,000」「▲5,000」と書かれていることが多い。そのまま打った人には、入れ方を案内する。
+  const minus = invalid && /^[-−－ー‐▲△]/.test(text.normalize('NFKC').trim())
 
   return (
     <span className={cn('block', className)}>
@@ -85,7 +87,9 @@ export const AmountField = forwardRef<HTMLInputElement, AmountFieldProps>(functi
       />
       {invalid && (
         <span id={errorId} role="alert" className="mt-1 block text-xs leading-5 text-pen">
-          数字で入れてください（例: 16500、8.2万）。{MAX_AMOUNT.toLocaleString('ja-JP')}円までです。
+          {minus
+            ? 'マイナスの金額は、入れられません。値引きやフリーレントは、その項目の行に、引かれている額をプラスの数で入れてください（合計から引きます）。'
+            : `数字で入れてください（例: 16500、8.2万）。${MAX_AMOUNT.toLocaleString('ja-JP')}円までです。`}
         </span>
       )}
     </span>

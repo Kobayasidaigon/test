@@ -48,7 +48,7 @@ export function StepHeading({ no, title, lead }: { no: number; title: string; le
 /** 手順の中の、ひとまとまり */
 export function Section({ title, lead, aside, children, className, id }: { title: string; lead?: ReactNode; aside?: ReactNode; children: ReactNode; className?: string; id?: string }) {
   return (
-    <section id={id} className={cn('rounded-xl border-2 border-ink bg-card p-4 md:p-6', className)}>
+    <section id={id} className={cn('min-w-0 rounded-xl border-2 border-ink bg-card p-3 md:p-6', className)}>
       <div className="mb-4 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         <div className="min-w-0">
           <h2 className="text-lg md:text-xl">{title}</h2>
@@ -103,7 +103,7 @@ export function WeekdayToggles({
   className?: string
 }) {
   return (
-    <div className={cn('flex flex-wrap gap-1', className)}>
+    <div className={cn('flex flex-wrap gap-0.5 md:gap-1', className)}>
       {WEEK_ORDER.map((w) => {
         const on = selected.includes(w)
         const off = disabled?.includes(w) ?? false

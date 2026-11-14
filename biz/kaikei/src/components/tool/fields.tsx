@@ -270,8 +270,8 @@ export const DateField = forwardRef<
     label?: string
     disabled?: boolean
     placeholder?: string
-    /** 読んだ結果を、入力欄の下に出すか */
-    showParsed?: boolean
+    /** 読んだ結果（「令和8年4月1日（水）」）を、入力欄の下に出すか。'reserve' は、空のときも1行ぶんの高さを取る */
+    showParsed?: boolean | 'reserve'
     onBlur?: () => void
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
     /** カレンダーで日付を選んだときに呼ばれる（onTextChange のあと） */
@@ -279,7 +279,7 @@ export const DateField = forwardRef<
     className?: string
   }
 >(function DateField(
-  { text, onTextChange, period, id, invalid, describedBy, label, disabled, placeholder = '例: 4/1', showParsed = true, onBlur, onKeyDown, onPick, className },
+  { text, onTextChange, period, id, invalid, describedBy, label, disabled, placeholder = '例: 4/1', showParsed = 'reserve', onBlur, onKeyDown, onPick, className },
   ref,
 ) {
   const pickerRef = useRef<HTMLInputElement>(null)
@@ -341,8 +341,8 @@ export const DateField = forwardRef<
           }}
         />
       </span>
-      {showParsed && (
-        <span className="mt-1 block min-h-[1.25rem] text-[0.84rem] leading-tight text-muted-foreground" aria-live="polite">
+      {(showParsed === 'reserve' || (showParsed && parsed?.ok)) && (
+        <span className={cn('mt-1 block text-[0.84rem] leading-tight text-muted-foreground', showParsed === 'reserve' && 'min-h-[1.25rem]')} aria-live="polite">
           {parsed?.ok ? formatWarekiWithWeekday(parsed.value) : ''}
         </span>
       )}
@@ -406,6 +406,7 @@ export function CommitDate({
         invalid={error !== null}
         describedBy={error ? errorId : undefined}
         placeholder="例: 2027/4/10"
+        showParsed
         onTextChange={setText}
         // カレンダーで選んだときは、入力欄から離れなくても反映する
         onPick={(date) => commit(date)}

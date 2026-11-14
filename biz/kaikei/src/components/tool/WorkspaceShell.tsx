@@ -20,7 +20,7 @@ import { OrgSettingsDialog } from './OrgSettingsDialog'
 import { ReconcileScreen } from './ReconcileScreen'
 import { ReportsScreen } from './ReportsScreen'
 import { TransactionsScreen } from './TransactionsScreen'
-import { useWorkspace } from './store'
+import { TAB_STORAGE, useWorkspace } from './store'
 
 // 帳簿を開いているときの、画面の骨組み。
 // 上に見出し（団体の名前、年度、ファイルに保存）、その下に5つの画面の切り替え、いちばん下に印刷用の紙（画面では見えない）。
@@ -34,8 +34,6 @@ const TABS: { key: TabKey; label: string; short: string; icon: typeof FileText }
   { key: 'reports', label: '資料', short: '資料', icon: FileText },
   { key: 'handover', label: '引き継ぎ', short: '引き継ぎ', icon: Handshake },
 ]
-
-const TAB_STORAGE = `${site.slug}:tab`
 
 function readTab(): TabKey {
   try {
@@ -66,7 +64,7 @@ const PrintSheets = memo(function PrintSheets({ book, yearId, kinds, today, wate
 
 export function WorkspaceShell() {
   const ws = useWorkspace()
-  const { book, year, locked, unsaved, isSample, isPro, license, today } = ws
+  const { book, year, locked, unsaved, dirty, isSample, isPro, license, today } = ws
   const [tab, setTabRaw] = useState<TabKey>(readTab)
   const [reportKind, setReportKind] = useState<ReportKind>('settlement')
   const [printKinds, setPrintKinds] = useState<ReportKind[]>(['settlement'])
@@ -74,7 +72,6 @@ export function WorkspaceShell() {
   const [wizardOpen, setWizardOpen] = useState(false)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const latest = latestYear(book)
-  const dirty = unsaved.neverSaved || unsaved.count > 0
 
   const setTab = (next: TabKey) => {
     setTabRaw(next)
@@ -135,7 +132,7 @@ export function WorkspaceShell() {
 
         <header className="border-b border-border bg-paper/80">
           <div className="mx-auto flex max-w-[82rem] flex-wrap items-center gap-x-4 gap-y-2 px-4 pb-2 pt-3 sm:px-6">
-            <Link to="/" className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg pr-1" aria-label={`${site.name} のトップページへ`}>
+            <Link to="/" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-lg sm:pr-1" aria-label={`${site.name} のトップページへ`}>
               <LogoMark />
               <span className="font-serif text-lg font-bold tracking-wide max-sm:sr-only">{site.name}</span>
             </Link>
@@ -154,7 +151,7 @@ export function WorkspaceShell() {
                 aria-label="見る年度"
                 value={year.id}
                 onChange={(e) => ws.setYearId(e.target.value)}
-                className="h-11 w-auto min-w-[9.5rem] shrink-0 font-bold"
+                className="h-11 w-[9.6rem] shrink-0 font-bold sm:w-auto sm:min-w-[9.6rem]"
               >
                 {[...book.years].reverse().map((y) => (
                   <option key={y.id} value={y.id}>
@@ -167,7 +164,13 @@ export function WorkspaceShell() {
 
             <div className="ml-auto flex shrink-0 items-center gap-2.5">
               <p className={cn('max-w-[15rem] text-right text-[0.8rem] leading-tight max-md:sr-only', dirty ? 'font-bold text-shu-ink' : 'text-muted-foreground')} role="status">
-                {unsaved.neverSaved ? 'まだファイルに保存していません' : unsaved.count > 0 ? `保存していない変更が ${unsaved.count}件` : 'ファイルに保存ずみ'}
+                {!dirty && unsaved.neverSaved
+                  ? 'サンプル（まだ何も変えていません）'
+                  : unsaved.neverSaved
+                    ? 'まだファイルに保存していません'
+                    : unsaved.count > 0
+                      ? `保存していない変更が ${unsaved.count}件`
+                      : 'ファイルに保存ずみ'}
               </p>
               <Button variant={dirty ? 'default' : 'outline'} onClick={ws.saveFile} className="relative">
                 <Download />
@@ -227,7 +230,10 @@ export function WorkspaceShell() {
               <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg border border-shu/40 bg-shu-soft/60 px-4 py-2.5">
                 <p className="flex items-center gap-2.5 leading-snug">
                   <span className="rounded-sm border-2 border-shu px-1.5 py-0.5 font-serif text-[0.86rem] font-bold leading-none text-shu-ink">見本</span>
-                  <span>サンプルの帳簿を見ています。{SAMPLE_NOTE}自由に書きかえて、試してください。</span>
+                  <span>
+                    サンプルの帳簿を見ています。{SAMPLE_NOTE}
+                    <span className="max-sm:hidden">自由に書きかえて、試してください。</span>
+                  </span>
                 </p>
                 <Button variant="outline" size="sm" onClick={() => setWizardOpen(true)}>
                   自分の団体で始める
@@ -270,7 +276,7 @@ export function WorkspaceShell() {
             <Link to="/" className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">
               {site.name}のトップへ
             </Link>
-            <Link to="/#pricing" className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">
+            <Link to="/#pricing" className="inline-flex min-h-11 min-w-11 items-center justify-center underline underline-offset-4 hover:text-foreground">
               料金
             </Link>
             <Link to="/privacy" className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">
@@ -284,7 +290,12 @@ export function WorkspaceShell() {
       <PrintSheets book={book} yearId={year.id} kinds={printKinds} today={today} watermark={!isPro} />
 
       <OrgSettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
-      <NewBookWizard open={wizardOpen} onOpenChange={setWizardOpen} today={today} onCreate={(next) => ws.startWith(next)} />
+      <NewBookWizard open={wizardOpen} onOpenChange={setWizardOpen} today={today} 
+        onCreate={(next) => {
+          ws.startWith(next)
+          setTab('transactions')
+        }}
+      />
 
       {/* 保存していない変更があるのに、別のファイルを開こうとしたときの確かめ */}
       <Dialog open={pendingFile !== null} onOpenChange={(open) => !open && setPendingFile(null)}>

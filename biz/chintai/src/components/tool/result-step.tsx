@@ -21,7 +21,7 @@ import { ConsultDesks } from '@/components/consult-desks'
 import { FindingCard } from '@/components/finding-card'
 import { InspectedSheet } from '@/components/inspected-sheet'
 import { OfferSlot } from '@/components/offer-slot'
-import { PenCircle } from '@/components/pen'
+import { DateStamp, PenCircle } from '@/components/pen'
 import { Sheet, SheetHeading, SheetNote, SheetTitle } from '@/components/sheet'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -48,6 +48,12 @@ function todayString(): string {
   const d = new Date()
   const p = (n: number) => String(n).padStart(2, '0')
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`
+}
+
+/** 日付のはんこに入れる形（'2026-11-15' → '26.11.15'）。 */
+function stampDate(date: string): string {
+  const [y, m, d] = date.split('-')
+  return `${y.slice(2)}.${Number(m)}.${Number(d)}`
 }
 
 export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, onSample }: ResultStepProps) {
@@ -94,6 +100,7 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
 
   const isSample = isSampleEstimate(estimate)
   const count = inspection.findings.length
+  const today = todayString()
 
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem] print:block">
@@ -108,11 +115,13 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
               </>
             }
             right={
-              <>
-                点検した日: {formatDateJa(todayString())}
-                <br />
-                ルールの最終確認日: {formatDateJa(RULES_VERIFIED_ON)}
-              </>
+              <DateStamp
+                top="みつもり"
+                bottom="点検"
+                date={stampDate(today)}
+                label={`点検した日: ${formatDateJa(today)}`}
+                className="-mb-1 size-[3.75rem] sm:-mb-9 sm:size-[4.75rem]"
+              />
             }
           />
           <h2 id="result-title" className="sr-only">
@@ -164,7 +173,10 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
 
           <InspectedSheet inspection={inspection} draw linkToDetails onSelect={(id) => accordion.openOne(id)} />
 
-          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-0.5 text-[13px] leading-6 text-ink-soft">
+          <p className="mt-3 text-[13px] leading-6 text-ink-soft">
+            点検した日: {formatDateJa(today)}　／　ルールの最終確認日: {formatDateJa(RULES_VERIFIED_ON)}
+          </p>
+          <div className="flex flex-wrap gap-x-5 gap-y-0.5 text-[13px] leading-6 text-ink-soft">
             <span className="font-bold">計算のもと</span>
             <dl className="contents">
               <Basis label="家賃（月額）" value={estimate.rent === null ? '未入力' : formatYen(estimate.rent)} />
@@ -240,7 +252,12 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
                 {accordion.allOpen ? '全部閉じる' : '全部開く'}
               </Button>
             }
-            note="行ごとに、なぜそう言うのか、確かめること、聞き方、根拠を出します。チェックを入れた項目は、手順3の確認の文面に入ります。"
+            note={
+              <>
+                <span className="no-print">行ごとに、なぜそう言うのか、確かめること、聞き方、根拠を出します。チェックを入れた項目は、手順3の確認の文面に入ります。</span>
+                <span className="print-only">確かめる項目（と、画面で開いてあった項目）について、なぜそう言うのか、確かめること、聞き方、根拠を出しています。</span>
+              </>
+            }
             className="mb-0"
           />
           <ol>
@@ -265,8 +282,10 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
 
         {/* ---------------- 3枚目: 相談先と、立て付け ---------------- */}
         <Sheet aria-labelledby="consult-title" className="print:pt-6">
-          <SheetHeading as="h2" title={<span id="consult-title">困ったときの相談先</span>} />
-          <ConsultDesks />
+          <div className="print-keep">
+            <SheetHeading as="h2" title={<span id="consult-title">困ったときの相談先</span>} />
+            <ConsultDesks />
+          </div>
           <div className="print-keep mt-7 border-t border-rule pt-4">
             <h3 className="text-[13px] font-bold">この道具について</h3>
             <p className="mt-1 text-[13px] leading-6 text-ink-soft">{DISCLAIMER}</p>
@@ -309,7 +328,7 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
               </Button>
             </li>
             <li>
-              <p className="mb-1.5 text-[13px] leading-6 text-ink-soft">相談に行くときに、紙で持っていけます。</p>
+              <p className="mb-1.5 text-[13px] leading-6 text-ink-soft">相談に行くときに、紙で持っていけます。確かめる項目の理由と根拠が入ります。ほかの項目も入れたいときは、「全部開く」を押してから印刷してください。</p>
               <Button variant="outline" className="w-full" onClick={() => window.print()}>
                 <PrinterIcon aria-hidden className="size-4" />
                 印刷する（A4）

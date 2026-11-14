@@ -1,5 +1,5 @@
 import { formatWareki, type HandoverReport, type PendingItem } from '@/core'
-import { Paper, PaperDate, PaperHeading, PaperSection, PaperSign, yen } from './Paper'
+import { Paper, PaperDate, PaperHeading, PaperSection, yen } from './Paper'
 
 // 5. 引き継ぎ書。
 // 残高（現金、口座ごと。照合の結果つき）、通帳・はんこ・帳簿などの保管場所のチェック、
@@ -42,14 +42,15 @@ function PendingTable({ items, total, empty }: { items: PendingItem[]; total: nu
 }
 
 export function HandoverPaper({ report, watermark = false }: { report: HandoverReport; watermark?: boolean }) {
-  const rows = report.custody.length + report.unpaid.length + report.unreceived.length + report.equipment.length + report.balances.length
   return (
-    <Paper label={`${report.yearLabel} ${report.title}`} watermark={watermark} pages={1 + rows / 26}>
+    <Paper label={`${report.yearLabel} ${report.title}`} watermark={watermark}>
       <PaperHeading title={report.title} period={report.yearLabel} orgName={report.orgName} />
 
-      <p style={{ marginTop: 'calc(var(--u) * 5)' }}>
-        引き継ぎをした日　
-        <PaperDate date={report.date} />
+      <p className="paper-line" style={{ marginTop: 'calc(var(--u) * 5)' }}>
+        <span>引き継ぎをした日</span>
+        <span>
+          <PaperDate date={report.date} />
+        </span>
       </p>
       <div style={{ marginTop: 'calc(var(--u) * 3)', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 'calc(var(--u) * 3)' }}>
         <PaperSignCompact caption="渡す人" role={report.from.title} name={report.from.name} />
@@ -71,7 +72,7 @@ export function HandoverPaper({ report, watermark = false }: { report: HandoverR
             <th scope="col">帳簿の残高</th>
             <th scope="col">確かめた日</th>
             <th scope="col">実際の残高</th>
-            <th scope="col">照合</th>
+            <th scope="col">照合の結果</th>
           </tr>
         </thead>
         <tbody>
@@ -84,6 +85,8 @@ export function HandoverPaper({ report, watermark = false }: { report: HandoverR
               <td className="center small">
                 {b.check ? CHECK_TEXT[b.check.status] : ''}
                 {b.check && b.check.diff !== 0 ? `（差 ${yen(b.check.diff)}）` : ''}
+                {/* 確かめた日のあとに取引が入っていると、帳簿の残高（いま）と、実際の残高（確かめた日）がちがって見える。そのわけを書く */}
+                {b.check && b.check.actual - b.check.diff !== b.bookBalance && <span style={{ display: 'block' }}>（そのあとに取引あり）</span>}
               </td>
             </tr>
           ))}
@@ -98,7 +101,7 @@ export function HandoverPaper({ report, watermark = false }: { report: HandoverR
         {report.lastTransactionDate
           ? `帳簿の残高は、${formatWareki(report.lastTransactionDate)}までの取引を入れた金額です。`
           : '帳簿の残高は、年度はじめの金額です（取引は、まだ入っていません）。'}
-        「実際の残高」は、確かめた日に通帳と手元の現金で確かめた金額です。
+        「実際の残高」と「照合の結果」は、確かめた日の時点のものです。
       </p>
 
       <PaperSection title="2　通帳・はんこ・帳簿などの保管場所" />

@@ -194,6 +194,8 @@
 /* マスの数が多い（30人 × 31日で約1000マス）ので、マスごとに長いクラスを書かず、ここにまとめた */
 .sg-wrap {
   position: relative;
+  /* 枠は表の幅に合わせる（日数の少ない表で、右の集計だけが広がらないように）。入りきらないときは、枠の中だけを横スクロール */
+  width: fit-content;
   max-width: 100%;
   overflow-x: auto;
   border: 2px solid var(--ink);
@@ -204,19 +206,18 @@
   overscroll-behavior-x: contain;
 }
 .sg {
-  --cw: 31px;
+  --cw: 30px;
   --ch: 36px;
-  --namew: 108px;
+  --namew: 104px;
   width: max-content;
-  min-width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 13px;
   line-height: 1.2;
 }
-/* 指で押す端末では、マスを 44px にする */
+/* 指で押す端末では、マスを 44px にする（列の幅には右の線の 1px が入るので、45px） */
 @media (max-width: 767px), (pointer: coarse) {
-  .sg { --cw: 44px; --ch: 44px; --namew: 84px; }
+  .sg { --cw: 45px; --ch: 44px; --namew: 84px; }
 }
 .sg th, .sg td {
   padding: 0;
@@ -323,8 +324,8 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
 
 /* 右の集計 */
 .sg .sg-sum {
-  min-width: 38px;
-  padding: 0 6px;
+  min-width: 34px;
+  padding: 0 5px;
   font-family: var(--font-num);
   font-size: 12.5px;
   font-weight: 500;
@@ -338,6 +339,8 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
 /* 下の過不足 */
 .sg .sg-need { height: 34px; font-family: var(--font-num); font-size: 12px; font-weight: 700; line-height: 1.15; }
 .sg-need[data-none] { color: #a9a48f; font-weight: 500; }
+/* まだ組んでいない表の、必要な人数 */
+.sg-need[data-blank] { color: var(--ink-soft); font-weight: 500; }
 .sg-diff { display: block; width: fit-content; margin: 1px auto 0; padding: 0 3px; border-radius: 3px; font-size: 10px; line-height: 13px; }
 .sg-diff[data-kind="short"] { background: var(--danger); color: #fff; }
 .sg-diff[data-kind="over"] { border: 1px solid var(--ink-soft); color: var(--ink-soft); line-height: 11px; }
@@ -390,7 +393,7 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
 }
 
 /* 印刷用のシフト表（PrintSheet）。用紙の向きと余白（@page）は、道具の画面が開いているあいだだけ入れる */
-.pt-sheet { color: var(--ink); font-family: var(--font-sans); }
+.pt-sheet { color: var(--ink); font-family: var(--font-sans); line-height: 1.35; }
 .pt-head { display: flex; align-items: baseline; justify-content: space-between; gap: 6mm; margin-bottom: 2.5mm; }
 .pt-title { font-family: var(--font-display); font-weight: 800; font-size: 15pt; line-height: 1.2; }
 .pt-meta { font-size: 7.5pt; color: var(--ink-soft); }
@@ -413,29 +416,29 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
   white-space: nowrap;
 }
 .pt thead th { height: 8.2mm; border-bottom: 0.5mm solid var(--ink); font-family: var(--font-num); font-weight: 700; }
-.pt .pt-name { padding: 0 1.2mm; text-align: left; font-weight: 700; font-size: 8.5pt; border-right: 0.5mm solid var(--ink); text-overflow: ellipsis; }
+.pt .pt-name { padding: 0 1.2mm; text-align: left; font-weight: 700; font-size: calc(var(--pf, 8pt) + 0.5pt); border-right: 0.5mm solid var(--ink); text-overflow: ellipsis; }
 .pt .pt-dw { display: block; font-family: var(--font-sans); font-size: 6.5pt; }
 .pt th[data-red] { color: var(--danger); }
 .pt th[data-dow="6"] .pt-dw { color: #1d4fb8; }
 .pt [data-closed] { background: #ece6d2; }
 .pt .pt-sumfirst { border-left: 0.5mm solid var(--ink); }
-.pt .pt-sum { font-family: var(--font-num); font-size: 7.5pt; }
+.pt .pt-sum { font-family: var(--font-num); font-size: calc(var(--pf, 8pt) - 0.5pt); }
 .pt thead .pt-sum { font-family: var(--font-sans); font-size: 6.5pt; }
 .pt tfoot tr:first-child > * { border-top: 0.5mm solid var(--ink); }
 .pt tfoot td, .pt tfoot th { height: 4.8mm; font-family: var(--font-num); font-size: 7pt; }
 .pt tfoot .pt-name { font-family: var(--font-sans); font-size: 7pt; }
+.pt tfoot .pt-sum { font-size: 7pt; }
 .pt .pt-short { font-weight: 800; color: var(--danger); }
 .pt-blk {
   display: inline-grid;
   place-items: center;
   width: 86%;
-  height: 82%;
-  max-height: 6mm;
+  height: calc(var(--pr, 6.4mm) * 0.8);
   border: 0.25mm solid var(--ink);
   border-radius: 0.9mm;
   background: var(--blk, #fff);
   font-weight: 800;
-  font-size: 8pt;
+  font-size: var(--pf, 8pt);
   line-height: 1;
 }
 .pt-blk[data-color="tomato"] { --blk: var(--shift-tomato); }

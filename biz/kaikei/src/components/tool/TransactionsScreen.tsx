@@ -48,8 +48,8 @@ function BalanceStrip() {
   const { summary } = useWorkspace()
   return (
     <section aria-label="いまの残高と、収入・支出の合計" className="overflow-hidden rounded-xl border border-border bg-paper shadow-lift">
-      <dl className="grid grid-cols-2 divide-rule/40 max-lg:[&>div:nth-child(n+3)]:border-t max-lg:[&>div:nth-child(n+3)]:border-rule/40 max-lg:[&>div:nth-child(odd)]:border-r max-lg:[&>div:nth-child(odd)]:border-rule/40 lg:grid-cols-[1fr_1fr_1.1fr_1.6fr] lg:divide-x">
-        <div className="px-4 py-3">
+      <dl className="grid grid-cols-2 lg:grid-cols-[1fr_1fr_1.1fr_1.6fr] lg:divide-x lg:divide-rule/40">
+        <div className="border-rule/40 px-4 py-3 max-lg:border-r">
           <dt className="text-[0.84rem] font-bold text-rule-ink">収入の合計</dt>
           <dd className="num mt-0.5 text-xl leading-tight">
             {formatYen(summary.incomeTotal)}
@@ -63,14 +63,14 @@ function BalanceStrip() {
             <span className="ml-0.5 text-[0.84rem]">円</span>
           </dd>
         </div>
-        <div className="bg-rule-soft/50 px-4 py-3">
+        <div className="border-rule/40 bg-rule-soft/50 px-4 py-3 max-lg:col-span-2 max-lg:flex max-lg:items-baseline max-lg:justify-between max-lg:gap-3 max-lg:border-t">
           <dt className="text-[0.84rem] font-bold">いまの残高（合計）</dt>
           <dd className="num mt-0.5 text-[1.45rem] font-bold leading-tight">
             {formatYen(summary.carryover)}
             <span className="ml-0.5 text-[0.84rem] font-normal">円</span>
           </dd>
         </div>
-        <div className="px-4 py-3">
+        <div className="border-rule/40 px-4 py-3 max-lg:col-span-2 max-lg:border-t">
           <dt className="text-[0.84rem] font-bold text-muted-foreground">置き場所ごとの残高</dt>
           <dd className="mt-1 grid gap-0.5 text-[0.9rem] leading-snug">
             {summary.accounts.map((a) => (
@@ -134,7 +134,7 @@ export function TransactionsScreen() {
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <BalanceStrip />
 
       {issues.length > 0 && (

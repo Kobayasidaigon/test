@@ -160,7 +160,7 @@ export function NewBookWizard({
           )}
 
           {step === 1 && (
-            <div className="grid gap-5">
+            <div className="grid grid-cols-1 gap-5">
               <Field label="団体の名前" hint="資料の右上に出ます。例: みどり町内会、ひまわり子ども会" error={errors.orgName}>
                 {(p) => <Input {...p} value={orgName} maxLength={LIMITS.nameLength} autoComplete="organization" onChange={(e) => setOrgName(e.target.value)} />}
               </Field>
@@ -200,7 +200,7 @@ export function NewBookWizard({
           )}
 
           {step === 2 && (
-            <div className="grid gap-5">
+            <div className="grid grid-cols-1 gap-5">
               <p className="leading-relaxed">
                 {formatWareki(period.startDate)}（年度はじめ）に、いくらありましたか。前の年度の決算書の「次年度繰越金」の内訳を、そのまま入れます。
                 <span className="mt-1 block text-[0.9rem] text-muted-foreground">わからなければ 0 のままで始めて、あとから「科目と予算」の画面で直せます。</span>

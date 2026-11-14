@@ -237,6 +237,21 @@ export type LoadResult =
 
 const UNAVAILABLE = 'このブラウザでは、入力した内容を保存できません。閉じると消えるので、「ファイルに書き出す」で残してください。'
 
+/**
+ * 保存領域の値を確かめる。
+ * parseSavedText と分けているのは、理由の文のため。ファイルの読み込みでは「ファイルを選んでください」と言うが、
+ * 保存領域では、選ぶファイルがない。JSON として読めないときは、保存領域に合った言い方にする。
+ */
+function parseStored(raw: string): ParseResult {
+  let value: unknown
+  try {
+    value = JSON.parse(raw)
+  } catch {
+    return fail('中身が途中で切れているか、書き換えられています。')
+  }
+  return parseSaved(value)
+}
+
 /** 保存領域から読み込む。何が起きても落ちずに、使えるデータ（だめなら空）を返す。 */
 export function loadData(storage: StorageLike | null | undefined): LoadResult {
   if (!storage) return { status: 'unavailable', data: createEmptyData(), reason: UNAVAILABLE }
@@ -247,7 +262,7 @@ export function loadData(storage: StorageLike | null | undefined): LoadResult {
     return { status: 'unavailable', data: createEmptyData(), reason: UNAVAILABLE }
   }
   if (raw === null) return { status: 'empty', data: createEmptyData() }
-  const parsed = parseSavedText(raw)
+  const parsed = parseStored(raw)
   if (parsed.ok) return { status: 'ok', data: parsed.data, warnings: parsed.warnings, savedAt: parsed.savedAt }
   try {
     // 次に保存すると上書きされるので、読めなかったデータを別のキーに取っておく。
@@ -258,7 +273,7 @@ export function loadData(storage: StorageLike | null | undefined): LoadResult {
   return {
     status: 'broken',
     data: createEmptyData(),
-    reason: `保存されていたデータを、読めませんでした。空の状態から始めます。（理由: ${parsed.reason}）`,
+    reason: `保存されていたデータを、読めませんでした。空の状態から始めます。「ファイルに書き出す」で残したファイルがあれば、「ファイルを読み込む」から戻せます。（理由: ${parsed.reason}）`,
   }
 }
 

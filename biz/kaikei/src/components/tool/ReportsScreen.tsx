@@ -5,6 +5,7 @@ import {
   DISCLAIMER,
   FORMAT_NOTE,
   LIMITS,
+  OUT_OF_SCOPE,
   buildReports,
   explain,
   formatYen,
@@ -96,13 +97,12 @@ function SettlementPanel({ onNavigate }: { onNavigate: (tab: 'categories') => vo
         />
         <p className="text-[0.84rem] leading-snug text-muted-foreground">前の年の決算書と、同じ向きにしてください。マイナスは △ で出ます。</p>
       </div>
-      <p className="border-t border-rule/40 pt-3 text-[0.9rem] leading-relaxed">
-        科目の名前・予算額・「説明」の文は、
-        <button type="button" className="font-bold text-rule-ink underline underline-offset-4" onClick={() => onNavigate('categories')}>
-          「科目と予算」の画面
-        </button>
-        で書きます。
-      </p>
+      <div className="border-t border-rule/40 pt-3 text-[0.9rem] leading-relaxed">
+        <p>科目の名前・予算額・「説明」の文は、「科目と予算」の画面で書きます。</p>
+        <Button variant="link" size="sm" className="justify-start px-0 text-left" onClick={() => onNavigate('categories')}>
+          「科目と予算」の画面へ
+        </Button>
+      </div>
     </>
   )
 }
@@ -290,7 +290,7 @@ export function ReportsScreen({
   const current = REPORT_KINDS.find((k) => k.kind === kind)!
 
   return (
-    <div className="grid gap-5">
+    <div className="grid grid-cols-1 gap-5">
       <section className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-xl border border-border bg-paper px-4 py-4 shadow-lift sm:px-6">
         <div className="min-w-0 flex-1 basis-64">
           <h2 className="text-xl">{year.label}の資料</h2>
@@ -311,10 +311,10 @@ export function ReportsScreen({
         <Alert variant="warn">
           <AlertTitle>無料版では、印刷した紙に「見本」の透かしが入ります</AlertTitle>
           <AlertDescription>
-            透かしなしで印刷するには、有料版（{pro.unit} {pro.priceText}・税込）のライセンスキーがいります。画面で確かめるだけなら、ずっと無料です。
-            <button type="button" className="ml-1 font-bold text-rule-ink underline underline-offset-4" onClick={() => onNavigate('handover')}>
-              有料版について（「引き継ぎ」の画面）
-            </button>
+            <p>透かしなしで印刷するには、有料版（{pro.unit} {pro.priceText}・税込）のライセンスキーがいります。画面で確かめるだけなら、ずっと無料です。</p>
+            <Button variant="link" size="sm" className="justify-start px-0 text-left" onClick={() => onNavigate('handover')}>
+              有料版について（「引き継ぎ」の画面へ）
+            </Button>
           </AlertDescription>
         </Alert>
       )}
@@ -322,8 +322,10 @@ export function ReportsScreen({
       <Tabs value={kind} onValueChange={(v) => onKindChange(v as ReportKind)}>
         <TabsList aria-label="資料の種類">
           {REPORT_KINDS.map((k) => (
-            <TabsTrigger key={k.kind} value={k.kind}>
-              {k.label}
+            <TabsTrigger key={k.kind} value={k.kind} aria-label={k.label}>
+              {/* スマホでは短い名前にして、2行に収める */}
+              <span className="sm:hidden">{k.short}</span>
+              <span className="max-sm:hidden">{k.label}</span>
             </TabsTrigger>
           ))}
         </TabsList>
@@ -331,7 +333,7 @@ export function ReportsScreen({
         {REPORT_KINDS.map((k) => (
           <TabsContent key={k.kind} value={k.kind} className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_21.5rem] xl:items-start">
             {/* 紙 */}
-            <div className="min-w-0 xl:order-none max-xl:order-last">
+            <div className="min-w-0">
               <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                 <p className="text-[0.86rem] text-muted-foreground">印刷したときの形です。</p>
                 <Button variant="ghost" size="sm" onClick={() => setZoom((z) => (z === 'fit' ? 'full' : 'fit'))} aria-pressed={zoom === 'full'}>
@@ -400,6 +402,7 @@ export function ReportsScreen({
       <div className="grid gap-1 border-t border-rule/40 pt-4 text-[0.86rem] leading-relaxed text-muted-foreground">
         <p>{FORMAT_NOTE}</p>
         <p>{DISCLAIMER}</p>
+        <p>{OUT_OF_SCOPE.map((s) => s.text).join(' ')}</p>
       </div>
 
       <Dialog open={printOpen} onOpenChange={setPrintOpen}>

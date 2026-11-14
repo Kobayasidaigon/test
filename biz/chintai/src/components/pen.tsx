@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react'
+import { useId, type CSSProperties, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 // 赤ペンの線。自分で描いた SVG（少しゆがんだ、手描きの線）。
@@ -135,4 +135,38 @@ export function PenBadge({ mark, variant = 0, draw, delay, className }: PenProps
 /** 紙の罫線に使う、二重線（見積書の題の下など）。 */
 export function DoubleRule({ className }: { className?: string }) {
   return <div aria-hidden className={cn('h-[5px] border-y border-rule-strong', className)} />
+}
+
+/**
+ * 日付のはんこ（事務の書類に押す、丸い日付印）。上と下に言葉、真ん中に日付。
+ * 点検した日を、紙の右上に押す。朱肉のかすれは、SVG のフィルターで付けている。
+ * 「合格」「済」のような、お墨付きに見える言葉は入れないこと（この道具は、結果を保証しない）。
+ */
+export function DateStamp({ top, date, bottom, label, className }: { top: string; date: string; bottom: string; /** 読み上げ用の文。 */ label: string; className?: string }) {
+  const id = useId()
+  return (
+    <svg role="img" aria-label={label} viewBox="0 0 80 80" className={cn('size-[4.5rem] shrink-0 -rotate-6 text-pen', className)}>
+      <defs>
+        <filter id={id} x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6" />
+        </filter>
+      </defs>
+      <g filter={`url(#${id})`} opacity="0.9" fill="none" stroke="currentColor">
+        <circle cx="40" cy="40" r="35.5" strokeWidth="2.4" />
+        <path d="M6.4 29 H73.6 M6.4 51 H73.6" strokeWidth="1.7" />
+        <g stroke="none" fill="currentColor" textAnchor="middle" fontWeight="700">
+          <text x="40" y="23.5" fontSize="10.5" letterSpacing="0.5">
+            {top}
+          </text>
+          <text x="40" y="44.6" fontSize="12.5" className="num" style={{ letterSpacing: 0 }}>
+            {date}
+          </text>
+          <text x="40" y="65" fontSize="11.5" letterSpacing="2">
+            {bottom}
+          </text>
+        </g>
+      </g>
+    </svg>
+  )
 }

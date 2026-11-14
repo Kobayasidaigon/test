@@ -52,8 +52,9 @@
   --font-sans: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
   /* 見出し。品のある太めの明朝 */
   --font-serif: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
-  /* 金額。数字の幅がそろう（桁がそろって見える） */
-  --font-num: "BIZ UDGothic", "BIZ UDPGothic", "Hiragino Sans", "Meiryo", monospace;
+  /* 金額。数字だけが、幅のそろう BIZ UDゴシックになる（index.html で数字の10文字だけを読み込んでいる）。
+     カンマ・△・円は、次の本文の書体で出る。カンマの幅はいつも同じなので、右にそろえると桁が並ぶ */
+  --font-num: "BIZ UDGothic", "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
   --shadow-paper: 0 1px 0 rgb(74 60 30 / 0.06), 0 10px 28px -14px rgb(74 60 30 / 0.35);
   --shadow-lift: 0 1px 0 rgb(74 60 30 / 0.08), 0 3px 8px -4px rgb(74 60 30 / 0.3);
 }
@@ -126,7 +127,7 @@
 
 @layer utilities {
   /* 金額。数字の幅をそろえて、右にそろえたときに桁が並ぶようにする */
-  .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; letter-spacing: 0; white-space: nowrap; }
+  .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; white-space: nowrap; }
   .font-serif { font-family: var(--font-serif); }
   /* 帳簿の見出しの下の線（太い線と細い線の2本） */
   .rule-double { border-bottom: 3px double var(--rule); }
@@ -167,7 +168,7 @@
 .print-only { display: none; }
 
 /* 印刷（A4 縦）。資料の紙（.paper）だけを出す。くわしくは styles/paper.css */
-@page { size: A4 portrait; margin: 15mm 14mm; }
+@page { size: A4 portrait; margin: 13mm 14mm; }
 @media print {
   html { font-size: 12pt; }
   body { background: #fff !important; }

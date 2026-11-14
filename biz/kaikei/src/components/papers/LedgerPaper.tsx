@@ -5,21 +5,18 @@ import { Paper, PaperHeading, yen } from './Paper'
 // 日付、領収書の番号、科目、摘要、入金、出金、残高。最初の行は「前年度より繰越」。
 // 何ページにも続くので、表の見出しの行は、次のページにも出る（paper.css）。
 
-/** 1ページに入る行の数のめやす（透かしの数を決めるのに使う）。 */
-const ROWS_PER_PAGE = 34
-
 export function LedgerPaper({ report, ledger, watermark = false }: { report: LedgerReport; ledger: Ledger; watermark?: boolean }) {
   return (
-    <Paper label={`${report.yearLabel} ${ledger.title}`} watermark={watermark} pages={1 + ledger.rows.length / ROWS_PER_PAGE}>
+    <Paper label={`${report.yearLabel} ${ledger.title}`} watermark={watermark}>
       <PaperHeading title={ledger.title} period={`${report.yearLabel}　${report.periodText}`} orgName={report.orgName} />
-      <p className="paper-unit" style={{ textAlign: 'right', marginTop: 'calc(var(--u) * 3)', marginBottom: 'calc(var(--u) * 1.2)' }}>
+      <p className="paper-unit" style={{ textAlign: 'right', marginTop: 'calc(var(--u) * 2)', marginBottom: 'calc(var(--u) * 1.2)' }}>
         （単位：円）
       </p>
       <table className="paper-table">
         <colgroup>
-          <col style={{ width: '12.5%' }} />
+          <col style={{ width: '10.5%' }} />
           <col style={{ width: '7.5%' }} />
-          <col style={{ width: '18%' }} />
+          <col style={{ width: '20%' }} />
           <col style={{ width: '25%' }} />
           <col style={{ width: '12%' }} />
           <col style={{ width: '12%' }} />
@@ -43,7 +40,7 @@ export function LedgerPaper({ report, ledger, watermark = false }: { report: Led
         <tbody>
           {ledger.rows.map((row) => (
             <tr key={row.key} className={row.kind === 'opening' ? 'muted' : undefined}>
-              <td className="nowrap">{formatMonthDay(row.date)}</td>
+              <td className="nowrap small">{formatMonthDay(row.date)}</td>
               <td className="center small">{row.receiptNo}</td>
               <td className="small">{row.categoryName}</td>
               <td className="small">{row.description}</td>

@@ -65,7 +65,7 @@ if (check.errors.length === 0) apply(addTransaction(book, year.id, input))
 | すること | 関数 |
 |---|---|
 | 新しく始める | `createBook({ orgName, orgKind, startDate, cashOpening?, bankAccounts? })`。期間の初期値は `defaultFiscalPeriod(today)` |
-| サンプルを入れる | `createSampleBook()` |
+| サンプルを入れる | `createSampleBook()`。開いている帳簿が見本かどうかは `isSampleBook(book)` |
 | 団体の名前・役の呼び名・差の向き | `updateOrg(book, patch)` |
 | 年度の呼び名・期間・作成日 | `updateYear(book, yearId, patch)` |
 | 役員の名前 | `updateOfficers(book, yearId, patch)` |

@@ -301,6 +301,20 @@ describe('ブラウザの保存領域', () => {
       expect(storage.map.get(BROKEN_BACKUP_KEY)).toBe(broken)
     }
   })
+  it('保存領域の中身が読めなかった理由は、保存領域に合った言い方にする（「ファイルを選んでください」とは言わない）', () => {
+    const cut = loadData(memoryStorage({ [STORAGE_KEY]: '{"app":"chintai","version":1,"da' }))
+    expect(cut.status).toBe('broken')
+    if (cut.status === 'broken') {
+      expect(cut.reason).toContain('途中で切れているか、書き換えられています')
+      expect(cut.reason).not.toContain('選んでください')
+      // どうすればよいか（ファイルから戻せること）も言う。
+      expect(cut.reason).toContain('ファイルを読み込む')
+    }
+    // JSON としては読めるが、形が違うときは、どこが違うのかを言う。
+    const badLine = loadData(memoryStorage({ [STORAGE_KEY]: JSON.stringify({ app: 'chintai', version: 1, data: { estimate: { lines: [{ itemId: 'kagi', amount: -1 }] } } }) }))
+    expect(badLine.status).toBe('broken')
+    if (badLine.status === 'broken') expect(badLine.reason).toContain('項目の1行目の金額')
+  })
   it('壊れたデータを取っておけなくても、落ちない', () => {
     const storage: StorageLike = {
       getItem: () => '{こわれている',

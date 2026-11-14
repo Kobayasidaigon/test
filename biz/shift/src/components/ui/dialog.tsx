@@ -11,7 +11,7 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const EASE: Transition["ease"] = [0.2, 0, 0, 1]
+const EASE = [0.2, 0, 0, 1] as const
 /** はずまずに、すっと止まるばね */
 const SPRING: Transition = { type: "spring", stiffness: 460, damping: 38, mass: 0.9 }
 

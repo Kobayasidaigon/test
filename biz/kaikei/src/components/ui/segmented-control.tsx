@@ -1,15 +1,16 @@
-import { useCallback, useEffect, useRef, type KeyboardEvent, type ReactNode } from "react"
-import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react"
+import { useCallback, useRef, type KeyboardEvent, type ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
 
 // 21st.dev の Segmented Control（ddoemonn）をもとにした、2〜4個から1つを選ぶ切り替え。
 // もとのまま使っているところ: ラジオグループとしてのふるまい（矢印キー・Home/End で動く、選んだものだけ Tab で止まる）と、
-// 選んだしるしがすべって動き、その下の字の色が、しるしの形に切りぬかれて変わる仕組み。
-// 変えたところ: 見た目を「紙の上の、墨のしるし」に。高さを 44px 以上に。字を大きく。幅いっぱいに広げられるように。
-// 選んだものは、色だけでなく aria-checked でも伝わる。
+// 選んだしるしがすべって動き、その下の字の色が、しるしの形に切りぬかれて変わる仕組み
+// （しるしの中に、白ぬきの字を逆向きにずらして重ねてある）。
+// 変えたところ: もとは motion のばねで動かしていたが、CSS の transition に置きかえた（道具の画面を軽くするため。
+// 動きを減らす設定では、index.css の決まりで、すぐに切り替わる）。見た目を「紙の上の、墨のしるし」に。
+// 高さを 44px 以上に。字を大きく。幅いっぱいに広げられるように。選んだものは、色だけでなく aria-checked でも伝わる。
 
-const SPRING = { type: "spring", stiffness: 520, damping: 38, mass: 0.5 } as const
+const SLIDE = "transform 0.24s cubic-bezier(0.3, 0.9, 0.3, 1)"
 
 export type SegmentedOption<T extends string = string> = {
   value: T
@@ -46,19 +47,6 @@ export function SegmentedControl<T extends string = string>({
   const index = found < 0 ? 0 : found
 
   const buttons = useRef<(HTMLButtonElement | null)[]>([])
-  const reduced = useReducedMotion()
-  const pos = useMotionValue(index)
-  const thumbX = useTransform(pos, (v) => `${v * 100}%`)
-  const maskX = useTransform(pos, (v) => `${v * -100}%`)
-
-  useEffect(() => {
-    if (reduced) {
-      pos.set(index)
-      return
-    }
-    const controls = animate(pos, index, SPRING)
-    return () => controls.stop()
-  }, [index, reduced, pos])
 
   const seek = useCallback(
     (from: number, dir: number) => {
@@ -116,17 +104,16 @@ export function SegmentedControl<T extends string = string>({
           </span>
         ))}
 
-        {/* すべって動くしるし。中に、白ぬきの字を同じ位置で重ねてある */}
-        <motion.div
+        {/* すべって動くしるし。中に、白ぬきの字を、逆向きに同じだけずらして重ねてある（字は動かず、色だけが変わって見える） */}
+        <div
           aria-hidden
           className={cn(
             "pointer-events-none absolute inset-y-0 left-0 overflow-hidden rounded-md shadow-lift",
             tone === "sumi" ? "bg-sumi" : "bg-rule-ink",
           )}
-          style={{ width: `${100 / count}%`, x: thumbX }}
-          initial={false}
+          style={{ width: `${100 / count}%`, transform: `translateX(${index * 100}%)`, transition: SLIDE }}
         >
-          <motion.div className="absolute inset-0" style={{ x: maskX }} initial={false}>
+          <div className="absolute inset-0" style={{ transform: `translateX(${index * -100}%)`, transition: SLIDE }}>
             <div className="absolute inset-y-0 left-0 grid" style={{ width: `${count * 100}%`, gridTemplateColumns: template }}>
               {options.map((option) => (
                 <span key={option.value} className={cn(seg, "text-white")}>
@@ -134,8 +121,8 @@ export function SegmentedControl<T extends string = string>({
                 </span>
               ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* 上の段: 押すところ（見えないボタン） */}
         <div className="absolute inset-0 grid" style={{ gridTemplateColumns: template }}>

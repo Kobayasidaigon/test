@@ -72,7 +72,7 @@ export function BudgetDraftPaper({
   watermark?: boolean
 }) {
   return (
-    <Paper label={report.title} watermark={watermark} pages={1 + (report.income.rows.length + report.expense.rows.length) / 38}>
+    <Paper label={report.title} watermark={watermark}>
       <PaperHeading title={report.title} period={report.nextPeriodText} orgName={report.orgName} />
 
       <PaperSection title="収入の部" unit="（単位：円）" />

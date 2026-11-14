@@ -10,7 +10,6 @@ import {
   formatYen,
   latestYear,
   parseDateInput,
-  parseYen,
   randomId,
   setLicenseKey,
   undoCarryForward,
@@ -65,9 +64,8 @@ function savedAtText(iso: string | null): string {
 
 /** 1. ひきつぎファイル */
 function FileCard({ onOpenFile }: { onOpenFile: (file: File) => void }) {
-  const { state, unsaved, saveFile } = useWorkspace()
+  const { state, unsaved, dirty, saveFile } = useWorkspace()
   const inputRef = useRef<HTMLInputElement>(null)
-  const dirty = unsaved.neverSaved || unsaved.count > 0
   return (
     <Card
       id="handover-file"
@@ -76,7 +74,9 @@ function FileCard({ onOpenFile }: { onOpenFile: (file: File) => void }) {
       lead="帳簿のすべて（過去の年度も）が、1つのファイルに入ります。作業のあとは、ファイルに保存してください。次の担当の方には、このファイルを渡します。"
     >
       <div className={cn('rounded-lg border px-4 py-3', dirty ? 'border-shu/45 bg-shu-soft' : 'border-rule/50 bg-rule-soft/40')} role="status">
-        <p className="font-bold leading-snug">{dirty ? unsaved.message : 'ファイルに保存してあります。そのあとの変更は、ありません。'}</p>
+        <p className="font-bold leading-snug">
+          {dirty ? unsaved.message : unsaved.neverSaved ? 'サンプルの帳簿です。まだ何も変えていないので、保存しなくてもかまいません。' : 'ファイルに保存してあります。そのあとの変更は、ありません。'}
+        </p>
         {state.savedAt && <p className="mt-0.5 text-[0.86rem] text-muted-foreground">最後に保存した（開いた）ファイル: {savedAtText(state.savedAt)} のもの</p>}
       </div>
       <div className="mt-4 flex flex-wrap gap-2.5">
@@ -215,9 +215,9 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
                   ))}
                 </ul>
                 {check.warnings.some((w) => w.code.startsWith('reconcile')) && (
-                  <button type="button" className="mt-1.5 font-bold text-rule-ink underline underline-offset-4" onClick={() => onNavigate('reconcile')}>
+                  <Button variant="link" size="sm" className="justify-start px-0 text-left" onClick={() => onNavigate('reconcile')}>
                     「残高の照合」の画面へ
-                  </button>
+                  </Button>
                 )}
               </AlertDescription>
             </Alert>
@@ -229,7 +229,7 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
       <div className="mt-4 flex flex-wrap items-center gap-2.5">
         <Button variant="secondary" size="lg" disabled={!isPro || !check.ok} onClick={openDialog}>
           <ArrowRightLeft />
-          「{check.preview.label}」を作って、繰り越す
+          次の年度へ繰り越す
         </Button>
         {canUndo && (
           <Button variant="ghost" onClick={() => setUndoOpen(true)}>
@@ -402,7 +402,7 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
       title="引き継ぎ書に書くこと"
       lead={`「${year.label}」の引き継ぎ書の中身です。残高と、照合の結果は、自動で入ります。`}
     >
-      <div className="grid gap-6">
+      <div className="grid grid-cols-1 gap-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="grid content-start gap-1.5">
             <Label htmlFor="handover-date">引き継ぎをする日</Label>
@@ -604,7 +604,10 @@ function LicenseCard() {
             </div>
           </div>
           {isSample ? null : inFile ? (
-            <p className="text-[0.9rem] leading-relaxed">{pro.note}</p>
+            <p className="text-[0.9rem] leading-relaxed">
+              {pro.note}
+              <span className="mt-1 block text-[0.84rem] text-muted-foreground">キーは、この帳簿のひきつぎファイルにも入っています。ブラウザから外しても、このファイルを開くと、また有料版になります。</span>
+            </p>
           ) : (
             <Alert variant="warn">
               <AlertDescription>
@@ -678,13 +681,12 @@ function LicenseCard() {
 
 /** 5. はじめからやり直す */
 function ResetCard() {
-  const { book, unsaved, reset, saveFile } = useWorkspace()
+  const { book, unsaved, dirty, isSample, reset, saveFile } = useWorkspace()
   const [open, setOpen] = useState(false)
-  const dirty = unsaved.neverSaved || unsaved.count > 0
   return (
     <Card id="handover-reset" tone="plain" title="このブラウザのデータを消す" lead="別の団体の帳簿を始めるときや、共用のパソコンを使い終わったときに使います。保存したひきつぎファイルは、消えません。">
       <Button variant="destructive" onClick={() => setOpen(true)}>
-        データを消して、はじめの画面にもどる
+        データを消して、はじめにもどる
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
@@ -705,7 +707,11 @@ function ResetCard() {
                 </AlertDescription>
               </Alert>
             ) : (
-              <p className="leading-relaxed">ひきつぎファイルに保存してあるので、あとでそのファイルを開けば、続きから始められます。</p>
+              <p className="leading-relaxed">
+                {isSample && unsaved.neverSaved
+                  ? 'サンプルの帳簿は、はじめの画面の「サンプルを見る」から、いつでも入れ直せます。'
+                  : 'ひきつぎファイルに保存してあるので、あとでそのファイルを開けば、続きから始められます。'}
+              </p>
             )}
           </DialogBody>
           <DialogFooter>
@@ -731,7 +737,7 @@ function ResetCard() {
 export function HandoverScreen({ onOpenFile, onNavigate }: { onOpenFile: (file: File) => void; onNavigate: (tab: 'reconcile' | 'reports') => void }) {
   const { locked, year, book } = useWorkspace()
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <FileCard onOpenFile={onOpenFile} />
       <CarryCard onNavigate={onNavigate} />
       {locked && <Alert variant="info">いま見ている「{year.label}」は読むだけなので、引き継ぎ書の中身は変えられません。いまの年度は「{latestYear(book).label}」です。</Alert>}

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 // 変えたもの:
 // - 見出しと中身の見た目は、使う側（点検の結果の1行）が決めるので、ここは「ふるまい」と「開く動き」だけにした。
 // - 高さを測って動かす仕組み（motion と ResizeObserver）をやめて、CSS の grid（0fr → 1fr）で開く。
-//   印刷のときに、CSS だけで全部開けるようにするため（index.css の [data-disclosure-panel]）。
+//   印刷のときに、CSS だけで開けるようにするため（index.css の [data-disclosure-panel][data-print-open]）。
 // - いくつでも同時に開ける形（multiple）を基本にして、「全部開く／全部閉じる」を足した。
 // - 中身の高さに上限を付けない（中でスクロールさせない。根拠の文は、全部見えたほうがよい）。
 
@@ -135,13 +135,26 @@ export function useAccordion({ ids, defaultOpen = [] }: UseAccordionOptions) {
 
 /**
  * 開いたり閉じたりする中身。useAccordion の panelProps をそのまま渡す。
- * 閉じているときも、中身は HTML に残す（印刷のときに、CSS だけで開けるように）。
+ * 閉じているときも、中身は HTML に残す（印刷のときに、CSS だけで開けるように）。printOpen を付けた欄は、印刷では必ず開く。
  */
-export function DisclosurePanel({ open, className, children, ...rest }: AccordionPanelProps & { className?: string; children: ReactNode }) {
+export function DisclosurePanel({
+  open,
+  printOpen = false,
+  className,
+  children,
+  ...rest
+}: AccordionPanelProps & {
+  /** 印刷のときは、閉じていても開いて出す。 */
+  printOpen?: boolean
+  className?: string
+  children: ReactNode
+}) {
   const ref = useInertWhenClosed(open)
   return (
     <div
       data-disclosure-panel
+      data-state={open ? "open" : "closed"}
+      data-print-open={printOpen || undefined}
       className="grid transition-[grid-template-rows] duration-300 ease-out"
       style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
     >

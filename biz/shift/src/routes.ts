@@ -21,8 +21,8 @@ export const routes: Route[] = [
   },
   {
     path: '/app',
-    title: 'ツール | たたき台シフト',
-    description: 'ツールの画面。',
+    title: 'シフトを組む | たたき台シフト',
+    description: '希望休と必要な人数を入れて、来月のシフトのたたき台を作る画面です。登録はいりません。入れた内容は、このブラウザの中だけに保存されます。',
     ssr: false,
     load: () => import('./pages/Tool'),
   },

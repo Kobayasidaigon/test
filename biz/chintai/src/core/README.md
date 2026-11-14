@@ -54,11 +54,11 @@ mail.body      // 本文（コピーのボタンで、そのままコピーす�
 | `items.ts` | 項目の一覧（26個）と、解説ページの中身（12ページ分） | `items` `otherItem` `getItem(id)` `isPresetItemId(id)` `listItemsByCategory()` `listGuideItems()` `findGuideItem(slug)` `resolveBasis(notes)` `listItemSources(item)` `NO_RULE_TEXT` `OTHER_ITEM_ID` |
 | `calc.ts` | 計算（仲介手数料の上限、日割りの目安、月額との比） | `brokerageCaps(rent)` `checkBrokerage()` `prorationDays()` `checkProration()` `compareToMonthly()` `monthsOf()` |
 | `inspect.ts` | 点検（この道具の中心） | `inspectEstimate(estimate)` `isOtherLine(line)` |
-| `search.ts` | 見積書の言葉から項目を探す | `searchItems(query, limit?)` `guessItemId(label)` `normalizeForSearch(text)` |
+| `search.ts` | 見積書の言葉から項目を探す | `searchItems(query, limit?)` `guessItemId(label)` `labelForMatch(query, match)` `normalizeForSearch(text)` |
 | `message.ts` | 確認の文面（メール用・LINE用） | `buildMessage(input, style)` `defaultAskLineIds(inspection)` `selectedFindings()` |
-| `estimate.ts` | 見積書を作る・書き換える（もとを書き換えない） | `createEmptyData()` `createEmptyEstimate()` `addLine()` `updateLine()` `removeLine()` `moveLine()` `pruneMessageLineIds()` `lineLabel()` `nextLineId()` |
+| `estimate.ts` | 見積書を作る・書き換える（もとを書き換えない） | `createEmptyData()` `createEmptyEstimate()` `addLine()` `updateLine()` `removeLine()` `moveLine()` `pruneMessageLineIds()` `lineLabel()` `nextLineId()` `isEmptyData()` |
 | `storage.ts` | 保存の形式（版つき）、読み込むときの検査、保存領域、ファイル | `STORAGE_KEY` `SCHEMA_VERSION` `loadData(storage)` `saveData(storage, data, now)` `clearData(storage)` `buildExportFile(data, now)` `parseSavedText(text)` `parseSaved(value)` `LIMITS` |
-| `sample.ts` | サンプルの見積書 | `sampleData()` `sampleEstimate()` `SAMPLE_NOTE` |
+| `sample.ts` | サンプルの見積書 | `sampleData()` `sampleEstimate()` `isSampleEstimate(estimate)` `SAMPLE_NOTE` |
 | `consult.ts` | 相談先（188 など）、広告の表示の根拠 | `consultDesks` `adDisclosure` |
 | `texts.ts` | 画面・LP で同じ言い方をするための文 | `DISCLAIMER` `CONSULT_NOTE` `ASK_TOTAL_LABEL` `ASK_TOTAL_NOTE` `MESSAGE_NOTE` `NOT_DOING` `DATA_NOTE` `AD_LABEL` |
 | `wording.ts` | 言ってはいけない言い方の一覧 | `BANNED_PHRASES` `LEGAL_WORDS` `findBannedPhrase(text)` |
@@ -133,6 +133,15 @@ item.limits / item.caveat                               // 確かめられなか
 getCategory(item.category)                              // 区分
 RULES_VERIFIED_ON                                       // ルールの最終確認日（formatDateJa で「2026年11月14日」）
 ```
+
+### 画面の担当（②）が足したもの
+
+- `labelForMatch(query, match)`（`search.ts`）… 探した言葉から項目を選んで足すときに、行の名前として残す文字を決める。
+  見積書の言葉（「室内抗菌施工費」「消毒料」）は残し、探すための短い言葉（「抗菌」）や読みがなは残さない。
+- `isEmptyData(data)`（`estimate.ts`）… まだ何も入っていないか。置きかえる前に確かめるかどうかを決める。
+- `isSampleEstimate(estimate)`（`sample.ts`）… サンプルのままか。結果の画面に `SAMPLE_NOTE` を出すかどうかを決める。
+- `loadData()` の `broken` の理由 … 保存領域の中身が JSON として読めないときは、「ファイルを選んでください」ではなく、
+  保存領域に合った言い方にした。ファイルから戻せることも言う。
 
 ## 設計で決めたこと（なぜそうしたか）
 

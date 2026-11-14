@@ -80,7 +80,8 @@ export function Toaster() {
 
   return (
     <div
-      className="no-print pointer-events-none fixed inset-x-0 bottom-0 z-[70] flex flex-col items-center gap-2 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:items-end sm:px-5 sm:pb-5"
+      // スマホでは上に出す（下からのシートや、下にある操作のボタンを、お知らせでかくさないため）
+      className="no-print pointer-events-none fixed inset-x-0 top-0 z-[70] flex flex-col items-center gap-2 px-3 pt-[max(0.5rem,env(safe-area-inset-top))] sm:bottom-0 sm:top-auto sm:items-end sm:px-5 sm:pb-5 sm:pt-0"
       onMouseEnter={() => store.pause()}
       onMouseLeave={() => store.resume()}
       onFocus={() => store.pause()}
@@ -91,7 +92,7 @@ export function Toaster() {
           key={t.id}
           role={t.kind === "error" ? "alert" : "status"}
           className={cn(
-            "pointer-events-auto flex w-full max-w-md items-center gap-3 rounded-lg border-2 py-2 pl-4 pr-2 text-sm font-bold leading-relaxed animate-in fade-in slide-in-from-bottom-3 duration-200",
+            "pointer-events-auto flex w-full max-w-md items-center gap-3 rounded-lg border-2 py-2 pl-4 pr-2 text-sm font-bold leading-relaxed animate-in fade-in duration-200 max-sm:slide-in-from-top-3 sm:slide-in-from-bottom-3",
             t.kind === "error" ? "border-danger bg-card text-danger shadow-[3px_3px_0_0_var(--danger)]" : "border-ink bg-ink text-paper shadow-[3px_3px_0_0_var(--shift-egg)]",
           )}
         >

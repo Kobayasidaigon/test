@@ -3,7 +3,7 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-import { dialogPaperClass } from "@/components/ui/dialog"
+import { dialogPaperClass, useReturnFocus } from "@/components/ui/dialog"
 
 // shadcn の Alert Dialog（21st.dev、Radix）をもとにした、確かめの画面。
 // いまの内容を置きかえる・消す、といった「元に戻しにくい操作」の前に出す。
@@ -31,12 +31,15 @@ AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
 const AlertDialogContent = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <AlertDialogPortal>
-    <AlertDialogOverlay />
-    <AlertDialogPrimitive.Content ref={ref} className={cn(dialogPaperClass, "sm:max-w-md", className)} {...props} />
-  </AlertDialogPortal>
-))
+>(({ className, ...props }, ref) => {
+  const returnFocus = useReturnFocus()
+  return (
+    <AlertDialogPortal>
+      <AlertDialogOverlay />
+      <AlertDialogPrimitive.Content ref={ref} className={cn(dialogPaperClass, "sm:max-w-md", className)} {...returnFocus} {...props} />
+    </AlertDialogPortal>
+  )
+})
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName
 
 const AlertDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (

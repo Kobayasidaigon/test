@@ -62,7 +62,14 @@ export type CheckReport = {
   ok: boolean
   /** 点検結果のまとめ（そのまま画面に出せる文の一覧。0件のときも「0件」と言う） */
   summary: string[]
+  /**
+   * summary と同じ文に、調子を付けたもの（画面で、色と印を出し分けるのに使う）。
+   * ok = 問題なし（0件）、bad = 直したほうがよい（違反、人数の不足）、note = 知らせるだけ（なるべく満たす条件）
+   */
+  summaryItems: SummaryItem[]
 }
+
+export type SummaryItem = { text: string; tone: 'ok' | 'bad' | 'note' }
 
 /** 点検に使う、スタッフごとの下ごしらえ */
 type Row = {
@@ -269,27 +276,28 @@ export function checkPlan(plan: ShiftPlan, schedule: Schedule = plan.schedule): 
 
   const missingTotal = shortages.reduce((n, s) => n + s.missing, 0) + roleShortages.reduce((n, s) => n + s.missing, 0)
 
-  const summary: string[] = []
-  summary.push(
+  const summaryItems: SummaryItem[] = []
+  summaryItems.push(
     violations.length === 0
-      ? '必ず守る条件（休み希望、定休日、連勤の上限など）の違反は、0件です。'
-      : `必ず守る条件に合わないところが、${violations.length}件あります。`,
+      ? { tone: 'ok', text: '必ず守る条件（休み希望、定休日、連勤の上限など）の違反は、0件です。' }
+      : { tone: 'bad', text: `必ず守る条件に合わないところが、${violations.length}件あります。` },
   )
-  summary.push(
+  summaryItems.push(
     shortages.length === 0
-      ? '必要な人数は、すべての日でそろっています（不足は0件）。'
-      : `人数が足りないところが、${shortages.length}か所あります（のべ${shortages.reduce((n, s) => n + s.missing, 0)}人）。`,
+      ? { tone: 'ok', text: '必要な人数は、すべての日でそろっています（不足は0件）。' }
+      : { tone: 'bad', text: `人数が足りないところが、${shortages.length}か所あります（のべ${shortages.reduce((n, s) => n + s.missing, 0)}人）。` },
   )
   if (plan.needs.roleMins.length > 0) {
-    summary.push(
+    summaryItems.push(
       roleShortages.length === 0
-        ? '役割の最低人数は、すべてそろっています（不足は0件）。'
-        : `役割の最低人数が足りないところが、${roleShortages.length}か所あります。`,
+        ? { tone: 'ok', text: '役割の最低人数は、すべてそろっています（不足は0件）。' }
+        : { tone: 'bad', text: `役割の最低人数が足りないところが、${roleShortages.length}か所あります。` },
     )
   }
-  if (minDaysShort.length > 0) summary.push(`勤務日数が下限に届いていない人が、${minDaysShort.length}人います。`)
-  if (wishesUnmet.length > 0) summary.push(`かなわなかった勤務の希望が、${wishesUnmet.length}件あります。`)
-  if (weeksWithoutOff.length > 0) summary.push(`休みが1日もない週が、${weeksWithoutOff.length}件あります。`)
+  if (minDaysShort.length > 0) summaryItems.push({ tone: 'note', text: `勤務日数が下限に届いていない人が、${minDaysShort.length}人います。` })
+  if (wishesUnmet.length > 0) summaryItems.push({ tone: 'note', text: `かなわなかった勤務の希望が、${wishesUnmet.length}件あります。` })
+  if (weeksWithoutOff.length > 0) summaryItems.push({ tone: 'note', text: `休みが1日もない週が、${weeksWithoutOff.length}件あります。` })
+  const summary = summaryItems.map((x) => x.text)
 
   return {
     violations,
@@ -302,6 +310,7 @@ export function checkPlan(plan: ShiftPlan, schedule: Schedule = plan.schedule): 
     missingTotal,
     ok: violations.length === 0,
     summary,
+    summaryItems,
   }
 }
 

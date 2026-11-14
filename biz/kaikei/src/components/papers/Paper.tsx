@@ -17,43 +17,20 @@ export function PaperFrame({ children, zoom = 'fit', className }: { children: Re
   )
 }
 
-/**
- * 「見本」の透かし（無料版）。
- * CSS の背景ではなく、本物の文字として置く。背景は、ブラウザの印刷の設定によっては紙に出ないため。
- * 紙が何ページにもなる資料（出納帳）でも、どのページにも入るように、紙の長さに合わせた数を縦に並べる。
- */
-function Watermark({ pages }: { pages: number }) {
-  // 1ページにつき2つ。紙からはみ出た分は、枠で切れる
-  const count = Math.max(2, Math.ceil(pages) * 2 + 1)
-  return (
-    <div className="paper-watermark" aria-hidden="true">
-      {Array.from({ length: count }, (_, i) => (
-        <span key={i} style={{ top: `calc(var(--u) * ${78 + i * 133})` }}>
-          見本
-        </span>
-      ))}
-    </div>
-  )
-}
-
 /** 1枚の紙（何ページかに続くこともある）。 */
 export function Paper({
   label,
   watermark = false,
-  pages = 1,
   children,
 }: {
   /** 読み上げ用の名前（「令和7年度 収支決算書」など） */
   label: string
-  /** 「見本」の透かしを入れるか */
+  /** 「見本」の透かしを入れるか（無料版）。透かしは paper.css が、紙の地にくり返して敷く */
   watermark?: boolean
-  /** およそ何ページになるか（透かしの数を決めるのに使う） */
-  pages?: number
   children: ReactNode
 }) {
   return (
-    <section className="paper" aria-label={label}>
-      {watermark && <Watermark pages={pages} />}
+    <section className="paper" aria-label={label} data-watermark={watermark ? '' : undefined}>
       {children}
     </section>
   )

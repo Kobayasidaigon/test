@@ -13,6 +13,7 @@ export function Hint({
   content,
   children,
   label,
+  tabbable = true,
   className,
 }: {
   /** 説明の文 */
@@ -21,6 +22,11 @@ export function Hint({
   children?: React.ReactNode
   /** 「？」のボタンの、読み上げ用の名前 */
   label?: string
+  /**
+   * Tab キーで止まるか。入力欄が続くフォームの中では false にして、Tab で次の入力欄へまっすぐ進めるようにする
+   * （そのときは、同じ説明を、入力欄の aria-describedby で読み上げに渡すこと）
+   */
+  tabbable?: boolean
   className?: string
 }) {
   const id = React.useId()
@@ -75,6 +81,7 @@ export function Hint({
         aria-label={children ? undefined : (label ?? "説明を見る")}
         aria-describedby={open ? id : undefined}
         aria-expanded={open}
+        tabIndex={tabbable ? undefined : -1}
         onMouseEnter={openSoon}
         onMouseLeave={closeSoon}
         onFocus={() => setOpen(true)}
@@ -84,10 +91,11 @@ export function Hint({
           setOpen((v) => !v)
         }}
         className={cn(
-          "inline-flex cursor-help items-center rounded-sm",
+          // 見た目は字の大きさのまま、押せるところだけを上下に広げて 44px にする
+          "relative inline-flex cursor-help items-center rounded-sm before:absolute before:-inset-x-1.5 before:-inset-y-2.5 before:content-['']",
           children
-            ? "border-b border-dashed border-current pb-px"
-            : "size-6 justify-center rounded-full border border-rule-ink/60 bg-paper text-[0.8rem] font-bold leading-none text-rule-ink before:absolute before:-inset-2.5 before:content-['']",
+            ? "border-b border-dashed border-current pb-px leading-[1.35]"
+            : "size-6 justify-center rounded-full border border-rule-ink/60 bg-paper text-[0.8rem] font-bold leading-none text-rule-ink",
         )}
       >
         {children ?? "？"}

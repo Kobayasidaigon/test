@@ -1,7 +1,7 @@
 import { useId, useState } from 'react'
 import { PencilLineIcon } from 'lucide-react'
 import { LIMITS, MESSAGE_NOTE, buildMessage, defaultAskLineIds, formatYen, getCategory, type AppData, type Inspection, type MessageStyle } from '@/core'
-import { CategoryMark } from '@/components/category-mark'
+import { FindingMark } from '@/components/category-mark'
 import { MessagePreview } from '@/components/message-preview'
 import { Sheet, SheetHeading, SheetNote, SheetTitle } from '@/components/sheet'
 import { Button } from '@/components/ui/button'
@@ -68,6 +68,8 @@ export function MessageStep({ data, setData, inspection, onGoInput, onGoResult }
   }
 
   const built = buildMessage({ inspection, ...message }, style)
+  /** 確かめる項目のうち、文面に入れていない数（あとから足した行は、自分で選び直すまで入らないので、知らせる）。 */
+  const missing = defaults.filter((id) => !selected.has(id)).length
   const isDefault = message.lineIds === null || (message.lineIds.length === defaults.length && defaults.every((id) => selected.has(id)))
 
   return (
@@ -149,7 +151,7 @@ export function MessageStep({ data, setData, inspection, onGoInput, onGoResult }
                   <span className="min-w-0 flex-1">
                     <span className={cn('block text-[15px] leading-snug', on && 'text-ink')}>{f.label}</span>
                     <span className="mt-0.5 flex items-center gap-1 text-xs leading-5 text-ink-soft">
-                      <CategoryMark id={f.category} variant={i} className="text-[11px]" />
+                      <FindingMark f={f} variant={i} className="text-[11px]" />
                       {getCategory(f.category).label}
                       {!attention && f.level === 'ok' && <span>（気になる点は、見つかっていません）</span>}
                     </span>
@@ -160,6 +162,11 @@ export function MessageStep({ data, setData, inspection, onGoInput, onGoResult }
             )
           })}
         </ul>
+        {missing > 0 && (
+          <p role="status" className="mt-3 text-[13px] leading-6 text-ink-soft">
+            赤ペンの丸が付いた項目のうち、{missing}つは、文面に入れていません。
+          </p>
+        )}
         <div className="mt-3 flex flex-wrap gap-2">
           <Button variant="outline" size="sm" disabled={isDefault} onClick={() => setLineIds(null)}>
             確かめる項目だけに戻す

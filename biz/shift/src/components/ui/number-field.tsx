@@ -14,6 +14,8 @@ export interface NumberFieldProps {
   onChange: (value: number | null) => void
   min?: number
   max?: number
+  /** −／＋と↑↓で、いくつずつ動かすか（初期値は 1） */
+  step?: number
   /** 空にできるか。true なら、消すと null になる */
   allowEmpty?: boolean
   /** 空のときに出す文字（「なし」など） */
@@ -36,7 +38,7 @@ function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v))
 }
 
-export function NumberField({ value, onChange, min = 0, max = 99, allowEmpty = false, placeholder, label, unit, disabled, id, className }: NumberFieldProps) {
+export function NumberField({ value, onChange, min = 0, max = 99, step = 1, allowEmpty = false, placeholder, label, unit, disabled, id, className }: NumberFieldProps) {
   // 打っている途中の文字（「1」→「12」のように、途中の値をそのまま見せるため）
   const [draft, setDraft] = useState<string | null>(null)
   const [nudge, setNudge] = useState(0)
@@ -104,10 +106,10 @@ export function NumberField({ value, onChange, min = 0, max = 99, allowEmpty = f
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (disabled) return
     let delta = 0
-    if (event.key === "ArrowUp") delta = 1
-    else if (event.key === "ArrowDown") delta = -1
-    else if (event.key === "PageUp") delta = 5
-    else if (event.key === "PageDown") delta = -5
+    if (event.key === "ArrowUp") delta = step
+    else if (event.key === "ArrowDown") delta = -step
+    else if (event.key === "PageUp") delta = step * 5
+    else if (event.key === "PageDown") delta = -step * 5
     else if (event.key === "Enter") {
       ;(event.target as HTMLInputElement).blur()
       return
@@ -138,7 +140,7 @@ export function NumberField({ value, onChange, min = 0, max = 99, allowEmpty = f
   return (
     <span
       className={cn(
-        "inline-flex h-11 items-stretch overflow-hidden rounded-lg border-2 border-ink bg-card align-middle",
+        "relative inline-flex h-12 items-stretch overflow-hidden rounded-lg border-2 border-ink bg-card align-middle md:h-11",
         "focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-focus",
         disabled && "pointer-events-none opacity-45",
         className,
@@ -147,9 +149,9 @@ export function NumberField({ value, onChange, min = 0, max = 99, allowEmpty = f
       <button
         type="button"
         tabIndex={-1}
-        aria-label={`${label}を1減らす`}
+        aria-label={`${label}を${step}減らす`}
         disabled={disabled}
-        onPointerDown={startHold(-1)}
+        onPointerDown={startHold(-step)}
         onPointerUp={stopRepeat}
         onPointerLeave={stopRepeat}
         onPointerCancel={stopRepeat}
@@ -171,15 +173,15 @@ export function NumberField({ value, onChange, min = 0, max = 99, allowEmpty = f
           disabled={disabled}
           placeholder={placeholder}
           value={shown}
-          onChange={(e) => setDraft(e.target.value.replace(/[^\d０-９]/g, "").slice(0, 3))}
+          onChange={(e) => setDraft(e.target.value.replace(/[^\d０-９]/g, "").slice(0, 4))}
           onFocus={(e) => e.target.select()}
           onBlur={(e) => {
             if (draft !== null) commit(e.target.value)
           }}
           onKeyDown={onKeyDown}
           className={cn(
-            "h-full w-10 min-w-0 border-0 bg-transparent p-0 text-center font-num text-base font-bold text-ink outline-none placeholder:font-sans placeholder:text-xs placeholder:font-medium placeholder:text-ink-soft",
-            unit && "w-8 text-right",
+            "h-full w-11 min-w-0 border-0 bg-transparent p-0 text-center font-num text-base font-bold text-ink outline-none placeholder:font-sans placeholder:text-xs placeholder:font-medium placeholder:text-ink-soft md:w-10",
+            unit && "text-right md:w-8",
           )}
         />
         {unit ? <span aria-hidden className="pl-0.5 pr-1.5 text-xs font-bold text-ink-soft">{unit}</span> : null}
@@ -187,9 +189,9 @@ export function NumberField({ value, onChange, min = 0, max = 99, allowEmpty = f
       <button
         type="button"
         tabIndex={-1}
-        aria-label={`${label}を1ふやす`}
+        aria-label={`${label}を${step}ふやす`}
         disabled={disabled}
-        onPointerDown={startHold(1)}
+        onPointerDown={startHold(step)}
         onPointerUp={stopRepeat}
         onPointerLeave={stopRepeat}
         onPointerCancel={stopRepeat}

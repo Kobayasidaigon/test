@@ -30,7 +30,7 @@ export function SheetTitle({
     <header className={cn('mb-6', className)}>
       <div className="flex items-end justify-between gap-3 text-xs leading-5 text-ink-soft">
         <span>{eyebrow}</span>
-        {right && <span className="text-right">{right}</span>}
+        {right && <span className="shrink-0 text-right">{right}</span>}
       </div>
       <Tag className="mt-2 text-center text-[1.35rem] font-bold tracking-[0.32em] [text-indent:0.32em] sm:text-2xl">{title}</Tag>
       <DoubleRule className="mt-3" />

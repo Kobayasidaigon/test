@@ -21,7 +21,7 @@ import {
   type Finding,
   type Inspection,
 } from '@/core'
-import { CategoryMark } from '@/components/category-mark'
+import { FindingMark } from '@/components/category-mark'
 import { PenCircle } from '@/components/pen'
 import { Sheet, SheetHeading, SheetTitle } from '@/components/sheet'
 import { Button } from '@/components/ui/button'
@@ -83,7 +83,8 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
 
   const add = (itemId: string, label: string) => {
     if (full) return
-    const next = addLine(estimate, itemId, { label })
+    // 名前が決まっていないときは、項目の名前を入れておく（空の欄より、入っている名前を見積書のとおりに直すほうが、早い）。
+    const next = addLine(estimate, itemId, { label: label || (itemId === OTHER_ITEM_ID ? '' : getItem(itemId).name) })
     const line = next.lines[next.lines.length - 1]
     setEstimate(() => next)
     setFocus({ lineId: line.id, role: 'amount' })
@@ -122,7 +123,7 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
           </h2>
 
           {empty && (
-            <div className="mb-7 flex flex-col gap-3 border-l-4 border-marker bg-marker-soft/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="no-print mb-7 flex flex-col gap-3 border-l-4 border-marker bg-marker-soft/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm leading-7">
                 不動産会社からもらった見積書を見ながら、項目と金額を、この紙に写してください。
                 <br className="hidden sm:block" />
@@ -144,18 +145,7 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
                 <AmountField id={ids.fee} value={estimate.commonFee} placeholder="例: 4,000" onChange={(commonFee) => setEstimate((e) => ({ ...e, commonFee }))} />
               </Field>
               <Field id={ids.date} label="入居する日" hint="日割り家賃の目安に使います">
-                <Input
-                  id={ids.date}
-                  type="date"
-                  min="2000-01-01"
-                  max="2100-12-31"
-                  value={estimate.moveInDate ?? ''}
-                  onChange={(e) => {
-                    const v = e.target.value
-                    setEstimate((est) => ({ ...est, moveInDate: v !== '' && isValidDate(v) ? v : null }))
-                  }}
-                  className="num"
-                />
+                <DateField id={ids.date} value={estimate.moveInDate} onChange={(moveInDate) => setEstimate((e) => ({ ...e, moveInDate }))} />
               </Field>
               <Field id={ids.stated} label="見積書に書かれた合計" optional hint="入れると、下の合計と比べます">
                 <AmountField id={ids.stated} value={estimate.statedTotal} placeholder="例: 477,042" onChange={(statedTotal) => setEstimate((e) => ({ ...e, statedTotal }))} />
@@ -215,14 +205,12 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
                 </ol>
                 <div className="flex items-baseline justify-between gap-4 border-b-[1.5px] border-ink/70 px-1 py-3 sm:pl-11">
                   <span className="text-sm font-bold">入力した項目の合計</span>
-                  <span className="num text-xl font-bold" aria-live="polite">
-                    {formatYen(inspection.total)}
-                  </span>
+                  <span className="num text-xl font-bold">{formatYen(inspection.total)}</span>
                 </div>
               </>
             )}
 
-            <div className="mt-5 border border-dashed border-ink/35 bg-muted/60 p-3 sm:p-4">
+            <div className="no-print mt-5 border border-dashed border-ink/35 bg-muted/60 p-3 sm:p-4">
               <p id={ids.add} className="text-sm font-bold">
                 項目を足す
               </p>
@@ -248,7 +236,7 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
           </section>
 
           {estimate.lines.length > 0 && (
-            <div className="mt-7 flex justify-end">
+            <div className="no-print mt-7 flex justify-end">
               <Button size="lg" onClick={onGoResult} className="w-full sm:w-auto">
                 点検の結果を見る
                 <ArrowRightIcon aria-hidden className="size-4" />
@@ -258,7 +246,7 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
         </Sheet>
 
         {!empty && (
-          <div className="flex flex-wrap justify-end gap-2 px-1">
+          <div className="no-print flex flex-wrap justify-end gap-2 px-1">
             <Button variant="ghost" size="sm" onClick={onSample}>
               サンプルの見積書に置きかえる
             </Button>
@@ -275,7 +263,14 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
 
       {/* 種類を変える画面 */}
       <Dialog open={kindLine !== null} onOpenChange={(o) => !o && setKindLineId(null)}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent
+          className="sm:max-w-2xl"
+          // はじめのフォーカスは、探す欄ではなく、画面そのものに置く（スマホで、開いたとたんにキーボードが出て、一覧が隠れるのを防ぐ）。
+          onOpenAutoFocus={(e) => {
+            e.preventDefault()
+            ;(e.currentTarget as HTMLElement).focus()
+          }}
+        >
           <DialogHeader>
             <DialogTitle>どの項目として点検するかを、選ぶ</DialogTitle>
             <DialogDescription>
@@ -318,14 +313,55 @@ function Field({ id, label, hint, optional, children }: { id: string; label: str
   )
 }
 
-/** 行の下に入る、赤ペンの短い書き込み（区分の印と言葉）。くわしい結果は、手順2で出す。 */
+/**
+ * 日付の入力欄。
+ * この道具が扱えるのは 2000年〜2100年の日付（core の isValidDate）。それより外の日付を打ったときは、
+ * 打った日付を消さずに残して、直し方を出す（何も言わずに欄が空に戻ると、何が起きたのかわからないため）。
+ */
+function DateField({ id, value, onChange }: { id: string; value: string | null; onChange: (value: string | null) => void }) {
+  const [text, setText] = useState(value ?? '')
+  const errorId = useId()
+  // 外から値が変わったとき（サンプル、読み込み、元に戻す）だけ、表示を合わせる。
+  useEffect(() => {
+    setText((current) => ((current !== '' && isValidDate(current) ? current : null) === value ? current : (value ?? '')))
+  }, [value])
+  const invalid = text !== '' && !isValidDate(text)
+  return (
+    <>
+      <Input
+        id={id}
+        type="date"
+        min="2000-01-01"
+        max="2100-12-31"
+        value={text}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? errorId : undefined}
+        onChange={(e) => {
+          const v = e.target.value
+          setText(v)
+          onChange(v !== '' && isValidDate(v) ? v : null)
+        }}
+        className="num"
+      />
+      {invalid && (
+        <p id={errorId} role="alert" className="mt-1 text-xs leading-5 text-pen">
+          2000年から2100年までの日付を、入れてください。
+        </p>
+      )}
+    </>
+  )
+}
+
+/** 行の下に入る、赤ペンの短い書き込み（印と言葉）。くわしい結果は、手順2で出す。 */
 function LiveMark({ finding, index }: { finding: Finding; index: number }) {
   const category = getCategory(finding.category)
   const attention = finding.level === 'check' || finding.level === 'alert'
+  // 「ふつうはかかる」の行でも、計算が目安と違うときは、確かめる項目になる。そのときは、何が違うのかを言う。
+  const text = attention && category.attention === 'calm' ? finding.headline : category.label
   return (
     <span className={cn('inline-flex items-center gap-1.5', attention ? 'font-pen text-[15px] text-pen' : 'text-[13px] text-ink-soft')}>
-      <CategoryMark id={finding.category} variant={index} className={attention ? 'text-[12px]' : 'text-[12px]'} />
-      <span>{category.label}</span>
+      <FindingMark f={finding} variant={index} className="text-[12px]" />
+      <span>{text}</span>
     </span>
   )
 }
@@ -392,7 +428,7 @@ function LineRow({
         />
       </div>
 
-      <div className="flex items-start justify-end">
+      <div className="no-print flex items-start justify-end">
         <button type="button" data-role="up" className={iconButton} aria-disabled={first || undefined} aria-label={`${n}行目（${name}）を、1つ上に動かす`} onClick={() => !first && onMove(-1)}>
           <ArrowUpIcon aria-hidden className="size-[18px]" />
         </button>
@@ -412,7 +448,7 @@ function LineRow({
         <button
           type="button"
           onClick={onChangeKind}
-          className="-my-2 inline-flex min-h-11 cursor-pointer items-center rounded-sm px-1 text-xs text-ink-soft underline decoration-ink-soft/50 underline-offset-[3px] hover:text-ink hover:decoration-ink sm:min-h-8"
+          className="no-print -my-2 inline-flex min-h-11 cursor-pointer items-center rounded-sm px-1 text-xs text-ink-soft underline decoration-ink-soft/50 underline-offset-[3px] hover:text-ink hover:decoration-ink sm:min-h-8"
         >
           種類を変える<span className="sr-only">（{n}行目、{name}）</span>
         </button>

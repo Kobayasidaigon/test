@@ -1,3 +1,5 @@
+import { useId } from "react"
+
 import { cn } from "@/lib/utils"
 
 // 朱のはんこ。21st.dev の部品ではなく、このサービスのために描いた SVG。
@@ -32,6 +34,8 @@ export function Seal({
   title?: string
 }) {
   const two = [...text].length >= 2
+  // かすれのフィルターの id。同じ画面にはんこがいくつあっても、重ならないようにする
+  const filterId = `seal-${useId().replace(/[^a-zA-Z0-9]/g, "")}`
   return (
     <svg
       viewBox="0 0 64 64"
@@ -44,12 +48,12 @@ export function Seal({
     >
       <defs>
         {/* 朱肉のかすれ */}
-        <filter id="seal-rough" x="-5%" y="-5%" width="110%" height="110%">
+        <filter id={filterId} x="-5%" y="-5%" width="110%" height="110%">
           <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n" />
           <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" />
         </filter>
       </defs>
-      <g filter="url(#seal-rough)" fill="none" stroke="var(--shu)">
+      <g filter={`url(#${filterId})`} fill="none" stroke="var(--shu)">
         <circle cx="32" cy="32" r="27" strokeWidth="3.4" />
         <circle cx="32" cy="32" r="22.5" strokeWidth="1" opacity="0.7" />
       </g>
@@ -61,7 +65,7 @@ export function Seal({
         fontWeight="800"
         fontSize={two ? 19 : 30}
         fill="var(--shu)"
-        filter="url(#seal-rough)"
+        filter={`url(#${filterId})`}
       >
         {text}
       </text>

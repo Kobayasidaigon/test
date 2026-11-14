@@ -25,7 +25,7 @@ const buttonVariants = cva(
         ghost: "border-transparent bg-transparent text-ink hover:bg-well active:translate-y-px",
         destructive:
           "border-danger bg-card text-danger shadow-[2px_2px_0_0_var(--danger)] hover:bg-danger-soft active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
-        link: "h-auto min-h-0 border-0 bg-transparent p-0 text-ink underline decoration-2 underline-offset-4 hover:decoration-shift-tomato",
+        link: "rounded-sm border-0 bg-transparent !px-0 !py-0 text-ink underline decoration-2 underline-offset-4 hover:decoration-shift-tomato md:!min-h-0",
       },
       size: {
         default: "min-h-11 px-4 py-2 text-[15px]",

@@ -46,6 +46,7 @@
   --color-marker: var(--marker);
   --color-marker-soft: var(--marker-soft);
   --color-pencil: var(--pencil);
+  --color-placeholder: var(--placeholder);
 
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
@@ -62,9 +63,17 @@
   --animate-pen-draw: pen-draw 0.7s cubic-bezier(0.3, 0.1, 0.2, 1) both;
   --animate-toast-in: toast-in 0.25s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 
+  /*
+    線を、書き始めから書き終わりへ、描いていく。pathLength="1" と組み合わせて、線の長さを 1 として扱う。
+    dashoffset ではなく dasharray を動かしているのは、終わりの形を「1 0」（すき間なし）にするため。
+    太さを保つ指定（non-scaling-stroke）と pathLength の組み合わせは、ブラウザによって長さの数え方が違うことがあるが、
+    終わりの形がすき間なしなら、どう数えられても、描き終わった線は必ずつながる。
+    はじめの opacity: 0 は、描き始めを待つあいだ、丸い線の端が点として見えてしまうのを防ぐ。
+  */
   @keyframes pen-draw {
-    from { stroke-dashoffset: 1; }
-    to { stroke-dashoffset: 0; }
+    0% { stroke-dasharray: 0 1; opacity: 0; }
+    1% { opacity: 1; }
+    100% { stroke-dasharray: 1 0; opacity: 1; }
   }
   @keyframes toast-in {
     from { opacity: 0; transform: translateY(8px); }
@@ -85,6 +94,7 @@
   --ink: #171a20;
   --ink-soft: #505b6c;    /* 補足の文字。白の上で 6.9:1、机の上で 5.8:1 */
   --pencil: #5b6779;      /* えんぴつの書き込み（メモ）。白の上で 5.8:1 */
+  --placeholder: #667084; /* 入力欄の例の文字。入れた文字より薄く、それでも白の上で 5:1 */
 
   /* 赤ペンと蛍光ペン */
   --pen: #c6202e;         /* 白の上で 5.7:1、蛍光ペンの上で 4.9:1 */
@@ -191,7 +201,7 @@
   max-width: 38em;
 }
 
-/* 赤ペンの線（SVG）。描き始めから終わりまでを、1 として動かす（pathLength="1" と組み合わせる）。 */
+/* 赤ペンの線（SVG）。色は currentColor。太さは、囲む相手の大きさが変わっても同じにする。 */
 .pen-stroke {
   fill: none;
   stroke: currentColor;
@@ -200,7 +210,6 @@
   vector-effect: non-scaling-stroke;
 }
 .pen-draw .pen-stroke {
-  stroke-dasharray: 1;
   animation: var(--animate-pen-draw);
   animation-delay: var(--pen-delay, 0ms);
 }
@@ -244,20 +253,25 @@
     box-shadow: none;
     border-radius: 0;
   }
-  /* 描く動きは止めて、線を全部出す。 */
-  .pen-draw .pen-stroke {
-    animation: none;
-    stroke-dasharray: none;
+  /* 動きは全部止める。描いている途中や、出てくる途中で印刷しても、赤ペンの線と書き込みが全部出るようにする。 */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
   }
-  /* 折りたたみは、全部開いて出す。 */
-  [data-disclosure-panel] {
-    grid-template-rows: 1fr !important;
-    visibility: visible !important;
-  }
-  /* 1つの項目が、ページの途中で切れないようにする。 */
+  .pen-draw .pen-stroke { stroke-dasharray: none; opacity: 1; }
+  /* 手書きの字の細いふちは、印刷では付けない（PDF にしたとき、字が二重に入って、コピーや読み上げで同じ字が2回出るため）。 */
+  .font-pen { -webkit-text-stroke: 0; }
+  /*
+    折りたたみ。印刷に入れると決めた欄（data-print-open）は、閉じていても開いて出す。
+    それ以外は、画面で開いている欄だけを出す。閉じている欄は、消す
+    （高さ 0 のままにしておくと、ページをまたぐ計算のときに、中身が出てきてしまうブラウザがあるため）。
+  */
+  [data-disclosure-panel][data-print-open] { grid-template-rows: 1fr !important; }
+  [data-disclosure-panel][data-state="closed"]:not([data-print-open]) { display: none !important; }
+  /* 1つのまとまりが、ページの途中で切れないようにする。 */
   .print-keep { break-inside: avoid; page-break-inside: avoid; }
   .print-break-before { break-before: page; page-break-before: always; }
-  h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
   /* 出典のリンクは、紙でもたどれるように URL を出す。 */
   a.print-url::after {
     content: "（" attr(href) "）";
@@ -266,4 +280,23 @@
     word-break: break-all;
   }
   a { text-decoration: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* LP                                                                  */
+/* ------------------------------------------------------------------ */
+
+/*
+  LP の一番上の見積書。行が画面に入るまで、その行の赤ペンを描き始めない（data-pen="hold" のあいだは、動きを止めておく）。
+  静的HTMLの段階では "hold" で書き出し、ブラウザで行が見えたときに、その行に data-pen-go を付ける（src/components/landing/hero.tsx）。
+  スクリプトを切っている人には、<noscript> の中の決まりで、はじめから動かす。動きを減らす設定の人には、"go" にして全部出す。
+*/
+[data-pen="hold"] .pen-stroke,
+[data-pen="hold"] .animate-in {
+  animation-play-state: paused !important;
+}
+/* 画面に入った行（data-pen-go）から、順に描く。 */
+[data-pen="hold"] [data-pen-go] .pen-stroke,
+[data-pen="hold"] [data-pen-go].animate-in {
+  animation-play-state: running !important;
 }

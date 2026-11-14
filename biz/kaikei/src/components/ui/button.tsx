@@ -7,8 +7,9 @@ import { cn } from "@/lib/utils"
 // shadcn/ui の Button を、ひきつぎ会計の見た目に合わせたもの。
 // ・だいじな操作（default）は朱。はんこを押すように、押すと少し沈む
 // ・高さは、いちばん小さいもの（sm）でも 44px より大きくする（スマホで押しやすいように）
+// ・名前が長いときは、折り返す（もとは1行に固定。スマホで、ボタンが画面からはみ出さないように変えた）
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-bold leading-none transition-[background-color,box-shadow,transform,border-color] duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-45 [&_svg]:size-[1.15em] [&_svg]:shrink-0",
+  "inline-flex max-w-full items-center justify-center gap-2 rounded-lg text-center font-bold leading-tight transition-[background-color,box-shadow,transform,border-color] duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-45 [&_svg]:size-[1.15em] [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -18,13 +19,14 @@ const buttonVariants = cva(
         soft: "border border-rule/50 bg-rule-soft text-secondary-foreground hover:bg-[#d3e7e3]",
         ghost: "text-foreground hover:bg-muted",
         destructive: "border-[1.5px] border-destructive bg-paper text-destructive hover:bg-shu-soft",
-        link: "h-auto min-h-0 px-0 font-normal text-rule-ink underline underline-offset-4 hover:text-foreground",
+        link: "px-1 font-bold text-rule-ink underline underline-offset-4 hover:text-foreground",
       },
       size: {
-        default: "h-12 px-5 text-base",
-        sm: "h-11 px-3.5 text-[0.94rem]",
-        lg: "h-14 px-7 text-lg",
-        icon: "size-11",
+        // 高さは「これ以上」で決める。名前が長くて折り返したときは、ボタンが縦にのびる
+        default: "min-h-12 px-5 py-1.5 text-base",
+        sm: "min-h-11 px-3.5 py-1 text-[0.94rem]",
+        lg: "min-h-14 px-7 py-2 text-lg",
+        icon: "size-11 shrink-0",
       },
     },
     defaultVariants: {

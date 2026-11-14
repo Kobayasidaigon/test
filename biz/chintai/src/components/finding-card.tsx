@@ -6,7 +6,7 @@ import type { Finding } from '@/core/types'
 import { guidePath } from '@/lib/guide-link'
 import { cn } from '@/lib/utils'
 import { Link } from '@/router'
-import { CategoryMark } from './category-mark'
+import { FindingMark } from './category-mark'
 import { BasisList } from './source-link'
 import { DisclosureChevron, DisclosurePanel, type AccordionHeaderProps, type AccordionPanelProps } from './ui/disclosure'
 
@@ -16,7 +16,7 @@ import { DisclosureChevron, DisclosurePanel, type AccordionHeaderProps, type Acc
 
 function Section({ title, children, className }: { title: string; children: ReactNode; className?: string }) {
   return (
-    <section className={cn('print-keep', className)}>
+    <section className={className}>
       <h4 className="mb-1.5 text-[13px] font-bold leading-snug text-ink">{title}</h4>
       {children}
     </section>
@@ -32,7 +32,7 @@ export function FindingDetails({ f, className }: { f: Finding; className?: strin
       <Section title="なぜそう言うのか">
         <ul className="space-y-1.5 text-sm leading-7">
           {f.reasons.map((r, i) => (
-            <li key={i} className="flex gap-2">
+            <li key={i} className="print-keep flex gap-2">
               <span aria-hidden className="mt-[0.85em] size-1 shrink-0 rounded-full bg-ink/60" />
               <span>{r}</span>
             </li>
@@ -44,7 +44,7 @@ export function FindingDetails({ f, className }: { f: Finding; className?: strin
         <Section title="確かめること">
           <ul className="space-y-1.5 text-sm leading-7">
             {f.checks.map((c, i) => (
-              <li key={i} className="flex gap-2.5">
+              <li key={i} className="print-keep flex gap-2.5">
                 {/* 印刷して持っていったときに、確かめたら印を付けられる、空のチェック欄。 */}
                 <span aria-hidden className="mt-[0.45em] size-[13px] shrink-0 rounded-[1px] border-[1.5px] border-ink/60" />
                 <span>{c}</span>
@@ -55,7 +55,7 @@ export function FindingDetails({ f, className }: { f: Finding; className?: strin
       )}
 
       <Section title="聞き方">
-        <p className="border-l-4 border-marker bg-marker-soft/60 px-3 py-2 text-sm leading-7">{f.howToAsk}</p>
+        <p className="print-keep border-l-4 border-marker bg-marker-soft/60 px-3 py-2 text-sm leading-7">{f.howToAsk}</p>
       </Section>
 
       {f.basisStatus === 'verified' && f.basis.length > 0 && (
@@ -120,9 +120,18 @@ export function FindingCard({ f, n, header, panel, footer, className }: FindingC
   const attention = f.level === 'check' || f.level === 'alert'
   const open = header['aria-expanded']
   return (
-    <li id={`finding-${f.lineId}`} tabIndex={-1} className={cn('scroll-mt-20 border-b border-rule py-5 outline-none first:pt-2 focus-visible:bg-marker-soft/40', className)}>
+    <li
+      id={`finding-${f.lineId}`}
+      tabIndex={-1}
+      className={cn(
+        'scroll-mt-20 border-b border-rule py-5 outline-none first:pt-2 focus-visible:bg-marker-soft/40',
+        // 印刷では、確かめる項目と、開いてある項目だけを出す（ほかの項目は、1枚目の見積書の一覧にある）。
+        !attention && !open && 'print:hidden',
+        className,
+      )}
+    >
       <div className="print-keep grid grid-cols-[auto_minmax(0,1fr)] gap-x-3">
-        <CategoryMark id={f.category} variant={n} className="mt-0.5 text-[15px]" />
+        <FindingMark f={f} variant={n} className="mt-0.5 text-[15px]" />
         <div className="min-w-0">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
             <h3 className="text-base font-bold leading-snug">
@@ -158,7 +167,8 @@ export function FindingCard({ f, n, header, panel, footer, className }: FindingC
           </button>
           {footer}
         </div>
-        <DisclosurePanel {...panel}>
+        {/* 確かめる項目は、印刷では、閉じていても開いて出す。 */}
+        <DisclosurePanel {...panel} printOpen={attention}>
           <FindingDetails f={f} className="border-t border-dashed border-rule-strong/60 pb-1 pt-4" />
         </DisclosurePanel>
       </div>

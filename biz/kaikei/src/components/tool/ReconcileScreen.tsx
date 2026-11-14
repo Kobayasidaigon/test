@@ -253,7 +253,7 @@ export function ReconcileScreen() {
   const total = result.rows.length
   const matched = total - result.uncheckedCount - result.mismatchCount
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <section className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-xl border border-border bg-paper px-4 py-4 shadow-lift sm:px-6">
         <div className="min-w-0 flex-1 basis-72">
           <h2 className="text-xl">残高の照合</h2>

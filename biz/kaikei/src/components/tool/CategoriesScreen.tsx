@@ -22,7 +22,7 @@ import {
 import { cn } from '@/lib/utils'
 import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Hint } from '@/components/ui/hint'
 import { Field, Input } from '@/components/ui/input'
 import { CommitMoney, CommitText, MoneyInput } from './fields'
@@ -87,42 +87,52 @@ function AccountsSection() {
       }
     >
       <div className="border-t border-rule/40">
-        <div className="hidden grid-cols-[minmax(0,1fr)_11rem_11rem_3rem] gap-3 border-b-[3px] border-double border-rule px-6 py-2 text-[0.86rem] font-bold text-rule-ink md:grid">
+        <div className="hidden grid-cols-[minmax(0,1fr)_11rem_11rem] gap-3 border-b-[3px] border-double border-rule px-6 py-2 text-[0.86rem] font-bold text-rule-ink md:grid">
           <span>名前</span>
           <span className="text-right">年度はじめの残高（円）</span>
           <span className="text-right">いまの残高（円）</span>
-          <span />
         </div>
         <ul>
           {year.accounts.map((a) => {
             const balance = summary.accounts.find((b) => b.accountId === a.id)
             return (
-              <li key={a.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-2 border-b border-rule/35 px-4 py-3 sm:px-6 md:grid-cols-[minmax(0,1fr)_11rem_11rem_3rem] md:items-center">
-                <div className="col-span-2 md:col-span-1">
+              <li key={a.id} className="grid gap-x-3 gap-y-1.5 border-b border-rule/35 px-4 py-3 sm:px-6 md:grid-cols-[minmax(0,1fr)_11rem_11rem] md:items-center">
+                <div className="flex items-start gap-1.5">
                   {a.kind === 'cash' ? (
-                    <p className="flex min-h-11 items-center font-bold">
+                    <p className="flex min-h-11 flex-1 items-center font-bold">
                       {a.name}
                       <span className="ml-2 text-[0.84rem] font-normal text-muted-foreground">（手元のお金）</span>
                     </p>
                   ) : (
                     <CommitText
+                      className="min-w-0 flex-1"
                       label={`口座の名前（いまは「${a.name}」）`}
                       value={a.name}
                       maxLength={LIMITS.nameLength}
                       disabled={locked}
+                      inputClassName="font-bold"
                       onCommit={(v) => {
                         const r = updateAccount(book, year.id, a.id, { name: v })
                         return apply(r, { quiet: true }) ? null : r.ok ? null : r.message
                       }}
                     />
                   )}
+                  {a.kind === 'bank' && !locked && (
+                    <Button variant="ghost" size="icon" aria-label={`口座「${a.name}」を消す`} onClick={() => setRemoving(a.id)}>
+                      <Trash2 />
+                    </Button>
+                  )}
                 </div>
-                <div className="grid gap-0.5">
-                  <span className="text-[0.8rem] text-muted-foreground md:hidden">年度はじめの残高</span>
+                <div className="flex items-center justify-between gap-3 md:block">
+                  <span className="text-[0.84rem] text-muted-foreground md:hidden">年度はじめの残高</span>
                   {carried || locked ? (
-                    <p className="num flex min-h-11 items-center justify-end px-2.5">{formatYen(a.openingBalance)}</p>
+                    <p className="num md:flex md:min-h-11 md:items-center md:justify-end md:px-2.5">
+                      {formatYen(a.openingBalance)}
+                      <span className="ml-1 text-[0.84rem] md:hidden">円</span>
+                    </p>
                   ) : (
                     <CommitMoney
+                      className="w-[9.5rem] md:w-auto"
                       label={`${a.name}の、年度はじめの残高`}
                       value={a.openingBalance}
                       onCommit={(v) => {
@@ -132,19 +142,12 @@ function AccountsSection() {
                     />
                   )}
                 </div>
-                <div className="grid gap-0.5 max-md:order-last max-md:col-span-2 max-md:grid-cols-[auto_1fr] max-md:items-baseline max-md:gap-2">
-                  <span className="text-[0.8rem] text-muted-foreground md:hidden">いまの残高</span>
-                  <p className={cn('num flex items-center justify-end md:min-h-11 md:px-2.5', (balance?.closing ?? 0) < 0 && 'font-bold text-destructive')}>
+                <div className="flex items-center justify-between gap-3 md:block">
+                  <span className="text-[0.84rem] text-muted-foreground md:hidden">いまの残高</span>
+                  <p className={cn('num md:flex md:min-h-11 md:items-center md:justify-end md:px-2.5', (balance?.closing ?? 0) < 0 && 'font-bold text-destructive')}>
                     {formatYen(balance?.closing ?? 0)}
                     <span className="ml-1 text-[0.84rem] md:hidden">円</span>
                   </p>
-                </div>
-                <div className="flex justify-end max-md:mt-[1.1rem]">
-                  {a.kind === 'bank' && !locked && (
-                    <Button variant="ghost" size="icon" aria-label={`口座「${a.name}」を消す`} onClick={() => setRemoving(a.id)}>
-                      <Trash2 />
-                    </Button>
-                  )}
                 </div>
               </li>
             )
@@ -420,7 +423,7 @@ export function CategoriesScreen() {
   const { summary } = useWorkspace()
   const gap = summary.budgetGap
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <Alert variant="info">{FORMAT_NOTE}</Alert>
       <AccountsSection />
       <CategorySection side="income" />

@@ -1,5 +1,5 @@
 import { getCategory } from '@/core/categories'
-import type { CategoryId } from '@/core/types'
+import type { CategoryId, Finding } from '@/core/types'
 import { cn } from '@/lib/utils'
 import { PenBadge, PenCheck } from './pen'
 
@@ -39,4 +39,23 @@ export function CategoryTag({ id, variant, className }: Props) {
       <span>{c.label}</span>
     </span>
   )
+}
+
+/**
+ * 1行の点検の結果に付ける印。
+ * - 形（文字）は区分で決まる。ただし、「ふつうはかかる」の行でも、計算が目安と違って確かめる項目になったときは「！」にする。
+ * - 色は、判定の強さで決まる。確かめる項目（check・alert）だけが赤ペン。ほかは、えんぴつ色。
+ *   赤を「確かめる項目」だけに使うことで、赤が並んでいる行を拾えば、聞くことの一覧になる。
+ */
+export function FindingMark({ f, variant, draw, delay, className }: { f: Pick<Finding, 'category' | 'level'> } & Omit<Props, 'id'>) {
+  const c = getCategory(f.category)
+  const attention = f.level === 'check' || f.level === 'alert'
+  if (c.attention === 'calm' && !attention) {
+    return (
+      <span className={cn('inline-grid size-[1.9em] shrink-0 place-items-center text-pencil', className)}>
+        <PenCheck draw={draw} delay={delay} />
+      </span>
+    )
+  }
+  return <PenBadge mark={c.attention === 'calm' ? '！' : c.mark} variant={variant} draw={draw} delay={delay} className={cn(attention ? 'text-pen' : 'text-pencil', className)} />
 }

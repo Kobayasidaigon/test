@@ -89,6 +89,11 @@ function ChoiceChips<T extends string>({
   )
 }
 
+const RECEIPT_HELP = '領収書やレシートに自分で書いた通し番号です。支出には、次の番号が自動で入ります。変えても、空にしてもかまいません。'
+
+/** ラベルの行。説明つきの言葉（点線の下線）があってもなくても、同じ高さにして、入力欄の位置をそろえる。 */
+const LABEL = 'flex min-h-[1.6rem] items-center'
+
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null
   return (
@@ -279,16 +284,26 @@ export function TransactionForm({
             value={kind}
             onValueChange={changeKind}
             options={KIND_OPTIONS.map((o) => ({ ...o, disabled: o.value === 'transfer' && !canTransfer }))}
-            className="w-full min-w-[17rem] sm:w-auto"
+            className="w-full sm:w-auto sm:min-w-[17rem]"
           />
           {kind === 'transfer' && (
             <p className="mt-1.5 max-w-[24rem] text-[0.84rem] leading-snug text-muted-foreground">{explain('預け入れ・引き出し')}</p>
           )}
         </div>
         {kind === 'transfer' ? (
-          <div className="flex flex-wrap items-end gap-x-3 gap-y-3">
-            <ChoiceChips legend="どこから" options={accountOptions} value={accountId} onChange={setAccountId} error={errors.accountId} />
-            <ArrowRight aria-hidden className="mb-3 hidden size-5 shrink-0 text-muted-foreground sm:block" />
+          <div className="flex flex-wrap items-start gap-x-3 gap-y-3">
+            <ChoiceChips
+              legend="どこから"
+              options={accountOptions}
+              value={accountId}
+              onChange={(next) => {
+                // 「どこへ」と同じ置き場所を選んだら、向きを入れかえる（預け入れ ⇔ 引き出し を、1回で切り替えられる）
+                if (next === toAccountId) setToAccountId(accountId)
+                setAccountId(next)
+              }}
+              error={errors.accountId}
+            />
+            <ArrowRight aria-hidden className="mt-[2.55rem] hidden size-5 shrink-0 text-muted-foreground sm:block" />
             <ChoiceChips legend="どこへ" options={accountOptions.filter((o) => o.value !== accountId)} value={toAccountId} onChange={setToAccountId} error={errors.toAccountId} />
           </div>
         ) : (
@@ -307,14 +322,15 @@ export function TransactionForm({
         className={cn(
           'grid grid-cols-2 gap-x-3 gap-y-3',
           editing
-            ? 'sm:grid-cols-[9.5rem_1fr]'
-            : kind === 'transfer'
-              ? 'lg:grid-cols-[9.5rem_minmax(0,1fr)_11rem_7.5rem_auto]'
-              : 'lg:grid-cols-[9.5rem_minmax(9rem,13rem)_minmax(0,1fr)_11rem_7.5rem_auto]',
+            ? '' // 直すときはダイアログの中なので、いつも2列（日付・科目 ／ 内容 ／ 金額・領収書の番号）
+            : // スマホ: 2列。タブレットと小さめのパソコン: 3列で2段。広いパソコン: 横1列
+              kind === 'transfer'
+              ? 'md:grid-cols-[10rem_13rem_minmax(0,1fr)] xl:grid-cols-[9.5rem_minmax(0,1fr)_11rem_7.5rem_auto]'
+              : 'md:grid-cols-[10rem_13rem_minmax(0,1fr)] xl:grid-cols-[9.5rem_minmax(9rem,13rem)_minmax(0,1fr)_11rem_7.5rem_auto]',
         )}
       >
-        <div className={cn(kind === 'transfer' && !editing && 'col-span-2 lg:col-span-1')}>
-          <Label htmlFor={id('date')}>日付</Label>
+        <div className={cn(kind === 'transfer' && (editing ? 'col-span-2' : 'col-span-2 md:col-span-1'))}>
+          <Label className={LABEL} htmlFor={id('date')}>日付</Label>
           <DateField
             ref={dateRef}
             id={id('date')}
@@ -331,8 +347,10 @@ export function TransactionForm({
 
         {kind !== 'transfer' && (
           <div>
-            <Label htmlFor={id('category')}>
-              <Hint content={explain('科目')}>科目</Hint>
+            <Label className={LABEL} htmlFor={id('category')}>
+              <Hint tabbable={false} content={explain('科目')}>
+                科目
+              </Hint>
             </Label>
             <NativeSelect
               ref={categoryRef}
@@ -340,24 +358,32 @@ export function TransactionForm({
               className="mt-1.5"
               value={categoryId}
               aria-invalid={errors.categoryId ? true : undefined}
-              aria-describedby={err('categoryId')}
+              aria-describedby={[id('category-help'), err('categoryId')].filter(Boolean).join(' ')}
               onChange={(e) => setCategoryId(e.target.value)}
               onKeyDown={onEnter(() => descriptionRef.current?.focus())}
             >
-              <option value="">選んでください</option>
+              <option value="">科目を選ぶ</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
                 </option>
               ))}
             </NativeSelect>
+            {/* 点線の言葉の説明は Tab で止まらないので、同じ説明を、読み上げにはここから渡す */}
+            <span id={id('category-help')} className="sr-only">
+              {explain('科目')}
+            </span>
             <FieldError id={id('categoryId-error')} message={errors.categoryId} />
           </div>
         )}
 
-        <div className="col-span-2 lg:col-span-1">
-          <Label htmlFor={id('description')}>
-            内容（<Hint content={explain('摘要')}>摘要</Hint>）
+        <div className={cn('col-span-2', !editing && (kind === 'transfer' ? 'xl:col-span-1' : 'md:col-span-1'))}>
+          <Label className={LABEL} htmlFor={id('description')}>
+            内容（
+            <Hint tabbable={false} content={explain('摘要')}>
+              摘要
+            </Hint>
+            ）
           </Label>
           <Input
             ref={descriptionRef}
@@ -370,7 +396,7 @@ export function TransactionForm({
             enterKeyHint="next"
             placeholder={kind === 'transfer' ? '例: 会費を預け入れ' : '例: 夏祭りの飲み物'}
             aria-invalid={errors.description ? true : undefined}
-            aria-describedby={err('description')}
+            aria-describedby={[id('description-help'), err('description')].filter(Boolean).join(' ')}
             onChange={(e) => setDescription(e.target.value)}
             onKeyDown={onEnter(() => {
               amountRef.current?.focus()
@@ -384,11 +410,14 @@ export function TransactionForm({
               ))}
             </datalist>
           )}
+          <span id={id('description-help')} className="sr-only">
+            {explain('摘要')}
+          </span>
           <FieldError id={id('description-error')} message={errors.description} />
         </div>
 
         <div>
-          <Label htmlFor={id('amount')}>金額</Label>
+          <Label className={LABEL} htmlFor={id('amount')}>金額</Label>
           <div className="mt-1.5">
             <MoneyInput
               ref={amountRef}
@@ -404,8 +433,10 @@ export function TransactionForm({
         </div>
 
         <div>
-          <Label htmlFor={id('receipt')}>
-            <Hint content="領収書やレシートに自分で書いた通し番号です。支出には、次の番号が自動で入ります。変えても、空にしてもかまいません。">領収書の番号</Hint>
+          <Label className={LABEL} htmlFor={id('receipt')}>
+            <Hint tabbable={false} content={RECEIPT_HELP}>
+              領収書の番号
+            </Hint>
           </Label>
           <Input
             ref={receiptRef}
@@ -415,19 +446,22 @@ export function TransactionForm({
             maxLength={LIMITS.receiptNoLength}
             autoComplete="off"
             aria-invalid={errors.receiptNo ? true : undefined}
-            aria-describedby={err('receiptNo')}
+            aria-describedby={[id('receipt-help'), err('receiptNo')].filter(Boolean).join(' ')}
             onChange={(e) => {
               setReceiptAuto(false)
               setReceiptText(e.target.value)
             }}
             onKeyDown={onEnter(submit)}
           />
+          <span id={id('receipt-help')} className="sr-only">
+            {RECEIPT_HELP}
+          </span>
           <FieldError id={id('receiptNo-error')} message={errors.receiptNo} />
         </div>
 
         {!editing && (
-          <div className="col-span-2 flex items-start lg:col-span-1 lg:pt-[1.72rem]">
-            <Button type="submit" className="w-full lg:w-auto">
+          <div className="col-span-2 flex items-start md:col-span-1 md:pt-[1.975rem]">
+            <Button type="submit" className="w-full md:w-auto">
               <CornerDownLeft />
               入れる
             </Button>

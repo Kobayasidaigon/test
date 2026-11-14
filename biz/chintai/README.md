@@ -16,7 +16,14 @@ npm run typecheck
 
 - `src/site.config.ts` … サービス名、URL、運営者の情報、料金と売り方（`pricing`）。公開前に埋める項目はここに集めてある。
 - `src/routes.ts` … ページの一覧。ここに足したページが `dist/<パス>/index.html` になる。
-- `src/pages/` … ページ。`src/components/ui/` … 21st.dev から取り入れた部品。
+- `src/pages/` … ページ。`src/pages/Tool.tsx` が道具の画面（`/app`）。
+- `src/index.css`、`index.html` … 見た目の土台（「見積書に、赤ペンで点検を入れる」）。色のトークン（机 `desk`、紙 `paper`、インク `ink`、赤ペン `pen`、蛍光ペン `marker`、えんぴつ `pencil`）、
+  書体（`font-sans` ＝ BIZ UDPGothic、`num` ＝ BIZ UDGothic の数字、`font-pen` ＝ Zen Kurenaido の手書き）、紙（`sheet`）、印刷（A4）の決まり。
+- `src/components/ui/` … 21st.dev から取り入れて、作り変えた部品（一覧は `CREDITS.md`）。
+- `src/components/` … このサービスの部品。赤ペンの線（`pen.tsx`）、紙（`sheet.tsx`）、赤ペンが入った見積書（`inspected-sheet.tsx`）、
+  1行ごとの結果（`finding-card.tsx`）、区分の印（`category-mark.tsx`）、出典（`source-link.tsx`）、相談先（`consult-desks.tsx`）、
+  確認の文面の便せん（`message-preview.tsx`）、広告の枠（`offer-slot.tsx`）、サイトの印（`brand.tsx`）。LP からも使える（描くときに window にさわらない）。
+- `src/components/tool/` … 道具の画面の組み立て（手順1〜3、保存、ファイルの書き出しと読み込み）。
 - `src/core/` … 中身のロジックとデータ（項目のルール、出典、点検、確認の文面、保存の形式）。くわしくは `src/core/README.md`。
 - `src/offers.ts` … 広告の枠。`url` が空の枠は表示しない（いまは全部空）。
 - データはブラウザの中だけに保存する。サーバーはない。

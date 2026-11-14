@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 // ・ふちは、紙の上で形がはっきりわかる濃さにする（--input）
 // ・まちがいがあるときは aria-invalid を付けると、ふちが朱になる（色だけにならないよう、下に文も出す）
 const fieldBase =
-  "w-full rounded-lg border-[1.5px] border-input bg-paper px-3 text-base text-foreground placeholder:text-muted-foreground/80 transition-[border-color,box-shadow] focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/35 disabled:cursor-not-allowed disabled:border-border disabled:bg-muted disabled:text-muted-foreground aria-[invalid=true]:border-destructive aria-[invalid=true]:ring-destructive/25"
+  "w-full rounded-lg border-[1.5px] border-input bg-paper px-3 text-base text-foreground placeholder:text-muted-foreground/90 transition-[border-color,box-shadow] focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/35 disabled:cursor-not-allowed disabled:border-border disabled:bg-muted disabled:text-muted-foreground aria-[invalid=true]:border-destructive aria-[invalid=true]:ring-destructive/25"
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 

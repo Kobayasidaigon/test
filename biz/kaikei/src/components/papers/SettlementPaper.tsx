@@ -4,9 +4,7 @@ import { Paper, PaperDate, PaperHeading, PaperSection, PaperSign, yen } from './
 // 1. 収支決算書。
 // 収入の部（最初の行が前年度繰越金）、支出の部、収入合計 − 支出合計 ＝ 次年度繰越金、繰越金の内訳、作成日と会計の署名欄。
 
-function SectionTable({ section, totalLabel, diffLabel }: { section: SettlementSection; totalLabel: string; diffLabel: string }) {
-  // 「差（決算−予算）」は幅がせまいので、「差」と向きを2行に分けて書く
-  const [diffHead, diffSub] = diffLabel.split('（')
+function SectionTable({ section, totalLabel }: { section: SettlementSection; totalLabel: string }) {
   return (
     <table className="paper-table">
       <colgroup>
@@ -21,10 +19,7 @@ function SectionTable({ section, totalLabel, diffLabel }: { section: SettlementS
           <th scope="col">科目</th>
           <th scope="col">予算額</th>
           <th scope="col">決算額</th>
-          <th scope="col">
-            {diffHead}
-            {diffSub && <span className="small" style={{ display: 'block', fontWeight: 400, letterSpacing: 0 }}>（{diffSub}</span>}
-          </th>
+          <th scope="col">差</th>
           <th scope="col">説明</th>
         </tr>
       </thead>
@@ -60,15 +55,17 @@ export function SettlementPaper({
   today: DateString
   watermark?: boolean
 }) {
+  // 「差」の向き（決算−予算 か、予算−決算 か）は、表の見出しを2行にせず、単位の横に書く（1枚に収めるため）
+  const unit = `（単位：円。${report.diffLabel.replace(/^差（(.+)）$/, '差は「$1」')}）`
   return (
-    <Paper label={report.title} watermark={watermark} pages={1 + (report.income.rows.length + report.expense.rows.length) / 34}>
+    <Paper label={report.title} watermark={watermark}>
       <PaperHeading title={report.title} period={report.periodText} orgName={report.orgName} />
 
-      <PaperSection title="収入の部" unit="（単位：円）" />
-      <SectionTable section={report.income} totalLabel="収入合計" diffLabel={report.diffLabel} />
+      <PaperSection title="収入の部" unit={unit} />
+      <SectionTable section={report.income} totalLabel="収入合計" />
 
-      <PaperSection title="支出の部" unit="（単位：円）" />
-      <SectionTable section={report.expense} totalLabel="支出合計" diffLabel={report.diffLabel} />
+      <PaperSection title="支出の部" unit={unit} />
+      <SectionTable section={report.expense} totalLabel="支出合計" />
 
       <div className="paper-result">
         <span className="term">
@@ -84,41 +81,43 @@ export function SettlementPaper({
         </span>
       </div>
 
-      <div style={{ breakInside: 'avoid' }}>
-        <PaperSection title="次年度繰越金の内訳" unit="（単位：円）" />
-        <table className="paper-table" style={{ width: '58%' }}>
-          <colgroup>
-            <col style={{ width: '60%' }} />
-            <col style={{ width: '40%' }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th scope="col">お金の置き場所</th>
-              <th scope="col">金額</th>
-            </tr>
-          </thead>
-          <tbody>
-            {report.breakdown.map((b) => (
-              <tr key={b.accountId}>
-                <td>{b.name}</td>
-                <td className="num">{yen(b.amount)}</td>
+      <div className="paper-bottom">
+        <div className="breakdown">
+          <PaperSection title="次年度繰越金の内訳" unit="（単位：円）" />
+          <table className="paper-table">
+            <colgroup>
+              <col style={{ width: '60%' }} />
+              <col style={{ width: '40%' }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">お金の置き場所</th>
+                <th scope="col">金額</th>
               </tr>
-            ))}
-            <tr className="total">
-              <th scope="row">合計</th>
-              <td className="num">{yen(report.breakdownTotal)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {report.breakdown.map((b) => (
+                <tr key={b.accountId}>
+                  <td>{b.name}</td>
+                  <td className="num">{yen(b.amount)}</td>
+                </tr>
+              ))}
+              <tr className="total">
+                <th scope="row">合計</th>
+                <td className="num">{yen(report.breakdownTotal)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div className="paper-closing">
-        <p>上記のとおり、報告します。</p>
-        <p className="paper-date">
-          <PaperDate date={report.reportDate || today} />
-        </p>
-        <div className="paper-signs">
-          <PaperSign role={report.treasurer.title} name={report.treasurer.name} />
+        <div className="paper-closing">
+          <p>上記のとおり、報告します。</p>
+          <p className="paper-date">
+            <PaperDate date={report.reportDate || today} />
+          </p>
+          <div className="paper-signs">
+            <PaperSign role={report.treasurer.title} name={report.treasurer.name} />
+          </div>
         </div>
       </div>
     </Paper>

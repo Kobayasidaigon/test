@@ -22,19 +22,20 @@
   --u: 1mm;
   --paper-line: #3a8f88; /* 帳簿の罫線の青緑 */
   --paper-line-strong: #1c625d;
-  --paper-head: #e4f0ed;
+  --paper-head: rgb(58 143 136 / 0.14); /* 見出しの行の地。「見本」の透かしがすけて見えるように、半透明にする */
   --paper-ink: #1b1915;
   --paper-sub: #4d483f;
   position: relative;
   box-sizing: border-box;
   width: calc(var(--u) * 210);
   min-height: calc(var(--u) * 297);
-  padding: calc(var(--u) * 15) calc(var(--u) * 14);
+  /* 画面の紙の余白は、印刷の余白（index.css の @page）と同じにする */
+  padding: calc(var(--u) * 13) calc(var(--u) * 14);
   background: #fffefb;
   color: var(--paper-ink);
   font-family: var(--font-sans);
-  font-size: calc(var(--u) * 3.7); /* およそ 10.5pt */
-  line-height: 1.55;
+  font-size: calc(var(--u) * 3.6); /* およそ 10pt */
+  line-height: 1.5;
   border: 1px solid #e4dac3;
   box-shadow: var(--shadow-paper);
   /* 見出しの行のうすい色を、印刷でも出す */
@@ -49,7 +50,8 @@
 .paper + .paper { margin-top: calc(var(--u) * 8); }
 
 .paper * { box-sizing: border-box; }
-.paper p { margin: 0; }
+/* :where で包んで、下の .paper-period などの余白の指定が負けないようにする */
+.paper :where(p) { margin: 0; }
 
 /* ---- 見出し ---- */
 .paper-title {
@@ -62,14 +64,14 @@
   text-align: center;
 }
 .paper-period { margin-top: calc(var(--u) * 1.5); text-align: center; font-size: calc(var(--u) * 3.6); color: var(--paper-sub); }
-.paper-org { margin-top: calc(var(--u) * 4); text-align: right; font-size: calc(var(--u) * 4.1); font-weight: 700; }
+.paper-org { margin-top: calc(var(--u) * 2); text-align: right; font-size: calc(var(--u) * 4.1); font-weight: 700; }
 .paper-section {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: calc(var(--u) * 4);
-  margin-top: calc(var(--u) * 6);
-  margin-bottom: calc(var(--u) * 1.6);
+  margin-top: calc(var(--u) * 4.4);
+  margin-bottom: calc(var(--u) * 1.4);
 }
 .paper-section h3 {
   margin: 0;
@@ -101,7 +103,8 @@
 .paper-table th,
 .paper-table td {
   border: calc(var(--u) * 0.2) solid var(--paper-line);
-  padding: calc(var(--u) * 1.25) calc(var(--u) * 1.8);
+  /* 行の高さは、およそ 7mm。町内会のひな形（収入4・支出10の科目）の決算書が、A4 の1枚に収まる詰め方 */
+  padding: calc(var(--u) * 0.85) calc(var(--u) * 1.7);
   vertical-align: middle;
   text-align: left;
   font-weight: 400;
@@ -117,13 +120,13 @@
 }
 .paper-table .num { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .paper-table .center { text-align: center; }
-.paper-table .small { font-size: calc(var(--u) * 3.1); line-height: 1.4; }
+.paper-table .small { font-size: calc(var(--u) * 3.1); line-height: 1.35; }
 .paper-table .nowrap { white-space: nowrap; }
 /* 合計の行。上を二重線にする（帳簿の締めの線） */
 .paper-table tr.total > * {
   border-top: calc(var(--u) * 0.9) double var(--paper-line-strong);
   font-weight: 700;
-  background: #f4f9f8;
+  background: rgb(58 143 136 / 0.06);
 }
 .paper-table tr.total th { text-align: center; letter-spacing: 0.2em; }
 .paper-table tr.muted td { color: var(--paper-sub); }
@@ -138,8 +141,8 @@
   align-items: baseline;
   justify-content: center;
   gap: calc(var(--u) * 1.5) calc(var(--u) * 3);
-  margin-top: calc(var(--u) * 6);
-  padding: calc(var(--u) * 3) calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 5);
+  padding: calc(var(--u) * 2.2) calc(var(--u) * 4);
   border-top: calc(var(--u) * 0.45) solid var(--paper-line-strong);
   border-bottom: calc(var(--u) * 0.9) double var(--paper-line-strong);
   break-inside: avoid;
@@ -150,9 +153,17 @@
 .paper-result .op { font-size: calc(var(--u) * 4.4); color: var(--paper-sub); }
 
 /* ---- 署名欄 ---- */
-.paper-closing { margin-top: calc(var(--u) * 9); break-inside: avoid; }
-.paper-date { margin-top: calc(var(--u) * 3); }
-.paper-signs { margin-top: calc(var(--u) * 5); display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--u) * 4); }
+.paper-closing { margin-top: calc(var(--u) * 7); break-inside: avoid; }
+.paper-date { margin-top: calc(var(--u) * 2); }
+.paper-signs { margin-top: calc(var(--u) * 4); display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--u) * 4); }
+/* 決算書のいちばん下: 左に繰越金の内訳、右に「報告します」と署名欄を並べる（1枚に収めるため） */
+.paper-bottom { display: flex; align-items: flex-end; gap: calc(var(--u) * 8); break-inside: avoid; }
+.paper-bottom > .breakdown { flex: 0 0 50%; min-width: 0; }
+.paper-bottom > .paper-closing { flex: 1 1 0; min-width: 0; margin-top: 0; }
+.paper-bottom .paper-sign { gap: calc(var(--u) * 2); }
+.paper-bottom .paper-sign .role { min-width: 0; }
+.paper-bottom .paper-sign .name { min-width: 0; flex: 1; }
+.paper-bottom .paper-signs { align-items: stretch; }
 .paper-sign { display: flex; align-items: center; gap: calc(var(--u) * 3); }
 .paper-sign .role { min-width: calc(var(--u) * 18); text-align: right; }
 .paper-sign .name {
@@ -171,15 +182,17 @@
   flex: none;
   width: calc(var(--u) * 11);
   height: calc(var(--u) * 11);
-  border: calc(var(--u) * 0.25) dashed #9a9384;
+  border: calc(var(--u) * 0.25) dashed #8d8678;
   border-radius: 50%;
-  color: #9a9384;
+  color: #777064; /* 紙の白の上で 4.5:1 以上 */
   font-size: calc(var(--u) * 3);
 }
 /* 手で書くための空き（「令和　年　月　日」など） */
 .paper-gap { display: inline-block; width: calc(var(--u) * 9); }
 
-.paper-body-text { margin-top: calc(var(--u) * 12); font-size: calc(var(--u) * 4.3); line-height: 2.1; text-indent: 1em; white-space: pre-wrap; }
+.paper-body-text { margin-top: calc(var(--u) * 10); font-size: calc(var(--u) * 4.3); line-height: 2.1; text-indent: 1em; white-space: pre-wrap; }
+/* ラベルと中身を横に並べる行（「引き継ぎをした日　令和…」） */
+.paper-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: calc(var(--u) * 4); }
 .paper-memo { white-space: pre-wrap; min-height: calc(var(--u) * 24); padding: calc(var(--u) * 2.5) calc(var(--u) * 3); border: calc(var(--u) * 0.45) solid var(--paper-line-strong); }
 .paper-check {
   display: inline-flex;
@@ -193,23 +206,18 @@
   font-weight: 700;
 }
 
-/* ---- 「見本」の透かし（無料版）---- */
-.paper-watermark { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
-.paper-watermark span {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-22deg);
-  padding: calc(var(--u) * 1) calc(var(--u) * 9) calc(var(--u) * 2);
-  border: calc(var(--u) * 1.8) solid currentColor;
-  border-radius: calc(var(--u) * 3);
-  color: rgb(197 54 27 / 0.17);
-  font-family: var(--font-serif);
-  font-weight: 800;
-  font-size: calc(var(--u) * 38);
-  line-height: 1.25;
-  letter-spacing: 0.3em;
-  text-indent: 0.3em;
-  white-space: nowrap;
+/* ---- 「見本」の透かし（無料版）----
+ * 紙の地に、朱の「見本」を、たてにくり返して敷く（140mm ごと。A4 の1ページに、およそ2つ入る）。
+ * 地の絵にしたのは、紙が何ページに続いても、どのページにも入り、よぶんな紙が出ないようにするため
+ * （本物の文字を紙の上に並べる作りも試したが、紙の終わりより下にはみ出した分だけ、白い紙が1枚よぶんに印刷された）。
+ * 地の絵は、ブラウザの印刷の設定で消されることがあるので、.paper の print-color-adjust: exact で、必ず出すようにしてある。
+ * 絵の中の字は、端末に入っている明朝体で出る（絵の中からは、Web フォントを使えないため）。 */
+.paper[data-watermark] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 140'%3E%3Cg transform='rotate(-20 105 70)' fill='%23c5361b' fill-opacity='.19'%3E%3Cpath fill-rule='evenodd' d='M61 49h88a4 4 0 0 1 4 4v34a4 4 0 0 1-4 4H61a4 4 0 0 1-4-4V53a4 4 0 0 1 4-4zm1.2 2.6a2.6 2.6 0 0 0-2.6 2.6v31.6a2.6 2.6 0 0 0 2.6 2.6h85.6a2.6 2.6 0 0 0 2.6-2.6V54.2a2.6 2.6 0 0 0-2.6-2.6z'/%3E%3Ctext x='109.5' y='80.5' text-anchor='middle' font-family='Hiragino Mincho ProN,Yu Mincho,YuMincho,Noto Serif CJK JP,Noto Serif JP,serif' font-weight='800' font-size='29' letter-spacing='9'%3E%E8%A6%8B%E6%9C%AC%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  /* 絵の1枚（たて 140mm）のまん中に「見本」がある。上から敷くので、紙の頭に、切れた透かしが出ない */
+  background-position: center top;
+  background-size: calc(var(--u) * 210) calc(var(--u) * 140);
 }
 
 @media print {
@@ -221,7 +229,8 @@
     padding: 0;
     border: 0;
     box-shadow: none;
-    background: transparent;
+    /* 地の色だけを消す（「見本」の透かしの絵は残す） */
+    background-color: transparent;
   }
   /* 資料が変わるところで、紙を改める */
   .paper + .paper { margin-top: 0; break-before: page; page-break-before: always; }

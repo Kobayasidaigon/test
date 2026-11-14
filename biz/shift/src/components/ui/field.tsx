@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const control =
-  "w-full rounded-lg border-2 border-ink bg-card px-3 text-base font-medium text-ink placeholder:font-normal placeholder:text-ink-soft/80 disabled:cursor-not-allowed disabled:opacity-50"
+  "w-full rounded-lg border-2 border-ink bg-card px-3 text-base font-medium text-ink placeholder:font-normal placeholder:text-ink-soft disabled:cursor-not-allowed disabled:opacity-50"
 
 export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(({ className, type = "text", ...props }, ref) => (
   <input ref={ref} type={type} className={cn(control, "h-11", className)} {...props} />

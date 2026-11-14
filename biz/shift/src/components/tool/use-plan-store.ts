@@ -107,7 +107,7 @@ export function usePlanStore() {
   )
 
   /** plan をまるごと入れかえる（サンプル、ファイルの読み込み、自動作成の結果、はじめからやり直す） */
-  const replace = useCallback((next: ShiftPlan | null) => commit(next), [commit])
+  const replace = useCallback((next: ShiftPlan | null, options?: { keepHistory?: boolean }) => commit(next, options), [commit])
 
   /** 1つ前に戻す。戻せたら true */
   const undo = useCallback(() => {

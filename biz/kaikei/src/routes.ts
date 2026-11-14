@@ -21,8 +21,9 @@ export const routes: Route[] = [
   },
   {
     path: '/app',
-    title: 'ツール | ひきつぎ会計',
-    description: 'ツールの画面。',
+    title: '帳簿をつける | ひきつぎ会計',
+    description:
+      '収入と支出を入力して、総会の資料（収支決算書、出納帳、会計監査報告書、次年度の予算案、引き継ぎ書）を作る画面です。登録はいりません。入力した内容は、どこにも送られません。',
     ssr: false,
     load: () => import('./pages/Tool'),
   },

@@ -61,86 +61,89 @@ export function Welcome({ store }: { store: Store }) {
         </nav>
       </header>
 
-      <div className="mt-8 sm:mt-12">
-        <h1 className="text-[1.75rem] leading-snug sm:text-[2.3rem]">
-          <span className="inline-block">会計のしごとを、</span>
-          <span className="inline-block">ここから始めます。</span>
-        </h1>
-        <p className="mt-3 max-w-[38em] leading-relaxed text-muted-foreground">
-          収入と支出を入れていくと、総会の資料ができあがります。登録はいりません。下の3つから、あてはまるものを選んでください。
-        </p>
-      </div>
+      <main>
+        <div className="mt-8 sm:mt-12">
+          <h1 className="text-[1.75rem] leading-snug sm:text-[2.3rem]">
+            <span className="inline-block">会計のしごとを、</span>
+            <span className="inline-block">ここから始めます。</span>
+          </h1>
+          <p className="mt-3 max-w-[38em] leading-relaxed text-muted-foreground">
+            収入と支出を入れていくと、総会の資料ができあがります。登録はいりません。下の3つから、あてはまるものを選んでください。
+          </p>
+        </div>
 
-      {store.notice && (
-        <Alert variant={store.notice.kind === 'error' ? 'error' : 'warn'} role="alert" className="mt-6">
-          <AlertDescription>
-            <p>{store.notice.message}</p>
-            {store.notice.detail && <p className="text-[0.84rem] text-muted-foreground">（くわしい理由: {store.notice.detail}）</p>}
-          </AlertDescription>
-        </Alert>
-      )}
-      {store.storageProblem && (
-        <Alert variant="warn" className="mt-6">
-          {store.storageProblem}
-        </Alert>
-      )}
+        {store.notice && (
+          <Alert variant={store.notice.kind === 'error' ? 'error' : 'warn'} role="alert" className="mt-6">
+            <AlertDescription>
+              <p>{store.notice.message}</p>
+              {store.notice.detail && <p className="text-[0.84rem] text-muted-foreground">（くわしい理由: {store.notice.detail}）</p>}
+            </AlertDescription>
+          </Alert>
+        )}
+        {store.storageProblem && (
+          <Alert variant="warn" className="mt-6">
+            {store.storageProblem}
+          </Alert>
+        )}
 
-      <div className="mt-7 overflow-hidden rounded-xl border border-border border-t-[3px] border-t-rule bg-paper shadow-paper">
-        <ChoiceRow index="一" title="ひきつぎファイルを開く" lead="前の担当の方から受け取ったファイルや、自分で保存したファイルがあるとき。続きから始められます。">
-          <FileDropzone
-            onFile={open}
-            busy={busy}
-            inputLabel="ひきつぎファイルを選ぶ"
-            title="ここにファイルを置くか、下のボタンで選びます"
-            description="「ひきつぎ会計_」で始まる名前の、.json のファイルです。"
-            buttonLabel="ひきつぎファイルを選ぶ"
-          />
-          {fileError && (
-            <Alert variant="error" role="alert" className="mt-3">
-              <AlertTitle>このファイルは開けませんでした</AlertTitle>
-              <AlertDescription>{fileError}</AlertDescription>
-            </Alert>
-          )}
-        </ChoiceRow>
+        <div className="mt-7 overflow-hidden rounded-xl border border-border border-t-[3px] border-t-rule bg-paper shadow-paper">
+          <ChoiceRow index="一" title="ひきつぎファイルを開く" lead="前の担当の方から受け取ったファイルや、自分で保存したファイルがあるとき。続きから始められます。">
+            <FileDropzone
+              onFile={open}
+              busy={busy}
+              inputLabel="ひきつぎファイルを選ぶ"
+              title="ここにファイルを置くか、下のボタンで選びます"
+              description="「ひきつぎ会計_」で始まる名前の、.json のファイルです。"
+              buttonLabel="ひきつぎファイルを選ぶ"
+            />
+            {fileError && (
+              <Alert variant="error" role="alert" className="mt-3">
+                <AlertTitle>このファイルは開けませんでした</AlertTitle>
+                <AlertDescription>{fileError}</AlertDescription>
+              </Alert>
+            )}
+          </ChoiceRow>
 
-        <ChoiceRow index="二" title="新しく始める" lead="はじめて使うとき。団体の種類を選ぶと、よくある科目が入った帳簿ができます。">
-          <Button size="lg" className="w-full sm:w-auto" onClick={() => setWizardOpen(true)}>
-            <FilePlus2 />
-            新しい帳簿を作る
-          </Button>
-          <p className="mt-2 text-[0.86rem] leading-relaxed text-muted-foreground">町内会・自治会、子ども会、PTA、サークルなどのひな形があります。</p>
-        </ChoiceRow>
+          <ChoiceRow index="二" title="新しく始める" lead="はじめて使うとき。団体の種類を選ぶと、よくある科目が入った帳簿ができます。">
+            <Button size="lg" className="w-full sm:w-auto" onClick={() => setWizardOpen(true)}>
+              <FilePlus2 />
+              新しい帳簿を作る
+            </Button>
+            <p className="mt-2 text-[0.86rem] leading-relaxed text-muted-foreground">町内会・自治会、子ども会、PTA、サークルなどのひな形があります。</p>
+          </ChoiceRow>
 
-        <ChoiceRow index="三" title="サンプルを見る" lead="まず、ようすを見たいとき。入力ずみの帳簿で、資料の印刷まで試せます。">
-          <Button variant="outline" size="lg" className="w-full sm:w-auto" onClick={() => start(createSampleBook())}>
-            <BookOpenText />
-            サンプルを入れて見る
-          </Button>
-          <p className="mt-2 text-[0.86rem] leading-relaxed text-muted-foreground">「あおぞら町内会」の2年ぶんの帳簿が入ります。{SAMPLE_NOTE}</p>
-        </ChoiceRow>
-      </div>
+          <ChoiceRow index="三" title="サンプルを見る" lead="まず、ようすを見たいとき。入力ずみの帳簿で、資料の印刷まで試せます。">
+            <Button variant="outline" size="lg" className="w-full sm:w-auto" onClick={() => start(createSampleBook())}>
+              <BookOpenText />
+              サンプルを入れて見る
+            </Button>
+            <p className="mt-2 text-[0.86rem] leading-relaxed text-muted-foreground">「あおぞら町内会」の2年ぶんの帳簿が入ります。{SAMPLE_NOTE}</p>
+          </ChoiceRow>
+        </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <section aria-labelledby="welcome-data">
-          <h2 id="welcome-data" className="rule-double pb-1.5 text-lg">
-            入力した内容の置き場所
-          </h2>
-          <p className="mt-3 text-[0.94rem] leading-relaxed">{DATA_NOTE}</p>
-        </section>
-        <section aria-labelledby="welcome-scope">
-          <h2 id="welcome-scope" className="rule-double pb-1.5 text-lg">
-            使えないこと
-          </h2>
-          <ul className="mt-3 grid gap-1.5 text-[0.94rem] leading-relaxed">
-            {OUT_OF_SCOPE.map((s) => (
-              <li key={s.id} className="flex gap-2">
-                <span aria-hidden className="mt-[0.7em] size-1.5 shrink-0 bg-shu" />
-                <span>{s.text}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <section aria-labelledby="welcome-data">
+            <h2 id="welcome-data" className="rule-double pb-1.5 text-lg">
+              入力した内容の置き場所
+            </h2>
+            <p className="mt-3 text-[0.94rem] leading-relaxed">{DATA_NOTE}</p>
+          </section>
+          <section aria-labelledby="welcome-scope">
+            <h2 id="welcome-scope" className="rule-double pb-1.5 text-lg">
+              使えないこと
+            </h2>
+            <ul className="mt-3 grid gap-1.5 text-[0.94rem] leading-relaxed">
+              {OUT_OF_SCOPE.map((s) => (
+                <li key={s.id} className="flex gap-2">
+                  <span aria-hidden className="mt-[0.7em] size-1.5 shrink-0 bg-shu" />
+                  <span>{s.text}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+
+      </main>
 
       <NewBookWizard open={wizardOpen} onOpenChange={setWizardOpen} today={store.today} onCreate={start} />
     </div>

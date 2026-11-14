@@ -37,21 +37,59 @@ export const dialogPaperClass =
   "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 " +
   "data-[state=open]:slide-in-from-bottom-4 data-[state=closed]:slide-out-to-bottom-4 sm:data-[state=open]:slide-in-from-bottom-2 sm:data-[state=closed]:slide-out-to-bottom-2"
 
+/**
+ * 閉じたときに、開く前にフォーカスがあったところ（開くボタン）へ、フォーカスを戻す。
+ * Radix は、DialogTrigger を使ったときだけ戻してくれる。この道具では、開く・閉じるを state で持っていて
+ * Trigger を使わないので、自分で覚えておいて戻す（戻さないと、キーボードの人が、ページの頭からやり直しになる）。
+ */
+export function useReturnFocus() {
+  const opener = React.useRef<HTMLElement | null>(null)
+  return {
+    onOpenAutoFocus: () => {
+      // この時点では、まだ、開く前のところにフォーカスがある。
+      opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    },
+    onCloseAutoFocus: (event: Event) => {
+      const el = opener.current
+      opener.current = null
+      if (el && el.isConnected && el !== document.body) {
+        event.preventDefault()
+        el.focus()
+      }
+    },
+  }
+}
+
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content ref={ref} className={cn(dialogPaperClass, className)} {...props}>
-      {children}
-      <DialogPrimitive.Close className="absolute right-2 top-2 grid size-11 cursor-pointer place-items-center rounded-sm text-ink-soft transition-colors hover:bg-ink/[0.07] hover:text-ink">
-        <X aria-hidden className="size-5" />
-        <span className="sr-only">閉じる</span>
-      </DialogPrimitive.Close>
-    </DialogPrimitive.Content>
-  </DialogPortal>
-))
+>(({ className, children, onOpenAutoFocus, onCloseAutoFocus, ...props }, ref) => {
+  const returnFocus = useReturnFocus()
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(dialogPaperClass, className)}
+        onOpenAutoFocus={(e) => {
+          returnFocus.onOpenAutoFocus()
+          onOpenAutoFocus?.(e)
+        }}
+        onCloseAutoFocus={(e) => {
+          onCloseAutoFocus?.(e)
+          if (!e.defaultPrevented) returnFocus.onCloseAutoFocus(e)
+        }}
+        {...props}
+      >
+        {children}
+        <DialogPrimitive.Close className="absolute right-2 top-2 grid size-11 cursor-pointer place-items-center rounded-sm text-ink-soft transition-colors hover:bg-ink/[0.07] hover:text-ink">
+          <X aria-hidden className="size-5" />
+          <span className="sr-only">閉じる</span>
+        </DialogPrimitive.Close>
+      </DialogPrimitive.Content>
+    </DialogPortal>
+  )
+})
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (

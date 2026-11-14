@@ -76,8 +76,9 @@ export default function Tool() {
       // 保存できなくても、そのまま使える。
     }
     // 手順が変わったら、紙のいちばん上から読めるようにする。読み上げにも、中身が変わったことが伝わるように、本文へフォーカスを移す。
+    // すべるように動かすと、長い結果の画面から戻るのに時間がかかるので、すぐに上へ移す。
     requestAnimationFrame(() => {
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, behavior: 'instant' })
       main.current?.focus({ preventScroll: true })
     })
   }
@@ -125,7 +126,7 @@ export default function Tool() {
         <h1 className="sr-only">{site.name} — 賃貸の初期費用の見積書を点検する道具</h1>
       </header>
 
-      <nav aria-label="道具の流れ" className="no-print sticky top-0 z-40 border-b border-ink/15 bg-desk/95 backdrop-blur-[2px]">
+      <nav aria-label="道具の流れ" className="no-print sticky top-0 z-40 border-b border-ink/15 bg-desk">
         <div className="mx-auto max-w-[76rem] px-2 pt-2 sm:px-6">
           <Steps
             className="-mb-px"
@@ -138,8 +139,9 @@ export default function Tool() {
                 shortTitle: '結果',
                 badge:
                   inspection.attentionCount > 0 ? (
-                    <span className="font-pen text-[15px] leading-none text-pen" aria-label={`確かめる項目が ${inspection.attentionCount}つ`}>
-                      {inspection.attentionCount}
+                    <span className="font-pen text-[15px] leading-none text-pen">
+                      <span aria-hidden>{inspection.attentionCount}</span>
+                      <span className="sr-only">（確かめる項目が {inspection.attentionCount}つ）</span>
                     </span>
                   ) : undefined,
               },
@@ -199,7 +201,7 @@ export default function Tool() {
 
       {/* スマホでは、入力のあいだ、合計と「結果を見る」を、いつも下に出しておく。 */}
       {ready && step === 'input' && lineCount > 0 && (
-        <div className="no-print fixed inset-x-0 bottom-0 z-30 border-t border-ink/20 bg-paper/95 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-6px_16px_-10px_rgb(31_45_71/0.4)] backdrop-blur-[2px] lg:hidden">
+        <div className="no-print fixed inset-x-0 bottom-0 z-30 border-t border-ink/20 bg-paper px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-6px_16px_-10px_rgb(31_45_71/0.4)] lg:hidden">
           <div className="mx-auto flex max-w-[76rem] items-center justify-between gap-3">
             <p className="min-w-0 leading-tight">
               <span className="block text-[11px] text-ink-soft">
