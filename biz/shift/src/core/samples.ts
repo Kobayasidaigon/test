@@ -13,7 +13,7 @@ export type SampleId = 'salon' | 'restaurant' | 'pharmacy'
 export const SAMPLES: Array<{ id: SampleId; label: string; note: string }> = [
   { id: 'salon', label: '美容室', note: 'スタッフ7人。火曜が定休日。早番と遅番。' },
   { id: 'restaurant', label: '飲食店', note: 'スタッフ8人。月曜が定休日。人が足りない週があり、組めない理由と直し方を見られます。' },
-  { id: 'pharmacy', label: '薬局', note: 'スタッフ6人。日曜と祝日が休み。薬剤師が必ず1人いるように組みます。' },
+  { id: 'pharmacy', label: '薬局', note: 'スタッフ6人。日曜と祝日が休み。土曜は午前だけ。薬剤師が必ず1人いるように組みます。' },
 ]
 
 /** その月の、n 回めの weekday の日（n は 1 から）。なければ null */
@@ -195,24 +195,32 @@ function pharmacy(year: number, month: number): ShiftPlan {
       { id: 'sh1', name: '1日', symbol: '日', start: '09:00', end: '18:30', breakMinutes: 60, color: 'tomato' },
       { id: 'sh2', name: '午前', symbol: '前', start: '09:00', end: '13:00', breakMinutes: 0, color: 'egg' },
       { id: 'sh3', name: '午後', symbol: '後', start: '14:00', end: '18:30', breakMinutes: 0, color: 'teal' },
+      { id: 'sh4', name: '土曜', symbol: '土', start: '09:00', end: '13:00', breakMinutes: 0, color: 'sky' },
     ],
     tags: [{ id: 'tag1', name: '薬剤師' }],
     staff: [
-      staff('st1', '松本', { tagIds: ['tag1'], minDays: 19, maxDays: 22 }),
-      staff('st2', '井上', { tagIds: ['tag1'], minDays: 19, maxDays: 22 }),
-      // 午前だけの薬剤師
+      // 常勤の3人は、平日は「1日」、土曜は「土曜」に入る。半日だけの勤務には入らない
+      staff('st1', '松本', { tagIds: ['tag1'], cannotWork: { sh2: ALL_DAYS, sh3: ALL_DAYS }, minDays: 15, maxDays: 22 }),
+      staff('st2', '井上', { tagIds: ['tag1'], cannotWork: { sh2: ALL_DAYS, sh3: ALL_DAYS }, minDays: 15, maxDays: 22 }),
+      // 午前だけの薬剤師（土曜も入れる）
       staff('st3', '木村', { tagIds: ['tag1'], cannotWork: { sh1: ALL_DAYS, sh3: ALL_DAYS }, maxDays: 16 }),
-      staff('st4', '林', { minDays: 19, maxDays: 22 }),
-      staff('st5', '清水', { fixedOffWeekdays: [6], cannotWork: { sh1: ALL_DAYS }, maxDays: 15 }),
-      staff('st6', '山口', { cannotWork: { sh1: ALL_DAYS }, maxDays: 13 }),
+      staff('st4', '林', { cannotWork: { sh2: ALL_DAYS, sh3: ALL_DAYS }, minDays: 15, maxDays: 22 }),
+      // 半日のパート。土曜は休み
+      staff('st5', '清水', { fixedOffWeekdays: [6], cannotWork: { sh1: ALL_DAYS }, maxDays: 20 }),
+      staff('st6', '山口', { cannotWork: { sh1: ALL_DAYS }, maxDays: 18 }),
     ],
     needs: {
-      // 並びは 日・月・火・水・木・金・土。日曜は休み。木曜と土曜は午前だけ開ける
-      weekly: { sh1: [0, 2, 2, 2, 0, 2, 0], sh2: [0, 1, 1, 1, 3, 1, 3], sh3: [0, 1, 1, 1, 0, 1, 0] },
+      // 並びは 日・月・火・水・木・金・土。日曜は休み。土曜は午前だけ開ける
+      weekly: {
+        sh1: [0, 2, 2, 2, 2, 2, 0],
+        sh2: [0, 1, 1, 1, 1, 1, 0],
+        sh3: [0, 1, 1, 1, 1, 1, 0],
+        sh4: [0, 0, 0, 0, 0, 0, 3],
+      },
       overrides: {},
       roleMins: [
         { id: 'rm1', shiftId: 'sh1', tagId: 'tag1', count: 1 },
-        { id: 'rm2', shiftId: 'sh2', tagId: 'tag1', count: 1 },
+        { id: 'rm2', shiftId: 'sh4', tagId: 'tag1', count: 1 },
       ],
     },
     wishes,

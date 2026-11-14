@@ -1,4 +1,6 @@
-import type { AskParts, BasisNote, ItemDef } from './types'
+import { categories } from './categories'
+import { getSource, type Source } from './sources'
+import type { AskParts, BasisNote, Category, ItemDef, ResolvedBasis } from './types'
 
 // 項目の一覧（プリセット）。点検のルールは、すべてこのデータから作る。
 //
@@ -768,7 +770,7 @@ export const items: ItemDef[] = [
   {
     id: 'internet',
     name: 'インターネット・ケーブルテレビの利用料',
-    aliases: ['インターネット', 'インターネット利用料', 'ネット利用料', 'ネット回線', '光回線', 'Wi-Fi', 'WiFi', 'ケーブルテレビ', 'CATV', '通信費'],
+    aliases: ['インターネット', 'インターネット利用料', 'ネット利用料', 'ネット回線', '光回線', 'Wi-Fi', 'ケーブルテレビ', 'CATV', '通信費'],
     keywords: ['いんたーねっと', 'ねっと', 'わいふぁい', 'けーぶるてれび'],
     summary: '建物に入っているインターネットやケーブルテレビの、利用料や初期の費用です。',
     why: NO_RULE_TEXT,
@@ -1180,4 +1182,25 @@ export function listGuideItems(): (ItemDef & { guide: NonNullable<ItemDef['guide
 /** slug から、解説ページのある項目を探す。 */
 export function findGuideItem(slug: string): (ItemDef & { guide: NonNullable<ItemDef['guide']> }) | null {
   return listGuideItems().find((i) => i.guide.slug === slug) ?? null
+}
+
+/** 項目を、区分ごとにまとめて返す（項目を選ぶ画面と、/items の一覧に使う）。項目のない区分は返さない。 */
+export function listItemsByCategory(): { category: Category; items: ItemDef[] }[] {
+  return categories
+    .map((category) => ({ category, items: items.filter((i) => i.category === category.id) }))
+    .filter((group) => group.items.length > 0)
+}
+
+/** 根拠の文を、出典の中身ごと取り出した形にする（画面でそのまま使える）。 */
+export function resolveBasis(notes: BasisNote[]): ResolvedBasis[] {
+  return notes.map((n) => ({ text: n.text, sources: n.sourceIds.map((id) => getSource(id)) }))
+}
+
+/** 項目が根拠・参考にしている出典を、重なりなく返す（解説ページの「根拠」の一覧に使う）。 */
+export function listItemSources(item: ItemDef): Source[] {
+  const seen = new Map<string, Source>()
+  for (const note of [...item.basis, ...item.related]) {
+    for (const id of note.sourceIds) seen.set(id, getSource(id))
+  }
+  return [...seen.values()]
 }

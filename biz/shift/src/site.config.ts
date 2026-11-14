@@ -69,7 +69,7 @@ export const site = {
       price: formatYen(pricing.pro.priceYen),
       note: '税込。1回だけのお支払いで、月額の料金はありません。キーに期限はありません。',
       features: [
-        `スタッフの人数に制限なし（${pricing.pro.testedStaffLimit}人まで動作を確かめています）`,
+        `スタッフ${pricing.free.staffLimit + 1}人以上の店でも使えます（${pricing.pro.testedStaffLimit}人まで動作を確かめています）`,
         'CSV の書き出し（Excel で開けます）',
         '翌月への引き継ぎ（スタッフと条件をそのまま次の月へ。月をまたぐ連勤も数えます）',
         '無料版でできること、すべて',

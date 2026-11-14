@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest'
+import { generateKeyPair, issueLicense, verifyLicense } from '../lib/license'
+import { site } from '../site.config'
 import { setLicenseKey } from './book'
 import { openBookFile } from './browser'
 import { summarizeYear } from './calc'
 import { carryForward } from './carry'
+import { addDays } from './dates'
 import { buildBookFile, parseBookFile, serializeBook, suggestFileName } from './file'
 import { createSampleBook } from './sample'
 import { deposit, expense, failCode, income, newBook, ok, year } from './test-helpers'
@@ -41,14 +44,30 @@ describe('書き出して、読み込む', () => {
     const r = parseBookFile(serializeBook(book, NOW))
     expect(r.ok && summarizeYear(r.book.years[0]).carryover).toBe(736_918)
   })
-  it('目印と版の番号が入る。人が開いても読める形（字下げつき）', () => {
-    const text = serializeBook(filled(), NOW)
+  it('目印と版の番号が入る。人が開いても読める形（字下げつき。取引は1件が1行）', () => {
+    const book = filled()
+    const text = serializeBook(book, NOW)
     const file = JSON.parse(text)
     expect(file.format).toBe(FILE_FORMAT)
     expect(file.version).toBe(FILE_VERSION)
     expect(file.savedAt).toBe(NOW.toISOString())
     expect(text).toContain('\n  "book": {')
     expect(text.endsWith('\n')).toBe(true)
+    const t = year(book).transactions[0]
+    expect(text).toContain(
+      `{ "id": "${t.id}", "date": "2026-04-10", "kind": "income", "categoryId": "${t.categoryId}", "description": "会費", "amount": 30000, "accountId": "${t.accountId}", "toAccountId": null, "receiptNo": "" }`,
+    )
+  })
+  it('中身は、ふつうの JSON.stringify で書いたものと同じ（書き方が違うだけ）', () => {
+    for (const book of [newBook(), filled(), createSampleBook()]) {
+      const plain = JSON.parse(JSON.stringify({ format: FILE_FORMAT, version: FILE_VERSION, savedAt: NOW.toISOString(), book }))
+      expect(JSON.parse(serializeBook(book, NOW))).toEqual(plain)
+    }
+  })
+  it('1年ぶん（300件）で、100KB より小さい', () => {
+    let book = newBook({ cashOpening: 900_000_000 })
+    for (let i = 0; i < 300; i++) book = expense(book, '2026-05-01', 1_000 + i, `夏祭りの飲み物と、子どもの景品 ${i}`)
+    expect(new TextEncoder().encode(serializeBook(book, NOW)).length).toBeLessThan(100_000)
   })
   it('ライセンスキーも、ファイルと一緒に渡る', () => {
     const book = ok(setLicenseKey(filled(), 'eyJwcm9kdWN0Ijoia2Fpa2VpIn0.c2lnbmF0dXJl'))
@@ -312,6 +331,18 @@ describe('読めるけれど、確かめてほしいファイル', () => {
   })
 })
 
+describe('読み込んだときに、形をそろえる', () => {
+  it('現金が先頭でないファイルも読める。読んだあとは、現金が先頭になる', () => {
+    const book = filled()
+    const r = parseBookFile(tamper(book, (f) => f.book.years[0].accounts.reverse()))
+    expect(r.ok).toBe(true)
+    if (r.ok) {
+      expect(r.book.years[0].accounts.map((a) => a.name)).toEqual(['現金', '普通預金'])
+      expect(summarizeYear(r.book.years[0])).toEqual(summarizeYear(year(book)))
+    }
+  })
+})
+
 describe('あやしいキーを持ち込まない', () => {
   it('__proto__ というキーの入ったファイルを読んでも、ほかの値に影響しない', () => {
     const text = serializeBook(filled(), NOW)
@@ -378,5 +409,38 @@ describe('openBookFile（利用者が選んだファイルを読む）', () => {
   it('空のファイルは断る', async () => {
     const r = await openBookFile(new Blob([]))
     expect(!r.ok && r.code).toBe('empty')
+  })
+})
+
+describe('ライセンスキーを、ひきつぎファイルで次の担当へ渡す', () => {
+  it('ファイルから取り出したキーが、そのまま確かめを通る。期限は発行から400日', async () => {
+    // 運営者がキーを発行する（scripts/license.mjs issue --days 400 と同じ中身）
+    const { publicKey, privateKey } = await generateKeyPair()
+    const issuedAt = '2026-11-14'
+    const expiresAt = addDays(issuedAt, site.pricing.pro.licenseDays)
+    expect(expiresAt).toBe('2027-12-19')
+    const key = await issueLicense({ product: site.slug, name: 'あおぞら町内会', plan: 'pro', issuedAt, expiresAt }, privateKey)
+
+    // 今年度の会計が、キーを帳簿に入れて、ファイルに保存する
+    const saved = ok(buildBookFile(ok(setLicenseKey(filled(), key)), NOW))
+
+    // 次の担当が、別のパソコンでファイルを開く
+    const opened = parseBookFile(saved.text)
+    expect(opened.ok).toBe(true)
+    if (!opened.ok) return
+    expect(opened.book.licenseKey).toBe(key)
+    const verified = await verifyLicense(opened.book.licenseKey, publicKey, site.slug, '2027-04-20')
+    expect(verified).toMatchObject({ ok: true, license: { name: 'あおぞら町内会', expiresAt } })
+
+    // 期限の日までは使える。次の日からは使えない
+    expect((await verifyLicense(opened.book.licenseKey, publicKey, site.slug, expiresAt)).ok).toBe(true)
+    expect(await verifyLicense(opened.book.licenseKey, publicKey, site.slug, addDays(expiresAt, 1))).toEqual({ ok: false, reason: 'expired' })
+
+    // 繰り越しても、キーは帳簿に残る
+    expect(ok(carryForward(opened.book)).licenseKey).toBe(key)
+  })
+  it('キーの入っていないファイルは、空のまま', () => {
+    const opened = parseBookFile(serializeBook(filled(), NOW))
+    expect(opened.ok && opened.book.licenseKey).toBe('')
   })
 })

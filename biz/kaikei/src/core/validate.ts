@@ -245,6 +245,8 @@ function readYear(value: unknown, path: string): FiscalYear {
   const accounts = arr(o.accounts, `${path}.accounts`, LIMITS.maxBankAccounts + 1).map((v, i) => readAccount(v, `${path}.accounts[${i}]`))
   uniqueIds(accounts, `${path}.accounts`)
   if (accounts.filter((a) => a.kind === 'cash').length !== 1) throw new Invalid(`${path}.accounts`, '現金が1つではありません')
+  // 現金を先頭にそろえる（画面も資料も「現金が先、口座があと」の並びで出すため）。口座どうしの順は変えない
+  accounts.sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'cash' ? -1 : 1))
 
   const categories = arr(o.categories, `${path}.categories`, LIMITS.maxCategoriesPerSide * 2).map((v, i) => readCategory(v, `${path}.categories[${i}]`))
   uniqueIds(categories, `${path}.categories`)

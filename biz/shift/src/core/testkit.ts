@@ -100,3 +100,45 @@ export function randomPlan(options: RandomPlanOptions): ShiftPlan {
     carry: null,
   }
 }
+
+/**
+ * 手で確かめやすい、小さな plan。2026年12月（31日。1日は火曜、祝日なし）。
+ * 勤務は sh1（早番）と sh2（遅番）、スタッフは st1〜st3。必要人数は、早番が毎日1人、遅番は0人。
+ * 条件はすべて「なし」にしてあるので、テストごとに、確かめたい条件だけを足す。
+ */
+export function tinyPlan(patch: Partial<ShiftPlan> = {}): ShiftPlan {
+  const one = (id: string, name: string): Staff => ({ id, name, tagIds: [], fixedOffWeekdays: [], cannotWork: {}, minDays: null, maxDays: null })
+  return {
+    storeName: '小さな店',
+    year: 2026,
+    month: 12,
+    closed: { weekdays: [], days: [] },
+    holidayMode: 'sunday',
+    shiftTypes: [
+      { id: 'sh1', name: '早番', symbol: '早', start: '09:00', end: '17:00', breakMinutes: 60, color: 'egg' },
+      { id: 'sh2', name: '遅番', symbol: '遅', start: '13:00', end: '21:00', breakMinutes: 60, color: 'sky' },
+    ],
+    tags: [{ id: 'tag1', name: '鍵を持っている' }],
+    staff: [one('st1', '青木'), one('st2', '石川'), one('st3', '上田')],
+    needs: { weekly: { sh1: [1, 1, 1, 1, 1, 1, 1], sh2: [0, 0, 0, 0, 0, 0, 0] }, overrides: {}, roleMins: [] },
+    wishes: {},
+    rules: { maxConsecutive: null, forbiddenPairs: [], weeklyDayOff: false, weekStart: 0, balanceWeekend: false, balanceShiftIds: [] },
+    schedule: emptySchedule(),
+    carry: null,
+    ...patch,
+  }
+}
+
+/** 「st1 の 1〜5日に sh1」のように、表を手で作る。days は [開始, 終了] の範囲か、日の一覧 */
+export function workOn(schedule: ShiftPlan['schedule'], staffId: string, shiftId: string, days: number[]): ShiftPlan['schedule'] {
+  const row = { ...(schedule.work[staffId] ?? {}) }
+  for (const d of days) row[String(d)] = shiftId
+  return { ...schedule, work: { ...schedule.work, [staffId]: row } }
+}
+
+/** from から to までの日の一覧 */
+export function range(from: number, to: number): number[] {
+  const out: number[] = []
+  for (let d = from; d <= to; d++) out.push(d)
+  return out
+}

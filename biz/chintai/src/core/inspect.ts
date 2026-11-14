@@ -1,11 +1,9 @@
 import { checkBrokerage, checkProration, compareToMonthly } from './calc'
 import { categoryOrder } from './categories'
 import { formatMonthDayJa, formatMonths, formatYen } from './format'
-import { getItem, OTHER_ITEM_ID } from './items'
-import { getSource } from './sources'
+import { getItem, OTHER_ITEM_ID, resolveBasis } from './items'
 import type {
   AskParts,
-  BasisNote,
   BrokerageCalc,
   CategorySubtotal,
   Estimate,
@@ -17,7 +15,6 @@ import type {
   InspectionNote,
   ItemDef,
   ProrationCalc,
-  ResolvedBasis,
 } from './types'
 
 // 見積書を点検する。この道具の中心。
@@ -32,10 +29,6 @@ import type {
 const NO_RULE_GENERAL = 'この項目についての国の決まりや資料は、見つかりませんでした。条件は、契約書と、不動産会社への質問で確かめましょう。'
 
 const MISSING_AMOUNT = '金額が、まだ入っていません（合計には入っていません）。'
-
-function resolve(notes: BasisNote[]): ResolvedBasis[] {
-  return notes.map((n) => ({ text: n.text, sources: n.sourceIds.map((id) => getSource(id)) }))
-}
 
 /** 区分ごとの、決まった言い方。 */
 const categoryHeadline: Record<ItemDef['category'], string> = {
@@ -58,7 +51,7 @@ type Draft = {
   askDefault: boolean
 }
 
-/** 見積書の1行を点検する。others は、同じ見積書のほかの行（重なりを見るため）。 */
+/** 見積書の1行を点検する。見積書の全体も受け取るのは、家賃などの計算のもとと、ほかの行との重なりを見るため。 */
 function inspectLine(line: EstimateLine, estimate: Estimate): Finding {
   const item = getItem(line.itemId)
   const label = line.label.trim() || item.name
@@ -127,8 +120,8 @@ function inspectLine(line: EstimateLine, estimate: Estimate): Finding {
     checks: item.checks,
     calc: d.calc,
     basisStatus: item.basisStatus,
-    basis: resolve(item.basis),
-    related: resolve(item.related),
+    basis: resolveBasis(item.basis),
+    related: resolveBasis(item.related),
     limits: item.limits,
     caveat: item.caveat,
     howToAsk: item.howToAsk,
@@ -136,6 +129,7 @@ function inspectLine(line: EstimateLine, estimate: Estimate): Finding {
     askDefault: d.askDefault,
     countsTowardAskTotal: item.askRemovable && item.totalRole === 'add' && line.amount !== null,
     totalRole: item.totalRole,
+    guideSlug: item.guide?.slug ?? null,
   }
 }
 
@@ -279,8 +273,15 @@ function applyProration(d: Draft, line: EstimateLine, estimate: Estimate): void 
 
 const NEED_RENT = '家賃を入れると、家賃の何か月分にあたるかを計算できます。'
 
+/** 0円の行は、月額と比べない（「約0か月分」と言っても役に立たないため）。0円であることだけを言う。 */
+function isZero(d: Draft, line: EstimateLine): boolean {
+  if (line.amount !== 0) return false
+  d.reasons.push('見積もりの額は、0円になっています。')
+  return true
+}
+
 function applyMonths(d: Draft, line: EstimateLine, estimate: Estimate): void {
-  if (line.amount === null) return
+  if (line.amount === null || isZero(d, line)) return
   const calc = compareToMonthly({ rent: estimate.rent, commonFee: estimate.commonFee, amount: line.amount, base: 'rent' })
   if (!calc) {
     d.reasons.push(NEED_RENT)
@@ -291,7 +292,7 @@ function applyMonths(d: Draft, line: EstimateLine, estimate: Estimate): void {
 }
 
 function applyAdvanceRent(d: Draft, line: EstimateLine, estimate: Estimate): void {
-  if (line.amount === null) return
+  if (line.amount === null || isZero(d, line)) return
   const { rent } = estimate
   if (rent === null || rent <= 0) {
     d.reasons.push(NEED_RENT)
@@ -320,7 +321,7 @@ function applyAdvanceRent(d: Draft, line: EstimateLine, estimate: Estimate): voi
 }
 
 function applyCommonFee(d: Draft, line: EstimateLine, estimate: Estimate): void {
-  if (line.amount === null) return
+  if (line.amount === null || isZero(d, line)) return
   const fee = estimate.commonFee
   if (fee === null || fee <= 0) {
     d.reasons.push('管理費・共益費（月額）を入れると、何か月分にあたるかを計算できます。')
@@ -339,7 +340,7 @@ function applyCommonFee(d: Draft, line: EstimateLine, estimate: Estimate): void 
 }
 
 function applyGuarantee(d: Draft, line: EstimateLine, estimate: Estimate): void {
-  if (line.amount === null) return
+  if (line.amount === null || isZero(d, line)) return
   const calc = compareToMonthly({ rent: estimate.rent, commonFee: estimate.commonFee, amount: line.amount, base: 'rent+fee' })
   if (!calc) {
     d.reasons.push(NEED_RENT)

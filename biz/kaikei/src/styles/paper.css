@@ -1,0 +1,228 @@
+/*
+ * 総会の資料の「紙」（A4 縦）。道具の画面でも LP の見本でも、同じ部品（src/components/papers）で使う。
+ *
+ * 大きさの考え方:
+ *   紙の中の寸法は、すべて --u（紙の幅の 210分の1 ＝ 印刷では 1mm）の何倍かで書く。
+ *   画面では、紙を入れる枠（.paper-frame）の幅に合わせて --u が小さくなるので、
+ *   スマホでも紙の全体が、同じ割りつけのまま縮んで見える（JavaScript を使わないので、静的HTMLでも崩れない）。
+ *   印刷では --u を 1mm に固定する。画面で見た形のまま、A4 に出る。
+ */
+
+.paper-frame {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 210mm;
+  margin-inline: auto;
+}
+/* 「大きく表示」: 紙を実物の大きさにして、枠の中を横に動かして見る */
+.paper-scroll { overflow-x: auto; max-width: 100%; }
+.paper-scroll[data-zoom="full"] .paper-frame { width: 210mm; max-width: none; }
+
+.paper {
+  --u: 1mm;
+  --paper-line: #3a8f88; /* 帳簿の罫線の青緑 */
+  --paper-line-strong: #1c625d;
+  --paper-head: #e4f0ed;
+  --paper-ink: #1b1915;
+  --paper-sub: #4d483f;
+  position: relative;
+  box-sizing: border-box;
+  width: calc(var(--u) * 210);
+  min-height: calc(var(--u) * 297);
+  padding: calc(var(--u) * 15) calc(var(--u) * 14);
+  background: #fffefb;
+  color: var(--paper-ink);
+  font-family: var(--font-sans);
+  font-size: calc(var(--u) * 3.7); /* およそ 10.5pt */
+  line-height: 1.55;
+  border: 1px solid #e4dac3;
+  box-shadow: var(--shadow-paper);
+  /* 見出しの行のうすい色を、印刷でも出す */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+@supports (width: 1cqw) {
+  .paper { --u: calc(100cqw / 210); }
+}
+.paper + .paper { margin-top: calc(var(--u) * 8); }
+
+.paper * { box-sizing: border-box; }
+.paper p { margin: 0; }
+
+/* ---- 見出し ---- */
+.paper-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: calc(var(--u) * 6.6);
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-align: center;
+}
+.paper-period { margin-top: calc(var(--u) * 1.5); text-align: center; font-size: calc(var(--u) * 3.6); color: var(--paper-sub); }
+.paper-org { margin-top: calc(var(--u) * 4); text-align: right; font-size: calc(var(--u) * 4.1); font-weight: 700; }
+.paper-section {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 6);
+  margin-bottom: calc(var(--u) * 1.6);
+}
+.paper-section h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: calc(var(--u) * 4.4);
+  letter-spacing: 0.08em;
+}
+/* 見出しの頭の、朱の四角（はんこの色を、ひとつだけ置く） */
+.paper-section h3::before {
+  content: "";
+  display: inline-block;
+  width: calc(var(--u) * 2.4);
+  height: calc(var(--u) * 2.4);
+  margin-right: calc(var(--u) * 1.8);
+  background: #c5361b;
+  vertical-align: 0.02em;
+}
+.paper-unit { font-size: calc(var(--u) * 3.2); color: var(--paper-sub); white-space: nowrap; }
+.paper-note { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 3.2); color: var(--paper-sub); }
+
+/* ---- 表 ---- */
+.paper-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: calc(var(--u) * 0.45) solid var(--paper-line-strong);
+}
+.paper-table th,
+.paper-table td {
+  border: calc(var(--u) * 0.2) solid var(--paper-line);
+  padding: calc(var(--u) * 1.25) calc(var(--u) * 1.8);
+  vertical-align: middle;
+  text-align: left;
+  font-weight: 400;
+}
+.paper-table thead th {
+  background: var(--paper-head);
+  border-bottom: calc(var(--u) * 0.45) solid var(--paper-line-strong);
+  text-align: center;
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.4);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.paper-table .num { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.paper-table .center { text-align: center; }
+.paper-table .small { font-size: calc(var(--u) * 3.1); line-height: 1.4; }
+.paper-table .nowrap { white-space: nowrap; }
+/* 合計の行。上を二重線にする（帳簿の締めの線） */
+.paper-table tr.total > * {
+  border-top: calc(var(--u) * 0.9) double var(--paper-line-strong);
+  font-weight: 700;
+  background: #f4f9f8;
+}
+.paper-table tr.total th { text-align: center; letter-spacing: 0.2em; }
+.paper-table tr.muted td { color: var(--paper-sub); }
+/* ページをまたぐ表は、見出しの行を次のページにも出す。行の途中では切らない */
+.paper-table thead { display: table-header-group; }
+.paper-table tr { break-inside: avoid; page-break-inside: avoid; }
+
+/* 決算書の「収入合計 − 支出合計 ＝ 次年度繰越金」 */
+.paper-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: calc(var(--u) * 1.5) calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 6);
+  padding: calc(var(--u) * 3) calc(var(--u) * 4);
+  border-top: calc(var(--u) * 0.45) solid var(--paper-line-strong);
+  border-bottom: calc(var(--u) * 0.9) double var(--paper-line-strong);
+  break-inside: avoid;
+}
+.paper-result .term { display: inline-flex; align-items: baseline; gap: calc(var(--u) * 2); white-space: nowrap; }
+.paper-result .term b { font-family: var(--font-num); font-size: calc(var(--u) * 4.6); font-weight: 700; }
+.paper-result .term.main b { font-size: calc(var(--u) * 5.6); }
+.paper-result .op { font-size: calc(var(--u) * 4.4); color: var(--paper-sub); }
+
+/* ---- 署名欄 ---- */
+.paper-closing { margin-top: calc(var(--u) * 9); break-inside: avoid; }
+.paper-date { margin-top: calc(var(--u) * 3); }
+.paper-signs { margin-top: calc(var(--u) * 5); display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--u) * 4); }
+.paper-sign { display: flex; align-items: center; gap: calc(var(--u) * 3); }
+.paper-sign .role { min-width: calc(var(--u) * 18); text-align: right; }
+.paper-sign .name {
+  min-width: calc(var(--u) * 52);
+  padding: 0 calc(var(--u) * 2) calc(var(--u) * 0.8);
+  border-bottom: calc(var(--u) * 0.25) solid var(--paper-ink);
+  font-size: calc(var(--u) * 4.4);
+  letter-spacing: 0.08em;
+  min-height: calc(var(--u) * 8);
+}
+/* はんこを押す丸 */
+.paper-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: calc(var(--u) * 11);
+  height: calc(var(--u) * 11);
+  border: calc(var(--u) * 0.25) dashed #9a9384;
+  border-radius: 50%;
+  color: #9a9384;
+  font-size: calc(var(--u) * 3);
+}
+/* 手で書くための空き（「令和　年　月　日」など） */
+.paper-gap { display: inline-block; width: calc(var(--u) * 9); }
+
+.paper-body-text { margin-top: calc(var(--u) * 12); font-size: calc(var(--u) * 4.3); line-height: 2.1; text-indent: 1em; white-space: pre-wrap; }
+.paper-memo { white-space: pre-wrap; min-height: calc(var(--u) * 24); padding: calc(var(--u) * 2.5) calc(var(--u) * 3); border: calc(var(--u) * 0.45) solid var(--paper-line-strong); }
+.paper-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--u) * 4.4);
+  height: calc(var(--u) * 4.4);
+  border: calc(var(--u) * 0.3) solid var(--paper-ink);
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* ---- 「見本」の透かし（無料版）---- */
+.paper-watermark { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
+.paper-watermark span {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-22deg);
+  padding: calc(var(--u) * 1) calc(var(--u) * 9) calc(var(--u) * 2);
+  border: calc(var(--u) * 1.8) solid currentColor;
+  border-radius: calc(var(--u) * 3);
+  color: rgb(197 54 27 / 0.17);
+  font-family: var(--font-serif);
+  font-weight: 800;
+  font-size: calc(var(--u) * 38);
+  line-height: 1.25;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  white-space: nowrap;
+}
+
+@media print {
+  .paper-frame { container-type: normal; width: auto; max-width: none; margin: 0; }
+  .paper {
+    --u: 1mm;
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  /* 資料が変わるところで、紙を改める */
+  .paper + .paper { margin-top: 0; break-before: page; page-break-before: always; }
+}

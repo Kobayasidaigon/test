@@ -148,6 +148,10 @@ export type YearSummary = {
   /** 収入の予算の合計（前年度繰越金は入れない） */
   incomeBudgetTotal: Yen
   expenseBudgetTotal: Yen
+  /** 前年度繰越金の予算額（決めていなければ、決算額と同じ） */
+  carryoverBudget: Yen
+  /** 収入の予算（前年度繰越金を入れた額）− 支出の予算。0 なら、予算の収入と支出が合っている */
+  budgetGap: Yen
   /** 移動（預け入れ・引き出し）の合計。収入にも支出にも入っていない */
   transferTotal: Yen
   counts: Record<TransactionKind, number>
@@ -191,6 +195,9 @@ export function summarizeYear(year: FiscalYear, diffStyle: DiffStyle = 'actual-m
   const openingTotal = accounts.reduce((s, a) => s + a.opening, 0)
   const closingTotal = accounts.reduce((s, a) => s + a.closing, 0)
   const carryover = openingTotal + incomeTotal - expenseTotal
+  const incomeBudgetTotal = income.reduce((s, c) => s + c.budget, 0)
+  const expenseBudgetTotal = expense.reduce((s, c) => s + c.budget, 0)
+  const carryoverBudget = year.carryoverBudget ?? openingTotal
   return {
     openingTotal,
     incomeTotal,
@@ -201,8 +208,10 @@ export function summarizeYear(year: FiscalYear, diffStyle: DiffStyle = 'actual-m
     balanced: carryover === closingTotal,
     income,
     expense,
-    incomeBudgetTotal: income.reduce((s, c) => s + c.budget, 0),
-    expenseBudgetTotal: expense.reduce((s, c) => s + c.budget, 0),
+    incomeBudgetTotal,
+    expenseBudgetTotal,
+    carryoverBudget,
+    budgetGap: carryoverBudget + incomeBudgetTotal - expenseBudgetTotal,
     transferTotal,
     counts,
   }
@@ -227,6 +236,84 @@ export function transferLabel(year: FiscalYear, tx: Transaction): string {
   if (from?.kind === 'cash' && to?.kind === 'bank') return '預け入れ'
   if (from?.kind === 'bank' && to?.kind === 'cash') return '引き出し'
   return '口座の間の移動'
+}
+
+// ---- 取引の一覧 ----
+
+/** 一覧に出すための取引。科目と置き場所の名前を引いてある。 */
+export type TransactionView = {
+  transaction: Transaction
+  /** 科目の名前。移動は「預け入れ」「引き出し」「口座の間の移動」 */
+  categoryName: string
+  accountName: string
+  /** 移動の入れ先の名前。収入と支出では空 */
+  toAccountName: string
+  /** 置き場所の書き方。「現金」、移動は「現金 → 普通預金」 */
+  accountText: string
+  /** 日付が会計年度の外か */
+  outsideYear: boolean
+}
+
+/** 取引の一覧（日付の順）。 */
+export function transactionViews(year: FiscalYear): TransactionView[] {
+  const categoryName = new Map(year.categories.map((c) => [c.id, c.name]))
+  const accountName = new Map(year.accounts.map((a) => [a.id, a.name]))
+  return sortedTransactions(year).map((tx) => {
+    const from = accountName.get(tx.accountId) ?? ''
+    const to = tx.toAccountId ? (accountName.get(tx.toAccountId) ?? '') : ''
+    return {
+      transaction: tx,
+      categoryName: tx.kind === 'transfer' ? transferLabel(year, tx) : ((tx.categoryId && categoryName.get(tx.categoryId)) || ''),
+      accountName: from,
+      toAccountName: to,
+      accountText: tx.kind === 'transfer' ? `${from} → ${to}` : from,
+      outsideYear: !isWithin(tx.date, year.startDate, year.endDate),
+    }
+  })
+}
+
+export type TransactionFilter = {
+  /** 内容・科目・領収書の番号・金額のどれかに入っている文字（全角と半角、大文字と小文字は区別しない） */
+  text?: string
+  kind?: TransactionKind
+  categoryId?: string
+  /** この置き場所が関係する取引（移動は、元でも先でも） */
+  accountId?: string
+  /** この日から（この日を含む） */
+  from?: DateString
+  /** この日まで（この日を含む） */
+  to?: DateString
+}
+
+/** 取引の一覧をしぼりこむ。 */
+export function filterTransactions(views: TransactionView[], filter: TransactionFilter): TransactionView[] {
+  const fold = (text: string) => text.normalize('NFKC').toLowerCase().replace(/[\s,]/g, '')
+  const needle = filter.text ? fold(filter.text) : ''
+  return views.filter(({ transaction: t, categoryName }) => {
+    if (filter.kind && t.kind !== filter.kind) return false
+    if (filter.categoryId && t.categoryId !== filter.categoryId) return false
+    if (filter.accountId && t.accountId !== filter.accountId && t.toAccountId !== filter.accountId) return false
+    if (filter.from && t.date < filter.from) return false
+    if (filter.to && t.date > filter.to) return false
+    if (needle === '') return true
+    return [t.description, categoryName, t.receiptNo, String(t.amount)].some((field) => fold(field).includes(needle))
+  })
+}
+
+/**
+ * 内容（摘要）の入力の手がかり。その科目で前に入れた内容を、新しい順に、重なりなく返す。
+ * 前の年度の分も入る（科目の id は年度をまたいで同じなので、去年の書き方をそのまま使える）。
+ */
+export function descriptionSuggestions(book: Book, categoryId: string, limit = 8): string[] {
+  const seen = new Set<string>()
+  const all = book.years.flatMap((y) => y.transactions).filter((t) => t.categoryId === categoryId && t.description !== '')
+  // 日付の新しい順。同じ日なら、あとに入れたものを先に
+  const sorted = all.map((t, i) => ({ t, i })).sort((a, b) => (a.t.date < b.t.date ? 1 : a.t.date > b.t.date ? -1 : b.i - a.i))
+  for (const { t } of sorted) {
+    if (seen.size >= limit) break
+    seen.add(t.description)
+  }
+  return [...seen]
 }
 
 // ---- 出納帳 ----

@@ -1,7 +1,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./styles/paper.css";
 
 @custom-variant dark (&:is(.dark *));
+
+/*
+ * ひきつぎ会計の見た目の土台 —「帳簿と、朱のはんこ」
+ *   地: 生成り（きなり）の紙      --background
+ *   字: 墨                        --foreground
+ *   罫: 帳簿の罫線の青緑          --rule / --rule-ink / --rule-soft
+ *   印: 朱（だいじな操作と、はんこ）--primary / --shu-ink
+ * 道具の画面も LP も、色・書体・角の丸み・影は、ここのトークンから使う（直に色を書かない）。
+ */
 
 /* shadcn 互換のトークン。21st.dev のコンポーネントはこの名前を参照する。 */
 @theme inline {
@@ -23,46 +33,126 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  /* このサービスだけの色 */
+  --color-paper: var(--paper);
+  --color-sumi: var(--sumi);
+  --color-shu: var(--shu);
+  --color-shu-ink: var(--shu-ink);
+  --color-shu-soft: var(--shu-soft);
+  --color-rule: var(--rule);
+  --color-rule-ink: var(--rule-ink);
+  --color-rule-soft: var(--rule-soft);
+  --color-kinari-deep: var(--kinari-deep);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --radius-sm: calc(var(--radius) - 3px);
+  --radius-md: calc(var(--radius) - 1px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: "Noto Sans JP", system-ui, -apple-system, "Hiragino Sans", sans-serif;
+  --font-sans: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  /* 見出し。品のある太めの明朝 */
+  --font-serif: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+  /* 金額。数字の幅がそろう（桁がそろって見える） */
+  --font-num: "BIZ UDGothic", "BIZ UDPGothic", "Hiragino Sans", "Meiryo", monospace;
+  --shadow-paper: 0 1px 0 rgb(74 60 30 / 0.06), 0 10px 28px -14px rgb(74 60 30 / 0.35);
+  --shadow-lift: 0 1px 0 rgb(74 60 30 / 0.08), 0 3px 8px -4px rgb(74 60 30 / 0.3);
 }
 
 :root {
-  --radius: 0.75rem;
-  --background: #ffffff;
-  --foreground: #16181d;
-  --card: #ffffff;
-  --card-foreground: #16181d;
-  --popover: #ffffff;
-  --popover-foreground: #16181d;
-  --primary: #16181d;
+  /* 紙の角。丸めすぎない（帳簿や回覧板の、きちんとした感じを残す） */
+  --radius: 0.4rem;
+
+  --background: #f4eee0; /* 生成り */
+  --foreground: #211e19; /* 墨 */
+  --paper: #fffdf8; /* 紙（カード、入力欄、資料） */
+  --kinari-deep: #e9e0cb; /* 生成りの濃いところ（帯、見出しの地） */
+  --sumi: #211e19;
+
+  --card: var(--paper);
+  --card-foreground: var(--foreground);
+  --popover: var(--paper);
+  --popover-foreground: var(--foreground);
+
+  --shu: #c5361b; /* 朱。白い字をのせて 5:1 以上 */
+  --shu-ink: #a52c14; /* 生成りの上に朱で字を書くとき（5.5:1 以上） */
+  --shu-soft: #f8e4dc;
+  --primary: var(--shu);
   --primary-foreground: #ffffff;
-  --secondary: #f1f2f4;
-  --secondary-foreground: #16181d;
-  --muted: #f1f2f4;
-  --muted-foreground: #5b616e;
-  --accent: #f1f2f4;
-  --accent-foreground: #16181d;
-  --destructive: #c62828;
-  --border: #e3e5e8;
-  --input: #e3e5e8;
-  --ring: #16181d;
+
+  --rule: #3a8f88; /* 帳簿の罫線の青緑 */
+  --rule-ink: #1c625d; /* 青緑で字を書くとき（生成りの上で 5.5:1 以上） */
+  --rule-soft: #e2efec;
+  --secondary: var(--rule-soft);
+  --secondary-foreground: #154d49;
+  --accent: var(--rule-soft);
+  --accent-foreground: #154d49;
+
+  --muted: #ebe4d3;
+  --muted-foreground: #5a5347; /* 生成りの上で 6:1 以上 */
+
+  --warn: #8a5a00; /* 「確かめてください」の字 */
+  --warn-soft: #fbf0cf;
+  --destructive: #a52c14;
+
+  --border: #d9cfb8; /* 紙のふち */
+  --input: #8c8371; /* 入力欄のふち。紙の上で 3:1 以上（形がわかるように） */
+  --ring: #1c625d;
 }
 
 @layer base {
   * { border-color: var(--border); }
-  html { scroll-behavior: smooth; }
+  /* 本文を 17px にする（パソコンに慣れていない人、年配の人が多いため）。ブラウザの文字の大きさの設定には従う */
+  html { font-size: 106.25%; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+    line-height: 1.75;
     -webkit-font-smoothing: antialiased;
+    /* 日本語を、文節のまとまりで折り返す（対応しているブラウザだけ） */
+    word-break: auto-phrase;
+    line-break: strict;
+    overflow-wrap: anywhere;
   }
+  h1, h2, h3 { font-family: var(--font-serif); font-weight: 700; text-wrap: balance; line-height: 1.4; letter-spacing: 0.02em; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  /* フォーカスの枠は、どの部品でも同じ青緑の2本線。消さない */
+  :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+  ::selection { background: #f3d3c8; }
+  /* 数字の入力欄の上下の矢印は、金額をまちがえて変えやすいので出さない */
+  input[type="number"]::-webkit-inner-spin-button { appearance: none; }
 }
+
+@layer utilities {
+  /* 金額。数字の幅をそろえて、右にそろえたときに桁が並ぶようにする */
+  .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; letter-spacing: 0; white-space: nowrap; }
+  .font-serif { font-family: var(--font-serif); }
+  /* 帳簿の見出しの下の線（太い線と細い線の2本） */
+  .rule-double { border-bottom: 3px double var(--rule); }
+  /* 選ぶ欄（select）の右はしの矢じるし（墨の色の、小さな山形） */
+  .select-arrow {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 7l6 7 6-7' fill='none' stroke='%23211e19' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1.05rem;
+  }
+  /* 画面を読み上げる人にだけ伝える文 */
+  .sr-only-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+/* 押したはんこが、紙になじむ動き */
+@keyframes stamp-in {
+  0% { transform: scale(1.5) rotate(-14deg); opacity: 0; }
+  60% { transform: scale(0.96) rotate(-7deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-8deg); opacity: 1; }
+}
+/* いま入れた行を、少しのあいだ色で知らせる */
+@keyframes row-flash {
+  0% { background-color: var(--shu-soft); }
+  100% { background-color: transparent; }
+}
+.row-flash { animation: row-flash 2.4s ease-out 1; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -73,8 +163,14 @@
   }
 }
 
-/* 印刷するときは、.no-print を付けた要素（ナビ、ボタンなど）を消す */
+/* 画面では見せず、印刷のときだけ出すもの */
+.print-only { display: none; }
+
+/* 印刷（A4 縦）。資料の紙（.paper）だけを出す。くわしくは styles/paper.css */
+@page { size: A4 portrait; margin: 15mm 14mm; }
 @media print {
+  html { font-size: 12pt; }
+  body { background: #fff !important; }
   .no-print { display: none !important; }
-  body { background: #fff; }
+  .print-only { display: block !important; }
 }

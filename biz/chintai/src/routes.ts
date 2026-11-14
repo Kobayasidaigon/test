@@ -21,8 +21,8 @@ export const routes: Route[] = [
   },
   {
     path: '/app',
-    title: 'ツール | みつもり点検',
-    description: 'ツールの画面。',
+    title: '見積書を点検する | みつもり点検',
+    description: '賃貸の初期費用の見積書を、項目ごとに点検する道具です。確かめたほうがよい項目と、不動産会社に送る確認の文面が出ます。無料で、登録はいりません。入力した内容は、送信されません。',
     ssr: false,
     load: () => import('./pages/Tool'),
   },

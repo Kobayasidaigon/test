@@ -80,3 +80,20 @@ export function pruneMessageLineIds(data: AppData): AppData {
 export function lineLabel(line: EstimateLine): string {
   return line.label.trim() || getItem(line.itemId).name
 }
+
+/**
+ * まだ何も入っていないか（見積書も、文面の名前も）。
+ * 「サンプルを入れる」「ファイルを読み込む」の前に、置きかえてよいかを確かめるかどうかを、これで決める。
+ */
+export function isEmptyData(data: AppData): boolean {
+  const { estimate: e, message: m } = data
+  return (
+    e.lines.length === 0 &&
+    e.rent === null &&
+    e.commonFee === null &&
+    e.moveInDate === null &&
+    e.statedTotal === null &&
+    m.senderName.trim() === '' &&
+    m.propertyName.trim() === ''
+  )
+}

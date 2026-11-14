@@ -1,4 +1,5 @@
 import { items, OTHER_ITEM_ID } from './items'
+import { LIMITS } from './storage'
 import type { ItemDef } from './types'
 
 // 見積書の言葉から、項目を探す。
@@ -82,4 +83,24 @@ export function searchItems(query: string, limit = 8): ItemMatch[] {
 export function guessItemId(label: string): string {
   const [best] = searchItems(label, 1)
   return best ? best.item.id : OTHER_ITEM_ID
+}
+
+/**
+ * 探した言葉から項目を選んで足すときに、行の名前（見積書に書かれていた名前）として残す文字を決める。
+ *
+ * - 打った言葉が、項目の言葉より長い（「室内抗菌施工費」の中に「抗菌」がある）とき、
+ *   または、見積書での別の呼び方とぴったり同じで3文字以上（「消毒料」）のとき → 見積書に書かれていた言葉とみなして、そのまま残す。
+ *   確認の文面に、不動産会社が見てわかる名前（見積書のとおりの名前）を出すため。
+ * - 打った言葉が、項目の言葉の一部（「抗菌」）や、読みがな（「しょうどく」）のとき
+ *   → 探すための言葉とみなして、残さない（空の文字を返す。行の名前は、項目の名前になる）。
+ */
+export function labelForMatch(query: string, match: ItemMatch): string {
+  const text = query.replace(/\s+/g, ' ').trim().slice(0, LIMITS.maxLabel)
+  if (text === '') return ''
+  if (normalizeForSearch(text) === normalizeForSearch(match.item.name)) return ''
+  // ぴったり同じ（100点以上）で、別の呼び方に当たったとき。読みがなに当たったときは、matched が項目の名前になっている。
+  // 2文字の言葉（「抗菌」「除菌」）は、探すために打った言葉であることが多いので、残さない。
+  if (match.score >= 100) return match.matched !== match.item.name && normalizeForSearch(text).length >= 3 ? text : ''
+  // 60点未満は、「打った言葉の中に、項目の言葉が入っている」当たり方。
+  return match.score < 60 ? text : ''
 }

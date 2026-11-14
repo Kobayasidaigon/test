@@ -49,7 +49,9 @@ export type SolveResult = {
 
 /**
  * 点数の重み（小さいほど良い）。「人数の不足」がいちばん重く、公平さがいちばん軽い。
- * 不足1人ぶん（1000）は、ほかの全部を足した最大（1人を置くことで増えうる点数）より大きくしてある。
+ * 不足1人ぶん（1000）は、1人を置くことで増えうるほかの点数を全部足した最大より大きくしてある
+ * （公平さは回数の2乗なので、31日ぜんぶ働いた人に足すときがいちばん大きい。その場合でも 600 に届かない。
+ * solver.test.ts で確かめている）。
  * だから、公平さや希望のために、人数の不足をわざと残すことはない。
  */
 export const WEIGHTS = {
@@ -66,9 +68,9 @@ export const WEIGHTS = {
   /** 「この勤務に入りたい」がかなわない（人を余らせてまで、かなえはしない。だから surplus より軽い） */
   wish: 100,
   /** 土日祝の回数のかたより（回数の2乗に掛ける） */
-  fairWeekend: 6,
+  fairWeekend: 4,
   /** 均等にしたい勤務の回数のかたより（回数の2乗に掛ける） */
-  fairShift: 6,
+  fairShift: 4,
   /** 勤務日数のかたより（日数の2乗に掛ける）。上限・下限を決めていない人どうしを、だいたい同じ日数にする */
   fairDays: 1,
 } as const
@@ -85,14 +87,20 @@ export function makeRng(seed: number): () => number {
   }
 }
 
+/** 「別の案を作る」ときの、次の種。いまの種（まだ組んでいなければ null）から決める */
+export function nextSeed(current: number | null): number {
+  return ((current ?? 0) % 0xfffffff0) + 1
+}
+
 const NO_LIMIT = 9999
 const UNLOCKED = -2
 const OFF = -1
 
 /** 表を組む。plan は書き換えない */
 export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult {
-  const seed = options.seed ?? 1
-  const effort = options.effort ?? 1
+  // 種は 0〜4294967295 の整数にそろえる（画面から時刻などの大きな数をわたされても、保存の検査を通る値にする）
+  const seed = (options.seed ?? 1) >>> 0
+  const effort = Number.isFinite(options.effort) ? Math.max(0, options.effort as number) : 1
   const onProgress = options.onProgress
   const rng = makeRng(seed)
   const calendar = buildCalendar(plan)
@@ -628,34 +636,47 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
   }
 
   onProgress?.({ phase: 'improve', ratio: 0 })
-  const reportEvery = Math.max(1, Math.floor(iterations / 20))
-  for (let k = 0; k < iterations; k++) {
-    if (k % 64 === 0) refreshShort()
-    if (onProgress && k % reportEvery === 0) onProgress({ phase: 'improve', ratio: k / iterations })
-    // 受け入れる「悪化の幅」を、はじめは広く、終わりに向けて 0 まで狭める
-    const left = 1 - k / iterations
-    const threshold = START_THRESHOLD * left * left
-    const before = cost
-    if (!proposeMove()) {
-      rollback()
-      continue
-    }
-    const delta = cost - before
-    if (delta <= 0 || delta < threshold * rng()) {
-      undoI.length = 0
-      undoV.length = 0
-      if (cost < best) {
-        best = cost
-        bestX.set(x)
+  /** 入れ替えを count 回ためす。progressFrom〜progressTo は、進み具合の表示に使う割合 */
+  function anneal(count: number, progressFrom: number, progressTo: number): void {
+    const reportEvery = Math.max(1, Math.floor(count / 20))
+    for (let k = 0; k < count; k++) {
+      if (k % 64 === 0) refreshShort()
+      if (onProgress && k % reportEvery === 0) onProgress({ phase: 'improve', ratio: progressFrom + ((progressTo - progressFrom) * k) / count })
+      // 受け入れる「悪化の幅」を、はじめは広く、終わりに向けて 0 まで狭める
+      const left = 1 - k / count
+      const threshold = START_THRESHOLD * left * left
+      const before = cost
+      if (!proposeMove()) {
+        rollback()
+        continue
       }
-    } else {
-      rollback()
+      const delta = cost - before
+      if (delta <= 0 || delta < threshold * rng()) {
+        undoI.length = 0
+        undoV.length = 0
+        if (cost < best) {
+          best = cost
+          bestX.set(x)
+        }
+      } else {
+        rollback()
+      }
+    }
+    // いちばん良かった状態に戻す
+    if (cost !== best) {
+      for (let i = 0; i < S * D; i++) if (x[i] !== bestX[i]) set(Math.floor(i / D), i % D, bestX[i])
     }
   }
 
-  // いちばん良かった状態に戻す
-  if (cost !== best) {
-    for (let i = 0; i < S * D; i++) if (x[i] !== bestX[i]) set(Math.floor(i / D), i % D, bestX[i])
+  let tried = iterations
+  anneal(iterations, 0, 0.7)
+  refreshShort()
+  if (iterations > 0 && shortSlots.length + shortRoles.length > 0) {
+    // 足りないところが残ったときだけ、もう一度ゆるめてから探し直す（半分の回数）。
+    // 「本当は埋まるのに足りない」案で止まることを減らすため。足りないところがなければ、ここは通らない
+    const extra = Math.round(iterations / 2)
+    tried += extra
+    anneal(extra, 0.7, 1)
   }
 
   // ---- 4. 仕上げ: 1マスの変更と、同じ日の入れ替えを全部試す ----
@@ -743,5 +764,5 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
   for (const [staffId, days] of Object.entries(plan.schedule.locked)) if (days.length > 0) locked[staffId] = [...days]
   const schedule: Schedule = { work, locked, seed }
 
-  return { schedule, check: checkPlan(plan, schedule), seed, iterations, score: cost }
+  return { schedule, check: checkPlan(plan, schedule), seed, iterations: tried, score: cost }
 }

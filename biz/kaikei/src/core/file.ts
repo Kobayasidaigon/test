@@ -19,10 +19,33 @@ export function suggestFileName(book: Book, now: Date): string {
   return `ひきつぎ会計_${safeFileNamePart(book.orgName)}_${safeFileNamePart(year.label)}_${dateFromLocal(now)}.json`
 }
 
-/** 帳簿を、ファイルに書く文字列にする。人が開いても読めるように、字下げを付ける。 */
+/**
+ * 値を JSON の文字列にする。字下げを付けるが、中身が文字や数だけのまとまり（取引、科目、置き場所など）は
+ * 1行に書く。JSON.stringify(値, null, 2) だと取引1件が11行になり、ファイルが3倍近く大きくなるため。
+ * 1件が1行なので、人が開いたときも表のように読める。
+ */
+function toJson(value: unknown, indent = ''): string {
+  const inner = indent + '  '
+  if (Array.isArray(value)) {
+    if (value.length === 0) return '[]'
+    return `[\n${value.map((v) => inner + toJson(v, inner)).join(',\n')}\n${indent}]`
+  }
+  if (typeof value === 'object' && value !== null) {
+    const entries = Object.entries(value).filter(([, v]) => v !== undefined)
+    if (entries.length === 0) return '{}'
+    if (entries.every(([, v]) => v === null || typeof v !== 'object')) {
+      return `{ ${entries.map(([k, v]) => `${JSON.stringify(k)}: ${toJson(v)}`).join(', ')} }`
+    }
+    return `{\n${entries.map(([k, v]) => `${inner}${JSON.stringify(k)}: ${toJson(v, inner)}`).join(',\n')}\n${indent}}`
+  }
+  // JSON.stringify は、文字にできない値（undefined など）に undefined を返す。そのときは null と書く
+  return JSON.stringify(value) ?? 'null'
+}
+
+/** 帳簿を、ファイルに書く文字列にする。 */
 export function serializeBook(book: Book, now: Date): string {
   const file: BookFile = { format: FILE_FORMAT, version: FILE_VERSION, savedAt: now.toISOString(), book }
-  return JSON.stringify(file, null, 2) + '\n'
+  return toJson(file) + '\n'
 }
 
 export type BuiltFile = { fileName: string; text: string }
@@ -38,6 +61,10 @@ export function buildBookFile(book: Book, now: Date): Result<BuiltFile> {
     text = serializeBook(book, now)
   } catch {
     return fail('serialize', '保存するファイルを作れませんでした。ページを開き直して、もう一度お試しください。')
+  }
+  // 読み込みのときと同じ上限で、大きさを確かめる（日本語は1文字が3バイトになるので、バイトで数える）
+  if (new TextEncoder().encode(text).length > LIMITS.maxFileBytes) {
+    return fail('too-large', 'データが大きくなりすぎて、ファイルに保存できません。お問い合わせください。')
   }
   const check = parseBookFile(text)
   if (!check.ok) {

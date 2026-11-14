@@ -110,6 +110,43 @@ export function explainShortages(plan: ShiftPlan, schedule: Schedule = plan.sche
   return out
 }
 
+/** 条件に当たるときの、ひとことの注意（マスを押したときの選択肢に添える） */
+export const BLOCK_NOTES: Record<BlockReason, string> = {
+  closedDay: '店を開けない日です',
+  offWish: '休み希望が出ています',
+  fixedOff: '固定の休みの曜日です',
+  cannotWork: 'この曜日のこの勤務には、入れない設定です',
+  maxDays: '月の勤務日数の上限をこえます',
+  maxConsecutive: '連勤の上限をこえます',
+  forbiddenPair: '前後の日と、続けて入れない組み合わせになります',
+}
+
+export type CellOption = {
+  /** 勤務の種類の id。休みは null */
+  shiftId: string | null
+  /** いま、そのマスに入っているものか */
+  current: boolean
+  /** これを選ぶと当たる、必ず守る条件。空なら問題なし */
+  reasons: BlockReason[]
+  /** 注意の文（reasons を文にしたもの）。問題がなければ空 */
+  notes: string[]
+}
+
+/**
+ * マスを押したときの選択肢（休み + 勤務の種類ぜんぶ）を、注意つきで返す。
+ * 条件に当たるものも、選べなくはしない（店長の判断で入れることはある。入れたら、点検が知らせる）。
+ */
+export function cellOptions(plan: ShiftPlan, schedule: Schedule, staffId: string, day: number): CellOption[] {
+  const calendar = buildCalendar(plan)
+  const now = shiftAt(schedule, staffId, day)
+  const options: CellOption[] = [{ shiftId: null, current: now === null, reasons: [], notes: [] }]
+  for (const s of plan.shiftTypes) {
+    const reasons = whyNot(plan, schedule, staffId, day, s.id, calendar)
+    options.push({ shiftId: s.id, current: now === s.id, reasons, notes: reasons.map((r) => BLOCK_NOTES[r]) })
+  }
+  return options
+}
+
 /** ゆるめる条件 */
 export type Relaxation =
   /** 条件は変えずに、別の種で組み直す */
@@ -185,7 +222,9 @@ function describe(plan: ShiftPlan, r: Relaxation): { label: string; when: string
       return { label: `${name}をやめる`, when: `${name}をやめると` }
     }
     case 'raiseMaxDays': {
-      const names = r.staffIds.map((id) => `${plan.staff.find((s) => s.id === id)?.name || '（名前なし）'}さん`).join('・')
+      // 人数が多いときは、名前を3人までにして、文が長くなりすぎないようにする（だれのことかは relaxation.staffIds でわかる）
+      const all = r.staffIds.map((id) => `${plan.staff.find((s) => s.id === id)?.name || '（名前なし）'}さん`)
+      const names = all.length <= 3 ? all.join('・') : `${all.slice(0, 2).join('・')}など${all.length}人`
       return { label: `${names}の勤務日数の上限を${r.by}日ふやす`, when: `${names}の勤務日数の上限を${r.by}日ふやすと` }
     }
     case 'unlockAll':
@@ -233,6 +272,7 @@ export function suggestRelaxations(plan: ShiftPlan, options: SuggestOptions = {}
   const suggestions: Suggestion[] = []
   const noEffect: string[] = []
   const solvedGroups = new Set<string>()
+  const groupBest = new Map<string, number>()
   // 条件を変えなくても別の案で減らせた数。条件をゆるめる提案は、これより良くなったときだけ出す
   // （たまたま良い案に当たっただけなのに「この条件のせい」と言ってしまわないため）
   let bar = before
@@ -250,6 +290,10 @@ export function suggestRelaxations(plan: ShiftPlan, options: SuggestOptions = {}
       if (relaxation.kind !== 'reseed') noEffect.push(label)
       return
     }
+    // 同じ種類の、より小さいゆるめ方と同じだけしか減らないなら、大きいほうは出さない（6日で足りるのに7日をすすめない）
+    const smaller = groupBest.get(group)
+    if (smaller !== undefined && after >= smaller) return
+    groupBest.set(group, after)
     if (relaxation.kind === 'reseed') bar = after
     if (after === 0) solvedGroups.add(group)
     suggestions.push({

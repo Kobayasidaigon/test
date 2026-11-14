@@ -191,7 +191,18 @@ function build(): Book {
   b.apply(setNextBudget(b.book, y1, b.category('expense', '予備費'), 776_818))
 
   // 引き継ぎ書
-  const places = ['会計の自宅（引き出し）', '会長の自宅', '会計の自宅（引き出し）', '会計の自宅（手提げ金庫）', '集会所の戸棚', '会長の自宅', '集会所の戸棚', '会計のパソコンと、USBメモリ']
+  // 並びは templates.ts の DEFAULT_CUSTODY_LABELS と同じ
+  const places = [
+    '会計の自宅（引き出し）', // 預金通帳
+    '会長の自宅', // 銀行の届出印
+    '会計の自宅（引き出し）', // キャッシュカード
+    '会計の自宅（手提げ金庫）', // 手元の現金
+    '集会所の戸棚', // 領収書のつづり
+    '集会所の戸棚', // これまでの帳簿と総会の資料
+    '会長の自宅', // 会の印鑑
+    '集会所の戸棚', // 規約と会員名簿
+    '会計のパソコンと、USBメモリ', // ひきつぎファイル
+  ]
   b.apply(
     updateHandover(b.book, y1, {
       date: '2026-04-19',
@@ -270,4 +281,15 @@ let cache: Book | null = null
 export function createSampleBook(): Book {
   cache ??= freeze(build())
   return cache
+}
+
+/**
+ * サンプルの帳簿（または、それをもとに少し変えたもの）か。
+ * 画面で「これは見本です」と出すためと、見本にライセンスキーを入れてしまわないために使う。
+ * 団体の名前と、最初の年度の id（サンプルだけの決め打ちの id）の両方が同じなら、サンプルとみなす。
+ * 団体の名前を変えたら、自分の帳簿として扱う。
+ */
+export function isSampleBook(book: Book): boolean {
+  const sample = createSampleBook()
+  return book.orgName === sample.orgName && book.years[0]?.id === sample.years[0].id
 }

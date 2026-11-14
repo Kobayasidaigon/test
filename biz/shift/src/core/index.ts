@@ -3,6 +3,7 @@
 export * from './types'
 export * from './dates'
 export * from './holidays'
+export * from './holidays.official'
 export * from './calendar'
 export * from './schedule'
 export * from './edit'

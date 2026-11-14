@@ -3,6 +3,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  たたき台シフトの見た目の土台。
+  「シフトはパズル。はめるのは機械に任せる」:
+  - 少し黄みのある白の地（--paper）に、濃い紺（--ink）の文字。
+  - 勤務は「色つきのブロック」。はっきりした色に、紺の太めの輪郭線。
+  - 影はぼかさない。紺を右下にずらして置く（--shadow-hard）。押すと、影のぶんだけ沈む。
+  - 道具の画面では、色は勤務の種類を見分けるためだけに使う（部品は白・地の色・紺）。
+*/
+
 /* shadcn 互換のトークン。21st.dev のコンポーネントはこの名前を参照する。 */
 @theme inline {
   --color-background: var(--background);
@@ -23,33 +32,99 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* このサービスの色。bg-paper、text-ink、border-line、bg-shift-egg のように使える */
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-well: var(--well);
+  --color-line: var(--line);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-focus: var(--focus);
+  --color-shift-tomato: var(--shift-tomato);
+  --color-shift-egg: var(--shift-egg);
+  --color-shift-teal: var(--shift-teal);
+  --color-shift-sky: var(--shift-sky);
+  --color-shift-plum: var(--shift-plum);
+  --color-shift-leaf: var(--shift-leaf);
+  --color-shift-orange: var(--shift-orange);
+  --color-shift-gray: var(--shift-gray);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: "Noto Sans JP", system-ui, -apple-system, "Hiragino Sans", sans-serif;
+
+  /* 影はぼかさず、ずらした紺で付ける。shadow-hard-sm / shadow-hard / shadow-hard-lg */
+  --shadow-hard-sm: 2px 2px 0 0 var(--ink);
+  --shadow-hard: 3px 3px 0 0 var(--ink);
+  --shadow-hard-lg: 5px 5px 0 0 var(--ink);
+
+  --font-sans: "M PLUS 1", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  /* 見出し。font-display */
+  --font-display: "M PLUS Rounded 1c", "M PLUS 1", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+  /* 数字。等幅なので、表の中で桁がそろう。font-num */
+  --font-num: "M PLUS 1 Code", "M PLUS 1", ui-monospace, "SFMono-Regular", monospace;
+
+  --animate-blk-snap: blk-snap 260ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  --animate-nudge: nudge 300ms ease-in-out;
 }
 
 :root {
-  --radius: 0.75rem;
-  --background: #ffffff;
-  --foreground: #16181d;
+  --radius: 0.625rem;
+
+  /* 地と文字 */
+  --paper: #fffaec;
+  --ink: #1b2452;
+  /* 説明の文字（地の上で 7:1） */
+  --ink-soft: #4b547b;
+  /* くぼみ（入力欄のまわり、休みの列、選んでいない部品） */
+  --well: #f5eed8;
+  /* 表の中の細い線 */
+  --line: #ddd5bd;
+  /* 条件に合わないところ。トマト赤のブロックと見分けがつく、暗い赤 */
+  --danger: #b3123a;
+  --danger-soft: #fde7ea;
+  --ok: #0b6b5d;
+  --ok-soft: #dff5ee;
+  /* キーボードのフォーカスの枠。輪郭線（紺）と見分けがつく色にする */
+  --focus: #2b59ff;
+
+  /*
+    勤務のブロックの色（core の ShiftColor の名前と同じ）。
+    どの色の上でも、文字は紺（--ink）。コントラストは 5.4:1 以上（いちばん低いトマト赤で 5.4:1）。
+  */
+  --shift-tomato: #ff6f59;
+  --shift-egg: #ffd43d;
+  --shift-teal: #2ec4b0;
+  --shift-sky: #74c7ff;
+  --shift-plum: #b9a0ff;
+  --shift-leaf: #9ad95b;
+  --shift-orange: #ffa53d;
+  --shift-gray: #c8ccda;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
   --card: #ffffff;
-  --card-foreground: #16181d;
+  --card-foreground: var(--ink);
   --popover: #ffffff;
-  --popover-foreground: #16181d;
-  --primary: #16181d;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f2f4;
-  --secondary-foreground: #16181d;
-  --muted: #f1f2f4;
-  --muted-foreground: #5b616e;
-  --accent: #f1f2f4;
-  --accent-foreground: #16181d;
-  --destructive: #c62828;
-  --border: #e3e5e8;
-  --input: #e3e5e8;
-  --ring: #16181d;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--well);
+  --secondary-foreground: var(--ink);
+  --muted: var(--well);
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--shift-egg);
+  --accent-foreground: var(--ink);
+  --destructive: var(--danger);
+  /* 輪郭線は紺。表の中の細い線は --line を使う */
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--focus);
 }
 
 @layer base {
@@ -60,8 +135,234 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+    font-weight: 500;
+    line-height: 1.75;
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt" 0;
   }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.35;
+    text-wrap: balance;
+    word-break: auto-phrase;
+  }
+  /* フォーカスの枠は消さない。紺の輪郭線の外側に、青の枠を出す */
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  button, [role="button"], summary, label[for], select { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  /* iOS で入力欄を押したときに、画面が勝手に拡大されないようにする（16px 未満だと拡大される） */
+  input, select, textarea { font-size: 16px; font-family: inherit; }
+  ::selection { background: var(--shift-egg); color: var(--ink); }
+}
+
+/* ---- 勤務のブロック ---- */
+/* <span class="blk" data-color="egg">早</span>。色の名前は core の ShiftColor と同じ */
+.blk {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  border: 1.5px solid var(--ink);
+  border-radius: 5px;
+  background: var(--blk, #fff);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.blk[data-color="tomato"] { --blk: var(--shift-tomato); }
+.blk[data-color="egg"] { --blk: var(--shift-egg); }
+.blk[data-color="teal"] { --blk: var(--shift-teal); }
+.blk[data-color="sky"] { --blk: var(--shift-sky); }
+.blk[data-color="plum"] { --blk: var(--shift-plum); }
+.blk[data-color="leaf"] { --blk: var(--shift-leaf); }
+.blk[data-color="orange"] { --blk: var(--shift-orange); }
+.blk[data-color="gray"] { --blk: var(--shift-gray); }
+/* 休み希望のブロック。勤務の色と取りちがえないよう、紺の地に白ぬきの字にする */
+.blk[data-color="off"] { --blk: var(--ink); color: var(--paper); }
+.blk[data-size="lg"] { width: 2.25rem; height: 2.25rem; font-size: 1rem; border-width: 2px; border-radius: 7px; }
+.blk[data-size="sm"] { width: 1.375rem; height: 1.375rem; font-size: 0.6875rem; border-radius: 4px; }
+
+/* ---- シフト表（ShiftGrid） ---- */
+/* マスの数が多い（30人 × 31日で約1000マス）ので、マスごとに長いクラスを書かず、ここにまとめた */
+.sg-wrap {
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-hard);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+.sg {
+  --cw: 31px;
+  --ch: 36px;
+  --namew: 108px;
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+  line-height: 1.2;
+}
+/* 指で押す端末では、マスを 44px にする */
+@media (max-width: 767px), (pointer: coarse) {
+  .sg { --cw: 44px; --ch: 44px; --namew: 84px; }
+}
+.sg th, .sg td {
+  padding: 0;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+  text-align: center;
+  font-weight: 500;
+}
+.sg tr > :last-child { border-right: 0; }
+.sg thead th { border-bottom: 2px solid var(--ink); vertical-align: bottom; }
+.sg tbody tr:last-child > * { border-bottom: 0; }
+.sg tfoot tr:first-child > * { border-top: 2px solid var(--ink); }
+.sg tfoot tr:last-child > * { border-bottom: 0; }
+
+/* 名前の列は、横スクロールしても左に残す */
+.sg .sg-name {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  width: var(--namew);
+  min-width: var(--namew);
+  max-width: var(--namew);
+  padding: 0 10px;
+  border-right: 2px solid var(--ink);
+  text-align: left;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sg thead .sg-name { font-size: 12px; color: var(--ink-soft); padding-bottom: 6px; }
+.sg tfoot .sg-name { font-size: 12px; }
+@media (max-width: 767px) { .sg .sg-name { padding: 0 8px; } }
+
+/* 日の見出し */
+.sg .sg-dayh {
+  width: var(--cw);
+  min-width: var(--cw);
+  height: 46px;
+  padding: 4px 0 3px;
+  font-family: var(--font-num);
+}
+.sg-dnum { display: block; font-size: 13px; font-weight: 700; }
+.sg-dw { display: block; margin-top: 2px; font-family: var(--font-sans); font-size: 11px; font-weight: 700; color: var(--ink-soft); }
+.sg-dayh[data-dow="6"] .sg-dw { color: #1d4fb8; }
+.sg-dayh[data-red] .sg-dw, .sg-dayh[data-red] .sg-dnum { color: var(--danger); }
+/* 祝日は、色だけでなく下線でも知らせる */
+.sg-dayh[data-holiday] .sg-dnum { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+.sg-dayh[data-closed], .sg td[data-closed] {
+  background: repeating-linear-gradient(135deg, var(--well) 0 4px, #ece3c8 4px 8px);
+}
+
+/* マス */
+.sg-cell { position: relative; width: var(--cw); min-width: var(--cw); height: var(--ch); }
+.sg-cellbtn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: var(--ch);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+button.sg-cellbtn:hover { background: #fff1bd; }
+button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
+.sg-cellbtn .blk { width: calc(var(--cw) - 7px); height: calc(var(--ch) - 9px); }
+/* 休み希望の印（表の中の小さな字） */
+.sg-wishmark { font-size: 11px; font-weight: 700; color: var(--ink-soft); }
+/* 手で固定したマス: 左上の角に、紺の三角 */
+.sg-cellbtn[data-locked]::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  z-index: 1;
+  border: 5px solid transparent;
+  border-top-color: var(--ink);
+  border-left-color: var(--ink);
+  border-top-left-radius: 2px;
+}
+/* 条件に合わないマス: 赤い枠と「!」の印（色・印・文の3つで知らせる。文はマスの読み上げと、表の上の一覧に出る） */
+.sg-cellbtn[data-bad] { box-shadow: inset 0 0 0 2.5px var(--danger); }
+.sg-cellbtn[data-bad]::after {
+  content: "!";
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  border-bottom-left-radius: 6px;
+  background: var(--danger);
+  color: #fff;
+  font: 800 10px/14px var(--font-num);
+  text-align: center;
+}
+/* 「このマスを見る」で、見つけやすいように少しのあいだ光らせる */
+.sg-cellbtn[data-flash] { animation: cell-flash 1.6s ease-out; }
+
+/* 右の集計 */
+.sg .sg-sum {
+  min-width: 38px;
+  padding: 0 6px;
+  font-family: var(--font-num);
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.sg thead .sg-sum { padding: 4px 4px 6px; font-family: var(--font-sans); font-size: 11px; font-weight: 700; color: var(--ink-soft); }
+.sg .sg-sum-first { border-left: 2px solid var(--ink); }
+.sg .sg-lastday { border-right: 0; }
+.sg tfoot .sg-sum { background: var(--well); }
+
+/* 下の過不足 */
+.sg .sg-need { height: 34px; font-family: var(--font-num); font-size: 12px; font-weight: 700; line-height: 1.15; }
+.sg-need[data-none] { color: #a9a48f; font-weight: 500; }
+.sg-diff { display: block; width: fit-content; margin: 1px auto 0; padding: 0 3px; border-radius: 3px; font-size: 10px; line-height: 13px; }
+.sg-diff[data-kind="short"] { background: var(--danger); color: #fff; }
+.sg-diff[data-kind="over"] { border: 1px solid var(--ink-soft); color: var(--ink-soft); line-height: 11px; }
+.sg-footlabel { display: flex; align-items: center; gap: 6px; height: 34px; }
+
+/* ブロックが表にカチカチとはまる動き。ShiftGrid が data-anim を付けたときだけ流れる */
+.sg[data-anim] .sg-cellbtn .blk {
+  animation: var(--animate-blk-snap);
+  animation-delay: calc(var(--d, 0) * 13ms + var(--r, 0) * 8ms);
+}
+
+@keyframes blk-snap {
+  0% { transform: translateY(-9px) scale(1.22); opacity: 0; }
+  62% { transform: translateY(1px) scale(0.93); opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+@keyframes cell-flash {
+  0%, 60% { background: var(--shift-egg); }
+  100% { background: transparent; }
+}
+/* 数の上限・下限で、入力欄を小さくゆらす */
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -71,10 +372,79 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  /* 順に現れる動きは、遅れ（delay）も止めないと「少しずつ出てくる」ままになる */
+  .sg[data-anim] .sg-cellbtn .blk { animation: none; }
 }
 
-/* 印刷するときは、.no-print を付けた要素（ナビ、ボタンなど）を消す */
+/* ---- 印刷 ---- */
+/* 画面では隠しておき、印刷のときだけ出す要素 */
+.print-only { display: none; }
+
 @media print {
+  /* 印刷するときは、.no-print を付けた要素（ナビ、ボタンなど）を消す */
   .no-print { display: none !important; }
-  body { background: #fff; }
+  .print-only { display: block !important; }
+  html, body { background: #fff !important; }
+  /* ブロックの色を、そのまま紙に出す（ブラウザの「背景を印刷しない」設定でも、記号の字で見分けられる） */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* 印刷用のシフト表（PrintSheet）。用紙の向きと余白（@page）は、道具の画面が開いているあいだだけ入れる */
+.pt-sheet { color: var(--ink); font-family: var(--font-sans); }
+.pt-head { display: flex; align-items: baseline; justify-content: space-between; gap: 6mm; margin-bottom: 2.5mm; }
+.pt-title { font-family: var(--font-display); font-weight: 800; font-size: 15pt; line-height: 1.2; }
+.pt-meta { font-size: 7.5pt; color: var(--ink-soft); }
+.pt {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 8pt;
+  line-height: 1.1;
+}
+.pt thead { display: table-header-group; }
+.pt tr { break-inside: avoid; page-break-inside: avoid; }
+.pt th, .pt td {
+  height: var(--pr, 6.4mm);
+  padding: 0;
+  border: 0.2mm solid #8d93ad;
+  text-align: center;
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.pt thead th { height: 8.2mm; border-bottom: 0.5mm solid var(--ink); font-family: var(--font-num); font-weight: 700; }
+.pt .pt-name { padding: 0 1.2mm; text-align: left; font-weight: 700; font-size: 8.5pt; border-right: 0.5mm solid var(--ink); text-overflow: ellipsis; }
+.pt .pt-dw { display: block; font-family: var(--font-sans); font-size: 6.5pt; }
+.pt th[data-red] { color: var(--danger); }
+.pt th[data-dow="6"] .pt-dw { color: #1d4fb8; }
+.pt [data-closed] { background: #ece6d2; }
+.pt .pt-sumfirst { border-left: 0.5mm solid var(--ink); }
+.pt .pt-sum { font-family: var(--font-num); font-size: 7.5pt; }
+.pt thead .pt-sum { font-family: var(--font-sans); font-size: 6.5pt; }
+.pt tfoot tr:first-child > * { border-top: 0.5mm solid var(--ink); }
+.pt tfoot td, .pt tfoot th { height: 4.8mm; font-family: var(--font-num); font-size: 7pt; }
+.pt tfoot .pt-name { font-family: var(--font-sans); font-size: 7pt; }
+.pt .pt-short { font-weight: 800; color: var(--danger); }
+.pt-blk {
+  display: inline-grid;
+  place-items: center;
+  width: 86%;
+  height: 82%;
+  max-height: 6mm;
+  border: 0.25mm solid var(--ink);
+  border-radius: 0.9mm;
+  background: var(--blk, #fff);
+  font-weight: 800;
+  font-size: 8pt;
+  line-height: 1;
+}
+.pt-blk[data-color="tomato"] { --blk: var(--shift-tomato); }
+.pt-blk[data-color="egg"] { --blk: var(--shift-egg); }
+.pt-blk[data-color="teal"] { --blk: var(--shift-teal); }
+.pt-blk[data-color="sky"] { --blk: var(--shift-sky); }
+.pt-blk[data-color="plum"] { --blk: var(--shift-plum); }
+.pt-blk[data-color="leaf"] { --blk: var(--shift-leaf); }
+.pt-blk[data-color="orange"] { --blk: var(--shift-orange); }
+.pt-blk[data-color="gray"] { --blk: var(--shift-gray); }
+.pt-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5mm 5mm; margin-top: 2.5mm; font-size: 7.5pt; }
+.pt-legend .pt-blk { width: 4.6mm; height: 4.6mm; font-size: 7pt; margin-right: 1mm; vertical-align: middle; }

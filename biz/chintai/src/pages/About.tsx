@@ -1,6 +1,11 @@
 import { Link } from '@/router'
 import { site } from '@/site.config'
-import { adDisclosure, consultDesks, DISCLAIMER, CONSULT_NOTE, getSource, RULES_VERIFIED_ON, formatDateJa } from '@/core'
+// '@/core' からまとめて import すると、項目のデータ（解説ページの文など）までこのページに入って重くなるので、
+// 要るファイルから直接 import している。
+import { adDisclosure, consultDesks } from '@/core/consult'
+import { formatDateJa } from '@/core/format'
+import { getSource, RULES_VERIFIED_ON } from '@/core/sources'
+import { CONSULT_NOTE, DISCLAIMER } from '@/core/texts'
 
 // このサイトについて。
 // 【仮のページ】中身のロジックの担当（①）が、/tokushoho を消したあとのリンク切れを防ぐために置いた、最小の形。

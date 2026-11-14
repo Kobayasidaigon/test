@@ -238,6 +238,38 @@ export function setDayNeed(plan: ShiftPlan, day: number, shiftId: string, count:
   return { ...plan, needs: { ...plan.needs, overrides } }
 }
 
+/**
+ * 役割の最低人数を書く（例: 遅番に「鍵を持っている」人が1人以上）。
+ * 同じ勤務・同じ札の決まりがもうあれば、人数だけを書きかえる。count が 0 以下なら、その決まりを消す。
+ */
+export function setRoleMin(plan: ShiftPlan, shiftId: string, tagId: string, count: number): ShiftPlan {
+  const n = Math.floor(count)
+  const existing = plan.needs.roleMins.find((r) => r.shiftId === shiftId && r.tagId === tagId)
+  let roleMins = plan.needs.roleMins
+  if (n <= 0) roleMins = roleMins.filter((r) => r !== existing)
+  else if (existing) roleMins = roleMins.map((r) => (r === existing ? { ...r, count: n } : r))
+  else roleMins = [...roleMins, { id: nextId('rm', roleMins.map((r) => r.id)), shiftId, tagId, count: n }]
+  return { ...plan, needs: { ...plan.needs, roleMins } }
+}
+
+// ---- 条件 ----
+
+/** 条件を書きかえる（連勤の上限、週1日の休み、公平さ など） */
+export function updateRules(plan: ShiftPlan, patch: Partial<ShiftPlan['rules']>): ShiftPlan {
+  return { ...plan, rules: { ...plan.rules, ...patch } }
+}
+
+/** 続けて入れない組み合わせを足す（first の次の日に next を入れない）。同じ組み合わせがもうあれば、何もしない */
+export function addForbiddenPair(plan: ShiftPlan, first: string, next: string): ShiftPlan {
+  const pairs = plan.rules.forbiddenPairs
+  if (pairs.some((p) => p.first === first && p.next === next)) return plan
+  return updateRules(plan, { forbiddenPairs: [...pairs, { id: nextId('fp', pairs.map((p) => p.id)), first, next }] })
+}
+
+export function removeForbiddenPair(plan: ShiftPlan, pairId: string): ShiftPlan {
+  return updateRules(plan, { forbiddenPairs: plan.rules.forbiddenPairs.filter((p) => p.id !== pairId) })
+}
+
 // ---- 希望 ----
 
 /** 希望を書く。wish が null なら消す */

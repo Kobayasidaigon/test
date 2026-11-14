@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { removeTransaction, setReconciliation, updateCategory, updateTransaction } from './book'
+import { removeTransaction, setReconciliation, updateCategory, updateTransaction, updateYear } from './book'
 import {
   accountBalances,
   bookBalanceAsOf,
@@ -7,17 +7,21 @@ import {
   buildLedgers,
   calcDiff,
   defaultReceiptNo,
+  descriptionSuggestions,
   duplicateReceiptNos,
   effectOn,
+  filterTransactions,
   listYearIssues,
   negativeBalanceDays,
   nextReceiptNo,
   reconcileYear,
   sortedTransactions,
   summarizeYear,
+  transactionViews,
   transactionsOutsideYear,
   transferLabel,
 } from './calc'
+import { carryForward } from './carry'
 import { addDays } from './dates'
 import { add, bankId, cashId, catId, deposit, expense, income, newBook, ok, seqIds, withdraw, year } from './test-helpers'
 import { LIMITS, type Book } from './types'
@@ -494,5 +498,90 @@ describe('残高の照合', () => {
     const r = reconcileYear(year(book))
     expect(r.rows[0].hints[0]).toContain('「普通預金」の差と、ちょうど逆')
     expect(r.rows[1].hints[0]).toContain('「現金」の差と、ちょうど逆')
+  })
+})
+
+describe('予算の収入と支出の差', () => {
+  it('前年度繰越金を入れた収入の予算 − 支出の予算', () => {
+    let book = newBook() // 前年度繰越金 110,000円
+    book = ok(updateCategory(book, year(book).id, catId(book, 'income', '会費'), { budget: 36_000 }))
+    book = ok(updateCategory(book, year(book).id, catId(book, 'expense', '事務費'), { budget: 6_000 }))
+    expect(summarizeYear(year(book))).toMatchObject({ carryoverBudget: 110_000, incomeBudgetTotal: 36_000, expenseBudgetTotal: 6_000, budgetGap: 140_000 })
+    book = ok(updateCategory(book, year(book).id, catId(book, 'expense', '予備費'), { budget: 140_000 }))
+    expect(summarizeYear(year(book)).budgetGap).toBe(0)
+    // 前年度繰越金の予算額を別に決めていれば、それで比べる
+    book = ok(updateYear(book, year(book).id, { carryoverBudget: 100_000 }))
+    expect(summarizeYear(year(book))).toMatchObject({ carryoverBudget: 100_000, budgetGap: -10_000 })
+  })
+})
+
+describe('取引の一覧', () => {
+  const base = () => {
+    let book = newBook({ cashOpening: 100_000 })
+    book = expense(book, '2026-05-01', 1_500, 'ノート')
+    book = income(book, '2026-04-10', 30_000, '前期の会費 １班')
+    book = deposit(book, '2026-04-12', 25_000)
+    book = expense(book, '2027-04-02', 12_000, '年度の外')
+    return book
+  }
+  it('日付の順に、科目と置き場所の名前を付けて返す', () => {
+    const views = transactionViews(year(base()))
+    expect(views.map((v) => [v.transaction.date, v.categoryName, v.accountText, v.outsideYear])).toEqual([
+      ['2026-04-10', '会費', '現金', false],
+      ['2026-04-12', '預け入れ', '現金 → 普通預金', false],
+      ['2026-05-01', '事務費', '現金', false],
+      ['2027-04-02', '事務費', '現金', true],
+    ])
+    expect(views[1]).toMatchObject({ accountName: '現金', toAccountName: '普通預金' })
+    expect(views[0].toAccountName).toBe('')
+  })
+  it('取引がなければ空', () => {
+    expect(transactionViews(year(newBook()))).toEqual([])
+    expect(filterTransactions([], { text: 'x' })).toEqual([])
+  })
+  it('文字でさがせる（内容、科目、領収書の番号、金額。全角と半角は区別しない）', () => {
+    const book = base()
+    const views = transactionViews(year(book))
+    const found = (text: string) => filterTransactions(views, { text }).map((v) => v.transaction.description)
+    expect(found('ノート')).toEqual(['ノート'])
+    expect(found('1班')).toEqual(['前期の会費 １班'])
+    expect(found('１班')).toEqual(['前期の会費 １班'])
+    expect(found('事務費')).toEqual(['ノート', '年度の外'])
+    expect(found('12,000')).toEqual(['年度の外'])
+    expect(found('１２０００')).toEqual(['年度の外'])
+    expect(found('預け入れ')).toEqual(['預け入れ'])
+    expect(found('ないもの')).toEqual([])
+    expect(found('')).toHaveLength(4)
+  })
+  it('種類、科目、置き場所、期間でしぼれる', () => {
+    const book = base()
+    const views = transactionViews(year(book))
+    const dates = (filter: Parameters<typeof filterTransactions>[1]) => filterTransactions(views, filter).map((v) => v.transaction.date)
+    expect(dates({ kind: 'transfer' })).toEqual(['2026-04-12'])
+    expect(dates({ categoryId: catId(book, 'income', '会費') })).toEqual(['2026-04-10'])
+    // 移動は、元の置き場所でも、先の置き場所でも出る
+    expect(dates({ accountId: bankId(book) })).toEqual(['2026-04-12'])
+    expect(dates({ accountId: cashId(book) })).toHaveLength(4)
+    // 期間は、両端の日を含む
+    expect(dates({ from: '2026-04-12', to: '2026-05-01' })).toEqual(['2026-04-12', '2026-05-01'])
+    expect(dates({ from: '2026-04-13', to: '2026-04-30' })).toEqual([])
+    expect(dates({ kind: 'expense', text: 'ノート', accountId: cashId(book) })).toEqual(['2026-05-01'])
+  })
+  it('内容の手がかり: その科目で前に入れた内容を、新しい順に、重なりなく出す', () => {
+    let book = newBook({ cashOpening: 100_000 })
+    book = expense(book, '2026-04-10', 100, 'コピー用紙')
+    book = expense(book, '2026-06-01', 100, '切手')
+    book = expense(book, '2026-05-01', 100, 'コピー用紙')
+    book = expense(book, '2026-05-02', 100, '')
+    book = income(book, '2026-05-03', 100, '前期の会費')
+    const id = catId(book, 'expense', '事務費')
+    expect(descriptionSuggestions(book, id)).toEqual(['切手', 'コピー用紙'])
+    expect(descriptionSuggestions(book, id, 1)).toEqual(['切手'])
+    expect(descriptionSuggestions(book, 'ない科目')).toEqual([])
+    // 繰り越したあとの新しい年度でも、前の年度の書き方が出る
+    book = ok(carryForward(book))
+    expect(descriptionSuggestions(book, id)).toEqual(['切手', 'コピー用紙'])
+    book = expense(book, '2027-04-10', 100, 'インク')
+    expect(descriptionSuggestions(book, id)).toEqual(['インク', '切手', 'コピー用紙'])
   })
 })

@@ -356,6 +356,24 @@ describe('checkTransaction（入れる前の確かめ）', () => {
     expect(codes(book, { kind: 'transfer', toAccountId: bankId(book), amount: 10_001 }).warnings).toEqual(['negative-balance'])
     expect(codes(book, { kind: 'income', categoryId: catId(book, 'income', '会費'), amount: 999_999 }).warnings).toEqual([])
   })
+  it('すでにマイナスの置き場所に収入を入れるときは、知らせない。支出を足すときは、知らせる', () => {
+    const book = expense(newBook(), '2026-04-10', 15_000) // 現金が △5,000円
+    expect(codes(book, { kind: 'income', categoryId: catId(book, 'income', '会費'), amount: 1_000, date: '2026-04-10' }).warnings).toEqual([])
+    expect(codes(book, { amount: 1, date: '2026-04-10', description: '別のもの' }).warnings).toEqual(['negative-balance'])
+    // 関係のない口座の取引では、知らせない
+    expect(codes(book, { accountId: bankId(book), amount: 1_000 }).warnings).toEqual([])
+  })
+  it('収入を小さく直したせいで、あとの日にマイナスになる場合も知らせる', () => {
+    let book = income(newBook({ cashOpening: 0 }), '2026-04-10', 30_000)
+    book = expense(book, '2026-05-01', 20_000)
+    const id = year(book).transactions[0].id
+    const fix = { kind: 'income' as const, categoryId: catId(book, 'income', '会費'), date: '2026-04-10', description: '会費' }
+    expect(codes(book, { ...fix, amount: 20_000 }, { ignoreTransactionId: id }).warnings).toEqual([])
+    const r = checkTransaction(book, year(book).id, base(book, { ...fix, amount: 3_000 }), { ignoreTransactionId: id })
+    expect(r.warnings.map((w) => w.code)).toEqual(['negative-balance'])
+    expect(r.warnings[0].message).toContain('令和8年5月1日')
+    expect(r.warnings[0].message).toContain('△17,000円')
+  })
   it('同じ領収書の番号を知らせる', () => {
     const book = expense(newBook(), '2026-04-10', 500)
     expect(codes(book, { receiptNo: '1', description: '別のもの' }).warnings).toEqual(['duplicate-receipt'])
@@ -521,7 +539,10 @@ describe('年度、役員、資料の入力', () => {
     expect(year(book).officers).toEqual({ president: '高橋 正夫', treasurer: '', auditors: ['田中', '', '伊藤'] })
     expect(failCode(updateOfficers(book, year(book).id, { auditors: [] }))).toBe('limit')
     expect(failCode(updateOfficers(book, year(book).id, { auditors: ['a', 'b', 'c', 'd'] }))).toBe('limit')
-    expect(failCode(updateOfficers(book, year(book).id, { president: 'あ'.repeat(LIMITS.nameLength + 1) }))).toBe('invalid-input')
+    const long = updateOfficers(book, year(book).id, { president: 'あ'.repeat(LIMITS.nameLength + 1) })
+    expect(failCode(long)).toBe('invalid-input')
+    // 画面に出す文には理由を、field には場所を入れる
+    expect(!long.ok && [long.message, long.field]).toEqual(['入力に正しくないところがあります（文字が長すぎます（60文字まで））。', 'officers.president'])
   })
   it('照合の記録を入れる・消す', () => {
     let book = newBook()

@@ -33,12 +33,14 @@ describe('checkBrokerage', () => {
   it('境界: 0.5か月分＋消費税ちょうどは「以内」、1円超えたら「超えている」', () => {
     expect(at(42_900).status).toBe('within-half')
     expect(at(42_900).overHalf).toBe(0)
+    expect(at(42_900).roundingOnly).toBe(false) // ちょうどのときは、端数の話を持ち出さない
     expect(at(42_901).status).toBe('within-full')
     expect(at(42_901).overHalf).toBe(1)
     expect(at(42_901).roundingOnly).toBe(false)
   })
   it('境界: 1か月分＋消費税ちょうどは「以内」、1円超えたら「超えている」', () => {
     expect(at(85_800).status).toBe('within-full')
+    expect(at(85_800).roundingOnly).toBe(false)
     expect(at(85_800).overHalf).toBe(42_900)
     expect(at(85_800).overFull).toBe(0)
     expect(at(85_801).status).toBe('over-full')

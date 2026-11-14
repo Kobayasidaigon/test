@@ -313,6 +313,8 @@ export type Finding = {
   countsTowardAskTotal: boolean
   /** 合計への入り方。 */
   totalRole: TotalRole
+  /** 解説ページ（/items/<slug>）がある項目なら、その slug。なければ null。 */
+  guideSlug: string | null
 }
 
 export type CategorySubtotal = {

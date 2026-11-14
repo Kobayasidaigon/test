@@ -226,7 +226,8 @@ export function setLicenseKey(book: Book, licenseKey: string): Result<Book> {
 }
 
 function invalidToFail(e: unknown): Fail {
-  if (e instanceof Invalid) return fail('invalid-input', `入力に正しくないところがあります（${e.path}: ${e.reason}）。`)
+  // 場所（handover.custody[0].place など）は画面に出しても伝わらないので、文には理由だけを入れて、field に場所を入れる
+  if (e instanceof Invalid) return fail('invalid-input', `入力に正しくないところがあります（${e.reason}）。`, e.path)
   throw e
 }
 
@@ -569,18 +570,19 @@ export function checkTransaction(
     warnings.push({ code: 'future-date', message: '日付が、今日より先です。', field: 'date' })
   }
 
-  // この取引を入れたあとに、お金を出した置き場所の残高がマイナスになる日があるか
-  if (fields.kind !== 'income') {
-    const after: FiscalYear = { ...base, transactions: [...others, { ...fields, id: '\u0000check' }] }
-    const day = negativeBalanceDays(after).find((d) => d.accountId === fields.accountId && d.date >= fields.date)
-    if (day) {
-      warnings.push({
-        code: 'negative-balance',
-        message: `この取引を入れると、「${day.accountName}」の残高が ${formatWareki(day.date)}にマイナス（${formatYen(day.balance)}円）になります。金額、日付、置き場所を確かめてください。`,
-        field: 'amount',
-        accountId: fields.accountId,
-      })
-    }
+  // この取引を入れる（直す）ことで、残高がマイナスになる日が新しくできるか、マイナスが大きくなるか。
+  // 入れる前からマイナスだった日は、ここでは言わない（年度ぜんたいの知らせ listYearIssues に出る）
+  const before = negativeBalanceDays(year)
+  const after = negativeBalanceDays({ ...base, transactions: [...others, { ...fields, id: '\u0000check' }] })
+  const worse = after.filter((d) => !before.some((b) => b.accountId === d.accountId && b.date === d.date && b.balance <= d.balance))
+  for (const accountId of new Set(worse.map((d) => d.accountId))) {
+    const day = worse.find((d) => d.accountId === accountId)!
+    warnings.push({
+      code: 'negative-balance',
+      message: `この取引を入れると、「${day.accountName}」の残高が ${formatWareki(day.date)}にマイナス（${formatYen(day.balance)}円）になります。金額、日付、置き場所を確かめてください。`,
+      field: 'amount',
+      accountId,
+    })
   }
 
   if (fields.receiptNo !== '') {

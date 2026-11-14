@@ -39,3 +39,22 @@ export function sampleEstimate(): Estimate {
 export function sampleData(): AppData {
   return { estimate: sampleEstimate(), message: { senderName: '', propertyName: '', lineIds: null } }
 }
+
+/**
+ * サンプルの見積書のままか（1か所でも書き換えたら false）。
+ * サンプルのままのあいだは、結果の画面に SAMPLE_NOTE を出して、自分の見積書の結果と取りちがえないようにする。
+ */
+export function isSampleEstimate(estimate: Estimate): boolean {
+  const s = sampleEstimate()
+  return (
+    estimate.rent === s.rent &&
+    estimate.commonFee === s.commonFee &&
+    estimate.moveInDate === s.moveInDate &&
+    estimate.statedTotal === s.statedTotal &&
+    estimate.lines.length === s.lines.length &&
+    estimate.lines.every((line, i) => {
+      const o = s.lines[i]
+      return line.itemId === o.itemId && line.label === o.label && line.amount === o.amount
+    })
+  )
+}
