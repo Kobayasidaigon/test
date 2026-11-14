@@ -287,16 +287,32 @@
 /* ------------------------------------------------------------------ */
 
 /*
-  LP の一番上の見積書。行が画面に入るまで、その行の赤ペンを描き始めない（data-pen="hold" のあいだは、動きを止めておく）。
-  静的HTMLの段階では "hold" で書き出し、ブラウザで行が見えたときに、その行に data-pen-go を付ける（src/components/landing/hero.tsx）。
-  スクリプトを切っている人には、<noscript> の中の決まりで、はじめから動かす。動きを減らす設定の人には、"go" にして全部出す。
+  LP の一番上の見積書。赤ペンの丸と書き込みは、その行が画面に入ったときに描き始める（スマホでは、見積書が見出しの下にあって、
+  開いたときには下のほうの行が見えていないため）。
+
+  - 静的HTMLは data-pen="hold" で書き出す。このあいだ、赤ペンの丸と、手書きの書き込みは、待たせておく。
+    行・金額・「ふつうはかかる項目です」の印は、待たせない（スクリプトが届く前でも、見積書として読めるように）。
+  - ブラウザで行が画面に入ると、スクリプトがその行に data-pen-go を付ける（src/components/landing/hero.tsx）。
+    動きの名前が元に戻るので、そこから、ふつうの「描く動き」が始まる。
+  - スクリプトが届かなかったときのために、待たせるのは 8秒まで。8秒たったら、CSS だけで描く。
+  - 動きを減らす設定の人には、待たせずに、はじめから全部出す。印刷のときも同じ（上の @media print が、動きを全部止める）。
 */
-[data-pen="hold"] .pen-stroke,
-[data-pen="hold"] .animate-in {
-  animation-play-state: paused !important;
+@keyframes pen-wait-stroke {
+  0% { stroke-dasharray: 0 1; opacity: 0; }
+  1% { opacity: 1; }
+  100% { stroke-dasharray: 1 0; opacity: 1; }
 }
-/* 画面に入った行（data-pen-go）から、順に描く。 */
-[data-pen="hold"] [data-pen-go] .pen-stroke,
-[data-pen="hold"] [data-pen-go].animate-in {
-  animation-play-state: running !important;
+@keyframes pen-wait-note {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-pen="hold"] .text-pen > .pen-draw:not([data-pen-go]) .pen-stroke {
+    animation-name: pen-wait-stroke;
+    animation-delay: 8s !important;
+  }
+  [data-pen="hold"] .font-pen.animate-in:not([data-pen-go]) {
+    animation-name: pen-wait-note;
+    animation-delay: 8s !important;
+  }
 }

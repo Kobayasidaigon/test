@@ -106,6 +106,17 @@ export default function Tool() {
 
   const { replace, planRef } = store
 
+  const { undo } = store
+  /** 「元に戻す」付きのお知らせ。いまの plan のあいだだけ有効（別の変更をしたら消える） */
+  const notifyUndo = useCallback(
+    (text: string, kind: 'message' | 'success' = 'message') => toast[kind](text, { label: '元に戻す', onClick: () => undo(), validFor: planRef.current }),
+    [undo, planRef],
+  )
+  // plan が変わったら、前の状態のための「元に戻す」のお知らせを消す
+  useEffect(() => toast.dropStale(plan), [plan])
+  /** サンプルに入れかえたことのお知らせは、表ができてから出す（組んでいる途中に出すと、すぐ古くなって消えるため） */
+  const sampleNotice = useRef<string | null>(null)
+
   /** 自動作成を始める。fresh は、入れたばかりのサンプルを組むとき（「元に戻す」の1回ぶんに数えない） */
   const runSolve = useCallback(
     (base: ShiftPlan, fresh = false) => {
@@ -132,6 +143,10 @@ export default function Tool() {
           setSolvedKey(inputsKey(next))
           setAnimKey((k) => k + 1)
           setAnnounce(`表ができました。${result.check.summary.join(' ')}`)
+          if (sampleNotice.current) {
+            notifyUndo(sampleNotice.current)
+            sampleNotice.current = null
+          }
           if (result.check.missingTotal > 0) setSuggest({ status: 'working', result: null, progress: null, forPlan: next })
         },
         onSuggestProgress: (done, total) => {
@@ -149,20 +164,20 @@ export default function Tool() {
         },
       })
     },
-    [replace, planRef],
+    [replace, planRef, notifyUndo],
   )
 
-  const undoToast = useCallback((text: string) => toast.message(text, { label: '元に戻す', onClick: () => store.undo() }), [store])
 
   const startSample = (id: SampleId) => {
     const next = nextMonthOf(localToday())
     const sample = makeSample(id, next.year, next.month)
     const hadPlan = planRef.current !== null
+    sampleNotice.current = null
     replace(sample)
     goStep(3)
     runSolve(sample, true)
     const label = SAMPLES.find((s) => s.id === id)?.label ?? ''
-    if (hadPlan) undoToast(`${label}のサンプルに入れかえました。`)
+    sampleNotice.current = hadPlan ? `${label}のサンプルに入れかえました。` : null
   }
 
   const startOwn = (blank: ShiftPlan) => {
@@ -180,7 +195,7 @@ export default function Tool() {
     setSolvedKey(null)
     replace(loaded)
     goStep(isScheduleEmpty(loaded.schedule) ? 0 : 3)
-    if (hadPlan) undoToast('ファイルの内容に入れかえました。')
+    if (hadPlan) notifyUndo('ファイルの内容に入れかえました。')
     else toast.success('ファイルを読み込みました。')
   }
 
@@ -198,7 +213,7 @@ export default function Tool() {
     setSuggest(NO_SUGGEST)
     replace(null)
     setMenuOpen(false)
-    undoToast('はじめの画面に戻りました。入れていた内容は、「元に戻す」で戻せます。')
+    notifyUndo('はじめの画面に戻りました。入れていた内容は、「元に戻す」で戻せます。')
   }
 
   const adopt = (s: Suggestion) => {
@@ -206,7 +221,7 @@ export default function Tool() {
     setSolvedKey(inputsKey(s.plan))
     setAnimKey((k) => k + 1)
     setSuggest(NO_SUGGEST)
-    undoToast(s.relaxation.kind === 'reseed' ? '別の案に入れかえました。' : `「${s.label}」に変えて、組み直した表に入れかえました。`)
+    notifyUndo(s.relaxation.kind === 'reseed' ? '別の案に入れかえました。' : `「${s.label}」に変えて、組み直した表に入れかえました。`)
   }
 
   // 印刷用の表は、マスの数が多い（30人で約1000マス）。打つ・押すの反応をおくらせないよう、少しあとで描き直す
@@ -353,7 +368,7 @@ export default function Tool() {
           ) : !plan || !gate || !report ? (
             <Start issue={store.issue} onDismissIssue={store.dismissIssue} onSample={startSample} onStart={startOwn} onImport={importPlan} />
           ) : (
-            <ToolProvider value={{ plan, update: store.update, replace: store.replace, undo: store.undo, gate, isPro: license.isPro, openLicense: () => setLicenseOpen(true), goStep }}>
+            <ToolProvider value={{ plan, update: store.update, replace: store.replace, undo: store.undo, notifyUndo, gate, isPro: license.isPro, openLicense: () => setLicenseOpen(true), goStep }}>
               {store.save.status === 'failed' ? (
                 <Notice variant="danger" className="mb-5">
                   <NoticeTitle>このブラウザに、保存できていません</NoticeTitle>

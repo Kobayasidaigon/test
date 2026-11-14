@@ -96,7 +96,7 @@ export default function Landing() {
           <Operation />
         </Section>
 
-        <Section id="faq" title="よくある質問" lead="ここにない疑問は、道具でサンプルを試すと、わかることがあります。" split className="border-t border-ink/15">
+        <Section id="faq" title="よくある質問" split className="border-t border-ink/15">
           <FaqList />
         </Section>
 

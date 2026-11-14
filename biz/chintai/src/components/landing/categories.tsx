@@ -100,8 +100,8 @@ export function Categories({ inspection }: { inspection: Inspection }) {
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,21.5rem)_minmax(0,1fr)] lg:items-start">
-      {/* 右の中身が長いので、広い画面では、見出しの耳を画面に残しておく。 */}
-      <div role="tablist" aria-label="区分" aria-orientation="vertical" className="z-10 grid grid-cols-2 gap-1 lg:sticky lg:top-20 lg:block lg:space-y-1 lg:py-3">
+      {/* 右の中身が長いので、広い画面では、見出しの耳を画面に残しておく（耳が全部入るだけの、画面の高さがあるときだけ）。 */}
+      <div role="tablist" aria-label="区分" aria-orientation="vertical" className="z-10 grid grid-cols-2 gap-1 lg:block lg:space-y-1 lg:py-3 lg:[@media(min-height:780px)]:sticky lg:[@media(min-height:780px)]:top-20">
         {categories.map((c, i) => {
           const selected = c.id === current
           return (

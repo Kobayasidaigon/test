@@ -6,7 +6,8 @@ import { findBannedPhrase } from '../core/wording'
 
 // 画面の文に、言ってはいけない言い方（断定、あおり、相場での判定、必ず下がるという期待）が
 // まぎれこんでいないかを確かめる。core のデータと結果の文は core のテストが見ているので、
-// ここでは、画面の部品（src/components）と道具のページ（src/pages/Tool.tsx）に、じかに書いた文を見る。
+// ここでは、画面の部品（src/components。LP の部品も入る）と、すべてのページ（src/pages）、
+// ページの題と説明文（src/routes.ts）に、じかに書いた文を見る。
 
 const here = fileURLToPath(new URL('.', import.meta.url))
 
@@ -27,11 +28,14 @@ function stripComments(source: string): string {
 }
 
 describe('画面の文', () => {
-  const files = [...listFiles(here), join(here, '..', 'pages', 'Tool.tsx')]
+  const files = [...listFiles(here), ...listFiles(join(here, '..', 'pages')), join(here, '..', 'routes.ts')]
 
   it('調べるファイルが見つかる', () => {
     expect(files.length).toBeGreaterThan(20)
     expect(files.some((f) => f.endsWith('result-step.tsx'))).toBe(true)
+    expect(files.some((f) => f.endsWith('Tool.tsx'))).toBe(true)
+    expect(files.some((f) => f.endsWith('Landing.tsx'))).toBe(true)
+    expect(files.some((f) => f.endsWith('faq.tsx'))).toBe(true)
   })
 
   it('言ってはいけない言い方が、入っていない', () => {

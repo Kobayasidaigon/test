@@ -47,6 +47,11 @@ export type ShiftGridProps = {
   flashCell?: string | null
   /** 読み上げ用の、表の名前 */
   label?: string
+  /**
+   * 見せる日の範囲（LP の見本用。省くと、その月のぜんぶの日）。
+   * 列を切り出すだけで、計算はその月ぜんぶでしている。右の集計は月ぜんぶの数なので、範囲を決めるときは showSummary を false にすること。
+   */
+  days?: { from: number; to: number }
   className?: string
 }
 
@@ -219,6 +224,7 @@ export function ShiftGrid({
   animateKey = 0,
   flashCell = null,
   label,
+  days,
   className,
 }: ShiftGridProps) {
   const freshCalendar = useMemo(() => buildCalendar(plan), [plan])
@@ -227,9 +233,13 @@ export function ShiftGrid({
   const calendarKey = JSON.stringify(freshCalendar)
   const calendarRef = useRef({ key: calendarKey, value: freshCalendar })
   if (calendarRef.current.key !== calendarKey) calendarRef.current = { key: calendarKey, value: freshCalendar }
-  const calendar = calendarRef.current.value
+  const fullCalendar = calendarRef.current.value
+  // 見せる列。days があるときだけ切り出す（集計と点検は、月ぜんぶの fullCalendar で計算する）
+  const dayFrom = days?.from ?? 1
+  const dayTo = days?.to ?? fullCalendar.length
+  const calendar = useMemo(() => (dayFrom <= 1 && dayTo >= fullCalendar.length ? fullCalendar : fullCalendar.filter((d) => d.day >= dayFrom && d.day <= dayTo)), [fullCalendar, dayFrom, dayTo])
 
-  const summary = useMemo(() => (mode === 'schedule' ? summarize(plan, schedule, calendar) : null), [mode, plan, schedule, calendar])
+  const summary = useMemo(() => (mode === 'schedule' ? summarize(plan, schedule, fullCalendar) : null), [mode, plan, schedule, fullCalendar])
   const shiftById = useMemo(() => new Map<string, ShiftType>(plan.shiftTypes.map((s) => [s.id, s])), [plan.shiftTypes])
   // スタッフごとの、条件に合わない日
   const badByStaff = useMemo(() => {
@@ -408,9 +418,9 @@ export function ShiftGrid({
                     <span className="truncate">{s.name}</span>
                   </span>
                 </th>
-                {summary.days.map((day, c) => {
+                {calendar.map((d, c) => {
+                  const day = summary.days[d.day - 1]
                   const slot = day.slots[si]
-                  const d = calendar[c]
                   const none = slot.need === 0 && slot.have === 0
                   const diffText = slot.diff < 0 ? `${-slot.diff}人足りません` : slot.diff > 0 ? `${slot.diff}人多い` : 'ちょうど'
                   if (blank) {

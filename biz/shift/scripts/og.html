@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>たたき台シフトの共有画像（1200×630）</title>
+    <!--
+      SNS などで共有されたときに出る画像（public/og.png）のもと。
+      作り方: このファイルをブラウザで開き、幅1200×高さ630 の画面をそのまま撮って public/og.png に保存する。
+      （Playwright なら: page.setViewportSize({ width: 1200, height: 630 }) → page.goto('file://…/scripts/og.html')
+        → document.fonts.ready を待つ → page.screenshot({ path: 'public/og.png' })）
+      色と書体は src/index.css と同じ。表のブロックの並びは、美容室のサンプルを道具で組んだ結果（2026年12月の2日〜14日）から取った。
+      文や料金を変えたら、ここも直して撮り直すこと。
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@500;700;800&family=M+PLUS+Rounded+1c:wght@800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --paper: #fffaec;
+        --ink: #1b2452;
+        --ink-soft: #4b547b;
+        --line: #ddd5bd;
+        --well: #f5eed8;
+        --egg: #ffd43d;
+        --sky: #74c7ff;
+        --tomato: #ff6f59;
+        --teal: #2ec4b0;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        position: relative;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "M PLUS 1", "Hiragino Sans", sans-serif;
+        font-weight: 500;
+      }
+      .left { position: absolute; left: 64px; top: 56px; width: 660px; }
+      .logo { display: flex; align-items: center; gap: 14px; font: 800 30px/1 "M PLUS Rounded 1c", sans-serif; }
+      .logo svg { width: 44px; height: 44px; }
+      h1 { margin-top: 58px; font: 800 53px/1.36 "M PLUS Rounded 1c", sans-serif; white-space: nowrap; }
+      p.sub { margin-top: 26px; width: 640px; font-size: 25px; line-height: 1.7; color: var(--ink-soft); }
+      ul.tags { position: absolute; left: 64px; bottom: 56px; display: flex; gap: 12px; list-style: none; }
+      ul.tags li {
+        padding: 9px 16px 10px;
+        border: 3px solid var(--ink);
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 4px 4px 0 var(--ink);
+        font-weight: 800;
+        font-size: 22px;
+        line-height: 1;
+      }
+      ul.tags li:first-child { background: var(--egg); }
+
+      /* 右の表。後ろに、色の板をずらして重ねる（LP の一番上の見本と同じ） */
+      .sheet { position: absolute; left: 752px; top: 70px; width: 560px; height: 620px; border: 3px solid var(--ink); border-radius: 18px; }
+      .sheet.b2 { background: var(--egg); transform: translate(26px, 26px); }
+      .sheet.b1 { background: var(--sky); transform: translate(13px, 13px); }
+      .sheet.top { background: #fff; overflow: hidden; }
+      .bar { display: flex; align-items: center; gap: 8px; height: 58px; padding: 0 20px; border-bottom: 3px solid var(--ink); background: var(--well); font-weight: 800; font-size: 20px; }
+      .bar i { width: 22px; height: 22px; border: 2.5px solid var(--ink); border-radius: 6px; }
+      .grid { display: grid; grid-template-columns: 86px repeat(12, 52px); }
+      .grid > * { display: grid; place-items: center; height: 64px; border-right: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); }
+      .grid .name { justify-content: start; padding-left: 18px; border-right: 3px solid var(--ink); font-weight: 800; font-size: 20px; }
+      .grid .head { height: 52px; border-bottom: 3px solid var(--ink); font-weight: 700; font-size: 18px; }
+      .grid .sat { color: #1d4fb8; }
+      .grid .sun { color: #b3123a; }
+      .blk { display: grid; place-items: center; width: 42px; height: 48px; border: 2.5px solid var(--ink); border-radius: 9px; font-weight: 800; font-size: 20px; line-height: 1; }
+      .e { background: var(--egg); }
+      .l { background: var(--sky); }
+      .w { font-weight: 700; font-size: 16px; color: var(--ink-soft); }
+    </style>
+  </head>
+  <body>
+    <div class="left">
+      <div class="logo">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="2.25" y="2.25" width="12.5" height="12.5" rx="2.5" fill="#ffd43d" stroke="#1b2452" stroke-width="2.5" />
+          <rect x="2.25" y="17.25" width="12.5" height="12.5" rx="2.5" fill="#ff6f59" stroke="#1b2452" stroke-width="2.5" />
+          <rect x="17.25" y="17.25" width="12.5" height="12.5" rx="2.5" fill="#74c7ff" stroke="#1b2452" stroke-width="2.5" />
+        </svg>
+        たたき台シフト
+      </div>
+      <h1>シフトを組むところだけ、<br />機械にまかせる。</h1>
+      <p class="sub">希望休と必要な人数を入れてボタンを押すと、<br />来月のシフトのたたき台ができます。</p>
+    </div>
+    <ul class="tags">
+      <li>登録なし</li>
+      <li>名前は外に出ない</li>
+      <li>月額なし</li>
+    </ul>
+
+    <div class="sheet b2"></div>
+    <div class="sheet b1"></div>
+    <div class="sheet top">
+      <div class="bar"><i style="background: var(--egg)"></i><i style="background: var(--tomato)"></i><i style="background: var(--sky)"></i>&nbsp;サンプル美容室　12月</div>
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <script>
+      // 美容室のサンプルを道具で組んだ結果（2026年12月。8日は定休日なので、ぬいてある）
+      // e = 早番、l = 遅番、w = 休み希望、_ = 休み
+      const days = ['2水', '3木', '4金', '5土', '6日', '7月', '9水', '10木', '11金', '12土', '13日', '14月']
+      const rows = [
+        ['青木', 'llll_e_llwl_'],
+        ['石川', 'eww_lll_el_l'],
+        ['上田', 'lll_ell_eeee'],
+        ['遠藤', '_eee__ee_ee_'],
+        ['小川', 'e__ee_eel_we'],
+        ['加藤', '_eeeee_lweel'],
+        ['木下', '___ll____ll_'],
+        ['', '____________'],
+      ]
+      const grid = document.getElementById('grid')
+      const add = (cls, html) => {
+        const d = document.createElement('div')
+        d.className = cls
+        d.innerHTML = html
+        grid.appendChild(d)
+      }
+      add('name head', '')
+      for (const d of days) add('head' + (d.endsWith('土') ? ' sat' : d.endsWith('日') ? ' sun' : ''), d.replace(/\D/g, ''))
+      for (const [name, cells] of rows) {
+        add('name', name)
+        for (const c of cells) add('', c === 'e' ? '<span class="blk e">早</span>' : c === 'l' ? '<span class="blk l">遅</span>' : c === 'w' ? '<span class="w">希</span>' : '')
+      }
+    </script>
+  </body>
+</html>

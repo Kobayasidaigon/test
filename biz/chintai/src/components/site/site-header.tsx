@@ -81,7 +81,12 @@ export function SiteHeader({ items }: { items: NavItem[] }) {
 
         <div className="ml-auto flex shrink-0 items-center gap-2 lg:ml-0">
           <Button asChild size="sm">
-            <Link to="/app">見積書を点検する</Link>
+            <Link to="/app">
+              {/* とてもせまい画面（幅 360px 未満）では、ボタンの言葉を短くして、帯からはみ出さないようにする。 */}
+              <span>
+                <span className="max-[359px]:hidden">見積書を</span>点検する
+              </span>
+            </Link>
           </Button>
           <Button
             ref={toggle}

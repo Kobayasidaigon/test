@@ -11,7 +11,12 @@ import { formatWareki, formatYen, type DateString, type Yen } from '@/core'
  */
 export function PaperFrame({ children, zoom = 'fit', className }: { children: ReactNode; zoom?: 'fit' | 'full'; className?: string }) {
   return (
-    <div className={`paper-scroll${className ? ` ${className}` : ''}`} data-zoom={zoom} tabIndex={zoom === 'full' ? 0 : undefined}>
+    <div
+      className={`paper-scroll${className ? ` ${className}` : ''}`}
+      data-zoom={zoom}
+      // 大きく表示しているときは、枠の中を横に動かせる。キーボードでも動かせるように、フォーカスが当たるようにする
+      {...(zoom === 'full' ? { tabIndex: 0, role: 'region', 'aria-label': '資料の紙（横に動かして見られます）' } : {})}
+    >
       <div className="paper-frame">{children}</div>
     </div>
   )

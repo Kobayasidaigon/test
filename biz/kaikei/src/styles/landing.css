@@ -1,0 +1,28 @@
+/*
+ * LP と、そのほかのページ（特商法、プライバシー）だけの決まり。
+ * 色・書体・影は index.css のトークンを使う。ここには、Tailwind のクラスでは書きにくいものだけを置く。
+ */
+
+/* 資料の見本（LP に置いた、本物の紙）。
+ * paper.css の印刷の決まりは「紙だけを A4 に出す」ためのもの（道具の画面用）。
+ * LP を印刷したときは、画面と同じように、枠の幅に合わせて縮んだ紙を、そのまま出す。 */
+@media print {
+  .lp-sheet .paper-frame { container-type: inline-size; width: 100%; max-width: 150mm; margin-inline: auto; }
+  .lp-sheet .paper {
+    --u: calc(100cqw / 210);
+    width: calc(var(--u) * 210);
+    min-height: calc(var(--u) * 297);
+    padding: calc(var(--u) * 13) calc(var(--u) * 14);
+    border: 1px solid #e4dac3;
+    background-color: #fffefb;
+  }
+  .lp-sheet .paper + .paper { break-before: auto; page-break-before: auto; margin-top: calc(var(--u) * 8); }
+}
+
+/* 規約のページ（特商法、プライバシー）の本文 */
+.legal-prose h2 { font-size: 1.2rem; margin-top: 2.2rem; padding-bottom: 0.35rem; border-bottom: 3px double var(--rule); }
+.legal-prose h2:first-child { margin-top: 0; }
+.legal-prose p { margin-top: 0.8rem; line-height: 1.9; }
+.legal-prose ul { margin-top: 0.6rem; display: grid; gap: 0.35rem; line-height: 1.85; }
+.legal-prose li { position: relative; padding-left: 1.1rem; }
+.legal-prose li::before { content: ""; position: absolute; left: 0.1rem; top: 0.78em; width: 0.38rem; height: 0.38rem; background: var(--shu); }

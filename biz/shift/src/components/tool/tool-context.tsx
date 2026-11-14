@@ -10,6 +10,11 @@ export type ToolContextValue = {
   update: PlanStore['update']
   replace: PlanStore['replace']
   undo: PlanStore['undo']
+  /**
+   * 「元に戻す」のボタンが付いたお知らせを出す。plan を変えた直後に呼ぶこと。
+   * そのあとで別の変更をすると、このお知らせは消える（古いお知らせで、別の変更が戻ってしまわないように）。
+   */
+  notifyUndo: (text: string, kind?: 'message' | 'success') => void
   gate: Gate
   isPro: boolean
   /** 買い切り版の案内とキーの入力を開く */

@@ -76,7 +76,7 @@ function restrictionSummary(staff: Staff, plan: ShiftPlan): string {
 }
 
 export function StepStore() {
-  const { plan, update, gate, isPro, openLicense, goStep, undo } = useTool()
+  const { plan, update, gate, isPro, openLicense, goStep, notifyUndo } = useTool()
   const [pendingMonth, setPendingMonth] = useState<{ year: number; month: number } | null>(null)
   const [pendingPreset, setPendingPreset] = useState<string | null>(null)
   const [openStaff, setOpenStaff] = useState<string | null>(null)
@@ -108,7 +108,6 @@ export function StepStore() {
     setFocusStaff(id)
   }
 
-  const undoToast = (text: string) => toast.message(text, { label: '元に戻す', onClick: () => undo() })
 
   const submitTag = () => {
     const name = clip(newTag.trim(), LIMITS.nameLength)
@@ -208,7 +207,7 @@ export function StepStore() {
                     className="grid size-11 place-items-center rounded-r-md hover:bg-well md:size-10"
                     onClick={() => {
                       update((p) => removeTag(p, t.id))
-                      undoToast(`「${t.name}」の札を消しました。`)
+                      notifyUndo(`「${t.name}」の札を消しました。`)
                     }}
                   >
                     <X aria-hidden className="size-4" strokeWidth={3} />
@@ -337,7 +336,7 @@ export function StepStore() {
                   onEnter={i === plan.staff.length - 1 ? addOneStaff : undefined}
                   onRemove={() => {
                     update((p) => removeStaff(p, st.id))
-                    undoToast(`${st.name || '（名前なし）'}さんを消しました。`)
+                    notifyUndo(`${st.name || '（名前なし）'}さんを消しました。`)
                   }}
                 />
               ))}
@@ -436,7 +435,7 @@ export function StepStore() {
 }
 
 function ShiftTypeRow({ shift, index }: { shift: ShiftType; index: number }) {
-  const { plan, update, undo } = useTool()
+  const { plan, update, notifyUndo } = useTool()
   const [colorOpen, setColorOpen] = useState(false)
   const n = index + 1
   const patch = (p: Partial<Omit<ShiftType, 'id'>>, coalesce?: string) => update((plan) => updateShiftType(plan, shift.id, p), coalesce ? { coalesce: `${coalesce}:${shift.id}` } : undefined)
@@ -557,7 +556,7 @@ function ShiftTypeRow({ shift, index }: { shift: ShiftType; index: number }) {
             aria-label={`${shift.name || `${n}つめの勤務`}を消す`}
             onClick={() => {
               update((p) => removeShiftType(p, shift.id))
-              toast.message(`「${shift.name || '名前なし'}」を消しました。この勤務の必要な人数や、表のマスも消えています。`, { label: '元に戻す', onClick: () => undo() })
+              notifyUndo(`「${shift.name || '名前なし'}」を消しました。この勤務の必要な人数や、表のマスも消えています。`)
             }}
           >
             <Trash2 aria-hidden />

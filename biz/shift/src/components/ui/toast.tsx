@@ -11,11 +11,22 @@ import { cn } from "@/lib/utils"
 
 type ToastKind = "message" | "success" | "error"
 
+export type ToastAction = {
+  label: string
+  onClick: () => void
+  /**
+   * この操作（元に戻す、など）が有効なあいだの「いまの状態」。
+   * dropStale に別の状態がわたされたら、このお知らせは消える
+   * （そのあとで別の変更をしたのに、古いお知らせの「元に戻す」で別のものが戻ってしまうのを防ぐ）。
+   */
+  validFor?: unknown
+}
+
 type Toast = {
   id: number
   text: ReactNode
   kind: ToastKind
-  action?: { label: string; onClick: () => void }
+  action?: ToastAction
   timeout?: ReturnType<typeof setTimeout>
   remaining: number
   start: number
@@ -43,6 +54,13 @@ const store = {
     this.toasts = this.toasts.filter((x) => x.id !== id)
     this.notify()
   },
+  dropStale(current: unknown) {
+    const kept = this.toasts.filter((t) => !t.action || !("validFor" in t.action) || t.action.validFor === current)
+    if (kept.length === this.toasts.length) return
+    for (const t of this.toasts) if (!kept.includes(t) && t.timeout) clearTimeout(t.timeout)
+    this.toasts = kept
+    this.notify()
+  },
   pause() {
     for (const t of this.toasts) {
       if (!t.timeout) continue
@@ -65,6 +83,8 @@ export const toast = {
   message: (text: ReactNode, action?: Toast["action"]) => store.add(text, "message", action),
   success: (text: ReactNode, action?: Toast["action"]) => store.add(text, "success", action),
   error: (text: ReactNode) => store.add(text, "error"),
+  /** 状態が変わったことを知らせる。古い状態のための操作つきのお知らせを消す */
+  dropStale: (current: unknown) => store.dropStale(current),
 }
 
 export function Toaster() {

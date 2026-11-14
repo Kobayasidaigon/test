@@ -165,7 +165,7 @@ export function FaqList() {
     <div className="border-t-[1.5px] border-ink/70">
       {/* スクリプトを切っている人には、答えを全部開いて見せる（開くボタンが動かないため）。 */}
       <noscript>
-        <style>{'[data-disclosure-panel]{grid-template-rows:1fr!important}'}</style>
+        <style dangerouslySetInnerHTML={{ __html: '[data-disclosure-panel]{grid-template-rows:1fr!important}' }} />
       </noscript>
       {faqs.map((f) => {
         const header = accordion.headerProps(f.id)
@@ -182,7 +182,7 @@ export function FaqList() {
               </button>
             </h3>
             <DisclosurePanel {...accordion.panelProps(f.id)}>
-              <div className="space-y-2 pb-5 pr-2 text-[15px] leading-[1.85] text-ink sm:pr-8">{f.a}</div>
+              <div className="max-w-[41em] space-y-2 pb-5 pr-2 text-[15px] leading-[1.85] text-ink">{f.a}</div>
             </DisclosurePanel>
           </div>
         )

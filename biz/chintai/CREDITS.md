@@ -1,6 +1,6 @@
 # みつもり点検で使った 21st.dev の部品
 
-どれも、そのまま貼らずに、このサービスの世界観（白い見積書の紙、青みのある灰色の机、黒いインク、赤ペンの赤、蛍光ペンの黄色。角はほとんど丸めない。影は、机に置いた紙の影だけ）に合わせて作り変えています。見本の文・数字・人物の写真は、ひとつも残していません。取ってきたコードに、ライセンスの表示が付いていた部品はありませんでした。
+どれも、そのまま貼らずに、このサービスの世界観（白い見積書の紙、青みのある灰色の机、黒いインク、赤ペンの赤、蛍光ペンの黄色。角はほとんど丸めない。影は、机に置いた紙の影だけ）に合わせて作り変えています。見本の文・数字・人物の写真は、ひとつも残していません。ライセンスの表示が付いていた部品は1つ（Feature Tab Switcher。MIT）で、表示をファイルの先頭に残しています。
 
 ## 道具の画面（`/app`）と、土台の部品
 
@@ -21,10 +21,32 @@
 | Invoice Line Items Table（shadcn の Table） | olewandowski1 | https://21st.dev/@olewandowski1/components/table-3 | `src/components/ui/table.tsx`（点検の結果の「区分ごとの小計」） | 表の部品（Table / TableHeader / TableBody / TableRow / TableHead / TableCell …）を取り入れた。見本の請求書の中身（会社名、金額、税率）は、すべて捨てた。罫線をはっきり引き、見出しの下と合計の下を濃い線にした。行に乗せたときの色の変化は取った（紙なので）。表が広いときは、表の中だけを横スクロールにする。 |
 | Button | shadcn | （単独では取っていない。上の Alert Dialog・Dialog・File Dropzone が、一緒に配っている部品） | `src/components/ui/button.tsx`（すべてのボタン） | 土台に入っていたもの（21st.dev の部品が一緒に配る、shadcn の Button と同じコード）。いちばん大事なボタンは、黒いインクのベタにした（赤は「赤ペンの書き込み」だけに使うので、ボタンには使わない）。消す操作は、赤ペンの色の文字と枠（ベタにはしない）。高さを 44px 以上にし、`type="button"` をはじめの値にした。 |
 
+## LP（`/`）と、その他のページ
+
+| 部品 | 作者 | URL | どこで使ったか | どう変えたか |
+| --- | --- | --- | --- | --- |
+| Centered Nav Header | olewandowski1 | https://21st.dev/@olewandowski1/components/centered-nav-header | `src/components/site/site-header.tsx`（LP と、その他のページの、上の帯） | 左に印、真ん中に行き先、右にいちばん大事なボタン、という3つの並びと、せまい画面では行き先をメニューのボタンにしまうことを残した。見本の「Sign In」と区切り線は取った（会員登録がない）。右のボタンは、道具を開く「見積書を点検する」の1つだけ。せまい画面のメニューは、横から出る別の画面（Radix の Sheet）をやめて、帯のすぐ下に開く1枚の紙にした（ページの中の行き先 `#faq` などを、ふつうのリンクとして動かすため。Esc・外を押す・行き先を押す、で閉じる）。帯は机の色のベタで、すりガラスにはしていない。Remix Icon は使わず、土台に入っている lucide の絵にした。 |
+| Hero with Dashboard Mockup | felipemenezes098 | https://21st.dev/@felipemenezes098/components/hero-02 | `src/components/landing/hero.tsx`（LP の一番上） | 左寄せの見出し・説明・ボタン1つ、という静かな組み立てと、「絵は、製品そのものを置く」という考え方を残した。写真の背景の上に浮かべた見本のダッシュボード（うその数字のグラフ）は捨てて、本物の部品（`InspectedSheet`）に、サンプルの見積書を本物のロジックで点検した結果を渡して置いた。見出しの下に絵を置く縦の並びを、広い画面では横の並びにした（開いてすぐ、赤ペンの入る行が見えるように）。出てくるときのぼかしと動き（motion）、行を整えるライブラリ（react-wrap-balancer）、セリフ体の見出しは使っていない。動くのは、行が画面に入ったときに赤ペンが入る、その1つだけ。 |
+| Feature Tab Switcher（Hirael の Feature 11。MIT License、Mohammad Shehadeh） | mohammadshehadeh | https://21st.dev/@mohammadshehadeh/components/feature-11 | `src/components/landing/categories.tsx`（LP の「何がわかるか」。区分を選ぶと、その区分の行の点検が出る） | 左に縦に並んだ見出し（題と、ひとことの説明）、右にその中身、という並びと、タブとしてのふるまい（矢印キーで見出しを動かすと中身もついてくる、選んだ見出しだけ Tab で止まる）を残した。見本の中身（共有の受信箱の例、人の頭文字の丸）は、すべて捨てた。右に出すのは、本物の判定ロジックが出した、その区分の行の点検の結果（理由、確かめること、聞き方、根拠と出典）。見出しは、紙のファイルの「見出しの耳」にして（道具の手順の耳と同じ考え方）、選んだ耳が右の紙とつながるようにした。アイコンのかわりに、区分の印（赤ペンの丸の中の1文字）。Radix の Tabs は入れず、ふるまいを自分で書いた。せまい画面では、見出しを2列に並べ、「理由と根拠」をはじめは閉じておく。MIT の著作権表示は、ファイルの先頭に残した。 |
+| How It Works Steps | ln-dev7 | https://21st.dev/@ln-dev7/components/how-it-works-09 | `src/components/landing/how-it-works.tsx`（LP の「使い方」） | 番号と、番号をつなぐ1本の線、その下に題と短い説明、アイコンを使わず文字で見せる、という組み立てを残した。丸い番号を、道具の画面と同じ黒い四角の番号にし、真ん中寄せを左寄せにした。見本の文（「135 production sections」など）、上の小さな英語のラベル、下の丸いボタンは取った。手順ごとに、道具の本物の部品を小さく置いた（1 は、その場で打てる項目さがし。2 と 3 は、サンプルの見積書を本物のロジックに通した結果）。 |
+| Minimal Footer | efferd | https://21st.dev/@efferd/components/minimal-footer | `src/components/site/site-footer.tsx`（LP と、その他のページの、いちばん下） | 左に印とひとことの説明、右にリンクの列、いちばん下に細い線と小さな文、という組み立てを残した。見本の会社の説明、SNS のアイコンの列、「All rights reserved」は取った（このサイトに SNS はない）。ぼんやり光る背景（radial-gradient）と等幅の書体をやめ、机の上の濃い罫線だけにした。リンクの列は、項目ごとの解説（データから作る）と、このサイトのページ。いちばん下に、法律の助言ではないことと、ルールの最終確認日を書いた。 |
+
+LP とその他のページでは、道具の画面のために取り入れた部品も、そのまま使っています。
+
+- Accordion（ddoemonn。`ui/disclosure.tsx`）… LP の「よくある質問」（`landing/faq.tsx`）と、「何がわかるか」の「理由と根拠を見る」。
+- Segmented Control（ddoemonn。`ui/segmented-control.tsx`）… LP の「文面の見本」の、メール用／LINE用の切り替え。
+- Input（originui。`ui/input.tsx`）… LP の「使い方」の項目さがしと、仲介手数料の解説ページの小さな点検（`guide/brokerage-try.tsx`）。
+- Button（shadcn。`ui/button.tsx`）… すべてのボタン。
+
 ## 21st.dev の部品ではないもの（自分で作ったもの）
 
 - `src/components/pen.tsx` … 赤ペンの丸・二重丸・下線・チェック・矢印・区分の印・日付のはんこ。自分で描いた SVG（少しゆがんだ手描きの線）。
 - `src/components/sheet.tsx`、`inspected-sheet.tsx`、`finding-card.tsx`、`category-mark.tsx`、`source-link.tsx`、`consult-desks.tsx`、`message-preview.tsx`、`offer-slot.tsx`、`brand.tsx` … 紙、赤ペンが入った見積書、1行ごとの結果、区分の印、出典、相談先、便せん、広告の枠、サイトの印。
 - `src/components/tool/` … 道具の画面の組み立て（手順1〜3、金額の入力欄、項目を選ぶ部品、ファイルの書き出しと読み込み、保存）。
+- `src/components/landing/` のうち、`section.tsx`（欄の見出し）、`message-sample.tsx`（文面の見本）、`not-doing.tsx`（しないこと）、`sources.tsx`（資料の一覧）、`guides.tsx`（解説への入口）、`operation.tsx`（運営）、`demo.ts`（LP で見せる点検の結果）。
+- `src/components/site/page-shell.tsx`（その他のページの枠、いまいる場所）、`src/components/guide/brokerage-try.tsx`（仲介手数料の小さな点検）。
+- `public/favicon.svg`、`public/og.png`（もとは `scripts/og.html`）… 白い見積書に、赤ペンの丸。自分で描いた SVG。
 
-探したが使わなかったもの（参考にしただけ）: Stepper（originui、sean0205。丸い番号と線の形なので、耳の形にした）、Combobox（uvain。cmdk が要るので使わず）、Toast（cnippet-dev。Base UI が要るので使わず）、Money Input（kuratlielia。小数の通貨向けなので、金額の欄は Input をもとに自分で作った）。
+LP のために探して、説明を読んだが、取らなかったもの: Preview Switch Hero（ruixen.ui。星の評価・顔写真の列・会社ロゴの列が前提の形なので、使わず）、Header 1（efferd。動かすと帯がすりガラスになる形なので、使わず）、Accordion（wensity。Base UI が要るので、使わず。よくある質問は、もう入っている ddoemonn の Accordion を使った）、Tabs（shadcn・originui。Radix の Tabs が要るので、ふるまいを自分で書いた）。
+
+道具の画面のために探したが使わなかったもの（参考にしただけ）: Stepper（originui、sean0205。丸い番号と線の形なので、耳の形にした）、Combobox（uvain。cmdk が要るので使わず）、Toast（cnippet-dev。Base UI が要るので使わず）、Money Input（kuratlielia。小数の通貨向けなので、金額の欄は Input をもとに自分で作った）。

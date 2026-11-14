@@ -30,7 +30,7 @@ function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
           <li key={i} className="flex items-center gap-x-1.5">
             {i > 0 && <span aria-hidden>›</span>}
             {c.to ? (
-              <Link to={c.to} className="inline-flex min-h-11 items-center underline decoration-ink-soft/50 underline-offset-4 hover:text-ink sm:min-h-8">
+              <Link to={c.to} className="inline-flex min-h-11 min-w-11 items-center underline decoration-ink-soft/50 underline-offset-4 hover:text-ink sm:min-h-8 sm:min-w-0">
                 {c.label}
               </Link>
             ) : (
@@ -71,7 +71,7 @@ export function PageShell({
         本文へ進む
       </a>
       <SiteHeader items={SUB_NAV} />
-      <main id="main" className={cn('mx-auto w-full px-3 pb-16 pt-5 sm:px-6 sm:pb-24 sm:pt-8', wide ? 'max-w-[64rem]' : 'max-w-[52rem]')}>
+      <main id="main" className={cn('mx-auto w-full px-3 pb-16 pt-5 sm:px-6 sm:pb-24 sm:pt-8', wide ? 'max-w-[64rem]' : 'max-w-[48rem]')}>
         <Breadcrumbs crumbs={crumbs} />
         <Sheet className="px-5 py-7 sm:px-12 sm:py-12">
           <header className="mb-8">

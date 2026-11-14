@@ -16,7 +16,8 @@ import { site } from '@/site.config'
 // - リンクの列は、「道具と解説」「項目ごとの解説（データから作る）」「このサイト」の3つ。
 // - いちばん下には、この道具の立て付け（法律の助言ではないこと）と、ルールの最終確認日を書く。
 
-const linkClass = 'inline-flex min-h-11 items-center text-sm text-ink no-underline hover:underline hover:underline-offset-4 sm:min-h-8'
+// 短い名前（「敷金」など）でも、指で押せる幅になるように、リンクを列の幅いっぱいに広げる。
+const linkClass = 'flex min-h-11 items-center py-1 text-sm leading-snug text-ink no-underline hover:underline hover:underline-offset-4 sm:min-h-8'
 
 export function SiteFooter() {
   const guides = listGuideItems()
@@ -30,7 +31,7 @@ export function SiteFooter() {
           </p>
           <p className="mt-3 max-w-[22em] text-sm leading-7 text-ink-soft">{site.tagline}ための、無料の道具です。</p>
           <p className="mt-4">
-            <Link to="/app" className={linkClass + ' font-bold underline underline-offset-4'}>
+            <Link to="/app" className="inline-flex min-h-11 items-center text-sm font-bold text-ink underline underline-offset-4">
               見積書を点検する
             </Link>
           </p>
@@ -38,7 +39,7 @@ export function SiteFooter() {
 
         <nav aria-label="項目ごとの解説">
           <p className="mb-1 text-xs text-ink-soft">項目ごとの解説</p>
-          <ul className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+          <ul className="grid grid-cols-2 gap-x-6">
             {guides.map((item) => (
               <li key={item.id}>
                 <Link to={`/items/${item.guide.slug}`} className={linkClass}>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>みつもり点検の共有画像（og.png）を作るためのページ</title>
+    <!--
+      共有画像（public/og.png、1200×630）のもと。SNS などでリンクを貼ったときに出る絵。
+      作り直し方（README にも書いてある）:
+        このファイルをブラウザで開き、画面の大きさを 1200×630 にして、ページをそのまま画像に保存する。
+        Playwright が使えるなら:
+          npx playwright screenshot --viewport-size=1200,630 --wait-for-timeout=2000 scripts/og.html public/og.png
+      色と書体は、src/index.css と同じ。見積書の行と金額は、サンプルの見積書（src/core/sample.ts）と同じ。
+      赤ペンの書き込みの文は、道具が実際に出す文（src/core の判定の結果）と同じにしてある。
+      うその数字や実績を、ここに足さないこと。
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPGothic:wght@400;700&family=Zen+Kurenaido&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --desk: #e7ebf1;
+        --paper: #ffffff;
+        --ink: #171a20;
+        --ink-soft: #505b6c;
+        --rule: #ccd3dd;
+        --rule-strong: #8a96a8;
+        --pen: #c6202e;
+        --pencil: #5b6779;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        position: relative;
+        background: var(--desk);
+        color: var(--ink);
+        font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .left { position: absolute; left: 64px; top: 56px; width: 500px; }
+      .brand { display: flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 700; letter-spacing: 0.04em; }
+      .brand svg { width: 44px; height: 44px; }
+      h1 { margin-top: 62px; font-size: 62px; font-weight: 700; line-height: 1.34; letter-spacing: 0.01em; }
+      h1 span { display: block; white-space: nowrap; }
+      .lead { margin-top: 30px; font-size: 25px; line-height: 1.7; color: var(--ink-soft); }
+      .facts { position: absolute; left: 64px; bottom: 54px; display: flex; gap: 12px; font-size: 22px; font-weight: 700; }
+      .facts span { border: 2px solid var(--ink); padding: 7px 16px 6px; border-radius: 3px; background: var(--paper); }
+
+      /* 見積書の紙。少しかたむけて、机に置いた感じにする。下は、画面の外へはみ出す。 */
+      .sheet-back, .sheet {
+        position: absolute; left: 612px; top: 48px; width: 556px; height: 700px;
+        background: var(--paper); border-radius: 2px;
+        box-shadow: 0 0 0 1px rgb(23 26 32 / 0.07), 0 1px 1px rgb(23 26 32 / 0.05), 0 26px 40px -24px rgb(31 45 71 / 0.55);
+      }
+      .sheet-back { transform: rotate(3.2deg) translate(10px, 6px); }
+      .sheet { transform: rotate(1.4deg); padding: 34px 36px; }
+      .eyebrow { font-size: 15px; color: var(--ink-soft); }
+      .title { margin-top: 8px; text-align: center; font-size: 29px; font-weight: 700; letter-spacing: 0.32em; text-indent: 0.32em; }
+      .double { margin-top: 12px; height: 6px; border-top: 1.5px solid var(--rule-strong); border-bottom: 1.5px solid var(--rule-strong); }
+      .rows { margin-top: 14px; border-top: 2px solid rgb(23 26 32 / 0.7); list-style: none; }
+      .rows li { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: start; border-bottom: 1px solid var(--rule); padding: 13px 4px 12px; }
+      .name { font-size: 21px; line-height: 1.4; }
+      .amount { position: relative; font-family: "BIZ UDGothic", monospace; font-size: 21px; line-height: 1.4; padding: 0 14px; }
+      .amount svg { position: absolute; left: -2px; top: -7px; width: calc(100% + 4px); height: calc(100% + 14px); overflow: visible; }
+      .note { grid-column: 1 / -1; margin-top: 5px; display: flex; align-items: center; gap: 8px; font-family: "Zen Kurenaido", cursive; font-size: 22px; line-height: 1.35; letter-spacing: -0.03em; color: var(--pen); -webkit-text-stroke: 0.45px currentColor; }
+      .note svg { width: 34px; height: 20px; flex: none; overflow: visible; }
+      .ok { grid-column: 1 / -1; margin-top: 4px; display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--ink-soft); }
+      .ok svg { width: 20px; height: 20px; flex: none; color: var(--pencil); }
+      .stroke { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+      .stamp { position: absolute; right: 30px; top: 22px; width: 88px; height: 88px; transform: rotate(-6deg); color: var(--pen); }
+    </style>
+  </head>
+  <body>
+    <div class="left">
+      <div class="brand">
+        <!-- サイトの印（public/favicon.svg、src/components/brand.tsx と同じ絵）。 -->
+        <svg viewBox="0 0 32 32" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7.5 3.5 H 24.5 V 28.5 H 7.5 Z" fill="#fff" stroke="#171a20" stroke-width="1.8" />
+          <path d="M11.5 9.5 H 20.5 M11.5 14 H 20.5 M11.5 20.5 H 15" stroke="#8a96a8" stroke-width="1.6" />
+          <path d="M17.2 18.2 C 20.5 16.6 26.6 17 27.6 19.8 C 28.6 22.8 23.6 24.6 19.8 24 C 16.2 23.4 14.6 20.6 17.6 18.4 C 18.6 17.7 19.8 17.4 20.8 17.4" stroke="#c6202e" stroke-width="1.8" />
+        </svg>
+        <span>みつもり点検</span>
+      </div>
+      <h1>
+        <span>賃貸の初期費用の</span>
+        <span>見積書を、</span>
+        <span>1行ずつ点検する。</span>
+      </h1>
+      <p class="lead">確かめたほうがよい行に、赤ペンが入ります。</p>
+    </div>
+    <div class="facts"><span>無料</span><span>登録なし</span><span>入力は送信されません</span></div>
+
+    <div class="sheet-back"></div>
+    <div class="sheet">
+      <svg class="stamp" viewBox="0 0 80 80" aria-hidden="true">
+        <g fill="none" stroke="currentColor" opacity="0.9">
+          <circle cx="40" cy="40" r="35.5" stroke-width="2.4" />
+          <path d="M6.4 29 H73.6 M6.4 51 H73.6" stroke-width="1.7" />
+          <g stroke="none" fill="currentColor" text-anchor="middle" font-weight="700" font-family="BIZ UDPGothic, sans-serif">
+            <text x="40" y="23.5" font-size="10.5">みつもり</text>
+            <text x="40" y="44.6" font-size="12.5">見本</text>
+            <text x="40" y="65" font-size="11.5" letter-spacing="2">点検</text>
+          </g>
+        </g>
+      </svg>
+      <p class="eyebrow">サンプルの見積書を、点検した結果</p>
+      <p class="title">初期費用の見積書</p>
+      <div class="double"></div>
+      <ol class="rows">
+        <li>
+          <span class="name">敷金</span><span class="amount">78,000円</span>
+          <span class="ok"><svg viewBox="0 0 24 24"><path class="stroke" stroke-width="2" d="M 3.5 12.5 C 5.5 14.5 7.5 17.5 9.5 21 C 12.5 13 17 7 21.5 2.5" /></svg>ふつうはかかる項目です。</span>
+        </li>
+        <li>
+          <span class="name">仲介手数料</span>
+          <span class="amount">85,800円<svg viewBox="0 0 200 80" preserveAspectRatio="none" style="color: var(--pen)"><path class="stroke" stroke-width="2.4" d="M 24 15 C 62 2 150 0 184 17 C 204 29 199 58 171 68 C 129 82 51 80 21 64 C -2 51 1 27 31 12 C 45 6 63 4 78 5" /></svg></span>
+          <span class="note"><svg viewBox="0 0 34 20"><path class="stroke" stroke-width="2.2" d="M 32 7 C 22 4 12 7 3 12" /><path class="stroke" stroke-width="2.2" d="M 10 5 L 3 12 L 12 16" /></svg>承諾していたかを、確かめる項目です。</span>
+        </li>
+        <li>
+          <span class="name">鍵交換費用</span>
+          <span class="amount">22,000円<svg viewBox="0 0 200 80" preserveAspectRatio="none" style="color: var(--pen)"><path class="stroke" stroke-width="2.4" d="M 31 10 C 81 -1 160 5 187 23 C 203 37 191 62 160 70 C 110 82 41 78 15 58 C -3 43 7 19 45 8 C 61 4 84 2 97 4" /></svg></span>
+          <span class="note"><svg viewBox="0 0 34 20"><path class="stroke" stroke-width="2.2" d="M 32 7 C 22 4 12 7 3 12" /><path class="stroke" stroke-width="2.2" d="M 10 5 L 3 12 L 12 16" /></svg>だれが負担するかを、確かめる項目です。</span>
+        </li>
+        <li>
+          <span class="name">室内抗菌施工費</span>
+          <span class="amount">16,500円<svg viewBox="0 0 200 80" preserveAspectRatio="none" style="color: var(--pen)"><path class="stroke" stroke-width="2.4" d="M 17 23 C 35 5 121 -1 176 12 C 205 22 203 54 177 66 C 135 82 57 82 23 66 C -1 54 -1 31 23 16 C 31 11 41 8 54 7" /></svg></span>
+          <span class="note"><svg viewBox="0 0 34 20"><path class="stroke" stroke-width="2.2" d="M 32 7 C 22 4 12 7 3 12" /><path class="stroke" stroke-width="2.2" d="M 10 5 L 3 12 L 12 16" /></svg>必須か任意かを、確かめる項目です。</span>
+        </li>
+        <li>
+          <span class="name">24時間安心サポート（2年）</span>
+          <span class="amount">16,500円<svg viewBox="0 0 200 80" preserveAspectRatio="none" style="color: var(--pen)"><path class="stroke" stroke-width="2.4" d="M 24 15 C 62 2 150 0 184 17 C 204 29 199 58 171 68 C 129 82 51 80 21 64 C -2 51 1 27 31 12 C 45 6 63 4 78 5" /></svg></span>
+          <span class="note"><svg viewBox="0 0 34 20"><path class="stroke" stroke-width="2.2" d="M 32 7 C 22 4 12 7 3 12" /><path class="stroke" stroke-width="2.2" d="M 10 5 L 3 12 L 12 16" /></svg>必須か任意かを、確かめる項目です。</span>
+        </li>
+      </ol>
+    </div>
+  </body>
+</html>

@@ -38,7 +38,7 @@ export function Operation() {
         <p className="mt-3 text-[13px] leading-6 text-ink-soft">{p.priceNote}</p>
       </div>
 
-      <div className="text-[15px] leading-[1.85]">
+      <div className="max-w-[40em] text-[15px] leading-[1.85]">
         <p>{p.revenueNote}</p>
         <p className="mt-3">
           {ads === 0

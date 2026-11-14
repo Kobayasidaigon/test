@@ -147,6 +147,8 @@
     text-wrap: balance;
     word-break: auto-phrase;
   }
+  /* 文の最後の行に、1〜2文字だけが残らないようにする */
+  p, li, dd { text-wrap: pretty; }
   /* フォーカスの枠は消さない。紺の輪郭線の外側に、青の枠を出す */
   :focus-visible {
     outline: 3px solid var(--focus);
@@ -451,3 +453,37 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
 .pt-blk[data-color="gray"] { --blk: var(--shift-gray); }
 .pt-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5mm 5mm; margin-top: 2.5mm; font-size: 7.5pt; }
 .pt-legend .pt-blk { width: 4.6mm; height: 4.6mm; font-size: 7pt; margin-right: 1mm; vertical-align: middle; }
+
+/* ---- LP（ランディングページ）と、そのほかのページ ---- */
+/* ページの中のリンク（#pricing など）で飛んだとき、上に固定したナビに見出しがかくれないようにする */
+.lp-anchor { scroll-margin-top: 5.5rem; }
+
+/* LP の見本の表。押すところがない（読むだけ）ので、スマホでもマスを小さいままにして、見える日を増やす */
+.lp-mini .sg { --cw: 30px; --ch: 34px; --namew: 76px; }
+@media (min-width: 768px) {
+  .lp-mini .sg { --ch: 36px; --namew: 96px; }
+}
+/* 枠の中に置く表は、影を付けない（外の枠が影を持つ） */
+.lp-flat.sg-wrap, .lp-flat .sg-wrap { box-shadow: none; }
+
+/* LP の長い文。1行は 35〜40字まで */
+.lp-prose { max-width: 38em; line-height: 1.9; }
+
+/* よくある質問（<details>）。開いたときに、中身がするっと出る。新しいブラウザでだけ動き、古いブラウザでは、そのまま開く */
+.lp-faq { interpolate-size: allow-keywords; }
+.lp-faq::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size 220ms cubic-bezier(0.23, 1, 0.32, 1), content-visibility 220ms allow-discrete;
+}
+.lp-faq[open]::details-content { block-size: auto; }
+.lp-faq > summary { list-style: none; }
+.lp-faq > summary::-webkit-details-marker { display: none; }
+.lp-faq .lp-faq-chev { transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+.lp-faq[open] .lp-faq-chev { transform: rotate(180deg); }
+
+/* 一番上の見本の、進み具合のブロック */
+@keyframes lp-pulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}

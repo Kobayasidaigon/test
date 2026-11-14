@@ -45,13 +45,18 @@ function getStorage(): StorageLike | null {
 /** どの画面（タブ）を開いていたかを覚えておく場所の名前（このタブを閉じるまで）。 */
 export const TAB_STORAGE = `${site.slug}:tab`
 
-/** 開いていた画面を忘れる。新しい帳簿を始めたとき・ファイルを開いたときは、いつも「入力」の画面から始めるため。 */
+/**
+ * 開いていた画面を忘れて、ページのいちばん上に戻る。
+ * 新しい帳簿を始めたとき・ファイルを開いたときは、いつも「入力」の画面の頭から始めるため
+ * （はじめの画面の下のほうのボタンを押したあと、帳簿の画面が途中から始まらないように）。
+ */
 function forgetTab(): void {
   try {
     window.sessionStorage.removeItem(TAB_STORAGE)
   } catch {
     // 覚えていなくても困らない
   }
+  window.scrollTo(0, 0)
 }
 
 /** このブラウザに入れてあるライセンスキー（use-license.ts が保存したもの）。なければ空。 */

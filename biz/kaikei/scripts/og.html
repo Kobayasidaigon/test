@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ja">
+<!--
+  共有画像（public/og.png、1200×630）のもとになるページ。
+  これをブラウザで 1200×630 の大きさで開いて、画面を撮ると、og.png になる（node scripts/og.cjs）。
+  右の紙は、サンプルの帳簿（あおぞら町内会・令和7年度）の、本物の収支決算書。
+  道具の紙の部品（src/components/papers/SettlementPaper.tsx）が出した HTML と、src/styles/paper.css を、そのまま写してある。
+  このファイルは node scripts/og-build.mjs が書き出す。サンプルや紙の形を変えたときは、作り直すこと。
+  見出しの文や割りつけを変えるときは、scripts/og-build.mjs の中のひな形を直す（ここを直に直すと、作り直したときに消える）。
+-->
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1200" />
+<title>ひきつぎ会計 共有画像</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&text=0123456789&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --font-sans: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  --font-serif: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+  --font-num: "BIZ UDGothic", "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  --shadow-paper: 0 1px 0 rgb(74 60 30 / 0.06), 0 18px 40px -18px rgb(74 60 30 / 0.5);
+  --kinari: #f4eee0; --sumi: #211e19; --shu: #c5361b; --rule: #3a8f88; --rule-ink: #1c625d; --sub: #5a5347;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { width: 1200px; height: 630px; overflow: hidden; background: var(--kinari); color: var(--sumi); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.og { position: relative; width: 1200px; height: 630px; overflow: hidden; }
+/* 上と下の、帳簿の二重線 */
+.og::before, .og::after { content: ""; position: absolute; z-index: 0; left: 0; right: 0; height: 5px; border-top: 1.5px solid var(--rule); border-bottom: 1.5px solid var(--rule); }
+.og::before { top: 22px; }
+.og::after { bottom: 22px; }
+.text { position: absolute; left: 76px; top: 70px; width: 640px; }
+.brand { display: flex; align-items: center; gap: 16px; font-family: var(--font-serif); font-weight: 700; font-size: 38px; letter-spacing: 0.06em; }
+.brand svg { width: 52px; height: 52px; }
+h1 { margin: 34px 0 0; font-family: var(--font-serif); font-weight: 800; font-size: 58px; line-height: 1.4; letter-spacing: 0.03em; }
+h1 span { display: block; white-space: nowrap; }
+.sub { margin: 22px 0 0; font-size: 29px; font-weight: 700; line-height: 1.6; }
+.who { position: absolute; left: 76px; bottom: 62px; display: flex; align-items: center; gap: 18px; font-size: 23px; color: var(--sub); }
+.chip { border: 2.5px solid var(--shu); color: #a52c14; font-family: var(--font-serif); font-weight: 700; padding: 5px 14px 6px; border-radius: 4px; font-size: 23px; line-height: 1; letter-spacing: 0.08em; }
+/* 右の紙。少しかたむけて、下は画面の外へ切る */
+.sheet { position: absolute; z-index: 1; left: 724px; top: 70px; width: 440px; transform: rotate(2.2deg); transform-origin: 20% 0; }
+.seal { position: absolute; right: -30px; top: -40px; width: 100px; height: 100px; transform: rotate(-8deg); }
+.paper {
+  --u: 1mm;
+  --paper-line: #3a8f88; /* 帳簿の罫線の青緑 */
+  --paper-line-strong: #1c625d;
+  --paper-head: rgb(58 143 136 / 0.14); /* 見出しの行の地。「見本」の透かしがすけて見えるように、半透明にする */
+  --paper-ink: #1b1915;
+  --paper-sub: #4d483f;
+  position: relative;
+  box-sizing: border-box;
+  width: calc(var(--u) * 210);
+  min-height: calc(var(--u) * 297);
+  /* 画面の紙の余白は、印刷の余白（index.css の @page）と同じにする */
+  padding: calc(var(--u) * 13) calc(var(--u) * 14);
+  background: #fffefb;
+  color: var(--paper-ink);
+  font-family: var(--font-sans);
+  font-size: calc(var(--u) * 3.6); /* およそ 10pt */
+  line-height: 1.5;
+  border: 1px solid #e4dac3;
+  box-shadow: var(--shadow-paper);
+  /* 見出しの行のうすい色を、印刷でも出す */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.paper + .paper { margin-top: calc(var(--u) * 8); }
+
+.paper * { box-sizing: border-box; }
+/* :where で包んで、下の .paper-period などの余白の指定が負けないようにする */
+.paper :where(p) { margin: 0; }
+
+/* ---- 見出し ---- */
+.paper-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: calc(var(--u) * 6.6);
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-align: center;
+}
+.paper-period { margin-top: calc(var(--u) * 1.5); text-align: center; font-size: calc(var(--u) * 3.6); color: var(--paper-sub); }
+.paper-org { margin-top: calc(var(--u) * 2); text-align: right; font-size: calc(var(--u) * 4.1); font-weight: 700; }
+.paper-section {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 4.4);
+  margin-bottom: calc(var(--u) * 1.4);
+}
+.paper-section h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: calc(var(--u) * 4.4);
+  letter-spacing: 0.08em;
+}
+/* 見出しの頭の、朱の四角（はんこの色を、ひとつだけ置く） */
+.paper-section h3::before {
+  content: "";
+  display: inline-block;
+  width: calc(var(--u) * 2.4);
+  height: calc(var(--u) * 2.4);
+  margin-right: calc(var(--u) * 1.8);
+  background: #c5361b;
+  vertical-align: 0.02em;
+}
+.paper-unit { font-size: calc(var(--u) * 3.2); color: var(--paper-sub); white-space: nowrap; }
+.paper-note { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 3.2); color: var(--paper-sub); }
+
+/* ---- 表 ---- */
+.paper-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: calc(var(--u) * 0.45) solid var(--paper-line-strong);
+}
+.paper-table th,
+.paper-table td {
+  border: calc(var(--u) * 0.2) solid var(--paper-line);
+  /* 行の高さは、およそ 7mm。町内会のひな形（収入4・支出10の科目）の決算書が、A4 の1枚に収まる詰め方 */
+  padding: calc(var(--u) * 0.85) calc(var(--u) * 1.7);
+  vertical-align: middle;
+  text-align: left;
+  font-weight: 400;
+}
+.paper-table thead th {
+  background: var(--paper-head);
+  border-bottom: calc(var(--u) * 0.45) solid var(--paper-line-strong);
+  text-align: center;
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.4);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.paper-table .num { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.paper-table .center { text-align: center; }
+.paper-table .small { font-size: calc(var(--u) * 3.1); line-height: 1.35; }
+.paper-table .nowrap { white-space: nowrap; }
+/* 合計の行。上を二重線にする（帳簿の締めの線） */
+.paper-table tr.total > * {
+  border-top: calc(var(--u) * 0.9) double var(--paper-line-strong);
+  font-weight: 700;
+  background: rgb(58 143 136 / 0.06);
+}
+.paper-table tr.total th { text-align: center; letter-spacing: 0.2em; }
+.paper-table tr.muted td { color: var(--paper-sub); }
+/* ページをまたぐ表は、見出しの行を次のページにも出す。行の途中では切らない */
+.paper-table thead { display: table-header-group; }
+.paper-table tr { break-inside: avoid; page-break-inside: avoid; }
+
+/* 決算書の「収入合計 − 支出合計 ＝ 次年度繰越金」 */
+.paper-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: calc(var(--u) * 1.5) calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 5);
+  padding: calc(var(--u) * 2.2) calc(var(--u) * 4);
+  border-top: calc(var(--u) * 0.45) solid var(--paper-line-strong);
+  border-bottom: calc(var(--u) * 0.9) double var(--paper-line-strong);
+  break-inside: avoid;
+}
+.paper-result .term { display: inline-flex; align-items: baseline; gap: calc(var(--u) * 2); white-space: nowrap; }
+.paper-result .term b { font-family: var(--font-num); font-size: calc(var(--u) * 4.6); font-weight: 700; }
+.paper-result .term.main b { font-size: calc(var(--u) * 5.6); }
+.paper-result .op { font-size: calc(var(--u) * 4.4); color: var(--paper-sub); }
+
+/* ---- 署名欄 ---- */
+.paper-closing { margin-top: calc(var(--u) * 7); break-inside: avoid; }
+.paper-date { margin-top: calc(var(--u) * 2); }
+.paper-signs { margin-top: calc(var(--u) * 4); display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--u) * 4); }
+/* 決算書のいちばん下: 左に繰越金の内訳、右に「報告します」と署名欄を並べる（1枚に収めるため） */
+.paper-bottom { display: flex; align-items: flex-end; gap: calc(var(--u) * 8); break-inside: avoid; }
+.paper-bottom > .breakdown { flex: 0 0 50%; min-width: 0; }
+.paper-bottom > .paper-closing { flex: 1 1 0; min-width: 0; margin-top: 0; }
+.paper-bottom .paper-sign { gap: calc(var(--u) * 2); }
+.paper-bottom .paper-sign .role { min-width: 0; }
+.paper-bottom .paper-sign .name { min-width: 0; flex: 1; }
+.paper-bottom .paper-signs { align-items: stretch; }
+.paper-sign { display: flex; align-items: center; gap: calc(var(--u) * 3); }
+.paper-sign .role { min-width: calc(var(--u) * 18); text-align: right; }
+.paper-sign .name {
+  min-width: calc(var(--u) * 52);
+  padding: 0 calc(var(--u) * 2) calc(var(--u) * 0.8);
+  border-bottom: calc(var(--u) * 0.25) solid var(--paper-ink);
+  font-size: calc(var(--u) * 4.4);
+  letter-spacing: 0.08em;
+  min-height: calc(var(--u) * 8);
+}
+/* はんこを押す丸 */
+.paper-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: calc(var(--u) * 11);
+  height: calc(var(--u) * 11);
+  border: calc(var(--u) * 0.25) dashed #8d8678;
+  border-radius: 50%;
+  color: #777064; /* 紙の白の上で 4.5:1 以上 */
+  font-size: calc(var(--u) * 3);
+}
+/* 手で書くための空き（「令和　年　月　日」など） */
+.paper-gap { display: inline-block; width: calc(var(--u) * 9); }
+
+.paper-body-text { margin-top: calc(var(--u) * 10); font-size: calc(var(--u) * 4.3); line-height: 2.1; text-indent: 1em; white-space: pre-wrap; }
+/* ラベルと中身を横に並べる行（「引き継ぎをした日　令和…」） */
+.paper-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: calc(var(--u) * 4); }
+.paper-memo { white-space: pre-wrap; min-height: calc(var(--u) * 24); padding: calc(var(--u) * 2.5) calc(var(--u) * 3); border: calc(var(--u) * 0.45) solid var(--paper-line-strong); }
+.paper-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--u) * 4.4);
+  height: calc(var(--u) * 4.4);
+  border: calc(var(--u) * 0.3) solid var(--paper-ink);
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1;
+  font-weight: 700;
+}
+
+
+/* 紙の幅を、この画像の中の大きさに合わせる（paper.css の決まりより、あとに書く） */
+.sheet .paper { --u: calc(440px / 210); }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="text">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2.5" y="2.5" width="27" height="27" rx="4" fill="none" stroke="#c5361b" stroke-width="2.6"/><path d="M9 10.5h14M9 16h14M9 21.5h8.5" stroke="#c5361b" stroke-width="2.6" stroke-linecap="round"/></svg>
+      ひきつぎ会計
+    </div>
+    <h1><span>収入と支出を</span><span>入れるだけで、</span><span>総会の資料がそろう。</span></h1>
+    <p class="sub">次の担当には、ファイルを1つ渡すだけ。</p>
+  </div>
+  <div class="who"><span class="chip">登録なし</span>町内会・子ども会・PTA・サークルの会計係に</div>
+  <div class="sheet">
+    <section class="paper" aria-label="令和7年度 収支決算書"><header><h2 class="paper-title">令和7年度 収支決算書</h2><p class="paper-period">（令和7年4月1日から令和8年3月31日まで）</p><p class="paper-org">あおぞら町内会</p></header><div class="paper-section"><h3>収入の部</h3><span class="paper-unit">（単位：円。差は「決算−予算」）</span></div><table class="paper-table"><colgroup><col style="width:25%"/><col style="width:15%"/><col style="width:15%"/><col style="width:15%"/><col style="width:30%"/></colgroup><thead><tr><th scope="col">科目</th><th scope="col">予算額</th><th scope="col">決算額</th><th scope="col">差</th><th scope="col">説明</th></tr></thead><tbody><tr><td>前年度繰越金</td><td class="num">604,774</td><td class="num">604,774</td><td class="num">0</td><td class="small"></td></tr><tr><td>会費</td><td class="num">372,000</td><td class="num">369,000</td><td class="num">△3,000</td><td class="small">月500円 × 62世帯。10月に1世帯が転出</td></tr><tr><td>市の補助金</td><td class="num">40,000</td><td class="num">40,000</td><td class="num">0</td><td class="small"></td></tr><tr><td>資源回収の報奨金</td><td class="num">24,000</td><td class="num">24,420</td><td class="num">420</td><td class="small"></td></tr><tr><td>雑収入</td><td class="num">500</td><td class="num">10,659</td><td class="num">10,159</td><td class="small">夏祭りへの寄付、預金の利息</td></tr><tr class="total"><th scope="row">収入合計</th><td class="num">1,041,274</td><td class="num">1,048,853</td><td class="num">7,579</td><td></td></tr></tbody></table><div class="paper-section"><h3>支出の部</h3><span class="paper-unit">（単位：円。差は「決算−予算」）</span></div><table class="paper-table"><colgroup><col style="width:25%"/><col style="width:15%"/><col style="width:15%"/><col style="width:15%"/><col style="width:30%"/></colgroup><thead><tr><th scope="col">科目</th><th scope="col">予算額</th><th scope="col">決算額</th><th scope="col">差</th><th scope="col">説明</th></tr></thead><tbody><tr><td>事務費</td><td class="num">20,000</td><td class="num">11,264</td><td class="num">△8,736</td><td class="small"></td></tr><tr><td>会議費</td><td class="num">15,000</td><td class="num">7,100</td><td class="num">△7,900</td><td class="small"></td></tr><tr><td>行事費</td><td class="num">160,000</td><td class="num">134,090</td><td class="num">△25,910</td><td class="small">夏祭り、敬老の日、新年会</td></tr><tr><td>防災・防犯費</td><td class="num">50,000</td><td class="num">43,905</td><td class="num">△6,095</td><td class="small">備蓄品の入れかえ、防災訓練、年末の夜回り</td></tr><tr><td>環境美化費</td><td class="num">30,000</td><td class="num">13,376</td><td class="num">△16,624</td><td class="small">春と秋の一斉清掃</td></tr><tr><td>防犯灯の電気代</td><td class="num">54,000</td><td class="num">53,760</td><td class="num">△240</td><td class="small"></td></tr><tr><td>慶弔費</td><td class="num">20,000</td><td class="num">10,000</td><td class="num">△10,000</td><td class="small"></td></tr><tr><td>連合会の負担金</td><td class="num">37,200</td><td class="num">37,200</td><td class="num">0</td><td class="small">600円 × 62世帯</td></tr><tr><td>雑費</td><td class="num">5,000</td><td class="num">1,240</td><td class="num">△3,760</td><td class="small"></td></tr><tr><td>予備費</td><td class="num">650,074</td><td class="num">0</td><td class="num">△650,074</td><td class="small"></td></tr><tr class="total"><th scope="row">支出合計</th><td class="num">1,041,274</td><td class="num">311,935</td><td class="num">△729,339</td><td></td></tr></tbody></table><div class="paper-result"><span class="term">収入合計 <b>1,048,853</b>円</span><span class="op">−</span><span class="term">支出合計 <b>311,935</b>円</span><span class="op">＝</span><span class="term main">次年度繰越金 <b>736,918</b>円</span></div><div class="paper-bottom"><div class="breakdown"><div class="paper-section"><h3>次年度繰越金の内訳</h3><span class="paper-unit">（単位：円）</span></div><table class="paper-table"><colgroup><col style="width:60%"/><col style="width:40%"/></colgroup><thead><tr><th scope="col">お金の置き場所</th><th scope="col">金額</th></tr></thead><tbody><tr><td>現金</td><td class="num">5,185</td></tr><tr><td>普通預金</td><td class="num">481,733</td></tr><tr><td>定期預金（防災の積立）</td><td class="num">250,000</td></tr><tr class="total"><th scope="row">合計</th><td class="num">736,918</td></tr></tbody></table></div><div class="paper-closing"><p>上記のとおり、報告します。</p><p class="paper-date">令和8年4月5日</p><div class="paper-signs"><div class="paper-sign"><span class="role">会計</span><span class="name">鈴木 和子</span><span class="paper-seal" aria-label="はんこを押すところ">印</span></div></div></div></div></section>
+    <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
+      <defs><filter id="k" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/></filter></defs>
+      <circle cx="32" cy="32" r="28.5" fill="#fffefb" opacity="0.9"/>
+      <g filter="url(#k)" fill="none" stroke="#c5361b"><circle cx="32" cy="32" r="27" stroke-width="3.4"/><circle cx="32" cy="32" r="22.5" stroke-width="1" opacity="0.7"/></g>
+      <text x="32" y="39" text-anchor="middle" font-family="Shippori Mincho B1, serif" font-weight="800" font-size="19" fill="#c5361b" filter="url(#k)">見本</text>
+    </svg>
+  </div>
+</div>
+</body>
+</html>

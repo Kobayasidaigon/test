@@ -66,7 +66,7 @@ const PHASE_TEXT: Record<SolveProgress['phase'], string> = {
 }
 
 export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve, onAdopt }: StepScheduleProps) {
-  const { plan, update, replace, undo, gate, isPro, openLicense, goStep } = useTool()
+  const { plan, update, replace, notifyUndo, gate, isPro, openLicense, goStep } = useTool()
   // マスの選択肢は、開くたびにこの画面ぜんたいを描き直さなくてすむよう、開いているマスを CellEditor の中に持たせる
   const editor = useRef<CellEditorHandle>(null)
   const [flash, setFlash] = useState<string | null>(null)
@@ -198,7 +198,7 @@ export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve
               size="sm"
               onClick={() => {
                 update((p) => ({ ...p, schedule: unlockAll(p.schedule) }))
-                toast.message(`固定を${locked}マス、すべて外しました。入っている勤務は、そのままです。`, { label: '元に戻す', onClick: () => undo() })
+                notifyUndo(`固定を${locked}マス、すべて外しました。入っている勤務は、そのままです。`)
               }}
             >
               固定をすべて外す
@@ -211,7 +211,7 @@ export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve
             size="sm"
             onClick={() => {
               update((p) => ({ ...p, schedule: emptySchedule() }))
-              toast.message('表を空にしました。', { label: '元に戻す', onClick: () => undo() })
+              notifyUndo('表を空にしました。')
             }}
           >
             表を空にする
@@ -312,6 +312,7 @@ export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve
           <li>{empty ? '下の行の数字は、その日に必要な人数' : '下の行の数字は、その日に入っている人数（赤い「−1」は1人足りない、「+1」は1人多い）'}</li>
           {holidays.length > 0 ? <li>この月の祝日: {holidays.map((d) => `${d.day}日（${d.holiday}）`).join('、')}</li> : null}
         </ul>
+        <p className="mt-2 border-t border-line pt-2 text-[12.5px] leading-snug text-ink-soft">印刷は、A4 の横向き1枚です（人数が多いときは2枚）。たて向きで出るときは、印刷の画面で、用紙の向きを「横」にしてください。</p>
       </div>
 
       {/* マスを押したときの選択肢。広い画面では吹き出し、せまい画面では下からのシート */}
@@ -347,7 +348,7 @@ export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve
               onClick={() => {
                 replace(carryToNextMonth(plan))
                 setCarryOpen(false)
-                toast.success(`${formatMonth(next.year, next.month)}へ引き継ぎました。希望休を入れてから、組んでください。`, { label: '元に戻す', onClick: () => undo() })
+                notifyUndo(`${formatMonth(next.year, next.month)}へ引き継ぎました。希望休を入れてから、組んでください。`, 'success')
                 goStep(2)
               }}
             >

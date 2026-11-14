@@ -1,5 +1,7 @@
 # ひきつぎ会計で使った 21st.dev の部品
 
+## 道具の画面で使った部品
+
 どれも、そのまま貼らずに、このサービスの世界観（「帳簿と、朱のはんこ」— 生成りの紙の地、墨の字、帳簿の罫線の青緑、だいじな操作と印に朱）に合わせて作り変えています。見本の文・数字・人物の写真は、ひとつも残していません。置き場所は `src/components/ui/` です。
 
 | 部品 | 作者 | URL | どこで使ったか | どう変えたか |
@@ -24,3 +26,27 @@
 - `src/components/tool/` … 道具の画面（はじめの画面、5つの画面、団体の設定、金額と日付の入力欄）。
 
 探したが使わなかったもの（参考にしただけ）: Stepper（nyxbui、corr）、Wizard Steps（ddoemonn）、Modal（ddoemonn）、Empty State（wensity、serafimcloud）、Underline Tabs（cnippet-dev）、Data Table（shadcn。TanStack Table が要るので使わず、取引の一覧は Table の部品に、`src/core` のしぼりこみの関数をつないで作った）、Bottom Nav Bar（arunachalam。選んだものだけ名前を出す形は、パソコンに慣れていない人にわかりにくいので使わず）。
+
+## ランディングページとその他のページで使った部品
+
+置き場所は `src/components/landing/` です。どれも、見本の文・数字・ロゴ・写真は、ひとつも残していません。絵のかわりに、道具が作る本物の資料の紙（`src/components/papers/`）と、道具の画面の一部を置いています。
+
+| 部品 | 作者 | URL | どこで使ったか | どう変えたか |
+| --- | --- | --- | --- | --- |
+| Centered Nav Header | olewandowski1 | https://21st.dev/@olewandowski1/components/centered-nav-header | `SiteHeader.tsx`。LP・特商法・プライバシーポリシーの、いちばん上の見出し | 左にしるし、まん中にページ内の案内、右にだいじなボタン、という3つの並びは、そのまま。スマホで開くメニュー（Sheet）をやめて、案内を見出しの下に、いつも並べておく形にした（押さないと中身が見えないメニューは、パソコンに慣れていない人が気づきにくいため）。「Sign In」と見本のロゴは外した（登録もログインもないサービスのため）。下の線を、帳簿の二重線に。幅 320px でも1行に収まるように、せまい画面では字と間を詰める。remixicon は使っていない。 |
+| Hero with Dashboard Mockup | felipemenezes098 | https://21st.dev/@felipemenezes098/components/hero-02 | `Hero.tsx`。LP のいちばん上 | 左そろえの明朝の見出し → 説明 → ボタン、の順と、その横（スマホでは下）に製品そのものを大きく置く組み立てを借りた。写真の背景と、作りものの画面（ダッシュボードの絵）をやめて、サンプルの帳簿の本物の収支決算書を置いた。出てくるときのぼかしの動き（motion）と、react-wrap-balancer は使っていない（折り返しは CSS で）。かわりに「ためしに支出を1件入れると、決算書がその場で変わる」を、道具と同じ関数（`src/core` の `checkTransaction`、`addTransaction`、`buildReports`）で動かしている。変わった行は、少しのあいだ朱のうすい色で知らせる。 |
+| Feature Tab Switcher（Feature 11 from Hirael） | mohammadshehadeh（Mohammad Shehadeh。MIT License） | https://21st.dev/@mohammadshehadeh/components/feature-11 | `Documents.tsx`。「総会の資料が、5種類そろいます」 | 縦に並んだタブ（名前と、ひとことの説明）の横に、選んだものの中身を見せる枠を置く組み立てと、矢印キーでタブを動かすと中身もついてくるふるまいを借りた。中身を、見本の一覧（作りもののデータ）から、本物の資料の紙5種類にした。Radix の Tabs をやめて自分で書いた（5枚とも静的HTMLに書き出して、選んでいない紙は隠すだけにするため。スマホではタブが横に並ぶので、矢印キーは上下・左右のどちらでも動く）。タブは、帳簿のインデックス（選んだものが、朱の線の付いた紙のつまみになる）に。番号は、資料をとじる順の漢数字。「大きく表示する」を足した。MIT の表示は `Documents.tsx` の先頭に残した。 |
+| How It Works Steps | ln-dev7 | https://21st.dev/@ln-dev7/components/how-it-works-09 | `HandoverSteps.tsx`。「引き継ぎは、ファイルを1つ渡すだけ」（渡す → 開く → 続きから） | 番号の丸を3つ横に並べて細い線でつなぐ形と、スマホでは縦に並べて段の間に矢じるしを置く形は、そのまま。「01 02 03」を、はんこの形の丸に漢数字に。字だけだった段に、道具の画面の一部をまねた小さな絵を付けた（ファイルの名前、年度の一覧、残高は、サンプルの帳簿から本物の関数で出している）。まん中のボタンと、英語の小見出しは外した。 |
+| Us vs Them Comparison | olewandowski1 | https://21st.dev/@olewandowski1/components/comparison-2 | `FitSection.tsx`。「向いている団体と、向いていない団体」 | 左右に並べた2つの欄（片方はチェックの行、もう片方はバツの行。色だけでなく形でも分ける）を借りた。もとは「自社とほかの会社」をくらべる部品だったが、ほかのサービスを悪く言う使い方はせず、「このサービスが合う団体と、合わない団体」を正直に並べる欄にした。おすすめの札、ボタン、見本の文は外した。カードを2枚並べるのをやめて、1枚の紙を罫線で左右に分けた。「対象外」の文は、道具の画面と同じもの（`src/core/notices.ts`）を使い、下に、もとにした公の資料を並べた。 |
+| Two-Plan Pricing Cards | ln-dev7 | https://21st.dev/@ln-dev7/components/pricing-16 | `Pricing.tsx`。料金（無料／1年度ぶん） | 無料と有料の2つを横に並べ、名前 → ひとこと → 金額 → チェックの一覧 → ボタン、の順に積む組み立ては、そのまま。角の丸い2枚のカードをやめて、1枚の紙を罫線で左右に分けた。「Recommended」の札と、英語の小さな字、矢じるしは外した。金額と文は、すべて `src/site.config.ts` から出す。購入のボタンは、決済ページが決まるまで「販売準備中です」と出す。 |
+| FAQ Section | kevingirelli | https://21st.dev/@kevingirelli/components/faq | `Faq.tsx`。よくある質問 | 「split」の割りつけ（パソコンでは、左に見出し、右に質問の一覧）と、質問を見出し（h3）の中の押せる行にする作り、見出しの下に「ここにない質問は…」の1行を置けるところを借りた。Radix の Accordion をやめて、ブラウザに元からある `<details>` にした（閉じている答えも静的HTMLに入るので、ページ内の検索で見つかり、JavaScript が動かなくても開ける）。質問と答えの頭に「問」「答」のしるし。行の高さを 44px 以上に。見本の英語の質問は、すべて入れかえた。 |
+| Minimal Two-Column Footer | ln-dev7 | https://21st.dev/@ln-dev7/components/footer-17 | `SiteFooter.tsx`。LP・特商法・プライバシーポリシーの、いちばん下 | 左にしるしと、ひとことの説明、右に縦に並べた案内、いちばん下に細い線と小さな文、という割りつけは、そのまま。見本のロゴ・文・地名は外した。年の数字は出さない（静的HTMLを作った年と、見ている年が食いちがうため）。ことわり書き（道具は補助であること）を、ここにも出す。 |
+
+21st.dev のものではない、自分で作ったもの（LP）:
+
+- `ReconcileDemo.tsx` … 残高の照合の見本。道具の「残高の照合」の画面の形に合わせて組み、計算は `src/core` の `setReconciliation` と `reconcileYear` を、そのまま動かしている。
+- `DataSection.tsx` … 「登録なし。どこにも預けない」の絵（データがどこにあって、どこには行かないか）。
+- `ClosingCta.tsx`、`LegalPage.tsx`（特商法とプライバシーポリシーの、紙の割りつけ）、`Section.tsx`（章の見出し、帳簿の二重線、はんこの形の番号）。
+- `scripts/og.html` … 共有画像（`public/og.png`）のもと。右の紙は、本物の収支決算書の部品が出した HTML。
+
+探したが使わなかったもの（LP）: Header 1（efferd。すりガラスの見出しなので使わず）、Hero with image, text and two buttons（tommyjepsen）、Accordion（originui、brijr、ddoemonn。答えを静的HTMLに入れるため `<details>` にしたので使わず）、Comparison Table（mohammadshehadeh）、How It Works（chamaac）。

@@ -9,7 +9,6 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 import { Label, Select, Textarea } from '@/components/ui/field'
 import { Notice, NoticeBody, NoticeTitle } from '@/components/ui/notice'
 import { SegmentedControl, type SegmentedOption } from '@/components/ui/segmented'
-import { toast } from '@/components/ui/toast'
 import { OffBlock, ShiftBlock } from '@/components/shift-block'
 import { ShiftGrid } from '@/components/shift-grid'
 import { StepHeading, useTool } from './tool-context'
@@ -18,7 +17,7 @@ import { StepHeading, useTool } from './tool-context'
 type Brush = string
 
 export function StepWishes() {
-  const { plan, update, undo, goStep } = useTool()
+  const { plan, update, notifyUndo, goStep } = useTool()
   const [brush, setBrush] = useState<Brush>('off')
   const [pasteOpen, setPasteOpen] = useState(false)
 
@@ -90,7 +89,7 @@ export function StepWishes() {
               variant="ghost"
               onClick={() => {
                 update((p) => ({ ...p, wishes: {} }))
-                toast.message(`希望を${wishCount}件、すべて消しました。`, { label: '元に戻す', onClick: () => undo() })
+                notifyUndo(`希望を${wishCount}件、すべて消しました。`)
               }}
             >
               希望をすべて消す
@@ -124,7 +123,7 @@ function sampleText(plan: ShiftPlan): string {
 }
 
 function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
-  const { plan, update, undo } = useTool()
+  const { plan, update, notifyUndo } = useTool()
   const [text, setText] = useState('')
   const [mode, setMode] = useState<'merge' | 'replace'>('merge')
   const [assign, setAssign] = useState<Record<number, string>>({})
@@ -157,7 +156,7 @@ function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
   const apply = () => {
     if (!preview) return
     update((p) => applyWishPaste(p, preview, { mode, assign }))
-    toast.success(`希望を取り込みました（休み希望${counts.off}件、入りたい${counts.shift}件）。`, { label: '元に戻す', onClick: () => undo() })
+    notifyUndo(`希望を取り込みました（休み希望${counts.off}件、入りたい${counts.shift}件）。`, 'success')
     close()
   }
 

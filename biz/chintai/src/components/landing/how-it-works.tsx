@@ -63,7 +63,7 @@ function TrySearch() {
                     <span className="block text-xs leading-5 text-ink-soft">{getCategory(m.item.category).label}</span>
                   </span>
                   {guide && (
-                    <Link to={guide} className="inline-flex min-h-11 shrink-0 items-center text-xs text-ink underline decoration-ink/40 underline-offset-4 hover:decoration-ink">
+                    <Link to={guide} className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center text-xs text-ink underline decoration-ink/40 underline-offset-4 hover:decoration-ink">
                       解説<span className="sr-only">（{m.item.name}）</span>
                     </Link>
                   )}
