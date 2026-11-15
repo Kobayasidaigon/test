@@ -5,17 +5,19 @@ import { formatDateJa, parseDate } from './format'
 // 決めごと:
 // - ここに入れるのは、法令と、国・自治体・公的な法人が出している資料だけ。まとめサイトや不動産会社の記事は入れない。
 // - 確かめた日（verifiedOn）を必ず持たせる。画面には「ルールの最終確認日」として RULES_VERIFIED_ON を出す。
-// - 確かめ方（verifiedBy）を正直に持たせる。2026-11-14 の確認では、作業した環境から官公庁のサイトを直接開けなかった
-//   （WebFetch は名前解決に失敗、curl は通信の制限で 403）。そのため、検索の対象を公式サイトのドメインに絞り、
+// - 確かめ方（verifiedBy）を正直に持たせる。
+//   2026-11-14 の確認では、作業した環境から官公庁のサイトを直接開けなかったので、検索の対象を公式サイトのドメインに絞り、
 //   検索結果に出た公式ページの本文の抜粋で、該当する記述を確かめた（'official-site-search'）。
-//   抜粋で確かめられなかった事実は、ルールに入れていない（README の「確かめられなかったこと」を参照）。
-//   公開の前に、運営者がそれぞれの URL を開いて、もう一度確かめること。
+//   2026-11-15 に、それぞれの URL（と、そのページから開く PDF）を開いて、根拠と参考の文を原文と1つずつ照らし合わせた
+//   （'official-page'）。開けなかった出典（法務省の PDF。サイト全体が、作業した環境からは 403 で開けなかった）は、
+//   検索で確かめたときの印のまま残してある（src/core/README.md の「出典の確かめ方」を参照）。
+//   原文で確かめられなかった事実は、ルールに入れていない。
 
 /**
  * ルール（項目のデータと出典）を最後に確かめた日。道具とページに出す。
  * 運営者が出典を確かめ直したら、最後に確かめた日に直す（README の「公開の前に、運営者がやること 1」）。
  */
-export const RULES_VERIFIED_ON = '2026-11-14'
+export const RULES_VERIFIED_ON = '2026-11-15'
 
 /**
  * 公式サイトを対象にした検索で確かめた日。
@@ -70,9 +72,12 @@ export const sources = {
     publisher: '国土交通省',
     url: 'https://www.mlit.go.jp/totikensangyo/const/1_6_bt_000266.html',
     kind: 'notice',
-    edition: '最終改正 令和6年国土交通省告示第949号（令和6年7月1日施行）',
-    place: '第四 貸借の媒介に関する報酬の額。宅地建物取引業法 第46条にもとづく告示（国土交通省「宅地建物取引業法関係」のページに掲載）',
+    edition: '最終改正 令和6年6月21日国土交通省告示第949号（令和6年7月1日施行）',
+    place:
+      '第四 貸借の媒介に関する報酬の額、第九 長期の空家等の貸借の媒介における特例。宅地建物取引業法 第46条第1項にもとづく告示（国土交通省「宅地建物取引業法関係」のページに、令和6年7月1日以降の本文の PDF がある）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'mlit-consumer-notice': {
     id: 'mlit-consumer-notice',
@@ -80,8 +85,10 @@ export const sources = {
     publisher: '国土交通省',
     url: 'https://www.mlit.go.jp/totikensangyo/const/1_6_bf_000013.html',
     kind: 'gov-page',
-    place: '賃貸の仲介手数料の上限の説明',
+    place: '「不動産取引の仲介手数料について」の、賃貸借取引の仲介手数料の上限額と、空き家等にかかる仲介手数料の特例',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'takken-kaishaku': {
     id: 'takken-kaishaku',
@@ -90,8 +97,22 @@ export const sources = {
     url: 'https://www.mlit.go.jp/totikensangyo/const/content/001881261.pdf',
     kind: 'notice',
     edition: '令和8年4月1日施行版',
-    place: '告示第四関係（承諾の時期）、重要事項説明書の様式（借賃以外に授受される金額）',
+    place: '第46条第1項関係 1(3)（告示第四関係。⑤ 承諾の時期）、1(8)（告示第九関係。長期の空家等の貸借の媒介の特例）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
+  },
+  'takken-jusetsu-yoshiki': {
+    id: 'takken-jusetsu-yoshiki',
+    title: '重要事項説明の様式例（宅地建物取引業法の解釈・運用の考え方 別添3）',
+    publisher: '国土交通省',
+    url: 'https://www.mlit.go.jp/totikensangyo/const/content/001895540.pdf',
+    kind: 'notice',
+    edition: '令和8年4月1日以降の版（国土交通省「宅地建物取引業法 法令改正・解釈について」のページの表示）',
+    place: '建物の貸借の様式の「Ⅱ 取引条件に関する事項」の「1 借賃以外に授受される金額」（金額、授受の目的）',
+    ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'mlit-jireishu': {
     id: 'mlit-jireishu',
@@ -100,18 +121,25 @@ export const sources = {
     url: 'https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000117.html',
     kind: 'guideline',
     edition: '令和4年3月',
+    place:
+      '借主からの質問の第1章（入居前）の Q2「その他の一時金」、Q2-1「礼金」、Q2-2「敷金の一部を返還しない旨の特約」、Q3「仲介手数料」、保証会社との契約、保険加入、第2章（入居中）の更新料（事例集の PDF は、このページから開く）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   // ---- 原状回復（鍵、クリーニング）----
   'genjo-guideline': {
     id: 'genjo-guideline',
     title: '原状回復をめぐるトラブルとガイドライン（再改訂版）',
     publisher: '国土交通省 住宅局',
-    url: 'https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000020.html',
+    url: 'https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000021.html',
     kind: 'guideline',
     edition: '平成23年8月',
-    place: '別表1「損耗・毀損の事例区分（部位別）一覧表」の「設備、その他（鍵など）」',
+    place:
+      '第1章 Ⅰ「原状回復にかかるトラブルの未然防止」（法的な拘束力）、別表1「損耗・毀損の事例区分（部位別）一覧表」の「設備、その他（鍵など）」（本文の PDF は、このダウンロードのページから開く）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'genjo-qa': {
     id: 'genjo-qa',
@@ -121,23 +149,31 @@ export const sources = {
     kind: 'guideline',
     place: 'Q16（クリーニング特約）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'mlit-ryuiten': {
     id: 'mlit-ryuiten',
-    title: '賃貸住宅の入居・退去に係る留意点',
-    publisher: '国土交通省',
-    url: 'https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000026.html',
+    title: '民間賃貸住宅（民間賃貸住宅の入居・退去に関する留意点等）',
+    publisher: '国土交通省 住宅局',
+    url: 'https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000016.html',
     kind: 'gov-page',
+    place: '「民間賃貸住宅の入居・退去に関する留意点等」の欄（契約書に署名、捺印をする前に確かめること）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'tokyo-guideline': {
     id: 'tokyo-guideline',
     title: '賃貸住宅トラブル防止ガイドライン（第4版）',
     publisher: '東京都 住宅政策本部',
-    url: 'https://www.juutakuseisaku.metro.tokyo.lg.jp/fudosan/tintai/310-3',
+    url: 'https://www.juutakuseisaku.metro.tokyo.lg.jp/fudosan/tintai/310-3/guidelines',
     kind: 'guideline',
-    edition: '令和4年12月',
+    edition: '令和4年（2022年）12月',
+    place: '参考「貸主・借主の負担区分」の一覧表の「鍵」（全文の PDF は、このダウンロードのページから開く）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   // ---- 民法（敷金、通常の使用による傷み）----
   minpo: {
@@ -148,6 +184,8 @@ export const sources = {
     kind: 'law',
     place: '第621条（賃借人の原状回復義務）、第622条の2（敷金）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'moj-chintai': {
     id: 'moj-chintai',
@@ -156,16 +194,21 @@ export const sources = {
     url: 'https://www.moj.go.jp/content/001399957.pdf',
     kind: 'gov-page',
     place: '敷金、原状回復の説明',
+    // 2026-11-15 の確認では、作業した環境から法務省のサイトが開けなかった（403）。検索で確かめたときの印のまま。
     ...on,
   },
   // ---- 消費生活センターなどの案内 ----
   'tokyo-kurashi-hoken': {
     id: 'tokyo-kurashi-hoken',
     title: '消費生活相談FAQ「賃貸住宅を契約するとき不動産仲介業者に火災保険を勧められたが、必要か。」',
-    publisher: '東京都 消費生活総合センター（東京くらしWEB）',
+    publisher: '東京都（東京くらしWEB）',
     url: 'https://www.shouhiseikatu.metro.tokyo.lg.jp/sodan/faq/main/94.html',
     kind: 'consumer-center',
+    edition: '更新日 2018年5月11日',
+    place: 'アドバイス',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'tokyo-kurashi-hajimete': {
     id: 'tokyo-kurashi-hajimete',
@@ -173,7 +216,11 @@ export const sources = {
     publisher: '東京都 消費生活総合センター（東京くらしWEB）',
     url: 'https://www.shouhiseikatu.metro.tokyo.lg.jp/wakamono/omiminiiretai/reiwa06tokushu-03.html',
     kind: 'consumer-center',
+    edition: '更新日 2025年4月7日',
+    place: '家主に毎月支払うお金と、契約のときに支払うお金の説明',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'kokusen-wakamono10': {
     id: 'kokusen-wakamono10',
@@ -181,17 +228,23 @@ export const sources = {
     publisher: '国民生活センター',
     url: 'https://www.kokusen.go.jp/news/data/n-20220303_1.html',
     kind: 'consumer-center',
-    edition: '2022年3月3日発表',
+    edition: '2022年3月3日公表',
+    place: '相談事例【事例1】と、トラブル防止のポイント「契約時」（くわしい内容は、このページの最後にある報告書本文の PDF）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'saitama-jirei': {
     id: 'saitama-jirei',
     title: '消費生活相談事例「新生活スタートの季節、賃貸借契約トラブルにご注意！」',
     publisher: '埼玉県 消費生活支援センター',
-    url: 'https://www.pref.saitama.lg.jp/b0304/soudanjirei/20240225.html',
+    url: 'https://www.pref.saitama.lg.jp/b0304/shohisoudan/jirei/sumai/20240225.html',
     kind: 'consumer-center',
-    edition: '2024年2月',
+    edition: '掲載日 2026年2月19日',
+    place: '【事例1】と、消費者へのアドバイス',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   // ---- 広告の表示 ----
   'caa-stealth': {
@@ -200,8 +253,10 @@ export const sources = {
     publisher: '消費者庁',
     url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing',
     kind: 'gov-page',
-    place: '「一般消費者が事業者の表示であることを判別することが困難である表示」（令和5年内閣府告示第19号）の説明',
+    place: '「一般消費者が事業者の表示であることを判別することが困難である表示」（令和5年3月28日内閣府告示第19号。令和5年10月1日施行）の説明',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   // ---- 相談先 ----
   'caa-188': {
@@ -210,7 +265,10 @@ export const sources = {
     publisher: '消費者庁',
     url: 'https://www.caa.go.jp/policies/policy/local_cooperation/local_consumer_administration/hotline/',
     kind: 'gov-page',
+    place: 'ページの本文と、ページにある「消費者ホットラインの概要」（PDF）',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'kokusen-map': {
     id: 'kokusen-map',
@@ -219,6 +277,8 @@ export const sources = {
     url: 'https://www.kokusen.go.jp/map/',
     kind: 'consumer-center',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
   'houterasu-dial': {
     id: 'houterasu-dial',
@@ -226,7 +286,10 @@ export const sources = {
     publisher: '日本司法支援センター（法テラス）',
     url: 'https://www.houterasu.or.jp/site/soudanmadoguchi-houseido/support-dial.html',
     kind: 'public-corp',
+    place: '利用概要、受付日時、料金、注意点',
     ...on,
+    verifiedBy: 'official-page',
+    verifiedOn: '2026-11-15',
   },
 } as const satisfies Record<string, Source>
 
@@ -248,6 +311,7 @@ export function listSources(): Source[] {
  * 2026-11-14 の確認は、作業した環境から官公庁のサイトを開けなかったので、公式サイトを対象にした検索で行った
  * （①の担当と④の担当が、別々に検索して、同じ記述が出ることを確かめた）。「確認」とだけ書くと、
  * 原文のページを開いて読んだように見えるので、どう確かめたかを、画面にも書く。
+ * 2026-11-15 に、開けた出典はすべて原文で確かめ直した。開けなかった出典が残っているあいだは、その件数を言う。
  *
  * 運用: 運営者が URL を1つずつ開いて原文で確かめたら、その出典の verifiedBy を 'official-page' に、
  * verifiedOn をその日にする。途中（一部だけ原文で確かめた）のあいだは、まだ済んでいない件数を言う。

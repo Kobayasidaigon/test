@@ -141,7 +141,10 @@ export type ShiftPlan = {
   carry: Carry | null
 }
 
-/** あつかう年の範囲。祝日の計算（holidays.ts）が正しいと確かめられる範囲に合わせている */
+/**
+ * あつかう年の範囲。祝日を計算できる範囲（holidays.ts の isHolidayYearSupported。決まりが今と同じで、春分・秋分の式が使える範囲）に合わせている。
+ * 公表の一覧と照らして確かめたのは 2025〜2027年（holidays.test.ts）で、2028年からあとの春分の日・秋分の日は見込み（EQUINOX_ANNOUNCED_THROUGH）。
+ */
 export const YEAR_MIN = 2022
 export const YEAR_MAX = 2099
 

@@ -82,6 +82,8 @@ export function dateFromLocal(d: Date): DateString {
 
 // ---- 和暦 ----
 // 令和の始まりは 2019年5月1日（元号を改める政令）。出典は sources.ts の 'reiwa-start'。
+// 平成の始まり（1989年1月8日）も、同じ内閣府のページで確かめた（2026-11-15）。昭和64年政令第1号の附則「この政令は、公布の日の翌日から施行する。」と、
+// 内閣総理大臣談話（昭和６４年１月７日）の「公布の日の翌日である一月八日以降について用いられることとなっております」による。
 const ERAS: { name: string; start: DateString; firstYear: number }[] = [
   { name: '令和', start: '2019-05-01', firstYear: 2019 },
   { name: '平成', start: '1989-01-08', firstYear: 1989 },

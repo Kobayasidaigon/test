@@ -83,13 +83,22 @@ describe('出典の一覧', () => {
 })
 
 describe('決まった文（対象外、ことわり書き、言葉の説明）', () => {
-  it('対象外のことが4つ。税の申告、法人格のある団体、収益事業、複式簿記', () => {
+  it('対象外のことが4つ。税の申告、法人と認可地縁団体、収益事業、複式簿記', () => {
     expect(OUT_OF_SCOPE.map((n) => n.id)).toEqual(['tax', 'corporation', 'revenue-business', 'double-entry'])
     expect(OUT_OF_SCOPE.every((n) => n.text.length > 0 && n.detail.length > 0)).toBe(true)
   })
   it('出典の id は、どれも出典の一覧にある', () => {
     for (const note of OUT_OF_SCOPE) {
       for (const id of note.factIds) expect(findFact(id), `${note.id} → ${id}`).toBeDefined()
+    }
+  })
+  it('出典の付いた「対象外」の文は、原文にない言い方を使わない（2026-11-15 に原文と照らして外した言い方）', () => {
+    // 地方自治法は、認可地縁団体について「権利を有し、義務を負う」と書いていて、「法人格」という言葉は使っていない。
+    // 収益事業の出典に書いてあるのは、法人税がかかること（通達の文は「法人税が課される」）で、申告のことではない
+    for (const note of OUT_OF_SCOPE.filter((n) => n.factIds.length > 0)) {
+      const text = `${note.text}\n${note.detail}`
+      expect(text, note.id).not.toContain('法人格')
+      expect(text, note.id).not.toContain('申告がいる')
     }
   })
   it('言ってはいけない言葉を使っていない（監査対応、不正を防ぐ、正しい様式）', () => {
