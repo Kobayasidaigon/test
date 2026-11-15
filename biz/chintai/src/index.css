@@ -227,6 +227,20 @@
   }
 }
 
+/*
+  お知らせ（付せん。src/components/ui/toast.tsx）は、ふだんは画面の下に出す。
+  スマホでは、重ねる画面（Dialog・AlertDialog）が、下から出る紙になる。そのあいだに下に出すと、
+  紙の下のほうにあるエラーの文やボタンに、付せんが重なって読めなくなる（「元に戻す」付きの付せんは、9秒出ている）。
+  重ねる画面が開いているあいだだけ、付せんを画面の上に出す。:has() のないブラウザでは、これまでどおり下に出る。
+  幅の境目は、Tailwind の sm（40rem）と同じ（それより広い画面では、重ねる画面はまん中に出るので、重ならない）。
+*/
+@media (width < 40rem) {
+  body:has([role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]) [data-toaster] {
+    top: max(0.75rem, env(safe-area-inset-top));
+    bottom: auto;
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* 印刷（A4）                                                          */
 /* ------------------------------------------------------------------ */
@@ -300,6 +314,19 @@
   - スクリプトが届かなかったときのために、待たせるのは 8秒まで。8秒たったら、CSS だけで描く。
   - 動きを減らす設定の人には、待たせずに、はじめから全部出す。印刷のときも同じ（上の @media print が、動きを全部止める）。
 */
+/*
+  LP の「何がわかるか」の「理由と根拠」（src/components/landing/categories.tsx）。
+  広い画面では、はじめから開いておく。せまい画面では、はじめは閉じておく。
+  はじめの形（data-details="auto"。静的HTMLと、読み込んだ直後）は、ここで、画面の幅で決める。
+  スクリプトで閉じると、読み込みのあとにページが 2000px ほど縮んで、# 付きのリンク（/#faq など）の行き先がずれるため。
+  閉じた中身は、見えないだけでなく、Tab でも止まらないようにする（visibility）。
+  幅の境目は、Tailwind の lg（64rem）と同じ。
+*/
+@media (width < 64rem) {
+  [data-details="auto"] [data-disclosure-panel] { grid-template-rows: 0fr !important; }
+  [data-details="auto"] [data-disclosure-panel] > * { visibility: hidden; }
+}
+
 @keyframes pen-wait-stroke {
   0% { stroke-dasharray: 0 1; opacity: 0; }
   1% { opacity: 1; }

@@ -45,11 +45,15 @@ function exampleOf(inspection: Inspection, id: CategoryId): Finding | null {
  * 1行の点検の結果。道具の「項目ごとの点検」と同じ中身（FindingDetails）を出す。
  * 「理由と根拠」は、道具と同じように、開いたり閉じたりできる。
  */
-function ExampleFinding({ f, open, onToggle }: { f: Finding; open: boolean; onToggle: () => void }) {
+function ExampleFinding({ f, open, onToggle }: { f: Finding; open: boolean | null; onToggle: () => void }) {
   const base = useId()
   const attention = f.level === 'check' || f.level === 'alert'
+  // open が null のあいだ（静的HTMLと、読み込んだ直後）は、開け閉めを CSS が画面の幅で決める（index.css の [data-details="auto"]）。
+  // HTML の上では「開いている」形にしておき、せまい画面では、CSS が閉じた高さにする。ボタンの文字と矢じりも、幅で出し分ける。
+  const auto = open === null
+  const shown = open ?? true
   return (
-    <div>
+    <div data-details={auto ? 'auto' : undefined}>
       <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3">
         <FindingMark f={f} className="mt-0.5 text-[15px]" />
         <div className="min-w-0">
@@ -64,16 +68,24 @@ function ExampleFinding({ f, open, onToggle }: { f: Finding; open: boolean; onTo
       <button
         type="button"
         id={`${base}-button`}
-        aria-expanded={open}
+        data-details-toggle
+        aria-expanded={shown}
         aria-controls={`${base}-details`}
         onClick={onToggle}
         className="-ml-2 mt-2 inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-sm px-2 text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:bg-ink/[0.05] hover:decoration-ink"
       >
-        <span>{open ? '理由と根拠を閉じる' : '理由と根拠を見る'}</span>
+        {auto ? (
+          <>
+            <span className="lg:hidden">理由と根拠を見る</span>
+            <span className="max-lg:hidden">理由と根拠を閉じる</span>
+          </>
+        ) : (
+          <span>{shown ? '理由と根拠を閉じる' : '理由と根拠を見る'}</span>
+        )}
         <span className="sr-only">（{f.label}）</span>
-        <DisclosureChevron open={open} />
+        <DisclosureChevron open={shown} className={auto ? 'max-lg:rotate-0' : undefined} />
       </button>
-      <DisclosurePanel id={`${base}-details`} role="region" aria-labelledby={`${base}-button`} open={open}>
+      <DisclosurePanel id={`${base}-details`} role="region" aria-labelledby={`${base}-button`} open={shown}>
         <FindingDetails f={f} className="mt-1 border-t border-dashed border-rule-strong/60 pb-1 pt-4" />
       </DisclosurePanel>
     </div>
@@ -84,11 +96,17 @@ export function Categories({ inspection }: { inspection: Inspection }) {
   const base = useId()
   const [current, setCurrent] = useState<CategoryId>('capped')
   const tabs = useRef(new Map<CategoryId, HTMLButtonElement>())
-  // 「理由と根拠」を開いておくか。静的HTMLと広い画面では、はじめから開いて、根拠まで見せる。
+  // 「理由と根拠」を開いておくか。広い画面では、はじめから開いて、根拠まで見せる。
   // せまい画面では、1つの区分の中身だけで画面3つ分ほどの長さになるので、はじめは閉じておく（押せば開く）。
-  const [details, setDetails] = useState(true)
+  //
+  // はじめの形（null）は、スクリプトではなく、CSS が画面の幅で決める（index.css の [data-details="auto"]）。
+  // 前は、開いた形で静的HTMLを書き出して、せまい画面では読み込んだあとにスクリプトで閉じていた。それだと、
+  // スマホで「/#faq」のような # 付きのリンクを開いたとき、ブラウザが長いページのまま # の場所へ動いたあとで、
+  // この欄が 2000px ほど縮み、行き先が全部ずれていた（「よくある質問」を押すと、フッターが出る）。
+  // CSS で決めておけば、読み込みの前後で高さが変わらない。読み込んだあとに、同じ形を state に写すだけ。
+  const [details, setDetails] = useState<boolean | null>(null)
   useEffect(() => {
-    if (window.matchMedia('(max-width: 1023px)').matches) setDetails(false)
+    setDetails(window.matchMedia('(min-width: 64rem)').matches)
   }, [])
 
   const move = (from: number, to: number) => {
@@ -99,6 +117,16 @@ export function Categories({ inspection }: { inspection: Inspection }) {
   }
 
   return (
+    <>
+      {/* スクリプトを切っている人には、せまい画面でも、開いたまま見せる（開け閉めのボタンは動かないので、出さない）。 */}
+      <noscript>
+        <style
+          dangerouslySetInnerHTML={{
+            __html:
+              '[data-details=auto] [data-disclosure-panel]{grid-template-rows:1fr!important}[data-details=auto] [data-disclosure-panel]>*{visibility:visible!important}[data-details-toggle]{display:none!important}',
+          }}
+        />
+      </noscript>
     <div className="lg:grid lg:grid-cols-[minmax(0,21.5rem)_minmax(0,1fr)] lg:items-start">
       {/* 右の中身が長いので、広い画面では、見出しの耳を画面に残しておく（耳が全部入るだけの、画面の高さがあるときだけ）。 */}
       <div role="tablist" aria-label="区分" aria-orientation="vertical" className="z-10 grid grid-cols-2 gap-1 lg:block lg:space-y-1 lg:py-3 lg:[@media(min-height:780px)]:sticky lg:[@media(min-height:780px)]:top-20">
@@ -170,12 +198,13 @@ export function Categories({ inspection }: { inspection: Inspection }) {
             {f && (
               <div className="mt-6">
                 <p className="mb-4 border-b-[1.5px] border-ink/70 pb-1.5 text-[13px] text-ink-soft">この区分の行は、道具でこう点検されます（見本の見積書の1行）</p>
-                <ExampleFinding f={f} open={details} onToggle={() => setDetails((d) => !d)} />
+                <ExampleFinding f={f} open={details} onToggle={() => setDetails((d) => !(d ?? true))} />
               </div>
             )}
           </div>
         )
       })}
     </div>
+    </>
   )
 }

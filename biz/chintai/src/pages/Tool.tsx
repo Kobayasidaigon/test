@@ -105,19 +105,21 @@ export default function Tool() {
       </a>
 
       <header className="no-print">
-        <div className="mx-auto flex max-w-[76rem] items-center justify-between gap-3 px-3 pt-2 sm:px-6 sm:pt-3">
+        {/* 幅 390px より せまい画面（iPhone SE・mini、多くの Android）では、名前と2つのボタンが1行に入るように、ボタンの絵を出さない。
+            それでも入らない幅（320px など）では、ボタンを次の行に回す（横にはみ出させない）。 */}
+        <div className="mx-auto flex max-w-[76rem] flex-wrap items-center justify-between gap-x-3 px-3 pt-2 sm:px-6 sm:pt-3">
           <Brand />
           <div className="flex items-center gap-1.5 sm:gap-2">
             <p className="mr-1 hidden text-xs leading-5 text-ink-soft md:block" aria-live="polite">
               {savedAt ? `このブラウザに保存しました（${formatTime(savedAt)}）` : ready && notice?.kind !== 'unavailable' ? '入れた内容は、このブラウザに保存されます' : ''}
             </p>
             <Button variant="outline" size="sm" onClick={() => exportToFile(data)} disabled={!ready}>
-              <DownloadIcon aria-hidden className="size-4" />
+              <DownloadIcon aria-hidden className="size-4 max-[389px]:hidden" />
               <span className="sm:hidden">書き出す</span>
               <span className="hidden sm:inline">ファイルに書き出す</span>
             </Button>
             <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} disabled={!ready}>
-              <FolderOpenIcon aria-hidden className="size-4" />
+              <FolderOpenIcon aria-hidden className="size-4 max-[389px]:hidden" />
               <span className="sm:hidden">読み込む</span>
               <span className="hidden sm:inline">ファイルを読み込む</span>
             </Button>

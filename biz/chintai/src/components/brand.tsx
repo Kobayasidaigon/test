@@ -18,9 +18,10 @@ export function BrandMark({ className }: { className?: string }) {
 /** サイトの名前（トップへ戻るリンク）。 */
 export function Brand({ className }: { className?: string }) {
   return (
-    <Link to="/" className={cn('inline-flex min-h-11 items-center gap-2 rounded-sm text-ink no-underline', className)} aria-label={`${site.name}のトップへ`}>
+    // 名前は、途中で折れないようにする（せまい画面で「みつもり点／検」と2行になるのを防ぐ）。
+    <Link to="/" className={cn('inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm text-ink no-underline', className)} aria-label={`${site.name}のトップへ`}>
       <BrandMark />
-      <span className="text-[17px] font-bold leading-none tracking-[0.04em]">{site.name}</span>
+      <span className="whitespace-nowrap text-[17px] font-bold leading-none tracking-[0.04em]">{site.name}</span>
     </Link>
   )
 }

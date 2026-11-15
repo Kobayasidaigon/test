@@ -103,6 +103,7 @@ toggleClosedDay(plan, day) / setMonth(plan, year, month)   // 月を変えると
 const r = loadPlan(localStorage)   // { status: 'empty' | 'ok' | 'broken' | 'unavailable', … }
 if (r.status === 'ok') setPlan(r.plan)
 if (r.status === 'broken') show(r.reason)   // r.raw に、壊れていた文字が入っている（取り出せるようにできる）
+// 理由の文は、保存領域の話として言う（「保存されていた内容が…」）。ファイルの話（「ファイルを選んでください」）にはならない
 savePlan(localStorage, plan)       // 書けたら true
 
 // ファイル
@@ -164,7 +165,7 @@ suggestions.noEffect   // 試したが、減らなかったもの
 ```ts
 const sum = summarize(plan)        // sum.staff[i]: 勤務日数、休み、土日祝、勤務の種類ごと、分。sum.days[i]: 過不足
 formatMinutes(sum.staff[0].minutes) // 「144時間」
-const pre = precheck(plan)         // blockers（組めない）と warnings（先に知らせること）
+const pre = precheck(plan)         // blockers（組めない）と warnings（先に知らせること。同じ名前・空の名前のスタッフも、ここで知らせる）
 const gate = featureGate(plan, isPro)  // canAddStaff / canSolve / canCsv / canCarryOver / message
 ```
 
@@ -172,6 +173,7 @@ const gate = featureGate(plan, isPro)  // canAddStaff / canSolve / canCsv / canC
 
 ```ts
 const preview = parseWishPaste(text, plan)     // rows、notes（どう読んだか）、problems（気をつけること）、offCount
+// 同じ名前のスタッフが2人以上いる行は、staffId が null になる（どちらかに勝手に入れない）。画面で選んでもらい、assign にわたす
 // 画面で preview を見せてから
 setPlan(applyWishPaste(plan, preview, { mode: 'merge' }))   // 'replace' なら、出てきた人の希望を入れかえる
 ```

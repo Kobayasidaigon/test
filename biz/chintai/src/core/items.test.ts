@@ -230,11 +230,27 @@ describe('根拠と出典', () => {
     // 管理費を含めるかどうかは確かめられなかったので、正直に書いてある。
     expect(getItem('chukai').limits.join('')).toContain('確かめられませんでした')
   })
-  it('鍵の交換費用には、ガイドラインの原文と、法律ではないことが書かれている', () => {
+  it('鍵の交換費用には、ガイドラインの考え方（貸主の負担とするのが妥当）と、法律ではないことが書かれている', () => {
     const text = getItem('kagi').basis.map((b) => b.text).join('')
-    expect(text).toContain('入居者の入れ替わりによる物件管理上の問題であり、賃貸人の負担とすることが妥当と考えられる')
+    expect(text).toContain('入居者の入れ替わりによる物件管理上の問題')
+    expect(text).toContain('貸主の負担とするのが妥当')
     expect(text).toContain('法的な拘束力を持つものではありません')
     expect(getItem('kagi').caveat).toContain('法律ではありません')
+  })
+  // 検索結果の抜粋で確かめただけの出典は、言い回しが1字でも違うと、引用としてまちがいになる。
+  // 運営者が原文を開いて確かめた出典（verifiedBy: 'official-page'）の文だけ、かぎかっこで引いてよい。
+  it('かぎかっこ（「」）での引用は、原文で確かめた出典の文にだけ使う。それまでは、「趣旨」の言いかえで書く', () => {
+    for (const item of all) {
+      for (const note of notesOf(item)) {
+        const allByPage = note.sourceIds.every((id) => (getSource(id) as Source).verifiedBy === 'official-page')
+        if (!allByPage) expect(note.text, `${item.id}: 原文で確かめていない出典の文に、かぎかっこの引用があります`).not.toMatch(/[「」『』]/)
+      }
+    }
+    // 解説ページの説明文（検索結果に出る文）も、同じ。
+    const kagi = getItem('kagi')
+    if (!kagi.basis.every((b) => b.sourceIds.every((id) => (getSource(id) as Source).verifiedBy === 'official-page'))) {
+      expect(kagi.guide?.description).not.toMatch(/[「」]/)
+    }
   })
   it('出典は、公式のサイトの https の URL で、確かめた日が入っている', () => {
     const official = /(\.go\.jp|\.lg\.jp|^www\.houterasu\.or\.jp)$/
@@ -282,14 +298,18 @@ describe('根拠と出典', () => {
     expect(findSourceProblems(list, '2027-01-20', today).join('')).toContain('今日（2027-01-12）より先')
   })
   it('確かめ方のことわり書きは、検索で確かめた出典が残っているあいだ、その件数を言う', () => {
-    const list = listSources()
-    const some = list.map((s, i) => (i < 5 ? { ...s, verifiedBy: 'official-page' as const, verifiedOn: '2027-01-08' } : s))
+    // いまの出典がどう確かめてあっても同じ結果になるように、全部を「検索で確認」にした一覧から始める。
+    const allSearch = listSources().map((s) => ({ ...s, verifiedBy: 'official-site-search' as const, verifiedOn: '2026-11-14' }))
+    expect(buildVerifyMethodNote(allSearch)).toContain('2026年11月14日の確認は、それぞれの公式サイトを対象にした検索で行いました')
+    expect(buildVerifyMethodNote(allSearch)).toContain('まだ済んでいません')
+    // 5件だけ、原文で確かめた。
+    const some = allSearch.map((s, i) => (i < 5 ? { ...s, verifiedBy: 'official-page' as const, verifiedOn: '2027-01-08' } : s))
     const note = buildVerifyMethodNote(some)
-    expect(note).toContain(`${list.length}件のうち${list.length - 5}件`)
+    expect(note).toContain(`${allSearch.length}件のうち${allSearch.length - 5}件は、2026年11月14日に`)
     expect(note).toContain('まだ済んでいません')
-    // 全部が検索での確認なら、いまの画面の文（「〜の確認は、…検索で行いました」）。
-    const allSearch = list.map((s) => ({ ...s, verifiedBy: 'official-site-search' as const }))
-    expect(buildVerifyMethodNote(allSearch)).toContain('の確認は、それぞれの公式サイトを対象にした検索で行いました')
+    expect(note).toContain('原文')
+    // 全部を原文で確かめたら、ことわり書きは消える。
+    expect(buildVerifyMethodNote(allSearch.map((s) => ({ ...s, verifiedBy: 'official-page' as const })))).toBeNull()
     expect(buildVerifyMethodNote([])).toBeNull()
   })
   it('出典の ID は、キーと同じ。URL は重ならない', () => {

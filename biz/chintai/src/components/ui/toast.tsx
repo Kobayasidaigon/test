@@ -16,6 +16,10 @@ import { cn } from "@/lib/utils"
 // - 「元に戻す」は、絵だけのボタンではなく、文字のボタンにした。キーボードでも届く。
 // - 見た目を、机の上の「付せん」にした（蛍光ペンの黄色、黒いインクの文字）。エラーは、赤ペンの枠。
 // - role="status"（エラーは role="alert"）で、読み上げに伝える。
+// - 「元に戻す」は、Ctrl+Z（Mac は ⌘+Z）でも押せる。お知らせはページのいちばん最後にあるので、
+//   キーボードだけの人は、消える前に Tab で届かないため（行を消したあと、フォーカスは次の行の金額に移る）。
+// - スマホで、下から出る紙（Dialog）が開いているあいだは、画面の上に出す（index.css の [data-toaster]）。
+//   紙の下のほうにある、エラーの文やボタンに重ならないように。
 
 type ToastType = "message" | "error"
 
@@ -28,6 +32,8 @@ type Toast = {
   timeout?: ReturnType<typeof setTimeout>
   remaining: number
   start: number
+  /** 出した時刻。そのあとに文字を打ったかどうかを見るため。 */
+  createdAt: number
 }
 
 let toastId = 0
@@ -40,7 +46,7 @@ const toastStore = {
     const id = toastId++
     // 操作のあるお知らせと、エラーは、読んで押す時間がいるので、長めに出す。
     const remaining = duration ?? (action ? 9000 : type === "error" ? 8000 : 3500)
-    const toast: Toast = { id, text, type, action, remaining, start: Date.now() }
+    const toast: Toast = { id, text, type, action, remaining, start: Date.now(), createdAt: Date.now() }
     toast.timeout = setTimeout(() => this.remove(id), remaining)
     // 積みすぎない。古いものから消す。
     while (this.toasts.length >= 3) this.remove(this.toasts[0].id)
@@ -83,6 +89,17 @@ const toastStore = {
   notify() {
     this.listeners.forEach((fn) => fn())
   },
+
+  /** 「元に戻す」などの操作が付いた、いちばん新しいお知らせ。 */
+  latestWithAction(): Toast | undefined {
+    for (let i = this.toasts.length - 1; i >= 0; i--) if (this.toasts[i].action) return this.toasts[i]
+    return undefined
+  },
+}
+
+/** キーボードで元に戻せるか（Ctrl+Z か ⌘+Z）を、押す人に伝える文。Mac かどうかは、描いたあとに見る。 */
+function undoKeyLabel(): string {
+  return typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘+Z" : "Ctrl+Z"
 }
 
 /** お知らせを出す。React の外（イベントの中）から呼べる。 */
@@ -99,13 +116,42 @@ export const useToasts = () => toast
 export function Toaster({ className }: { className?: string }) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
+  const [undoKey, setUndoKey] = useState("Ctrl+Z")
+
   useEffect(() => {
     setToasts(toastStore.toasts)
+    setUndoKey(undoKeyLabel())
     return toastStore.subscribe(() => setToasts(toastStore.toasts))
+  }, [])
+
+  // Ctrl+Z（⌘+Z）で、いちばん新しいお知らせの「元に戻す」を押す。
+  // ただし、お知らせが出たあとに入力欄で文字を打っていたら、何もしない（入力欄の「打った文字を戻す」を、横取りしないため）。
+  useEffect(() => {
+    let typedAt = 0
+    const onInput = () => {
+      typedAt = Date.now()
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey || e.isComposing || e.key.toLowerCase() !== "z") return
+      const t = toastStore.latestWithAction()
+      if (!t || typedAt >= t.createdAt) return
+      e.preventDefault()
+      t.action?.onAction()
+      toastStore.remove(t.id)
+      // ボタンを押したときと違って、画面のどこも見ていないことがあるので、戻したことを言う。
+      toastStore.add("元に戻しました。", "message")
+    }
+    document.addEventListener("input", onInput, true)
+    document.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.removeEventListener("input", onInput, true)
+      document.removeEventListener("keydown", onKeyDown)
+    }
   }, [])
 
   return (
     <div
+      data-toaster
       className={cn("no-print pointer-events-none fixed inset-x-0 z-[60] flex flex-col items-center gap-2 px-3 sm:inset-x-auto sm:right-5 sm:items-end sm:px-0", className)}
       onMouseEnter={() => toastStore.pauseAll()}
       onMouseLeave={() => toastStore.resumeAll()}
@@ -125,13 +171,18 @@ export function Toaster({ className }: { className?: string }) {
           {t.action && (
             <button
               type="button"
-              className="min-h-11 shrink-0 cursor-pointer rounded-sm border border-ink/60 bg-paper px-3 text-[13px] font-bold hover:border-ink"
+              aria-keyshortcuts="Control+Z Meta+Z"
+              title={`${undoKey} でも押せます`}
+              className="min-h-11 shrink-0 cursor-pointer rounded-sm border border-ink/60 bg-paper px-3 text-[13px] font-bold leading-tight hover:border-ink"
               onClick={() => {
                 t.action?.onAction()
                 toastStore.remove(t.id)
               }}
             >
               {t.action.label}
+              {/* キーボードのある端末（マウスを乗せられる端末）でだけ、ショートカットを小さく添える。読み上げにも伝える。 */}
+              <span className="hidden text-[11px] font-normal text-ink-soft [@media(hover:hover)]:block">{undoKey}</span>
+              <span className="sr-only [@media(hover:hover)]:hidden">（{undoKey} でも押せます）</span>
             </button>
           )}
           <button
