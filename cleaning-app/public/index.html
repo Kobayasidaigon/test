@@ -1478,8 +1478,9 @@ const LS = (function () {
   let ls = null;
   try { ls = window.localStorage; ls.getItem('x'); } catch (e) { ls = null; }
   const mem = new Map();          // 端末に入らなかったぶん
-  let keySet = null;              // 端末＋メモリの鍵（length/key(i) 用）
-  let keyArr = null;
+  let keyArr = null;              // 端末＋メモリの鍵（length/key(i) 用）
+  let keyLen = -1, keyVer = -1;   // 作ったときの端末の件数とメモリの版
+  let memVer = 0;                 // メモリの中身の鍵が変わるたびに進める
   let full = false;               // 一度でも入らなかったか
 
   function rawGet(k) { if (!ls) return null; try { return ls.getItem(k); } catch (e) { return null; } }
@@ -1491,15 +1492,18 @@ const LS = (function () {
     try { for (let i = 0; i < ls.length; i++) { const k = ls.key(i); if (k !== null) out.push(k); } } catch (e) {}
     return out;
   }
+  // 端末の件数かメモリが変わったら作り直す（ほかのタブや試験が直接書いたぶんも拾う）
   function keys() {
-    if (keyArr) return keyArr;
-    if (!keySet) { keySet = new Set(rawKeys()); mem.forEach((v, k) => keySet.add(k)); }
-    keyArr = Array.from(keySet);
+    let len = 0;
+    if (ls) { try { len = ls.length; } catch (e) {} }
+    if (keyArr && len === keyLen && memVer === keyVer) return keyArr;
+    const set = new Set(rawKeys());
+    mem.forEach((v, k) => set.add(k));
+    keyArr = Array.from(set); keyLen = len; keyVer = memVer;
     return keyArr;
   }
-  function addKey(k) { if (keySet && !keySet.has(k)) { keySet.add(k); keyArr = null; } }
-  function dropKey(k) { if (keySet && keySet.has(k)) { keySet.delete(k); keyArr = null; } }
-
+  function memSet(k, v) { if (!mem.has(k)) memVer++; mem.set(k, v); }
+  function memDel(k) { if (mem.delete(k)) memVer++; }
   // 今日の日付（端末の時刻で YYYY-MM-DD）。todayStr() はまだ無いので自前で
   function today() {
     const d = new Date(), p = n => (n < 10 ? '0' : '') + n;
@@ -1535,7 +1539,7 @@ const LS = (function () {
     for (const c of cands) {
       const v = rawGet(c.k);
       if (v === null) continue;
-      mem.set(c.k, v);
+      memSet(c.k, v);
       rawRemove(c.k);
       freed += v.length + c.k.length;
       if (freed >= goal) break;
@@ -1549,11 +1553,10 @@ const LS = (function () {
   // 端末に入ったら true。入らなくてもメモリには必ず入る（例外は出さない）
   function set(k, v) {
     k = String(k); v = String(v);
-    addKey(k);
-    if (rawSet(k, v)) { mem.delete(k); return true; }
-    if (makeRoom(k, k.length + v.length) && rawSet(k, v)) { mem.delete(k); return true; }
+    if (rawSet(k, v)) { memDel(k); return true; }
+    if (makeRoom(k, k.length + v.length) && rawSet(k, v)) { memDel(k); return true; }
     rawRemove(k);           // 古い値が端末に残らないように
-    mem.set(k, v);
+    memSet(k, v);
     full = true;
     return false;
   }
@@ -1563,19 +1566,17 @@ const LS = (function () {
   function fill(entries, budget) {
     let used = 0, toMem = false;
     for (const [k, v] of entries) {
-      addKey(k);
-      const n = k.length + v.length;
-      if (!toMem && used + n <= budget && rawSet(k, v)) { mem.delete(k); used += n; continue; }
+        const n = k.length + v.length;
+      if (!toMem && used + n <= budget && rawSet(k, v)) { memDel(k); used += n; continue; }
       toMem = true;
       rawRemove(k);
-      mem.set(k, v);
+      memSet(k, v);
     }
     return { disk: used, mem: mem.size };
   }
   function remove(k) {
-    mem.delete(k);
+    memDel(k);
     rawRemove(k);
-    dropKey(k);
   }
   return {
     getItem: get,
