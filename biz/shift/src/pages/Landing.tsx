@@ -17,12 +17,14 @@ import { Reasons } from '@/components/landing/reasons'
 import { LP_WIDTH, Ph } from '@/components/landing/section'
 import { SiteFooter } from '@/components/landing/site-footer'
 import { SiteHeader } from '@/components/landing/site-header'
+import { useAnchorFix } from '@/components/landing/use-anchor-fix'
 
 export default function Landing() {
+  useAnchorFix()
   return (
     <div className="min-h-dvh">
       <SiteHeader landing />
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <How />

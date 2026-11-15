@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { site } from '../site.config'
 import { DATA_NOTE, DISCLAIMER, FORMAT_NOTE, GLOSSARY, OUT_OF_SCOPE, SHARE_NOTE, explain } from './notices'
+import { isValidDate } from './dates'
 import { FACTS, findFact } from './sources'
 import { DEFAULT_CUSTODY_LABELS, ORG_KINDS, categoryTemplate, defaultAuditorCount, defaultCustody, defaultRoleNames } from './templates'
 import { LIMITS } from './types'
@@ -62,8 +63,15 @@ describe('出典の一覧', () => {
       // 公式の情報だけを出典にする（国の役所のサイト）
       expect(new URL(f.source.url).protocol, f.id).toBe('https:')
       expect(new URL(f.source.url).hostname.endsWith('.go.jp'), f.id).toBe(true)
-      expect(f.checkedOn, f.id).toBe('2026-11-14')
+      // 確かめた日は、実在する日付で書いてあること（日付そのものは、確かめ直すたびに変わるので、決め打ちにしない）
+      expect(isValidDate(f.checkedOn), f.id).toBe(true)
+      expect(f.checkedOn >= '2026-11-14', f.id).toBe(true)
       expect(['page', 'search-excerpt']).toContain(f.how)
+    }
+  })
+  it('「対象外」の理由に付けた出典は、すべて一覧にある', () => {
+    for (const s of OUT_OF_SCOPE) {
+      for (const id of s.factIds) expect(findFact(id), `${s.id} → ${id}`).toBeDefined()
     }
   })
   it('id が重ならない。id で引ける', () => {

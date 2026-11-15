@@ -81,6 +81,21 @@ describe('parseYen', () => {
     expect(value('￥３，０００')).toBe(3000)
     expect(value('　５００　')).toBe(500)
   })
+  it('カンマが3桁ごとの位置にないときは、だまって読まずに断る（桁の打ちそこねを、そのまま入れない）', () => {
+    for (const text of ['12,5', '1,20', '12,50', '1,2345', ',500', '500,', '1,,000', '12,000,0', '１２，５', '1、20']) {
+      const r = parseYen(text)
+      expect(r.ok, text).toBe(false)
+      if (!r.ok) expect(r.message, text).toContain('カンマ')
+    }
+    // 正しい位置のカンマは、何桁でも読む
+    expect(value('1,000')).toBe(1000)
+    expect(value('999,999,999')).toBe(999999999)
+    expect(value('1,234,567円')).toBe(1234567)
+    expect(value('0,500')).toBe(500)
+    // 小数やマイナスは、カンマが入っていても、それぞれの理由で断る
+    expect(value('1,200.5')).toContain('小数')
+    expect(value('-1,200')).toContain('マイナス')
+  })
   it('先頭の 0 は捨てる', () => {
     expect(value('00120')).toBe(120)
     expect(value('000')).toBe(0)

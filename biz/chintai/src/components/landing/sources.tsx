@@ -1,6 +1,6 @@
 import { formatDateJa } from '@/core/format'
 import { items } from '@/core/items'
-import { listSources, RULES_VERIFIED_ON, sourceKindLabel, type Source, type SourceKind } from '@/core/sources'
+import { listSources, RULES_VERIFIED_ON, sourceKindLabel, VERIFY_METHOD_NOTE, verifiedLabel, type Source, type SourceKind } from '@/core/sources'
 import { Sheet, SheetTitle } from '@/components/sheet'
 
 // 根拠にしている資料の一覧。core の sources.ts にある出典を、種類ごとに全部出す。
@@ -27,10 +27,8 @@ function SourceRow({ s }: { s: Source }) {
       </div>
       <p className="text-[13px] leading-6 text-ink-soft">
         {s.publisher}
-        <span className="whitespace-nowrap md:block">
-          <span className="md:hidden">　</span>
-          {formatDateJa(s.verifiedOn)}に確認
-        </span>
+        {/* 発行元の名前が長いと、せまい画面で名前の途中で折れるので、確かめた日は、いつも次の行に置く。 */}
+        <span className="block whitespace-nowrap">{verifiedLabel(s)}</span>
       </p>
     </li>
   )
@@ -65,6 +63,13 @@ export function Sources() {
       </Sheet>
 
       <div className="space-y-8 text-[15px] leading-[1.85]">
+        {/* どう確かめたかを、正直に書く（「確認」とだけ書くと、原文のページを開いて読んだように見えるため）。 */}
+        {VERIFY_METHOD_NOTE && (
+          <div>
+            <h3 className="border-b-[1.5px] border-ink/70 pb-1.5 text-base font-bold">資料の確かめ方</h3>
+            <p className="mt-3 border-l-4 border-marker bg-marker-soft px-3 py-2 text-sm leading-7">{VERIFY_METHOD_NOTE}</p>
+          </div>
+        )}
         <div>
           <h3 className="border-b-[1.5px] border-ink/70 pb-1.5 text-base font-bold">根拠にしないもの</h3>
           <p className="mt-3">まとめサイトや、不動産会社の記事は、根拠にしていません。信頼できる公的な相場のデータを確かめられていないので、金額の高い安いも判定しません。</p>

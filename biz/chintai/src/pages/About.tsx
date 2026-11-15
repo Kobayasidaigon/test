@@ -1,6 +1,6 @@
 import { adDisclosure } from '@/core/consult'
 import { formatDateJa } from '@/core/format'
-import { getSource, RULES_VERIFIED_ON } from '@/core/sources'
+import { getSource, RULES_VERIFIED_ON, VERIFY_METHOD_NOTE } from '@/core/sources'
 import { DATA_NOTE, DISCLAIMER, NOT_DOING } from '@/core/texts'
 import { ConsultDesks } from '@/components/consult-desks'
 import { PageSection, PageShell } from '@/components/site/page-shell'
@@ -75,6 +75,7 @@ export default function About() {
           </Link>
           に、全部並べています。ルール（項目のデータと出典）を最後に確かめたのは、{formatDateJa(RULES_VERIFIED_ON)}です。法令や資料は、変わることがあります。
         </p>
+        {VERIFY_METHOD_NOTE && <p>{VERIFY_METHOD_NOTE}</p>}
       </PageSection>
 
       <PageSection id="soudan" title="困ったときの相談先">

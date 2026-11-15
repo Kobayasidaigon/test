@@ -213,8 +213,8 @@ export function TransactionForm({
     })
   }
 
-  const submit = () => {
-    setFormError(null)
+  /** いまの入力欄の中身から、取引の入力を組み立てる。 */
+  const readInput = () => {
     const date = parseDateInput(dateText, year)
     const amount = parseYen(amountText)
     const input: TransactionInput = {
@@ -228,6 +228,26 @@ export function TransactionForm({
       toAccountId: kind === 'transfer' ? toAccountId || null : null,
       receiptNo: receiptAuto ? undefined : receiptText,
     }
+    return { date, amount, input }
+  }
+
+  /**
+   * 知らせを読んだうえで「このまま入れる」を押したとき。
+   * 知らせが出ているあいだに入力欄を書きかえていたら、知らせを見たときの古い中身を入れてしまわないように、
+   * いまの中身で、もう一度はじめから確かめる（新しい中身に合った知らせが出る）。
+   */
+  const confirmPending = () => {
+    if (!pending) return
+    if (JSON.stringify(readInput().input) !== JSON.stringify(pending.input)) {
+      submit()
+      return
+    }
+    save(pending.input)
+  }
+
+  const submit = () => {
+    setFormError(null)
+    const { date, amount, input } = readInput()
     const check = checkTransaction(book, year.id, input, { today, ignoreTransactionId: editing?.id })
     const next: Partial<Record<FieldName, string>> = {}
     for (const e of check.errors) {
@@ -485,7 +505,7 @@ export function TransactionForm({
               ))}
             </ul>
             <div className="mt-3 flex flex-wrap gap-2">
-              <Button ref={confirmRef} size="sm" onClick={() => save(pending.input)}>
+              <Button ref={confirmRef} size="sm" onClick={confirmPending}>
                 このまま{editing ? '保存する' : '入れる'}
               </Button>
               <Button

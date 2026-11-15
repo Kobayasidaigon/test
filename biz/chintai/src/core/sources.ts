@@ -1,3 +1,5 @@
+import { formatDateJa } from './format'
+
 // 根拠にしている資料の一覧（出典）。
 //
 // 決めごと:
@@ -20,7 +22,9 @@ export type SourceKind =
   | 'consumer-center' // 国民生活センター・自治体の消費生活センター
   | 'public-corp' // 公的な法人（法テラス）
 
-export type VerifiedBy = 'official-site-search'
+export type VerifiedBy =
+  | 'official-site-search' // 公式サイトを対象にした検索の結果に出る、公式ページの本文の抜粋で確かめた（ページそのものは開けていない）
+  | 'official-page' // 公式のページ（PDF を含む）を開いて、原文で確かめた
 
 export type Source = {
   id: string
@@ -221,6 +225,25 @@ export function getSource(id: SourceId): Source {
 /** 出典の一覧（LP の「根拠にしている資料」に出す）。 */
 export function listSources(): Source[] {
   return Object.values(sources)
+}
+
+/**
+ * 確かめ方についての、正直なことわり書き。資料の一覧、解説ページ、点検の結果、「このサイトについて」に出す。
+ *
+ * 2026-11-14 の確認は、作業した環境から官公庁のサイトを開けなかったので、公式サイトを対象にした検索で行った
+ * （①の担当と④の担当が、別々に検索して、同じ記述が出ることを確かめた）。「確認」とだけ書くと、
+ * 原文のページを開いて読んだように見えるので、どう確かめたかを、画面にも書く。
+ *
+ * 運用: 運営者が URL を1つずつ開いて原文で確かめたら、その出典の verifiedBy を 'official-page' に、
+ * verifiedOn をその日にする。全部の出典が 'official-page' になると、この文は null になり、画面から消える。
+ */
+export const VERIFY_METHOD_NOTE: string | null = Object.values(sources).some((s: Source) => s.verifiedBy === 'official-site-search')
+  ? `${formatDateJa(RULES_VERIFIED_ON)}の確認は、それぞれの公式サイトを対象にした検索で行いました。検索結果に出る公式ページの本文の抜粋で、該当する記述があることを確かめています。資料のページそのものを開いての確認は、まだ済んでいません。大事な判断の前には、リンク先の原文を、ご自身でも確かめてください。`
+  : null
+
+/** 出典ごとの「いつ、どう確かめたか」（例:「2026年11月14日に、検索で確認」）。 */
+export function verifiedLabel(source: Source): string {
+  return `${formatDateJa(source.verifiedOn)}に、${source.verifiedBy === 'official-page' ? '原文で確認' : '検索で確認'}`
 }
 
 /** 出典の種類の、画面に出す名前。 */

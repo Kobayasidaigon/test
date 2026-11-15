@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Calculator } from 'lucide-react'
 import {
   bookBalanceAsOf,
+  dateFromLocal,
   explain,
   formatWareki,
   formatYen,
@@ -36,7 +37,9 @@ function CashCounter({ onUse }: { onUse: (total: number) => void }) {
   return (
     <div className="mt-3 rounded-lg border border-rule/50 bg-rule-soft/40 p-3">
       <p className="text-[0.9rem] font-bold">お札と硬貨の枚数を入れると、合計を出します</p>
-      <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-5">
+      {/* 列の数は、枠の幅に合わせて決める（1列を 9.5rem より細くしない）。
+          決まった数の列にすると、パソコンの2列組みの中で、枚数の欄が字も見えないほど細くなるため */}
+      <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))]">
         {DENOMINATIONS.map((d) => (
           <label key={d} className="flex items-center gap-1.5 text-[0.9rem]">
             <span className="num w-[4.2rem] shrink-0 text-right">{formatYen(d)}円</span>
@@ -92,8 +95,18 @@ function ReconcileCard({ row }: { row: ReconcileRow }) {
     const actual = parseYen(actualText)
     if (!parsedDate.ok) next.date = parsedDate.message
     if (!actual.ok) next.actual = actual.message
+    if (parsedDate.ok) {
+      // 「今日」は、押したときの日付で見る（画面を開いたまま日付が変わっても、今日の日付を断らないように）
+      const now = dateFromLocal(new Date())
+      if (parsedDate.value > now) {
+        // 先の日付の残高は、まだ数えられない。年を打ちまちがえたまま「合っています」と記録しないように断る
+        next.date = '今日より先の日付です。数えた日（今日か、それより前の日）を入れてください。'
+      } else if (parsedDate.value < year.startDate) {
+        next.date = `この年度が始まる日（${formatWareki(year.startDate)}）より前の日付です。年を確かめてください。`
+      }
+    }
     setErrors(next)
-    if (!parsedDate.ok || !actual.ok) return
+    if (next.date || !parsedDate.ok || !actual.ok) return
     const result = setReconciliation(book, year.id, row.accountId, { date: parsedDate.value, actual: actual.value })
     if (apply(result)) setJustStamped(true)
   }

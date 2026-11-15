@@ -133,7 +133,7 @@ export function Faq() {
                   <span aria-hidden className="mt-[0.15em] flex size-7 shrink-0 items-center justify-center rounded-sm border-[1.5px] border-shu font-serif text-[0.92rem] font-bold leading-none text-shu-ink">
                     問
                   </span>
-                  <h3 className="flex-1 font-sans text-[1.06rem] font-bold leading-[1.6] tracking-normal">{item.question}</h3>
+                  <h3 className="flex-1 font-sans text-[1.06rem] font-bold leading-[1.6] tracking-normal [text-wrap:wrap]">{item.question}</h3>
                   <Plus aria-hidden className="mt-1 size-5 shrink-0 text-rule-ink transition-transform duration-200 group-open:rotate-45" strokeWidth={2.6} />
                 </summary>
                 <div className="flex gap-3 pb-5 pr-1 sm:pr-8">

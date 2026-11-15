@@ -8,6 +8,8 @@ import { ConsultDesks } from './consult-desks'
 import { FindingDetails } from './finding-card'
 import { InspectedSheet } from './inspected-sheet'
 import { MessagePreview } from './message-preview'
+import { OfferSlot } from './offer-slot'
+import { visibleOffers, type Offer } from '../offers'
 import { DateStamp, PenCircle, PenUnderline } from './pen'
 import { Sheet, SheetHeading, SheetTitle } from './sheet'
 
@@ -67,5 +69,32 @@ describe('静的HTMLに書き出せる部品', () => {
     expect(marks).toContain('？')
     expect(marks).toContain('ふつうはかかる')
     expect(marks).toContain('みつもり点検')
+  })
+})
+
+// 広告の枠は、いまは全部空なので、だれも「出た状態」を画面で見ていない。提携先が入ったときの形を、ここで確かめておく。
+describe('広告の枠（出たときの形）', () => {
+  const offer: Offer = { id: 't', kind: '試験', title: '試験の広告の見出し', description: '試験の説明', url: 'https://ad.invalid/x', placements: ['result'], itemIds: [] }
+
+  it('枠が空なら、何も出さない', () => {
+    expect(renderToString(createElement(OfferSlot, { offers: [] }))).toBe('')
+    // いまの設定（url が全部空）では、どの場所にも出ない。
+    expect(visibleOffers()).toHaveLength(0)
+  })
+
+  it('出すときは、必ず「広告」と書き、リンクに sponsored を付け、結果とは関係ないことを添える', () => {
+    const html = renderToString(createElement(OfferSlot, { offers: visibleOffers('result', undefined, [offer]) }))
+    expect(html).toContain('>広告</p>')
+    expect(html).toContain('aria-label="広告"')
+    expect(html).toContain('href="https://ad.invalid/x"')
+    expect(html).toMatch(/rel="sponsored nofollow noopener noreferrer"/)
+    expect(html).toContain('点検の結果は、広告とは関係なく決まります。')
+  })
+
+  it('見出しのない枠や、https でないリンクは、出さない', () => {
+    expect(visibleOffers('result', undefined, [{ ...offer, title: ' ' }])).toHaveLength(0)
+    expect(visibleOffers('result', undefined, [{ ...offer, url: 'http://ad.invalid/x' }])).toHaveLength(0)
+    expect(visibleOffers('result', undefined, [{ ...offer, url: 'javascript:alert(1)' }])).toHaveLength(0)
+    expect(visibleOffers('item', undefined, [offer])).toHaveLength(0)
   })
 })

@@ -121,12 +121,20 @@ export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
     return empty
   }
 
-  const staffByName = new Map(plan.staff.map((s) => [normName(s.name), s.id]))
+  // 同じ名前のスタッフが2人以上いるときは、どちらのことか決められない。勝手に片方へ入れず、画面で選んでもらう
+  const idsByName = new Map<string, string[]>()
+  for (const s of plan.staff) {
+    const n = normName(s.name)
+    if (n === '') continue
+    const list = idsByName.get(n)
+    if (list) list.push(s.id)
+    else idsByName.set(n, [s.id])
+  }
   const matchStaff = (name: string): string | null => {
     const n = normName(name)
     if (n === '') return null
-    const exact = staffByName.get(n)
-    if (exact) return exact
+    const exact = idsByName.get(n)
+    if (exact) return exact.length === 1 ? exact[0] : null
     // 「青木」と「青木 花子」のように、片方がもう片方の頭に当たる人が1人だけなら、その人とみなす
     const near = plan.staff.filter((s) => {
       const sn = normName(s.name)
@@ -237,7 +245,15 @@ export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
     rows.push(row)
   }
 
-  const unmatched = rows.filter((r) => r.staffId === null)
+  // 名前が当てはまらなかった行。同じ名前のスタッフが2人以上いて決められなかった行は、分けて知らせる
+  const isSameName = (r: PasteRow) => nameColumn !== null && (idsByName.get(normName(r.name))?.length ?? 0) > 1
+  const ambiguous = rows.filter((r) => r.staffId === null && isSameName(r))
+  const unmatched = rows.filter((r) => r.staffId === null && !isSameName(r))
+  if (ambiguous.length > 0) {
+    problems.push(
+      `同じ名前のスタッフが2人以上います（${[...new Set(ambiguous.map((r) => r.name))].join('、')}）。どの人のことか決められないので、下の表の「当てはめるスタッフ」で選んでください。選ばなければ、この行は取り込みません。`,
+    )
+  }
   if (unmatched.length > 0) {
     problems.push(
       nameColumn === null

@@ -94,6 +94,7 @@ export function Pricing() {
                   <a href={site.checkoutUrl} target="_blank" rel="noreferrer">
                     {pro.name}版を買う（{pro.price}）
                     <ExternalLink aria-hidden />
+                    <span className="sr-only">（決済ページが、新しいタブで開きます）</span>
                   </a>
                 </Button>
               ) : (

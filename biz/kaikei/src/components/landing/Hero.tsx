@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type RefObject } from 'react'
 import { BookOpenText, CornerDownLeft, Undo2 } from 'lucide-react'
 import {
   SAMPLE_NOTE,
@@ -41,9 +41,9 @@ export function Hero({ book, base, reports, onBookChange }: Props) {
   return (
     <section className="overflow-x-clip pb-14 pt-9 sm:pb-20 sm:pt-12">
       {/* 並び: スマホでは「見出し → 決算書の見本 → ためしに1件」。パソコンでは、左に見出しと「ためしに1件」、右に決算書の見本 */}
-      <Container className="grid gap-x-14 gap-y-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)] lg:grid-rows-[auto_1fr]">
+      <Container className="grid gap-x-10 gap-y-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,27rem)] lg:grid-rows-[auto_1fr] xl:grid-cols-[minmax(0,1fr)_minmax(0,34rem)] xl:gap-x-14">
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
-          <h1 className="text-[2.15rem] font-extrabold leading-[1.4] tracking-[0.04em] sm:text-[3rem] lg:text-[3.3rem]">
+          <h1 className="text-[2.15rem] font-extrabold leading-[1.4] tracking-[0.04em] sm:text-[3rem] lg:text-[2.6rem] xl:text-[3.3rem]">
             <Phrase>会計係になった、</Phrase>
             <Phrase>あなたへ。</Phrase>
           </h1>
@@ -97,7 +97,7 @@ export function Hero({ book, base, reports, onBookChange }: Props) {
 }
 
 /** 「ためしに、支出を1件入れてみてください」。入れると、横の決算書が、その場で変わる。 */
-function TryCard({ book, base, onBookChange, paperRef }: Pick<Props, 'book' | 'base' | 'onBookChange'> & { paperRef: React.RefObject<HTMLDivElement> }) {
+function TryCard({ book, base, onBookChange, paperRef }: Pick<Props, 'book' | 'base' | 'onBookChange'> & { paperRef: RefObject<HTMLDivElement> }) {
   const id = useId()
   const yearId = demoYearId(book)
   const year = book.years[0]

@@ -1,6 +1,6 @@
 import { formatDateJa } from '@/core/format'
 import { items, listGuideItems, listItemsByCategory } from '@/core/items'
-import { RULES_VERIFIED_ON } from '@/core/sources'
+import { RULES_VERIFIED_ON, VERIFY_METHOD_NOTE } from '@/core/sources'
 import { DISCLAIMER } from '@/core/texts'
 import { CategoryMark } from '@/components/category-mark'
 import { PageShell } from '@/components/site/page-shell'
@@ -75,6 +75,7 @@ export default function Items() {
         <p className="text-[13px] leading-6 text-ink-soft">
           {DISCLAIMER}
           <span className="block">ルールの最終確認日: {formatDateJa(RULES_VERIFIED_ON)}</span>
+          {VERIFY_METHOD_NOTE && <span className="block">{VERIFY_METHOD_NOTE}</span>}
         </p>
       </div>
     </PageShell>

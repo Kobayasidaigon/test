@@ -109,12 +109,13 @@ export function InspectedSheet({ inspection, draw = false, linkToDetails = false
                     onSelect?.(f.lineId)
                     scrollToId(`finding-${f.lineId}`)
                   }}
-                  className="text-[15px] leading-snug underline decoration-ink/30 decoration-dotted underline-offset-4 hover:decoration-ink hover:decoration-solid print:no-underline"
+                  // 上下の余白（と、それを打ち消す負の余白）は、指で押せる大きさ（44px）にするため。行の高さは変えない。
+                  className="-my-3 inline-block min-w-11 py-3 text-[15px] leading-snug wrap-anywhere underline decoration-ink/30 decoration-dotted underline-offset-4 hover:decoration-ink hover:decoration-solid print:no-underline"
                 >
                   {f.label}
                 </a>
               ) : (
-                <span className="text-[15px] leading-snug">{f.label}</span>
+                <span className="text-[15px] leading-snug wrap-anywhere">{f.label}</span>
               )}
               {f.totalRole === 'exclude' && <span className="ml-1.5 whitespace-nowrap text-xs text-ink-soft">（合計に入れない）</span>}
               {f.totalRole === 'subtract' && f.amount !== null && <span className="ml-1.5 whitespace-nowrap text-xs text-ink-soft">（合計から引く）</span>}

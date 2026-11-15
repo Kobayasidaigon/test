@@ -73,7 +73,7 @@ export function MessageStep({ data, setData, inspection, onGoInput, onGoResult }
   const isDefault = message.lineIds === null || (message.lineIds.length === defaults.length && defaults.every((id) => selected.has(id)))
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] print:block">
+    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] print:block">
       {/* 文面を先に置く（スマホで、開いてすぐ文面が見えるように）。広い画面では、左に設定、右に文面を並べる。 */}
       <Sheet aria-labelledby="message-title" className="lg:sticky lg:top-[4.75rem] lg:col-start-2 lg:row-start-1">
         <SheetTitle title="確認の文面" eyebrow="不動産会社に送る文面" className="mb-4" />
@@ -149,7 +149,7 @@ export function MessageStep({ data, setData, inspection, onGoInput, onGoResult }
                 <label className={cn('flex min-h-12 cursor-pointer items-center gap-3 py-2', !on && 'text-ink-soft')}>
                   <Checkbox checked={on} onCheckedChange={(v) => toggle(f.lineId, v === true)} />
                   <span className="min-w-0 flex-1">
-                    <span className={cn('block text-[15px] leading-snug', on && 'text-ink')}>{f.label}</span>
+                    <span className={cn('block text-[15px] leading-snug wrap-anywhere', on && 'text-ink')}>{f.label}</span>
                     <span className="mt-0.5 flex items-center gap-1 text-xs leading-5 text-ink-soft">
                       <FindingMark f={f} variant={i} className="text-[11px]" />
                       {getCategory(f.category).label}

@@ -24,10 +24,10 @@ function Workspace({ store, state }: { store: ReturnType<typeof useStore>; state
  * このブラウザに入力中の帳簿があるときは、入れかえない（だまって消さないため）。そのときは、理由を知らせる。
  */
 function useSampleLink(store: ReturnType<typeof useStore>) {
-  const { ready, state, startWith } = store
-  // いつ確かめても「そのときの帳簿」を見るように、覚えておく
-  const latest = useRef(state)
-  latest.current = state
+  const { ready, state, notice, startWith } = store
+  // いつ確かめても「そのときの帳簿」と「そのときの知らせ」を見るように、覚えておく
+  const latest = useRef({ state, notice })
+  latest.current = { state, notice }
   // 描く前に済ませる（はじめの画面が、一瞬だけ見えてしまわないように）
   useLayoutEffect(() => {
     if (!ready) return
@@ -40,9 +40,12 @@ function useSampleLink(store: ReturnType<typeof useStore>) {
       } catch {
         // 外せなくても、困るのは「読み込み直すとサンプルが開く」ことだけ
       }
-      const current = latest.current
-      if (current === null) startWith(createSampleBook())
-      else if (!isSampleBook(current.book)) {
+      const current = latest.current.state
+      if (current === null) {
+        // 保存データが壊れていた、などの知らせが出ているときは、はじめの画面にとどまって、その知らせを読んでもらう
+        // （サンプルを開くと、知らせが消えてしまうため）
+        if (latest.current.notice === null) startWith(createSampleBook())
+      } else if (!isSampleBook(current.book)) {
         toast.message('サンプルは開きませんでした。このブラウザに、入力中の帳簿が残っているためです。サンプルを見るときは、先に「ファイルに保存」をしてから、「引き継ぎ」の画面のいちばん下でデータを消してください。', { duration: 14_000 })
       }
     }

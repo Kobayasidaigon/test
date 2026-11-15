@@ -398,7 +398,8 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
 .pt-sheet { color: var(--ink); font-family: var(--font-sans); line-height: 1.35; }
 .pt-head { display: flex; align-items: baseline; justify-content: space-between; gap: 6mm; margin-bottom: 2.5mm; }
 .pt-title { font-family: var(--font-display); font-weight: 800; font-size: 15pt; line-height: 1.2; }
-.pt-meta { font-size: 7.5pt; color: var(--ink-soft); }
+/* 店の名前が長くて題が2行になっても、右の「印刷した日」は折り返さない */
+.pt-meta { font-size: 7.5pt; color: var(--ink-soft); white-space: nowrap; flex-shrink: 0; }
 .pt {
   width: 100%;
   table-layout: fixed;
@@ -466,6 +467,9 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
 /* 枠の中に置く表は、影を付けない（外の枠が影を持つ） */
 .lp-flat.sg-wrap, .lp-flat .sg-wrap { box-shadow: none; }
 
+/* 紺の地の上では、青いフォーカスの枠が見えにくいので、卵色にする */
+.lp-dark :focus-visible { outline-color: var(--shift-egg); }
+
 /* LP の長い文。1行は 35〜40字まで */
 .lp-prose { max-width: 38em; line-height: 1.9; }
 
@@ -481,9 +485,3 @@ button.sg-cellbtn:focus-visible { outline-offset: -3px; z-index: 2; }
 .lp-faq > summary::-webkit-details-marker { display: none; }
 .lp-faq .lp-faq-chev { transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
 .lp-faq[open] .lp-faq-chev { transform: rotate(180deg); }
-
-/* 一番上の見本の、進み具合のブロック */
-@keyframes lp-pulse {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}

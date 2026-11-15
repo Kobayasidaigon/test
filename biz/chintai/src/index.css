@@ -142,6 +142,9 @@
   h1, h2, h3, h4 {
     text-wrap: balance;
     word-break: auto-phrase;
+    /* 文節で切れない長い言葉（利用者が入れた、切れ目のない長い名前など）は、どこででも折り返す。
+       これがないと、auto-phrase のせいで折り返せず、スマホで画面の外へはみ出す。 */
+    overflow-wrap: anywhere;
     line-height: 1.45;
   }
   /* フォーカスの枠は消さない。どの部品でも同じ青い枠にする。 */

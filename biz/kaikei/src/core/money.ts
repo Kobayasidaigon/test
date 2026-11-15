@@ -45,11 +45,18 @@ export type ParseYenResult = { ok: true; value: Yen } | { ok: false; message: st
  * 小数・マイナス・数字でない文字は、理由を言って断る。0 は通す（0 でよいかは、使う側で決める）。
  */
 export function parseYen(text: string): ParseYenResult {
-  // NFKC で全角の数字・記号を半角にそろえる
-  const cleaned = text
+  // NFKC で全角の数字・記号を半角にそろえる。「、」は、カンマのつもりで打たれることがあるので、カンマとして読む
+  const normalized = text
     .normalize('NFKC')
-    .replace(/[\s,、円¥\\]/g, '')
+    .replace(/[\s円¥\\]/g, '')
+    .replace(/、/g, ',')
     .replace(/^\+/, '')
+  // カンマは、3桁ごとの区切りの位置にあるときだけ読む。
+  // 「12,5」や「1,20」をだまって 125・120 と読むと、桁を打ちそこねた金額が、そのまま帳簿に入ってしまうため
+  if (normalized.includes(',') && /^[\d,]+$/.test(normalized) && !/^\d{1,3}(,\d{3})+$/.test(normalized)) {
+    return { ok: false, message: 'カンマの位置が正しくありません。「12,000」のように3桁ごとに入れるか、カンマなしで入れてください。' }
+  }
+  const cleaned = normalized.replace(/,/g, '')
   if (cleaned === '') return { ok: false, message: '金額を入れてください。' }
   if (/^[-−ー―‐△▲]/.test(cleaned)) {
     return { ok: false, message: 'マイナスの金額は入れられません。支出は「支出」として、プラスの金額で入れてください。' }

@@ -119,7 +119,7 @@ export const PrintSheet = memo(function PrintSheet({ plan }: { plan: ShiftPlan }
         <tfoot>
           {plan.shiftTypes.map((s, si) => (
             <tr key={s.id}>
-              <th className="pt-name">{s.name}の人数</th>
+              <th className="pt-name">{s.name || symbolOf(s)}の人数</th>
               {summary.days.map((day, c) => {
                 const slot = day.slots[si]
                 const closed = calendar[c].closed

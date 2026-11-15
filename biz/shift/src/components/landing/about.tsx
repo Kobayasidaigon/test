@@ -136,7 +136,7 @@ export function About() {
             <Ph>「組む」ところだけ。</Ph>
           </>
         }
-        lead="シフト管理のサービスではありません。スタッフ用のアプリも、会員登録も、月額の料金もありません。毎月いちばん手間のかかる「組む」作業だけを、肩代わりする道具です。"
+        lead="シフト管理のサービスではありません。スタッフ用のアプリも、会員登録も、月額の料金もありません。毎月の「組む」作業だけを、肩代わりする道具です。"
       />
 
       <ol className="mt-10 grid items-stretch gap-3 md:mt-14 lg:grid-cols-[1fr_auto_1.15fr_auto_1fr] lg:gap-4">
@@ -151,10 +151,8 @@ export function About() {
             <div className={cn('flex flex-col rounded-xl border-2 border-ink p-5 md:p-6', s.main ? 'bg-shift-egg shadow-hard-lg' : 'bg-paper')}>
               <p className={cn('w-fit rounded-md border-2 border-ink px-2 py-0.5 text-[12.5px] font-extrabold leading-snug', s.main ? 'bg-ink text-paper' : 'bg-card text-ink')}>{s.tag}</p>
               <div className="mx-auto mt-4 flex min-h-[9.5rem] w-full max-w-[17rem] items-center">{s.art}</div>
-              <h3 className="mt-4 text-[1.25rem] md:text-[1.4rem]">
-                <span className="mr-2 font-num text-[0.9em]">{i + 1}.</span>
-                {s.title}
-              </h3>
+              {/* 番号は付けない（すぐ下の「使い方の3ステップ」の番号と、まぎれないように） */}
+              <h3 className="mt-4 text-[1.25rem] md:text-[1.4rem]">{s.title}</h3>
               <p className={cn('mt-2 text-[15px] leading-[1.85]', s.main ? 'text-ink' : 'text-ink-soft')}>{s.body}</p>
             </div>
           </li>

@@ -109,7 +109,7 @@ export function InputStep({ data, setData, inspection, onGoResult, onSample, onC
   const empty = isEmptyData(data)
 
   return (
-    <div ref={root} className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
+    <div ref={root} className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
       <div className="min-w-0 space-y-5">
         <Sheet aria-labelledby="input-title">
           <SheetTitle

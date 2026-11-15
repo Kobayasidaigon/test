@@ -28,6 +28,17 @@ export function precheck(plan: ShiftPlan): Precheck {
   const dup = symbols.find((x, i) => symbols.indexOf(x) !== i)
   if (dup) warnings.push(`記号「${dup}」が、2つの勤務で使われています。表で見分けられないので、別の記号にしてください。`)
 
+  // 名前が空の人、同じ名前の人がいると、表でも、点検の文でも、だれのことか見分けられない
+  const unnamed = plan.staff.filter((st) => st.name.trim() === '').length
+  if (unnamed > 0) warnings.push(`名前が空のスタッフが、${unnamed}人います。表で見分けられないので、①で名前を入れてください。`)
+  const nameCount = new Map<string, number>()
+  for (const st of plan.staff) {
+    const n = st.name.trim()
+    if (n !== '') nameCount.set(n, (nameCount.get(n) ?? 0) + 1)
+  }
+  const sameNames = [...nameCount].filter(([, c]) => c > 1).map(([n]) => n)
+  if (sameNames.length > 0) warnings.push(`同じ名前のスタッフがいます（${sameNames.join('、')}）。表や点検の文で見分けられないので、①で「佐藤（花）」のように、ちがう名前にしてください。`)
+
   for (const st of plan.staff) {
     if (st.minDays !== null && st.maxDays !== null && st.minDays > st.maxDays) {
       warnings.push(`${st.name || '（名前なし）'}さんの勤務日数は、下限（${st.minDays}日）が上限（${st.maxDays}日）より大きくなっています。`)

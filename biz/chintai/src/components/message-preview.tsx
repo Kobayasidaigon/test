@@ -19,7 +19,7 @@ export function MessagePreview({
     <div className={cn('border border-rule-strong/70 bg-paper', className)}>
       {message.subject !== null && (
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-rule-strong/70 px-4 py-2">
-          <p className="min-w-0 text-sm leading-7">
+          <p className="min-w-0 text-sm leading-7 wrap-anywhere">
             <span className="mr-2 text-xs text-ink-soft">件名</span>
             <span className="font-bold">{message.subject}</span>
           </p>
@@ -28,7 +28,7 @@ export function MessagePreview({
       )}
       {/* 行の高さ（1.9em）に合わせて、便せんの罫線を引く。 */}
       <p
-        className="whitespace-pre-wrap break-words px-4 py-3 text-[15px]"
+        className="whitespace-pre-wrap wrap-anywhere px-4 py-3 text-[15px]"
         style={{
           lineHeight: '1.9em',
           backgroundImage: 'linear-gradient(to bottom, transparent calc(1.9em - 1px), var(--rule) calc(1.9em - 1px))',

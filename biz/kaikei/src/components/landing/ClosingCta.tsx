@@ -15,7 +15,7 @@ export function ClosingCta() {
               <Phrase>資料の形を見てください。</Phrase>
             </h2>
             <p className="mt-2 max-w-[36em] leading-[1.85] text-muted-foreground">
-              入力ずみの見本の帳簿で、入力から、資料の印刷、引き継ぎまで、ひととおり試せます。登録はいりません。
+              入力ずみの見本の帳簿で、入力から、資料の確認と印刷まで、ひととおり試せます。登録はいりません。
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">

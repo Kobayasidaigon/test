@@ -34,6 +34,19 @@ function Price({ value, note }: { value: number; note: string }) {
   )
 }
 
+/** 文の中の「1年度 980円。」を、ひとまとまりにする（スマホの幅で、「1年度」と「980円」の間で折れないように）。 */
+function keepPriceTogether(sentence: string, price: string) {
+  const at = sentence.indexOf(price)
+  if (at < 0) return sentence
+  return (
+    <>
+      {sentence.slice(0, at)}
+      <span className="whitespace-nowrap">{price}</span>
+      {sentence.slice(at + price.length)}
+    </>
+  )
+}
+
 export function Pricing() {
   const { free, pro, summary } = site.pricing
   return (
@@ -48,7 +61,8 @@ export function Pricing() {
             .filter(Boolean)
             .map((sentence, i, all) => (
               <Phrase key={sentence}>
-                {sentence}。{i === all.length - 1 && pro.taxIncluded && <span className="text-[0.8em] font-normal">（税込）</span>}
+                {keepPriceTogether(sentence + '。', `${pro.unit} ${pro.priceText}。`)}
+                {i === all.length - 1 && pro.taxIncluded && <span className="text-[0.8em] font-normal">（税込）</span>}
               </Phrase>
             ))}
         </p>

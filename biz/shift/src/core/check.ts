@@ -101,7 +101,10 @@ function nameOf(staff: Staff): string {
 
 function shiftName(plan: ShiftPlan, shiftId: string | null): string {
   if (shiftId === null) return '休み'
-  return plan.shiftTypes.find((s) => s.id === shiftId)?.name ?? '（消した勤務）'
+  const s = plan.shiftTypes.find((x) => x.id === shiftId)
+  if (!s) return '（消した勤務）'
+  // 名前が空の勤務は、記号で言う。記号も空なら、そう言う（文の中で、何も書かれないままにしない）
+  return s.name || s.symbol || '（名前のない勤務）'
 }
 
 /**

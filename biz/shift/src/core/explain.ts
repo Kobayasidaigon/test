@@ -68,7 +68,10 @@ function reasonFor(plan: ShiftPlan, schedule: Schedule, calendar: ReturnType<typ
  */
 export function explainShortages(plan: ShiftPlan, schedule: Schedule = plan.schedule, report: CheckReport = checkPlan(plan, schedule)): SlotExplanation[] {
   const calendar = buildCalendar(plan)
-  const shiftName = (id: string) => plan.shiftTypes.find((s) => s.id === id)?.name ?? '（消した勤務）'
+  const shiftName = (id: string) => {
+    const s = plan.shiftTypes.find((x) => x.id === id)
+    return s ? s.name || s.symbol || '（名前のない勤務）' : '（消した勤務）'
+  }
   const tagName = (id: string) => plan.tags.find((t) => t.id === id)?.name ?? '（消した札）'
   const staffName = (id: string) => `${plan.staff.find((s) => s.id === id)?.name || '（名前なし）'}さん`
   const out: SlotExplanation[] = []
@@ -210,7 +213,10 @@ function applyRelaxation(plan: ShiftPlan, r: Relaxation): ShiftPlan {
 }
 
 function describe(plan: ShiftPlan, r: Relaxation): { label: string; when: string } {
-  const shiftName = (id: string) => plan.shiftTypes.find((s) => s.id === id)?.name ?? '（消した勤務）'
+  const shiftName = (id: string) => {
+    const s = plan.shiftTypes.find((x) => x.id === id)
+    return s ? s.name || s.symbol || '（名前のない勤務）' : '（消した勤務）'
+  }
   switch (r.kind) {
     case 'reseed':
       return { label: '条件を変えずに、別の案で組み直す', when: '条件を変えずに、別の案で組み直すと' }

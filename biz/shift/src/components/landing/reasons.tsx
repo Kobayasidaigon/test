@@ -65,7 +65,11 @@ export function Reasons() {
         </div>
 
         {/* 道具の画面と同じ組み立ての、点検の結果 */}
-        <div className="min-w-0 rounded-xl border-2 border-paper bg-paper p-3 text-ink shadow-[5px_5px_0_0_var(--shift-egg)] md:p-5" aria-live="polite">
+        <div className="min-w-0 rounded-xl border-2 border-paper bg-paper p-3 text-ink shadow-[5px_5px_0_0_var(--shift-egg)] md:p-5">
+          {/* 読み上げには、変わったことだけを短く伝える（箱ぜんぶを読み直させない） */}
+          <p className="sr-only" role="status">
+            {fixed && fix ? `「${fix.label}」に変えて、組み直した表に入れかえました。${report.summaryItems.map((x) => x.text).join(' ')}` : ''}
+          </p>
           <p className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-0.5 text-sm font-bold">
             <span>
               {plan.storeName}　<span className="font-num">{formatMonth(plan.year, plan.month)}</span>

@@ -261,11 +261,13 @@ export default function Tool() {
 
             {plan ? (
               <>
-                <p className="order-3 flex min-w-0 flex-1 flex-col pb-1 text-sm leading-snug md:order-none md:flex-none md:flex-row md:items-baseline md:gap-x-3 md:pb-0">
-                  <span className="truncate font-bold">
-                    {plan.storeName || '（店の名前なし）'}　{formatMonth(plan.year, plan.month)}
+                <p className="order-3 flex min-w-0 flex-1 flex-col pb-1 text-sm leading-snug md:order-none md:flex-row md:items-baseline md:gap-x-3 md:pb-0">
+                  {/* 店の名前が長いときは、名前だけを「…」で切る（年月と保存の様子は、いつも見えるように残す） */}
+                  <span className="flex min-w-0 font-bold" title={plan.storeName || undefined}>
+                    <span className="truncate">{plan.storeName || '（店の名前なし）'}</span>
+                    <span className="shrink-0 whitespace-pre">　{formatMonth(plan.year, plan.month)}</span>
                   </span>
-                  <span role="status" className={store.save.status === 'failed' ? 'text-[12.5px] font-bold text-danger' : 'text-[12.5px] text-ink-soft'}>
+                  <span role="status" className={store.save.status === 'failed' ? 'shrink-0 text-[12.5px] font-bold text-danger' : 'shrink-0 text-[12.5px] text-ink-soft'}>
                     {store.save.status === 'saved' ? (
                       <>
                         <span className="hidden sm:inline">このブラウザに</span>保存済み{store.save.at ? `（${clock(store.save.at)}）` : ''}
@@ -275,7 +277,7 @@ export default function Tool() {
                     ) : null}
                   </span>
                 </p>
-                <Button variant="ghost" size="sm" className="hidden md:ml-auto md:inline-flex" disabled={!store.canUndo} onClick={() => store.undo()}>
+                <Button variant="ghost" size="sm" className="hidden md:inline-flex" disabled={!store.canUndo} onClick={() => store.undo()}>
                   <Undo2 aria-hidden />
                   元に戻す
                 </Button>

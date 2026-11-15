@@ -31,6 +31,11 @@ export function FitSection() {
   const facts = factIds.map((factId) => findFact(factId)).filter((f) => f !== undefined)
   // 本文まで開いて確かめられていない資料があるうちは、「出典」とは言わず、そのことを書いておく
   const unverified = FACTS.some((f) => factIds.includes(f.id) && f.how !== 'page')
+  // 確かめた日。資料によって日が違うときは、いちばん古い日から新しい日までを書く（どれか1つの日だけを書くと、うそになるため）
+  const days = facts.map((f) => f.checkedOn).sort()
+  const firstDay = days[0] ?? ''
+  const lastDay = days[days.length - 1] ?? ''
+  const checkedText = firstDay === lastDay ? formatSeireki(firstDay) : `${formatSeireki(firstDay)}から${formatSeireki(lastDay)}の間`
 
   return (
     <section id="fit" aria-labelledby="fit-title" className="scroll-mt-4 py-16 sm:py-24">
@@ -100,7 +105,7 @@ export function FitSection() {
               ))}
             </ul>
             <p className="mt-1.5">
-              {formatSeireki(facts[0]?.checkedOn ?? '')}に確かめました。
+              {checkedText}に確かめました。
               {unverified && '検索結果に出た抜粋で確かめたもので、ページの本文での確かめが済んでいない資料を含みます。'}
             </p>
           </div>

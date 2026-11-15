@@ -100,8 +100,14 @@ export function NewBookWizard({
       }),
     })
     if (!result.ok) {
-      setFormError(result.message)
-      if (result.field === 'orgName') setStep(1)
+      if (result.field === 'orgName') {
+        // 名前のまちがいは、名前の段に戻って、その欄の下に出す（残高の段に出しても、どこを直すのかわからないため）
+        setErrors({ orgName: result.message })
+        setFormError(null)
+        setStep(1)
+      } else {
+        setFormError(result.message)
+      }
       return
     }
     setFormError(null)

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { getCategory } from '@/core/categories'
 import { formatDateJa } from '@/core/format'
 import { findGuideItem, listGuideItems, NO_RULE_TEXT, resolveBasis } from '@/core/items'
-import { RULES_VERIFIED_ON } from '@/core/sources'
+import { RULES_VERIFIED_ON, VERIFY_METHOD_NOTE } from '@/core/sources'
 import { DISCLAIMER, MESSAGE_NOTE } from '@/core/texts'
 import { CategoryMark } from '@/components/category-mark'
 import { BrokerageTry } from '@/components/guide/brokerage-try'
@@ -213,6 +213,7 @@ export default function ItemGuide() {
         </Link>
         にまとめています。
         <span className="block">ルールの最終確認日: {formatDateJa(RULES_VERIFIED_ON)}</span>
+        {VERIFY_METHOD_NOTE && <span className="block">{VERIFY_METHOD_NOTE}</span>}
       </p>
     </PageShell>
   )

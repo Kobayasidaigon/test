@@ -50,3 +50,9 @@ LP とその他のページでは、道具の画面のために取り入れた�
 LP のために探して、説明を読んだが、取らなかったもの: Preview Switch Hero（ruixen.ui。星の評価・顔写真の列・会社ロゴの列が前提の形なので、使わず）、Header 1（efferd。動かすと帯がすりガラスになる形なので、使わず）、Accordion（wensity。Base UI が要るので、使わず。よくある質問は、もう入っている ddoemonn の Accordion を使った）、Tabs（shadcn・originui。Radix の Tabs が要るので、ふるまいを自分で書いた）。
 
 道具の画面のために探したが使わなかったもの（参考にしただけ）: Stepper（originui、sean0205。丸い番号と線の形なので、耳の形にした）、Combobox（uvain。cmdk が要るので使わず）、Toast（cnippet-dev。Base UI が要るので使わず）、Money Input（kuratlielia。小数の通貨向けなので、金額の欄は Input をもとに自分で作った）。
+
+## 仕上げの点検（④）で、部品に入れた直し
+
+| 部品 | どこ | 何を直したか |
+| --- | --- | --- |
+| Combobox（halaska-studio） | `src/components/ui/combobox.tsx` | 候補を「指す」のを、マウスが乗ったとき（mouseenter）ではなく、マウスを実際に動かしたとき（mousemove で、場所が変わったとき）だけにした。キーボードで打っている人のマウスが、たまたま候補の一覧の出る場所に止まっていると、指す候補が勝手に動き、Enter で「一覧にない項目として足す」が選ばれてしまっていたため。 |

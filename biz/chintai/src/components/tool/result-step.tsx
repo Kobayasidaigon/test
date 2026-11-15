@@ -6,6 +6,7 @@ import {
   DISCLAIMER,
   RULES_VERIFIED_ON,
   SAMPLE_NOTE,
+  VERIFY_METHOD_NOTE,
   defaultAskLineIds,
   formatDateJa,
   formatYen,
@@ -28,6 +29,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useAccordion } from '@/components/ui/disclosure'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { cn } from '@/lib/utils'
 
 // 手順2「点検の結果」。
 // 1枚目の紙: 赤ペンが入った見積書（一覧）と、合計・区分ごとの小計・「もし全部外せた場合の差」。
@@ -101,9 +103,10 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
   const isSample = isSampleEstimate(estimate)
   const count = inspection.findings.length
   const today = todayString()
+  const totalText = formatYen(inspection.total)
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem] print:block">
+    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem] print:block">
       <div className="min-w-0 space-y-6 print:space-y-0">
         {/* ---------------- 1枚目: 赤ペンが入った見積書 ---------------- */}
         <Sheet aria-labelledby="result-title">
@@ -131,7 +134,8 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
           {isSample && <SheetNote className="mb-5">{SAMPLE_NOTE}</SheetNote>}
 
           {/* まず、答えを出す（確かめる項目の数、合計、もし全部外せた場合の差）。そのあとに、赤ペンの入った見積書を見せる。 */}
-          <div className="print-keep mb-5 grid grid-cols-2 border border-rule-strong/70 sm:grid-cols-[auto_auto_minmax(0,1fr)] print:grid-cols-[auto_auto_minmax(0,1fr)]">
+          {/* せまい画面では、左のマスは中身の幅、右のマス（合計）は残り全部。けたの多い合計が、マスからはみ出さないようにする。 */}
+          <div className="print-keep mb-5 grid grid-cols-[auto_minmax(0,1fr)] border border-rule-strong/70 sm:grid-cols-[auto_auto_minmax(0,1fr)] print:grid-cols-[auto_auto_minmax(0,1fr)]">
             <div className="px-4 py-3">
               <p className="text-[13px] font-bold">確かめる項目</p>
               <p className="mt-1.5 flex items-baseline gap-2">
@@ -147,7 +151,7 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
             </div>
             <div className="border-l border-rule-strong/70 px-4 py-3">
               <p className="text-[13px] font-bold">入力した項目の合計</p>
-              <p className="num mt-1.5 text-2xl font-bold leading-[1.6]">{formatYen(inspection.total)}</p>
+              <p className={cn('num mt-1.5 font-bold', totalText.length > 11 ? 'text-lg leading-[2.1]' : 'text-2xl leading-[1.6]')}>{totalText}</p>
             </div>
             <div className="col-span-2 border-t border-rule-strong/70 px-4 py-3 sm:col-span-1 sm:border-l sm:border-t-0 print:col-span-1 print:border-l print:border-t-0">
               <p className="text-[13px] font-bold">{ASK_TOTAL_LABEL}</p>
@@ -293,6 +297,7 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
               ルール（項目のデータと出典）の最終確認日: {formatDateJa(RULES_VERIFIED_ON)}
               {site.baseUrl && <span className="print-only">　{site.name}（{site.baseUrl}）</span>}
             </p>
+            {VERIFY_METHOD_NOTE && <p className="mt-1 text-[13px] leading-6 text-ink-soft">{VERIFY_METHOD_NOTE}</p>}
           </div>
         </Sheet>
 

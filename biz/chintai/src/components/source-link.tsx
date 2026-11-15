@@ -1,5 +1,4 @@
-import { formatDateJa } from '@/core/format'
-import type { Source } from '@/core/sources'
+import { verifiedLabel, type Source } from '@/core/sources'
 import type { ResolvedBasis } from '@/core/types'
 import { cn } from '@/lib/utils'
 
@@ -14,7 +13,7 @@ export function SourceLink({ source, className }: { source: Source; className?: 
         {source.publisher}「{source.title}」
       </a>
       {source.place && <span>　{source.place}</span>}
-      <span className="whitespace-nowrap">（{formatDateJa(source.verifiedOn)}に確認）</span>
+      <span className="whitespace-nowrap">（{verifiedLabel(source)}）</span>
     </span>
   )
 }

@@ -70,7 +70,7 @@ export function Documents({ reports, yearLabel }: { reports: Reports; yearLabel:
               <Phrase>5種類そろいます。</Phrase>
             </>
           }
-          lead="収支決算書だけでなく、会計監査報告書と、次の担当の方への引き継ぎ書まで。どれも、入力した取引からできあがります。下は、見本の団体の、本物の資料です。"
+          lead="収支決算書だけでなく、会計監査報告書と、次の担当の方への引き継ぎ書まで。どれも、入力した内容からできあがります。下は、見本の団体の帳簿から、道具が作った資料です。"
         />
 
         <div className="mt-8 grid gap-x-10 gap-y-5 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)]">

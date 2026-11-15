@@ -49,7 +49,7 @@ mail.body      // 本文（コピーのボタンで、そのままコピーす�
 | ファイル | 役割 | 主な公開 |
 | --- | --- | --- |
 | `types.ts` | データの型 | `Estimate` `EstimateLine` `AppData` `MessageSettings` `ItemDef` `ItemGuide` `Category` `CategoryId` `Finding` `FindingLevel` `Inspection` `BrokerageCalc` `ProrationCalc` `MonthsCalc` `BasisNote` `ResolvedBasis` |
-| `sources.ts` | 出典の一覧（文書名、発行元、URL、確かめた日、確かめ方） | `sources` `getSource(id)` `listSources()` `sourceKindLabel` `RULES_VERIFIED_ON` `Source` `SourceId` |
+| `sources.ts` | 出典の一覧（文書名、発行元、URL、確かめた日、確かめ方） | `sources` `getSource(id)` `listSources()` `sourceKindLabel` `RULES_VERIFIED_ON` `VERIFY_METHOD_NOTE`（確かめ方のことわり書き。全部を原文で確かめると null）`verifiedLabel(source)` `Source` `SourceId` |
 | `categories.ts` | 区分（7つ＋「その他」） | `categories` `getCategory(id)` `categoryOrder` |
 | `items.ts` | 項目の一覧（26個）と、解説ページの中身（12ページ分） | `items` `otherItem` `getItem(id)` `isPresetItemId(id)` `listItemsByCategory()` `listGuideItems()` `findGuideItem(slug)` `resolveBasis(notes)` `listItemSources(item)` `NO_RULE_TEXT` `OTHER_ITEM_ID` |
 | `calc.ts` | 計算（仲介手数料の上限、日割りの目安、月額との比） | `brokerageCaps(rent)` `checkBrokerage()` `prorationDays()` `checkProration()` `compareToMonthly()` `monthsOf()` |
@@ -216,7 +216,15 @@ RULES_VERIFIED_ON                                       // ルールの最終確
 `metro.tokyo.lg.jp`、`pref.saitama.lg.jp`、`houterasu.or.jp`）、検索結果に出た公式ページの本文の抜粋で、該当する記述を確かめました。
 `sources.ts` の `verifiedBy: 'official-site-search'` は、この確かめ方を表します。
 
+同じ日に、点検の担当（④）が、根拠と参考の文を1つずつ、もう一度、別の検索で確かめ直しました。その結果:
+
+- 「礼金は、退去のときに返ってきません」… 出典にしていた「賃貸住宅の入居・退去に係る留意点」では確かめられなかった。事例集の分類（「後日、借主に返還しないもの（礼金、権利金等）」）で確かめられたので、文と出典を、そちらに変えた。
+- 「払った更新料は、返ってきません」… 公式の資料で確かめられなかったので、根拠と解説ページから消した。
+- そのほかの文は、2回目の検索でも、同じ記述が公式ページの抜粋に出ることを確かめた。
+
+**それでも、原文のページを開いて読んだわけではありません。** 画面には、そのことを正直に出しています（`VERIFY_METHOD_NOTE`、`verifiedLabel`）。
 **公開の前に、運営者が、`sources.ts` の URL を1つずつ開いて、`items.ts` の `basis` と `related` の文が合っているかを、もう一度確かめてください。**
+確かめた資料は、`verifiedBy: 'official-page'` に変えます（リポジトリの README の「公開前にやること 1」）。
 
 確かめられなかったので、ルールに入れていないこと:
 

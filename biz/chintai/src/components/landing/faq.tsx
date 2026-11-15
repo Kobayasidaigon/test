@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { consultDesks } from '@/core/consult'
 import { formatDateJa } from '@/core/format'
 import { items, otherItem, resolveBasis } from '@/core/items'
-import { RULES_VERIFIED_ON } from '@/core/sources'
+import { RULES_VERIFIED_ON, VERIFY_METHOD_NOTE } from '@/core/sources'
 import { DATA_NOTE, DISCLAIMER, NOT_DOING } from '@/core/texts'
 import { SourceLink } from '@/components/source-link'
 import { DisclosureChevron, DisclosurePanel, useAccordion } from '@/components/ui/disclosure'
@@ -127,6 +127,7 @@ function buildFaqs(): Faq[] {
             <a href="#konkyo" className={linkClass}>根拠にしている資料</a>
             ）。ルールを最後に確かめたのは、{formatDateJa(RULES_VERIFIED_ON)}です。法令や資料は、変わることがあります。
           </p>
+          {VERIFY_METHOD_NOTE && <p>{VERIFY_METHOD_NOTE}</p>}
           <p>{DISCLAIMER}</p>
         </>
       ),

@@ -11,7 +11,7 @@ export function LegalPage({ title, lead, color, children }: { title: string; lea
   return (
     <div className="flex min-h-dvh flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main" className="flex-1">
         <div className={`${LP_WIDTH} py-10 md:py-16`}>
           <div className="max-w-[50rem]">
             <p>
@@ -20,9 +20,9 @@ export function LegalPage({ title, lead, color, children }: { title: string; lea
                 トップページへ
               </Link>
             </p>
-            <h1 className="mt-3 flex items-start gap-3 text-[1.6rem] leading-[1.4] md:text-[2.2rem]">
-              <span aria-hidden className="blk mt-1.5 md:mt-2.5" data-color={color} />
-              <span>{title}</span>
+            <h1 className="mt-3 flex items-start gap-3 text-[1.6rem] leading-[1.4] max-[359px]:text-[1.3rem] md:text-[2.2rem]">
+              <span aria-hidden className="blk mt-1.5 max-[359px]:mt-0.5 md:mt-2.5" data-color={color} />
+              <span className="min-w-0">{title}</span>
             </h1>
             {lead ? <p className="lp-prose mt-4 text-[15px] text-ink-soft md:text-base">{lead}</p> : null}
             <div className="mt-8 md:mt-10">{children}</div>

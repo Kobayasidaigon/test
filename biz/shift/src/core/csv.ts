@@ -22,6 +22,11 @@ export function csvText(value: string): string {
   return v
 }
 
+/** 見出しに書く勤務の名前。名前が空なら記号、それも空なら「名前のない勤務」（見出しが「の回数」だけにならないように） */
+function labelOf(s: { name: string; symbol: string }): string {
+  return s.name || s.symbol || '名前のない勤務'
+}
+
 /** シフト表を CSV の文字列にする。schedule を省くと、plan に入っている表を書き出す */
 export function toCsv(plan: ShiftPlan, schedule: Schedule = plan.schedule): string {
   const calendar = buildCalendar(plan)
@@ -37,7 +42,7 @@ export function toCsv(plan: ShiftPlan, schedule: Schedule = plan.schedule): stri
     '勤務日数',
     '休みの日数',
     '土日祝の回数',
-    ...plan.shiftTypes.map((s) => csvText(`${s.name}の回数`)),
+    ...plan.shiftTypes.map((s) => csvText(`${labelOf(s)}の回数`)),
     '勤務時間（時間）',
   ])
   plan.staff.forEach((st, i) => {
@@ -60,13 +65,13 @@ export function toCsv(plan: ShiftPlan, schedule: Schedule = plan.schedule): stri
 
   rows.push([])
   plan.shiftTypes.forEach((s, si) => {
-    rows.push([csvText(`${s.name}（必要な人数）`), ...summary.days.map((d) => String(d.slots[si].need))])
-    rows.push([csvText(`${s.name}（入っている人数）`), ...summary.days.map((d) => String(d.slots[si].have))])
+    rows.push([csvText(`${labelOf(s)}（必要な人数）`), ...summary.days.map((d) => String(d.slots[si].need))])
+    rows.push([csvText(`${labelOf(s)}（入っている人数）`), ...summary.days.map((d) => String(d.slots[si].have))])
   })
 
   rows.push([])
   rows.push(['記号', '勤務', '時間'])
-  for (const s of plan.shiftTypes) rows.push([csvText(s.symbol), csvText(s.name), `${s.start}〜${s.end}`])
+  for (const s of plan.shiftTypes) rows.push([csvText(s.symbol), csvText(labelOf(s)), `${s.start}〜${s.end}`])
 
   return '﻿' + rows.map((r) => r.join(',')).join('\r\n') + '\r\n'
 }

@@ -94,8 +94,9 @@ export function FindingDetails({ f, className }: { f: Finding; className?: strin
       )}
 
       {guide && (
-        <p className="no-print text-sm">
-          <Link to={guide} className="underline decoration-ink/40 underline-offset-4 hover:decoration-ink">
+        <p className="no-print -my-2 text-sm">
+          {/* 1つだけで置くリンクなので、指で押せる高さ（44px）にする。 */}
+          <Link to={guide} className="inline-flex min-h-11 items-center underline decoration-ink/40 underline-offset-4 hover:decoration-ink">
             「{f.itemName}」の解説を読む
           </Link>
         </p>

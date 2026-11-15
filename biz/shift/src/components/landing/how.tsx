@@ -1,4 +1,5 @@
 // 「使い方の3ステップ」。絵のかわりに、道具の画面と同じ部品（ShiftGrid、ShiftBlock）を、美容室のサンプルのデータで置く。
+// ①の箱だけは、道具の入力欄そのものではなく、同じサンプルのデータを短くまとめた表（ブロックは同じ部品）。
 //
 // 21st.dev の「How It Works Steps」（ln-dev7）をもとにしている。
 // 借りたところ: 番号の印を横に3つ並べ、印どうしを1本の線でつなぐ組み立てと、下にまとめのボタンを1つ置く形。
@@ -33,7 +34,7 @@ function StoreCut({ plan }: { plan: ShiftPlan }) {
   const shiftName = (id: string) => plan.shiftTypes.find((s) => s.id === id)?.name ?? ''
   const tagName = (id: string) => plan.tags.find((t) => t.id === id)?.name ?? ''
   return (
-    <Cut title="道具の画面から：スタッフと、必要な人数">
+    <Cut title="サンプルの店：スタッフと、必要な人数">
       {/* スタッフ: 名前、役割の札、月の勤務日数、決まった休み */}
       <ul className="mb-3 grid gap-px border-b border-line pb-3 text-[12.5px]">
         {plan.staff.map((st) => {
@@ -119,7 +120,7 @@ export function How() {
       title: '希望休を写す',
       body: '紙や LINE で集めた休みの希望を、マスを押して入れます。Excel にまとめてあるなら、表ごと貼り付けられます。',
       cut: (
-        <Cut title="道具の画面から：希望休">
+        <Cut title="道具と同じ表：希望休">
           <p aria-hidden className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12.5px] font-bold text-ink-soft">
             <span className="flex items-center gap-1.5">
               <OffBlock size="sm" />
@@ -142,7 +143,7 @@ export function How() {
       title: 'ボタンを押して、直して、印刷する',
       body: '条件を守った表が、数秒でできます。気になるマスは、押して直せます。直したマスは固定されて、組み直しても残ります。',
       cut: (
-        <Cut title="道具の画面から：できたシフト表">
+        <Cut title="道具と同じ表：できたシフト表">
           <ul className="mb-2 grid gap-0.5">
             {report.summaryItems.slice(0, 2).map((item, i) => (
               <li key={i} className="flex items-start gap-1.5 text-[12.5px] font-bold leading-relaxed">
@@ -171,7 +172,7 @@ export function How() {
             <Ph>貼る。3ステップです。</Ph>
           </>
         }
-        lead={`下の3つの箱は、絵ではなく、道具の画面と同じ部品です（美容室のサンプル、${month}の${DAYS.from}日〜${DAYS.to}日）。`}
+        lead={`下の箱の中身は、絵ではありません。美容室のサンプル（${month}）のデータを、道具と同じ部品で出しています。表は、${DAYS.from}日〜${DAYS.to}日のぶんです。`}
       />
 
       <ol className="relative mt-10 grid gap-x-8 gap-y-12 md:mt-14 xl:grid-cols-3">
@@ -197,7 +198,7 @@ export function How() {
       <div className="mt-10 flex flex-col items-start gap-x-6 gap-y-3 border-t-2 border-ink/15 pt-6 md:mt-14 md:flex-row md:items-center">
         <Button asChild size="lg">
           <Link to="/app">
-            サンプルを入れて、動かしてみる
+            サンプルで動かしてみる
             <ArrowRight aria-hidden strokeWidth={3} />
           </Link>
         </Button>
