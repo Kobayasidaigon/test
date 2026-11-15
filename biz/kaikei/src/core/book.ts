@@ -5,6 +5,7 @@ import {
   accountUseCount,
   categoryUseCount,
   defaultReceiptNo,
+  endOfDayBalance,
   findYear,
   isYearLocked,
   negativeBalanceDays,
@@ -572,9 +573,12 @@ export function checkTransaction(
 
   // この取引を入れる（直す）ことで、残高がマイナスになる日が新しくできるか、マイナスが大きくなるか。
   // 入れる前からマイナスだった日は、ここでは言わない（年度ぜんたいの知らせ listYearIssues に出る）
-  const before = negativeBalanceDays(year)
+  // 「入れる前」の残高は、同じ日付の取引がなくても、その日の終わりの残高でくらべる。
+  // 日付が一致する日だけをくらべると、すでにマイナスの置き場所に収入を入れたとき（残高は増えるのに）、
+  // 「この取引を入れるとマイナスになります」と、まちがって知らせてしまうため
+  const balanceBefore = endOfDayBalance(year)
   const after = negativeBalanceDays({ ...base, transactions: [...others, { ...fields, id: '\u0000check' }] })
-  const worse = after.filter((d) => !before.some((b) => b.accountId === d.accountId && b.date === d.date && b.balance <= d.balance))
+  const worse = after.filter((d) => balanceBefore(d.accountId, d.date) > d.balance)
   for (const accountId of new Set(worse.map((d) => d.accountId))) {
     const day = worse.find((d) => d.accountId === accountId)!
     warnings.push({

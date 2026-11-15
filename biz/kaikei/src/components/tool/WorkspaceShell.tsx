@@ -131,6 +131,10 @@ export function WorkspaceShell() {
         )}
 
         <header className="border-b border-border bg-paper/80">
+          {/* ページの大見出し。画面には出さず、読み上げと見出しの一覧のために置く（団体の名前は、すぐ下のボタンに見えている） */}
+          <h1 className="sr-only">
+            {book.orgName}の帳簿（{year.label}）
+          </h1>
           <div className="mx-auto flex max-w-[82rem] flex-wrap items-center gap-x-4 gap-y-2 px-4 pb-2 pt-3 sm:px-6">
             <Link to="/" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-lg sm:pr-1" aria-label={`${site.name} のトップページへ`}>
               <LogoMark />
@@ -278,6 +282,9 @@ export function WorkspaceShell() {
             </Link>
             <Link to="/#pricing" className="inline-flex min-h-11 min-w-11 items-center justify-center underline underline-offset-4 hover:text-foreground">
               料金
+            </Link>
+            <Link to="/tokushoho" className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">
+              特定商取引法にもとづく表記
             </Link>
             <Link to="/privacy" className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">
               プライバシーポリシー

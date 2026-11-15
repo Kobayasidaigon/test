@@ -9,6 +9,7 @@ import {
   defaultReceiptNo,
   descriptionSuggestions,
   duplicateReceiptNos,
+  endOfDayBalance,
   effectOn,
   filterTransactions,
   listYearIssues,
@@ -325,6 +326,42 @@ describe('残高がマイナスになる日', () => {
     let book = newBook({ bankAccounts: [{ name: '普通預金', openingBalance: 1_000 }] })
     book = withdraw(book, '2026-04-10', 1_001)
     expect(negativeBalanceDays(year(book))).toEqual([{ accountId: bankId(book), accountName: '普通預金', date: '2026-04-10', balance: -1 }])
+  })
+})
+
+describe('その日の終わりの残高（endOfDayBalance）', () => {
+  it('取引のない日は、その前の取引の日の残高。最初の取引より前は、年度はじめの残高', () => {
+    let book = newBook() // 現金 10,000円、普通預金 100,000円
+    book = expense(book, '2026-05-10', 3_000)
+    book = expense(book, '2026-05-10', 500)
+    book = withdraw(book, '2026-06-01', 20_000)
+    const at = endOfDayBalance(year(book))
+    const cash = cashId(book)
+    const bank = bankId(book)
+    expect(at(cash, '2026-04-01')).toBe(10_000)
+    expect(at(cash, '2026-05-09')).toBe(10_000)
+    // 同じ日の取引は、すべて入れたあとの残高
+    expect(at(cash, '2026-05-10')).toBe(6_500)
+    expect(at(cash, '2026-05-31')).toBe(6_500)
+    expect(at(cash, '2026-06-01')).toBe(26_500)
+    expect(at(cash, '2027-03-31')).toBe(26_500)
+    expect(at(bank, '2026-05-31')).toBe(100_000)
+    expect(at(bank, '2026-06-01')).toBe(80_000)
+    // ない置き場所は 0
+    expect(at('nai', '2026-06-01')).toBe(0)
+  })
+  it('どの日でも、bookBalanceAsOf と同じ答えになる', () => {
+    let book = newBook()
+    book = expense(book, '2026-04-03', 1_200)
+    book = income(book, '2026-04-20', 48_000)
+    book = withdraw(book, '2026-07-05', 30_000)
+    book = expense(book, '2026-07-05', 45_000)
+    const at = endOfDayBalance(year(book))
+    for (const a of year(book).accounts) {
+      for (const date of ['2026-03-31', '2026-04-01', '2026-04-03', '2026-04-19', '2026-04-20', '2026-07-04', '2026-07-05', '2026-12-31']) {
+        expect(at(a.id, date), `${a.name} ${date}`).toBe(bookBalanceAsOf(year(book), a.id, date))
+      }
+    }
   })
 })
 

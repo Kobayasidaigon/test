@@ -454,6 +454,41 @@ export function negativeBalanceDays(year: FiscalYear): NegativeDay[] {
   return result
 }
 
+/**
+ * 「その日の終わりの残高」を引く関数を作る。取引のない日は、その前の取引の日の残高（なければ年度はじめの残高）を返す。
+ * 何度も引くとき（取引を入れる前と後をくらべるとき）のために、先に日ごとの残高を作っておく。
+ */
+export function endOfDayBalance(year: FiscalYear): (accountId: string, date: DateString) => Yen {
+  const txs = sortedTransactions(year)
+  const table = new Map<string, { opening: Yen; dates: DateString[]; balances: Yen[] }>()
+  for (const account of year.accounts) {
+    const dates: DateString[] = []
+    const balances: Yen[] = []
+    let balance = account.openingBalance
+    for (let i = 0; i < txs.length; i++) {
+      balance += effectOn(txs[i], account.id)
+      if (i === txs.length - 1 || txs[i + 1].date !== txs[i].date) {
+        dates.push(txs[i].date)
+        balances.push(balance)
+      }
+    }
+    table.set(account.id, { opening: account.openingBalance, dates, balances })
+  }
+  return (accountId, date) => {
+    const t = table.get(accountId)
+    if (!t) return 0
+    // date 以前の、いちばん新しい取引の日をさがす（二分探索）
+    let lo = 0
+    let hi = t.dates.length
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1
+      if (t.dates[mid] <= date) lo = mid + 1
+      else hi = mid
+    }
+    return lo === 0 ? t.opening : t.balances[lo - 1]
+  }
+}
+
 /** 年度の外の日付の取引。 */
 export function transactionsOutsideYear(year: FiscalYear): Transaction[] {
   return sortedTransactions(year).filter((t) => !isWithin(t.date, year.startDate, year.endDate))

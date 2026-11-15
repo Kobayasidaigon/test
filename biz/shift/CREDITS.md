@@ -42,6 +42,7 @@ Segmented Control（klyv-ui。上の表にあるもの）は、LP の一番上�
 - `src/components/landing/reasons.tsx` … 「組めないとき」の見本。道具の画面（④シフト表）の「点検の結果」「足りないところを埋める案」と同じ組み立てを、LP 用に書いたもの。
 - `src/components/landing/legal-page.tsx` … 特商法・プライバシーのページの枠。
 - `scripts/og.html` … 共有画像（`public/og.png`）のもと。
+- `public/404.html` … 見つからないページ。React を使わない1枚だけのHTMLで、色・書体・ブロックの絵を、ほかのページに合わせて手で書いた。
 
 ## 探したが、使わなかったもの（参考にしただけ）
 

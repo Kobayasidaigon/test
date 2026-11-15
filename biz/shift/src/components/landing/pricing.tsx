@@ -99,7 +99,8 @@ export function Pricing() {
                 </Button>
               ) : (
                 <>
-                  <Button size="lg" variant="outline" disabled className="w-full">
+                  {/* 押せないボタンは、ふつう薄くする。ここは「販売準備中」という知らせでもあるので、薄くせず、点線の枠と沈んだ地の色で「押せない」を伝える（文字のコントラストを保つ） */}
+                  <Button size="lg" variant="outline" disabled className="w-full border-dashed border-ink/50 bg-well text-ink-soft shadow-none disabled:opacity-100">
                     販売準備中
                   </Button>
                   <p className="mt-2.5 text-[13px] leading-relaxed text-ink-soft">

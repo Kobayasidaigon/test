@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      見つからないページ（404）。Vercel などの静的ホスティングは、ないURLが開かれたとき、dist/404.html を返す。
+      ほかのページとちがって React を使わない、これ1枚だけのHTML（JavaScript の読み込みに失敗しても出せるように）。
+      サービスの名前・色・書体は、src/site.config.ts と src/index.css に合わせて、手で書いてある。変えたら、ここも直すこと。
+    -->
+    <title>ページが見つかりません｜たたき台シフト</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#fffaec" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@500;700&family=M+PLUS+Rounded+1c:wght@800&display=swap" rel="stylesheet" />
+    <style>
+      :root { --paper: #fffaec; --ink: #1b2452; --ink-soft: #4b547b; --egg: #ffd43d; --focus: #2b59ff; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; background: var(--paper); color: var(--ink); font-family: "M PLUS 1", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif; font-weight: 500; line-height: 1.8; }
+      main { width: 100%; max-width: 34rem; }
+      .logo { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--ink); text-decoration: none; font-family: "M PLUS Rounded 1c", "M PLUS 1", sans-serif; font-weight: 800; font-size: 1.05rem; border-radius: 6px; }
+      .logo svg { width: 28px; height: 28px; }
+      /* はまる場所が見つからなかったブロック、という絵（点線の空きマスと、勤務のブロック） */
+      .row { display: flex; gap: 6px; margin: 28px 0 20px; }
+      .cell { width: 44px; height: 44px; border-radius: 8px; border: 2px dashed rgba(27, 36, 82, 0.4); display: grid; place-items: center; font-family: "M PLUS Rounded 1c", sans-serif; font-weight: 800; font-size: 1.1rem; }
+      .cell.blk { border: 2px solid var(--ink); background: var(--egg); box-shadow: 2px 2px 0 0 var(--ink); transform: rotate(-8deg) translateY(-6px); }
+      h1 { margin: 0; font-family: "M PLUS Rounded 1c", "M PLUS 1", sans-serif; font-weight: 800; font-size: 1.7rem; line-height: 1.4; text-wrap: balance; }
+      p { margin: 12px 0 0; color: var(--ink-soft); }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+      .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 20px; border: 2px solid var(--ink); border-radius: 10px; font-weight: 700; color: var(--ink); text-decoration: none; background: #fff; box-shadow: 2px 2px 0 0 var(--ink); }
+      .btn.main { background: var(--egg); box-shadow: 3px 3px 0 0 var(--ink); }
+      .btn:active { transform: translate(2px, 2px); box-shadow: none; }
+      a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="logo" href="/" aria-label="たたき台シフトのトップページへ">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect x="2.25" y="2.25" width="12.5" height="12.5" rx="2.5" fill="#ffd43d" stroke="#1b2452" stroke-width="2.5" /><rect x="2.25" y="17.25" width="12.5" height="12.5" rx="2.5" fill="#ff6f59" stroke="#1b2452" stroke-width="2.5" /><rect x="17.25" y="17.25" width="12.5" height="12.5" rx="2.5" fill="#74c7ff" stroke="#1b2452" stroke-width="2.5" /></svg>
+        たたき台シフト
+      </a>
+      <div class="row" aria-hidden="true">
+        <span class="cell"></span><span class="cell"></span><span class="cell blk">？</span><span class="cell"></span><span class="cell"></span>
+      </div>
+      <h1>このページは、見つかりませんでした。</h1>
+      <p>アドレスがまちがっているか、ページがなくなっています。前に入れた内容（スタッフの名前やシフト表）があれば、お使いのブラウザの中に残っています。下のボタンから、道具の画面を開いてください。</p>
+      <div class="actions">
+        <a class="btn main" href="/app">道具を開く</a>
+        <a class="btn" href="/">トップページへ</a>
+      </div>
+    </main>
+  </body>
+</html>

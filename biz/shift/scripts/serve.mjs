@@ -25,7 +25,13 @@ async function find(pathname) {
 
 createServer(async (req, res) => {
   const file = await find(new URL(req.url, 'http://x').pathname)
-  if (!file) { res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' }); res.end('404'); return }
+  if (!file) {
+    // 公開先（Vercel など）と同じく、ないURLには dist/404.html を返す（なければ、文字だけ）
+    const notFound = await readFile(join(dist, '404.html')).catch(() => null)
+    res.writeHead(404, { 'content-type': notFound ? types['.html'] : 'text/plain; charset=utf-8' })
+    res.end(notFound ?? '404')
+    return
+  }
   res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' })
   res.end(await readFile(file))
 }).listen(port, () => console.log(`http://localhost:${port}`))

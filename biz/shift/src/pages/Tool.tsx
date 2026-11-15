@@ -261,20 +261,25 @@ export default function Tool() {
 
             {plan ? (
               <>
+                {/*
+                  店の名前が長いときは、名前だけを「…」で切る（年月と保存の様子は、いつも見えるように残す）。
+                  スマホでは、1行めに店の名前、2行めに年月と保存の様子。広い画面では、横1行に並ぶ。
+                */}
                 <p className="order-3 flex min-w-0 flex-1 flex-col pb-1 text-sm leading-snug md:order-none md:flex-row md:items-baseline md:gap-x-3 md:pb-0">
-                  {/* 店の名前が長いときは、名前だけを「…」で切る（年月と保存の様子は、いつも見えるように残す） */}
-                  <span className="flex min-w-0 font-bold" title={plan.storeName || undefined}>
-                    <span className="truncate">{plan.storeName || '（店の名前なし）'}</span>
-                    <span className="shrink-0 whitespace-pre">　{formatMonth(plan.year, plan.month)}</span>
+                  <span className="truncate font-bold" title={plan.storeName || undefined}>
+                    {plan.storeName || '（店の名前なし）'}
                   </span>
-                  <span role="status" className={store.save.status === 'failed' ? 'shrink-0 text-[12.5px] font-bold text-danger' : 'shrink-0 text-[12.5px] text-ink-soft'}>
-                    {store.save.status === 'saved' ? (
-                      <>
-                        <span className="hidden sm:inline">このブラウザに</span>保存済み{store.save.at ? `（${clock(store.save.at)}）` : ''}
-                      </>
-                    ) : store.save.status === 'failed' ? (
-                      '保存できていません'
-                    ) : null}
+                  <span className="flex shrink-0 items-baseline gap-x-2 md:gap-x-3">
+                    <span className="text-[13px] font-bold md:text-sm">{formatMonth(plan.year, plan.month)}</span>
+                    <span role="status" className={store.save.status === 'failed' ? 'text-[12.5px] font-bold text-danger' : 'text-[12.5px] text-ink-soft'}>
+                      {store.save.status === 'saved' ? (
+                        <>
+                          <span className="hidden sm:inline">このブラウザに</span>保存済み{store.save.at ? `（${clock(store.save.at)}）` : ''}
+                        </>
+                      ) : store.save.status === 'failed' ? (
+                        '保存できていません'
+                      ) : null}
+                    </span>
                   </span>
                 </p>
                 <Button variant="ghost" size="sm" className="hidden md:inline-flex" disabled={!store.canUndo} onClick={() => store.undo()}>

@@ -47,10 +47,12 @@ export function Hero({ book, base, reports, onBookChange }: Props) {
             <Phrase>会計係になった、</Phrase>
             <Phrase>あなたへ。</Phrase>
           </h1>
-          <p className="mt-5 max-w-[30em] text-[1.16rem] leading-[1.9] sm:text-[1.24rem]">
-            収入と支出を入れるだけで、総会の資料がそろいます。次の担当の方には、ファイルを1つ渡すだけです。
+          <p className="mt-5 max-w-[30em] text-[1.16rem] leading-[1.9] [text-wrap:pretty] sm:text-[1.24rem]">
+            {/* パソコンの幅では、文ごとに行を分ける（「次の」だけが、前の行の終わりに残らないように） */}
+            <span className="sm:inline-block">収入と支出を入れるだけで、総会の資料がそろいます。</span>
+            <span className="sm:inline-block">次の担当の方には、ファイルを1つ渡すだけです。</span>
           </p>
-          <p className="mt-3 max-w-[36em] leading-[1.9] text-muted-foreground">
+          <p className="mt-3 max-w-[36em] leading-[1.9] text-muted-foreground [text-wrap:pretty]">
             町内会・自治会、子ども会、PTA、サークルなど、係が毎年かわる小さな団体のための、会計の道具です。登録はいりません。
           </p>
 

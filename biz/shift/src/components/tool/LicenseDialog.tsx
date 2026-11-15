@@ -79,7 +79,10 @@ export function LicenseDialog({ open, onOpenChange, license }: { open: boolean; 
               </Button>
             ) : (
               <div className="flex flex-wrap items-center gap-3">
-                <Button disabled>販売準備中</Button>
+                {/* LP の料金の札と同じ見せ方（薄くせず、点線の枠で「押せない」を伝える） */}
+                <Button variant="outline" disabled className="border-dashed border-ink/50 bg-well text-ink-soft shadow-none disabled:opacity-100">
+                  販売準備中
+                </Button>
                 <span className="text-[13px] leading-relaxed text-ink-soft">まだ買えません。販売を始めたら、ここに購入のボタンが出ます。</span>
               </div>
             )}

@@ -363,6 +363,20 @@ describe('checkTransaction（入れる前の確かめ）', () => {
     // 関係のない口座の取引では、知らせない
     expect(codes(book, { accountId: bankId(book), amount: 1_000 }).warnings).toEqual([])
   })
+  it('すでにマイナスの置き場所があっても、残高を減らさない取引なら、別の日付で入れても知らせない', () => {
+    const book = expense(newBook(), '2026-04-10', 15_000) // 現金が △5,000円
+    const inc = { kind: 'income' as const, categoryId: catId(book, 'income', '会費'), amount: 1_000 }
+    // 取引のない日（4/20）に収入を入れる。現金は △4,000円 に増えるだけなので、知らせない
+    expect(codes(book, { ...inc, date: '2026-04-20' }).warnings).toEqual([])
+    // 関係のない口座の取引を、取引のない日に入れても、現金のことは知らせない
+    expect(codes(book, { accountId: bankId(book), amount: 1_000, date: '2026-04-20' }).warnings).toEqual([])
+    // 別の日付でも、現金の支出を足すと、さらに減るので知らせる
+    expect(codes(book, { amount: 1, date: '2026-04-20', description: '別のもの' }).warnings).toEqual(['negative-balance'])
+    // マイナスの日より前の日付の収入で、マイナスが埋まるなら、知らせない
+    expect(codes(book, { ...inc, amount: 5_000, date: '2026-04-05' }).warnings).toEqual([])
+    // 埋まりきらなくても、減らしてはいないので、知らせない
+    expect(codes(book, { ...inc, amount: 4_999, date: '2026-04-05' }).warnings).toEqual([])
+  })
   it('収入を小さく直したせいで、あとの日にマイナスになる場合も知らせる', () => {
     let book = income(newBook({ cashOpening: 0 }), '2026-04-10', 30_000)
     book = expense(book, '2026-05-01', 20_000)

@@ -172,14 +172,15 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
       }
       lead={`「${latest.label}」を締めて、新しい年度を作ります。科目と予算（予算案を入れていれば、その金額）を引き継ぎ、年度末の残高が、新しい年度のはじめの残高になります。`}
     >
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-lg border border-rule/50 bg-rule-soft/40 px-4 py-3">
+      {/* grid-cols-1 を書いておく（書かないと、長い口座の名前が欄を押し広げて、スマホで画面が横にはみ出す） */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="min-w-0 rounded-lg border border-rule/50 bg-rule-soft/40 px-4 py-3">
           <p className="text-[0.86rem] font-bold text-rule-ink">できる年度</p>
           <p className="mt-0.5 font-serif text-lg font-bold">{check.preview.label}</p>
           <p className="text-[0.9rem] text-muted-foreground">
             {formatWareki(check.preview.startDate)} 〜 {formatWareki(check.preview.endDate)}
           </p>
-          <dl className="mt-2 grid gap-0.5 border-t border-rule/40 pt-2 text-[0.94rem]">
+          <dl className="mt-2 grid grid-cols-1 gap-0.5 border-t border-rule/40 pt-2 text-[0.94rem]">
             {check.preview.accounts.map((a) => (
               <div key={a.accountId} className="flex items-baseline justify-between gap-3">
                 <dt className="min-w-0 truncate">{a.name}</dt>

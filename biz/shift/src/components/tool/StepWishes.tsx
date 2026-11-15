@@ -229,8 +229,8 @@ function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
                     {/* 列の幅を決めておく（決めないと、長い名前の入った選択肢が幅を取って、「読み取った希望」の列がつぶれる） */}
                     <table className="w-full min-w-[30rem] table-fixed border-collapse text-left text-sm">
                       <colgroup>
-                        <col className="w-[24%]" />
-                        <col className="w-[32%]" />
+                        <col className="w-[20%]" />
+                        <col className="w-[40%]" />
                         <col />
                       </colgroup>
                       <caption className="sr-only">読み取った結果</caption>

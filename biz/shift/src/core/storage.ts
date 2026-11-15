@@ -262,27 +262,50 @@ function migrate(plan: unknown, _format: number): unknown {
 }
 
 /**
+ * 断るときの文。同じ理由でも、ファイルを選んだときと、ブラウザの保存領域から読んだときとで、言い方を分ける
+ * （保存領域の中身が読めなかった人に「ファイルを選んでください」と言っても、何をすればよいかわからないため）。
+ */
+const REJECT = {
+  file: {
+    json: 'ファイルを読めませんでした。この道具で書き出したファイル（.json）を選んでください。',
+    app: `${site.name}のファイルではないようです。この道具で書き出したファイルを選んでください。`,
+    format: 'ファイルの版がわかりません。この道具で書き出したファイルを選んでください。',
+    newer: 'このファイルは、新しい版の道具で作られています。ページを読み込み直して、最新の道具で開いてください。',
+    invalid: 'ファイルの中身に、読めないところがあります: ',
+  },
+  storage: {
+    json: '保存されていた内容が壊れていて、読めませんでした。',
+    app: `保存されていた内容が、${site.name}のものではありませんでした。`,
+    format: '保存されていた内容の版が、わかりませんでした。',
+    newer: '保存されていた内容は、新しい版の道具で作られています。ページを読み込み直して、最新の道具で開いてください。',
+    invalid: '保存されていた内容に、読めないところがあります: ',
+  },
+} as const
+
+/**
  * 保存した文字列（ファイルの中身、または保存領域の値）を読む。
  * 合わないときは、理由の文を返す（そのまま画面に出せる）。
+ * source は、どこから読んだ文字か（理由の文の言い方が変わるだけ。検査は同じ）。
  */
-export function parsePlanText(text: string): ParseResult {
+export function parsePlanText(text: string, source: 'file' | 'storage' = 'file'): ParseResult {
+  const say = REJECT[source]
   let data: unknown
   try {
     data = JSON.parse(text)
   } catch {
-    return { ok: false, reason: 'ファイルを読めませんでした。この道具で書き出したファイル（.json）を選んでください。' }
+    return { ok: false, reason: say.json }
   }
   if (!isObj(data) || data.app !== APP_ID) {
-    return { ok: false, reason: `${site.name}のファイルではないようです。この道具で書き出したファイルを選んでください。` }
+    return { ok: false, reason: say.app }
   }
   if (typeof data.format !== 'number' || !Number.isInteger(data.format) || data.format < 1) {
-    return { ok: false, reason: 'ファイルの版がわかりません。この道具で書き出したファイルを選んでください。' }
+    return { ok: false, reason: say.format }
   }
   if (data.format > FORMAT_VERSION) {
-    return { ok: false, reason: 'このファイルは、新しい版の道具で作られています。ページを読み込み直して、最新の道具で開いてください。' }
+    return { ok: false, reason: say.newer }
   }
   const result = validatePlan(migrate(data.plan, data.format))
-  if (!result.ok) return { ok: false, reason: `ファイルの中身に、読めないところがあります: ${result.reason}` }
+  if (!result.ok) return { ok: false, reason: `${say.invalid}${result.reason}` }
   return { ok: true, plan: result.plan, savedAt: typeof data.savedAt === 'string' ? data.savedAt : null }
 }
 
@@ -307,7 +330,7 @@ export function loadPlan(storage: StorageLike): LoadResult {
     return { status: 'unavailable' }
   }
   if (raw === null) return { status: 'empty' }
-  const r = parsePlanText(raw)
+  const r = parsePlanText(raw, 'storage')
   return r.ok ? { status: 'ok', plan: r.plan, savedAt: r.savedAt } : { status: 'broken', reason: r.reason, raw }
 }
 

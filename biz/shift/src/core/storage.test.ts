@@ -299,6 +299,26 @@ describe('ブラウザの保存領域', () => {
       }
     }
   })
+  it('保存領域から読めなかったときの理由は、「ファイルを選んでください」とは言わない（ファイルを選ぶ場面ではないため）', () => {
+    const reasonOf = (raw: string) => {
+      const r = loadPlan(memoryStorage({ [STORAGE_KEY]: raw }))
+      return r.status === 'broken' ? r.reason : '(読めてしまった)'
+    }
+    const cases: Array<[string, string]> = [
+      ['{こわれた', '保存されていた内容が壊れていて'],
+      ['{}', '保存されていた内容が、たたき台シフトのものではありません'],
+      [JSON.stringify({ app: APP_ID, plan: {} }), '保存されていた内容の版が'],
+      [JSON.stringify({ app: APP_ID, format: FORMAT_VERSION + 1, plan: {} }), '新しい版の道具で作られています'],
+      [JSON.stringify({ app: APP_ID, format: 1, plan: { year: 1 } }), '保存されていた内容に、読めないところがあります: 年は'],
+    ]
+    for (const [raw, part] of cases) {
+      expect(reasonOf(raw)).toContain(part)
+      expect(reasonOf(raw)).not.toContain('ファイル')
+    }
+    // 同じ中身でも、ファイルとして読んだときは、ファイルの話として言う
+    const asFile = parsePlanText('{}')
+    expect(asFile.ok ? '' : asFile.reason).toContain('ファイルではないようです')
+  })
   it('保存領域そのものが使えなくても落ちない', () => {
     const dead: StorageLike = {
       getItem: () => {

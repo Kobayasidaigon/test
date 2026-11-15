@@ -37,7 +37,8 @@ export function SectionHeading({
         {title}
       </h2>
       {lead && (
-        <p className={cn('mt-4 max-w-[38em] text-[1.02rem] leading-[1.9]', tone === 'cover' ? 'text-white/90' : 'text-muted-foreground')}>{lead}</p>
+        // text-wrap: pretty … 最後の行に「資料です。」のような短い切れはしだけが残らないようにする
+        <p className={cn('mt-4 max-w-[38em] text-[1.02rem] leading-[1.9] [text-wrap:pretty]', tone === 'cover' ? 'text-white/90' : 'text-muted-foreground')}>{lead}</p>
       )}
     </div>
   )
