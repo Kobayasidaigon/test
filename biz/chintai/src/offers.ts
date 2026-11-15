@@ -1,7 +1,7 @@
 // 広告の枠（アフィリエイト）。このサイトの収入は、ここの広告だけ。
 //
 // 決めごと:
-// - url が空の枠は、表示しない（visibleOffers が返さない）。いまは全部空。提携できたら、運営者が url と文を入れる。
+// - url が空の枠は、表示しない（visibleOffers が返さない）。はじめは全部空。提携できたら、運営者が url と文を入れる。
 // - 表示するときは、必ず「広告」と書く（core/texts.ts の AD_LABEL。根拠は core/consult.ts の adDisclosure）。
 // - 見本の文や、うその実績は書かない。title と description も、提携先が決まってから、事実だけを書く。
 // - 実行時に外部のタグやスクリプトは読み込まない。広告は、ふつうのリンク（<a rel="sponsored nofollow noopener">）だけ。
@@ -24,13 +24,19 @@ export type Offer = {
   url: string
   /** どこに出すか。 */
   placements: OfferPlacement[]
-  /** 関係のある項目（core/items.ts の id）。解説ページでは、関係のある枠だけを出す。空なら、どのページにも出せる。 */
+  /** 関係のある項目（core/items.ts の id）。解説ページ（'item'）では、その項目のページにだけ出す。空なら、すべての解説ページに出る。 */
   itemIds: string[]
 }
 
+// どの枠が、どこに出るか（url と title を入れたとき）:
+// - hikkoshi（引越しの見積もり）… 点検の結果の画面と、すべての解説ページ。引越しは、どの項目を読んでいる人にも関係があるため。
+//   検索から来た人が最初に開くのは解説ページなので、解説ページに出る枠を、少なくとも1つは置く（offers.test.ts が確かめている）。
+// - net（インターネット回線）… 点検の結果の画面だけ。解説ページにも出したいときは、placements に 'item' を足す
+//   （itemIds が空なので、すべての解説ページに出る）。
+// - hoken（火災保険）… 点検の結果の画面と、火災保険料の解説ページ（/items/kasai-hoken）。
 export const offers: Offer[] = [
-  { id: 'hikkoshi', kind: '引越しの見積もり', title: '', description: '', url: '', placements: ['result'], itemIds: [] },
-  { id: 'net', kind: 'インターネット回線', title: '', description: '', url: '', placements: ['result', 'item'], itemIds: ['internet'] },
+  { id: 'hikkoshi', kind: '引越しの見積もり', title: '', description: '', url: '', placements: ['result', 'item'], itemIds: [] },
+  { id: 'net', kind: 'インターネット回線', title: '', description: '', url: '', placements: ['result'], itemIds: [] },
   { id: 'hoken', kind: '火災保険', title: '', description: '', url: '', placements: ['result', 'item'], itemIds: ['kasaihoken'] },
 ]
 

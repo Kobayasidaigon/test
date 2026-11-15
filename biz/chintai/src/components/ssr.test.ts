@@ -72,14 +72,14 @@ describe('静的HTMLに書き出せる部品', () => {
   })
 })
 
-// 広告の枠は、いまは全部空なので、だれも「出た状態」を画面で見ていない。提携先が入ったときの形を、ここで確かめておく。
+// 広告の枠は、はじめは全部空なので、だれも「出た状態」を画面で見ていない。提携先が入ったときの形を、ここで確かめておく。
 describe('広告の枠（出たときの形）', () => {
   const offer: Offer = { id: 't', kind: '試験', title: '試験の広告の見出し', description: '試験の説明', url: 'https://ad.invalid/x', placements: ['result'], itemIds: [] }
 
   it('枠が空なら、何も出さない', () => {
     expect(renderToString(createElement(OfferSlot, { offers: [] }))).toBe('')
-    // いまの設定（url が全部空）では、どの場所にも出ない。
-    expect(visibleOffers()).toHaveLength(0)
+    // url が空の枠は、どの場所にも出ない（いまの設定が空かどうかは、確かめない。運営者が広告を入れても、落ちないように）。
+    expect(visibleOffers(undefined, undefined, [{ ...offer, url: '' }])).toHaveLength(0)
   })
 
   it('出すときは、必ず「広告」と書き、リンクに sponsored を付け、結果とは関係ないことを添える', () => {
