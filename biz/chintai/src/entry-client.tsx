@@ -35,7 +35,11 @@ function SingleApp() {
     let alive = true
     const go = async () => {
       const parsed = parseHash(location.hash)
-      if (!parsed && state) return // #pricing のようなページ内の移動
+      // #pricing のようなページ内の移動では、ページを切り替えない。
+      // ただし、ハッシュが空のとき（index.html をハッシュなしで開いたあと、別のページへ行って「戻る」を押したとき）は、
+      // ページ内の移動ではなく、最初のページ（/）へ戻る動きなので、切り替える（ここを飛ばすと、URL だけ戻って画面が前のページのまま残った）
+      const empty = location.hash === '' || location.hash === '#'
+      if (!parsed && !empty && state) return
       const route = findRoute(parsed?.path ?? '/')
       const Page = (await route.load()).default
       if (!alive) return
