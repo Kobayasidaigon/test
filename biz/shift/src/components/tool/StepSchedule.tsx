@@ -320,10 +320,10 @@ export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve
             <span aria-hidden className="inline-block size-3.5 rounded-[3px] border border-ink/40 bg-[repeating-linear-gradient(135deg,var(--well)_0_3px,#e3d9bb_3px_6px)]" />
             店を開けない日
           </li>
-          <li>{empty ? '下の行の数字は、その日に必要な人数' : '下の行の数字は、その日に入っている人数（赤い「−1」は1人足りない、「+1」は1人多い）'}</li>
+          <li>{empty ? '下の行の数字は、その日に必要な人数' : '下の行の数字は、その日に入っている人数（赤い「−1」は1人足りない、「+1」は1人多い、赤い「役」は役割の最低人数が足りない）'}</li>
           {holidays.length > 0 ? <li>この月の祝日: {holidays.map((d) => `${d.day}日（${d.holiday}）`).join('、')}</li> : null}
         </ul>
-        <p className="mt-2 border-t border-line pt-2 text-[12.5px] leading-snug text-ink-soft">印刷は、A4 の横向き1枚です（人数が多いときは2枚）。たて向きで出るときは、印刷の画面で、用紙の向きを「横」にしてください。</p>
+        <p className="mt-2 border-t border-line pt-2 text-[12.5px] leading-snug text-ink-soft">印刷は、A4 の横向き1枚です（人数が多いときは、同じくらいの人数ずつ2枚以上に分けて、どの紙にも店の名前と年月、記号の説明を入れます）。たて向きで出るときは、印刷の画面で、用紙の向きを「横」にしてください。</p>
       </div>
 
       {/* マスを押したときの選択肢。広い画面では吹き出し、せまい画面では下からのシート */}

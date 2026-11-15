@@ -181,7 +181,8 @@ export function NumberField({ value, onChange, min = 0, max = 99, step = 1, allo
           onKeyDown={onKeyDown}
           className={cn(
             "h-full w-11 min-w-0 border-0 bg-transparent p-0 text-center font-num text-base font-bold text-ink outline-none placeholder:font-sans placeholder:text-xs placeholder:font-medium placeholder:text-ink-soft md:w-10",
-            unit && "text-right md:w-8",
+            // 単位のあるときは、数字を右に寄せて単位とくっつけ、欄をせまくする（スマホの幅で、勤務2種類の人数の表が横にはみ出さないように）
+            unit && "w-8 text-right",
           )}
         />
         {unit ? <span aria-hidden className="pl-0.5 pr-1.5 text-xs font-bold text-ink-soft">{unit}</span> : null}

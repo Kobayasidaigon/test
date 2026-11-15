@@ -95,10 +95,13 @@ if (cmd === 'keygen') {
 } else if (cmd === 'verify') {
   const { slug, licensePublicKey } = await siteConfig()
   const [body, sig] = (rest[0] ?? '').trim().split('.')
-  if (!body || !sig || !licensePublicKey) {
+  if (!rest[0]) {
     console.error('使い方: node scripts/license.mjs verify <キー>   （site.config.ts に licensePublicKey が必要）')
     process.exit(1)
   }
+  // 公開鍵がないのか、キーの形がちがうのかを分けて言う（どちらも「使い方」の文にすると、何を直せばよいかわからない）
+  if (!licensePublicKey) fail('site.config.ts の licensePublicKey が空です。keygen で表示された公開鍵を貼ってから、確かめてください。')
+  if (!body || !sig) fail('キーの形が正しくありません。キーを、最初から最後まで（途中の「.」もふくめて）コピーし直してください。')
   let key
   try {
     key = await crypto.subtle.importKey('spki', Buffer.from(licensePublicKey, 'base64url'), ALGO, false, ['verify'])
