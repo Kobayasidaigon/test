@@ -4,6 +4,7 @@ import {
   formatDateJa,
   formatMonthDayJa,
   formatMonths,
+  toOneLine,
   formatYen,
   formatYenOrBlank,
   isValidAmount,
@@ -44,6 +45,13 @@ describe('formatMonths', () => {
   })
   it('0 に近い値を「0か月分」と言い切らない', () => {
     expect(formatMonths(0.004)).toBe('約0か月分')
+  })
+  it('ちょうどではないとわかっているとき（exact が false）は、0.5 刻みでも「約」を付ける', () => {
+    // 78,100円 ÷ 78,000円 は、丸めると 1 になる。「1か月分」と言い切らない。
+    expect(formatMonths(1, false)).toBe('約1か月分')
+    expect(formatMonths(0.5, false)).toBe('約0.5か月分')
+    expect(formatMonths(1.28, false)).toBe('約1.28か月分')
+    expect(formatMonths(1, true)).toBe('1か月分')
   })
 })
 
@@ -145,5 +153,14 @@ describe('isValidAmount', () => {
     expect(isValidAmount(Infinity)).toBe(false)
     expect(isValidAmount('78000')).toBe(false)
     expect(isValidAmount(null)).toBe(false)
+  })
+})
+
+describe('toOneLine', () => {
+  it('改行・タブ・全角の空白の続きを、1つの空白に直して、前後の空白を取る', () => {
+    expect(toOneLine('  室内抗菌施工費\n\n追伸  ')).toBe('室内抗菌施工費 追伸')
+    expect(toOneLine('鍵交換\t費用　　（税込）')).toBe('鍵交換 費用 （税込）')
+    expect(toOneLine('\r\n')).toBe('')
+    expect(toOneLine('敷金')).toBe('敷金')
   })
 })

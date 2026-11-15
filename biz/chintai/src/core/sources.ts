@@ -1,4 +1,4 @@
-import { formatDateJa } from './format'
+import { formatDateJa, parseDate } from './format'
 
 // 根拠にしている資料の一覧（出典）。
 //
@@ -11,8 +11,18 @@ import { formatDateJa } from './format'
 //   抜粋で確かめられなかった事実は、ルールに入れていない（README の「確かめられなかったこと」を参照）。
 //   公開の前に、運営者がそれぞれの URL を開いて、もう一度確かめること。
 
-/** ルール（項目のデータと出典）を最後に確かめた日。道具とページに出す。 */
+/**
+ * ルール（項目のデータと出典）を最後に確かめた日。道具とページに出す。
+ * 運営者が出典を確かめ直したら、最後に確かめた日に直す（README の「公開の前に、運営者がやること 1」）。
+ */
 export const RULES_VERIFIED_ON = '2026-11-14'
+
+/**
+ * 公式サイトを対象にした検索で確かめた日。
+ * RULES_VERIFIED_ON と分けてあるのは、運営者が RULES_VERIFIED_ON を直したときに、まだ原文で確かめていない出典の
+ * 「確かめた日」まで一緒に新しくなって、「（新しい日）に、検索で確認」という、事実と違う表示になるのを防ぐため。
+ */
+const SEARCH_VERIFIED_ON = '2026-11-14'
 
 export type SourceKind =
   | 'law' // 法律
@@ -45,7 +55,12 @@ export type Source = {
   verifiedBy: VerifiedBy
 }
 
-const on = { verifiedOn: RULES_VERIFIED_ON, verifiedBy: 'official-site-search' } as const
+/**
+ * 出典に共通の、確かめた日と確かめ方（2026-11-14 の、検索での確認）。
+ * 原文で確かめた出典には、`...on` のあとに `verifiedBy: 'official-page', verifiedOn: '確かめた日'` を書いて、上書きする。
+ * ここ（on）は、直さなくてよい。
+ */
+const on = { verifiedOn: SEARCH_VERIFIED_ON, verifiedBy: 'official-site-search' } as const
 
 export const sources = {
   // ---- 仲介手数料 ----
@@ -235,11 +250,23 @@ export function listSources(): Source[] {
  * 原文のページを開いて読んだように見えるので、どう確かめたかを、画面にも書く。
  *
  * 運用: 運営者が URL を1つずつ開いて原文で確かめたら、その出典の verifiedBy を 'official-page' に、
- * verifiedOn をその日にする。全部の出典が 'official-page' になると、この文は null になり、画面から消える。
+ * verifiedOn をその日にする。途中（一部だけ原文で確かめた）のあいだは、まだ済んでいない件数を言う。
+ * 全部の出典が 'official-page' になると、この文は null になり、画面から消える。
  */
-export const VERIFY_METHOD_NOTE: string | null = Object.values(sources).some((s: Source) => s.verifiedBy === 'official-site-search')
-  ? `${formatDateJa(RULES_VERIFIED_ON)}の確認は、それぞれの公式サイトを対象にした検索で行いました。検索結果に出る公式ページの本文の抜粋で、該当する記述があることを確かめています。資料のページそのものを開いての確認は、まだ済んでいません。大事な判断の前には、リンク先の原文を、ご自身でも確かめてください。`
-  : null
+export function buildVerifyMethodNote(list: Source[]): string | null {
+  const bySearch = list.filter((s) => s.verifiedBy === 'official-site-search')
+  if (bySearch.length === 0) return null
+  // （Array の at() は、少し古い iPhone の Safari にないので、使わない。）
+  const dates = bySearch.map((s) => s.verifiedOn).sort()
+  const date = formatDateJa(dates[dates.length - 1])
+  const tail = '大事な判断の前には、リンク先の原文を、ご自身でも確かめてください。'
+  if (bySearch.length === list.length) {
+    return `${date}の確認は、それぞれの公式サイトを対象にした検索で行いました。検索結果に出る公式ページの本文の抜粋で、該当する記述があることを確かめています。資料のページそのものを開いての確認は、まだ済んでいません。${tail}`
+  }
+  return `資料の${list.length}件のうち${bySearch.length}件は、${date}に、それぞれの公式サイトを対象にした検索で確かめたものです（検索結果に出る公式ページの本文の抜粋で、該当する記述があることを確かめています）。この${bySearch.length}件は、資料のページそのものを開いての確認が、まだ済んでいません。${tail}`
+}
+
+export const VERIFY_METHOD_NOTE: string | null = buildVerifyMethodNote(Object.values(sources))
 
 /** 出典ごとの「いつ、どう確かめたか」（例:「2026年11月14日に、検索で確認」）。 */
 export function verifiedLabel(source: Source): string {
@@ -254,4 +281,45 @@ export const sourceKindLabel: Record<SourceKind, string> = {
   'gov-page': '国の機関の案内',
   'consumer-center': '消費生活センターなどの案内',
   'public-corp': '公的な法人の案内',
+}
+
+/**
+ * 出典の「確かめた日」「確かめ方」と、ルールの最終確認日の、つじつまを確かめる。
+ * おかしなところを、直し方つきの文で返す（なければ、空の配列）。
+ *
+ * テスト（items.test.ts）が、これを使う。値そのもの（'2026-11-14' など）を決め打ちで確かめると、
+ * 運営者が README の手順どおりに出典を確かめ直しただけで、テストが落ちてしまう。確かめるのは、形と決まりだけにする。
+ *
+ * - 確かめた日は、暦にある日（YYYY-MM-DD）で、今日より先ではない。
+ * - 確かめ方は、'official-site-search' か 'official-page'。
+ * - ルールの最終確認日は、暦にある日で、今日より先ではなく、出典の確かめた日のうち、いちばん新しい日より先でもない
+ *   （どの出典も確かめていない日を、「最終確認日」として画面に出さないため）。
+ *   出典を1件ずつ確かめている途中で、最終確認日のほうが古いのは、かまわない。
+ */
+export function findSourceProblems(list: Source[], rulesVerifiedOn: string, today: string): string[] {
+  const problems: string[] = []
+  const methods: string[] = ['official-site-search', 'official-page'] satisfies VerifiedBy[]
+  for (const s of list) {
+    if (!parseDate(s.verifiedOn)) {
+      problems.push(`出典「${s.id}」の verifiedOn（${s.verifiedOn}）が、'2027-01-10' の形の、暦にある日になっていません。`)
+    } else if (s.verifiedOn > today) {
+      problems.push(`出典「${s.id}」の verifiedOn（${s.verifiedOn}）が、今日（${today}）より先の日になっています。`)
+    }
+    if (!methods.includes(s.verifiedBy)) {
+      problems.push(`出典「${s.id}」の verifiedBy（${s.verifiedBy}）は、'official-site-search' か 'official-page' のどちらかにしてください。`)
+    }
+  }
+  if (!parseDate(rulesVerifiedOn)) {
+    problems.push(`RULES_VERIFIED_ON（${rulesVerifiedOn}）が、'2027-01-10' の形の、暦にある日になっていません。`)
+    return problems
+  }
+  if (rulesVerifiedOn > today) problems.push(`RULES_VERIFIED_ON（${rulesVerifiedOn}）が、今日（${today}）より先の日になっています。`)
+  const dates = list.map((s) => s.verifiedOn).filter((d) => parseDate(d)).sort()
+  const newest: string | undefined = dates[dates.length - 1]
+  if (newest !== undefined && rulesVerifiedOn > newest) {
+    problems.push(
+      `RULES_VERIFIED_ON（${rulesVerifiedOn}）が、どの出典の確かめた日（いちばん新しいのは ${newest}）よりも、先の日になっています。確かめた出典に verifiedOn: '確かめた日' を書いてから、RULES_VERIFIED_ON を直してください。`,
+    )
+  }
+  return problems
 }

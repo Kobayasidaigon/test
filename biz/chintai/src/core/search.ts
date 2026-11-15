@@ -29,6 +29,25 @@ const index: { item: ItemDef; terms: Term[] }[] = items.map((item) => ({
   ].filter((t) => t.text.length > 0),
 }))
 
+/**
+ * ほかの項目の言葉の一部にもなっている言葉（「家賃」「賃料」「管理費」「敷金」など）。
+ *
+ * こういう言葉は、見積書の言葉の中に入っていても、それだけでは決め手にならない。
+ * 「家賃（日割）」には、前家賃の「家賃」と、日割り家賃の「日割」が、同じ長さで入っている。
+ * 同じ点にすると、一覧で上にある前家賃が先に出て、日割りの額に「1か月分とは違う額です」と赤ペンが入ってしまう。
+ * そこで、ほかの項目の言葉の一部にもなる言葉は、「中に入っている」当たり方の点を、いちばん低くする。
+ * 項目のデータから自動で決めるので、項目を足したときに、ここを直す必要はない。
+ */
+const sharedTerms = new Set<string>()
+index.forEach(({ terms }, i) => {
+  for (const t of terms) {
+    if (index.some((other, j) => j !== i && other.terms.some((o) => o.text.includes(t.text)))) sharedTerms.add(t.text)
+  }
+})
+
+/** 「見積書の言葉の中に、項目の言葉が入っている」当たり方の、いちばん低い点。 */
+const CONTAINED_BASE = 40
+
 /** 探す言葉が、項目の言葉にどれくらい合うか（0 は合わない）。 */
 function scoreTerm(q: string, t: Term): number {
   const bonus = t.from === 'name' ? 5 : 0
@@ -39,7 +58,10 @@ function scoreTerm(q: string, t: Term): number {
   // 短すぎる言葉（英字2文字 など）は、たまたま含まれることがあるので、当たりにしない。
   const ascii = /^[\x20-\x7e]+$/.test(t.text)
   const minLength = ascii ? 3 : 2
-  if (t.text.length >= minLength && q.includes(t.text)) return 40 + Math.min(t.text.length, 15)
+  if (t.text.length >= minLength && q.includes(t.text)) {
+    // 長い言葉が入っているほど、点を高くする。ほかの項目の言葉の一部にもなる言葉は、長さを点にしない。
+    return sharedTerms.has(t.text) ? CONTAINED_BASE : CONTAINED_BASE + Math.min(t.text.length, 15)
+  }
   return 0
 }
 

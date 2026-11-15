@@ -185,11 +185,14 @@ describe('出典の確かめ方を、正直に持っている', () => {
     }
   })
 
-  it('確かめた日は、今日より先の日付になっていない形（YYYY-MM-DD）で、ルールの最終確認日より新しくない', () => {
-    for (const s of listSources()) {
-      expect(s.verifiedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-      expect(s.verifiedOn <= RULES_VERIFIED_ON).toBe(true)
-    }
+  // 「確かめた日 ≦ ルールの最終確認日」は、求めない。運営者が README の手順どおりに、出典を1件ずつ原文で確かめて
+  // 日付を書いていくと、最後に RULES_VERIFIED_ON を直すまでのあいだ、出典の日付のほうが新しくなるため。
+  // 求めるのは、逆向き（どの出典も確かめていない日を、最終確認日にしない）。くわしい検査は items.test.ts にある。
+  it('確かめた日は YYYY-MM-DD の形。ルールの最終確認日は、いちばん新しい「確かめた日」より先になっていない', () => {
+    const dates = listSources().map((s) => s.verifiedOn)
+    for (const d of dates) expect(d).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    expect(RULES_VERIFIED_ON).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    expect(RULES_VERIFIED_ON <= [...dates].sort()[dates.length - 1]).toBe(true)
   })
 
   it('相談先の電話番号は、公式のページで確かめた番号のまま（188 と 0570-078374）', () => {

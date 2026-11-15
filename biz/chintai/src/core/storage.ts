@@ -1,6 +1,6 @@
 import { site } from '../site.config'
 import { createEmptyData } from './estimate'
-import { isValidAmount, isValidDate } from './format'
+import { isValidAmount, isValidDate, toOneLine } from './format'
 import { getItem, isPresetItemId, OTHER_ITEM_ID } from './items'
 import type { AppData, Estimate, EstimateLine, MessageSettings } from './types'
 

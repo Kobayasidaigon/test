@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { brokerageCaps, checkBrokerage, checkProration, compareToMonthly, monthsOf, prorationDays } from './calc'
+import { brokerageCaps, checkBrokerage, checkProration, compareToMonthly, isWholeHalfMonths, monthsOf, prorationDays } from './calc'
 
 describe('仲介手数料の上限の目安', () => {
   it('家賃 × 0.55 と、家賃 × 1.1', () => {
@@ -23,6 +23,10 @@ describe('checkBrokerage', () => {
     expect(at(85_800, null).status).toBe('no-rent')
     expect(at(85_800, 0).status).toBe('no-rent')
     expect(at(85_800, null).halfCap).toBeNull()
+  })
+  it('比べた額と、行の数（1）を返す', () => {
+    expect(at(85_800)).toMatchObject({ amount: 85_800, lineCount: 1 })
+    expect(at(null)).toMatchObject({ amount: null, lineCount: 1 })
   })
   it('金額が未入力のときは、上限の目安だけ出す', () => {
     const r = at(null)
@@ -203,7 +207,33 @@ describe('月額との比', () => {
       base: 'rent',
       baseAmount: 78_000,
       months: 2,
+      exact: true,
     })
+  })
+  it('isWholeHalfMonths: 0.5か月分の刻みに、ちょうど合うときだけ true（丸めた数では見ない）', () => {
+    expect(isWholeHalfMonths(78_000, 78_000)).toBe(true)
+    expect(isWholeHalfMonths(39_000, 78_000)).toBe(true)
+    expect(isWholeHalfMonths(117_000, 78_000)).toBe(true)
+    expect(isWholeHalfMonths(156_000, 78_000)).toBe(true)
+    // 丸めると 1 になるが、ちょうどではない額（家賃の±0.5％の中）。
+    expect(monthsOf(78_100, 78_000)).toBe(1)
+    expect(isWholeHalfMonths(78_100, 78_000)).toBe(false)
+    expect(isWholeHalfMonths(78_001, 78_000)).toBe(false)
+    expect(isWholeHalfMonths(77_999, 78_000)).toBe(false)
+    expect(isWholeHalfMonths(78_389, 78_000)).toBe(false)
+    // 月額が奇数のときの 0.5か月分は円にならない（77,777 × 0.5 ＝ 38,888.5）。1円未満の差は、合っているとみなす。
+    expect(isWholeHalfMonths(38_888, 77_777)).toBe(true)
+    expect(isWholeHalfMonths(38_889, 77_777)).toBe(true)
+    expect(isWholeHalfMonths(38_890, 77_777)).toBe(false)
+    // 0円や、月額がないときは false。
+    expect(isWholeHalfMonths(0, 78_000)).toBe(false)
+    expect(isWholeHalfMonths(100, 78_000)).toBe(false)
+    expect(isWholeHalfMonths(78_000, 0)).toBe(false)
+  })
+  it('compareToMonthly は、ちょうどかどうか（exact）も返す', () => {
+    expect(compareToMonthly({ rent: 78_000, commonFee: 4_000, amount: 78_100, base: 'rent' })).toMatchObject({ months: 1, exact: false })
+    expect(compareToMonthly({ rent: 78_000, commonFee: 4_000, amount: 100_000, base: 'rent' })).toMatchObject({ months: 1.28, exact: false })
+    expect(compareToMonthly({ rent: 78_000, commonFee: 4_000, amount: 41_000, base: 'rent+fee' })).toMatchObject({ months: 0.5, exact: true })
   })
   it('家賃＋管理費と比べる。管理費がなければ、家賃と比べる', () => {
     expect(compareToMonthly({ rent: 78_000, commonFee: 4_000, amount: 41_000, base: 'rent+fee' })?.months).toBe(0.5)

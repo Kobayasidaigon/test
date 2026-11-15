@@ -15,7 +15,7 @@ import {
   resolveBasis,
 } from './items'
 import { normalizeForSearch } from './search'
-import { getSource, listSources, RULES_VERIFIED_ON, sources, type SourceId } from './sources'
+import { buildVerifyMethodNote, findSourceProblems, getSource, listSources, RULES_VERIFIED_ON, sources, type Source, type SourceId } from './sources'
 import { ASK_TOTAL_NOTE, DISCLAIMER, MESSAGE_NOTE, NOT_DOING } from './texts'
 import type { BasisNote, CategoryId, ItemDef } from './types'
 import { BANNED_PHRASES, findBannedPhrase, LEGAL_WORDS } from './wording'
@@ -48,6 +48,15 @@ function textsOf(item: ItemDef): string[] {
 }
 
 const BANNED = BANNED_PHRASES
+
+/**
+ * 今日の日付（'2027-01-10' の形）に、1日半のゆとりを足したもの。
+ * 「確かめた日が、今日より先になっていない」ことを確かめるのに使う。テストを動かす機械の時計が、
+ * 運営者のいる日本の時刻より遅れていても（時差）、今日確かめた日付で落ちないように、ゆとりを持たせる。
+ */
+function todayWithMargin(): string {
+  return new Date(Date.now() + 36 * 60 * 60 * 1000).toISOString().slice(0, 10)
+}
 
 describe('区分', () => {
   it('仕様書の7つの区分と、一覧にない項目のための区分がある', () => {
@@ -235,10 +244,53 @@ describe('根拠と出典', () => {
       expect(url.hostname, s.id).toMatch(official)
       expect(s.title.length, s.id).toBeGreaterThan(3)
       expect(s.publisher.length, s.id).toBeGreaterThan(1)
-      expect(s.verifiedOn, s.id).toBe('2026-11-14')
-      expect(s.verifiedBy, s.id).toBe('official-site-search')
+      expect(s.verifiedOn, s.id).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+      expect(['official-site-search', 'official-page'], s.id).toContain(s.verifiedBy)
     }
-    expect(RULES_VERIFIED_ON).toBe('2026-11-14')
+  })
+  // 値そのもの（'2026-11-14'、'official-site-search'）は、決め打ちで確かめない。
+  // 運営者が README の「公開の前に、運営者がやること 1」のとおりに、出典を原文で確かめて書き直すと、値は変わる。
+  // 確かめるのは、形と決まりだけ。落ちたときは、下の文（直し方つき）が、そのまま出る。
+  it('出典の確かめた日・確かめ方と、ルールの最終確認日の、つじつまが合っている（合わないところを、直し方つきで言う）', () => {
+    expect(findSourceProblems(listSources(), RULES_VERIFIED_ON, todayWithMargin())).toEqual([])
+  })
+  it('README の手順どおりに、出典を原文で確かめた形に書き直しても、つじつまの検査を通る', () => {
+    const list = listSources()
+    const today = '2027-01-12'
+    // 手順5の途中: 1件だけ、原文で確かめた。ルールの最終確認日は、まだ古いまま。
+    const one = list.map((s) => (s.id === 'minpo' ? { ...s, verifiedBy: 'official-page' as const, verifiedOn: '2027-01-08' } : s))
+    expect(findSourceProblems(one, RULES_VERIFIED_ON, today)).toEqual([])
+    // 手順6: 全部を原文で確かめて、ルールの最終確認日を、最後に確かめた日にした。
+    const all = list.map((s, i) => ({ ...s, verifiedBy: 'official-page' as const, verifiedOn: i % 2 === 0 ? '2027-01-08' : '2027-01-10' }))
+    expect(findSourceProblems(all, '2027-01-10', today)).toEqual([])
+    expect(buildVerifyMethodNote(all)).toBeNull()
+  })
+  it('つじつまの合わない書き方は、何を直すかを言って知らせる', () => {
+    const list = listSources()
+    const today = '2027-01-12'
+    const patch = (p: Partial<Source>) => list.map((s) => (s.id === 'minpo' ? ({ ...s, ...p } as Source) : s))
+    // 暦にない日、形の違う日。
+    expect(findSourceProblems(patch({ verifiedOn: '2027-02-30' }), RULES_VERIFIED_ON, today).join('')).toContain('「minpo」の verifiedOn')
+    expect(findSourceProblems(patch({ verifiedOn: '2027/1/10' }), RULES_VERIFIED_ON, today).join('')).toContain('暦にある日')
+    // 今日より先の日。
+    expect(findSourceProblems(patch({ verifiedOn: '2027-01-13' }), RULES_VERIFIED_ON, today).join('')).toContain('今日（2027-01-12）より先')
+    // 知らない確かめ方。
+    expect(findSourceProblems(patch({ verifiedBy: 'looked' as never }), RULES_VERIFIED_ON, today).join('')).toContain("'official-page'")
+    // 出典を確かめ直さずに、ルールの最終確認日だけを新しくした。
+    expect(findSourceProblems(list, '2027-01-10', today).join('')).toContain('どの出典の確かめた日')
+    expect(findSourceProblems(list, '2027-13-01', today).join('')).toContain('RULES_VERIFIED_ON')
+    expect(findSourceProblems(list, '2027-01-20', today).join('')).toContain('今日（2027-01-12）より先')
+  })
+  it('確かめ方のことわり書きは、検索で確かめた出典が残っているあいだ、その件数を言う', () => {
+    const list = listSources()
+    const some = list.map((s, i) => (i < 5 ? { ...s, verifiedBy: 'official-page' as const, verifiedOn: '2027-01-08' } : s))
+    const note = buildVerifyMethodNote(some)
+    expect(note).toContain(`${list.length}件のうち${list.length - 5}件`)
+    expect(note).toContain('まだ済んでいません')
+    // 全部が検索での確認なら、いまの画面の文（「〜の確認は、…検索で行いました」）。
+    const allSearch = list.map((s) => ({ ...s, verifiedBy: 'official-site-search' as const }))
+    expect(buildVerifyMethodNote(allSearch)).toContain('の確認は、それぞれの公式サイトを対象にした検索で行いました')
+    expect(buildVerifyMethodNote([])).toBeNull()
   })
   it('出典の ID は、キーと同じ。URL は重ならない', () => {
     for (const [key, s] of Object.entries(sources)) expect(s.id).toBe(key)
@@ -304,9 +356,10 @@ describe('言い方（断定しない、相場で判定しない）', () => {
 describe('解説ページのデータ', () => {
   const guides = listGuideItems()
 
-  it('8〜12ページある', () => {
+  // 仕様書は「8〜12ページ」。下の限りだけを確かめる。上の限りを決め打ちにすると、運営者が README の
+  // 「項目を足す・直す」のとおりに解説ページを足しただけで、テストが落ちるため。
+  it('8ページ以上ある', () => {
     expect(guides.length).toBeGreaterThanOrEqual(8)
-    expect(guides.length).toBeLessThanOrEqual(12)
   })
   it('仕様書に例として書かれた10の項目に、ページがある', () => {
     for (const id of ['shodoku', 'support24', 'chukai', 'kagi', 'kasaihoken', 'shokaki', 'gaichu', 'hoshoryo', 'cleaning', 'shorui']) {

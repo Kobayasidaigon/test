@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createEmptyEstimate } from './estimate'
 import { inspectEstimate, isOtherLine } from './inspect'
-import { items, NO_RULE_TEXT } from './items'
+import { getItem, items, NO_RULE_TEXT } from './items'
 import { sampleEstimate } from './sample'
 import type { Estimate, EstimateLine, Finding } from './types'
 import { findBannedPhrase, LEGAL_WORDS } from './wording'
@@ -73,9 +73,13 @@ describe('サンプルの見積書', () => {
     expect(f.label).toBe('室内抗菌施工費')
     expect(f.itemName).toBe('室内の消毒・抗菌')
   })
-  it('解説ページがある項目は、その slug を持っている', () => {
+  it('解説ページがある項目は、その slug を持っている。ない項目は null', () => {
     expect(r.findings.find((x) => x.itemId === 'shodoku')!.guideSlug).toBe('shodoku-kokin')
-    expect(r.findings.find((x) => x.itemId === 'reikin')!.guideSlug).toBeNull()
+    // どの項目に解説ページがあるかは、項目のデータ（items.ts の guide）から求める。決め打ちにすると、
+    // 運営者が解説ページを足しただけで、テストが落ちるため。
+    for (const f of r.findings) expect(f.guideSlug, f.itemId).toBe(getItem(f.itemId).guide?.slug ?? null)
+    const without = items.find((i) => i.guide === undefined)!
+    expect(one(without.id, 1_000).guideSlug).toBeNull()
   })
   it('見積書に書かれた合計と合っている', () => {
     expect(r.statedTotalDiff).toBe(0)
