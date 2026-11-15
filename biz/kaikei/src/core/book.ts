@@ -170,16 +170,30 @@ function bump(book: Book, patch: Partial<Book>): Book {
   return { ...book, ...patch, revision: book.revision + 1 }
 }
 
-/** 年度を1つ書きかえる。読むだけの年度（繰り越したあとの前の年度）は断る。 */
-function editYear(book: Book, yearId: string, edit: (year: FiscalYear) => FiscalYear | Fail): Result<Book> {
+/**
+ * 年度を1つ書きかえる。
+ *
+ * 読むだけの年度（繰り越したあとの前の年度）では、数字に関わるもの（取引、科目、予算、置き場所、期間）は断る。
+ * ただし「資料に書くこと」（作成日、役員の名前、監査報告書の文と日付、引き継ぎ書、残高の照合の記録）は、
+ * 呼ぶ側が allowLocked を付けて、読むだけの年度でも変えられるようにしてある。
+ * 総会の前（監査 → 総会 → 引き継ぎ）に、新しい年度の取引を入れるために先に繰り越した人が、
+ * 前の年度の資料の日付や名前を入れられなくなって、行きづまるため（点検で見つかった）。
+ * 決算の数字（取引と残高）は、どちらの場合も変わらない。
+ */
+function editYear(book: Book, yearId: string, edit: (year: FiscalYear) => FiscalYear | Fail, options: { allowLocked?: boolean } = {}): Result<Book> {
   const year = findYear(book, yearId)
   if (!year) return fail('year-not-found', 'この年度が見つかりません。')
-  if (isYearLocked(book, yearId)) {
-    return fail('year-locked', `「${year.label}」は、次の年度へ繰り越したので、読むだけになっています。直したいことがあるときは、いまの年度の取引として入れてください。`)
-  }
+  if (!options.allowLocked && isYearLocked(book, yearId)) return lockedFail(year)
   const next = edit(year)
   if ('ok' in next) return next
   return { ok: true, value: bump(book, { years: book.years.map((y) => (y.id === yearId ? next : y)) }) }
+}
+
+function lockedFail(year: FiscalYear): Fail {
+  return fail(
+    'year-locked',
+    `「${year.label}」は、次の年度へ繰り越したので、取引・科目・予算・残高は読むだけになっています。直したいことがあるときは、いまの年度の取引として入れてください。`,
+  )
 }
 
 // ---- 団体 ----
@@ -242,8 +256,12 @@ export type YearPatch = {
   carryoverBudget?: Yen | null
 }
 
-/** 年度の呼び名、期間、資料の作成日、前年度繰越金の予算額を変える。 */
+/**
+ * 年度の呼び名、期間、資料の作成日、前年度繰越金の予算額を変える。
+ * 読むだけの年度で変えられるのは、資料の作成日だけ（呼び名・期間・予算額は、決算の数字と見出しに関わるので断る）。
+ */
 export function updateYear(book: Book, yearId: string, patch: YearPatch): Result<Book> {
+  const onlyReportDate = patch.label === undefined && patch.startDate === undefined && patch.endDate === undefined && patch.carryoverBudget === undefined
   return editYear(book, yearId, (year) => {
     const next = { ...year }
     if (patch.label !== undefined) {
@@ -271,10 +289,10 @@ export function updateYear(book: Book, yearId: string, patch: YearPatch): Result
       next.carryoverBudget = patch.carryoverBudget
     }
     return next
-  })
+  }, { allowLocked: onlyReportDate })
 }
 
-/** 役員の名前を変える（空でもよい）。auditors は 1〜3人。 */
+/** 役員の名前を変える（空でもよい）。auditors は 1〜3人。資料の署名欄なので、読むだけの年度でも変えられる。 */
 export function updateOfficers(book: Book, yearId: string, patch: Partial<Officers>): Result<Book> {
   return editYear(book, yearId, (year) => {
     const merged = {
@@ -290,7 +308,7 @@ export function updateOfficers(book: Book, yearId: string, patch: Partial<Office
     } catch (e) {
       return invalidToFail(e)
     }
-  })
+  }, { allowLocked: true })
 }
 
 // ---- お金の置き場所 ----
@@ -552,7 +570,7 @@ export function checkTransaction(
   const year = findYear(book, yearId)
   if (!year) return { errors: [{ code: 'year-not-found', message: 'この年度が見つかりません。' }], warnings: [] }
   if (isYearLocked(book, yearId)) {
-    return { errors: [{ code: 'year-locked', message: `「${year.label}」は、次の年度へ繰り越したので、読むだけになっています。` }], warnings: [] }
+    return { errors: [{ code: 'year-locked', message: lockedFail(year).message }], warnings: [] }
   }
   const others = year.transactions.filter((t) => t.id !== options.ignoreTransactionId)
   const base: FiscalYear = { ...year, transactions: others }
@@ -563,7 +581,10 @@ export function checkTransaction(
   if (!isWithin(fields.date, year.startDate, year.endDate)) {
     warnings.push({
       code: 'outside-year',
-      message: `日付が、会計年度（${formatWareki(year.startDate)}〜${formatWareki(year.endDate)}）の外です。日付か、年度をまちがえていないか確かめてください。`,
+      // 年度の終わりより先の日付は、「次の年度の取引」のことが多い。次の年度の取引は、繰り越してから入れる、と案内する
+      message:
+        `日付が、会計年度（${formatWareki(year.startDate)}〜${formatWareki(year.endDate)}）の外です。日付か、年度をまちがえていないか確かめてください。` +
+        (fields.date > year.endDate ? '次の年度の取引は、「引き継ぎ」の画面で次の年度へ繰り越してから、入れます。' : ''),
       field: 'date',
     })
   }
@@ -665,7 +686,10 @@ export function removeTransaction(book: Book, yearId: string, transactionId: str
 
 // ---- 残高の照合 ----
 
-/** 実際の残高（通帳の残高、手元の現金）を記録する。null を渡すと記録を消す。 */
+/**
+ * 実際の残高（通帳の残高、手元の現金）を記録する。null を渡すと記録を消す。
+ * 帳簿の数字は変えない「確かめた記録」なので、読むだけの年度でも入れられる（年度末の照合は、繰り越したあとの監査ですることがある）。
+ */
 export function setReconciliation(
   book: Book,
   yearId: string,
@@ -683,12 +707,12 @@ export function setReconciliation(
       reconciliations[accountId] = { date: record.date, actual: record.actual }
     }
     return { ...year, reconciliations }
-  })
+  }, { allowLocked: true })
 }
 
 // ---- 資料 ----
 
-/** 会計監査報告書の本文と、監査の日を変える。 */
+/** 会計監査報告書の本文と、監査の日を変える。読むだけの年度でも変えられる（監査は、年度が終わったあとにするため）。 */
 export function updateAudit(book: Book, yearId: string, patch: Partial<Audit>): Result<Book> {
   return editYear(book, yearId, (year) => {
     try {
@@ -696,24 +720,47 @@ export function updateAudit(book: Book, yearId: string, patch: Partial<Audit>): 
     } catch (e) {
       return invalidToFail(e)
     }
-  })
+  }, { allowLocked: true })
 }
 
-/** 次年度の予算案を入れる。null を渡すと、入力を消す（今年度の予算をそのまま使う）。 */
+/**
+ * 次年度の予算案を入れる。null を渡すと、入力を消す（今年度の予算をそのまま使う）。
+ *
+ * 繰り越したあとでも、「いまの年度の、すぐ前の年度」の予算案は変えられる。
+ * 総会に出す予算書（案）は前の年度の資料なので、先に繰り越した人が、案の金額を直せなくなるのを防ぐため。
+ * そのときは、いまの年度の同じ科目の予算額にも、同じ金額を入れる（繰り越しのときと同じ決まり:
+ * 予算案があればそれ、なければ前の年度の予算）。紙の予算案と、新しい年度の予算が、食いちがったままにならないようにするため。
+ * いまの年度で消した科目には、入れない。2つ以上前の年度の予算案は、変えられない（次の年度も、もう読むだけなので）。
+ */
 export function setNextBudget(book: Book, yearId: string, categoryId: string, amount: Yen | null): Result<Book> {
-  return editYear(book, yearId, (year) => {
-    if (!year.categories.some((c) => c.id === categoryId)) return fail('not-found', 'この科目が見つかりません。')
-    const nextBudget = { ...year.nextBudget }
-    if (amount === null) delete nextBudget[categoryId]
-    else if (!isYen(amount)) return fail('invalid-amount', '予算額は、0円以上の整数で入れてください。', 'amount')
-    else nextBudget[categoryId] = amount
-    return { ...year, nextBudget }
-  })
+  const target = findYear(book, yearId)
+  if (!target) return fail('year-not-found', 'この年度が見つかりません。')
+  const locked = isYearLocked(book, yearId)
+  const latest = book.years[book.years.length - 1]
+  if (locked && previousYear(book, latest.id)?.id !== yearId) return lockedFail(target)
+  if (!target.categories.some((c) => c.id === categoryId)) return fail('not-found', 'この科目が見つかりません。')
+  if (amount !== null && !isYen(amount)) return fail('invalid-amount', '予算額は、0円以上の整数で入れてください。', 'amount')
+
+  const nextBudget = { ...target.nextBudget }
+  if (amount === null) delete nextBudget[categoryId]
+  else nextBudget[categoryId] = amount
+  const carried = amount ?? target.categories.find((c) => c.id === categoryId)!.budget
+  return {
+    ok: true,
+    value: bump(book, {
+      years: book.years.map((y) => {
+        if (y.id === yearId) return { ...y, nextBudget }
+        if (locked && y.id === latest.id) return { ...y, categories: y.categories.map((c) => (c.id === categoryId ? { ...c, budget: carried } : c)) }
+        return y
+      }),
+    }),
+  }
 }
 
 /**
  * 引き継ぎ書の中身を変える。一覧（保管場所、未払い、未収、備品）は、まるごと入れかえる。
  * 一覧の行に付ける id は randomId() で作る。
+ * 読むだけの年度でも変えられる（引き継ぎは、年度が終わって、繰り越したあとにすることがあるため）。
  */
 export function updateHandover(book: Book, yearId: string, patch: Partial<Handover>): Result<Book> {
   return editYear(book, yearId, (year) => {
@@ -722,5 +769,5 @@ export function updateHandover(book: Book, yearId: string, patch: Partial<Handov
     } catch (e) {
       return invalidToFail(e)
     }
-  })
+  }, { allowLocked: true })
 }

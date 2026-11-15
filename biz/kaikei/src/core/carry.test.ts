@@ -11,9 +11,12 @@ import {
 } from './book'
 import { accountBalances, isYearLocked, latestYear, summarizeYear } from './calc'
 import { carryForward, checkCarryForward, undoCarryForward } from './carry'
+import { buildBookFile } from './file'
 import { add, bankId, cashId, catId, deepFreeze, deposit, expense, failCode, income, newBook, ok, seqIds, withdraw, year } from './test-helpers'
 import { LIMITS, type Book } from './types'
 import { checkYearChain } from './validate'
+
+const NOW = new Date('2027-04-01T09:00:00Z')
 
 /** 1年ぶんの取引が入った帳簿。現金 13,500円、普通預金 125,000円、合計 138,500円。 */
 function filled(): Book {
@@ -186,6 +189,28 @@ describe('繰り越す前の確かめ', () => {
     book = withdraw(book, '2026-04-10', 5_000)
     expect(checkCarryForward(book).ok).toBe(true)
     expect(carryForward(book).ok).toBe(true)
+  })
+  it('年度末の残高が上限をこえた置き場所があると、繰り越せない（繰り越すと、保存も読み込みもできない帳簿になるため）', () => {
+    let book = newBook({ cashOpening: LIMITS.maxAmount })
+    // 上限ちょうどなら、繰り越せて、そのあと保存できる
+    const atLimit = ok(carryForward(book))
+    expect(year(atLimit).accounts[0].openingBalance).toBe(LIMITS.maxAmount)
+    expect(buildBookFile(atLimit, NOW).ok).toBe(true)
+    // 1円でもこえると、止める
+    book = income(book, '2026-04-10', 1)
+    const check = checkCarryForward(book)
+    expect(check.ok).toBe(false)
+    expect(check.blockers.map((b) => b.code)).toEqual(['closing-too-large'])
+    expect(check.blockers[0].message).toContain('「現金」')
+    expect(check.blockers[0].message).toContain('999,999,999円')
+    expect(check.blockers[0].message).toContain('1,000,000,000円')
+    expect(failCode(carryForward(book))).toBe('closing-too-large')
+    // 繰り越す前の帳簿は、いままでどおり保存できる
+    expect(buildBookFile(book, NOW).ok).toBe(true)
+    // 金額を直せば、繰り越せる
+    book = expense(book, '2026-04-11', 1)
+    expect(checkCarryForward(book).ok).toBe(true)
+    expect(buildBookFile(ok(carryForward(book)), NOW).ok).toBe(true)
   })
   it('年度の途中でマイナスの日があっただけなら、知らせるが、繰り越せる', () => {
     let book = newBook({ cashOpening: 1_000 })

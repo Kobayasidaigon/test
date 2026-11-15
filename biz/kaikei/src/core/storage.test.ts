@@ -149,13 +149,15 @@ describe('壊れたデータを読んでも落ちない', () => {
     }
     expect(loadLocal(storage).status).toBe('broken')
   })
-  it('消す', () => {
-    const storage = fakeStorage({ [BROKEN_KEY]: '退避したもの' })
+  it('消す。読めなかったデータの退避も、一緒に消す（共用のパソコンに、前の帳簿を残さない）', () => {
+    const storage = fakeStorage({ [BROKEN_KEY]: '退避したもの（前の団体の帳簿）', 'ほかのサービスのデータ': 'そのまま' })
     saveLocal(storage, stateFromNewBook(newBook()))
     clearLocal(storage)
     expect(loadLocal(storage)).toEqual({ status: 'empty' })
-    // 退避したデータは残す
-    expect(storage.data.get(BROKEN_KEY)).toBe('退避したもの')
+    expect(storage.data.has(STORAGE_KEY)).toBe(false)
+    expect(storage.data.has(BROKEN_KEY)).toBe(false)
+    // このサービスのもの以外には、さわらない
+    expect(storage.data.get('ほかのサービスのデータ')).toBe('そのまま')
   })
 })
 

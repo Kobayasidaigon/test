@@ -48,6 +48,17 @@ export function checkCarryForward(book: Book, options: { today?: DateString } = 
       })
     }
   }
+  // 上限をこえた残高は、新しい年度の「年度はじめの残高」として保存できない（読み込みの検査が、上限をこえた金額を断る）。
+  // そのまま繰り越すと、ファイルに保存できず、読み込み直すと帳簿を開けなくなるので、ここで止める（点検で見つかった）
+  for (const a of summary.accounts) {
+    if (a.closing > LIMITS.maxAmount) {
+      blockers.push({
+        code: 'closing-too-large',
+        message: `「${a.name}」の残高が ${formatYen(LIMITS.maxAmount)}円 をこえている（${formatYen(a.closing)}円）ので、繰り越せません。金額のまちがいがないか確かめてください。`,
+        accountId: a.accountId,
+      })
+    }
+  }
   if (!summary.balanced) {
     blockers.push({ code: 'unbalanced', message: '置き場所ごとの残高の合計と、次年度繰越金が合っていません。データが壊れているかもしれません。' })
   }

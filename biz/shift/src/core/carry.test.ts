@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { CARRY_TAIL_DAYS, carryNote, carryRuns, carryToNextMonth } from './carry'
 import { checkPlan } from './check'
+import { cellOptions } from './explain'
 import { emptySchedule, shiftAt } from './schedule'
 import { solve } from './solver'
 import { validatePlan } from './storage'
@@ -46,18 +47,23 @@ describe('翌月への引き継ぎ', () => {
     expect(next.schedule).toEqual(emptySchedule())
   })
 
-  it('前の月の終わりの14日ぶんの勤務を、古い順に残す', () => {
+  it('前の月の勤務を、まるごと、古い順に残す（31日ぶんまで）', () => {
     let s = workOn(emptySchedule(), 'st1', 'sh1', range(27, 31))
-    s = workOn(s, 'st2', 'sh2', [18, 31])
+    s = workOn(s, 'st2', 'sh2', [1, 18, 31])
     const next = carryToNextMonth(tinyPlan({ schedule: s }))
     expect(next.carry!.year).toBe(2026)
     expect(next.carry!.month).toBe(12)
-    expect(next.carry!.tail.st1).toHaveLength(CARRY_TAIL_DAYS)
+    expect(CARRY_TAIL_DAYS).toBe(31)
+    expect(next.carry!.tail.st1).toHaveLength(31)
     expect(next.carry!.tail.st1.slice(-6)).toEqual([null, 'sh1', 'sh1', 'sh1', 'sh1', 'sh1'])
-    // 18日は、31日から数えて14日め（いちばん古い）
+    // 添字は「日 − 1」（12月は31日あるので、1日がいちばん古い）
     expect(next.carry!.tail.st2[0]).toBe('sh2')
-    expect(next.carry!.tail.st2[13]).toBe('sh2')
-    expect(next.carry!.tail.st3).toEqual(new Array(14).fill(null))
+    expect(next.carry!.tail.st2[17]).toBe('sh2')
+    expect(next.carry!.tail.st2[30]).toBe('sh2')
+    expect(next.carry!.tail.st3).toEqual(new Array(31).fill(null))
+    // 2月（28日）からの引き継ぎは、28日ぶん
+    const feb = carryToNextMonth(tinyPlan({ year: 2027, month: 2, schedule: workOn(emptySchedule(), 'st1', 'sh1', [28]) }))
+    expect(feb.carry!.tail.st1).toHaveLength(28)
   })
 
   it('表が空のとき（まだ組んでいないとき）は、前の月の勤務を持たない', () => {
@@ -114,6 +120,44 @@ describe('引き継いだ月の自動作成: 月をまたぐ条件を守る', ()
     expect(shiftAt(result.schedule, 'st1', 1)).toBeNull()
     expect(shiftAt(result.schedule, 'st1', 2)).toBe('sh1')
     expect(result.check.violations).toEqual([])
+  })
+
+  it('連勤の上限が15日以上でも、月をまたぐ連勤を数えそこなわない（前の月を、まるごと持っていく）', () => {
+    for (const limit of [15, 20, 31]) {
+      // 12月の終わりに、上限ちょうどの日数を続けて勤務した（12月の中では、違反なし）
+      const dec = tinyPlan({ staff: [base.staff[0]], rules: { ...base.rules, maxConsecutive: limit }, schedule: workOn(emptySchedule(), 'st1', 'sh1', range(31 - limit + 1, 31)) })
+      expect(checkPlan(dec).violations).toEqual([])
+      const jan = carryToNextMonth(dec)
+      expect(carryRuns(jan)[0].run).toBe(limit)
+      // 1月1日に入れると、上限をこえる。マスの注意にも、点検にも出る
+      expect(cellOptions(jan, jan.schedule, 'st1', 1)[1].reasons).toContain('maxConsecutive')
+      const forced = { ...jan, schedule: workOn(emptySchedule(), 'st1', 'sh1', [1]) }
+      expect(checkPlan(forced).violations.map((v) => v.kind)).toContain('maxConsecutive')
+      // 自動作成は、1月1日に入れない
+      for (const seed of [1, 2, 3]) {
+        const result = solve(jan, { seed, effort: 0.1 })
+        expect(shiftAt(result.schedule, 'st1', 1)).toBeNull()
+        expect(result.check.violations).toEqual([])
+      }
+    }
+  })
+
+  it('2月をまるごと勤務した人は、1月の終わりからの連勤も足して数える（2月は28日しかないため）', () => {
+    // 1月30日・31日 → 2月の28日ぜんぶ → 3月1日 で、32日続きになる。上限は30日
+    const rules = { ...base.rules, maxConsecutive: 30 }
+    const jan = tinyPlan({ year: 2027, month: 1, staff: [base.staff[0]], rules, schedule: workOn(emptySchedule(), 'st1', 'sh1', [30, 31]) })
+    const feb = carryToNextMonth(jan)
+    const mar = carryToNextMonth({ ...feb, schedule: workOn(emptySchedule(), 'st1', 'sh1', range(1, 28)) })
+    expect([mar.year, mar.month]).toEqual([2027, 3])
+    expect(mar.carry!.tail.st1).toHaveLength(31) // 1月の終わりの3日（29日は休み） + 2月の28日
+    expect(mar.carry!.tail.st1[0]).toBeNull()
+    expect(carryRuns(mar)[0].run).toBe(30)
+    expect(cellOptions(mar, mar.schedule, 'st1', 1)[1].reasons).toContain('maxConsecutive')
+    expect(validatePlan(mar).ok).toBe(true)
+    // 2月の途中に休みがあれば、1月のぶんは足さない
+    const mar2 = carryToNextMonth({ ...feb, schedule: workOn(emptySchedule(), 'st1', 'sh1', range(2, 28)) })
+    expect(mar2.carry!.tail.st1).toHaveLength(28)
+    expect(carryRuns(mar2)[0].run).toBe(27)
   })
 
   it('引き継ぎがなければ、1日から入れる（前の月を気にしない）', () => {

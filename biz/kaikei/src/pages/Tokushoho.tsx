@@ -17,7 +17,7 @@ export default function Tokushoho() {
     ['支払方法', site.sales.payment],
     ['支払時期', site.sales.paymentTiming],
     ['商品の引渡し時期', site.sales.delivery],
-    ['返品・キャンセル', site.sales.refund],
+    ['返品・キャンセル', site.sales.refund + site.sales.cancel],
     ['動作環境', site.sales.environment],
   ]
   return (

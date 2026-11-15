@@ -34,15 +34,22 @@ function Price({ value, note }: { value: number; note: string }) {
   )
 }
 
-/** 文の中の「1年度 980円。」を、ひとまとまりにする（スマホの幅で、「1年度」と「980円」の間で折れないように）。 */
-function keepPriceTogether(sentence: string, price: string) {
+/**
+ * 文の中の「1年度 980円（税込）。」を、ひとまとまりにする（スマホの幅で、「1年度」と「980円」の間で折れないように）。
+ * （税込）は、句点の前に入れる（「…980円。（税込）」とならないように）。字は、本文と同じゴシックで小さく出す
+ * （明朝のふつうの太さは読み込んでいないので、明朝のままだと、この1か所のために別の太さの書体を読み込むことになる）。
+ */
+function priceSentence(sentence: string, price: string, tax: boolean) {
   const at = sentence.indexOf(price)
-  if (at < 0) return sentence
+  if (at < 0) return `${sentence}。`
   return (
     <>
       {sentence.slice(0, at)}
-      <span className="whitespace-nowrap">{price}</span>
-      {sentence.slice(at + price.length)}
+      <span className="whitespace-nowrap">
+        {price}
+        {tax && <span className="font-sans text-[0.8em] font-bold">（税込）</span>}
+        {sentence.slice(at + price.length)}。
+      </span>
     </>
   )
 }
@@ -59,11 +66,8 @@ export function Pricing() {
           {summary
             .split('。')
             .filter(Boolean)
-            .map((sentence, i, all) => (
-              <Phrase key={sentence}>
-                {keepPriceTogether(sentence + '。', `${pro.unit} ${pro.priceText}。`)}
-                {i === all.length - 1 && pro.taxIncluded && <span className="text-[0.8em] font-normal">（税込）</span>}
-              </Phrase>
+            .map((sentence) => (
+              <Phrase key={sentence}>{priceSentence(sentence, `${pro.unit} ${pro.priceText}`, pro.taxIncluded)}</Phrase>
             ))}
         </p>
 
@@ -108,13 +112,20 @@ export function Pricing() {
         <ul className="mt-6 grid max-w-[60em] gap-2 text-[0.92rem] leading-[1.8] text-muted-foreground">
           <li>{pro.note}</li>
           <li>
+            <span className="font-bold text-foreground">
+              キーは、お申し込みから{pro.deliveryDays}日以内に、メールでお送りします。
+            </span>
+            1件ずつ手作業で発行するため、お支払いのあと、すぐには届きません。総会の日までに、余裕をもってお申し込みください。
+          </li>
+          <li>
             キーは、発行した日から{pro.licenseDays}日のあいだ使えます（総会が年度の終わりより遅くなっても使えるように、1年より長くしてあります）。届いたキーは、道具の「引き継ぎ」の画面で入れます。
           </li>
           <li>
-            {site.sales.refund}
-            <Link to="/tokushoho" className="ml-1 rounded text-rule-ink underline underline-offset-4">
+            {site.sales.refund}キーをお送りする前のキャンセルと、キーが届かないときのご連絡先は、
+            <Link to="/tokushoho" className="rounded text-rule-ink underline underline-offset-4">
               特定商取引法にもとづく表記
             </Link>
+            に書いています。
           </li>
         </ul>
       </Container>

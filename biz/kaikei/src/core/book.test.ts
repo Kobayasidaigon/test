@@ -28,7 +28,7 @@ import { carryForward } from './carry'
 import { ORG_KINDS } from './templates'
 import { add, bankId, cashId, catId, deepFreeze, deposit, expense, failCode, income, newBook, ok, seqIds, withdraw, year } from './test-helpers'
 import { LIMITS, type Book } from './types'
-import { isSafeId } from './validate'
+import { checkYearChain, isSafeId } from './validate'
 
 describe('createBook', () => {
   it('団体の種類に合った科目のひな形が入る。予算は 0円 から', () => {
@@ -324,6 +324,10 @@ describe('checkTransaction（入れる前の確かめ）', () => {
     expect(r.errors).toEqual([])
     expect(r.warnings[0].message).toContain('令和8年4月1日〜令和9年3月31日')
     expect(r.warnings[0].field).toBe('date')
+    // 年度の終わりより先の日付には、「次の年度の取引は、繰り越してから入れる」と案内する（前の日付には、出さない）
+    const later = checkTransaction(book, year(book).id, base(book, { date: '2027-04-05' })).warnings[0].message
+    expect(later).toContain('繰り越してから')
+    expect(r.warnings[0].message).not.toContain('繰り越してから')
   })
   it('今日を渡すと、先の日付を知らせる', () => {
     const book = newBook()
@@ -650,7 +654,7 @@ describe('団体とライセンスキー', () => {
 })
 
 describe('読むだけの年度（繰り越したあとの、前の年度）', () => {
-  it('どの操作も断る。理由の文に、年度の呼び名が入る', () => {
+  it('数字に関わる操作（取引、科目、置き場所、年度の呼び名と期間、繰越金の予算額）は、どれも断る。理由の文に、年度の呼び名が入る', () => {
     let book = newBook()
     book = income(book, '2026-04-10', 30_000)
     const old = year(book)
@@ -666,17 +670,17 @@ describe('読むだけの年度（繰り越したあとの、前の年度）', (
       removeTransaction(book, old.id, tx),
       addCategory(book, old.id, { side: 'income', name: '寄付金' }),
       updateCategory(book, old.id, cat, { budget: 1 }),
+      updateCategory(book, old.id, cat, { note: 'x' }),
       moveCategory(book, old.id, cat, 'down'),
       removeCategory(book, old.id, cat),
       addBankAccount(book, old.id, { name: '定期' }),
       updateAccount(book, old.id, cash, { name: '手元の現金' }),
       removeAccount(book, old.id, cash),
       updateYear(book, old.id, { label: 'x' }),
-      updateOfficers(book, old.id, { president: 'x' }),
-      setReconciliation(book, old.id, cash, { date: '2027-03-31', actual: 0 }),
-      updateAudit(book, old.id, { date: '2027-04-01' }),
-      setNextBudget(book, old.id, cat, 1),
-      updateHandover(book, old.id, { memo: 'x' }),
+      updateYear(book, old.id, { endDate: '2027-03-30' }),
+      updateYear(book, old.id, { carryoverBudget: 1 }),
+      // 作成日と一緒に渡しても、数字に関わるものが入っていれば断る
+      updateYear(book, old.id, { reportDate: '2027-04-10', label: 'x' }),
     ]
     for (const r of attempts) {
       expect(failCode(r)).toBe('year-locked')
@@ -684,6 +688,91 @@ describe('読むだけの年度（繰り越したあとの、前の年度）', (
     }
     // 前の年度は、1文字も変わっていない
     expect(book.years[0]).toEqual(old)
+  })
+  it('資料に書くこと（作成日、役員の名前、監査報告書、引き継ぎ書、照合の記録）は、繰り越したあとでも入れられる。決算の数字は変わらない', () => {
+    // 総会の前に、新しい年度の取引を入れるために先に繰り越した人が、前の年度の資料を仕上げられるように
+    let book = income(newBook(), '2026-04-10', 30_000)
+    const old = year(book)
+    const cash = cashId(book)
+    const before = summarizeYear(old)
+    book = ok(carryForward(book))
+    book = income(book, '2027-04-05', 500) // 新しい年度に取引が入っている（繰り越しは、もう取り消せない）
+    book = ok(updateYear(book, old.id, { reportDate: '2027-04-10' }))
+    book = ok(updateOfficers(book, old.id, { president: '山田', treasurer: '佐藤', auditors: ['鈴木', '高橋'] }))
+    book = ok(updateAudit(book, old.id, { date: '2027-04-12', text: '{年度}の会計を監査しました。' }))
+    book = ok(updateHandover(book, old.id, { date: '2027-04-19', successor: '田中', memo: '会費は5月に集めます。' }))
+    book = ok(setReconciliation(book, old.id, cash, { date: '2027-03-31', actual: 40_000 }))
+    const after = book.years[0]
+    expect(after.reportDate).toBe('2027-04-10')
+    expect(after.officers).toEqual({ president: '山田', treasurer: '佐藤', auditors: ['鈴木', '高橋'] })
+    expect(after.audit).toEqual({ date: '2027-04-12', text: '{年度}の会計を監査しました。' })
+    expect(after.handover).toMatchObject({ date: '2027-04-19', successor: '田中', memo: '会費は5月に集めます。' })
+    expect(after.reconciliations[cash]).toEqual({ date: '2027-03-31', actual: 40_000 })
+    // 数字に関わるところは、繰り越す前のまま
+    expect(after.transactions).toEqual(old.transactions)
+    expect(after.categories).toEqual(old.categories)
+    expect(after.accounts).toEqual(old.accounts)
+    expect(summarizeYear(after)).toEqual(before)
+    // 新しい年度の年度はじめの残高も、動いていない
+    expect(checkYearChain(book)).toEqual([])
+    // 記録は消すこともできる
+    expect(ok(setReconciliation(book, old.id, cash, null)).years[0].reconciliations).toEqual({})
+    // まちがった値は、読むだけの年度でも、同じ理由で断る
+    expect(failCode(updateYear(book, old.id, { reportDate: '2027-02-30' }))).toBe('invalid-date')
+    expect(failCode(updateOfficers(book, old.id, { auditors: [] }))).toBe('limit')
+  })
+  it('すぐ前の年度の予算案は、繰り越したあとでも変えられる。いまの年度の予算額にも、同じ金額が入る', () => {
+    let book = newBook()
+    const dues = catId(book, 'income', '会費')
+    const office = catId(book, 'expense', '事務費')
+    const old = year(book)
+    book = ok(updateCategory(book, old.id, dues, { budget: 30_000 }))
+    book = ok(updateCategory(book, old.id, office, { budget: 5_000 }))
+    book = ok(carryForward(book))
+    const now = () => year(book)
+    const budgetOf = (id: string) => now().categories.find((c) => c.id === id)!.budget
+    // 予算案を入れずに繰り越したので、新しい年度の予算は、前の年度と同じ
+    expect([budgetOf(dues), budgetOf(office)]).toEqual([30_000, 5_000])
+    // あとから予算案を入れる → 紙の予算案と、新しい年度の予算が、同じ金額になる
+    book = ok(setNextBudget(book, old.id, dues, 36_000))
+    expect(book.years[0].nextBudget).toEqual({ [dues]: 36_000 })
+    expect([budgetOf(dues), budgetOf(office)]).toEqual([36_000, 5_000])
+    // 前の年度の予算そのもの（決算書に出る数字）は、変わらない
+    expect(book.years[0].categories.find((c) => c.id === dues)!.budget).toBe(30_000)
+    // 0円 も入れられる（空と 0 は違う）
+    book = ok(setNextBudget(book, old.id, office, 0))
+    expect(budgetOf(office)).toBe(0)
+    // 入力を消すと、前の年度の予算に戻る（繰り越しのときと同じ決まり）
+    book = ok(setNextBudget(book, old.id, dues, null))
+    expect(book.years[0].nextBudget).toEqual({ [office]: 0 })
+    expect(budgetOf(dues)).toBe(30_000)
+    // いまの年度で消した科目には、入れない（紙の予算案だけが変わる）
+    book = ok(removeCategory(book, now().id, office))
+    book = ok(setNextBudget(book, old.id, office, 7_000))
+    expect(book.years[0].nextBudget[office]).toBe(7_000)
+    expect(now().categories.some((c) => c.id === office)).toBe(false)
+    // まちがった金額と、ない科目は断る
+    expect(failCode(setNextBudget(book, old.id, dues, 1.5))).toBe('invalid-amount')
+    expect(failCode(setNextBudget(book, old.id, 'nai', 1))).toBe('not-found')
+    // いまの年度の予算案は、いままでどおり（ほかの年度には、さわらない）
+    const kept = book.years[0]
+    book = ok(setNextBudget(book, now().id, dues, 40_000))
+    expect(now().nextBudget).toEqual({ [dues]: 40_000 })
+    expect(book.years[0]).toBe(kept)
+  })
+  it('2つ以上前の年度の予算案は、変えられない（次の年度も、もう読むだけなので）', () => {
+    let book = newBook()
+    const dues = catId(book, 'income', '会費')
+    const first = year(book)
+    book = ok(carryForward(book, {}, seqIds('a')))
+    book = ok(carryForward(book, {}, seqIds('b')))
+    const r = setNextBudget(book, first.id, dues, 1)
+    expect(failCode(r)).toBe('year-locked')
+    expect(!r.ok && r.message).toContain('令和8年度')
+    // すぐ前の年度（令和9年度）なら、変えられる
+    expect(setNextBudget(book, book.years[1].id, dues, 1).ok).toBe(true)
+    // 資料に書くことは、古い年度でも入れられる
+    expect(updateAudit(book, first.id, { date: '2027-04-12' }).ok).toBe(true)
   })
   it('2年目からは、始まりの日と年度はじめの残高を変えられない', () => {
     let book = income(newBook(), '2026-04-10', 30_000)

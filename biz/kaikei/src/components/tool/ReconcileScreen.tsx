@@ -67,7 +67,9 @@ function CashCounter({ onUse }: { onUse: (total: number) => void }) {
 }
 
 function ReconcileCard({ row }: { row: ReconcileRow }) {
-  const { book, year, locked, today, apply } = useWorkspace()
+  // 照合の記録は、帳簿の数字を変えない「確かめた記録」なので、繰り越したあとの前の年度でも入れられる
+  // （年度末の照合は、年度が終わったあとの監査ですることがある）
+  const { book, year, today, apply } = useWorkspace()
   const period = year
   // 確かめた日の初期値: 記録があればその日。なければ、今日（年度の中なら）か、年度の終わりの日
   const initialDate = row.date ?? (isWithin(today, year.startDate, year.endDate) ? today : year.endDate)
@@ -134,7 +136,6 @@ function ReconcileCard({ row }: { row: ReconcileRow }) {
                 text={dateText}
                 onTextChange={setDateText}
                 period={period}
-                disabled={locked}
                 invalid={!!errors.date}
                 describedBy={errors.date ? `${id}-date-error` : undefined}
               />
@@ -151,7 +152,6 @@ function ReconcileCard({ row }: { row: ReconcileRow }) {
                   id={`${id}-actual`}
                   value={actualText}
                   onValueChange={setActualText}
-                  disabled={locked}
                   aria-invalid={errors.actual ? true : undefined}
                   aria-describedby={errors.actual ? `${id}-actual-error` : undefined}
                   onKeyDown={(e) => {
@@ -178,28 +178,26 @@ function ReconcileCard({ row }: { row: ReconcileRow }) {
             <span className={cn('num text-lg', bookBalance < 0 && 'font-bold text-destructive')}>{formatYen(bookBalance)} 円</span>
           </p>
 
-          {!locked && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Button onClick={check}>照らし合わせる</Button>
-              {row.kind === 'cash' && (
-                <Button variant="soft" onClick={() => setCounter((v) => !v)} aria-expanded={counter}>
-                  <Calculator />
-                  枚数から計算する
-                </Button>
-              )}
-              {row.status !== 'unchecked' && (
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    if (apply(setReconciliation(book, year.id, row.accountId, null))) setJustStamped(false)
-                  }}
-                >
-                  記録を消す
-                </Button>
-              )}
-            </div>
-          )}
-          {counter && !locked && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button onClick={check}>照らし合わせる</Button>
+            {row.kind === 'cash' && (
+              <Button variant="soft" onClick={() => setCounter((v) => !v)} aria-expanded={counter}>
+                <Calculator />
+                枚数から計算する
+              </Button>
+            )}
+            {row.status !== 'unchecked' && (
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  if (apply(setReconciliation(book, year.id, row.accountId, null))) setJustStamped(false)
+                }}
+              >
+                記録を消す
+              </Button>
+            )}
+          </div>
+          {counter && (
             <CashCounter
               onUse={(total) => {
                 setActualText(formatYen(total))
@@ -280,7 +278,11 @@ export function ReconcileScreen() {
           {result.mismatchCount > 0 && <span className="mt-0.5 block text-[0.84rem] font-bold text-destructive">合っていない: {result.mismatchCount}</span>}
         </p>
       </section>
-      {locked && <Alert variant="info">この年度は読むだけなので、照合の記録は変えられません。</Alert>}
+      {locked && (
+        <Alert variant="info">
+          「{year.label}」は、繰り越したあとの年度です。取引は読むだけですが、照合の記録は、いまも入れられます。合わなかった分の直しは、いまの年度の取引として入れてください。
+        </Alert>
+      )}
       {result.rows.map((row) => (
         <ReconcileCard key={`${year.id}-${row.accountId}`} row={row} />
       ))}

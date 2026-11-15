@@ -206,16 +206,31 @@
   font-weight: 700;
 }
 
+/* ---- 引き継ぎ書だけの詰め方 ----
+ * 保管場所のひな形（9行）が入った、作ったばかりの帳簿の引き継ぎ書を、A4 の1枚に収める。
+ * 詰める前は、紙の中身が 279mm あり（1枚に入るのは 271mm）、「6 次の担当の方へ」の空の枠だけが2枚目に送られていた。
+ *   ・小見出しの上の空きを、少し詰める
+ *   ・「渡した」のしるしの四角が、行の高さを押し広げないようにする（ほかの表と同じ、およそ 7mm の行にする）
+ *   ・メモが空のときは、手で書くための枠を、少し低くする（書いてあるときは、いままでどおり、中身に合わせて広がる）
+ */
+.paper-handover .paper-section { margin-top: calc(var(--u) * 3.6); }
+.paper-table td.check-cell { line-height: 0; }
+.paper-table td.check-cell .paper-check { vertical-align: middle; }
+.paper-memo:empty { min-height: calc(var(--u) * 20); }
+
 /* ---- 「見本」の透かし（無料版）----
- * 紙の地に、朱の「見本」を、たてにくり返して敷く（140mm ごと。A4 の1ページに、およそ2つ入る）。
+ * 紙の地に、朱の「見本」を、左・右と互いちがいに、たてにくり返して敷く（70mm ごとに1つ。A4 の1ページに、およそ4つ入る）。
  * 地の絵にしたのは、紙が何ページに続いても、どのページにも入り、よぶんな紙が出ないようにするため
  * （本物の文字を紙の上に並べる作りも試したが、紙の終わりより下にはみ出した分だけ、白い紙が1枚よぶんに印刷された）。
+ * はじめは、大きな「見本」を 140mm ごとに1つ敷いていた。それだと、表が次のページに少しだけ続いたとき、
+ * そのページには、途中で切れた透かし（枠の上の辺と、字の頭だけ）しか出ず、汚れのように見えた（点検で見つかった）。
+ * 小さめにして間を詰めたので、短いページにも、丸ごと1つは入りやすい（紙の終わりで絵が切れること自体は、地の絵なので、なくせない）。
  * 地の絵は、ブラウザの印刷の設定で消されることがあるので、.paper の print-color-adjust: exact で、必ず出すようにしてある。
  * 絵の中の字は、端末に入っている明朝体で出る（絵の中からは、Web フォントを使えないため）。 */
 .paper[data-watermark] {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 140'%3E%3Cg transform='rotate(-20 105 70)' fill='%23c5361b' fill-opacity='.19'%3E%3Cpath fill-rule='evenodd' d='M61 49h88a4 4 0 0 1 4 4v34a4 4 0 0 1-4 4H61a4 4 0 0 1-4-4V53a4 4 0 0 1 4-4zm1.2 2.6a2.6 2.6 0 0 0-2.6 2.6v31.6a2.6 2.6 0 0 0 2.6 2.6h85.6a2.6 2.6 0 0 0 2.6-2.6V54.2a2.6 2.6 0 0 0-2.6-2.6z'/%3E%3Ctext x='109.5' y='80.5' text-anchor='middle' font-family='Hiragino Mincho ProN,Yu Mincho,YuMincho,Noto Serif CJK JP,Noto Serif JP,serif' font-weight='800' font-size='29' letter-spacing='9'%3E%E8%A6%8B%E6%9C%AC%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 140'%3E%3Cdefs%3E%3Cg id='s' fill='%23c5361b' fill-opacity='.19'%3E%3Cpath fill-rule='evenodd' d='M61 49h88a4 4 0 0 1 4 4v34a4 4 0 0 1-4 4H61a4 4 0 0 1-4-4V53a4 4 0 0 1 4-4zm1.2 2.6a2.6 2.6 0 0 0-2.6 2.6v31.6a2.6 2.6 0 0 0 2.6 2.6h85.6a2.6 2.6 0 0 0 2.6-2.6V54.2a2.6 2.6 0 0 0-2.6-2.6z'/%3E%3Ctext x='109.5' y='80.5' text-anchor='middle' font-family='Hiragino Mincho ProN,Yu Mincho,YuMincho,Noto Serif CJK JP,Noto Serif JP,serif' font-weight='800' font-size='29' letter-spacing='9'%3E%E8%A6%8B%E6%9C%AC%3C/text%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23s' transform='translate(62 35) rotate(-20) scale(.66) translate(-105 -70)'/%3E%3Cuse href='%23s' transform='translate(148 105) rotate(-20) scale(.66) translate(-105 -70)'/%3E%3C/svg%3E");
   background-repeat: repeat-y;
-  /* 絵の1枚（たて 140mm）のまん中に「見本」がある。上から敷くので、紙の頭に、切れた透かしが出ない */
+  /* 絵の1枚（たて 140mm）に、「見本」が2つ（上の左寄りと、下の右寄り）。上から敷くので、紙の頭に、切れた透かしが出ない */
   background-position: center top;
   background-size: calc(var(--u) * 210) calc(var(--u) * 140);
 }

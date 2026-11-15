@@ -137,11 +137,17 @@ export function saveLocal(storage: StorageLike, state: LocalState): { ok: true }
   }
 }
 
-/** ブラウザの中のデータを消す（「はじめからやり直す」）。退避したデータは残す。 */
+/**
+ * ブラウザの中のデータを消す（「このブラウザのデータを消す」）。
+ * 読めなかったデータの退避（BROKEN_KEY）も、一緒に消す。退避には、前の帳簿がまるごと入っていることがあり、
+ * 「共用のパソコンを使い終わったときに消す」と案内しているのに、団体の名前や取引が残ってしまうため（点検で見つかった）。
+ */
 export function clearLocal(storage: StorageLike): void {
-  try {
-    storage.removeItem(STORAGE_KEY)
-  } catch {
-    // 保存領域が使えないなら、消すものもない
+  for (const key of [STORAGE_KEY, BROKEN_KEY]) {
+    try {
+      storage.removeItem(key)
+    } catch {
+      // 保存領域が使えないなら、消すものもない
+    }
   }
 }

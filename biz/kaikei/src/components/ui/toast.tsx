@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 // 変えたところ: もとは createRoot で別の場所に描いていたが、<Toaster /> を画面に置く形にした（印刷のときに消せるように）。
 // 重ねて縮める飾りはやめて、下から積む。消えるまでの時間を長く（3秒 → 6秒。まちがいの知らせは 12秒）。
 // 種類ごとに形の違うアイコンを出す。読み上げに伝える（role="status"、まちがいは role="alert"）。文と色を、ひきつぎ会計のものに。
+// ダイアログが開いているあいだは、スマホでは画面の上に出す（ダイアログの下のボタンに、かぶさらないように）。
 
 type ToastType = "message" | "success" | "warning" | "error"
 
@@ -108,10 +109,29 @@ export function Toaster({ className }: { className?: string }) {
     return toastStore.subscribe(() => setToasts(toastStore.toasts))
   }, [])
 
+  // ダイアログが開いているあいだは、スマホとタブレットでは、知らせを画面の上に出す。
+  // スマホのダイアログは下から出る紙で、ボタンがいちばん下にある。知らせも下に出すと、「保存しました」の知らせが
+  // 「消す」「繰り越す」などのボタンに、消えるまでかぶさって押せなかった（点検で見つかった）。
+  // ダイアログは body の直下に足されるので、body の子の出入りと、開閉のしるし（data-state）だけを見張る
+  const [dialogOpen, setDialogOpen] = useState(false)
+  useEffect(() => {
+    const check = () => setDialogOpen(document.querySelector('[role="dialog"][data-state="open"]') !== null)
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-state"] })
+    return () => observer.disconnect()
+  }, [])
+
   const visible = toasts.slice(-3)
   return (
     <div
-      className={cn("no-print pointer-events-none fixed inset-x-3 z-[60] flex flex-col items-end gap-2 sm:left-auto sm:right-5 sm:w-[26rem]", className)}
+      data-dialog-open={dialogOpen || undefined}
+      className={cn(
+        "no-print pointer-events-none fixed inset-x-3 z-[60] flex flex-col items-end gap-2 sm:left-auto sm:right-5 sm:w-[26rem]",
+        className,
+        // 上の位置の指定は、呼ぶ側の bottom の指定より後ろに置く（同じ強さなので、! を付けて勝たせる）
+        dialogOpen && "max-lg:!bottom-auto max-lg:top-3",
+      )}
       onMouseEnter={() => toastStore.pauseAll()}
       onMouseLeave={() => toastStore.resumeAll()}
       onFocus={() => toastStore.pauseAll()}

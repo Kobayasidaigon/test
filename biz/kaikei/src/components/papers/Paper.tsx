@@ -26,16 +26,19 @@ export function PaperFrame({ children, zoom = 'fit', className }: { children: Re
 export function Paper({
   label,
   watermark = false,
+  className,
   children,
 }: {
   /** 読み上げ用の名前（「令和7年度 収支決算書」など） */
   label: string
   /** 「見本」の透かしを入れるか（無料版）。透かしは paper.css が、紙の地にくり返して敷く */
   watermark?: boolean
+  /** 資料ごとの詰め方を変えるための名前（paper.css の .paper-handover など） */
+  className?: string
   children: ReactNode
 }) {
   return (
-    <section className="paper" aria-label={label} data-watermark={watermark ? '' : undefined}>
+    <section className={className ? `paper ${className}` : 'paper'} aria-label={label} data-watermark={watermark ? '' : undefined}>
       {children}
     </section>
   )

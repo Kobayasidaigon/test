@@ -139,7 +139,7 @@ export function ReconcileDemo() {
                 {book !== initial && (
                   <Button variant="ghost" onClick={reset}>
                     <Undo2 aria-hidden="true" />
-                    もとに戻す
+                    元に戻す
                   </Button>
                 )}
               </div>

@@ -141,14 +141,17 @@ export function WorkspaceShell() {
               <span className="font-serif text-lg font-bold tracking-wide max-sm:sr-only">{site.name}</span>
             </Link>
 
-            <div className="order-last flex min-w-0 basis-full items-center gap-2 sm:order-none sm:basis-auto sm:flex-1">
+            {/* スマホでは、団体の名前を「…」で切らない（どの団体の帳簿を開いているかは、係を兼ねる人にはだいじ）。
+                名前が年度の欄と1行に並ばないときは、名前に1行使って、年度の欄を次の行に送る。それでも入らない名前は、折り返す。
+                パソコンでは、いままでどおり1行（幅が足りなければ「…」。全部の名前は、設定を開くと見える） */}
+            <div className="order-last flex min-w-0 basis-full flex-wrap items-center gap-x-2 gap-y-1 sm:order-none sm:basis-auto sm:flex-1 sm:flex-nowrap">
               <button
                 type="button"
                 onClick={() => setSettingsOpen(true)}
-                className="group inline-flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg px-2 text-left hover:bg-muted"
+                className="group inline-flex min-h-11 min-w-0 max-w-full items-center gap-1.5 rounded-lg px-2 text-left hover:bg-muted"
                 aria-label={`団体の設定を開く（${book.orgName}）`}
               >
-                <span className="min-w-0 truncate font-serif text-[1.15rem] font-bold leading-tight">{book.orgName}</span>
+                <span className="min-w-0 break-words font-serif text-[1.15rem] font-bold leading-tight sm:truncate">{book.orgName}</span>
                 <Settings2 className="size-[1.1rem] shrink-0 text-muted-foreground group-hover:text-foreground" aria-hidden="true" />
               </button>
               <NativeSelect
@@ -249,8 +252,8 @@ export function WorkspaceShell() {
                 <p className="flex items-center gap-3 leading-snug">
                   <Seal text="済" size={40} />
                   <span>
-                    <span className="font-bold">「{year.label}」は、読むだけです。</span>
-                    次の年度へ繰り越したので、書きかえられません。資料を見ること・印刷することは、できます。
+                    <span className="font-bold">「{year.label}」の取引・科目・予算額は、読むだけです。</span>
+                    次の年度へ繰り越したためです。資料に書くこと（作成日、役員の名前、監査報告書、次年度の予算案、引き継ぎ書）と、残高の照合は、いまも入れられます。印刷もできます。
                   </span>
                 </p>
                 <Button variant="soft" size="sm" onClick={() => ws.setYearId(latest.id)}>

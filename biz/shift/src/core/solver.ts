@@ -637,14 +637,14 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
 
   onProgress?.({ phase: 'improve', ratio: 0 })
   /** 入れ替えを count 回ためす。progressFrom〜progressTo は、進み具合の表示に使う割合 */
-  function anneal(count: number, progressFrom: number, progressTo: number): void {
+  function anneal(count: number, progressFrom: number, progressTo: number, startThreshold: number = START_THRESHOLD): void {
     const reportEvery = Math.max(1, Math.floor(count / 20))
     for (let k = 0; k < count; k++) {
       if (k % 64 === 0) refreshShort()
       if (onProgress && k % reportEvery === 0) onProgress({ phase: 'improve', ratio: progressFrom + ((progressTo - progressFrom) * k) / count })
       // 受け入れる「悪化の幅」を、はじめは広く、終わりに向けて 0 まで狭める
       const left = 1 - k / count
-      const threshold = START_THRESHOLD * left * left
+      const threshold = startThreshold * left * left
       const before = cost
       if (!proposeMove()) {
         rollback()
@@ -674,9 +674,15 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
   if (iterations > 0 && shortSlots.length + shortRoles.length > 0) {
     // 足りないところが残ったときだけ、もう一度ゆるめてから探し直す（半分の回数）。
     // 「本当は埋まるのに足りない」案で止まることを減らすため。足りないところがなければ、ここは通らない
+    const EXP = (globalThis as any).__exp ?? { rounds: 1, th: START_THRESHOLD }
     const extra = Math.round(iterations / 2)
     tried += extra
-    anneal(extra, 0.7, 1)
+    const per = Math.round(extra / EXP.rounds)
+    for (let round = 0; round < EXP.rounds; round++) {
+      anneal(per, 0.7, 1, EXP.th)
+      refreshShort()
+      if (shortSlots.length + shortRoles.length === 0) break
+    }
   }
 
   // ---- 4. 仕上げ: 1マスの変更と、同じ日の入れ替えを全部試す ----

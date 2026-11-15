@@ -19,6 +19,8 @@ import {
   type PendingItem,
 } from '@/core'
 import { site } from '@/site.config'
+import { peekLicense, sameOrgName } from '@/lib/book-license'
+import { reasonText, verifyLicense, type License } from '@/lib/license'
 import { cn } from '@/lib/utils'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -27,7 +29,7 @@ import { Field, Input, Label, Textarea } from '@/components/ui/input'
 import { Seal } from '@/components/ui/seal'
 import { toast } from '@/components/ui/toast'
 import { CommitDate, CommitMoney, CommitText, DateField, shortDate } from './fields'
-import { storedLicenseKey, useWorkspace } from './store'
+import { useWorkspace } from './store'
 
 // ⑤ 引き継ぎ。
 //   1. ひきつぎファイル（保存する、別のファイルを開く）
@@ -170,7 +172,7 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
           {!isPro && <span className="ml-2 rounded-sm border border-shu/50 bg-shu-soft px-1.5 py-0.5 align-middle font-sans text-[0.76rem] font-bold text-shu-ink">有料版</span>}
         </>
       }
-      lead={`「${latest.label}」を締めて、新しい年度を作ります。科目と予算（予算案を入れていれば、その金額）を引き継ぎ、年度末の残高が、新しい年度のはじめの残高になります。`}
+      lead={`「${latest.label}」を締めて、新しい年度を作ります。科目と予算（予算案を入れていれば、その金額）を引き継ぎ、年度末の残高が、新しい年度のはじめの残高になります。新しい年度の日付の取引は、繰り越してから入れます。`}
     >
       {/* grid-cols-1 を書いておく（書かないと、長い口座の名前が欄を押し広げて、スマホで画面が横にはみ出す） */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -238,8 +240,11 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
           </Button>
         )}
       </div>
+      <p className="mt-3 text-[0.9rem] leading-relaxed text-muted-foreground">
+        繰り越すと、「{latest.label}」の取引・科目・予算額は、読むだけになります。資料に書くこと（作成日、役員の名前、監査報告書、次年度の予算案、引き継ぎ書）と、残高の照合は、繰り越したあとでも入れられます。
+      </p>
       {!isPro && (
-        <p className="mt-3 text-[0.9rem] leading-relaxed">
+        <p className="mt-2 text-[0.9rem] leading-relaxed">
           繰り越しは、有料版（{pro.unit} {pro.priceText}・税込）のはたらきです。下の「有料版」のところで、ライセンスキーを入れると使えます。
         </p>
       )}
@@ -249,10 +254,20 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
           <DialogHeader>
             <DialogTitle>次の年度へ繰り越す</DialogTitle>
             <DialogDescription>
-              繰り越すと、「{latest.label}」は読むだけになり、取引を足したり直したりできなくなります。先に、ファイルに保存しておくと安心です。
+              繰り越すと、「{latest.label}」の取引・科目・予算額・年度はじめの残高は、読むだけになります（足したり直したりできません）。先に、ファイルに保存しておくと安心です。
             </DialogDescription>
           </DialogHeader>
           <DialogBody className="grid gap-4">
+            <ul className="grid gap-1.5 rounded-lg border border-rule/50 bg-rule-soft/40 px-4 py-3 text-[0.92rem] leading-relaxed">
+              <li>
+                <span className="font-bold">繰り越したあとも、書けるもの: </span>
+                「{latest.label}」の資料の作成日、役員の名前、監査報告書の文と日付、次年度の予算案、引き継ぎ書、残高の照合の記録。
+              </li>
+              <li>
+                <span className="font-bold">取り消せるのは: </span>
+                新しい年度に、取引を1件も入れていないあいだだけです。
+              </li>
+            </ul>
             <Field label="新しい年度の呼び名">{(p) => <Input {...p} value={label} maxLength={LIMITS.nameLength} onChange={(e) => setLabel(e.target.value)} />}</Field>
             <div className="grid gap-1.5">
               <p className="text-[0.94rem] font-bold">期間</p>
@@ -317,7 +332,6 @@ function ListEditor<T extends { id: string }>({
   items,
   empty,
   addLabel,
-  disabled,
   onAdd,
   onRemove,
   describe,
@@ -327,7 +341,6 @@ function ListEditor<T extends { id: string }>({
   items: T[]
   empty: string
   addLabel: string
-  disabled: boolean
   onAdd: () => void
   onRemove: (id: string) => void
   describe: (item: T) => string
@@ -343,16 +356,14 @@ function ListEditor<T extends { id: string }>({
           {items.map((item) => (
             <li key={item.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2 rounded-lg border border-border bg-background/50 p-2.5">
               <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">{children(item)}</div>
-              {!disabled && (
-                <Button variant="ghost" size="icon" aria-label={`「${describe(item) || '名前なし'}」の行を消す`} onClick={() => onRemove(item.id)}>
-                  <Trash2 />
-                </Button>
-              )}
+              <Button variant="ghost" size="icon" aria-label={`「${describe(item) || '名前なし'}」の行を消す`} onClick={() => onRemove(item.id)}>
+                <Trash2 />
+              </Button>
             </li>
           ))}
         </ul>
       )}
-      {!disabled && items.length < LIMITS.maxListItems && (
+      {items.length < LIMITS.maxListItems && (
         <Button variant="soft" size="sm" className="mt-2" onClick={onAdd}>
           <Plus />
           {addLabel}
@@ -364,7 +375,8 @@ function ListEditor<T extends { id: string }>({
 
 /** 3. 引き継ぎ書に書くこと */
 function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void }) {
-  const { book, year, locked, apply } = useWorkspace()
+  // 引き継ぎ書は「資料に書くこと」なので、繰り越したあとの前の年度でも書ける（引き継ぎは、年度が終わったあとにするため）
+  const { book, year, apply } = useWorkspace()
   const h = year.handover
   const patch = (p: Partial<Handover>): string | null => {
     const r = updateHandover(book, year.id, p)
@@ -375,6 +387,19 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
     if (message) toast.error(message)
   }
 
+  // 中身の入った行を消す前の確かめ（元に戻すはたらきがないので、書いたものを1回押しただけで失わないように）
+  const [removing, setRemoving] = useState<{ what: string; run: () => void } | null>(null)
+  /** 行を消す。何か書いてある行は、先に確かめる。空の行は、すぐ消す。 */
+  const removeRow = (what: string, filled: boolean, patchValue: Partial<Handover>) => {
+    const run = () => {
+      const message = patch(patchValue)
+      if (message) toast.error(message)
+      else toast.message(`${what}の行を消しました。`)
+    }
+    if (filled) setRemoving({ what, run })
+    else run()
+  }
+
   const pendingRows = (key: 'unpaid' | 'unreceived') => (item: PendingItem) => (
     <>
       <CommitText
@@ -382,7 +407,6 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
         value={item.description}
         maxLength={LIMITS.noteLength}
         placeholder="内容（例: 集会所の鍵の複製代）"
-        disabled={locked}
         onCommit={(v) => patch({ [key]: h[key].map((x) => (x.id === item.id ? { ...x, description: v } : x)) })}
       />
       <CommitMoney
@@ -391,7 +415,6 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
         value={item.amount}
         allowEmpty
         placeholder="金額（円）"
-        disabled={locked}
         onCommit={(v) => patch({ [key]: h[key].map((x) => (x.id === item.id ? { ...x, amount: v } : x)) })}
       />
     </>
@@ -407,11 +430,11 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="grid content-start gap-1.5">
             <Label htmlFor="handover-date">引き継ぎをする日</Label>
-            <CommitDate id="handover-date" value={h.date} disabled={locked} emptyHint="空のままなら、紙に手で書けるように、空けて出します。" onCommit={(v) => patch({ date: v })} />
+            <CommitDate id="handover-date" value={h.date} emptyHint="空のままなら、紙に手で書けるように、空けて出します。" onCommit={(v) => patch({ date: v })} />
           </div>
           <div className="grid content-start gap-1.5">
             <Label htmlFor="handover-successor">次の担当の方の名前</Label>
-            <CommitText id="handover-successor" value={h.successor} maxLength={LIMITS.nameLength} disabled={locked} onCommit={(v) => patch({ successor: v })} />
+            <CommitText id="handover-successor" value={h.successor} maxLength={LIMITS.nameLength} onCommit={(v) => patch({ successor: v })} />
             <p className="text-[0.84rem] leading-snug text-muted-foreground">空のままなら、線だけを出します（手で書けます）。</p>
           </div>
         </div>
@@ -426,7 +449,6 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
                   label={`引き継ぐもの（いまは「${c.label}」）`}
                   value={c.label}
                   maxLength={LIMITS.nameLength}
-                  disabled={locked}
                   inputClassName="font-bold"
                   className="max-md:col-span-2"
                   onCommit={(v) => patch({ custody: h.custody.map((x) => (x.id === c.id ? { ...x, label: v } : x)) })}
@@ -436,29 +458,26 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
                   value={c.place}
                   maxLength={LIMITS.noteLength}
                   placeholder="保管場所（例: 会計の自宅）"
-                  disabled={locked}
                   className="max-md:col-span-2"
                   onCommit={(v) => patch({ custody: h.custody.map((x) => (x.id === c.id ? { ...x, place: v } : x)) })}
                 />
-                <label className={cn('inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg px-2 text-[0.94rem] font-bold', locked && 'cursor-not-allowed opacity-60')}>
+                <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg px-2 text-[0.94rem] font-bold">
                   <input
                     type="checkbox"
                     className="size-5 accent-[var(--rule-ink)]"
                     checked={c.handedOver}
-                    disabled={locked}
+                    aria-label={`「${c.label}」を渡した`}
                     onChange={(e) => patchOrToast({ custody: h.custody.map((x) => (x.id === c.id ? { ...x, handedOver: e.target.checked } : x)) })}
                   />
                   渡した
                 </label>
-                {!locked && (
-                  <Button variant="ghost" size="icon" className="justify-self-end" aria-label={`「${c.label}」の行を消す`} onClick={() => patchOrToast({ custody: h.custody.filter((x) => x.id !== c.id) })}>
-                    <Trash2 />
-                  </Button>
-                )}
+                <Button variant="ghost" size="icon" className="justify-self-end" aria-label={`「${c.label}」の行を消す`} onClick={() => removeRow(`「${c.label}」`, c.place !== '' || c.handedOver, { custody: h.custody.filter((x) => x.id !== c.id) })}>
+                  <Trash2 />
+                </Button>
               </li>
             ))}
           </ul>
-          {!locked && h.custody.length < LIMITS.maxListItems && (
+          {h.custody.length < LIMITS.maxListItems && (
             <Button variant="soft" size="sm" className="mt-2" onClick={() => patchOrToast({ custody: [...h.custody, { id: randomId(), label: '引き継ぐもの', place: '', handedOver: false }] })}>
               <Plus />
               行を足す
@@ -471,10 +490,12 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
           items={h.unpaid}
           empty="書いてあるものは、ありません。"
           addLabel="まだ払っていないものを足す"
-          disabled={locked}
           describe={(i) => i.description}
           onAdd={() => patchOrToast({ unpaid: [...h.unpaid, { id: randomId(), description: '', amount: null }] })}
-          onRemove={(id) => patchOrToast({ unpaid: h.unpaid.filter((x) => x.id !== id) })}
+          onRemove={(id) => {
+            const item = h.unpaid.find((x) => x.id === id)
+            removeRow(`「${item?.description || 'まだ払っていないもの'}」`, !!item && (item.description !== '' || item.amount !== null), { unpaid: h.unpaid.filter((x) => x.id !== id) })
+          }}
         >
           {pendingRows('unpaid')}
         </ListEditor>
@@ -484,10 +505,12 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
           items={h.unreceived}
           empty="書いてあるものは、ありません。"
           addLabel="まだもらっていないものを足す"
-          disabled={locked}
           describe={(i) => i.description}
           onAdd={() => patchOrToast({ unreceived: [...h.unreceived, { id: randomId(), description: '', amount: null }] })}
-          onRemove={(id) => patchOrToast({ unreceived: h.unreceived.filter((x) => x.id !== id) })}
+          onRemove={(id) => {
+            const item = h.unreceived.find((x) => x.id === id)
+            removeRow(`「${item?.description || 'まだもらっていないもの'}」`, !!item && (item.description !== '' || item.amount !== null), { unreceived: h.unreceived.filter((x) => x.id !== id) })
+          }}
         >
           {pendingRows('unreceived')}
         </ListEditor>
@@ -497,10 +520,12 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
           items={h.equipment}
           empty="書いてあるものは、ありません。"
           addLabel="備品を足す"
-          disabled={locked}
           describe={(i) => i.name}
           onAdd={() => patchOrToast({ equipment: [...h.equipment, { id: randomId(), name: '', quantity: '', place: '' }] })}
-          onRemove={(id) => patchOrToast({ equipment: h.equipment.filter((x) => x.id !== id) })}
+          onRemove={(id) => {
+            const item = h.equipment.find((x) => x.id === id)
+            removeRow(`「${item?.name || '備品'}」`, !!item && (item.name !== '' || item.quantity !== '' || item.place !== ''), { equipment: h.equipment.filter((x) => x.id !== id) })
+          }}
         >
           {(item) => (
             <>
@@ -510,7 +535,6 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
                   value={item.name}
                   maxLength={LIMITS.nameLength}
                   placeholder="名前（例: テント）"
-                  disabled={locked}
                   onCommit={(v) => patch({ equipment: h.equipment.map((x) => (x.id === item.id ? { ...x, name: v } : x)) })}
                 />
                 <CommitText
@@ -518,7 +542,6 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
                   value={item.quantity}
                   maxLength={20}
                   placeholder="数（例: 2張）"
-                  disabled={locked}
                   onCommit={(v) => patch({ equipment: h.equipment.map((x) => (x.id === item.id ? { ...x, quantity: v } : x)) })}
                 />
               </div>
@@ -528,7 +551,6 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
                 value={item.place}
                 maxLength={LIMITS.noteLength}
                 placeholder="保管場所"
-                disabled={locked}
                 onCommit={(v) => patch({ equipment: h.equipment.map((x) => (x.id === item.id ? { ...x, place: v } : x)) })}
               />
             </>
@@ -540,7 +562,7 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
             次の担当の方へのメモ
           </Label>
           <p className="text-[0.9rem] leading-relaxed text-muted-foreground">会費を集める時期、引き落としの日、補助金の申請の時期など、知っておくと助かることを書きます。</p>
-          <CommitText id="handover-memo" multiline rows={7} value={h.memo} maxLength={LIMITS.textLength} disabled={locked} onCommit={(v) => patch({ memo: v })} />
+          <CommitText id="handover-memo" multiline rows={7} value={h.memo} maxLength={LIMITS.textLength} onCommit={(v) => patch({ memo: v })} />
         </div>
 
         <div>
@@ -549,38 +571,126 @@ function HandoverFormCard({ onNavigate }: { onNavigate: (tab: 'reports') => void
           </Button>
         </div>
       </div>
+
+      <Dialog open={removing !== null} onOpenChange={(open) => !open && setRemoving(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{removing?.what}の行を消しますか</DialogTitle>
+            <DialogDescription>この行に書いたことが、消えます。元に戻せません。</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setRemoving(null)}>
+              消さない
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                const r = removing
+                setRemoving(null)
+                r?.run()
+              }}
+            >
+              消す
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   )
 }
 
 /** 4. 有料版（ライセンスキー） */
 function LicenseCard() {
-  const { book, license, isSample, apply } = useWorkspace()
+  const { book, license, bookLicense, isSample, today, apply } = useWorkspace()
   const [key, setKey] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  // キーの名前と、帳簿の団体の名前が違うときの確かめ
+  const [confirming, setConfirming] = useState<{ key: string; license: License } | null>(null)
   const pro = site.pricing.pro
-  const inFile = book.licenseKey !== ''
+
+  // キーは団体のものなので、帳簿（ひきつぎファイル）の中に入れる。有料版かどうかは、帳簿に入っているキーで決まる
+  const put = (licenseKey: string) => {
+    if (apply(setLicenseKey(book, licenseKey))) {
+      toast.success('有料版になりました。キーは、ひきつぎファイルの中に入りました。ファイルを保存し直してください。')
+    }
+  }
 
   const activate = async () => {
-    const trimmed = key.trim()
+    const trimmed = key.replace(/\s+/g, '')
     if (trimmed === '') {
       setError('ライセンスキーを貼り付けてください。')
       return
     }
     setBusy(true)
-    const reason = await license.activate(trimmed)
+    const result = await verifyLicense(trimmed, site.licensePublicKey, site.slug, today)
     setBusy(false)
-    if (reason !== null) {
-      setError(reason)
+    if (!result.ok) {
+      // 期限切れは、いつ切れたかも言う
+      const expiredOn = result.reason === 'expired' ? peekLicense(trimmed)?.expiresAt : null
+      setError(expiredOn ? `このキーは、${formatWareki(expiredOn)}に期限が切れています。有料版を使うときは、あらためてお申し込みください。` : reasonText[result.reason])
       return
     }
     setError(null)
     setKey('')
-    // キーは団体のものなので、ひきつぎファイルにも入れる（見本の帳簿には入れない）
-    if (!isSample) apply(setLicenseKey(book, trimmed))
-    toast.success(isSample ? '有料版になりました。' : '有料版になりました。キーは、ひきつぎファイルにも入れました。ファイルを保存し直してください。')
+    // 別の団体あてのキーかもしれないときは、だまって入れずに、確かめる（名前の書き方が違うだけのこともあるので、断りはしない）
+    if (!sameOrgName(result.license.name, book.orgName)) setConfirming({ key: trimmed, license: result.license })
+    else put(trimmed)
   }
+
+  const remove = (done: string) => apply(setLicenseKey(book, ''), { done })
+
+  const keyForm = (
+    <div className="grid gap-4">
+      <form
+        className="grid gap-2"
+        onSubmit={(e) => {
+          e.preventDefault()
+          activate()
+        }}
+      >
+        <Field
+          label="ライセンスキー"
+          hint={`お申し込みのあと、${pro.deliveryDays}日以内にメールで届くキーを、最初から最後までコピーして、貼り付けてください。キーは、この帳簿のひきつぎファイルの中に入ります。`}
+          error={error}
+        >
+          {(p) => (
+            <Textarea
+              {...p}
+              value={key}
+              rows={3}
+              spellCheck={false}
+              autoComplete="off"
+              className="min-h-20 break-all font-mono text-[0.86rem]"
+              onChange={(e) => setKey(e.target.value)}
+            />
+          )}
+        </Field>
+        <div>
+          <Button type="submit" variant="secondary" disabled={busy}>
+            <KeyRound />
+            {busy ? '確かめています…' : 'キーを確かめて、有料版にする'}
+          </Button>
+        </div>
+      </form>
+      <div className="border-t border-rule/40 pt-3">
+        {site.checkoutUrl ? (
+          <>
+            <Button asChild variant="outline">
+              <a href={site.checkoutUrl} target="_blank" rel="noreferrer">
+                有料版を申し込む（{pro.priceText}・税込。決済ページが開きます）
+              </a>
+            </Button>
+            <p className="mt-2 text-[0.86rem] leading-relaxed text-muted-foreground">
+              キーは、手作業で発行して、お申し込みから{pro.deliveryDays}日以内にメールでお送りします（すぐには届きません）。総会の日までに、余裕をもってお申し込みください。
+            </p>
+          </>
+        ) : (
+          <p className="inline-flex min-h-11 items-center rounded-lg border border-dashed border-input/70 bg-muted px-4 font-bold text-muted-foreground">販売準備中です（{pro.priceText}・税込）</p>
+        )}
+      </div>
+    </div>
+  )
 
   return (
     <Card
@@ -593,89 +703,104 @@ function LicenseCard() {
           <AlertTitle>いまは公開前のため、有料版のはたらきを、すべて試せます</AlertTitle>
           <AlertDescription>販売を始めたあとは、ライセンスキーを入れると、有料版になります。無料版の見え方は、画面のいちばん上の切り替えで確かめられます。</AlertDescription>
         </Alert>
-      ) : license.license ? (
+      ) : isSample ? (
+        // 見本の帳簿には、キーを入れない（キーは、お申し込みをした団体の帳簿に入れるもの）
+        <Alert variant="info">
+          <AlertTitle>サンプルの帳簿では、無料版の見え方になります</AlertTitle>
+          <AlertDescription>ライセンスキーは、ご自分の団体の帳簿に入れます。ひきつぎファイルを開くか、新しい帳簿を作ってから、この画面でキーを入れてください。</AlertDescription>
+        </Alert>
+      ) : bookLicense.status === 'ok' ? (
         <div className="grid gap-3">
           <div className="flex items-center gap-4 rounded-lg border border-rule/50 bg-rule-soft/40 px-4 py-3">
             <Seal text="済" size={56} title="有料版です" />
             <div className="min-w-0">
-              <p className="font-bold">有料版です{license.license.name ? `（${license.license.name} 様）` : ''}</p>
+              <p className="font-bold">有料版です{bookLicense.license.name ? `（${bookLicense.license.name} 様）` : ''}</p>
               <p className="text-[0.9rem] text-muted-foreground">
-                {license.license.expiresAt ? `${formatWareki(license.license.expiresAt)}まで使えます。` : '期限はありません。'}
+                {bookLicense.license.expiresAt ? `${formatWareki(bookLicense.license.expiresAt)}まで使えます。` : '期限はありません。'}
               </p>
             </div>
           </div>
-          {isSample ? null : inFile ? (
-            <p className="text-[0.9rem] leading-relaxed">
-              {pro.note}
-              <span className="mt-1 block text-[0.84rem] text-muted-foreground">キーは、この帳簿のひきつぎファイルにも入っています。ブラウザから外しても、このファイルを開くと、また有料版になります。</span>
-            </p>
-          ) : (
-            <Alert variant="warn">
-              <AlertDescription>
-                このキーは、まだひきつぎファイルに入っていません。入れておくと、次の担当の方も、期限まで有料版を使えます。
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="mt-2"
-                  onClick={() => {
-                    const stored = storedLicenseKey()
-                    if (stored) apply(setLicenseKey(book, stored), { done: 'キーを、ひきつぎファイルに入れました。ファイルを保存し直してください。' })
-                    else toast.error('このブラウザに、キーが残っていませんでした。もう一度、キーを入れてください。')
-                  }}
-                >
-                  キーを、ひきつぎファイルに入れる
-                </Button>
-              </AlertDescription>
+          {!sameOrgName(bookLicense.license.name, book.orgName) && (
+            <Alert variant="info">
+              このキーは、「{bookLicense.license.name}」あてに発行されたものです。いま開いている帳簿は「{book.orgName}」です。キーは、お申し込みをした団体のものです。
             </Alert>
           )}
+          <p className="text-[0.9rem] leading-relaxed">
+            {pro.note}
+            <span className="mt-1 block text-[0.84rem] text-muted-foreground">キーは、この帳簿のひきつぎファイルの中に入っています。ファイルを保存して渡せば、次の担当の方が開いたときも、有料版になります。</span>
+          </p>
           <div>
-            <Button variant="ghost" size="sm" onClick={() => license.deactivate()}>
-              このブラウザから、キーを外す
+            <Button variant="ghost" size="sm" onClick={() => remove('キーを、この帳簿から外しました。無料版に戻りました。')}>
+              この帳簿から、キーを外す
             </Button>
           </div>
         </div>
       ) : (
         <div className="grid gap-4">
-          <form
-            className="grid gap-2"
-            onSubmit={(e) => {
-              e.preventDefault()
-              activate()
-            }}
-          >
-            <Field label="ライセンスキー" hint="購入のあとに届くメールのキーを、最初から最後までコピーして、貼り付けてください。" error={error}>
-              {(p) => (
-                <Textarea
-                  {...p}
-                  value={key}
-                  rows={3}
-                  spellCheck={false}
-                  autoComplete="off"
-                  className="min-h-20 break-all font-mono text-[0.86rem]"
-                  onChange={(e) => setKey(e.target.value)}
-                />
-              )}
-            </Field>
-            <div>
-              <Button type="submit" variant="secondary" disabled={busy}>
-                <KeyRound />
-                {busy ? '確かめています…' : 'キーを確かめて、有料版にする'}
-              </Button>
-            </div>
-          </form>
-          <div className="border-t border-rule/40 pt-3">
-            {site.checkoutUrl ? (
-              <Button asChild variant="outline">
-                <a href={site.checkoutUrl} target="_blank" rel="noreferrer">
-                  有料版を申しこむ（{pro.priceText}・決済ページが開きます）
-                </a>
-              </Button>
-            ) : (
-              <p className="inline-flex min-h-11 items-center rounded-lg border border-dashed border-input/70 bg-muted px-4 font-bold text-muted-foreground">販売準備中です（{pro.priceText}・税込）</p>
-            )}
-          </div>
+          {bookLicense.status === 'checking' && <p role="status">キーを確かめています…</p>}
+          {bookLicense.status === 'expired' && (
+            // 警告ではなく、おだやかな案内にする（道具が使えなくなったわけではないので）
+            <Alert variant="info">
+              <AlertTitle>
+                有料版のキーは、{bookLicense.license.expiresAt ? `${formatWareki(bookLicense.license.expiresAt)}に` : ''}期限が切れました
+              </AlertTitle>
+              <AlertDescription>
+                入力と、画面での確認は、このまま無料で使えます。透かしなしで印刷するとき・次の年度へ繰り越すときは、あらためてお申し込みのうえ、新しいキーを下の欄に入れてください。
+                <div className="mt-2">
+                  <Button variant="soft" size="sm" onClick={() => remove('期限が切れたキーを、この帳簿から外しました。')}>
+                    期限が切れたキーを、ファイルから外す
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
+          {bookLicense.status === 'invalid' && (
+            <Alert variant="warn">
+              <AlertTitle>この帳簿に入っているライセンスキーは、使えませんでした</AlertTitle>
+              <AlertDescription>
+                {bookLicense.message}
+                <div className="mt-2">
+                  <Button variant="soft" size="sm" onClick={() => remove('使えなかったキーを、この帳簿から外しました。')}>
+                    使えないキーを、ファイルから外す
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
+          {bookLicense.status !== 'checking' && keyForm}
         </div>
       )}
+
+      <Dialog open={confirming !== null} onOpenChange={(open) => !open && setConfirming(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>このキーは、「{confirming?.license.name}」あてのものです</DialogTitle>
+            <DialogDescription>
+              いま開いている帳簿は「{book.orgName}」です。キーは、お申し込みをした団体のものです。
+            </DialogDescription>
+          </DialogHeader>
+          <DialogBody>
+            <p className="leading-relaxed">
+              同じ団体の帳簿なら（名前の書き方が違うだけなら）、このまま入れてください。別の団体の帳簿には、その団体でお申し込みのうえ、届いたキーを入れてください。
+            </p>
+          </DialogBody>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setConfirming(null)}>
+              入れない
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                const c = confirming
+                setConfirming(null)
+                if (c) put(c.key)
+              }}
+            >
+              同じ団体なので、入れる
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   )
 }
@@ -685,9 +810,14 @@ function ResetCard() {
   const { book, unsaved, dirty, isSample, reset, saveFile } = useWorkspace()
   const [open, setOpen] = useState(false)
   return (
-    <Card id="handover-reset" tone="plain" title="このブラウザのデータを消す" lead="別の団体の帳簿を始めるときや、共用のパソコンを使い終わったときに使います。保存したひきつぎファイルは、消えません。">
+    <Card
+      id="handover-reset"
+      tone="plain"
+      title="このブラウザのデータを消す"
+      lead="別の団体の帳簿を始めるときや、共用のパソコンを使い終わったときに使います。このブラウザに残っている帳簿（有料版のキーも、帳簿の中に入っています）が、すべて消えます。保存したひきつぎファイルは、消えません。"
+    >
       <Button variant="destructive" onClick={() => setOpen(true)}>
-        データを消して、はじめにもどる
+        データを消して、はじめに戻る
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
@@ -741,7 +871,11 @@ export function HandoverScreen({ onOpenFile, onNavigate }: { onOpenFile: (file: 
     <div className="grid grid-cols-1 gap-6">
       <FileCard onOpenFile={onOpenFile} />
       <CarryCard onNavigate={onNavigate} />
-      {locked && <Alert variant="info">いま見ている「{year.label}」は読むだけなので、引き継ぎ書の中身は変えられません。いまの年度は「{latestYear(book).label}」です。</Alert>}
+      {locked && (
+        <Alert variant="info">
+          いま見ている「{year.label}」は、繰り越したあとの年度です。取引は読むだけですが、下の引き継ぎ書の中身は、いまも書けます。いまの年度は「{latestYear(book).label}」です。
+        </Alert>
+      )}
       <HandoverFormCard onNavigate={onNavigate} />
       <LicenseCard />
       <ResetCard />

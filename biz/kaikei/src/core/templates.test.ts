@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { site } from '../site.config'
 import { DATA_NOTE, DISCLAIMER, FORMAT_NOTE, GLOSSARY, OUT_OF_SCOPE, SHARE_NOTE, explain } from './notices'
 import { isValidDate } from './dates'
+import { formatYen } from './money'
 import { FACTS, findFact } from './sources'
 import { DEFAULT_CUSTODY_LABELS, ORG_KINDS, categoryTemplate, defaultAuditorCount, defaultCustody, defaultRoleNames } from './templates'
 import { LIMITS } from './types'
@@ -105,24 +106,37 @@ describe('決まった文（対象外、ことわり書き、言葉の説明）'
   })
 })
 
+// 料金の設定のテストは、「金額がいくらか」を決め打ちで確かめない。
+// 運営者が README のとおりに金額や日数を変えたり、公開前の空の項目（決済ページ、公開鍵、運営者の情報）を
+// 埋めたりしても、npm test が落ちないようにするため（落ちると、README の公開のコマンドがビルドまで進まない）。
+// ここで確かめるのは、「数字の設定」と「文の中の数字」が、食いちがっていないこと。
 describe('料金の設定（src/site.config.ts）', () => {
-  it('1年度 980円（税込）。キーは発行から400日', () => {
-    expect(site.pricing.pro.price).toBe(980)
-    expect(site.pricing.pro.taxIncluded).toBe(true)
-    expect(site.pricing.pro.licenseDays).toBe(400)
-    expect(site.pricing.free.price).toBe(0)
+  const { pro, free, summary } = site.pricing
+  it('金額と日数は、ありうる値（1円以上の整数、1日以上の整数）。無料は 0円', () => {
+    expect(Number.isInteger(pro.price) && pro.price > 0).toBe(true)
+    expect(Number.isInteger(pro.licenseDays) && pro.licenseDays > 0).toBe(true)
+    expect(Number.isInteger(pro.deliveryDays) && pro.deliveryDays > 0).toBe(true)
+    expect(free.price).toBe(0)
+    expect(free.priceText).toBe('0円')
   })
   it('文の中の金額が、数字の設定と合っている', () => {
-    expect(site.pricing.pro.priceText).toBe('980円')
-    expect(site.pricing.summary).toContain('1年度 980円')
-    expect(site.sales.price).toContain('980円')
-    expect(site.sales.price).toContain('税込')
-    expect(site.sales.delivery).toContain(`${site.pricing.pro.licenseDays}日`)
+    expect(pro.priceText).toBe(`${formatYen(pro.price)}円`)
+    expect(summary).toContain(`${pro.unit} ${pro.priceText}`)
+    expect(site.sales.price).toContain(pro.priceText)
+    // 税込かどうかが、設定と、特定商取引法の表記の文とで、同じ
+    expect(site.sales.price.includes('税込')).toBe(pro.taxIncluded)
   })
-  it('公開前に運営者が書く項目は、空のまま（うその連絡先や決済ページを入れない）', () => {
-    expect(site.checkoutUrl).toBe('')
-    expect(site.licensePublicKey).toBe('')
-    expect(Object.values(site.operator).every((v) => v === '')).toBe(true)
+  it('文の中の日数（キーが届くまで、キーが使える期間）が、数字の設定と合っている', () => {
+    expect(site.sales.delivery).toContain(`${pro.deliveryDays}日以内`)
+    expect(site.sales.delivery).toContain(`${pro.licenseDays}日`)
+  })
+  it('返品・キャンセルの文に、送る前のキャンセルと、キーが届かない・使えないときのことが書いてある', () => {
+    expect(site.sales.refund.length).toBeGreaterThan(0)
+    expect(site.sales.cancel).toContain('キャンセル')
+    expect(site.sales.cancel).toContain('届かない')
+    expect(site.sales.cancel).toContain('使えない')
+  })
+  it('slug は、保存したデータとライセンスキーに使うので、変えない', () => {
     expect(site.slug).toBe('kaikei')
   })
 })

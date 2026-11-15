@@ -517,7 +517,7 @@ export function TransactionForm({
                   focusField(field ?? 'date')
                 }}
               >
-                入力にもどって直す
+                入力に戻って直す
               </Button>
             </div>
           </AlertDescription>

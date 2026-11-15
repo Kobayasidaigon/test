@@ -4,6 +4,7 @@ import {
   clearLocal,
   dateFromLocal,
   findYear,
+  formatWareki,
   isSampleBook,
   isYearLocked,
   latestYear,
@@ -26,6 +27,7 @@ import {
   type YearSummary,
 } from '@/core'
 import { site } from '@/site.config'
+import { checkBookLicense, type BookLicense } from '@/lib/book-license'
 import { useLicense, type LicenseState } from '@/lib/use-license'
 import { toast } from '@/components/ui/toast'
 
@@ -59,15 +61,6 @@ function forgetTab(): void {
   window.scrollTo(0, 0)
 }
 
-/** このブラウザに入れてあるライセンスキー（use-license.ts が保存したもの）。なければ空。 */
-export function storedLicenseKey(): string {
-  try {
-    return window.localStorage.getItem(`${site.slug}:license`) ?? ''
-  } catch {
-    return ''
-  }
-}
-
 export type ApplyOptions = {
   /** うまくいったときに出す知らせ */
   done?: string
@@ -95,7 +88,10 @@ export type Store = {
   openFile: (file: Blob) => Promise<string | null>
   /** ブラウザの中のデータを消して、はじめの画面に戻る */
   reset: () => void
+  /** 公開前モードと、無料版の表示の切り替え（公開前だけ）。公開後に有料版かどうかは bookLicense で決める */
   license: LicenseState
+  /** いま開いている帳簿に入っているキーを、確かめた結果（公開後だけ。公開前は、いつも none） */
+  bookLicense: BookLicense
   today: DateString
 }
 
@@ -200,25 +196,45 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
     return () => window.removeEventListener('storage', onStorage)
   }, [])
 
-  // ひきつぎファイルにライセンスキーが入っていて、まだ有料版でなければ、そのキーを確かめる
-  // （キーは団体のもの。前の担当が入れたキーが、ファイルと一緒に次の担当へ渡る）
-  const triedKeys = useRef(new Set<string>())
+  // 有料版かどうかは、「いま開いている帳簿に入っているキー」で決める（キーは団体のもの。src/lib/book-license.ts）。
+  // ブラウザにキーを覚えさせないので、同じパソコンで別の団体の帳簿を開いても、有料版にはならない。
+  // 帳簿のキーが変わるたび（ファイルを開いた、キーを入れた・外した）と、日付が変わったとき（期限）に、確かめ直す。
+  const [bookLicense, setBookLicense] = useState<BookLicense>({ status: 'none' })
   const bookKey = state?.book.licenseKey ?? ''
-  const { ready: licenseReady, prelaunch, license: activeLicense, activate } = license
+  const bookKeyRef = useRef(bookKey)
+  bookKeyRef.current = bookKey
+  // ファイルを開いた直後に1回だけ、キーの結果を知らせるための印（開いたファイルのキー）。
+  // 読み込み直すたびに知らせると、期限が切れたあと、開くたびに同じ知らせが出つづけてしまう（点検で見つかった）
+  const announceFor = useRef<string | null>(null)
+  const { prelaunch } = license
   useEffect(() => {
-    if (!bookKey || !licenseReady || prelaunch || activeLicense) return
-    if (triedKeys.current.has(bookKey)) return
-    triedKeys.current.add(bookKey)
+    if (prelaunch || bookKey === '') {
+      setBookLicense({ status: 'none' })
+      return
+    }
     let alive = true
-    activate(bookKey).then((reason) => {
+    setBookLicense((current) => (current.status === 'ok' ? current : { status: 'checking' }))
+    checkBookLicense(bookKey, site.licensePublicKey, site.slug, today).then((result) => {
       if (!alive) return
-      if (reason === null) toast.success('ひきつぎファイルに入っているライセンスキーで、有料版になりました。')
-      else toast.warning(`ひきつぎファイルに入っているライセンスキーは、使えませんでした。${reason}`, { duration: 12_000 })
+      setBookLicense(result)
+      if (announceFor.current !== bookKey) return
+      announceFor.current = null
+      if (result.status === 'ok') {
+        toast.success('ひきつぎファイルに入っているライセンスキーで、有料版になりました。')
+      } else if (result.status === 'expired') {
+        // 警告ではなく、ふつうの知らせにする（入力と確認は、これまでどおり使えるため）
+        toast.message(
+          `このファイルの有料版のキーは、${result.license.expiresAt ? formatWareki(result.license.expiresAt) + 'に' : ''}期限が切れています。入力と確認は、これまでどおり無料で使えます。`,
+          { duration: 12_000 },
+        )
+      } else if (result.status === 'invalid') {
+        toast.warning(`ひきつぎファイルに入っているライセンスキーは、使えませんでした。${result.message}`, { duration: 12_000 })
+      }
     })
     return () => {
       alive = false
     }
-  }, [bookKey, licenseReady, prelaunch, activeLicense, activate])
+  }, [bookKey, prelaunch, today])
 
   const startWith = useCallback((book: Book) => {
     forgetTab()
@@ -232,6 +248,8 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
     const r = await openBookFile(file)
     if (!r.ok) return r.message
     forgetTab()
+    // 開いたファイルのキーが、いまの帳簿のキーと違うときだけ、確かめた結果を1回知らせる
+    announceFor.current = r.book.licenseKey !== '' && r.book.licenseKey !== bookKeyRef.current ? r.book.licenseKey : null
     setStateRaw(stateFromFile(r.book, r.savedAt))
     setYearId(latestYear(r.book).id)
     setChangedElsewhere(false)
@@ -239,16 +257,20 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
     return null
   }, [])
 
+  const { deactivate } = license
   const reset = useCallback(() => {
     const storage = getStorage()
+    // 帳簿と、読めなかったデータの退避を消す。キーは帳簿の中にしか置いていないので、帳簿と一緒に消える
     if (storage) clearLocal(storage)
+    // 前の作りでブラウザに覚えさせたキー（kaikei:license）が残っていれば、それも消す
+    deactivate()
     forgetTab()
     lastWritten.current = null
     setStateRaw(null)
     setYearId(null)
     setNotice(null)
     setChangedElsewhere(false)
-  }, [])
+  }, [deactivate])
 
   const reloadFromStorage = useCallback(() => {
     setChangedElsewhere(false)
@@ -270,6 +292,7 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
     openFile,
     reset,
     license,
+    bookLicense,
     today,
   }
 }
@@ -330,7 +353,8 @@ export function useWorkspaceValue(store: ReturnType<typeof useStore>, state: Loc
     unsaved,
     dirty: !(isSample && book.revision === 0) && (unsaved.neverSaved || unsaved.count > 0),
     isSample,
-    isPro: license.isPro,
+    // 公開前は、切り替えのとおり。公開後は、いま開いている帳簿に、使えるキーが入っているときだけ
+    isPro: license.prelaunch ? license.isPro : store.bookLicense.status === 'ok',
   }
 }
 

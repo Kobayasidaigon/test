@@ -1,12 +1,17 @@
 // 翌月への引き継ぎ（有料版の機能）。
-// スタッフと条件をそのまま次の月へ持っていき、前の月の終わりの勤務を「carry」として残す。
+// スタッフと条件をそのまま次の月へ持っていき、前の月の勤務を「carry」として残す。
 // 点検と自動作成は、carry を見て、月をまたぐ連勤・続けて入れない組み合わせ・週1日の休みを数える。
 import { daysInMonth, formatMonth, nextMonth } from './dates'
 import { emptySchedule, isScheduleEmpty, shiftAt } from './schedule'
-import type { Carry, ShiftPlan } from './types'
+import { LIMITS, type Carry, type ShiftPlan } from './types'
 
-/** 前の月の終わりの何日ぶんを持っていくか。連勤の上限をどれだけ大きくしても足りるよう、2週間ぶんにした */
-export const CARRY_TAIL_DAYS = 14
+/**
+ * 前の月の終わりの、最大で何日ぶんを持っていくか。
+ * 連勤の上限は 31日まで入れられるので、31日ぶん（前の月をまるごと）持っていく。
+ * 14日ぶんにしていたときは、上限が15日以上の店で、月をまたぐ連勤を数えそこなっていた。
+ * 保存の検査の上限（LIMITS.carryTail）と同じ数。
+ */
+export const CARRY_TAIL_DAYS = LIMITS.carryTail
 
 /**
  * 次の月の plan を作る。
@@ -19,12 +24,16 @@ export function carryToNextMonth(plan: ShiftPlan): ShiftPlan {
   let carry: Carry | null = null
   if (!isScheduleEmpty(plan.schedule)) {
     const total = daysInMonth(plan.year, plan.month)
-    const from = Math.max(1, total - CARRY_TAIL_DAYS + 1)
+    // いまの plan が、すぐ前の月から引き継いだものなら、その終わりの勤務もつなげて数える。
+    // 月が 31日より短いとき（2月など）に、月をまるごと勤務した人の連勤を、短く数えないため
+    const before = plan.carry && nextMonth(plan.carry.year, plan.carry.month).year === plan.year && nextMonth(plan.carry.year, plan.carry.month).month === plan.month ? plan.carry.tail : null
     const tail: Carry['tail'] = {}
     for (const st of plan.staff) {
       const days: Array<string | null> = []
-      for (let day = from; day <= total; day++) days.push(shiftAt(plan.schedule, st.id, day))
-      tail[st.id] = days
+      for (let day = 1; day <= total; day++) days.push(shiftAt(plan.schedule, st.id, day))
+      // 前の月のぶんを足すのは、今月に休みが1日もなかった人だけ（休みがあれば、連勤はそこで切れている）
+      const earlier = before && !days.includes(null) ? (before[st.id] ?? []) : []
+      tail[st.id] = [...earlier, ...days].slice(-CARRY_TAIL_DAYS)
     }
     carry = { year: plan.year, month: plan.month, tail }
   }

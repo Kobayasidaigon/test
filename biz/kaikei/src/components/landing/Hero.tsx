@@ -68,8 +68,8 @@ export function Hero({ book, base, reports, onBookChange }: Props) {
             </Button>
           </div>
           <p className="mt-3 text-[0.9rem] leading-[1.8] text-muted-foreground">
-            {site.pricing.summary}
-            {pro.taxIncluded && '（税込）'}
+            {/* （税込）は、文の終わりの「。」の前に入れる（「…980円。（税込）」とならないように） */}
+            {pro.taxIncluded ? site.pricing.summary.replace(/。$/, '（税込）。') : site.pricing.summary}
           </p>
         </div>
 
@@ -252,7 +252,7 @@ function TryCard({ book, base, onBookChange, paperRef }: Pick<Props, 'book' | 'b
           {added > 0 && (
             <Button variant="ghost" onClick={reset}>
               <Undo2 aria-hidden="true" />
-              もとに戻す
+              元に戻す
             </Button>
           )}
         </div>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildCalendar, openDayCount } from './calendar'
+import { buildCalendar, holidaysClosed, openDayCount } from './calendar'
 import { tinyPlan } from './testkit'
 
 const needsA = { weekly: { sh1: [3, 1, 1, 1, 1, 1, 2], sh2: [2, 1, 1, 1, 1, 1, 2] }, overrides: {}, roleMins: [] }
@@ -63,6 +63,37 @@ describe('buildCalendar', () => {
       expect(cal[20]).toMatchObject({ needs: { sh1: 0, sh2: 0 }, closed: 'holiday' })
       expect(cal[21].closed).toBe('holiday') // 国民の休日も休み
       expect(cal[23].closed).toBeNull() // 24日（木）は平日
+    })
+  })
+
+  describe('日曜が定休日で、祝日が「日曜と同じ」のとき（2026年9月21日は月曜の祝日）', () => {
+    const sundayClosed = { weekdays: [0 as const], days: [] }
+    it('祝日も休みになる（日曜と同じ ＝ 休み。画面から見えない日曜の人数で、開けてしまわない）', () => {
+      const plan = tinyPlan({ year: 2026, month: 9, needs: needsA, holidayMode: 'sunday', closed: sundayClosed })
+      const cal = buildCalendar(plan)
+      expect(cal[20]).toMatchObject({ holiday: '敬老の日', closed: 'holiday', needs: { sh1: 0, sh2: 0 } })
+      expect(cal[21].closed).toBe('holiday') // 国民の休日
+      expect(cal[22].closed).toBe('holiday') // 秋分の日
+      expect(cal[23].closed).toBeNull() // 24日（木）は平日
+      expect(cal[5].closed).toBe('weekday') // 6日（日）は、定休日の曜日
+      expect(holidaysClosed(plan)).toBe(true)
+    })
+    it('その日だけの人数を書けば、祝日でも開ける日になる。書いていない勤務は0人', () => {
+      const cal = buildCalendar(tinyPlan({ year: 2026, month: 9, needs: { ...needsA, overrides: { '21': { sh1: 2 } } }, holidayMode: 'sunday', closed: sundayClosed }))
+      expect(cal[20]).toMatchObject({ closed: null, needs: { sh1: 2, sh2: 0 }, overridden: true })
+    })
+    it('「その曜日のまま」なら、祝日は月曜の人数で開ける', () => {
+      const plan = tinyPlan({ year: 2026, month: 9, needs: needsA, holidayMode: 'weekday', closed: sundayClosed })
+      expect(buildCalendar(plan)[20]).toMatchObject({ closed: null, needs: { sh1: 1, sh2: 1 } })
+      expect(holidaysClosed(plan)).toBe(false)
+    })
+    it('日曜が定休日でなければ、祝日は日曜の人数で開ける（これまでどおり）', () => {
+      const plan = tinyPlan({ year: 2026, month: 9, needs: needsA, holidayMode: 'sunday', closed: { weekdays: [2], days: [] } })
+      expect(buildCalendar(plan)[20]).toMatchObject({ closed: null, needs: { sh1: 3, sh2: 2 } })
+      expect(holidaysClosed(plan)).toBe(false)
+    })
+    it('「休みにする」なら、日曜が定休日でもなくても、祝日は休み', () => {
+      expect(holidaysClosed(tinyPlan({ holidayMode: 'closed' }))).toBe(true)
     })
   })
 

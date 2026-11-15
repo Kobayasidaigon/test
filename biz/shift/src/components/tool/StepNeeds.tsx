@@ -6,6 +6,7 @@ import {
   buildCalendar,
   formatDay,
   formatMonth,
+  holidaysClosed,
   LIMITS,
   removeForbiddenPair,
   setDayNeed,
@@ -46,6 +47,9 @@ export function StepNeeds() {
   const shiftName = (id: string) => plan.shiftTypes.find((s) => s.id === id)?.name || '（名前なし）'
   const tagName = (id: string) => plan.tags.find((t) => t.id === id)?.name || '（名前なし）'
   const noShifts = plan.shiftTypes.length === 0
+  // 日曜が定休日のあいだは、「日曜と同じ」＝ 祝日も休み。選ぶ前にわかるよう、選択肢の名前にも書く
+  const sundayClosed = plan.closed.weekdays.includes(0)
+  const holidayOptions = HOLIDAY_OPTIONS.map((o) => (o.value === 'sunday' && sundayClosed ? { ...o, label: '日曜と同じ（休み）' } : o))
 
   // 選んでいた勤務や札が消えたときは、先頭のものに合わせる
   const rmShiftId = plan.shiftTypes.some((s) => s.id === rmShift) ? rmShift : (plan.shiftTypes[0]?.id ?? '')
@@ -125,7 +129,12 @@ export function StepNeeds() {
 
           <div className="mt-4 border-t-2 border-ink/15 pt-4">
             <p className="mb-1.5 text-sm font-bold">祝日の人数</p>
-            <SegmentedControl label="祝日の人数" variant="chips" options={HOLIDAY_OPTIONS} value={plan.holidayMode} onValueChange={(v) => update((p) => ({ ...p, holidayMode: v }))} />
+            <SegmentedControl label="祝日の人数" variant="chips" options={holidayOptions} value={plan.holidayMode} onValueChange={(v) => update((p) => ({ ...p, holidayMode: v }))} />
+            {sundayClosed && plan.holidayMode === 'sunday' ? (
+              <p className="mt-2 text-[13px] font-bold leading-relaxed">
+                日曜日が定休日なので、祝日も休みになります。祝日に店を開けるときは、「その曜日のまま」を選ぶか、カレンダーで、その日の人数を入れてください。
+              </p>
+            ) : null}
             <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">祝日は、国民の祝日に関する法律の決まりから計算しています。日ごとの人数は、この月のカレンダーで、いつでも変えられます。</p>
           </div>
         </Section>
@@ -411,7 +420,7 @@ function DayEditor({ d, onClose }: { d: DayInfo; onClose: () => void }) {
   const { plan, update } = useTool()
   const dayText = formatDay(plan.year, plan.month, d.day)
   const closedByDate = d.closed === 'date'
-  const wouldBeClosed = plan.closed.weekdays.includes(d.weekday) || (!!d.holiday && plan.holidayMode === 'closed')
+  const wouldBeClosed = plan.closed.weekdays.includes(d.weekday) || (!!d.holiday && holidaysClosed(plan))
   const hasOverride = !!plan.needs.overrides[String(d.day)]
   const reset = () =>
     update((p) => {
@@ -433,7 +442,9 @@ function DayEditor({ d, onClose }: { d: DayInfo; onClose: () => void }) {
             : d.closed === 'weekday'
               ? '定休日の曜日です。この日だけ開けるときは、下に人数を入れてください。'
               : d.closed === 'holiday'
-                ? '祝日は休みにする設定です。この日だけ開けるときは、下に人数を入れてください。'
+                ? plan.holidayMode === 'closed'
+                  ? '祝日は休みにする設定です。この日だけ開けるときは、下に人数を入れてください。'
+                  : '祝日は「日曜と同じ」の設定で、日曜日が定休日なので、休みです。この日だけ開けるときは、下に人数を入れてください。'
                 : d.overridden
                   ? 'この日だけの人数になっています。'
                   : 'この日だけ、人数を変えたり、休みにしたりできます。'}

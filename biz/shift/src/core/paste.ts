@@ -7,7 +7,10 @@ import type { ShiftPlan, Wish } from './types'
 /** 休み希望として読む文字（全角・半角、大文字・小文字は、そろえてから比べる） */
 export const OFF_MARKS = ['休', '休み', '希', '希休', '希望', '希望休', '休希望', '休み希望', '×', '✕', '✖', '✗', 'x', 'バツ', '公', '公休', '有', '有休', '有給', '年休', 'off', 'ng', '不可']
 
-/** 希望ではないものとして、だまって読み飛ばす文字（「出られる」の印や、線） */
+/** 日として読めるマスがこの数以上あるのに、左から右へ増えていかない行は、「日付の並びがちがう表」とみなして断る */
+const UNORDERED_DAYS = 10
+
+/** 希望ではないものとして、だまって読み飛ばす文字（「出られる」の印や、線）。勤務の名前・記号と同じなら、勤務のほうを取る */
 const IGNORE_MARKS = ['○', '◯', '〇', '◎', '出', '可', '-', 'ー', '―', '‐', '・']
 
 export type PasteRow = {
@@ -22,6 +25,9 @@ export type PasteRow = {
   /** 読めなかったマス（取り込まない） */
   unknown: Array<{ day: number; text: string }>
 }
+
+/** 貼り付けた表の1行。line は上から何行めか（1から）。empty は、マスがすべて空の行 */
+type SourceRow = { line: number; cells: string[]; empty: boolean }
 
 export type PastePreview = {
   /** 取り込めるものが1つでもあるか */
@@ -46,8 +52,11 @@ function normName(text: string): string {
   return norm(text).replace(/\s+/g, '')
 }
 
-/** 貼り付けた文字を、行とマスに分ける。Excel は、改行の入ったマスを "…" で囲んで渡してくる */
-export function splitTable(text: string): string[][] {
+/**
+ * 貼り付けた文字を、行とマスに分ける。空の行も、そのまま残す（行の番号と、行の並びを変えないため）。
+ * Excel は、改行の入ったマスを "…" で囲んで渡してくる。
+ */
+function splitRows(text: string): string[][] {
   const src = text.replace(/\r\n?/g, '\n')
   const delimiter = src.includes('\t') ? '\t' : src.includes(',') ? ',' : null
   const rows: string[][] = []
@@ -80,7 +89,12 @@ export function splitTable(text: string): string[][] {
     row.push(cell)
     rows.push(row)
   }
-  return rows.map((r) => r.map((c) => c.trim())).filter((r) => r.some((c) => c !== ''))
+  return rows.map((r) => r.map((c) => c.trim()))
+}
+
+/** 貼り付けた文字を、行とマスに分ける。マスがすべて空の行は捨てる */
+export function splitTable(text: string): string[][] {
+  return splitRows(text).filter((r) => r.some((c) => c !== ''))
 }
 
 /** マスを日として読む。「1」「1日」「12/1」「12月1日」「2026/12/1」「1(火)」を受け付ける */
@@ -112,7 +126,10 @@ function isWeekdayRow(row: string[]): boolean {
  */
 export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
   const total = daysInMonth(plan.year, plan.month)
-  const table = splitTable(text)
+  // 行の番号は、貼り付けた表の中の番号で持つ（空の行を捨てたあとの番号にすると、画面の「2行め」が、もとの表とずれる）
+  const allRows: SourceRow[] = splitRows(text).map((cells, i) => ({ line: i + 1, cells, empty: cells.every((c) => c === '') }))
+  // 日付の行と名前の列は、中身のある行だけでさがす
+  const table = allRows.filter((r) => !r.empty)
   const notes: string[] = []
   const problems: string[] = []
   const empty: PastePreview = { ok: false, rows: [], notes, problems, offCount: 0, shiftCount: 0 }
@@ -151,15 +168,17 @@ export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
   const ignoreMarks = new Set(IGNORE_MARKS.map(norm))
 
   // 日付の行をさがす（上の5行のうち、日として読めるマスが3つ以上、左から右へ増えていく行）
-  let headerIndex = -1
+  let header: SourceRow | null = null
   let dayOfColumn = new Map<number, number>()
   let headerMonth: number | null = null
+  /** 日付がたくさん並んでいるのに、左から右へ増えていかない行（16日はじまりの表など） */
+  let unordered: { row: SourceRow; days: number[] } | null = null
   for (let r = 0; r < Math.min(5, table.length); r++) {
     const map = new Map<number, number>()
     let last = 0
     let month: number | null = null
     let increasing = true
-    table[r].forEach((cell, c) => {
+    table[r].cells.forEach((cell, c) => {
       const d = readDay(cell)
       if (!d) return
       if (d.day <= last) increasing = false
@@ -168,18 +187,30 @@ export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
       if (d.month !== null) month = d.month
     })
     if (map.size >= 3 && increasing) {
-      headerIndex = r
+      header = table[r]
       dayOfColumn = map
       headerMonth = month
       break
     }
+    // 勤務の記号が数字の店では、数字のマスは希望かもしれないので、日付には数えない
+    const dayLike = [...map.entries()].filter(([c]) => !shiftByMark.has(norm(table[r].cells[c])))
+    if (!unordered && !increasing && dayLike.length >= UNORDERED_DAYS) unordered = { row: table[r], days: dayLike.map(([, d]) => d) }
+  }
+  if (!header && unordered) {
+    // この道具は、1日〜末日の1か月を単位にしている。日付の並びがちがう表を「名前の右の列が1日」と読むと、
+    // ちがう日に休み希望が入ってしまう。読まずに断る
+    problems.push(
+      `${unordered.row.line}行めに日付が並んでいますが、1日から順に並んでいません（${unordered.days.slice(0, 3).join('、')} … ${unordered.days[unordered.days.length - 1]}）。このままでは、どの列が何日かを決められないので、読み取りませんでした。列を1日〜末日の順に並べてから、貼り付けてください。`,
+    )
+    return empty
   }
 
   let nameColumn: number | null
-  let dataRows: Array<{ line: number; cells: string[] }>
-  if (headerIndex >= 0) {
+  let dataRows: SourceRow[]
+  if (header) {
+    const headerLine = header.line
     const firstDayColumn = Math.min(...dayOfColumn.keys())
-    dataRows = table.slice(headerIndex + 1).map((cells, i) => ({ line: headerIndex + 2 + i, cells }))
+    dataRows = allRows.filter((r) => r.line > headerLine)
     // 名前の列は、日の列より左で、スタッフの名前にいちばん多く当たる列。どれも当たらなければ、いちばん左
     nameColumn = null
     if (firstDayColumn > 0) {
@@ -192,14 +223,14 @@ export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
         }
       }
     }
-    notes.push(`${headerIndex + 1}行めを、日付の行として読みました（${Math.min(...dayOfColumn.values())}日〜${Math.max(...dayOfColumn.values())}日）。`)
+    notes.push(`${headerLine}行めを、日付の行として読みました（${Math.min(...dayOfColumn.values())}日〜${Math.max(...dayOfColumn.values())}日）。`)
     if (headerMonth !== null && headerMonth !== plan.month) {
       problems.push(`貼り付けた表は${headerMonth}月のものに見えます。いま開いているのは${plan.month}月です。月が合っているか、確かめてください。`)
     }
   } else {
-    dataRows = table.map((cells, i) => ({ line: i + 1, cells }))
+    dataRows = allRows
     // 日付の行がないとき。いちばん左の列が名前かどうかは、スタッフの名前に当たるか、印でない文字が入っているかで決める
-    const firstCells = dataRows.map((r) => r.cells[0] ?? '')
+    const firstCells = table.map((r) => r.cells[0] ?? '')
     const looksLikeName = firstCells.some((c) => matchStaff(c) !== null) || firstCells.filter((c) => c !== '' && !offMarks.has(norm(c)) && !ignoreMarks.has(norm(c)) && !shiftByMark.has(norm(c))).length > firstCells.length / 2
     nameColumn = looksLikeName ? 0 : null
     const width = Math.max(...dataRows.map((r) => r.cells.length))
@@ -211,14 +242,29 @@ export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
         : '日付の行が見つからなかったので、名前のすぐ右の列を1日として読みました。',
     )
   }
-  if (nameColumn === null) notes.push('名前の列が見つからなかったので、上の行から順に、スタッフの並びに当てはめました。')
+  if (nameColumn === null) {
+    notes.push('名前の列が見つからなかったので、上の行から順に、スタッフの並びに当てはめました。')
+    // 名前の列がないときは、行の並びだけが「だれの行か」の手がかりになる。
+    // 希望が1つもない人の行（マスがすべて空の行）を捨てると、それより下の人の希望が、1人ずつ上の人にずれて入ってしまう。
+    // だから、空の行も1人ぶんとして数える。数えないのは、前後にある「何も書いていない行」（改行だけの行）だけ
+    // （Excel は最後に改行を1つ足して渡してくる。その行を1人ぶんに数えない）。
+    const wide = table.some((r) => r.cells.length > 1)
+    const blankLine = (r: SourceRow) => r.empty && (!wide || r.cells.length === 1)
+    let from = 0
+    let to = dataRows.length
+    while (from < to && blankLine(dataRows[from])) from++
+    while (to > from && blankLine(dataRows[to - 1])) to--
+    dataRows = dataRows.slice(from, to)
+  }
 
   const skippedDays = [...new Set([...dayOfColumn.values()].filter((d) => d > total))]
   if (skippedDays.length > 0) problems.push(`${plan.month}月は${total}日までなので、${skippedDays.join('日・')}日の列は読み飛ばしました。`)
 
   const rows: PasteRow[] = []
+  /** 名前の列がない表で、希望のない1人ぶんとして数えた、空の行 */
+  const emptyRows = new Set<PasteRow>()
   let staffCursor = 0
-  for (const { line, cells } of dataRows) {
+  for (const { line, cells, empty: emptyRow } of dataRows) {
     if (isWeekdayRow(cells)) continue
     const name = nameColumn === null ? '' : (cells[nameColumn] ?? '')
     let staffId: string | null
@@ -235,14 +281,25 @@ export function parseWishPaste(text: string, plan: ShiftPlan): PastePreview {
       if (day > total) continue
       const raw = cells[c] ?? ''
       const mark = norm(raw)
-      if (mark === '' || ignoreMarks.has(mark)) continue
+      if (mark === '') continue
+      // 勤務の名前・記号を先に調べる（記号が「出」「○」の勤務を、読み飛ばす印とまちがえないため）
       const shiftId = shiftByMark.get(mark)
       if (shiftId) row.wishes.push({ day, wish: { kind: 'shift', shiftId }, text: raw })
       else if (offMarks.has(mark)) row.wishes.push({ day, wish: { kind: 'off' }, text: raw })
-      else row.unknown.push({ day, text: raw })
+      else if (!ignoreMarks.has(mark)) row.unknown.push({ day, text: raw })
     }
     row.wishes.sort((a, b) => a.day - b.day)
     rows.push(row)
+    if (nameColumn === null && emptyRow) emptyRows.add(row)
+  }
+  if (nameColumn === null) {
+    // スタッフの人数より下にある空の行は、だれの行でもない（広めに選んでコピーしただけ）。だまって捨てる
+    while (rows.length > 0 && rows[rows.length - 1].staffId === null && emptyRows.has(rows[rows.length - 1])) emptyRows.delete(rows.pop()!)
+    const counted = rows.filter((r) => emptyRows.has(r) && r.staffId !== null)
+    if (counted.length > 0) notes.push(`空の行（${counted.map((r) => r.line).join('・')}行め）は、希望のない人の行として数えました。`)
+    if (rows.length > 0 && rows.length < plan.staff.length) {
+      problems.push(`貼り付けた表は${rows.length}行で、スタッフは${plan.staff.length}人です。上から${rows.length}人に当てはめました。行と人がずれていないか、下の表で確かめてください。`)
+    }
   }
 
   // 名前が当てはまらなかった行。同じ名前のスタッフが2人以上いて決められなかった行は、分けて知らせる

@@ -70,7 +70,7 @@ export function HandoverSteps() {
     {
       numeral: '三',
       title: '続きから',
-      body: '同じ画面で、続きから入力できます。過去の年度も、同じファイルに入っています（過去の年度は、読むだけです）。',
+      body: '同じ画面で、続きから入力できます。過去の年度も、同じファイルに入っています（過去の年度の取引は、読むだけです）。',
       art: (
         <div className="flex h-full flex-col justify-center gap-2">
           <div className="rounded-lg border border-border bg-paper shadow-lift">

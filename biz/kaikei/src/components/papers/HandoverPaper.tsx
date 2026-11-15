@@ -43,7 +43,7 @@ function PendingTable({ items, total, empty }: { items: PendingItem[]; total: nu
 
 export function HandoverPaper({ report, watermark = false }: { report: HandoverReport; watermark?: boolean }) {
   return (
-    <Paper label={`${report.yearLabel} ${report.title}`} watermark={watermark}>
+    <Paper label={`${report.yearLabel} ${report.title}`} watermark={watermark} className="paper-handover">
       <PaperHeading title={report.title} period={report.yearLabel} orgName={report.orgName} />
 
       <p className="paper-line" style={{ marginTop: 'calc(var(--u) * 5)' }}>
@@ -126,7 +126,7 @@ export function HandoverPaper({ report, watermark = false }: { report: HandoverR
           <tbody>
             {report.custody.map((c) => (
               <tr key={c.id}>
-                <td className="center">
+                <td className="center check-cell">
                   <span className="paper-check" role="img" aria-label={c.handedOver ? '渡した' : 'まだ'}>
                     {c.handedOver ? '✓' : ''}
                   </span>

@@ -72,11 +72,14 @@ function BalanceStrip() {
         </div>
         <div className="border-rule/40 px-4 py-3 max-lg:col-span-2 max-lg:border-t">
           <dt className="text-[0.84rem] font-bold text-muted-foreground">置き場所ごとの残高</dt>
-          <dd className="mt-1 grid gap-0.5 text-[0.9rem] leading-snug">
+          {/* 列の幅を minmax(0,1fr) にして、行が口座の名前の長さまで広がらないようにする。
+              広がると、スマホで右はしの金額がカードの外に出て、桁の途中で切れて見える（3,081,550円が「3,081,5」に見えた）。
+              長い名前は「…」で切らずに折り返す。金額は、必ず全部見せる */}
+          <dd className="mt-1 grid grid-cols-[minmax(0,1fr)] gap-0.5 text-[0.9rem] leading-snug">
             {summary.accounts.map((a) => (
-              <span key={a.accountId} className="flex items-baseline justify-between gap-3">
-                <span className="min-w-0 truncate">{a.name}</span>
-                <span className={cn('num shrink-0', a.closing < 0 && 'font-bold text-destructive')}>{formatYen(a.closing)} 円</span>
+              <span key={a.accountId} className="flex min-w-0 items-baseline justify-between gap-3">
+                <span className="min-w-0 break-words">{a.name}</span>
+                <span className={cn('num shrink-0 whitespace-nowrap', a.closing < 0 && 'font-bold text-destructive')}>{formatYen(a.closing)} 円</span>
               </span>
             ))}
           </dd>
@@ -321,7 +324,8 @@ export function TransactionsScreen() {
             </div>
 
             {/* スマホ: 1件ずつの札。押すと、直す画面が開く */}
-            <ul className="mt-3 grid gap-0 overflow-hidden rounded-xl border border-border bg-paper shadow-lift md:hidden">
+            {!locked && <p className="mt-2 text-[0.88rem] leading-snug text-muted-foreground md:hidden">取引を押すと、直したり消したりできます。</p>}
+            <ul className="mt-2 grid gap-0 overflow-hidden rounded-xl border border-border bg-paper shadow-lift md:hidden">
               {shown.map((v) => {
                 const t = v.transaction
                 const body = (
@@ -339,6 +343,13 @@ export function TransactionsScreen() {
                     <span className="flex shrink-0 flex-col items-end gap-0.5">
                       <span className="num text-[1.08rem] font-bold">{amountText(v)} 円</span>
                       <span className="max-w-[9rem] text-right text-[0.78rem] leading-tight text-muted-foreground">{v.accountText}</span>
+                      {/* 押すと直せることを、目に見える形で示す（読み上げには、ボタンの名前で伝えている） */}
+                      {!locked && (
+                        <span aria-hidden className="mt-1 inline-flex items-center gap-1 rounded-sm border border-rule/60 bg-rule-soft/60 px-1.5 py-0.5 text-[0.8rem] font-bold leading-none text-rule-ink">
+                          <Pencil className="size-3.5" />
+                          直す
+                        </span>
+                      )}
                     </span>
                   </>
                 )

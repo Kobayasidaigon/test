@@ -8,7 +8,10 @@ import {
   OUT_OF_SCOPE,
   buildReports,
   explain,
+  formatWareki,
   formatYen,
+  latestYear,
+  previousYear,
   setNextBudget,
   updateAudit,
   updateOfficers,
@@ -54,7 +57,8 @@ function PanelField({ label, hint, children, htmlFor }: { label: React.ReactNode
 }
 
 function SettlementPanel({ onNavigate }: { onNavigate: (tab: 'categories') => void }) {
-  const { book, year, locked, apply } = useWorkspace()
+  // 作成日と署名欄の名前は「資料に書くこと」なので、繰り越したあとの前の年度でも書ける
+  const { book, year, apply } = useWorkspace()
   const id = useId()
   return (
     <>
@@ -62,7 +66,6 @@ function SettlementPanel({ onNavigate }: { onNavigate: (tab: 'categories') => vo
         <CommitDate
           id={`${id}-date`}
           value={year.reportDate}
-          disabled={locked}
           emptyHint="空のままなら、印刷する日の日付が入ります。"
           onCommit={(v) => {
             const r = updateYear(book, year.id, { reportDate: v })
@@ -75,7 +78,6 @@ function SettlementPanel({ onNavigate }: { onNavigate: (tab: 'categories') => vo
           id={`${id}-treasurer`}
           value={year.officers.treasurer}
           maxLength={LIMITS.nameLength}
-          disabled={locked}
           onCommit={(v) => {
             const r = updateOfficers(book, year.id, { treasurer: v })
             return apply(r, { quiet: true }) ? null : r.ok ? null : r.message
@@ -108,7 +110,8 @@ function SettlementPanel({ onNavigate }: { onNavigate: (tab: 'categories') => vo
 }
 
 function AuditPanel() {
-  const { book, year, locked, apply } = useWorkspace()
+  // 監査は、年度が終わったあと（繰り越したあとのことも多い）にするので、読むだけの年度でも書ける
+  const { book, year, apply } = useWorkspace()
   const id = useId()
   const auditors = year.officers.auditors
   const role = book.roleNames.auditor
@@ -125,7 +128,6 @@ function AuditPanel() {
           rows={6}
           value={year.audit.text}
           maxLength={LIMITS.textLength}
-          disabled={locked}
           onCommit={(v) => {
             // 全角の｛｝で書かれても、置きかわるようにする
             const text = v.replace(/｛/g, '{').replace(/｝/g, '}')
@@ -133,9 +135,9 @@ function AuditPanel() {
             return apply(r, { quiet: true }) ? null : r.ok ? null : r.message
           }}
         />
-        {!locked && year.audit.text !== DEFAULT_AUDIT_TEXT && (
+        {year.audit.text !== DEFAULT_AUDIT_TEXT && (
           <Button variant="ghost" size="sm" className="justify-self-start" onClick={() => apply(updateAudit(book, year.id, { text: DEFAULT_AUDIT_TEXT }))}>
-            はじめの文にもどす
+            はじめの文に戻す
           </Button>
         )}
       </PanelField>
@@ -143,7 +145,6 @@ function AuditPanel() {
         <CommitDate
           id={`${id}-date`}
           value={year.audit.date}
-          disabled={locked}
           emptyHint="空のままなら、紙に手で書けるように、空けて出します。"
           onCommit={(v) => {
             const r = updateAudit(book, year.id, { date: v })
@@ -158,7 +159,6 @@ function AuditPanel() {
         <SegmentedControl
           label="監査をする人の数"
           tone="rule"
-          disabled={locked}
           value={String(auditors.length)}
           onValueChange={(v) => {
             const n = Number(v)
@@ -179,7 +179,6 @@ function AuditPanel() {
             id={`${id}-auditor-${i}`}
             value={name}
             maxLength={LIMITS.nameLength}
-            disabled={locked}
             onCommit={(v) => {
               const r = updateOfficers(book, year.id, { auditors: auditors.map((a, k) => (k === i ? v : a)) })
               return apply(r, { quiet: true }) ? null : r.ok ? null : r.message
@@ -192,7 +191,6 @@ function AuditPanel() {
           id={`${id}-president`}
           value={year.officers.president}
           maxLength={LIMITS.nameLength}
-          disabled={locked}
           onCommit={(v) => {
             const r = updateOfficers(book, year.id, { president: v })
             return apply(r, { quiet: true }) ? null : r.ok ? null : r.message
@@ -208,6 +206,10 @@ function AuditPanel() {
 
 function BudgetPanel({ reports }: { reports: Reports }) {
   const { book, year, locked, apply } = useWorkspace()
+  // 繰り越したあとでも、いまの年度のすぐ前の年度なら、予算案を変えられる（変えた金額は、いまの年度の予算額にも入る）。
+  // それより前の年度は、次の年度も読むだけなので、変えられない
+  const latest = latestYear(book)
+  const frozen = locked && previousYear(book, latest.id)?.id !== year.id
   const draft = reports.budgetDraft
   const rows = [
     ...draft.income.rows.filter((r) => !r.isCarryover).map((r) => ({ ...r, side: '収入' })),
@@ -218,6 +220,13 @@ function BudgetPanel({ reports }: { reports: Reports }) {
       <p className="text-[0.9rem] leading-relaxed">
         {draft.nextYearLabel}の<Hint content={explain('予算')}>予算</Hint>を、科目ごとに入れます。空のままの科目は、今年度の予算と同じ金額になります。
       </p>
+      {locked && (
+        <p className="rounded-lg border border-rule/50 bg-rule-soft/40 px-3 py-2 text-[0.9rem] leading-relaxed">
+          {frozen
+            ? `「${year.label}」の予算案は、もう変えられません（次の年度も、読むだけになっているため）。`
+            : `繰り越したあとなので、ここで変えた金額は、「${latest.label}」の同じ科目の予算額にも入ります。`}
+        </p>
+      )}
       <ul className="grid gap-0 overflow-hidden rounded-lg border border-rule/50">
         {rows.map((r, i) => (
           <li key={r.key} className={cn('grid grid-cols-[minmax(0,1fr)_8.4rem] items-center gap-x-2 gap-y-0.5 px-3 py-2', i > 0 && 'border-t border-rule/35')}>
@@ -233,7 +242,7 @@ function BudgetPanel({ reports }: { reports: Reports }) {
               value={r.entered ? r.nextBudget : null}
               allowEmpty
               placeholder={formatYen(r.currentBudget)}
-              disabled={locked}
+              disabled={frozen}
               onCommit={(v) => {
                 const result = setNextBudget(book, year.id, r.key, v)
                 return apply(result, { quiet: true }) ? null : result.ok ? null : result.message
@@ -267,7 +276,7 @@ export function ReportsScreen({
   onPrint: (kinds: ReportKind[]) => void
   onNavigate: (tab: 'categories' | 'handover') => void
 }) {
-  const { book, year, today, isPro } = useWorkspace()
+  const { book, year, today, isPro, bookLicense } = useWorkspace()
   const reports = useMemo(() => buildReports(book, year.id), [book, year.id])
   const [zoom, setZoom] = useState<'fit' | 'full'>('fit')
   const [ledgerAccount, setLedgerAccount] = useState(year.accounts[0].id)
@@ -311,6 +320,12 @@ export function ReportsScreen({
         <Alert variant="warn">
           <AlertTitle>無料版では、印刷した紙に「見本」の透かしが入ります</AlertTitle>
           <AlertDescription>
+            {/* キーの期限が切れて無料版に戻ったときは、そのことを、ここでも言う（なぜ透かしが入るようになったのかが、わかるように） */}
+            {bookLicense.status === 'expired' && (
+              <p className="font-bold">
+                この帳簿の有料版のキーは、{bookLicense.license.expiresAt ? `${formatWareki(bookLicense.license.expiresAt)}に` : ''}期限が切れました。入力と、画面での確認は、このまま使えます。
+              </p>
+            )}
             <p>透かしなしで印刷するには、有料版（{pro.unit} {pro.priceText}・税込）のライセンスキーがいります。画面で確かめるだけなら、ずっと無料です。</p>
             <Button variant="link" size="sm" className="justify-start px-0 text-left" onClick={() => onNavigate('handover')}>
               有料版について（「引き継ぎ」の画面へ）

@@ -129,6 +129,85 @@ describe('parseWishPaste: 日付の行や名前の列がないとき', () => {
   })
 })
 
+describe('parseWishPaste: 名前の列がない表で、希望のない人がいるとき', () => {
+  // 青木 = 1日と4日、石川 = 希望なし、上田 = 2日と6日
+  const text = '休\t\t\t休\t\t\n\t\t\t\t\t\n\t休\t\t\t\t休'
+
+  it('空の行は、希望のない1人ぶんとして数える（下の人の希望が、上の人にずれない）', () => {
+    const p = parseWishPaste(text, plan)
+    expect(p.rows.map((r) => [r.line, r.staffId, r.wishes.map((w) => w.day)])).toEqual([
+      [1, 'st1', [1, 4]],
+      [2, 'st2', []],
+      [3, 'st3', [2, 6]],
+    ])
+    expect(p.notes.join('')).toContain('空の行（2行め）は、希望のない人の行として数えました')
+    expect(p.problems).toEqual([])
+    const next = applyWishPaste(plan, p)
+    expect(next.wishes).toEqual({ st1: { '1': { kind: 'off' }, '4': { kind: 'off' } }, st3: { '2': { kind: 'off' }, '6': { kind: 'off' } } })
+  })
+  it('日付の行があって名前の列がない表でも、同じ', () => {
+    const p = parseWishPaste(`${days(1, 6)}\n${text}`, plan)
+    expect(p.rows.map((r) => [r.line, r.staffId, r.wishes.map((w) => w.day)])).toEqual([
+      [2, 'st1', [1, 4]],
+      [3, 'st2', []],
+      [4, 'st3', [2, 6]],
+    ])
+  })
+  it('いちばん下の人に希望がなくても、行の数は合う（Excel は、最後に改行を1つ足して渡してくる）', () => {
+    const p = parseWishPaste('休\t\t\r\n\t休\t\r\n\t\t\r\n', plan)
+    expect(p.rows.map((r) => [r.staffId, r.wishes.map((w) => w.day)])).toEqual([['st1', [1]], ['st2', [2]], ['st3', []]])
+    expect(p.problems).toEqual([])
+  })
+  it('スタッフの人数より下にある空の行は、だまって捨てる', () => {
+    const p = parseWishPaste('休\t\t\n\t休\t\n\t\t×\n\t\t\n\t\t\n', plan)
+    expect(p.rows).toHaveLength(3)
+    expect(p.problems).toEqual([])
+  })
+  it('前後の、何も書いていない行（改行だけ）は、人として数えない', () => {
+    const p = parseWishPaste('\n休\t\t\n\t休\t\n\n', plan)
+    expect(p.rows.map((r) => [r.line, r.staffId, r.wishes.map((w) => w.day)])).toEqual([[2, 'st1', [1]], [3, 'st2', [2]]])
+  })
+  it('行の数がスタッフの人数より少ないときは、確かめるように言う', () => {
+    const p = parseWishPaste('休\t\t\n\t休\t', plan)
+    expect(p.problems.join('')).toContain('貼り付けた表は2行で、スタッフは3人です')
+  })
+  it('名前の列がある表では、空の行があっても、行の番号は貼り付けた表のままになる', () => {
+    const p = parseWishPaste(`名前\t${days(1, 3)}\n青木\t休\n\t\t\t\n上田\t\t休`, plan)
+    expect(p.rows.map((r) => [r.line, r.staffId])).toEqual([[2, 'st1'], [4, 'st3']])
+  })
+})
+
+describe('parseWishPaste: 日付が1日から順に並んでいない表', () => {
+  const head = ['名前', ...Array.from({ length: 16 }, (_, i) => String(16 + i)), ...Array.from({ length: 15 }, (_, i) => String(1 + i))].join('\t')
+  it('16日はじまりの表は、断る（名前の右の列を1日と読んで、ちがう日に入れてしまわない）', () => {
+    const p = parseWishPaste([head, '青木\t休', `石川${'\t'.repeat(31)}休`].join('\n'), plan)
+    expect(p.ok).toBe(false)
+    expect(p.rows).toEqual([])
+    expect(p.offCount).toBe(0)
+    expect(p.problems.join('')).toContain('1日から順に並んでいません')
+  })
+  it('月をまたぐ日付（12/16 〜 1/15）の表も、断る', () => {
+    const cells = [...Array.from({ length: 16 }, (_, i) => `12/${16 + i}`), ...Array.from({ length: 15 }, (_, i) => `1/${1 + i}`)]
+    const p = parseWishPaste([`名前\t${cells.join('\t')}`, '青木\t休'].join('\n'), plan)
+    expect(p.ok).toBe(false)
+    expect(p.problems.join('')).toContain('1日から順に並んでいません')
+  })
+})
+
+describe('parseWishPaste: 勤務の記号が、読み飛ばす印と同じとき', () => {
+  it('記号が「出」の勤務は、「出」のマスを「その勤務に入りたい」として読む', () => {
+    const p2 = tinyPlan()
+    p2.shiftTypes[0] = { ...p2.shiftTypes[0], name: '出勤', symbol: '出' }
+    const p = parseWishPaste(`名前\t${days(1, 4)}\n青木\t出\t休\t出勤\t○`, p2)
+    expect(p.rows[0].wishes).toEqual([
+      { day: 1, wish: { kind: 'shift', shiftId: 'sh1' }, text: '出' },
+      { day: 2, wish: { kind: 'off' }, text: '休' },
+      { day: 3, wish: { kind: 'shift', shiftId: 'sh1' }, text: '出勤' },
+    ])
+    expect(p.problems).toEqual([])
+  })
+})
+
 describe('parseWishPaste: タブでもカンマでもない貼り付け', () => {
   it('空白で区切られた文字も読む（メモ帳などから貼ったとき）', () => {
     const p = parseWishPaste('青木 休 休\n石川　×', plan)

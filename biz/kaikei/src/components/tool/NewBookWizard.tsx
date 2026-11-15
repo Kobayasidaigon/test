@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Plus, Trash2 } from 'lucide-react'
 import {
   LIMITS,
@@ -55,6 +55,37 @@ export function NewBookWizard({
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [formError, setFormError] = useState<string | null>(null)
 
+  // 段を進めたり戻ったりしたら、中身のスクロールを頭に戻して、フォーカスを新しい段へ移す。
+  // 戻さないと、スマホでは前の段で下まで読んだ位置のまま次の段が開き、ラベルが上に隠れて、名前のない入力欄がいきなり見える。
+  // キーボードでは、フォーカスが「次へ進む」に残り、新しい段の入力欄へは Shift+Tab で戻らないと届かない（点検で見つかった）。
+  const bodyRef = useRef<HTMLDivElement>(null)
+  const stepRef = useRef<HTMLDivElement>(null)
+  // 数が増えるたびに、下の useEffect が動く（同じ段にとどまって、まちがいの欄へ移すときにも使う）
+  const [moved, setMoved] = useState(0)
+  const go = (next: number) => {
+    setStep(next)
+    setMoved((n) => n + 1)
+  }
+  useEffect(() => {
+    // 開いた直後（moved が 0）は、何もしない（ダイアログが、自分でフォーカスを中へ入れる）
+    if (moved === 0) return
+    const body = bodyRef.current
+    const area = stepRef.current
+    if (!body || !area) return
+    body.scrollTop = 0
+    // まちがいがあるときは、その欄へ。入力してもらう欄なので、スマホでも、その欄にフォーカスを入れる
+    const invalid = area.querySelector<HTMLElement>('[aria-invalid="true"]')
+    if (invalid) {
+      invalid.focus()
+      return
+    }
+    // 指で使う画面では、入力欄にフォーカスを入れない（段が変わるたびに、文字のキーボードが出て、画面の半分が隠れるため）。
+    // 段の囲みへ移すだけにする。読み上げと、次の Tab は、段の頭から始まる
+    const touch = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches
+    const first = touch ? null : area.querySelector<HTMLElement>('input:checked, input:not([type="radio"]), select, textarea')
+    ;(first ?? area).focus({ preventScroll: true })
+  }, [moved])
+
   const periods = useMemo(() => {
     const current = defaultFiscalPeriod(today, startMonth)
     const prevStart = `${Number(current.startDate.slice(0, 4)) - 1}${current.startDate.slice(4)}`
@@ -71,11 +102,13 @@ export function NewBookWizard({
     if (step === 1) {
       if (orgName.trim() === '') {
         setErrors({ orgName: '団体の名前を入れてください。' })
+        // 同じ段にとどまる。フォーカスを、名前の欄へ移す
+        setMoved((n) => n + 1)
         return
       }
       setErrors({})
     }
-    setStep((s) => Math.min(2, s + 1))
+    go(Math.min(2, step + 1))
   }
 
   const create = () => {
@@ -87,7 +120,11 @@ export function NewBookWizard({
       if (b.name.trim() === '') next[`bankname-${b.key}`] = '口座の名前を入れてください。'
     })
     setErrors(next)
-    if (Object.keys(next).length > 0) return
+    if (Object.keys(next).length > 0) {
+      // まちがいのある欄へ、フォーカスを移す
+      setMoved((n) => n + 1)
+      return
+    }
     const result = createBook({
       orgName,
       orgKind: kind,
@@ -104,7 +141,7 @@ export function NewBookWizard({
         // 名前のまちがいは、名前の段に戻って、その欄の下に出す（残高の段に出しても、どこを直すのかわからないため）
         setErrors({ orgName: result.message })
         setFormError(null)
-        setStep(1)
+        go(1)
       } else {
         setFormError(result.message)
       }
@@ -127,154 +164,157 @@ export function NewBookWizard({
           <DialogTitle>新しく始める</DialogTitle>
           <DialogDescription>3つのことを決めると、帳簿ができます。どれも、あとから変えられます。</DialogDescription>
         </DialogHeader>
-        <DialogBody>
-          <Steps items={STEPS} current={step} onStepChange={setStep} label="新しく始める手順" className="mb-6" />
+        <DialogBody ref={bodyRef}>
+          <Steps items={STEPS} current={step} onStepChange={go} label="新しく始める手順" className="mb-6" />
+          {/* 段の中身。段が変わったとき、フォーカスの移り先になる（tabIndex -1 は、Tab では止まらず、プログラムからだけ移せる） */}
+          <div ref={stepRef} tabIndex={-1} aria-label={`${step + 1}つめ: ${STEPS[step].title}`} role="group" className="rounded-lg outline-offset-4">
 
-          {step === 0 && (
-            <fieldset>
-              <legend className="mb-2 font-bold">どんな団体ですか</legend>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {ORG_KINDS.map((k) => (
-                  <label
-                    key={k.kind}
-                    className={cn(
-                      'flex min-h-14 cursor-pointer items-center gap-3 rounded-lg border-[1.5px] bg-paper px-3.5 py-2.5 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring',
-                      kind === k.kind ? 'border-rule-ink bg-rule-soft' : 'border-input/70 hover:bg-muted',
-                    )}
-                  >
-                    <input type="radio" name="org-kind" value={k.kind} checked={kind === k.kind} onChange={() => setKind(k.kind)} className="size-5 shrink-0 accent-[var(--rule-ink)] outline-none" />
-                    <span className="grid">
-                      <span className="font-bold leading-snug">{k.label}</span>
-                      <span className="text-[0.84rem] leading-snug text-muted-foreground">{k.description}</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-              <div className="mt-4 rounded-lg border border-border bg-background/60 px-4 py-3 text-[0.9rem] leading-relaxed">
-                <p className="font-bold">「{kindInfo?.label}」で始めると、次の科目が入ります。</p>
-                <p className="mt-1 text-muted-foreground">
-                  <span className="font-bold text-rule-ink">収入</span>
-                  ：{template.filter((c) => c.side === 'income').map((c) => c.name).join('、')}
-                </p>
-                <p className="text-muted-foreground">
-                  <span className="font-bold text-shu-ink">支出</span>
-                  ：{template.filter((c) => c.side === 'expense').map((c) => c.name).join('、')}
-                </p>
-                <p className="mt-1.5 text-[0.84rem] text-muted-foreground">よくある名前の一例です。前の年の資料に合わせて、あとから自由に変えられます。</p>
-              </div>
-            </fieldset>
-          )}
-
-          {step === 1 && (
-            <div className="grid grid-cols-1 gap-5">
-              <Field label="団体の名前" hint="資料の右上に出ます。例: みどり町内会、ひまわり子ども会" error={errors.orgName}>
-                {(p) => <Input {...p} value={orgName} maxLength={LIMITS.nameLength} autoComplete="organization" onChange={(e) => setOrgName(e.target.value)} />}
-              </Field>
-              <div className="grid gap-4 sm:grid-cols-[11rem_1fr]">
-                <Field label="会計年度が始まる月" hint="団体の規約で決まっています。">
-                  {(p) => (
-                    <NativeSelect {...p} value={startMonth} onChange={(e) => setStartMonth(Number(e.target.value))}>
-                      {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-                        <option key={m} value={m}>
-                          {m}月
-                        </option>
-                      ))}
-                    </NativeSelect>
-                  )}
-                </Field>
-                <Field label="どの年度から入力しますか">
-                  {(p) => (
-                    <NativeSelect {...p} value={yearOffset} onChange={(e) => setYearOffset(Number(e.target.value))}>
-                      {/* 選ぶ欄の字は短くする（スマホの幅で、終わりが切れて読めなくなるため）。期間は、すぐ下の枠に出ている */}
-                      <option value={0}>{fiscalYearLabel(periods.current.startDate)}（いまの年度）</option>
-                      <option value={-1}>{fiscalYearLabel(periods.previous.startDate)}（1つ前の年度）</option>
-                    </NativeSelect>
-                  )}
-                </Field>
-              </div>
-              <p className="rounded-lg border border-rule/40 bg-rule-soft/50 px-4 py-3 leading-relaxed">
-                <span className="font-bold">{fiscalYearLabel(period.startDate)}</span>
-                <span className="ml-2">
-                  {formatWareki(period.startDate)} から {formatWareki(period.endDate)} まで
-                </span>
-                <span className="mt-1 block text-[0.86rem] text-muted-foreground">年度の呼び名と、終わりの日は、あとで「団体の設定」から変えられます。</span>
-              </p>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="grid grid-cols-1 gap-5">
-              <p className="leading-relaxed">
-                {formatWareki(period.startDate)}（年度はじめ）に、いくらありましたか。前の年度の決算書の「次年度繰越金」の内訳を、そのまま入れます。
-                <span className="mt-1 block text-[0.9rem] text-muted-foreground">わからなければ 0 のままで始めて、あとから「科目と予算」の画面で直せます。</span>
-              </p>
-              <Field label="現金（手元のお金）" error={errors.cash} className="max-w-xs">
-                {(p) => <MoneyInput {...p} value={cash} onValueChange={setCash} onFocus={(e) => e.target.select()} />}
-              </Field>
-              <div className="grid gap-3">
-                <p className="font-bold">預金口座（通帳ごとに1つ。3つまで）</p>
-                {banks.length === 0 && <p className="text-[0.94rem] text-muted-foreground">口座は使わない（現金だけ）で始めます。</p>}
-                {banks.map((b, i) => (
-                  <div key={b.key} className="grid grid-cols-[1fr_auto] items-start gap-x-2 gap-y-2 rounded-lg border border-border bg-background/50 p-3 sm:grid-cols-[1fr_11rem_auto]">
-                    <Field label={`口座${i + 1}の名前`} error={errors[`bankname-${b.key}`]} className="col-span-2 sm:col-span-1">
-                      {(p) => (
-                        <Input
-                          {...p}
-                          value={b.name}
-                          maxLength={LIMITS.nameLength}
-                          placeholder="例: 普通預金、ゆうちょ"
-                          onChange={(e) => setBanks((list) => list.map((x) => (x.key === b.key ? { ...x, name: e.target.value } : x)))}
-                        />
+            {step === 0 && (
+              <fieldset>
+                <legend className="mb-2 font-bold">どんな団体ですか</legend>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {ORG_KINDS.map((k) => (
+                    <label
+                      key={k.kind}
+                      className={cn(
+                        'flex min-h-14 cursor-pointer items-center gap-3 rounded-lg border-[1.5px] bg-paper px-3.5 py-2.5 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring',
+                        kind === k.kind ? 'border-rule-ink bg-rule-soft' : 'border-input/70 hover:bg-muted',
                       )}
-                    </Field>
-                    <Field label="年度はじめの残高" error={errors[`bank-${b.key}`]}>
-                      {(p) => (
-                        <MoneyInput
-                          {...p}
-                          value={b.amount}
-                          onFocus={(e) => e.target.select()}
-                          onValueChange={(text) => setBanks((list) => list.map((x) => (x.key === b.key ? { ...x, amount: text } : x)))}
-                        />
-                      )}
-                    </Field>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="mt-[1.65rem]"
-                      aria-label={`口座${i + 1}（${b.name || '名前なし'}）を外す`}
-                      onClick={() => setBanks((list) => list.filter((x) => x.key !== b.key))}
                     >
-                      <Trash2 />
+                      <input type="radio" name="org-kind" value={k.kind} checked={kind === k.kind} onChange={() => setKind(k.kind)} className="size-5 shrink-0 accent-[var(--rule-ink)] outline-none" />
+                      <span className="grid">
+                        <span className="font-bold leading-snug">{k.label}</span>
+                        <span className="text-[0.84rem] leading-snug text-muted-foreground">{k.description}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+                <div className="mt-4 rounded-lg border border-border bg-background/60 px-4 py-3 text-[0.9rem] leading-relaxed">
+                  <p className="font-bold">「{kindInfo?.label}」で始めると、次の科目が入ります。</p>
+                  <p className="mt-1 text-muted-foreground">
+                    <span className="font-bold text-rule-ink">収入</span>
+                    ：{template.filter((c) => c.side === 'income').map((c) => c.name).join('、')}
+                  </p>
+                  <p className="text-muted-foreground">
+                    <span className="font-bold text-shu-ink">支出</span>
+                    ：{template.filter((c) => c.side === 'expense').map((c) => c.name).join('、')}
+                  </p>
+                  <p className="mt-1.5 text-[0.84rem] text-muted-foreground">よくある名前の一例です。前の年の資料に合わせて、あとから自由に変えられます。</p>
+                </div>
+              </fieldset>
+            )}
+
+            {step === 1 && (
+              <div className="grid grid-cols-1 gap-5">
+                <Field label="団体の名前" hint="資料の右上に出ます。例: みどり町内会、ひまわり子ども会" error={errors.orgName}>
+                  {(p) => <Input {...p} value={orgName} maxLength={LIMITS.nameLength} autoComplete="organization" onChange={(e) => setOrgName(e.target.value)} />}
+                </Field>
+                <div className="grid gap-4 sm:grid-cols-[11rem_1fr]">
+                  <Field label="会計年度が始まる月" hint="団体の規約で決まっています。">
+                    {(p) => (
+                      <NativeSelect {...p} value={startMonth} onChange={(e) => setStartMonth(Number(e.target.value))}>
+                        {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                          <option key={m} value={m}>
+                            {m}月
+                          </option>
+                        ))}
+                      </NativeSelect>
+                    )}
+                  </Field>
+                  <Field label="どの年度から入力しますか">
+                    {(p) => (
+                      <NativeSelect {...p} value={yearOffset} onChange={(e) => setYearOffset(Number(e.target.value))}>
+                        {/* 選ぶ欄の字は短くする（スマホの幅で、終わりが切れて読めなくなるため）。期間は、すぐ下の枠に出ている */}
+                        <option value={0}>{fiscalYearLabel(periods.current.startDate)}（いまの年度）</option>
+                        <option value={-1}>{fiscalYearLabel(periods.previous.startDate)}（1つ前の年度）</option>
+                      </NativeSelect>
+                    )}
+                  </Field>
+                </div>
+                <p className="rounded-lg border border-rule/40 bg-rule-soft/50 px-4 py-3 leading-relaxed">
+                  <span className="font-bold">{fiscalYearLabel(period.startDate)}</span>
+                  <span className="ml-2">
+                    {formatWareki(period.startDate)} から {formatWareki(period.endDate)} まで
+                  </span>
+                  <span className="mt-1 block text-[0.86rem] text-muted-foreground">年度の呼び名と、終わりの日は、あとで「団体の設定」から変えられます。</span>
+                </p>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="grid grid-cols-1 gap-5">
+                <p className="leading-relaxed">
+                  {formatWareki(period.startDate)}（年度はじめ）に、いくらありましたか。前の年度の決算書の「次年度繰越金」の内訳を、そのまま入れます。
+                  <span className="mt-1 block text-[0.9rem] text-muted-foreground">わからなければ 0 のままで始めて、あとから「科目と予算」の画面で直せます。</span>
+                </p>
+                <Field label="現金（手元のお金）" error={errors.cash} className="max-w-xs">
+                  {(p) => <MoneyInput {...p} value={cash} onValueChange={setCash} onFocus={(e) => e.target.select()} />}
+                </Field>
+                <div className="grid gap-3">
+                  <p className="font-bold">預金口座（通帳ごとに1つ。3つまで）</p>
+                  {banks.length === 0 && <p className="text-[0.94rem] text-muted-foreground">口座は使わない（現金だけ）で始めます。</p>}
+                  {banks.map((b, i) => (
+                    <div key={b.key} className="grid grid-cols-[1fr_auto] items-start gap-x-2 gap-y-2 rounded-lg border border-border bg-background/50 p-3 sm:grid-cols-[1fr_11rem_auto]">
+                      <Field label={`口座${i + 1}の名前`} error={errors[`bankname-${b.key}`]} className="col-span-2 sm:col-span-1">
+                        {(p) => (
+                          <Input
+                            {...p}
+                            value={b.name}
+                            maxLength={LIMITS.nameLength}
+                            placeholder="例: 普通預金、ゆうちょ"
+                            onChange={(e) => setBanks((list) => list.map((x) => (x.key === b.key ? { ...x, name: e.target.value } : x)))}
+                          />
+                        )}
+                      </Field>
+                      <Field label="年度はじめの残高" error={errors[`bank-${b.key}`]}>
+                        {(p) => (
+                          <MoneyInput
+                            {...p}
+                            value={b.amount}
+                            onFocus={(e) => e.target.select()}
+                            onValueChange={(text) => setBanks((list) => list.map((x) => (x.key === b.key ? { ...x, amount: text } : x)))}
+                          />
+                        )}
+                      </Field>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="mt-[1.65rem]"
+                        aria-label={`口座${i + 1}（${b.name || '名前なし'}）を外す`}
+                        onClick={() => setBanks((list) => list.filter((x) => x.key !== b.key))}
+                      >
+                        <Trash2 />
+                      </Button>
+                    </div>
+                  ))}
+                  {banks.length < LIMITS.maxBankAccounts && (
+                    <Button
+                      variant="soft"
+                      size="sm"
+                      className="justify-self-start"
+                      onClick={() => setBanks((list) => [...list, { key: nextKey.current++, name: list.length === 0 ? '普通預金' : '', amount: '0' }])}
+                    >
+                      <Plus />
+                      口座を足す
                     </Button>
-                  </div>
-                ))}
-                {banks.length < LIMITS.maxBankAccounts && (
-                  <Button
-                    variant="soft"
-                    size="sm"
-                    className="justify-self-start"
-                    onClick={() => setBanks((list) => [...list, { key: nextKey.current++, name: list.length === 0 ? '普通預金' : '', amount: '0' }])}
-                  >
-                    <Plus />
-                    口座を足す
-                  </Button>
+                  )}
+                </div>
+                <p className="rule-double flex items-baseline justify-between gap-3 pb-2 font-bold">
+                  <span>合計（前年度繰越金）</span>
+                  <span className="num text-xl">{formatYen(total)} 円</span>
+                </p>
+                {formError && (
+                  <Alert variant="error" role="alert">
+                    {formError}
+                  </Alert>
                 )}
               </div>
-              <p className="rule-double flex items-baseline justify-between gap-3 pb-2 font-bold">
-                <span>合計（前年度繰越金）</span>
-                <span className="num text-xl">{formatYen(total)} 円</span>
-              </p>
-              {formError && (
-                <Alert variant="error" role="alert">
-                  {formError}
-                </Alert>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </DialogBody>
         <DialogFooter className="sm:justify-between">
-          <Button variant="ghost" onClick={() => (step === 0 ? onOpenChange(false) : setStep(step - 1))}>
-            {step === 0 ? 'やめる' : '前にもどる'}
+          <Button variant="ghost" onClick={() => (step === 0 ? onOpenChange(false) : go(step - 1))}>
+            {step === 0 ? 'やめる' : '前に戻る'}
           </Button>
           {step < 2 ? <Button onClick={goNext}>次へ進む</Button> : <Button onClick={create}>この内容で帳簿を作る</Button>}
         </DialogFooter>

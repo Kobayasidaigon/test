@@ -107,6 +107,17 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
   const printsDetails = inspection.findings.some((f) => f.level === 'check' || f.level === 'alert' || accordion.isOpen(f.lineId))
   const today = todayString()
   const totalText = formatYen(inspection.total)
+  // 合計の字の大きさ。けたが多いと、スマホの幅で、右のマスからはみ出すので、けたの数で小さくする。
+  // - 1億円以上（12字から）は、どの幅でも小さい字。
+  // - 100万円以上（10字・11字）は、幅 350〜399px の画面でだけ、小さい字
+  //   （確かめる項目があると、左のマスが赤ペンの丸のぶん広くなり、幅 360〜375px で、数字がマスの線にかかっていた）。
+  //   幅 350px より せまい画面では、マスを縦に積むので（下の grid）、ふつうの大きさで入る。
+  const totalSize =
+    totalText.length > 11
+      ? 'text-lg leading-[2.1]'
+      : totalText.length > 9
+        ? 'text-lg leading-[2.1] max-[349px]:text-2xl max-[349px]:leading-[1.6] min-[400px]:text-2xl min-[400px]:leading-[1.6]'
+        : 'text-2xl leading-[1.6]'
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem] print:block">
@@ -138,7 +149,8 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
 
           {/* まず、答えを出す（確かめる項目の数、合計、もし全部外せた場合の差）。そのあとに、赤ペンの入った見積書を見せる。 */}
           {/* せまい画面では、左のマスは中身の幅、右のマス（合計）は残り全部。けたの多い合計が、マスからはみ出さないようにする。 */}
-          <div className="print-keep mb-5 grid grid-cols-[auto_minmax(0,1fr)] border border-rule-strong/70 sm:grid-cols-[auto_auto_minmax(0,1fr)] print:grid-cols-[auto_auto_minmax(0,1fr)]">
+          {/* 幅 350px より せまい画面（幅 320px の端末など）では、横に2つ並べると、100万円以上の合計が右のマスに入らないので、縦に積む。 */}
+          <div className="print-keep mb-5 grid grid-cols-[auto_minmax(0,1fr)] border border-rule-strong/70 max-[349px]:grid-cols-1 sm:grid-cols-[auto_auto_minmax(0,1fr)] print:grid-cols-[auto_auto_minmax(0,1fr)]">
             <div className="px-4 py-3">
               <p className="text-[13px] font-bold">確かめる項目</p>
               <p className="mt-1.5 flex items-baseline gap-2">
@@ -152,11 +164,11 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
                 <span className="text-xs text-ink-soft">{count}行のうち</span>
               </p>
             </div>
-            <div className="border-l border-rule-strong/70 px-4 py-3">
+            <div className="border-l border-rule-strong/70 px-4 py-3 max-[349px]:border-l-0 max-[349px]:border-t">
               <p className="text-[13px] font-bold">入力した項目の合計</p>
-              <p className={cn('num mt-1.5 font-bold', totalText.length > 11 ? 'text-lg leading-[2.1]' : 'text-2xl leading-[1.6]')}>{totalText}</p>
+              <p className={cn('num mt-1.5 font-bold', totalSize)}>{totalText}</p>
             </div>
-            <div className="col-span-2 border-t border-rule-strong/70 px-4 py-3 sm:col-span-1 sm:border-l sm:border-t-0 print:col-span-1 print:border-l print:border-t-0">
+            <div className="col-span-2 border-t border-rule-strong/70 px-4 py-3 max-[349px]:col-span-1 sm:col-span-1 sm:border-l sm:border-t-0 print:col-span-1 print:border-l print:border-t-0">
               <p className="text-[13px] font-bold">{ASK_TOTAL_LABEL}</p>
               {inspection.askCount > 0 ? (
                 <>

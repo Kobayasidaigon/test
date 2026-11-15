@@ -5,6 +5,7 @@ import {
   LIMITS,
   addBankAccount,
   addCategory,
+  categoryUseCount,
   explain,
   formatWareki,
   formatYen,
@@ -231,6 +232,12 @@ const ROW_GRID = 'grid grid-cols-[minmax(0,1fr)_auto_auto] md:grid-cols-[5.6rem_
 
 function CategoryRow({ row, index, count }: { row: CategoryTotal; index: number; count: number }) {
   const { book, year, locked, apply } = useWorkspace()
+  // 消す前の確かめ。予算額・説明の文・次年度の予算案が入っている科目は、1回押しただけで消さない
+  // （元に戻すはたらきがないので、入れた金額と文が、一緒になくなるため）。名前だけの科目は、すぐ消す（足し直せる）
+  const [confirming, setConfirming] = useState(false)
+  const hasNextBudget = Object.prototype.hasOwnProperty.call(year.nextBudget, row.categoryId)
+  const filled = row.budget !== 0 || row.note !== '' || hasNextBudget
+  const remove = () => apply(removeCategory(book, year.id, row.categoryId), { done: `科目「${row.name}」を消しました。` })
   const commit = (patch: { name?: string; budget?: number; note?: string }) => {
     const r = updateCategory(book, year.id, row.categoryId, patch)
     return apply(r, { quiet: true }) ? null : r.ok ? null : r.message
@@ -289,12 +296,42 @@ function CategoryRow({ row, index, count }: { row: CategoryTotal; index: number;
             variant="ghost"
             size="icon"
             aria-label={`科目「${row.name}」を消す`}
-            onClick={() => apply(removeCategory(book, year.id, row.categoryId), { done: `科目「${row.name}」を消しました。` })}
+            onClick={() => {
+              // 取引で使われている科目は、どのみち消せない。確かめを出さずに、消せない理由を知らせる
+              if (filled && categoryUseCount(year, row.categoryId) === 0) setConfirming(true)
+              else remove()
+            }}
           >
             <Trash2 />
           </Button>
         )}
       </div>
+      <Dialog open={confirming} onOpenChange={setConfirming}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>科目「{row.name}」を消しますか</DialogTitle>
+            <DialogDescription>
+              この科目に入れた
+              {[row.budget !== 0 && `予算額（${formatYen(row.budget)}円）`, row.note !== '' && '決算書の説明の文', hasNextBudget && '次年度の予算案'].filter(Boolean).join('・')}
+              も、一緒に消えます。元に戻せません。
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setConfirming(false)}>
+              消さない
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setConfirming(false)
+                remove()
+              }}
+            >
+              消す
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </li>
   )
 }

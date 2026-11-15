@@ -62,10 +62,11 @@ export function OrgSettingsDialog({ open, onOpenChange }: { open: boolean; onOpe
       if (label.trim() !== year.label || start.value !== year.startDate || end.value !== year.endDate) {
         steps.push((b) => updateYear(b, year.id, { label, startDate: start.value, endDate: end.value }))
       }
-      const o = year.officers
-      if (president.trim() !== o.president || treasurer.trim() !== o.treasurer || auditors.some((a, i) => a.trim() !== o.auditors[i])) {
-        steps.push((b) => updateOfficers(b, year.id, { president, treasurer, auditors }))
-      }
+    }
+    // 役員の名前は、資料の署名欄に出るもの。繰り越したあとの前の年度でも変えられる（総会の前に、先に繰り越した人のため）
+    const o = year.officers
+    if (president.trim() !== o.president || treasurer.trim() !== o.treasurer || auditors.some((a, i) => a.trim() !== o.auditors[i])) {
+      steps.push((b) => updateOfficers(b, year.id, { president, treasurer, auditors }))
     }
     if (steps.length === 0) {
       onOpenChange(false)
@@ -90,13 +91,13 @@ export function OrgSettingsDialog({ open, onOpenChange }: { open: boolean; onOpe
         <DialogBody className="grid grid-cols-1 gap-6">
           <Field label="団体の名前">{(p) => <Input {...p} value={orgName} maxLength={LIMITS.nameLength} onChange={(e) => setOrgName(e.target.value)} />}</Field>
 
-          <fieldset className="grid gap-3" disabled={locked}>
+          <fieldset className="grid gap-3">
             <legend className="rule-double mb-3 w-full pb-1 font-serif text-lg font-bold">
               {year.label}の、年度と役員
-              {locked && <span className="ml-2 font-sans text-[0.84rem] font-normal text-muted-foreground">（読むだけの年度なので、変えられません）</span>}
+              {locked && <span className="ml-2 font-sans text-[0.84rem] font-normal text-muted-foreground">（繰り越したあとの年度なので、変えられるのは、役員の名前だけです）</span>}
             </legend>
             <Field label="年度の呼び名" hint="例: 令和8年度、2026年度、第12期" className="max-w-xs">
-              {(p) => <Input {...p} value={label} maxLength={LIMITS.nameLength} onChange={(e) => setLabel(e.target.value)} />}
+              {(p) => <Input {...p} value={label} maxLength={LIMITS.nameLength} disabled={locked} onChange={(e) => setLabel(e.target.value)} />}
             </Field>
             <div className="grid gap-3 sm:grid-cols-2">
               <div>

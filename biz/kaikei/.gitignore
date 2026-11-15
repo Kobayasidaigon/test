@@ -3,3 +3,4 @@ dist/
 dist-*/
 shots/
 .license-private.json
+.license-issued.tsv

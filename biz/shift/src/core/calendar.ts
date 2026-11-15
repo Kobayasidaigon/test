@@ -10,7 +10,7 @@ export type ClosedReason =
   | 'date'
   /** 定休日の曜日 */
   | 'weekday'
-  /** 祝日を休みにする設定 */
+  /** 祝日が休みになる設定（「休みにする」か、「日曜と同じ」で日曜が定休日） */
   | 'holiday'
 
 export type DayInfo = {
@@ -33,13 +33,22 @@ export type DayInfo = {
 }
 
 /**
+ * 祝日が休みになる設定か。
+ * 「休みにする」のほか、「日曜と同じ人数」で日曜が定休日のときも、休みになる（日曜と同じ ＝ 休み）。
+ * 定休日の曜日の人数は画面に出ない（直せない）ので、その数で祝日を開けると、どこから来た人数かがわからなくなる。
+ */
+export function holidaysClosed(plan: Pick<ShiftPlan, 'holidayMode' | 'closed'>): boolean {
+  return plan.holidayMode === 'closed' || (plan.holidayMode === 'sunday' && plan.closed.weekdays.includes(0))
+}
+
+/**
  * 日ごとの情報を、1日から末日まで順に返す（添字は day - 1）。
  *
  * 決まりの強さの順:
  *   1. 個別の定休日（closed.days）… いちばん強い。必ず休み。
  *   2. 日ごとの上書き（needs.overrides）… 定休日の曜日や祝日でも、書いてあれば開ける日になる。
  *   3. 定休日の曜日（closed.weekdays）
- *   4. 祝日（holidayMode）
+ *   4. 祝日（holidayMode）。「日曜と同じ」で日曜が定休日なら、祝日も休み（holidaysClosed）
  *   5. 曜日ごとの必要人数（needs.weekly）
  * 「個別に決めたことは、曜日の決まりより強い」という1つの考え方でそろえている。
  */
@@ -48,6 +57,7 @@ export function buildCalendar(plan: ShiftPlan): DayInfo[] {
   const holidays = holidaysInMonth(plan.year, plan.month)
   const closedDays = new Set(plan.closed.days)
   const closedWeekdays = new Set<number>(plan.closed.weekdays)
+  const holidayClosed = holidaysClosed(plan)
   const out: DayInfo[] = []
 
   for (let day = 1; day <= total; day++) {
@@ -60,10 +70,10 @@ export function buildCalendar(plan: ShiftPlan): DayInfo[] {
     if (closedDays.has(day)) closed = 'date'
     else if (hasOverride) closed = null
     else if (closedWeekdays.has(weekday)) closed = 'weekday'
-    else if (h && plan.holidayMode === 'closed') closed = 'holiday'
+    else if (h && holidayClosed) closed = 'holiday'
 
     // 上書きで開けた「本来は休みの日」は、曜日の人数を引き継がない（0 から始めて、書いた勤務だけ人数が入る）
-    const wouldBeClosed = closedWeekdays.has(weekday) || (!!h && plan.holidayMode === 'closed')
+    const wouldBeClosed = closedWeekdays.has(weekday) || (!!h && holidayClosed)
     const needsFrom: Weekday = h && plan.holidayMode === 'sunday' ? 0 : weekday
 
     const needs: Record<string, number> = {}

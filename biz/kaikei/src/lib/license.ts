@@ -87,7 +87,8 @@ export async function verifyLicense(
 export const reasonText: Record<Exclude<VerifyResult, { ok: true }>['reason'], string> = {
   format: 'キーの形が正しくありません。メールに書かれたキーを、最初から最後までコピーしてください。',
   signature: 'このキーは確認できませんでした。コピーしたときに文字が欠けていないか確かめてください。',
-  product: 'このキーは別のサービスのものです。',
-  expired: 'このキーは期限が切れています。',
+  // どの文も、何が起きたかに続けて、どうすればよいかを言う
+  product: 'このキーは、別のサービスのものです。このサービスのキーが書かれたメールを確かめて、もう一度貼り付けてください。',
+  expired: 'このキーは、期限が切れています。有料版を使うときは、あらためてお申し込みください。',
   unsupported: 'このブラウザではキーを確認できません。最新の Chrome、Safari、Edge、Firefox でお試しください。',
 }

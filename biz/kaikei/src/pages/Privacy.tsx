@@ -12,6 +12,18 @@ export default function Privacy() {
   return (
     <LegalPage title="プライバシーポリシー" lead={`${site.name}が、どんな情報を、どこに置き、何に使うかを書いています。`}>
       <div className="legal-prose">
+        {/* このページでいう「運営者」が、だれのことかを、最初に書く（お預かりした情報を扱う事業者の名前は、この1枚で読めるようにする） */}
+        <h2>運営者</h2>
+        <p>
+          このページで「運営者」というのは、{site.name}を運営している、次の事業者のことです。
+          <br />
+          名前: <Filled value={site.operator.name} />
+          <br />
+          運営責任者: <Filled value={site.operator.representative} />
+          <br />
+          所在地: <Filled value={site.operator.address} />
+        </p>
+
         <h2>入力した内容の扱い</h2>
         <p>
           {site.name}に入力した内容（団体の名前、役員の名前、お金の出入り、メモなど）は、お使いのブラウザの中（そのパソコンやスマートフォンの中）と、ご自分で保存した「ひきつぎファイル」にだけ置かれます。運営者のサーバーには送られず、運営者が見ることはできません。
@@ -70,7 +82,7 @@ export default function Privacy() {
         </p>
       </div>
       <p className="mt-8 text-[0.92rem] leading-[1.85] text-muted-foreground">
-        販売の条件は
+        運営者の電話番号と、販売の条件は
         <Link to="/tokushoho" className="mx-1 rounded text-rule-ink underline underline-offset-4">
           特定商取引法にもとづく表記
         </Link>

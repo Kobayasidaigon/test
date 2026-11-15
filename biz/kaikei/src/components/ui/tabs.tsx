@@ -64,8 +64,9 @@ const NavTabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Tr
       ref={ref}
       className={cn(
         "group relative flex min-w-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground data-[state=active]:text-foreground [&_svg]:shrink-0",
-        // スマホ: アイコンの下に名前。選んだものは、上に朱の線
-        "max-lg:min-h-[3.6rem] max-lg:flex-col max-lg:gap-0.5 max-lg:px-0.5 max-lg:pb-1 max-lg:pt-1.5 max-lg:text-[0.72rem] max-lg:font-bold max-lg:leading-tight max-lg:outline-offset-[-3px] max-lg:data-[state=active]:shadow-[inset_0_3px_0_var(--shu)] max-lg:[&_svg]:size-[1.4rem]",
+        // スマホ: アイコンの下に名前。選んだものは、上に朱の線。字は 0.8rem（いちばんよく押すところなので、12px より小さくしない。
+        // 5つ並べても、幅 320 で「引き継ぎ」が収まる大きさ）
+        "max-lg:min-h-[3.6rem] max-lg:flex-col max-lg:gap-0.5 max-lg:px-0.5 max-lg:pb-1 max-lg:pt-1.5 max-lg:text-[0.8rem] max-lg:font-bold max-lg:leading-tight max-lg:outline-offset-[-3px] max-lg:data-[state=active]:shadow-[inset_0_3px_0_var(--shu)] max-lg:[&_svg]:size-[1.4rem]",
         // パソコン: アイコンの右に名前。選んだものは、紙の色のつまみ
         "lg:min-h-12 lg:gap-2 lg:rounded-t-lg lg:border lg:border-b-0 lg:border-transparent lg:px-4 lg:text-base lg:font-bold lg:data-[state=active]:border-rule lg:data-[state=active]:bg-paper lg:data-[state=active]:shadow-[inset_0_3px_0_var(--shu)] lg:[&_svg]:size-[1.15rem]",
         className,
