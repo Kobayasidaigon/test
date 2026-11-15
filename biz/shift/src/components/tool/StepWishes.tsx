@@ -2,7 +2,7 @@
 // 上で入れるものを選んでから、表のマスを押して入れる。Excel からの貼り付けもできる。
 import { useMemo, useState } from 'react'
 import { ClipboardPaste, Eraser, Users } from 'lucide-react'
-import { applyWishPaste, formatMonth, parseWishPaste, setWish, type PastePreview, type ShiftPlan, type Wish } from '@/core'
+import { applyWishPaste, formatMonth, parseWishPaste, setWish, type PastePreview, type ShiftPlan, type Staff, type Wish } from '@/core'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
@@ -107,6 +107,17 @@ export function StepWishes() {
       <PasteDialog open={pasteOpen} onOpenChange={setPasteOpen} />
     </div>
   )
+}
+
+/**
+ * 選択肢に出すスタッフの呼び方。同じ名前の人がいるとき、名前が空のときは、
+ * 「上から何人めか」を添える（添えないと、選択肢のどれがだれか見分けられない）。
+ */
+function staffLabel(plan: ShiftPlan, staff: Staff): string {
+  const index = plan.staff.findIndex((s) => s.id === staff.id)
+  const name = staff.name.trim()
+  const same = name === '' || plan.staff.some((s) => s.id !== staff.id && s.name.trim() === name)
+  return `${name || '（名前なし）'}さん${same ? `（上から${index + 1}人め）` : ''}`
 }
 
 /** 貼り付けの見本（いまのスタッフの名前で作る。どう書けば読めるかが、ひと目でわかるように） */
@@ -215,7 +226,13 @@ function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
 
                 {preview.rows.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border-2 border-ink">
-                    <table className="w-full min-w-[26rem] border-collapse text-left text-sm">
+                    {/* 列の幅を決めておく（決めないと、長い名前の入った選択肢が幅を取って、「読み取った希望」の列がつぶれる） */}
+                    <table className="w-full min-w-[30rem] table-fixed border-collapse text-left text-sm">
+                      <colgroup>
+                        <col className="w-[24%]" />
+                        <col className="w-[32%]" />
+                        <col />
+                      </colgroup>
                       <caption className="sr-only">読み取った結果</caption>
                       <thead>
                         <tr className="border-b-2 border-ink bg-well text-xs">
@@ -237,16 +254,21 @@ function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
                           const matched = plan.staff.find((s) => s.id === r.staffId)
                           return (
                             <tr key={r.line} className="border-b border-line align-top last:border-b-0">
-                              <td className="px-3 py-2 font-bold">{r.name || `${r.line}行め`}</td>
+                              <td className="break-words px-3 py-2 font-bold">{r.name || `${r.line}行め`}</td>
                               <td className="px-3 py-2">
                                 {matched ? (
-                                  <span>{matched.name || '（名前なし）'}さん</span>
+                                  <span className="break-words">{staffLabel(plan, matched)}</span>
                                 ) : (
-                                  <Select aria-label={`${r.name || `${r.line}行め`}を当てはめるスタッフ`} value={assign[r.line] ?? ''} onChange={(e) => setAssign((a) => ({ ...a, [r.line]: e.target.value }))}>
+                                  <Select
+                                    aria-label={`${r.name || `${r.line}行め`}を当てはめるスタッフ`}
+                                    value={assign[r.line] ?? ''}
+                                    onChange={(e) => setAssign((a) => ({ ...a, [r.line]: e.target.value }))}
+                                    className="w-full"
+                                  >
                                     <option value="">取り込まない</option>
                                     {plan.staff.map((s) => (
                                       <option key={s.id} value={s.id}>
-                                        {s.name || '（名前なし）'}さん
+                                        {staffLabel(plan, s)}
                                       </option>
                                     ))}
                                   </Select>

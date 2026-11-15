@@ -122,6 +122,14 @@ export function StepStore() {
 
   const presetLabel = SHIFT_PRESETS.find((p) => p.id === pendingPreset)?.label
 
+  // 同じ名前のスタッフ（表でも点検の文でも見分けられなくなるので、入れているうちに知らせる）
+  const seenNames = new Map<string, number>()
+  for (const st of plan.staff) {
+    const n = st.name.trim()
+    if (n !== '') seenNames.set(n, (seenNames.get(n) ?? 0) + 1)
+  }
+  const sameNames = [...seenNames].filter(([, c]) => c > 1).map(([n]) => n)
+
   return (
     <div>
       <StepHeading no={1} title="店とスタッフ" lead="店の休みの日と、勤務の種類、スタッフを入れます。あとからいつでも直せます。" />
@@ -351,6 +359,12 @@ export function StepStore() {
               スタッフを足す
             </Button>
           </div>
+        ) : null}
+
+        {sameNames.length > 0 ? (
+          <p className="mt-3 text-[13px] font-bold leading-relaxed text-danger">
+            同じ名前のスタッフがいます（{sameNames.join('、')}）。表で見分けられないので、「佐藤（花）」のように、ちがう名前にしてください。
+          </p>
         ) : null}
 
         {!gate.canAddStaff && !isPro ? (
