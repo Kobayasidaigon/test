@@ -180,9 +180,8 @@ export function Toaster({ className }: { className?: string }) {
               }}
             >
               {t.action.label}
-              {/* キーボードのある端末（マウスを乗せられる端末）でだけ、ショートカットを小さく添える。読み上げにも伝える。 */}
+              {/* キーボードのある端末（マウスを乗せられる端末）でだけ、ショートカットを小さく添える。読み上げには、aria-keyshortcuts で伝わる。 */}
               <span className="hidden text-[11px] font-normal text-ink-soft [@media(hover:hover)]:block">{undoKey}</span>
-              <span className="sr-only [@media(hover:hover)]:hidden">（{undoKey} でも押せます）</span>
             </button>
           )}
           <button

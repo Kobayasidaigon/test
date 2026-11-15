@@ -49,10 +49,10 @@ mail.body      // 本文（コピーのボタンで、そのままコピーす�
 | ファイル | 役割 | 主な公開 |
 | --- | --- | --- |
 | `types.ts` | データの型 | `Estimate` `EstimateLine` `AppData` `MessageSettings` `ItemDef` `ItemGuide` `Category` `CategoryId` `Finding` `FindingLevel` `Inspection` `BrokerageCalc` `ProrationCalc` `MonthsCalc` `BasisNote` `ResolvedBasis` |
-| `sources.ts` | 出典の一覧（文書名、発行元、URL、確かめた日、確かめ方） | `sources` `getSource(id)` `listSources()` `sourceKindLabel` `RULES_VERIFIED_ON` `VERIFY_METHOD_NOTE`（確かめ方のことわり書き。全部を原文で確かめると null）`verifiedLabel(source)` `Source` `SourceId` |
+| `sources.ts` | 出典の一覧（文書名、発行元、URL、確かめた日、確かめ方） | `sources` `getSource(id)` `listSources()` `sourceKindLabel` `RULES_VERIFIED_ON` `VERIFY_METHOD_NOTE`（確かめ方のことわり書き。全部を原文で確かめると null）`buildVerifyMethodNote(list)` `verifiedLabel(source)` `findSourceProblems(list, rulesVerifiedOn, today)`（日付と確かめ方の、つじつまの検査）`Source` `SourceId` |
 | `categories.ts` | 区分（7つ＋「その他」） | `categories` `getCategory(id)` `categoryOrder` |
 | `items.ts` | 項目の一覧（26個）と、解説ページの中身（12ページ分） | `items` `otherItem` `getItem(id)` `isPresetItemId(id)` `listItemsByCategory()` `listGuideItems()` `findGuideItem(slug)` `resolveBasis(notes)` `listItemSources(item)` `NO_RULE_TEXT` `OTHER_ITEM_ID` |
-| `calc.ts` | 計算（仲介手数料の上限、日割りの目安、月額との比） | `brokerageCaps(rent)` `checkBrokerage()` `prorationDays()` `checkProration()` `compareToMonthly()` `monthsOf()` |
+| `calc.ts` | 計算（仲介手数料の上限、日割りの目安、月額との比） | `brokerageCaps(rent)` `checkBrokerage()` `prorationDays()` `checkProration()` `compareToMonthly()` `monthsOf()` `isWholeHalfMonths()` |
 | `inspect.ts` | 点検（この道具の中心） | `inspectEstimate(estimate)` `isOtherLine(line)` |
 | `search.ts` | 見積書の言葉から項目を探す | `searchItems(query, limit?)` `guessItemId(label)` `labelForMatch(query, match)` `normalizeForSearch(text)` |
 | `message.ts` | 確認の文面（メール用・LINE用） | `buildMessage(input, style)` `defaultAskLineIds(inspection)` `selectedFindings()` |
@@ -62,11 +62,11 @@ mail.body      // 本文（コピーのボタンで、そのままコピーす�
 | `consult.ts` | 相談先（188 など）、広告の表示の根拠 | `consultDesks` `adDisclosure` |
 | `texts.ts` | 画面・LP で同じ言い方をするための文 | `DISCLAIMER` `CONSULT_NOTE` `ASK_TOTAL_LABEL` `ASK_TOTAL_NOTE` `MESSAGE_NOTE` `NOT_DOING` `DATA_NOTE` `AD_LABEL` |
 | `wording.ts` | 言ってはいけない言い方の一覧 | `BANNED_PHRASES` `LEGAL_WORDS` `findBannedPhrase(text)` |
-| `format.ts` | 表示と入力 | `formatYen()` `formatYenOrBlank()` `formatDateJa()` `formatMonthDayJa()` `formatMonths()` `parseAmountInput(text)` `parseDate()` `isValidDate()` `isValidAmount()` `daysInMonth()` `MAX_AMOUNT` |
+| `format.ts` | 表示と入力 | `formatYen()` `formatYenOrBlank()` `formatDateJa()` `formatMonthDayJa()` `formatMonths(months, exact?)` `toOneLine(text)` `parseAmountInput(text)` `parseDate()` `isValidDate()` `isValidAmount()` `daysInMonth()` `MAX_AMOUNT` |
 
 core の外にあるもの:
 
-- `src/offers.ts` … 広告の枠。`visibleOffers(placement?, itemId?)` が、`url` が空の枠を返さない（いまは全部空）。
+- `src/offers.ts` … 広告の枠。`visibleOffers(placement?, itemId?)` が、`url` が空の枠を返さない（はじめは全部空）。
 - `src/lib/file-io.ts` … ブラウザにさわる部分だけ。`downloadTextFile(file)` と `readTextFile(file)`。
 - `src/site.config.ts` … `site.pricing` に、料金と売り方（無料、登録なし、収入は広告）をまとめてある。
 
@@ -185,6 +185,27 @@ RULES_VERIFIED_ON                                       // ルールの最終確
   上限を超えているときは、（家賃＋管理費）での計算と同じ額かどうかを調べて、「計算のもとを聞く」材料にする。
 - 上限との差が1円未満なら、端数の処理の違いとみなす（`roundingOnly`）。
 - 上限を超えていても、言い方は「超えている可能性があります」まで。入力した家賃のまちがいもありうるため。
+- **仲介手数料の行が2つ以上あるとき**（「仲介手数料」と「仲介手数料（消費税）」を分けて書いた見積書 など）は、金額の入っている行を
+  **合わせた額**で、上限と比べる（`calc.amount` が比べた額、`calc.lineCount` が合わせた行の数）。1行ずつ比べると、合計では上限を
+  超えていても、どの行にも「おさまっています」と出てしまうため。合わせた行には、同じ判定と理由（「2行の合計が、…」）が出る。
+  確認の文面は、合わせた額でたずねる。同じ質問が2回入らないように、はじめから文面に入れる（`askDefault`）のは、最初の行だけ。
+
+### 0円の行
+
+- 初期費用として足す、確かめる区分の項目（消毒、鍵の交換、火災保険、クリーニングの前払い、一覧にない項目 など）の行が 0円のときは、
+  確かめる項目にも、「もし全部外せた場合の差」にも、はじめの文面にも入れない（`level: 'ok'`、「見積もりの額は、0円になっています。」）。
+  「鍵の交換費用 0円」に赤ペンを入れて、「貸主様にご負担いただけますか」とたずねる文面を作ると、的はずれになるため。
+- 重なりの知らせ（`overlapsWith`）は、相手の行が 0円のときは出さない。敷金が 0円の見積書では、クリーニングの前払いの聞き方も、
+  「敷金からも引かれますか」ではなく、「この金額のほかに請求されることはありますか」だけにする。相手の金額が未入力のときは、出す。
+- 更新料など、初期費用ではない項目（合計に入れない・引く項目）は、金額がなくても条件を確かめる項目なので、0円でも変えない。
+
+### 「何か月分」の言い方
+
+- `monthsOf()` は、小数第2位に丸めた数。78,100円 ÷ 78,000円 も 1 になる。丸めた数だけを見て「1か月分にあたります」と言い切ると、
+  「1か月分とは違う額です」という判定と食い違う。
+- そこで、0.5か月分の刻みに**ちょうど**合うかどうか（`isWholeHalfMonths()`。割り算をせずに、整数のまま確かめる）を `MonthsCalc.exact` に持たせ、
+  ちょうどのときだけ「1か月分」と言い切る。ちょうどでなければ、「約1か月分（ちょうど1か月分より 100円 多い額）」と、差も言う。
+  保証料の割合（％）も、割り切れないときは「約」を付ける。
 
 ### 日割り家賃
 
@@ -193,10 +214,27 @@ RULES_VERIFIED_ON                                       // ルールの最終確
 - 多いときは `check`（家賃がかかり始める日を確かめる）。少ないときは `note`（借りる人に不利ではないので、赤ペンは入れない）。
 - 「日割り管理費」を別の行に書く見積書があるので、管理費だけの日割りとして合うときも `ok`。
 
+### 見積書の言葉から探す（`search.ts`）
+
+- 合い方の点は、ぴったり（100）＞ 前から合う（80）＞ 項目の言葉の一部（60）＞ 打った言葉の中に、項目の言葉が入っている（40＋言葉の長さ）。
+- 「家賃」「賃料」「管理費」のように、**ほかの項目の言葉の一部にもなっている言葉**は、打った言葉の中に入っていても、決め手にならない。
+  こういう言葉は、長さを点にせず、いちばん低い点（40）にする。「家賃（日割）」「3月分賃料（日割）」で、前家賃ではなく、日割り家賃が
+  いちばん上に出るようにするため（前は同点で、前家賃が先に出て、日割りの額に「1か月分とは違う額です」と赤ペンが入っていた）。
+  どの言葉がそれにあたるかは、項目のデータから自動で決めるので、項目を足しても、ここを直す必要はない。
+- 見積書での別の呼び方を足すときは、項目の `aliases`（画面にも出す）か `keywords`（探すためだけ）に足す。
+
+### 名前は、1行にそろえる
+
+- 行の名前、送る人の名前、物件名は、確認の文面の中にそのまま入る。読み込んだファイルの名前に改行が入っていると、文面の中に、
+  別の段落として入ってしまう。読み込むとき（`storage.ts`）、点検するとき（`inspect.ts` の `label`）、文面の見出しを作るとき（`message.ts`）に、
+  `toOneLine()` で、改行や続いた空白を1つの空白に直す。
+
 ### 保存
 
 - 保存領域のキーは `chintai:data:v1`。中身は `{ app: 'chintai', version: 1, savedAt, data }`。ファイルも同じ形。
 - 読み込むときは、中身を1つずつ確かめる。型の違う値は、何行目かを言って断る。
+  断る理由の文は、どこから来た値かで言い方を変える（`parseSaved(value, 'file' | 'storage')`。保存領域には、選んだファイルがないので、
+  「このファイルは」ではなく「保存されていたデータは」と言う）。
   直せるもの（知らない項目の ID → 「その他」、重なった行の ID、長すぎる名前、文面の設定）は、直して読み込み、`warnings` で知らせる。
 - 保存領域の中身が読めなかったときは、空から始めて、読めなかった中身を `chintai:data:v1:broken` に取っておく
   （次の保存で上書きされて、なくならないように）。
@@ -222,9 +260,17 @@ RULES_VERIFIED_ON                                       // ルールの最終確
 - 「払った更新料は、返ってきません」… 公式の資料で確かめられなかったので、根拠と解説ページから消した。
 - そのほかの文は、2回目の検索でも、同じ記述が公式ページの抜粋に出ることを確かめた。
 
+仕上げの直し（⑤。2026-11-15）でも、官公庁のサイトは開けませんでした。そのため、原文の言い回しを**かぎかっこで引いていた文**
+（鍵の交換費用の国土交通省・東京都のガイドライン、礼金の2つの文、重要事項説明書の様式の欄の名前）を、「〜という趣旨の記載があります」
+という言いかえに直しました。検索の抜粋だけで、1字ずつの引用をすると、言い回しが違ったときに、引用としてまちがいになるためです。
+かぎかっこの引用は、その出典を原文で確かめて `verifiedBy: 'official-page'` にしてから使います（`items.test.ts` が確かめています）。
+
 **それでも、原文のページを開いて読んだわけではありません。** 画面には、そのことを正直に出しています（`VERIFY_METHOD_NOTE`、`verifiedLabel`）。
 **公開の前に、運営者が、`sources.ts` の URL を1つずつ開いて、`items.ts` の `basis` と `related` の文が合っているかを、もう一度確かめてください。**
-確かめた資料は、`verifiedBy: 'official-page'` に変えます（リポジトリの README の「公開前にやること 1」）。
+確かめた資料は、`verifiedBy: 'official-page'` に変え、`verifiedOn` に確かめた日を書きます（リポジトリの README の「公開前にやること 1」）。
+出典の日付と確かめ方のテストは、値の決め打ちではなく、形と決まり（`findSourceProblems()`）を見ているので、この書きかえでは落ちません。
+`RULES_VERIFIED_ON`（画面に出す「ルールの最終確認日」）と、検索で確かめた日（`sources.ts` の中の `SEARCH_VERIFIED_ON`）は、別に持っています。
+`RULES_VERIFIED_ON` を直しても、まだ原文で確かめていない出典の「確かめた日」は、変わりません。
 
 確かめられなかったので、ルールに入れていないこと:
 
@@ -245,10 +291,13 @@ RULES_VERIFIED_ON                                       // ルールの最終確
 npm test    # src/core/*.test.ts と src/offers.test.ts
 ```
 
-- `calc.test.ts` … 仲介手数料の上限の境界（ちょうど、1円超え、端数）、日割り（月の日数、うるう年、1日・月末の入居、幅の境界）。
-- `inspect.test.ts` … サンプル、空の見積書、家賃や入居日がない場合、区分ごとの判定、重なり、合計への入り方、言い方の検査。
-- `items.test.ts` … 項目のデータ（出典の有無、公式サイトの URL、確かめた日、禁句、文面の形、解説ページの数と重なり）。
-- `search.test.ts` … 仕様書の例（「抗菌」）、全角・半角・カタカナ・ひらがな、すべての別の呼び方。
-- `message.test.ts` … 名前と物件名の差し込み、行の順、法律の言葉を出さないこと。
-- `storage.test.ts` … 書き出しと読み込み、合わないファイルを断る理由、壊れた保存領域、保存できないブラウザ。
+- `calc.test.ts` … 仲介手数料の上限の境界（ちょうど、1円超え、端数）、日割り（月の日数、うるう年、1日・月末の入居、幅の境界）、0.5か月分の刻みにちょうど合うか。
+- `inspect.test.ts` … サンプル、空の見積書、家賃や入居日がない場合、区分ごとの判定、仲介手数料が2行以上ある場合、1か月分と少しだけ違う額、0円の行、重なり、合計への入り方、言い方の検査。
+- `items.test.ts` … 項目のデータ（出典の有無、公式サイトの URL、確かめた日と確かめ方のつじつま、かぎかっこの引用、禁句、文面の形、解説ページの数と重なり）。
+- `search.test.ts` … 仕様書の例（「抗菌」）、全角・半角・カタカナ・ひらがな、すべての別の呼び方、「日割」「当月」の入った言葉。
+- `message.test.ts` … 名前と物件名の差し込み、行の順、法律の言葉を出さないこと、名前の中の改行。
+- `storage.test.ts` … 書き出しと読み込み、合わないファイルを断る理由、名前の中の改行、壊れた保存領域、保存できないブラウザ。
+
+テストは、「いまの値」ではなく、「形と決まり」を確かめる（出典の日付、広告の枠が空かどうか、解説ページの数の上の限りは、決め打ちにしない）。
+運営者が README の手順どおりに、出典を確かめ直したり、広告を入れたり、解説ページを足したりしても、落ちないようにするため。
 - `estimate.test.ts` … 行を足す・書き換える・消す・動かす、サンプル、相談先。

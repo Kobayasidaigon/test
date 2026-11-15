@@ -523,6 +523,10 @@ describe('言い方（どんな見積書でも、断定しない）', () => {
       const r = inspectEstimate(estimateOf([...items.map((i): [string, number | null] => [i.id, amount]), ['other', amount, 'その他の費用']], condition))
       findings.push(...r.findings)
       noteTexts.push(...r.notes.map((n) => n.text))
+      // 仲介手数料が2行ある見積書（合わせた額で比べる文）と、敷金が0円の見積書（クリーニングの聞き方が変わる）の文も、調べる。
+      const extra = inspectEstimate(estimateOf([['chukai', amount], ['chukai', amount, '仲介手数料（消費税）'], ['shikikin', 0], ['cleaning', amount]], condition))
+      findings.push(...extra.findings)
+      noteTexts.push(...extra.notes.map((n) => n.text))
     }
   }
 
