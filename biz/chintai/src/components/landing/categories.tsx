@@ -24,7 +24,7 @@ import { FindingDetails } from '@/components/finding-card'
 import { DisclosureChevron, DisclosurePanel } from '@/components/ui/disclosure'
 import { cn } from '@/lib/utils'
 
-/** 区分ごとに、例として見せる項目（見本の見積書の中の行）。なければ、その区分のはじめの行。 */
+/** 区分ごとに、例として見せる項目（サンプルの見積書に行を足した、例の見積書の中の行）。なければ、その区分のはじめの行。 */
 const EXAMPLE_ITEM: Record<CategoryId, string> = {
   usual: 'hiwari',
   capped: 'chukai',
@@ -197,7 +197,7 @@ export function Categories({ inspection }: { inspection: Inspection }) {
             <p className="text-jp mt-3 text-[15px]">{c.description}</p>
             {f && (
               <div className="mt-6">
-                <p className="mb-4 border-b-[1.5px] border-ink/70 pb-1.5 text-[13px] text-ink-soft">この区分の行は、道具でこう点検されます（見本の見積書の1行）</p>
+                <p className="mb-4 border-b-[1.5px] border-ink/70 pb-1.5 text-[13px] text-ink-soft">この区分の行は、道具でこう点検されます（サンプルの見積書に、行を足した例です）</p>
                 <ExampleFinding f={f} open={details} onToggle={() => setDetails((d) => !(d ?? true))} />
               </div>
             )}

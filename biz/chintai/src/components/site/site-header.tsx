@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { MenuIcon, XIcon } from 'lucide-react'
 import { Brand } from '@/components/brand'
 import { Button } from '@/components/ui/button'
+import { useKeepHashTarget } from '@/lib/scroll'
 import { cn } from '@/lib/utils'
 import { Link } from '@/router'
 
@@ -43,6 +44,8 @@ export function SiteHeader({ items }: { items: NavItem[] }) {
   const root = useRef<HTMLElement>(null)
   const toggle = useRef<HTMLButtonElement>(null)
   const menuId = useId()
+  // # 付きの URL で開いたとき、書体が届いてページの高さが変わっても、行き先がずれないようにする。
+  useKeepHashTarget()
 
   // 開いているあいだだけ、Esc と、帯の外を押したときに閉じる。
   useEffect(() => {

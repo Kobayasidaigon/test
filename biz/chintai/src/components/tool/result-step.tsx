@@ -102,6 +102,9 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
 
   const isSample = isSampleEstimate(estimate)
   const count = inspection.findings.length
+  // 印刷に出る「項目ごとの点検」があるか。出るのは、確かめる項目と、画面で開いてある項目だけ（finding-card.tsx）。
+  // 1つもないときは、見出しと説明だけの、中身が空の紙になるので、印刷では、この紙ごと出さない。
+  const printsDetails = inspection.findings.some((f) => f.level === 'check' || f.level === 'alert' || accordion.isOpen(f.lineId))
   const today = todayString()
   const totalText = formatYen(inspection.total)
 
@@ -247,7 +250,7 @@ export function ResultStep({ data, setData, inspection, onGoInput, onGoMessage, 
         </Sheet>
 
         {/* ---------------- 2枚目: 項目ごとの、くわしい結果 ---------------- */}
-        <Sheet aria-labelledby="details-title" className="print:pt-6">
+        <Sheet aria-labelledby="details-title" className={cn('print:pt-6', !printsDetails && 'no-print')}>
           <SheetHeading
             as="h2"
             title={<span id="details-title">項目ごとの点検</span>}

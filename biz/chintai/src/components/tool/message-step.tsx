@@ -144,16 +144,23 @@ export function MessageStep({ data, setData, inspection, onGoInput, onGoResult }
           {inspection.findings.map((f, i) => {
             const on = selected.has(f.lineId)
             const attention = f.level === 'check' || f.level === 'alert'
+            const category = getCategory(f.category)
+            // 「ふつうはかかる」の行でも、計算が目安と違うときは、確かめる項目になる（日割り家賃 など）。
+            // そのときは、区分の名前だけでは、なぜチェックが入っているのかがわからないので、何が違うのかを言う（手順1の行と同じ）。
+            const note = attention && category.attention === 'calm' ? f.headline : category.label
             return (
               <li key={f.lineId} className="border-b border-rule">
                 <label className={cn('flex min-h-12 cursor-pointer items-center gap-3 py-2', !on && 'text-ink-soft')}>
                   <Checkbox checked={on} onCheckedChange={(v) => toggle(f.lineId, v === true)} />
                   <span className="min-w-0 flex-1">
                     <span className={cn('block text-[15px] leading-snug wrap-anywhere', on && 'text-ink')}>{f.label}</span>
-                    <span className="mt-0.5 flex items-center gap-1 text-xs leading-5 text-ink-soft">
-                      <FindingMark f={f} variant={i} className="text-[11px]" />
-                      {getCategory(f.category).label}
-                      {!attention && f.level === 'ok' && <span>（気になる点は、見つかっていません）</span>}
+                    {/* 印の右は、1つのまとまりにする（別々に並べると、せまい画面で、2つの列に割れて、それぞれが折れる）。 */}
+                    <span className="mt-0.5 flex items-start gap-1 text-xs leading-5 text-ink-soft">
+                      <FindingMark f={f} variant={i} className="shrink-0 text-[11px]" />
+                      <span className="min-w-0 pt-px">
+                        {note}
+                        {!attention && f.level === 'ok' && '（気になる点は、見つかっていません）'}
+                      </span>
                     </span>
                   </span>
                   <span className="num shrink-0 text-sm">{f.amount === null ? <span className="text-xs text-ink-soft">未入力</span> : formatYen(f.amount)}</span>

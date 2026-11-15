@@ -228,6 +228,42 @@
 }
 
 /*
+  道具のページ（/app）は、ブラウザで描く。描けないときに、真っ白のままにしない。
+  - スクリプトを切っているとき … index.html の <noscript> の中の .nojs-note を出す。
+    静的HTMLのあるページ（#root に data-ssr が付く）では、本文が読めるので、出さない。
+  - スクリプトの読み込みに時間がかかっている・失敗したとき … #root が空のまま3秒たったら、ひとこと出す。
+    描かれると #root が空でなくなるので、この文は消える。
+*/
+.nojs-note {
+  max-width: 34rem;
+  margin: 4rem auto;
+  padding: 1.25rem 1.5rem;
+  background: var(--paper);
+  box-shadow: var(--shadow-paper);
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+.nojs-note a { text-decoration: underline; text-underline-offset: 4px; }
+#root[data-ssr] ~ noscript > .nojs-note { display: none; }
+
+@keyframes root-wait {
+  to { opacity: 1; }
+}
+#root:empty::before {
+  content: "読み込んでいます。しばらく待っても出ないときは、通信の状態を確かめて、ページを読み込み直してください。";
+  display: block;
+  max-width: 30rem;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.9;
+  text-align: center;
+  opacity: 0;
+  animation: root-wait 0.3s 3s forwards;
+}
+
+/*
   お知らせ（付せん。src/components/ui/toast.tsx）は、ふだんは画面の下に出す。
   スマホでは、重ねる画面（Dialog・AlertDialog）が、下から出る紙になる。そのあいだに下に出すと、
   紙の下のほうにあるエラーの文やボタンに、付せんが重なって読めなくなる（「元に戻す」付きの付せんは、9秒出ている）。

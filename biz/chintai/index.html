@@ -19,6 +19,17 @@
   </head>
   <body>
     <div id="root"><!--app-html--></div>
+    <!--
+      スクリプトを切っているとき。道具のページ（/app。ブラウザで描くページ）は、中身が何も出ないので、そのことを伝える。
+      静的HTMLのあるページ（#root に data-ssr が付く）では、本文が読めるので、出さない（src/index.css の .nojs-note）。
+    -->
+    <noscript>
+      <style>#root:empty::before { display: none; }</style>
+      <p class="nojs-note">
+        この道具は、JavaScript を使って、ブラウザの中だけで動きます。ブラウザの設定で JavaScript を有効にして、ページを開き直してください。<br />
+        <a href="/">トップページ（道具の説明）へ</a>
+      </p>
+    </noscript>
     <script type="module" src="/src/entry-client.tsx"></script>
   </body>
 </html>

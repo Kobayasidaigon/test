@@ -53,7 +53,7 @@ export function Operation() {
         </p>
         <p className="mt-4 text-sm">
           <Link to="/about" className="inline-flex min-h-11 items-center underline decoration-ink/40 underline-offset-4 hover:decoration-ink">
-            運営者と、この道具の立て付けについて
+            運営者と、この道具がしないことについて
           </Link>
         </p>
       </div>

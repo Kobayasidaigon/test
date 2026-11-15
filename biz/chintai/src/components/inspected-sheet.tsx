@@ -15,8 +15,30 @@ import { PenArrow, PenCheck, PenCircle, PenUnderline } from './pen'
 // - 確かめる項目は、丸（形）と、余白の言葉（headline）の両方で伝える。
 // - 気になる点が見つからなかった行は、チェックの印と言葉。
 
-/** 行の高さがそろうように、番号・名前・金額・書き込みの4つのマスに置く。せまい画面では、書き込みを下の段に回す。 */
-const ROW = 'grid grid-cols-[1.6rem_minmax(0,1fr)_auto] gap-x-2 sm:grid-cols-[2rem_minmax(0,1fr)_8.5rem_minmax(0,1.3fr)] sm:gap-x-3'
+/**
+ * 行の高さがそろうように、番号・名前・金額・書き込みの4つのマスに置く。せまい画面では、書き込みを下の段に回す。
+ * 幅 1024〜1279px（小さめのノートPC、タブレットの横）では、LP の一番上で、この紙が画面の右6割に入るので、書き込みのマスがせまくなる。
+ * 「ふつうはかかる項目です。」の最後の「す。」だけが次の行に落ちて、紙が縦に長くなるので、この幅では、金額のマスを少し詰めて、
+ * 書き込みのマスを広げる。
+ */
+const ROW =
+  'grid grid-cols-[1.6rem_minmax(0,1fr)_auto] gap-x-2 sm:grid-cols-[2rem_minmax(0,1fr)_8.5rem_minmax(0,1.3fr)] sm:gap-x-3 lg:max-xl:grid-cols-[2rem_minmax(0,1fr)_7.75rem_minmax(0,1.55fr)]'
+
+/**
+ * 行の名前。終わりのかっこ書き（「（3/20〜3/31）」「（2年）」など）は、ひとまとまりにして、途中で折れないようにする
+ * （「日割り家賃（3/20〜」「3/31）」のように、日付の途中で折れるのを防ぐ）。かっこ書きが長くて1行に入らないときは、中で折れる。
+ */
+function LabelText({ label }: { label: string }) {
+  const m = /^(.+?)([（(][^（()）]{1,16}[)）])$/.exec(label)
+  if (!m) return <>{label}</>
+  return (
+    <>
+      {m[1]}
+      {/* 名前がリンクのとき（結果の画面）は、下線がこのまとまりにも続くように、線の形を親から引き継ぐ。 */}
+      <span className="inline-block max-w-full [text-decoration:inherit]">{m[2]}</span>
+    </>
+  )
+}
 
 /** 順番に描かれていくように、行ごとに描き始めをずらす（ミリ秒）。 */
 const STEP = 110
@@ -112,10 +134,12 @@ export function InspectedSheet({ inspection, draw = false, linkToDetails = false
                   // 上下の余白（と、それを打ち消す負の余白）は、指で押せる大きさ（44px）にするため。行の高さは変えない。
                   className="-my-3 inline-block min-w-11 py-3 text-[15px] leading-snug wrap-anywhere underline decoration-ink/30 decoration-dotted underline-offset-4 hover:decoration-ink hover:decoration-solid print:no-underline"
                 >
-                  {f.label}
+                  <LabelText label={f.label} />
                 </a>
               ) : (
-                <span className="text-[15px] leading-snug wrap-anywhere">{f.label}</span>
+                <span className="text-[15px] leading-snug wrap-anywhere">
+                  <LabelText label={f.label} />
+                </span>
               )}
               {f.totalRole === 'exclude' && <span className="ml-1.5 whitespace-nowrap text-xs text-ink-soft">（合計に入れない）</span>}
               {f.totalRole === 'subtract' && f.amount !== null && <span className="ml-1.5 whitespace-nowrap text-xs text-ink-soft">（合計から引く）</span>}

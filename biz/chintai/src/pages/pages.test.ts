@@ -79,8 +79,10 @@ describe('静的HTMLに書き出すページ', () => {
     const html = await renderRoute(routes.find((r) => r.path === '/')!)
     const inspection = inspectEstimate(sampleEstimate())
     expect(html).toContain(formatYen(inspection.total))
+    // 行の名前は、終わりのかっこ書きを折れないまとまり（<span>）にしているので、タグを取りのぞいた文で確かめる。
+    const text = visibleText(html)
     for (const f of inspection.findings) {
-      expect(html).toContain(f.label)
+      expect(text).toContain(f.label)
       expect(html).toContain(f.headline)
     }
     // 静的HTMLの段階では、赤ペンを描く動きを止めてある（画面に入ったら、ブラウザで動かす）。

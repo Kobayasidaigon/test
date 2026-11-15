@@ -154,13 +154,13 @@ export function HowItWorks({ inspection }: { inspection: Inspection }) {
           demo={
             line && (
               <div>
-                <p className="mb-2 text-xs text-ink-soft">1つの項目を選んだときの、LINE 用の文面</p>
+                <p className="mb-2 text-xs text-ink-soft">1つの項目を選んだときの、LINE用の文面</p>
                 <MessagePreview message={line} />
               </div>
             )
           }
         >
-          聞きたい項目を選ぶと、不動産会社に送る文面ができます。メール用のていねいな文と、LINE 用の短い文。コピーして、自分の言葉に直して使います。
+          聞きたい項目を選ぶと、不動産会社に送る文面ができます。メール用のていねいな文と、LINE用の短い文。コピーして、自分の言葉に直して使います。
         </Step>
       </ol>
 

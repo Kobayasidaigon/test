@@ -127,8 +127,10 @@ export default function ItemGuide() {
         <ul className="space-y-5">
           {item.guide.points.map((p) => (
             <li key={p.title} className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3">
-              {/* 紙に印刷したときに、確かめたら印を付けられる、空のチェック欄（道具の結果と同じ形）。 */}
-              <span aria-hidden className="mt-[0.5em] size-[14px] shrink-0 rounded-[1px] border-[1.5px] border-ink/60" />
+              {/* 画面では、箇条書きの点（四角い欄にすると、押して印を付けられるものに見えるが、押しても何も起きないため）。 */}
+              <span aria-hidden className="mt-[0.62em] size-1.5 shrink-0 rounded-full bg-ink/70 print:hidden" />
+              {/* 紙に印刷したときに、確かめたら手で印を付けられる、空のチェック欄（道具の結果と同じ形）。 */}
+              <span aria-hidden className="mt-[0.5em] hidden size-[14px] shrink-0 rounded-[1px] border-[1.5px] border-ink/60 print:block" />
               <div>
                 <h3 className="text-base font-bold leading-snug">{p.title}</h3>
                 <p className="mt-1">{p.body}</p>

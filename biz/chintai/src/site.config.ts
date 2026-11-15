@@ -18,6 +18,12 @@ export const site = {
     name: '',
     email: '',
   },
+  // サイトを置くサーバーの会社（ホスティング会社）。プライバシーポリシー（/privacy）の「サイトを置いているサーバーの記録」に出す。
+  // 例: name: 'Vercel Inc.'、privacyUrl: 'https://vercel.com/legal/privacy-policy'（公開するときに、実際に使う会社のものを確かめて入れる）。
+  hosting: {
+    name: '',
+    privacyUrl: '',
+  },
   // 料金と売り方。数字と事実は、ここだけに書く。
   pricing: {
     /** 道具の料金（円）。0 ＝ 無料。有料版はない。 */

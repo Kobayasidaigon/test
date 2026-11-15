@@ -44,9 +44,11 @@ export function FindingDetails({ f, className }: { f: Finding; className?: strin
         <Section title="確かめること">
           <ul className="space-y-1.5 text-sm leading-7">
             {f.checks.map((c, i) => (
-              <li key={i} className="print-keep flex gap-2.5">
-                {/* 印刷して持っていったときに、確かめたら印を付けられる、空のチェック欄。 */}
-                <span aria-hidden className="mt-[0.45em] size-[13px] shrink-0 rounded-[1px] border-[1.5px] border-ink/60" />
+              <li key={i} className="print-keep flex gap-2 print:gap-2.5">
+                {/* 画面では、ふつうの箇条書きの点。四角い欄にすると、押して印を付けられるものに見えるが、押しても何も起きないため。 */}
+                <span aria-hidden className="mt-[0.85em] size-1 shrink-0 rounded-full bg-ink/60 print:hidden" />
+                {/* 印刷して持っていったときに、確かめたら手で印を付けられる、空のチェック欄。 */}
+                <span aria-hidden className="mt-[0.45em] hidden size-[13px] shrink-0 rounded-[1px] border-[1.5px] border-ink/60 print:block" />
                 <span>{c}</span>
               </li>
             ))}

@@ -5,6 +5,7 @@ import { site } from '@/site.config'
 // プライバシーポリシー（/privacy）。
 // 「入力した内容はブラウザの中だけに保存し、サーバーに送らない」「有料版はなく、決済もしない」前提で書いてある。
 // 広告の枠（src/offers.ts）に実際のリンクを入れるときは、提携先の決まりに合わせて、「広告について」の段を見直すこと。
+// ページを配るサーバー（ホスティング会社）の側で、アクセスの記録が残ることも、書いてある（会社の名前は site.config.ts の hosting）。
 // index.html が Google Fonts を読み込んでいるあいだは、「書体の読み込み」の段が要る。
 // 書体を自分のサーバーから配る形に変えたら、その段を消すこと。
 
@@ -33,6 +34,27 @@ export default function Privacy() {
       <PageSection title="広告について">
         <p>このサイトは、広告の収入で運営します。広告には、必ず「広告」と表示します。広告は、ほかのサイトへのリンクです。リンク先のサイトでの情報の扱いは、そのサイトの決まりによります。</p>
         <p>このサイトには、アクセス解析や広告配信のためのプログラム（タグ）を入れていません。</p>
+      </PageSection>
+
+      <PageSection title="サイトを置いているサーバーの記録">
+        <p>
+          このサイトのページは、ホスティング会社（サイトを置くサーバーを貸している会社）のサーバーから配っています。ページを開くと、お使いの端末の IP アドレス、ブラウザの種類、開いたページ、日時などが、そのサーバーに記録されます（アクセスの記録）。記録の扱いは、ホスティング会社の決まりによります。
+        </p>
+        <p>入力した内容は、お使いのブラウザの中だけで扱い、サーバーには送らないので、この記録には入りません。</p>
+        <p>
+          ホスティング会社:{' '}
+          {site.hosting.name ? (
+            /^https:\/\//.test(site.hosting.privacyUrl) ? (
+              <a href={site.hosting.privacyUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                {site.hosting.name}
+              </a>
+            ) : (
+              site.hosting.name
+            )
+          ) : (
+            '（公開前に記入します）'
+          )}
+        </p>
       </PageSection>
 
       <PageSection title="書体の読み込み">

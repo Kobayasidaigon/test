@@ -107,8 +107,10 @@ describe('書き出しと読み込み', () => {
 
 describe('合わないファイルは、理由を言って断る', () => {
   it('JSON でない', () => {
-    expect(reasonOf(parseSavedText('これはJSONではない'))).toContain('JSON の形になっていません')
-    expect(reasonOf(parseSavedText('{"app":"chintai",'))).toContain('JSON の形になっていません')
+    expect(reasonOf(parseSavedText('これはJSONではない'))).toContain('ファイルの中身を、読めませんでした')
+    expect(reasonOf(parseSavedText('{"app":"chintai",'))).toContain('ファイルの中身を、読めませんでした')
+    // 英語のままの言葉（JSON）を、理由の文に出さない。ファイルの名前の「.json」だけは、選ぶファイルを伝えるために出す。
+    expect(reasonOf(parseSavedText('これはJSONではない')).replace('.json', '')).not.toMatch(/JSON/i)
   })
   it('空のファイル', () => {
     expect(reasonOf(parseSavedText(''))).toContain('空です')
@@ -323,6 +325,21 @@ describe('ブラウザの保存領域', () => {
       // どうすればよいか（ファイルから戻せること）も言う。
       expect(cut.reason).toContain('ファイルを読み込む')
     }
+    // ほかの道具のデータや、新しい版のデータが入っていたときも、「このファイルは」とは言わない（選んだファイルは、ないので）。
+    const other = loadData(memoryStorage({ [STORAGE_KEY]: '{"app":"shift","version":1,"data":{}}' }))
+    if (other.status !== 'broken') throw new Error('broken になるはず')
+    expect(other.reason).toContain('みつもり点検のデータではありません')
+    expect(other.reason).not.toContain('このファイル')
+    expect(other.reason).not.toContain('書き出したファイルではありません')
+    const newer = loadData(memoryStorage({ [STORAGE_KEY]: '{"app":"chintai","version":99,"data":{}}' }))
+    if (newer.status !== 'broken') throw new Error('broken になるはず')
+    expect(newer.reason).toContain('新しい版')
+    expect(newer.reason).not.toContain('このファイル')
+    const badVersion = loadData(memoryStorage({ [STORAGE_KEY]: '{"app":"chintai","version":"x","data":{}}' }))
+    if (badVersion.status !== 'broken') throw new Error('broken になるはず')
+    expect(badVersion.reason).not.toContain('書き出したファイルかどうか')
+    // ファイルの読み込みでは、これまでどおり、ファイルの言い方。
+    expect(reasonOf(parseSavedText('{"app":"shift","version":1,"data":{}}'))).toBe('このファイルは、みつもり点検で書き出したファイルではありません。')
     // JSON としては読めるが、形が違うときは、どこが違うのかを言う。
     const badLine = loadData(memoryStorage({ [STORAGE_KEY]: JSON.stringify({ app: 'chintai', version: 1, data: { estimate: { lines: [{ itemId: 'kagi', amount: -1 }] } } }) }))
     expect(badLine.status).toBe('broken')

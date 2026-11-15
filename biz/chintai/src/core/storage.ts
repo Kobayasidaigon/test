@@ -88,16 +88,26 @@ function migrate(version: number, data: unknown): unknown {
 /**
  * 読み込んだ値（JSON.parse の結果）を確かめて、道具のデータにする。
  * 合わないときは、理由を返す。
+ *
+ * from は、どこから来た値か。理由の文の言い方を変える（ファイルの読み込みでは「このファイルは」と言うが、
+ * ブラウザの保存領域には、選んだファイルがないので、「保存されていたデータは」と言う）。
  */
-export function parseSaved(value: unknown): ParseResult {
+export function parseSaved(value: unknown, from: 'file' | 'storage' = 'file'): ParseResult {
+  const file = from === 'file'
   if (!isRecord(value)) return fail('みつもり点検のデータではありません（中身が、決まった形になっていません）。')
-  if (value.app !== APP_ID) return fail('このファイルは、みつもり点検で書き出したファイルではありません。')
+  if (value.app !== APP_ID) {
+    return fail(file ? 'このファイルは、みつもり点検で書き出したファイルではありません。' : '保存されていたデータは、みつもり点検のデータではありません。')
+  }
   const version = value.version
   if (typeof version !== 'number' || !Number.isInteger(version) || version < 1) {
-    return fail('版の番号が、正しくありません。みつもり点検で書き出したファイルかどうかを、確かめてください。')
+    return fail(file ? '版の番号が、正しくありません。みつもり点検で書き出したファイルかどうかを、確かめてください。' : '版の番号が、正しくありません。')
   }
   if (version > SCHEMA_VERSION) {
-    return fail(`このファイルは、新しい版のみつもり点検で作られています（版 ${version}）。ページを読み込み直してから、もう一度お試しください。`)
+    return fail(
+      file
+        ? `このファイルは、新しい版のみつもり点検で作られています（版 ${version}）。ページを読み込み直してから、もう一度お試しください。`
+        : `保存されていたデータは、新しい版のみつもり点検で作られています（版 ${version}）。ページを読み込み直してください。`,
+    )
   }
   const data = migrate(version, value.data)
   if (!isRecord(data)) return fail('データの中身が、見つかりません。')
@@ -188,7 +198,8 @@ export function parseSavedText(text: string): ParseResult {
   try {
     value = JSON.parse(body)
   } catch {
-    return fail('ファイルを読めませんでした（JSON の形になっていません）。みつもり点検で書き出したファイルを、選んでください。')
+    // 「JSON」という言葉は、ふつうの人には通じにくいので、出さない。
+    return fail('ファイルの中身を、読めませんでした。みつもり点検で書き出したファイル（mitsumori-tenken-….json）を、選んでください。')
   }
   return parseSaved(value)
 }
@@ -250,7 +261,7 @@ function parseStored(raw: string): ParseResult {
   } catch {
     return fail('中身が途中で切れているか、書き換えられています。')
   }
-  return parseSaved(value)
+  return parseSaved(value, 'storage')
 }
 
 /** 保存領域から読み込む。何が起きても落ちずに、使えるデータ（だめなら空）を返す。 */

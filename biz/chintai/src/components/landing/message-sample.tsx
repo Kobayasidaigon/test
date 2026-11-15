@@ -25,7 +25,7 @@ export function MessageSample({ inspection }: { inspection: Inspection }) {
             '「教えていただけますでしょうか」「外すことはできますか」という、たずねる形で書きます。',
             '法律や決まりの名前は、文面に出しません。根拠は、あなたが点検の結果で読むためのものです。',
             '名前と物件名は、入れた人だけ、文面に差し込みます。',
-            'メール用のていねいな文と、LINE 用の短い文を、切り替えられます。コピーのボタンが付いています。',
+            'メール用のていねいな文と、LINE用の短い文を、切り替えられます。コピーのボタンが付いています。',
           ].map((t) => (
             <li key={t} className="flex items-start gap-2.5">
               <PenCheck className="mt-[0.3em] text-pencil" />

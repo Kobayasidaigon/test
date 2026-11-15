@@ -12,7 +12,7 @@ import { site } from '@/site.config'
 
 // このサイトについて（/about）。
 // 有料版がなく、ものを売らないサイトなので、特定商取引法にもとづく表記のかわりに、このページを置く。
-// 運営者、広告で運営していること、この道具の立て付け（免責）、相談先を書く。
+// 運営者、広告で運営していること、この道具がすること・しないこと（免責）、相談先を書く。
 // 文とデータは、site.config.ts と core から出している（画面や LP と、同じ言い方になる）。
 // 運営者の名前と連絡先は、site.config.ts が空のあいだ、「公開前に記入します」と出る。
 // 「個人が運営しているサイトです」の文は、運営のしかたが変わったら（法人にした、など）、直すこと。
@@ -57,7 +57,7 @@ export default function About() {
         </p>
       </PageSection>
 
-      <PageSection title="この道具の立て付け">
+      <PageSection title="この道具が、すること・しないこと">
         <p>{DISCLAIMER}</p>
         <p>この道具がしないことは、次の{NOT_DOING.length}つです。</p>
         <ul className="space-y-1">
