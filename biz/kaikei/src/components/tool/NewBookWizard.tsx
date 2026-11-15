@@ -185,12 +185,9 @@ export function NewBookWizard({
                 <Field label="どの年度から入力しますか">
                   {(p) => (
                     <NativeSelect {...p} value={yearOffset} onChange={(e) => setYearOffset(Number(e.target.value))}>
-                      <option value={0}>
-                        {fiscalYearLabel(periods.current.startDate)}（{formatWareki(periods.current.startDate)}〜）いまの年度
-                      </option>
-                      <option value={-1}>
-                        {fiscalYearLabel(periods.previous.startDate)}（{formatWareki(periods.previous.startDate)}〜）1つ前の年度
-                      </option>
+                      {/* 選ぶ欄の字は短くする（スマホの幅で、終わりが切れて読めなくなるため）。期間は、すぐ下の枠に出ている */}
+                      <option value={0}>{fiscalYearLabel(periods.current.startDate)}（いまの年度）</option>
+                      <option value={-1}>{fiscalYearLabel(periods.previous.startDate)}（1つ前の年度）</option>
                     </NativeSelect>
                   )}
                 </Field>

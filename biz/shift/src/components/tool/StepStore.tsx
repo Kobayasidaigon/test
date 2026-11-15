@@ -662,7 +662,8 @@ function StaffRow({
 
         <div>
           <span className={label}>月の勤務日数（下限 〜 上限）</span>
-          <div className="flex items-center gap-1.5">
+          {/* 幅320pxの画面では、2つの欄が1行に入りきらないので、折り返せるようにしておく */}
+          <div className="flex flex-wrap items-center gap-1.5">
             <NumberField label={`${who}の月の勤務日数の下限`} value={staff.minDays} min={0} max={31} allowEmpty placeholder="なし" onChange={(v) => patch({ minDays: v })} />
             <span aria-hidden className="text-sm font-bold">
               〜

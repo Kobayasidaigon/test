@@ -483,7 +483,8 @@ function SuggestPanel({ suggest, onAdopt }: { suggest: SuggestState; onAdopt: (s
           {r.suggestions.map((s, i) => (
             <li key={i} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg border-2 border-ink bg-card px-3 py-2">
               <span className="min-w-0 flex-1 basis-64 text-sm font-bold leading-relaxed">{s.text}</span>
-              <Button variant="outline" size="sm" onClick={() => onAdopt(s)}>
+              {/* とてもせまい画面（幅320pxなど）では、ボタンの文を折り返す（折り返さないと、枠からはみ出して横スクロールが出る） */}
+              <Button variant="outline" size="sm" className="max-w-full whitespace-normal text-left leading-snug" onClick={() => onAdopt(s)}>
                 {s.relaxation.kind === 'reseed' ? 'この案にする' : 'この条件にして、組み直した表にする'}
               </Button>
             </li>

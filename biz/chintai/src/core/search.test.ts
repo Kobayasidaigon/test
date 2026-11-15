@@ -68,6 +68,31 @@ describe('searchItems', () => {
     ]
     for (const [query, id] of cases) expect(top(query), query).toBe(id)
   })
+  it('「日割」「当月」の入った言葉は、前家賃ではなく、日割り家賃がいちばん上に出る', () => {
+    // 「家賃」「賃料」は、ほかの項目の言葉の一部にもなる言葉なので、それだけでは決め手にしない。
+    for (const query of ['家賃（日割）', '賃料（日割）', '家賃（日割り）', '日割分賃料', '日割分家賃', '日割り分家賃', '家賃日割分', '3月分賃料（日割）', '当月分賃料', '当月賃料', '当月分家賃（日割）']) {
+      expect(top(query), query).toBe('hiwari')
+    }
+    // 管理費・共益費の日割りも、日割りとして点検する（日割りの目安と比べられる）。
+    for (const query of ['管理費（日割）', '共益費（日割）', '日割管理費', '日割共益費', '日割管理費等']) expect(top(query), query).toBe('hiwari')
+    // 「日割」「当月」のない言葉は、これまでどおり。
+    for (const query of ['4月分賃料', '4月分家賃', '翌月賃料', '前賃料', '賃料等', '家賃', '賃料']) expect(top(query), query).toBe('maeyachin')
+    for (const query of ['管理費等', '共益費', '管理費']) expect(top(query), query).toBe('kanrihi')
+    expect(top('家賃保証')).toBe('hoshoryo')
+  })
+  it('見積書にありそうな言い方で、候補が1つも出ないことがない', () => {
+    const cases: [string, string][] = [
+      ['消毒代', 'shodoku'],
+      ['入居時消毒', 'shodoku'],
+      ['鍵代', 'kagi'],
+      ['カギ代', 'kagi'],
+      ['鍵設定費', 'kagi'],
+      ['緊急駆け付け', 'support24'],
+      ['24時間駆けつけ', 'support24'],
+      ['安心入居サービス', 'support24'],
+    ]
+    for (const [query, id] of cases) expect(top(query), query).toBe(id)
+  })
   it('ひらがなの読みでも探せる', () => {
     expect(top('しょうかき')).toBe('shokaki')
     expect(top('あんしん')).toBe('support24')

@@ -131,8 +131,23 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
   const [notice, setNotice] = useState<Notice | null>(null)
   const [storageProblem, setStorageProblem] = useState<string | null>(null)
   const [changedElsewhere, setChangedElsewhere] = useState(false)
-  // 「今日」は、開いたときの日付で決める（途中で日付が変わっても、入力の途中で年度の判定が動かないように）
-  const today = useMemo(() => dateFromLocal(new Date()), [])
+  // 「今日」は、開いたときの日付で決める（入力の途中で日付が変わっても、その場では動かさない）。
+  // ただ、画面を開いたまま日をまたいで、次の日に戻ってきたときは、新しい日付に直す。
+  // 直さないと、今日の日付の取引に「日付が、今日より先です」と、まちがって知らせてしまうため
+  const [today, setToday] = useState(() => dateFromLocal(new Date()))
+  useEffect(() => {
+    const refresh = () => {
+      if (document.visibilityState === 'hidden') return
+      const now = dateFromLocal(new Date())
+      setToday((current) => (current === now ? current : now))
+    }
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refresh)
+    return () => {
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+    }
+  }, [])
   // このタブが最後に書いた中身。別のタブからの変更と、自分の保存を見分けるために覚えておく
   const lastWritten = useRef<string | null>(null)
 

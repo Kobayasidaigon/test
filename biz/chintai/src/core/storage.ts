@@ -66,8 +66,9 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+/** 名前を、1行にそろえて（改行や続いた空白を、1つの空白に）、長すぎるものを切る。 */
 function cut(text: string, max: number): string {
-  return text.trim().slice(0, max)
+  return toOneLine(text).slice(0, max).trim()
 }
 
 /** 保存する形にする。 */

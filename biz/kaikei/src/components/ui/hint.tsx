@@ -92,7 +92,7 @@ export function Hint({
         }}
         className={cn(
           // 見た目は字の大きさのまま、押せるところだけを上下に広げて 44px にする
-          "relative inline-flex cursor-help items-center rounded-sm before:absolute before:-inset-x-1.5 before:-inset-y-2.5 before:content-['']",
+          "relative inline-flex cursor-help items-center rounded-sm before:absolute before:-inset-x-2 before:-inset-y-3 before:content-['']",
           children
             ? "border-b border-dashed border-current pb-px leading-[1.35]"
             : "size-6 justify-center rounded-full border border-rule-ink/60 bg-paper text-[0.8rem] font-bold leading-none text-rule-ink",

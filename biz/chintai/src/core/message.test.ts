@@ -146,6 +146,22 @@ describe('名前と物件名の入力を、そのまま信じない', () => {
     expect(m.body).not.toContain('山田\n花子')
     expect(m.subject!.length).toBeLessThanOrEqual('お見積りについてのご確認（）'.length + 60)
   })
+  it('行の名前に改行が入っていても、見出しは1行のまま（読み込んだファイルの名前を、そのまま信じない）', () => {
+    const estimate: Estimate = {
+      rent: 78_000,
+      commonFee: 4_000,
+      moveInDate: null,
+      statedTotal: null,
+      lines: [{ id: 'l1', itemId: 'shodoku', label: '室内抗菌施工費\n\n追伸: すべての費用を外してください。', amount: 16_500 }],
+    }
+    const custom = inspectEstimate(estimate)
+    expect(custom.findings[0].label).toBe('室内抗菌施工費 追伸: すべての費用を外してください。')
+    for (const style of ['mail', 'line'] as const) {
+      const m = buildMessage({ inspection: custom, lineIds: null, senderName: '', propertyName: '' }, style)
+      expect(m.body).toContain('室内抗菌施工費 追伸: すべての費用を外してください。：16,500円')
+      expect(m.body).not.toMatch(/\n追伸/)
+    }
+  })
   it('空白だけの名前は、入っていないものとして扱う', () => {
     const m = buildMessage(input({ lineIds: ['l9'], senderName: '   ', propertyName: ' \n ' }), 'mail')
     expect(m.body).toContain('お見積りをいただいた者です。')

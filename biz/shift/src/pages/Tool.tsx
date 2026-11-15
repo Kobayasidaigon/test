@@ -263,18 +263,22 @@ export default function Tool() {
               <>
                 {/*
                   店の名前が長いときは、名前だけを「…」で切る（年月と保存の様子は、いつも見えるように残す）。
-                  スマホでは、1行めに店の名前、2行めに年月と保存の様子。広い画面では、横1行に並ぶ。
+                  スマホでは、2段めの左に、店の名前／年月と保存の様子、の2行。
+                  タブレットや小さめのノートの幅（md〜lg）では、ボタンと同じ段に入りきらないので、2段めをまるごと使う。
+                  広い画面（xl = 1280px から）では、印のすぐ右に、横1行で並ぶ。
                 */}
-                <p className="order-3 flex min-w-0 flex-1 flex-col pb-1 text-sm leading-snug md:order-none md:flex-row md:items-baseline md:gap-x-3 md:pb-0">
+                <p className="order-3 flex min-w-0 flex-1 flex-col pb-1 text-sm leading-snug md:basis-full md:flex-row md:items-baseline md:gap-x-3 xl:order-none xl:basis-0 xl:pb-0">
                   <span className="truncate font-bold" title={plan.storeName || undefined}>
                     {plan.storeName || '（店の名前なし）'}
                   </span>
-                  <span className="flex shrink-0 items-baseline gap-x-2 md:gap-x-3">
-                    <span className="text-[13px] font-bold md:text-sm">{formatMonth(plan.year, plan.month)}</span>
-                    <span role="status" className={store.save.status === 'failed' ? 'text-[12.5px] font-bold text-danger' : 'text-[12.5px] text-ink-soft'}>
+                  {/* 年月と保存の様子は、それぞれ途中で折り返さない。とてもせまい画面では、保存の様子だけが次の行に回る */}
+                  <span className="flex shrink-0 flex-wrap items-baseline gap-x-2 md:flex-nowrap md:gap-x-3">
+                    <span className="whitespace-nowrap text-[13px] font-bold md:text-sm">{formatMonth(plan.year, plan.month)}</span>
+                    <span role="status" className={store.save.status === 'failed' ? 'whitespace-nowrap text-[12.5px] font-bold text-danger' : 'whitespace-nowrap text-[12.5px] text-ink-soft'}>
                       {store.save.status === 'saved' ? (
                         <>
-                          <span className="hidden sm:inline">このブラウザに</span>保存済み{store.save.at ? `（${clock(store.save.at)}）` : ''}
+                          {/* スマホでは「保存済み」だけにする（時刻まで出すと、となりのボタンと並ばない） */}
+                          <span className="hidden sm:inline">このブラウザに</span>保存済み{store.save.at ? <span className="hidden sm:inline">（{clock(store.save.at)}）</span> : null}
                         </>
                       ) : store.save.status === 'failed' ? (
                         '保存できていません'
@@ -282,7 +286,7 @@ export default function Tool() {
                     </span>
                   </span>
                 </p>
-                <Button variant="ghost" size="sm" className="hidden md:inline-flex" disabled={!store.canUndo} onClick={() => store.undo()}>
+                <Button variant="ghost" size="sm" className="hidden md:ml-auto md:inline-flex" disabled={!store.canUndo} onClick={() => store.undo()}>
                   <Undo2 aria-hidden />
                   元に戻す
                 </Button>

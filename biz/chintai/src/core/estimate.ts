@@ -1,3 +1,4 @@
+import { toOneLine } from './format'
 import { getItem } from './items'
 import type { AppData, Estimate, EstimateLine, Yen } from './types'
 
@@ -78,7 +79,7 @@ export function pruneMessageLineIds(data: AppData): AppData {
 
 /** 行の表示名（見積書の名前があればそれ、なければ項目の名前）。 */
 export function lineLabel(line: EstimateLine): string {
-  return line.label.trim() || getItem(line.itemId).name
+  return toOneLine(line.label) || getItem(line.itemId).name
 }
 
 /**

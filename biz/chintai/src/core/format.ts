@@ -27,12 +27,27 @@ export function formatMonthDayJa(date: DateString): string {
   return p ? `${p.month}月${p.day}日` : date
 }
 
-/** 1.5 → '1.5か月分'、1 → '1か月分'、1.37 → '約1.37か月分'。 */
-export function formatMonths(months: number): string {
+/**
+ * 1.5 → '1.5か月分'、1 → '1か月分'、1.37 → '約1.37か月分'。
+ *
+ * exact は、もとの金額が 0.5か月分の刻みにちょうど合っているか（calc.ts の isWholeHalfMonths）。
+ * months は小数第2位に丸めた数なので、78,100円 ÷ 78,000円 も 1 になる。丸めた数だけを見て「1か月分」と
+ * 言い切ると、「1か月分とは違う額です」という判定と食い違う。ちょうどでないとわかっているときは、
+ * exact に false を渡すと、0.5 の刻みでも「約」を付ける。
+ */
+export function formatMonths(months: number, exact = true): string {
   const half = Math.round(months * 2) / 2
-  // ちょうど 0.5 刻みに近いときは「約」を付けない（1円の差で「約1か月分」になるのを防ぐ）。
-  if (Math.abs(months - half) < 0.005 && half > 0) return `${trimZero(half)}か月分`
+  if (exact && Math.abs(months - half) < 0.005 && half > 0) return `${trimZero(half)}か月分`
   return `約${trimZero(Math.round(months * 100) / 100)}か月分`
+}
+
+/**
+ * 文字を、1行にそろえる。改行・タブ・全角の空白などの続きを、1つの空白に直して、前後の空白を取る。
+ * 行の名前や、送る人の名前は、確認の文面の中にそのまま入る。読み込んだファイルの名前に改行が入っていると、
+ * 文面の中に、別の段落として入ってしまうので、表示や文面に使う前に、これを通す。
+ */
+export function toOneLine(text: string): string {
+  return text.replace(/\s+/g, ' ').trim()
 }
 
 function trimZero(n: number): string {

@@ -40,6 +40,8 @@ export function checkBrokerage(input: { rent: Yen | null; commonFee: Yen | null;
     kind: 'brokerage',
     status: 'no-rent',
     rent,
+    amount,
+    lineCount: 1,
     halfCap: null,
     fullCap: null,
     overHalf: 0,
@@ -79,6 +81,8 @@ export function checkBrokerage(input: { rent: Yen | null; commonFee: Yen | null;
     kind: 'brokerage',
     status,
     rent,
+    amount,
+    lineCount: 1,
     halfCap,
     fullCap,
     overHalf: Math.max(0, amount - halfCap),
@@ -177,6 +181,17 @@ export function monthsOf(amount: Yen, monthly: Yen): number | null {
 }
 
 /**
+ * 金額が、月額の 0.5か月分の刻み（0.5、1、1.5、…）に、ちょうど合っているか。
+ * 丸めた数（monthsOf）で見ると、78,100円 ÷ 78,000円 も 1 になり、「1か月分」と言い切ってしまう。
+ * 割り算をせずに、整数のまま確かめる。月額が奇数のときの 0.5か月分は円にならないので、1円未満の差は合っているとみなす。
+ */
+export function isWholeHalfMonths(amount: Yen, monthly: Yen): boolean {
+  if (monthly <= 0 || amount <= 0) return false
+  const halves = Math.round((amount * 2) / monthly) // 0.5か月分が、いくつ分か
+  return halves > 0 && Math.abs(amount * 2 - halves * monthly) < 2
+}
+
+/**
  * 金額を、家賃（や家賃＋管理費）と比べる。高い安いの判定ではなく、「何か月分にあたるか」という計算だけ。
  * base は、どの月額と比べるか。'auto' は、家賃＋管理費とちょうど合うときはそちら、そうでなければ家賃。
  */
@@ -191,7 +206,7 @@ export function compareToMonthly(input: {
   const fee = commonFee !== null && commonFee > 0 ? commonFee : 0
   const make = (base: MonthsCalc['base'], baseAmount: number): MonthsCalc | null => {
     const months = monthsOf(amount, baseAmount)
-    return months === null ? null : { kind: 'months', base, baseAmount, months }
+    return months === null ? null : { kind: 'months', base, baseAmount, months, exact: isWholeHalfMonths(amount, baseAmount) }
   }
   if (input.base === 'fee') return fee > 0 ? make('fee', fee) : null
   if (rent === null || rent <= 0) return null

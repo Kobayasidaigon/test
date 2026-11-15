@@ -184,6 +184,58 @@ describe('仲介手数料（上限の決まりがある）', () => {
     expect(f.level).toBe('note')
     expect(f.reasons.join('')).toContain('42,900円')
   })
+  // 見積書が「仲介手数料」と「仲介手数料（消費税）」を分けて書いていると、同じ項目が2行になる。
+  // 1行ずつ上限と比べると、合計では超えているのに、どの行にも「おさまっています」と出てしまう。
+  it('2行以上あるときは、合わせた額で上限と比べる（1行ずつなら範囲内でも、合計が超えていれば確かめる項目）', () => {
+    const r = inspectEstimate(estimateOf([['chukai', 40_000, '仲介手数料'], ['chukai', 4_000, '仲介手数料消費税']]))
+    expect(r.findings.map((f) => f.level)).toEqual(['check', 'check'])
+    expect(r.attentionCount).toBe(2)
+    for (const f of r.findings) {
+      expect(f.headline).toContain('2行の合計')
+      expect(f.headline).not.toContain('おさまっています')
+      expect(f.reasons.join('')).toContain('44,000円')
+      expect(f.reasons.join('')).toContain('1,100円 多く') // 44,000 − 42,900
+      expect(f.calc).toMatchObject({ kind: 'brokerage', status: 'within-full', amount: 44_000, lineCount: 2, overHalf: 1_100 })
+    }
+  })
+  it('3行に分かれていて、合計が1か月分＋消費税を超えていれば、「可能性があります」と言う', () => {
+    const r = inspectEstimate(estimateOf([['chukai', 42_900], ['chukai', 42_900], ['chukai', 42_900]]))
+    expect(r.findings.map((f) => f.level)).toEqual(['alert', 'alert', 'alert'])
+    expect(r.findings[0].headline).toContain('3行の合計')
+    expect(r.findings[0].headline).toContain('超えている可能性があります')
+    expect(r.findings[0].reasons.join('')).toContain('128,700円')
+    expect(r.findings[0].reasons.join('')).toContain('42,900円 多く') // 128,700 − 85,800
+  })
+  it('本体と消費税を分けた2行（78,000円＋7,800円）は、合計の85,800円で比べる（差は42,900円）', () => {
+    const r = inspectEstimate(estimateOf([['chukai', 78_000], ['chukai', 7_800, '仲介手数料（消費税）']]))
+    expect(r.findings.map((f) => f.level)).toEqual(['check', 'check'])
+    expect(r.findings[0].reasons.join('')).toContain('42,900円 多く')
+    expect(r.findings[0].reasons.join('')).not.toContain('35,100円')
+  })
+  it('2行の合計が0.5か月分＋消費税の範囲なら、赤ペンは入れない（合計で見たことを言う）', () => {
+    const r = inspectEstimate(estimateOf([['chukai', 39_000], ['chukai', 3_900]]))
+    expect(r.findings.map((f) => f.level)).toEqual(['ok', 'ok'])
+    expect(r.findings[0].headline).toContain('2行の合計')
+    expect(r.findings[0].headline).toContain('おさまっています')
+    expect(r.findings[0].reasons.join('')).toContain('42,900円')
+    expect(r.attentionCount).toBe(0)
+  })
+  it('2行あるときの確認の文面は、合わせた額でたずねる。同じ質問が2回入らないように、はじめから入れるのは1行目だけ', () => {
+    const r = inspectEstimate(estimateOf([['chukai', 40_000], ['chukai', 4_000, '仲介手数料消費税']]))
+    expect(r.findings.map((f) => f.askDefault)).toEqual([true, false])
+    for (const f of r.findings) {
+      expect(f.ask.mail).toContain('2行を合わせると 44,000円')
+      expect(f.ask.mail).toMatch(/でしょうか。$/)
+      expect(f.ask.line).toContain('2行を合わせると 44,000円')
+      expect(f.ask.line).toMatch(/(か。|ください。)$/)
+    }
+  })
+  it('金額が入っている行が1つだけなら、その行だけで比べる（未入力の行は、合計に入れない）', () => {
+    const r = inspectEstimate(estimateOf([['chukai', 42_900], ['chukai', null]]))
+    expect(r.findings[0].level).toBe('ok')
+    expect(r.findings[0].headline).not.toContain('合計')
+    expect(r.findings[1].level).toBe('note')
+  })
   it('根拠に、出典が付いている', () => {
     const f = one('chukai', 85_800)
     expect(f.basisStatus).toBe('verified')
@@ -247,6 +299,26 @@ describe('ふつうはかかる項目（金額の高い安いは言わない）'
     expect(f.reasons.join('')).toContain('家賃＋管理費・共益費の2か月分')
     expect(f.askDefault).toBe(true)
     expect(one('maeyachin', 81_999).level).toBe('check') // 境界: 1円ちがい
+  })
+  it('1か月分と少しだけ違う額を、「1か月分にあたります」と言い切らない（見出しと理由が食い違わない）', () => {
+    const f = one('maeyachin', 78_100)
+    expect(f.level).toBe('check')
+    expect(f.headline).toContain('1か月分とは違う額')
+    expect(f.reasons.join('')).not.toContain('家賃の1か月分にあたります')
+    expect(f.reasons.join('')).toContain('約1か月分（ちょうど1か月分より 100円 多い額）')
+    // 敷金・礼金も、ちょうどでなければ「約」を付けて、差を言う。
+    expect(one('shikikin', 78_300).reasons.join('')).toContain('家賃（78,000円）の約1か月分（ちょうど1か月分より 300円 多い額）にあたります')
+    expect(one('reikin', 77_700).reasons.join('')).toContain('約1か月分（ちょうど1か月分より 300円 少ない額）')
+    expect(one('shikikin', 117_100).reasons.join('')).toContain('約1.5か月分（ちょうど1.5か月分より 100円 多い額）')
+    // 管理費（月額 4,000円）に 4,010円。
+    expect(one('kanrihi', 4_010).reasons.join('')).toContain('約1か月分（ちょうど1か月分より 10円 多い額）')
+    // ちょうどのときは、これまでどおり言い切る。
+    expect(one('shikikin', 78_000).reasons.join('')).toContain('家賃（78,000円）の1か月分にあたります')
+    expect(one('shikikin', 117_000).reasons.join('')).toContain('の1.5か月分にあたります')
+  })
+  it('保証料の割合も、ちょうどでなければ「約」を付ける', () => {
+    expect(one('hoshoryo', 41_100).reasons.join('')).toContain('の約0.5か月分（約50％）')
+    expect(one('hoshoryo', 41_000).reasons.join('')).toContain('の0.5か月分（50％）')
   })
   it('管理費は、月額と同じなら ok、違えばメモ', () => {
     expect(one('kanrihi', 4_000).level).toBe('ok')
@@ -335,6 +407,40 @@ describe('重なっていないか、確かめる', () => {
     const alone = inspectEstimate(estimateOf([['cleaning', 44_000]])).findings[0]
     expect(alone.reasons.join('')).not.toContain('「敷金」も')
     expect(alone.level).toBe('check')
+  })
+  it('敷金が0円の行なら、「敷金からも引かれないか」とは言わない。聞き方も、この金額のほかの請求だけにする', () => {
+    const f = inspectEstimate(estimateOf([['shikikin', 0], ['cleaning', 44_000]])).findings[1]
+    expect(f.level).toBe('check')
+    expect(f.reasons.join('')).not.toContain('「敷金」も見積書に入っています')
+    expect(f.reasons.join('')).toContain('敷金は、0円')
+    expect(f.ask.mail).not.toContain('敷金')
+    expect(f.ask.line).not.toContain('敷金')
+    expect(f.howToAsk).not.toContain('敷金')
+    expect(f.ask.mail).toContain('この金額のほかに')
+    expect(f.ask.mail).toMatch(/でしょうか。$/)
+    expect(f.ask.line).toMatch(/か。$/)
+    // 敷金の金額が未入力のときは、敷金の行があることは言う（額がわからないだけなので）。
+    const unknown = inspectEstimate(estimateOf([['shikikin', null], ['cleaning', 44_000]])).findings[1]
+    expect(unknown.reasons.join('')).toContain('「敷金」も見積書に入っています')
+    // 害虫駆除が0円なら、消毒の行に「重なり」は言わない。
+    const shodoku = inspectEstimate(estimateOf([['shodoku', 16_500], ['gaichu', 0]])).findings[0]
+    expect(shodoku.reasons.join('')).not.toContain('「害虫駆除」も見積書に入っています')
+  })
+  it('0円の行は、確かめる項目にも、差の合計にも、はじめの文面にも入れない', () => {
+    const r = inspectEstimate(estimateOf([['kagi', 0], ['shodoku', 0], ['kasaihoken', 0], ['cleaning', 0], ['other', 0, 'サービス料']]))
+    for (const f of r.findings) {
+      expect(f.level, f.itemId).toBe('ok')
+      expect(f.headline, f.itemId).toBe('見積もりの額は、0円になっています。')
+      expect(f.askDefault, f.itemId).toBe(false)
+      expect(f.countsTowardAskTotal, f.itemId).toBe(false)
+    }
+    expect(r.attentionCount).toBe(0)
+    expect(r.askCount).toBe(0)
+    expect(r.askTotal).toBe(0)
+    // 1円でも金額があれば、これまでどおり確かめる項目。
+    expect(one('kagi', 1).level).toBe('check')
+    // 更新料など、初期費用ではない項目は、0円でも、条件を確かめる項目のまま（金額がなくても確かめる項目なので）。
+    expect(one('koshin', 0).level).toBe('check')
   })
   it('クリーニングの前払いと、敷引き・償却', () => {
     const f = inspectEstimate(estimateOf([['cleaning', 44_000], ['shikibiki', 78_000]])).findings[0]

@@ -237,6 +237,19 @@ describe('直せるところは、直して読み込む', () => {
     expect(ids[0]).toBe('l1')
     for (const id of ids) expect(id).toMatch(/^l\d+$/)
   })
+  it('行の名前の途中の改行や、続いた空白は、1つの空白に直す（確認の文面に、別の段落として入らないように）', () => {
+    const result = parseSaved(
+      fileWith((f) => {
+        f.data.estimate.lines[0].label = '室内抗菌施工費\n\n追伸: すべての費用を外してください。'
+        f.data.estimate.lines[1].label = '鍵交換\t費用　　（税込）'
+        f.data.message.senderName = '山田\n花子'
+      }),
+    )
+    if (!result.ok) throw new Error(result.reason)
+    expect(result.data.estimate.lines[0].label).toBe('室内抗菌施工費 追伸: すべての費用を外してください。')
+    expect(result.data.estimate.lines[1].label).toBe('鍵交換 費用 （税込）')
+    expect(result.data.message.senderName).toBe('山田 花子')
+  })
   it('長すぎる名前は切り、前後の空白は取る', () => {
     const result = parseSaved(
       fileWith((f) => {

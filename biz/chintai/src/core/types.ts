@@ -212,13 +212,20 @@ export type BrokerageCalc = {
    */
   status: 'no-rent' | 'no-amount' | 'within-half' | 'within-full' | 'over-full'
   rent: Yen | null
+  /**
+   * 上限と比べた額。仲介手数料の行が2つ以上あるとき（本体と消費税を分けて書いた見積書 など）は、
+   * 金額の入っている行を合わせた額。1行ずつ比べると、合計では上限を超えていても、見落とすため。
+   */
+  amount: Yen | null
+  /** 合わせた行の数（ふつうは 1）。 */
+  lineCount: number
   /** 家賃 × 0.55（円未満は切り捨て）。 */
   halfCap: Yen | null
   /** 家賃 × 1.1（円未満は切り捨て）。 */
   fullCap: Yen | null
-  /** 見積もりの額 − halfCap（超えていなければ 0）。 */
+  /** 比べた額（amount）− halfCap（超えていなければ 0）。 */
   overHalf: Yen
-  /** 見積もりの額 − fullCap（超えていなければ 0）。 */
+  /** 比べた額（amount）− fullCap（超えていなければ 0）。 */
   overFull: Yen
   /** 上限との差が1円未満で、端数の処理の違いとみなしたか。 */
   roundingOnly: boolean
@@ -266,6 +273,11 @@ export type MonthsCalc = {
   baseAmount: Yen
   /** 金額 ÷ baseAmount（小数第2位まで）。 */
   months: number
+  /**
+   * 金額が、0.5か月分の刻みに、ちょうど合っているか（1円未満の端数を除く）。
+   * months は丸めた数なので、78,100円 ÷ 78,000円 も 1 になる。「1か月分」と言い切ってよいのは、これが true のときだけ。
+   */
+  exact: boolean
 }
 
 export type FindingCalc = BrokerageCalc | ProrationCalc | MonthsCalc

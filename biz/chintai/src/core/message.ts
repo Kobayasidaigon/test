@@ -1,4 +1,4 @@
-import { formatYen } from './format'
+import { formatYen, toOneLine } from './format'
 import type { Finding, Inspection } from './types'
 
 // 不動産会社に送る、確認の文面を作る。
@@ -33,7 +33,7 @@ export type BuiltMessage = {
 
 /** 名前や物件名に入った改行や余分な空白を取り、長すぎるものを切る。 */
 function clean(text: string, max: number): string {
-  return text.replace(/\s+/g, ' ').trim().slice(0, max)
+  return toOneLine(text).slice(0, max)
 }
 
 /** はじめから文面に入れておく行（確かめる項目）のID。 */
@@ -53,7 +53,10 @@ export function selectedFindings(inspection: Inspection, lineIds: string[] | nul
  * 金額をかっこに入れないのは、見積書の名前がかっこで終わることが多いため（「火災保険料（2年）（20,000円）」になるのを避ける）。
  */
 function heading(f: Finding): string {
-  return f.amount === null ? f.label : `${f.label}：${formatYen(f.amount)}`
+  // 行の名前は、点検（inspect.ts）で1行にそろえてあるが、ここでも通す。文面は、そのまま人に送るものなので、
+  // 名前の中の改行で、見出しが別の段落に割れることがないようにする。
+  const label = toOneLine(f.label)
+  return f.amount === null ? label : `${label}：${formatYen(f.amount)}`
 }
 
 /** 確認の文面を作る。 */
