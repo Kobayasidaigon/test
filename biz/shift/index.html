@@ -11,14 +11,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
       書体は M PLUS の3つ（同じ作者の、同じ骨格の書体）にそろえている。
-      - M PLUS Rounded 1c … 見出し（太くて親しみのある丸ゴシック）
-      - M PLUS 1 … 本文と画面の文字
-      - M PLUS 1 Code … 数字（等幅。表の中で桁がそろう）
+      - M PLUS Rounded 1c … 見出し（太くて親しみのある丸ゴシック）。太さは 800 の1つだけ
+      - M PLUS 1 … 本文と画面の文字。太さは 400 と 700 の2つだけ（500 は 400、800 は 700 で出る）
+      - M PLUS 1 Code … 数字（等幅。表の中で桁がそろう）。英数字と記号だけにしぼって読む（text=）。
+        日本語の字は、--font-num の次の「M PLUS 1」で出る
+      日本語の書体は、太さ1つで @font-face が100個以上になり、読み込みが重い。太さと字をしぼって、最初の表示を軽くしている。
     -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;500;700;800&family=M+PLUS+1+Code:wght@500;700&family=M+PLUS+Rounded+1c:wght@700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Rounded+1c:wght@800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@500;700&display=swap&text=%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%E2%88%92" rel="stylesheet" />
   </head>
   <body>
     <div id="root"><!--app-html--></div>

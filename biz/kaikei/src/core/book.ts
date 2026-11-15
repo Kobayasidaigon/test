@@ -174,7 +174,7 @@ function bump(book: Book, patch: Partial<Book>): Book {
  * 年度を1つ書きかえる。
  *
  * 読むだけの年度（繰り越したあとの前の年度）では、数字に関わるもの（取引、科目、予算、置き場所、期間）は断る。
- * ただし「資料に書くこと」（作成日、役員の名前、監査報告書の文と日付、引き継ぎ書、残高の照合の記録）は、
+ * ただし「資料に書くこと」（作成日、役員の名前、決算書の説明の文、監査報告書の文と日付、引き継ぎ書、残高の照合の記録）は、
  * 呼ぶ側が allowLocked を付けて、読むだけの年度でも変えられるようにしてある。
  * 総会の前（監査 → 総会 → 引き継ぎ）に、新しい年度の取引を入れるために先に繰り越した人が、
  * 前の年度の資料の日付や名前を入れられなくなって、行きづまるため（点検で見つかった）。
@@ -428,13 +428,22 @@ export function addCategory(
 
 /** 科目の名前、予算額、決算書の説明を変える。 */
 export function updateCategory(book: Book, yearId: string, categoryId: string, patch: { name?: string; budget?: Yen; note?: string }): Result<Book> {
-  return editYear(book, yearId, (year) => {
-    const category = year.categories.find((c) => c.id === categoryId)
-    if (!category) return fail('not-found', 'この科目が見つかりません。')
-    const fields = checkCategoryFields(year, category.side, categoryId, patch)
-    if ('ok' in fields) return fields
-    return { ...year, categories: year.categories.map((c) => (c.id === categoryId ? { ...c, ...fields } : c)) }
-  })
+  // 決算書の「説明」の文（note）だけを変えるときは、読むだけの年度でも変えられる。
+  // 説明は、総会の前に決算書を仕上げるときに書くもの（「会費: 新しく3世帯が入ったため」など）で、数字は動かさない。
+  // 先に繰り越した人が、説明を書けなくなるのを防ぐ（作成日や役員の名前と同じ「資料に書くこと」の扱い）。
+  const onlyNote = patch.note !== undefined && patch.name === undefined && patch.budget === undefined
+  return editYear(
+    book,
+    yearId,
+    (year) => {
+      const category = year.categories.find((c) => c.id === categoryId)
+      if (!category) return fail('not-found', 'この科目が見つかりません。')
+      const fields = checkCategoryFields(year, category.side, categoryId, patch)
+      if ('ok' in fields) return fields
+      return { ...year, categories: year.categories.map((c) => (c.id === categoryId ? { ...c, ...fields } : c)) }
+    },
+    { allowLocked: onlyNote },
+  )
 }
 
 /** 科目を、同じ部（収入・支出）の中で1つ上か下へ動かす。端にあるときは何も変えない。 */

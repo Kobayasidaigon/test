@@ -253,7 +253,7 @@ export function WorkspaceShell() {
                   <Seal text="済" size={40} />
                   <span>
                     <span className="font-bold">「{year.label}」の取引・科目・予算額は、読むだけです。</span>
-                    次の年度へ繰り越したためです。資料に書くこと（作成日、役員の名前、監査報告書、次年度の予算案、引き継ぎ書）と、残高の照合は、いまも入れられます。印刷もできます。
+                    次の年度へ繰り越したためです。資料に書くこと（作成日、役員の名前、決算書の説明、監査報告書、次年度の予算案、引き継ぎ書）と、残高の照合は、いまも入れられます。印刷もできます。
                   </span>
                 </p>
                 <Button variant="soft" size="sm" onClick={() => ws.setYearId(latest.id)}>

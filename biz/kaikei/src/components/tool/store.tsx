@@ -206,16 +206,22 @@ export function useStore(): Store & { yearId: string | null; setYearId: (id: str
   // ファイルを開いた直後に1回だけ、キーの結果を知らせるための印（開いたファイルのキー）。
   // 読み込み直すたびに知らせると、期限が切れたあと、開くたびに同じ知らせが出つづけてしまう（点検で見つかった）
   const announceFor = useRef<string | null>(null)
+  // いまの bookLicense が、どのキーを確かめた結果か
+  const checkedKey = useRef<string | null>(null)
   const { prelaunch } = license
   useEffect(() => {
     if (prelaunch || bookKey === '') {
+      checkedKey.current = null
       setBookLicense({ status: 'none' })
       return
     }
     let alive = true
-    setBookLicense((current) => (current.status === 'ok' ? current : { status: 'checking' }))
+    // 同じキーを、日付が変わって確かめ直すあいだは、いまの結果のままにする（有料版の表示が、一瞬消えないように）。
+    // 別のキーに変わったときは、前の帳簿の結果を引きずらない（別の団体の名前で、一瞬でも有料版に見えないように）
+    if (checkedKey.current !== bookKey) setBookLicense({ status: 'checking' })
     checkBookLicense(bookKey, site.licensePublicKey, site.slug, today).then((result) => {
       if (!alive) return
+      checkedKey.current = bookKey
       setBookLicense(result)
       if (announceFor.current !== bookKey) return
       announceFor.current = null

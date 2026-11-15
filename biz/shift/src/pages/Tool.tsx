@@ -1,7 +1,7 @@
 // 道具の画面（/app）。4つの手順（①店とスタッフ → ②必要な人数と条件 → ③希望休 → ④シフト表）を行き来する。
 // ここは、保存と読み込み、手順の切りかえ、自動作成の進行、ダイアログをまとめる役。
 // 手順ごとの中身は src/components/tool/、計算は src/core/ にある。
-import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { Download, FolderOpen, Menu, Undo2 } from 'lucide-react'
 import {
   buildExportFile,
@@ -26,6 +26,7 @@ import { Link } from '@/router'
 import { site } from '@/site.config'
 import { useLicense } from '@/lib/use-license'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Notice, NoticeBody, NoticeTitle } from '@/components/ui/notice'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Steps } from '@/components/ui/steps'
@@ -69,6 +70,11 @@ export default function Tool() {
   const [licenseOpen, setLicenseOpen] = useState(false)
   const [fileOpen, setFileOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  /**
+   * いまの内容をまるごと入れかえる操作の前の確かめ（はじめからやり直す、メニューからサンプルを入れる）。
+   * 押しまちがい1回で、1か月ぶんの入力が消えないようにする（「元に戻す」のお知らせは数秒で消え、読み込み直すと戻せないため）
+   */
+  const [confirmReplace, setConfirmReplace] = useState<{ kind: 'restart' } | { kind: 'sample'; id: SampleId } | null>(null)
 
   const [solving, setSolving] = useState<SolveProgress | null>(null)
   const [suggest, setSuggest] = useState(NO_SUGGEST)
@@ -78,6 +84,18 @@ export default function Tool() {
   const handle = useRef<SolveHandle | null>(null)
   const token = useRef(0)
   const mainRef = useRef<HTMLElement>(null)
+  /** 右上の「そのほかの操作」。メニューから開いたダイアログを閉じたら、ここへフォーカスを戻す（メニューの中のボタンは、もう消えているため） */
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  /** 入れかえの確かめを閉じたあとの戻し先。やめたときはメニューのボタン、はじめの画面に戻ったとき（メニューがない）は手順の頭 */
+  const confirmReturn = useMemo<RefObject<HTMLElement | null>>(
+    () => ({
+      get current() {
+        const m = menuButtonRef.current
+        return m && m.isConnected ? m : mainRef.current
+      },
+    }),
+    [],
+  )
 
   // 前に開いていた手順に戻す
   useEffect(() => {
@@ -213,6 +231,7 @@ export default function Tool() {
     setSuggest(NO_SUGGEST)
     replace(null)
     setMenuOpen(false)
+    // はじめの画面にも「さっきの内容に戻す」を出しておく（このお知らせが消えても戻せるように）
     notifyUndo('はじめの画面に戻りました。入れていた内容は、「元に戻す」で戻せます。')
   }
 
@@ -300,7 +319,7 @@ export default function Tool() {
                 </Button>
                 <Popover open={menuOpen} onOpenChange={setMenuOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" className="order-1 ml-auto md:order-none md:ml-0" aria-label="そのほかの操作">
+                    <Button ref={menuButtonRef} variant="ghost" size="icon" className="order-1 ml-auto md:order-none md:ml-0" aria-label="そのほかの操作">
                       <Menu aria-hidden />
                     </Button>
                   </PopoverTrigger>
@@ -335,14 +354,21 @@ export default function Tool() {
                         className={menuItem}
                         onClick={() => {
                           setMenuOpen(false)
-                          startSample(s.id)
+                          setConfirmReplace({ kind: 'sample', id: s.id })
                         }}
                       >
                         {s.label}のサンプルを入れる
                       </button>
                     ))}
-                    <button type="button" className={menuItem} onClick={restart}>
-                      はじめからやり直す
+                    <button
+                      type="button"
+                      className={menuItem}
+                      onClick={() => {
+                        setMenuOpen(false)
+                        setConfirmReplace({ kind: 'restart' })
+                      }}
+                    >
+                      すべて消して、はじめの画面に戻る
                     </button>
                     <button
                       type="button"
@@ -361,7 +387,8 @@ export default function Tool() {
               </>
             ) : (
               <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setLicenseOpen(true)}>
-                {site.plans.pro.name}版について
+                {/* 店のデータがあるときの、メニューの中の名前とそろえる（LP と、キーを送るメールの案内が、この名前で書いてある） */}
+                {site.plans.pro.name}版について・キーを入れる
               </Button>
             )}
           </div>
@@ -377,7 +404,7 @@ export default function Tool() {
           {!store.ready ? (
             <p className="py-16 text-center text-sm text-ink-soft">読み込んでいます…</p>
           ) : !plan || !gate || !report ? (
-            <Start issue={store.issue} onDismissIssue={store.dismissIssue} onSample={startSample} onStart={startOwn} onImport={importPlan} />
+            <Start issue={store.issue} onDismissIssue={store.dismissIssue} onSample={startSample} onStart={startOwn} onImport={importPlan} onRestore={store.canUndo ? () => store.undo() : undefined} />
           ) : (
             <ToolProvider value={{ plan, update: store.update, replace: store.replace, undo: store.undo, notifyUndo, gate, isPro: license.isPro, openLicense: () => setLicenseOpen(true), goStep }}>
               {store.save.status === 'failed' ? (
@@ -444,8 +471,47 @@ export default function Tool() {
 
       {printPlan ? <PrintSheet plan={printPlan} /> : null}
       <Toaster />
-      {plan ? <FileDialog open={fileOpen} onOpenChange={setFileOpen} current={plan} onReplace={importPlan} /> : null}
-      <LicenseDialog open={licenseOpen} onOpenChange={setLicenseOpen} license={license} />
+      {plan ? <FileDialog open={fileOpen} onOpenChange={setFileOpen} current={plan} onReplace={importPlan} returnFocus={menuButtonRef} /> : null}
+      <LicenseDialog open={licenseOpen} onOpenChange={setLicenseOpen} license={license} returnFocus={menuButtonRef} />
+
+      {/* はじめからやり直す・サンプルを入れる、の前の確かめ（月を変えるときと同じ形） */}
+      <Dialog open={confirmReplace !== null && plan !== null} onOpenChange={(v) => !v && setConfirmReplace(null)} returnFocus={confirmReturn}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {confirmReplace?.kind === 'sample' ? `${SAMPLES.find((x) => x.id === confirmReplace.id)?.label ?? ''}のサンプルに入れかえますか` : 'すべて消して、はじめの画面に戻りますか'}
+            </DialogTitle>
+            <DialogDescription>いま入れている内容は、このブラウザからも消えます。</DialogDescription>
+          </DialogHeader>
+          <DialogBody>
+            <ul className="list-disc space-y-1 pb-3 pl-5 text-sm leading-relaxed">
+              <li>消えるもの: {plan?.storeName ? `「${plan.storeName}」の` : ''}店の名前、勤務の種類、スタッフ、必要な人数、条件、希望休、シフト表のすべて</li>
+              <li>このページを開いているあいだは「元に戻す」で戻せますが、読み込み直すと戻せません。</li>
+            </ul>
+            <p className="pb-3 text-sm leading-relaxed text-ink-soft">いまの内容を残しておきたいときは、先に「ファイルに保存する」で保存してください。</p>
+          </DialogBody>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setConfirmReplace(null)}>
+              やめる
+            </Button>
+            <Button variant="outline" onClick={saveFile}>
+              <Download aria-hidden />
+              先にファイルに保存する
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                const c = confirmReplace
+                setConfirmReplace(null)
+                if (c?.kind === 'sample') startSample(c.id)
+                else if (c?.kind === 'restart') restart()
+              }}
+            >
+              {confirmReplace?.kind === 'sample' ? 'サンプルに入れかえる' : '消して、はじめの画面に戻る'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

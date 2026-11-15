@@ -19,10 +19,12 @@ import {
   nextMonth,
   precheck,
   setCell,
+  shiftAt,
   toCsv,
   unlockAll,
   unlockCell,
   type CheckReport,
+  type SlotExplanation,
   type SolveProgress,
   type Suggestion,
   type SuggestionResult,
@@ -63,6 +65,7 @@ const PHASE_TEXT: Record<SolveProgress['phase'], string> = {
   greedy: '埋めにくい日から、順に置いています',
   improve: '入れ替えて、良くしています',
   finish: '仕上げています',
+  retry: '足りないところが残ったので、条件を変えずに、別の案も作っています',
 }
 
 export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve, onAdopt }: StepScheduleProps) {
@@ -245,10 +248,18 @@ export function StepSchedule({ report, solving, suggest, animKey, stale, onSolve
       <div aria-live="polite" className="min-h-0">
         {solving ? (
           <div className="mb-4 flex flex-wrap items-center gap-3 rounded-lg border-2 border-ink bg-card px-4 py-3">
-            <span className="text-sm font-bold">{PHASE_TEXT[solving.phase]}</span>
+            <span className="text-sm font-bold">
+              {PHASE_TEXT[solving.phase]}
+              {solving.retry ? (
+                <span className="font-num font-medium text-ink-soft">
+                  （{solving.retry.index}／{solving.retry.total}）
+                </span>
+              ) : null}
+            </span>
             <span aria-hidden className="flex gap-1">
               {Array.from({ length: 12 }, (_, i) => {
-                const t = solving.phase === 'greedy' ? solving.ratio * 0.25 : solving.phase === 'improve' ? 0.25 + solving.ratio * 0.65 : 0.9 + solving.ratio * 0.1
+                // 別の案を作っているあいだ（retry）は、その全体の進み具合を、はじめから数え直して見せる
+                const t = solving.phase === 'retry' ? solving.ratio : solving.phase === 'greedy' ? solving.ratio * 0.25 : solving.phase === 'improve' ? 0.25 + solving.ratio * 0.65 : 0.9 + solving.ratio * 0.1
                 const colors = ['egg', 'sky', 'tomato', 'teal']
                 return <span key={i} className="blk" data-size="sm" data-color={i < Math.round(t * 12) ? colors[i % colors.length] : undefined} />
               })}
@@ -372,6 +383,17 @@ function ReportPanel({ report, onShowCell }: { report: CheckReport; onShowCell: 
   const [showAll, setShowAll] = useState(false)
   const allGood = report.summaryItems.every((x) => x.tone === 'ok')
   const firstStaff = plan.staff[0]?.id
+  /**
+   * 「この日を見る」で移るマス。足りない勤務のマスに移す（ほかの勤務のマスに移すと、どこの話かわからない）。
+   * まだ入れられる人 → 役割の不足なら、その勤務に入っている札のない人 → その勤務に入っている人 → 1人め、の順
+   */
+  const cellFor = (e: SlotExplanation): string => {
+    const free = e.reasons.find((r) => r.reason === 'free')?.staffIds[0]
+    if (free) return free
+    const on = plan.staff.filter((st) => shiftAt(plan.schedule, st.id, e.day) === e.shiftId)
+    const pick = (e.tagId ? on.find((st) => !st.tagIds.includes(e.tagId!)) : undefined) ?? on[0]
+    return pick?.id ?? firstStaff ?? ''
+  }
   const shownExplanations = showAll ? explanations : explanations.slice(0, 6)
   const softNotes = [...report.minDaysShort.map((x) => x.message), ...report.wishesUnmet.map((x) => x.message), ...report.weeksWithoutOff.map((x) => x.message)]
 
@@ -424,7 +446,7 @@ function ReportPanel({ report, onShowCell }: { report: CheckReport; onShowCell: 
               <li key={i} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-md bg-[#fff4cf] px-3 py-1.5 text-[13.5px] leading-relaxed">
                 <span className="min-w-0 flex-1 basis-60">{e.text}</span>
                 {firstStaff ? (
-                  <Button variant="link" className="shrink-0 text-[13px]" onClick={() => onShowCell(e.reasons.find((r) => r.reason === 'free')?.staffIds[0] ?? firstStaff, e.day)}>
+                  <Button variant="link" className="shrink-0 text-[13px]" onClick={() => onShowCell(cellFor(e), e.day)}>
                     この日を見る
                   </Button>
                 ) : null}

@@ -1,5 +1,14 @@
 import { site } from '@/site.config'
+import { Link } from '@/router'
 import { LegalPage, LegalSection } from '@/components/landing/legal-page'
+
+const todo = '（公開前に記入します）'
+
+/** '2027-01-10' を「2027年1月10日」にする。形が合わなければ、そのまま出す */
+function jaDate(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso)
+  return m ? `${Number(m[1])}年${Number(m[2])}月${Number(m[3])}日` : iso
+}
 
 // プライバシーポリシー。「入力した内容はブラウザの中だけに保存し、サーバーに送らない」作りに合わせて書いてある。
 // アクセス解析や広告を入れるとき、書体の読み込み先を変えるときは、ここの文も直すこと（うそにならないように）。
@@ -37,12 +46,29 @@ export default function Privacy() {
         <p>ライセンスキーの送付、お問い合わせへの返信、サービスの大事なお知らせにだけ使います。法令にもとづく場合を除いて、ご本人の同意なく第三者に渡しません。</p>
       </LegalSection>
 
+      <LegalSection title="運営者">
+        {/* だれが情報をあずかるのかを、このページだけでもわかるようにする（くわしい連絡先は、特定商取引法にもとづく表記にある） */}
+        <p>
+          {site.operator.name || todo}
+          <br />
+          所在地: {site.operator.address || todo}
+        </p>
+        <p>
+          運営者の連絡先は、
+          <Link to="/tokushoho" className="font-bold underline decoration-2 underline-offset-4">
+            特定商取引法にもとづく表記
+          </Link>
+          にも載せています。
+        </p>
+      </LegalSection>
+
       <LegalSection title="お問い合わせ">
         <p>
           お預かりした情報の確認・訂正・削除のご希望は、次の宛先までご連絡ください。
           <br />
           {contact}
         </p>
+        <p className="text-ink-soft">このポリシーを定めた日: {site.privacyPolicyDate ? jaDate(site.privacyPolicyDate) : todo}</p>
       </LegalSection>
     </LegalPage>
   )

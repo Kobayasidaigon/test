@@ -40,14 +40,39 @@ export function useIsMobile(query = "(max-width: 640px)") {
 }
 
 const OpenContext = React.createContext(false)
+/** 閉じたあとにフォーカスを戻す先（開いたときにフォーカスがあった要素）を返す */
+const ReturnFocusContext = React.createContext<() => HTMLElement | null>(() => null)
 
-export interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {}
+export interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
+  /**
+   * 開いたボタンがもう画面にないとき（メニューの中のボタンから開いたときなど）に、フォーカスを戻す先。
+   * 指定がなく、開いたボタンもないときは、どこにも戻さない。
+   */
+  returnFocus?: React.RefObject<HTMLElement | null>
+}
 
-export function Dialog({ open: openProp, defaultOpen, onOpenChange, children, ...props }: DialogProps) {
+export function Dialog({ open: openProp, defaultOpen, onOpenChange, children, returnFocus, ...props }: DialogProps) {
   // 閉じるときの動き（AnimatePresence）のために、開いているかどうかを自分でも持つ
   const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false)
   const controlled = openProp !== undefined
   const open = controlled ? openProp : uncontrolled
+
+  // このダイアログは Trigger を使わずに開け閉めしているので、Radix は「どのボタンから開いたか」を知らない。
+  // そのままでは、閉じたときにフォーカスが body に落ち、キーボードの人はページの頭から Tab を押し直すことになる。
+  // そこで、開いた瞬間にフォーカスがあった要素を覚えておき、閉じたらそこへ戻す。
+  // 描く前（open が true になった最初の描画）に読む。Radix がフォーカスを中へ移すのは、そのあと（effect の中）
+  const opener = React.useRef<HTMLElement | null>(null)
+  const wasOpen = React.useRef(false)
+  if (open && !wasOpen.current && typeof document !== "undefined") {
+    const el = document.activeElement
+    opener.current = el instanceof HTMLElement && el !== document.body ? el : null
+  }
+  wasOpen.current = open
+  const getReturn = React.useCallback(() => {
+    const el = opener.current
+    if (el && el.isConnected) return el
+    return returnFocus?.current ?? null
+  }, [returnFocus])
   const handle = React.useCallback(
     (next: boolean) => {
       if (!controlled) setUncontrolled(next)
@@ -57,9 +82,11 @@ export function Dialog({ open: openProp, defaultOpen, onOpenChange, children, ..
   )
   return (
     <OpenContext.Provider value={open}>
-      <DialogPrimitive.Root open={open} onOpenChange={handle} {...props}>
-        {children}
-      </DialogPrimitive.Root>
+      <ReturnFocusContext.Provider value={getReturn}>
+        <DialogPrimitive.Root open={open} onOpenChange={handle} {...props}>
+          {children}
+        </DialogPrimitive.Root>
+      </ReturnFocusContext.Provider>
     </OpenContext.Provider>
   )
 }
@@ -109,8 +136,18 @@ export interface DialogContentProps extends React.ComponentPropsWithoutRef<typeo
 }
 
 export const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Content>, DialogContentProps>(
-  ({ className, children, showClose = true, centeredOnMobile = false, ...props }, ref) => {
+  ({ className, children, showClose = true, centeredOnMobile = false, onCloseAutoFocus, ...props }, ref) => {
     const open = React.useContext(OpenContext)
+    const getReturn = React.useContext(ReturnFocusContext)
+    // 呼ぶ側が戻し先を決めていれば（④のマスのシートなど）それに任せ、決めていなければ、開いたボタンへ戻す
+    const closeAutoFocus = (e: Event) => {
+      onCloseAutoFocus?.(e)
+      if (e.defaultPrevented) return
+      const el = getReturn()
+      if (!el) return
+      e.preventDefault()
+      el.focus({ preventScroll: true })
+    }
     const reduce = useReducedMotion()
     const isMobile = useIsMobile()
     const isSheet = isMobile && !centeredOnMobile
@@ -131,7 +168,7 @@ export const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrim
             </DialogPrimitive.Overlay>
             {/* まん中に置くための枠。motion の transform と、位置合わせの transform がぶつからないようにする */}
             <div className={cn("no-print pointer-events-none fixed inset-0 z-50 flex", isSheet ? "items-end" : "items-center justify-center p-4")}>
-              <DialogPrimitive.Content asChild forceMount ref={ref} {...props}>
+              <DialogPrimitive.Content asChild forceMount ref={ref} onCloseAutoFocus={closeAutoFocus} {...props}>
                 <motion.div
                   className={cn(
                     "pointer-events-auto relative flex w-full flex-col overflow-hidden border-2 border-ink bg-card text-ink focus:outline-none",

@@ -241,7 +241,7 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
         )}
       </div>
       <p className="mt-3 text-[0.9rem] leading-relaxed text-muted-foreground">
-        繰り越すと、「{latest.label}」の取引・科目・予算額は、読むだけになります。資料に書くこと（作成日、役員の名前、監査報告書、次年度の予算案、引き継ぎ書）と、残高の照合は、繰り越したあとでも入れられます。
+        繰り越すと、「{latest.label}」の取引・科目・予算額は、読むだけになります。資料に書くこと（作成日、役員の名前、決算書の説明、監査報告書、次年度の予算案、引き継ぎ書）と、残高の照合は、繰り越したあとでも入れられます。
       </p>
       {!isPro && (
         <p className="mt-2 text-[0.9rem] leading-relaxed">
@@ -261,7 +261,7 @@ function CarryCard({ onNavigate }: { onNavigate: (tab: 'reconcile') => void }) {
             <ul className="grid gap-1.5 rounded-lg border border-rule/50 bg-rule-soft/40 px-4 py-3 text-[0.92rem] leading-relaxed">
               <li>
                 <span className="font-bold">繰り越したあとも、書けるもの: </span>
-                「{latest.label}」の資料の作成日、役員の名前、監査報告書の文と日付、次年度の予算案、引き継ぎ書、残高の照合の記録。
+                「{latest.label}」の資料の作成日、役員の名前、決算書の「説明」の文、監査報告書の文と日付、次年度の予算案、引き継ぎ書、残高の照合の記録。
               </li>
               <li>
                 <span className="font-bold">取り消せるのは: </span>

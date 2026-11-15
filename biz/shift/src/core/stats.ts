@@ -40,6 +40,11 @@ export type DaySlot = {
   have: number
   /** have − need。負なら不足、正なら多い */
   diff: number
+  /**
+   * 役割の最低人数が足りないもの（足りていれば空）。人数がそろっていても、役割が足りないことがある。
+   * 表の下の行と印刷で、人数の不足と同じように印を出すために使う（check.ts の roleShortages と同じ決まり）
+   */
+  roleShort: Array<{ tagId: string; need: number; have: number }>
 }
 
 export type DaySummary = {
@@ -86,9 +91,19 @@ export function summarize(plan: ShiftPlan, schedule: Schedule = plan.schedule, c
 
   const days: DaySummary[] = calendar.map((d) => {
     const slots: DaySlot[] = plan.shiftTypes.map((s) => {
-      const have = plan.staff.filter((st) => shiftAt(schedule, st.id, d.day) === s.id).length
+      const on = plan.staff.filter((st) => shiftAt(schedule, st.id, d.day) === s.id)
+      const have = on.length
       const need = d.needs[s.id] ?? 0
-      return { shiftId: s.id, need, have, diff: have - need }
+      const roleShort: DaySlot['roleShort'] = []
+      // 役割の最低人数は、その日その勤務に人が要るときだけ数える（点検と同じ）
+      if (need > 0) {
+        for (const rm of plan.needs.roleMins) {
+          if (rm.shiftId !== s.id) continue
+          const tagged = on.filter((st) => st.tagIds.includes(rm.tagId)).length
+          if (tagged < rm.count) roleShort.push({ tagId: rm.tagId, need: rm.count, have: tagged })
+        }
+      }
+      return { shiftId: s.id, need, have, diff: have - need, roleShort }
     })
     return {
       day: d.day,

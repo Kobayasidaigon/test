@@ -221,7 +221,9 @@ describe('条件をゆるめる提案（実際に組み直して、確かめた�
       ['連勤の上限を6日にする', 2, 1, false],
     ])
     expect(out.suggestions[1].text).toBe('連勤の上限を6日にすると、足りない人数が、のべ2人から1人に減ります。')
-    expect(out.text).toBe('条件を変えて、実際に組み直して確かめました。')
+    // 自動作成は、いちばん良い表を保証しない。条件のせいだと言い切らず、別の案で埋まることもあると添える
+    expect(out.text).toContain('条件を変えて、実際に組み直して確かめました')
+    expect(out.text).toContain('「別の案を作る」で埋まることもあります')
   })
 
   it('ゆるめても減らないものは、提案に出さない。何を試したかは、正直に言う', () => {
@@ -235,6 +237,9 @@ describe('条件をゆるめる提案（実際に組み直して、確かめた�
     expect(out.noEffect).toEqual(['連勤の上限を4日にする', '連勤の上限を5日にする'])
     expect(out.text).toContain('連勤の上限を4日にする、連勤の上限を5日にする')
     expect(out.text).toContain('足りないところは減りませんでした')
+    // 休み希望の見直しは、すすめない（人の事情。LP の「組めないとき」と同じ約束）
+    expect(out.text).not.toMatch(/休み希望(を|か)、?見直/)
+    expect(out.text).toContain('休み希望と固定の休みは、人の事情なので、ゆるめる案は出していません')
   })
 
   it('大きいゆるめ方が、小さいゆるめ方と同じだけしか減らさないなら、小さいほうだけを出す', () => {
@@ -261,6 +266,7 @@ describe('条件をゆるめる提案（実際に組み直して、確かめた�
     expect(out.suggestions).toEqual([])
     expect(out.noEffect).toEqual([])
     expect(out.text).toContain('ゆるめて試せる条件がありませんでした')
+    expect(out.text).not.toMatch(/休み希望(を|か)、?見直/)
   })
 
   it('足りないところがなければ、何も試さない', () => {

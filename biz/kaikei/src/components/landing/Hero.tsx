@@ -43,7 +43,7 @@ export function Hero({ book, base, reports, onBookChange }: Props) {
       {/* 並び: スマホでは「見出し → 決算書の見本 → ためしに1件」。パソコンでは、左に見出しと「ためしに1件」、右に決算書の見本 */}
       <Container className="grid gap-x-10 gap-y-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,27rem)] lg:grid-rows-[auto_1fr] xl:grid-cols-[minmax(0,1fr)_minmax(0,34rem)] xl:gap-x-14">
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
-          <h1 className="text-[2.15rem] font-extrabold leading-[1.4] tracking-[0.04em] sm:text-[3rem] lg:text-[2.6rem] xl:text-[3.3rem]">
+          <h1 className="text-[2.15rem] font-bold leading-[1.4] tracking-[0.04em] sm:text-[3rem] lg:text-[2.6rem] xl:text-[3.3rem]">
             <Phrase>会計係になった、</Phrase>
             <Phrase>あなたへ。</Phrase>
           </h1>

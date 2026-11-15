@@ -17,12 +17,15 @@ export function Start({
   onSample,
   onStart,
   onImport,
+  onRestore,
 }: {
   issue: LoadIssue | null
   onDismissIssue: () => void
   onSample: (id: SampleId) => void
   onStart: (plan: ShiftPlan) => void
   onImport: (plan: ShiftPlan) => void
+  /** 「はじめからやり直す」で消した内容に戻す。戻せる内容があるあいだだけ渡される */
+  onRestore?: () => void
 }) {
   const next = useMemo(() => nextMonthOf(localToday()), [])
   const [year, setYear] = useState(next.year)
@@ -45,6 +48,20 @@ export function Start({
         <p className="mt-2 max-w-[38em] text-[15px] leading-[1.85] text-ink-soft">登録はいりません。入れた内容は、このブラウザの中だけに保存されます。スタッフの名前や希望休が、外に送られることはありません。</p>
       </header>
 
+      {onRestore ? (
+        // 消した直後のお知らせ（「元に戻す」）は数秒で消える。そのあとでも戻せるように、ここにも出し続ける
+        <Notice variant="info" className="mb-5">
+          <NoticeTitle>さっきまで入れていた内容は、まだ戻せます</NoticeTitle>
+          <NoticeBody>
+            <p>このページを閉じたり、読み込み直したりすると、戻せなくなります。</p>
+            <div className="mt-2">
+              <Button variant="outline" size="sm" onClick={onRestore}>
+                さっきの内容に戻す
+              </Button>
+            </div>
+          </NoticeBody>
+        </Notice>
+      ) : null}
       {issue?.kind === 'broken' ? (
         <Notice variant="danger" className="mb-5">
           <NoticeTitle>前に保存した内容を、読めませんでした</NoticeTitle>

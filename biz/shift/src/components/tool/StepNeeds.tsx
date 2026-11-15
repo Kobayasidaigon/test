@@ -61,6 +61,7 @@ export function StepNeeds() {
   // カレンダーの1日の前に置く空きマスの数（月曜はじまり）
   const lead = WEEK_ORDER.indexOf(calendar[0].weekday)
   const dayInfo = editDay !== null ? calendar[editDay - 1] : null
+  const firstHoliday = calendar.find((d) => d.holiday)
 
   return (
     <div>
@@ -85,7 +86,8 @@ export function StepNeeds() {
                     曜日
                   </th>
                   {plan.shiftTypes.map((s) => (
-                    <th key={s.id} scope="col" className="min-w-[10rem] px-1 pb-2 text-left md:min-w-[7.5rem]">
+                    // スマホの幅（390px）でも、勤務が2種類なら横に動かさずに収まる幅にする
+                    <th key={s.id} scope="col" className="min-w-[8.75rem] px-0.5 pb-2 text-left sm:px-1 md:min-w-[7.5rem]">
                       <span className="flex items-center gap-1.5 text-[13px] font-bold">
                         <ShiftBlock shift={s} size="sm" />
                         <span className="truncate">{s.name || '（名前なし）'}</span>
@@ -108,7 +110,7 @@ export function StepNeeds() {
                         </td>
                       ) : (
                         plan.shiftTypes.map((s) => (
-                          <td key={s.id} className="border-t border-line px-1 py-1.5">
+                          <td key={s.id} className="border-t border-line px-0.5 py-1.5 sm:px-1">
                             <NumberField
                               label={`${WEEKDAY_LABELS[w]}曜日の${s.name}の必要な人数`}
                               value={plan.needs.weekly[s.id]?.[w] ?? 0}
@@ -164,12 +166,17 @@ export function StepNeeds() {
               <span aria-hidden className="inline-block size-2.5 rounded-full bg-ink" />
               この日だけ人数を変えた日
             </li>
-            <li className="flex items-center gap-1.5">
-              <span aria-hidden className="font-num font-bold text-danger underline decoration-2 underline-offset-2">
-                23
-              </span>
-              下線は祝日
-            </li>
+            {/* 見本の数字を決め打ちにすると、祝日でない日を祝日と読めてしまう。この月に祝日があるときだけ、本当の祝日の日で出す */}
+            {firstHoliday ? (
+              <li className="flex items-center gap-1.5">
+                <span aria-hidden className="font-num font-bold text-danger underline decoration-2 underline-offset-2">
+                  {firstHoliday.day}
+                </span>
+                下線は祝日（{firstHoliday.day}日は{firstHoliday.holiday}）
+              </li>
+            ) : (
+              <li>この月に祝日はありません</li>
+            )}
           </ul>
         </Section>
       </div>
@@ -405,7 +412,8 @@ function DayCell({ d, onPress }: { d: DayInfo; onPress: () => void }) {
           <span className="sm:hidden">{total}人</span>
           {needs.map((s) => (
             <span key={s.id} className="hidden items-center gap-0.5 sm:inline-flex">
-              <span aria-hidden className="inline-block size-2.5 rounded-[2px] border border-ink" style={{ background: `var(--shift-${s.color})` }} />
+              {/* 色の四角だけでは、色でしか見分けられない。ほかの場所と同じく、記号の入ったブロックにする */}
+              <ShiftBlock shift={s} size="xs" />
               {d.needs[s.id]}
             </span>
           ))}

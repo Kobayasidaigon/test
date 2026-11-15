@@ -3,7 +3,7 @@
 import type { ShiftColor, ShiftType } from '@/core'
 import { cn } from '@/lib/utils'
 
-export type BlockSize = 'sm' | 'md' | 'lg'
+export type BlockSize = 'xs' | 'sm' | 'md' | 'lg'
 
 /** 表に出す記号。記号が空なら、名前の頭の1文字で代える */
 export function symbolOf(shift: Pick<ShiftType, 'symbol' | 'name'>): string {

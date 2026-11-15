@@ -106,7 +106,8 @@ const Row = memo(
     return (
       <tr>
         <th scope="row" className="sg-name" title={st.name || undefined}>
-          {st.name || '（名前なし）'}
+          {/* スマホの幅では2行まで折り返す（index.css の .sg-nametext）。同じ名字の人を、下の名前で見分けられるように */}
+          <span className="sg-nametext">{st.name || '（名前なし）'}</span>
         </th>
         {calendar.map((d, c) => {
           const wish = wishes?.[String(d.day)] ?? null
@@ -337,6 +338,8 @@ export function ShiftGrid({
                   data-red={d.weekday === 0 || d.holiday ? '' : undefined}
                   data-holiday={d.holiday ? '' : undefined}
                   data-closed={d.closed ? '' : undefined}
+                  // 「この日を見る」で、どの日の話かを列の見出しでも見せる
+                  data-flash={flashDay === d.day ? '' : undefined}
                   title={note || undefined}
                 >
                   <span className="sg-dnum">{d.day}</span>
@@ -423,6 +426,8 @@ export function ShiftGrid({
                   const slot = day.slots[si]
                   const none = slot.need === 0 && slot.have === 0
                   const diffText = slot.diff < 0 ? `${-slot.diff}人足りません` : slot.diff > 0 ? `${slot.diff}人多い` : 'ちょうど'
+                  // 人数がそろっていても、役割の最低人数が足りないことがある。人数の不足と同じように、印と文で出す
+                  const roleText = slot.roleShort.map((x) => `「${plan.tags.find((t) => t.id === x.tagId)?.name || '（名前なし）'}」の人が、必要${x.need}人に対して${x.have}人`).join('、')
                   if (blank) {
                     return (
                       <td key={day.day} className={cn('sg-need', c === lastDay && showSummary && 'sg-lastday')} data-closed={d.closed ? '' : undefined} data-none={none ? '' : undefined} data-blank="" title={d.closed ? '店を開けない日' : `必要${slot.need}人`}>
@@ -441,7 +446,8 @@ export function ShiftGrid({
                       className={cn('sg-need', c === lastDay && showSummary && 'sg-lastday')}
                       data-closed={d.closed ? '' : undefined}
                       data-none={none ? '' : undefined}
-                      title={d.closed ? '店を開けない日' : `必要${slot.need}人、入っている${slot.have}人（${diffText}）`}
+                      data-flash={flashDay === d.day ? '' : undefined}
+                      title={d.closed ? '店を開けない日' : `必要${slot.need}人、入っている${slot.have}人（${diffText}）${roleText ? `。役割: ${roleText}` : ''}`}
                     >
                       {d.closed && none ? null : (
                         <>
@@ -451,7 +457,12 @@ export function ShiftGrid({
                               {slot.diff < 0 ? `−${-slot.diff}` : `+${slot.diff}`}
                             </span>
                           ) : null}
-                          <span className="sr-only">{`必要${slot.need}人、入っている${slot.have}人（${diffText}）`}</span>
+                          {roleText ? (
+                            <span aria-hidden className="sg-diff" data-kind="role">
+                              役
+                            </span>
+                          ) : null}
+                          <span className="sr-only">{`必要${slot.need}人、入っている${slot.have}人（${diffText}）${roleText ? `。役割が足りません: ${roleText}` : ''}`}</span>
                         </>
                       )}
                     </td>

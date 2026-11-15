@@ -4,7 +4,7 @@ import { checkPlan } from './check'
 import { explainShortages } from './explain'
 import { makeSample, SAMPLES } from './samples'
 import { emptySchedule, isLocked, setCell, shiftAt } from './schedule'
-import { makeRng, nextSeed, solve, WEIGHTS } from './solver'
+import { makeRng, nextSeed, RETRY_COUNT, retrySeed, solve, solveBest, WEIGHTS } from './solver'
 import { validatePlan } from './storage'
 import { randomPlan, range, tinyPlan, workOn } from './testkit'
 import type { ShiftPlan } from './types'
@@ -412,6 +412,93 @@ describe('自動作成: 仕上がり', () => {
   })
 })
 
+describe('自動作成: 本当は埋まるのに、足りないまま止まらない', () => {
+  // 3人の店（早番・遅番が毎日1人、遅番の次の日に早番を入れない、連勤5日まで、遅番に鍵の人1人、休み希望あり）。
+  // 総当たり（動的計画法）で、足りない人数の本当の最小が0（すべて埋まる）と確かめたもの。
+  // 前の作りでは、種1〜60のうち26個で「1人足りない」と出し、条件をゆるめる提案（連勤7日など）をすすめていた
+  const all = [0, 1, 2, 3, 4, 5, 6] as Array<0 | 1 | 2 | 3 | 4 | 5 | 6>
+  const off = (...days: number[]) => Object.fromEntries(days.map((d) => [String(d), { kind: 'off' as const }]))
+  const fillable = tinyPlan({
+    year: 2027,
+    month: 2,
+    staff: [
+      { id: 'st1', name: '人1', tagIds: ['tag1'], fixedOffWeekdays: [], cannotWork: {}, minDays: null, maxDays: null },
+      { id: 'st2', name: '人2', tagIds: ['tag1'], fixedOffWeekdays: [1], cannotWork: {}, minDays: null, maxDays: null },
+      { id: 'st3', name: '人3', tagIds: ['tag1'], fixedOffWeekdays: [], cannotWork: { sh1: all }, minDays: null, maxDays: null },
+    ],
+    needs: { weekly: { sh1: [1, 1, 1, 1, 1, 1, 1], sh2: [1, 1, 1, 1, 1, 1, 1] }, overrides: {}, roleMins: [{ id: 'rm1', shiftId: 'sh2', tagId: 'tag1', count: 1 }] },
+    wishes: { st1: off(11, 12, 13, 14, 23), st2: off(2, 3, 6, 17), st3: off(21) },
+    rules: { maxConsecutive: 5, forbiddenPairs: [{ id: 'fp1', first: 'sh2', next: 'sh1' }], weeklyDayOff: true, weekStart: 0, balanceWeekend: true, balanceShiftIds: ['sh2'] },
+  })
+
+  it('総当たりで「すべて埋まる」とわかっている3人の店で、どの種でも、足りないところを残さない', () => {
+    const missing = Array.from({ length: 10 }, (_, i) => solve(fillable, { seed: i + 1 }).check.missingTotal)
+    expect(missing).toEqual(new Array(10).fill(0))
+  })
+
+  it('足りない人数の下限（lowerBound）は、組んだ結果の足りない人数をこえない', () => {
+    for (let seed = 1; seed <= 30; seed++) {
+      const plan = randomPlan({ seed, staff: 1 + (seed % 12), tight: seed % 2 === 0, maxOffWishes: 8 })
+      const r = solve(plan, { seed, effort: 0.05 })
+      expect(r.lowerBound).toBeGreaterThanOrEqual(0)
+      expect(r.lowerBound).toBeLessThanOrEqual(r.check.missingTotal)
+    }
+  })
+
+  it('下限: 全員が休み希望の日は、その日の必要な人数ぶん。役割の札を持つ人がいない勤務は、役割の人数ぶん', () => {
+    const plan = tinyPlan({
+      needs: { weekly: { sh1: [2, 2, 2, 2, 2, 2, 2], sh2: [1, 1, 1, 1, 1, 1, 1] }, overrides: {}, roleMins: [{ id: 'rm1', shiftId: 'sh2', tagId: 'tag1', count: 1 }] },
+      wishes: { st1: off(5), st2: off(5), st3: off(5) },
+    })
+    // 5日: 早番2人 + 遅番1人 = 3人足りない。役割（鍵の人）は、札を持つ人がいないので、31日ぶん
+    const r = solve(plan, { seed: 1, effort: 0.05 })
+    expect(r.lowerBound).toBe(3 + 31)
+    expect(r.check.missingTotal).toBe(3 + 31)
+  })
+
+  it('solveBest: 足りないところがなければ、1回で終わる（solve と同じ表）', () => {
+    const plan = tinyPlan()
+    const best = solveBest(plan, { seed: 7, effort: 0.1 })
+    expect(best.tries).toBe(1)
+    expect(best.schedule).toEqual(solve(plan, { seed: 7, effort: 0.1 }).schedule)
+  })
+
+  it('solveBest: 足りない人数が下限と同じなら、それ以上は組み直さない', () => {
+    const plan = tinyPlan({ wishes: { st1: off(5), st2: off(5), st3: off(5) } })
+    const best = solveBest(plan, { seed: 1, effort: 0.1 })
+    expect(best.check.missingTotal).toBe(1)
+    expect(best.tries).toBe(1)
+  })
+
+  it('solveBest: 足りないところが残ると、別の種でも組み、いちばん良い表を返す。同じ種なら同じ結果。表の種は、渡した種のまま', () => {
+    for (let seed = 1; seed <= 4; seed++) {
+      const plan = randomPlan({ seed, staff: 8, tight: true })
+      const first = solve(plan, { seed, effort: 0.1 })
+      const best = solveBest(plan, { seed, effort: 0.1 })
+      if (first.check.missingTotal > first.lowerBound) {
+        expect(best.tries).toBeGreaterThan(1)
+        expect(best.tries).toBeLessThanOrEqual(RETRY_COUNT + 1)
+      }
+      expect(best.check.missingTotal).toBeLessThanOrEqual(first.check.missingTotal)
+      // 組み直したどの案よりも、悪くない
+      for (let k = 1; k < best.tries; k++) expect(best.check.missingTotal).toBeLessThanOrEqual(solve(plan, { seed: retrySeed(seed, k), effort: 0.1 }).check.missingTotal)
+      expect(best.check.violations).toEqual([])
+      expect(best.schedule.seed).toBe(seed)
+      expect(solveBest(plan, { seed, effort: 0.1 }).schedule).toEqual(best.schedule)
+    }
+  })
+
+  it('solveBest: 組み直しの途中経過は retry として届き、何回めかがわかる', () => {
+    const plan = randomPlan({ seed: 2, staff: 8, tight: true })
+    const seen: Array<{ index: number; total: number }> = []
+    const best = solveBest(plan, { seed: 2, effort: 0.05, onProgress: (p) => p.phase === 'retry' && p.retry && seen.push(p.retry) })
+    if (best.tries > 1) {
+      expect(seen.length).toBeGreaterThan(0)
+      expect(seen.every((r) => r.total === RETRY_COUNT && r.index >= 1 && r.index <= RETRY_COUNT)).toBe(true)
+    }
+  })
+})
+
 describe('自動作成: 速さ（目安は、20人 × 31日で3秒以内）', () => {
   it('20人 × 31日', () => {
     const plan = randomPlan({ seed: 3, staff: 20, year: 2026, month: 12 })
@@ -420,6 +507,14 @@ describe('自動作成: 速さ（目安は、20人 × 31日で3秒以内）', ()
     const ms = performance.now() - t0
     expect(result.check.violations).toEqual([])
     expect(ms).toBeLessThan(3000)
+  })
+  it('足りないところが残る20人の店で、別の案まで組んでも（solveBest）、目安の時間におさまる', () => {
+    const plan = randomPlan({ seed: 5, staff: 20, tight: true })
+    const t0 = performance.now()
+    const result = solveBest(plan, { seed: 1 })
+    const ms = performance.now() - t0
+    expect(result.check.violations).toEqual([])
+    expect(ms).toBeLessThan(4000)
   })
   it('30人 × 31日（有料版で確かめている人数）', () => {
     const plan = randomPlan({ seed: 4, staff: 30, year: 2026, month: 12 })

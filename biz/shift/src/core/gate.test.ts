@@ -25,7 +25,15 @@ describe('料金の設定（site.config.ts）', () => {
     expect(site.plans.free.features[0]).toBe('スタッフ8人まで')
     expect(site.sales.price).toContain('4,980円（税込）')
     expect(site.sales.refund).toContain('スタッフ8人まで')
-    expect(site.sales.delivery).toContain('期限はありません')
+    // 引渡しの日数は運営者が決める。決めるまでは空（ページには「公開前に記入します」）。決めたら、日数とキーの期限の話が入る
+    if (site.sales.licenseDeliveryDays === null) expect(site.sales.delivery).toBe('')
+    else expect(site.sales.delivery).toContain(`${site.sales.licenseDeliveryDays}営業日以内`)
+  })
+  it('買い切り版の説明に、無料版でもできること（スタッフと条件を次の月に残す）を書かない', () => {
+    expect(site.plans.pro.features.join('')).not.toContain('スタッフと条件')
+    expect(site.plans.free.features.join('')).toContain('スタッフと条件はそのまま残ります')
+    // 買い切り版だけの機能は、買う前に試せないことを、返品の条件に書いてある
+    expect(site.sales.refund).toContain('お買い上げの前には試せません')
   })
   it('slug は変えていない', () => {
     expect(site.slug).toBe('shift')

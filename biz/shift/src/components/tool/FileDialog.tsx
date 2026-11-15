@@ -1,6 +1,6 @@
 // ファイルの読み込み。読み込み口（ImportZone）と、いまの内容と入れかえる前に確かめるダイアログ（FileDialog）。
 // 中身の確かめは core の parsePlanText にまかせ、合わないファイルは、返ってきた理由の文をそのまま出して断る。
-import { useState } from 'react'
+import { useState, type RefObject } from 'react'
 import { formatMonth, parsePlanText, readFileText, type ShiftPlan } from '@/core'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -40,14 +40,27 @@ export function ImportZone({ onLoaded }: { onLoaded: (plan: ShiftPlan, file: Loa
   )
 }
 
-export function FileDialog({ open, onOpenChange, current, onReplace }: { open: boolean; onOpenChange: (v: boolean) => void; current: ShiftPlan; onReplace: (plan: ShiftPlan) => void }) {
+export function FileDialog({
+  open,
+  onOpenChange,
+  current,
+  onReplace,
+  returnFocus,
+}: {
+  open: boolean
+  onOpenChange: (v: boolean) => void
+  current: ShiftPlan
+  onReplace: (plan: ShiftPlan) => void
+  /** 開いたボタンがもうないとき（メニューから開いたとき）に、閉じたあとフォーカスを戻す先 */
+  returnFocus?: RefObject<HTMLElement | null>
+}) {
   const [loaded, setLoaded] = useState<LoadedFile | null>(null)
   const close = () => {
     onOpenChange(false)
     setLoaded(null)
   }
   return (
-    <Dialog open={open} onOpenChange={(v) => (v ? onOpenChange(true) : close())}>
+    <Dialog open={open} onOpenChange={(v) => (v ? onOpenChange(true) : close())} returnFocus={returnFocus}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>ファイルを開く</DialogTitle>

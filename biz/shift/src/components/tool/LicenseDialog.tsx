@@ -2,7 +2,7 @@
 // - 公開前（公開鍵が未設定）: 買い切り版の機能がすべて使えることを知らせ、無料版の見え方に切りかえられる。
 // - 公開後: キーを貼り付けて確かめる。だめなら、返ってきた理由の文をそのまま出す。
 // 購入のボタンは、決済ページ（site.checkoutUrl）が空のあいだは「販売準備中」にする（うそのリンクを作らない）。
-import { useState } from 'react'
+import { useState, type RefObject } from 'react'
 import { Check, ExternalLink } from 'lucide-react'
 import { site } from '@/site.config'
 import type { LicenseState } from '@/lib/use-license'
@@ -13,7 +13,18 @@ import { Notice, NoticeBody, NoticeTitle } from '@/components/ui/notice'
 import { Switch } from '@/components/ui/switch'
 import { toast } from '@/components/ui/toast'
 
-export function LicenseDialog({ open, onOpenChange, license }: { open: boolean; onOpenChange: (v: boolean) => void; license: LicenseState }) {
+export function LicenseDialog({
+  open,
+  onOpenChange,
+  license,
+  returnFocus,
+}: {
+  open: boolean
+  onOpenChange: (v: boolean) => void
+  license: LicenseState
+  /** 開いたボタンがもうないとき（メニューから開いたとき）に、閉じたあとフォーカスを戻す先 */
+  returnFocus?: RefObject<HTMLElement | null>
+}) {
   const [key, setKey] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -31,7 +42,7 @@ export function LicenseDialog({ open, onOpenChange, license }: { open: boolean; 
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} returnFocus={returnFocus}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{pro.name}版について</DialogTitle>

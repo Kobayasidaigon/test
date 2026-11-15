@@ -19,10 +19,15 @@ import { checkPlan, type CheckReport } from './check'
 import type { Schedule, ShiftPlan } from './types'
 
 export type SolveProgress = {
-  /** greedy = 順に置いている、improve = 入れ替えで良くしている、finish = 仕上げ */
-  phase: 'greedy' | 'improve' | 'finish'
+  /**
+   * greedy = 順に置いている、improve = 入れ替えで良くしている、finish = 仕上げ、
+   * retry = 足りないところが残ったので、条件を変えずに別の種で組み直している（solveBest だけ）
+   */
+  phase: 'greedy' | 'improve' | 'finish' | 'retry'
   /** 0〜1 */
   ratio: number
+  /** retry のとき、何回めの組み直しか（1から）と、全部で何回か */
+  retry?: { index: number; total: number }
 }
 
 export type SolveOptions = {
@@ -45,6 +50,14 @@ export type SolveResult = {
   iterations: number
   /** なるべく満たす条件の点数（小さいほど良い）。同じ入力で作った別の案どうしを比べる目安 */
   score: number
+  /**
+   * 足りない人数（check.missingTotal）の、どう組んでも下回らない数（下限）。
+   * その日その勤務に入れる人の数だけから出す、かんたんな見積もり（連勤や日数の上限は見ない）。
+   * missingTotal がこの数と同じなら、その表より足りない人数を減らすことはできない
+   */
+  lowerBound: number
+  /** solveBest で、条件を変えずに組んだ回数（はじめの1回をふくむ）。solve では 1 */
+  tries: number
 }
 
 /**
@@ -370,6 +383,28 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
     for (let t = 0; t < T; t++) okStaff[d * T + t] = freeByDay[d].filter((s) => ok[(s * D + d) * T + t])
   }
 
+  // 足りない人数の下限。手で固定したマスを置いたあとで、日ごと・勤務ごとに「置ける人の数」と「要る人の数」をくらべる。
+  // 1人は1日に1つの勤務にしか入れないので、日ごとの合計でもくらべる。役割の最低人数は、札を持つ置ける人の数とくらべる
+  let lowerBound = 0
+  for (let d = 0; d < D; d++) {
+    let slotShort = 0
+    let dayNeed = 0
+    for (let t = 0; t < T; t++) {
+      const rem = Math.max(0, need[d * T + t] - cover[d * T + t])
+      slotShort += Math.max(0, rem - okStaff[d * T + t].length)
+      dayNeed += rem
+      if (need[d * T + t] <= 0) continue
+      for (const r of rulesOfShift[t]) {
+        const remR = roleCount[r] - roleCover[d * R + r]
+        if (remR <= 0) continue
+        let tagged = 0
+        for (const s of okStaff[d * T + t]) if (hasTag[s * R + r]) tagged++
+        lowerBound += Math.max(0, remR - tagged)
+      }
+    }
+    lowerBound += Math.max(slotShort, dayNeed - freeByDay[d].length)
+  }
+
   // ---- 2. 埋めにくいところから順に置く ----
   onProgress?.({ phase: 'greedy', ratio: 0 })
 
@@ -470,6 +505,11 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
   const bestX = x.slice()
   // 受け入れる悪化の幅の、はじめの値。いくつかの値で比べて決めた（0 だと行き止まりに残りやすく、大きすぎると仕上がりが粗くなる）
   const START_THRESHOLD = 300
+  // 足りないところが残ったときの、探し直しで使う幅。不足1人ぶん（WEIGHTS.short = 1000）より大きくして、
+  // 「いったん1人足りなくしてから、別の並べ方で埋め直す」動きを受け入れられるようにする。
+  // 300 のままだと、本当は埋まる3人の店（42通り）で、探し直しても埋まったのは半分ほどだった。1500 で 9割をこえた
+  // （時間は同じ。いちばん良かった状態に最後に戻すので、仕上がりが前より悪くなることはない）
+  const RESCUE_THRESHOLD = 1500
   let shortSlots: number[] = [] // d * T + t
   let shortRoles: number[] = [] // d * R + r
   const openDays: number[] = []
@@ -637,7 +677,7 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
 
   onProgress?.({ phase: 'improve', ratio: 0 })
   /** 入れ替えを count 回ためす。progressFrom〜progressTo は、進み具合の表示に使う割合 */
-  function anneal(count: number, progressFrom: number, progressTo: number, startThreshold: number = START_THRESHOLD): void {
+  function anneal(count: number, progressFrom: number, progressTo: number, startThreshold: number): void {
     const reportEvery = Math.max(1, Math.floor(count / 20))
     for (let k = 0; k < count; k++) {
       if (k % 64 === 0) refreshShort()
@@ -669,20 +709,14 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
   }
 
   let tried = iterations
-  anneal(iterations, 0, 0.7)
+  anneal(iterations, 0, 0.7, START_THRESHOLD)
   refreshShort()
   if (iterations > 0 && shortSlots.length + shortRoles.length > 0) {
     // 足りないところが残ったときだけ、もう一度ゆるめてから探し直す（半分の回数）。
     // 「本当は埋まるのに足りない」案で止まることを減らすため。足りないところがなければ、ここは通らない
-    const EXP = (globalThis as any).__exp ?? { rounds: 1, th: START_THRESHOLD }
     const extra = Math.round(iterations / 2)
     tried += extra
-    const per = Math.round(extra / EXP.rounds)
-    for (let round = 0; round < EXP.rounds; round++) {
-      anneal(per, 0.7, 1, EXP.th)
-      refreshShort()
-      if (shortSlots.length + shortRoles.length === 0) break
-    }
+    anneal(extra, 0.7, 1, RESCUE_THRESHOLD)
   }
 
   // ---- 4. 仕上げ: 1マスの変更と、同じ日の入れ替えを全部試す ----
@@ -770,5 +804,55 @@ export function solve(plan: ShiftPlan, options: SolveOptions = {}): SolveResult 
   for (const [staffId, days] of Object.entries(plan.schedule.locked)) if (days.length > 0) locked[staffId] = [...days]
   const schedule: Schedule = { work, locked, seed }
 
-  return { schedule, check: checkPlan(plan, schedule), seed, iterations: tried, score: cost }
+  return { schedule, check: checkPlan(plan, schedule), seed, iterations: tried, score: cost, lowerBound, tries: 1 }
+}
+
+/** 足りないところが残ったときに、条件を変えずに、別の種で組み直す回数（はじめの1回のほかに） */
+export const RETRY_COUNT = 4
+
+/** solveBest の k 回めの組み直しに使う種。「別の案を作る」の種（nextSeed で 1 ずつふえる）と重なりにくいよう、大きく飛ばす */
+export function retrySeed(seed: number, k: number): number {
+  return (seed + Math.imul(k, 0x9e3779b1)) >>> 0
+}
+
+export type SolveBestOptions = SolveOptions & {
+  /** 足りないところが残ったときに、別の種で組み直す回数。初期値は RETRY_COUNT */
+  retries?: number
+}
+
+/**
+ * 表を組む。足りないところが残ったら、条件を変えずに別の種で何回か組み直し、いちばん良い表を返す。
+ * 自動作成は入れ替えをくり返す方法なので、本当は埋まる表があるのに、足りないまま止まることがある。
+ * そのまま「条件をゆるめると埋まります」と提案すると、要らない条件の変更をすすめてしまう。だから、先にここで組み直す。
+ * 足りない人数が下限（lowerBound）に届いたら、それ以上は減らせないので、組み直しをやめる。
+ * 同じ入力・同じ種なら、同じ結果になる（組み直しの種も、seed から決まる）。返す表の seed は、渡した seed のまま
+ * （「別の案を作る」は、この seed の次から数える）。
+ */
+export function solveBest(plan: ShiftPlan, options: SolveBestOptions = {}): SolveResult {
+  const seed = (options.seed ?? 1) >>> 0
+  const retries = Math.max(0, Math.floor(options.retries ?? RETRY_COUNT))
+  const onProgress = options.onProgress
+  let best = solve(plan, { seed, effort: options.effort, onProgress })
+  let tries = 1
+  let iterations = best.iterations
+  for (let k = 1; k <= retries; k++) {
+    if (best.check.missingTotal <= best.lowerBound) break
+    onProgress?.({ phase: 'retry', ratio: (k - 1) / retries, retry: { index: k, total: retries } })
+    const r = solve(plan, {
+      seed: retrySeed(seed, k),
+      effort: options.effort,
+      onProgress: onProgress ? (p) => onProgress({ phase: 'retry', ratio: (k - 1 + (p.phase === 'greedy' ? 0.1 : p.phase === 'improve' ? 0.1 + p.ratio * 0.8 : 0.9 + p.ratio * 0.1)) / retries, retry: { index: k, total: retries } }) : undefined,
+    })
+    tries++
+    iterations += r.iterations
+    // 必ず守る条件の違反（手で固定したマスからしか出ない）が少ないほう、次に足りない人数が少ないほう、次に点数が小さいほう
+    const better =
+      r.check.violations.length !== best.check.violations.length
+        ? r.check.violations.length < best.check.violations.length
+        : r.check.missingTotal !== best.check.missingTotal
+          ? r.check.missingTotal < best.check.missingTotal
+          : r.score < best.score
+    if (better) best = r
+  }
+  return { ...best, schedule: { ...best.schedule, seed }, seed, iterations, tries }
 }

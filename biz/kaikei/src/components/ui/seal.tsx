@@ -62,7 +62,7 @@ export function Seal({
         y={two ? 39 : 43}
         textAnchor="middle"
         fontFamily="var(--font-serif)"
-        fontWeight="800"
+        fontWeight="700"
         fontSize={two ? 19 : 30}
         fill="var(--shu)"
         filter={`url(#${filterId})`}

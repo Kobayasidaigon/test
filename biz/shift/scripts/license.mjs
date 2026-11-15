@@ -23,6 +23,34 @@ async function siteConfig() {
   return { slug: pick('slug'), licensePublicKey: pick('licensePublicKey') }
 }
 
+/** 説明の文を出して止める（Node のエラーをそのまま見せると、何が起きたかわかりにくいため） */
+function fail(message) {
+  console.error(message)
+  process.exit(1)
+}
+
+/** 秘密鍵を読む。ないとき・こわれているときは、どうすればよいかを言って止める */
+async function readPrivateKey() {
+  let text
+  try {
+    text = await readFile(privatePath, 'utf8')
+  } catch (e) {
+    if (e && e.code === 'ENOENT') {
+      fail(
+        '秘密鍵（.license-private.json）が、このフォルダにありません。\n' +
+          '鍵を作ったパソコン（node scripts/license.mjs keygen を実行したパソコン）から、控えを持ってきて、このフォルダに置いてください。\n' +
+          '新しく keygen をすると、発行済みのキーがすべて使えなくなるので、控えがあるうちは作り直さないでください。',
+      )
+    }
+    fail(`秘密鍵（.license-private.json）を読めませんでした（${e && e.message ? e.message : e}）。`)
+  }
+  try {
+    return await crypto.subtle.importKey('jwk', JSON.parse(text), ALGO, false, ['sign'])
+  } catch {
+    fail('秘密鍵（.license-private.json）の中身がこわれています。控えのファイルと入れかえてください。')
+  }
+}
+
 const [cmd, ...rest] = process.argv.slice(2)
 const flag = (name) => {
   const i = rest.indexOf(`--${name}`)
@@ -49,6 +77,8 @@ if (cmd === 'keygen') {
     process.exit(1)
   }
   const days = flag('days')
+  // --days は、期限つきのキーを作るときだけ。数字でないと日付が作れないので、先に断る
+  if (days !== undefined && !/^[1-9][0-9]{0,4}$/.test(days)) fail('--days には、日数を数字で入れてください（例: --days 365）。買い切りのキーは、--days を付けずに発行します。')
   const today = new Date()
   const license = {
     product: slug,
@@ -57,7 +87,7 @@ if (cmd === 'keygen') {
     issuedAt: today.toISOString().slice(0, 10),
     expiresAt: days ? new Date(today.getTime() + Number(days) * 86400000).toISOString().slice(0, 10) : null,
   }
-  const key = await crypto.subtle.importKey('jwk', JSON.parse(await readFile(privatePath, 'utf8')), ALGO, false, ['sign'])
+  const key = await readPrivateKey()
   const body = b64u(new TextEncoder().encode(JSON.stringify(license)))
   const sig = new Uint8Array(await crypto.subtle.sign(SIGN, key, new TextEncoder().encode(body)))
   console.error(JSON.stringify(license))
@@ -69,11 +99,27 @@ if (cmd === 'keygen') {
     console.error('使い方: node scripts/license.mjs verify <キー>   （site.config.ts に licensePublicKey が必要）')
     process.exit(1)
   }
-  const key = await crypto.subtle.importKey('spki', Buffer.from(licensePublicKey, 'base64url'), ALGO, false, ['verify'])
-  const ok = await crypto.subtle.verify(SIGN, key, Buffer.from(sig, 'base64url'), new TextEncoder().encode(body))
-  const license = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'))
-  console.log(ok && license.product === slug ? '有効なキーです。' : '無効なキーです。', license)
-  process.exit(ok ? 0 : 1)
+  let key
+  try {
+    key = await crypto.subtle.importKey('spki', Buffer.from(licensePublicKey, 'base64url'), ALGO, false, ['verify'])
+  } catch {
+    fail('site.config.ts の licensePublicKey が、公開鍵の形になっていません。keygen で表示された公開鍵を、最初から最後まで貼り直してください。')
+  }
+  let license
+  try {
+    license = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'))
+  } catch {
+    fail('キーの形が正しくありません。キーを、最初から最後まで（途中の「.」もふくめて）コピーし直してください。')
+  }
+  let ok = false
+  try {
+    ok = await crypto.subtle.verify(SIGN, key, Buffer.from(sig, 'base64url'), new TextEncoder().encode(body))
+  } catch {
+    ok = false
+  }
+  const valid = ok && license && license.product === slug
+  console.log(valid ? '有効なキーです。' : '無効なキーです。', license)
+  process.exit(valid ? 0 : 1)
 } else {
   console.log('使い方: node scripts/license.mjs keygen | issue --name "名前" [--plan pro] [--days 365] | verify <キー>')
 }

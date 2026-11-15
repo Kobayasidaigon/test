@@ -670,7 +670,9 @@ describe('読むだけの年度（繰り越したあとの、前の年度）', (
       removeTransaction(book, old.id, tx),
       addCategory(book, old.id, { side: 'income', name: '寄付金' }),
       updateCategory(book, old.id, cat, { budget: 1 }),
-      updateCategory(book, old.id, cat, { note: 'x' }),
+      updateCategory(book, old.id, cat, { name: '会費収入' }),
+      // 説明の文と一緒に渡しても、名前や予算額が入っていれば断る
+      updateCategory(book, old.id, cat, { note: 'x', budget: 1 }),
       moveCategory(book, old.id, cat, 'down'),
       removeCategory(book, old.id, cat),
       addBankAccount(book, old.id, { name: '定期' }),
@@ -689,12 +691,11 @@ describe('読むだけの年度（繰り越したあとの、前の年度）', (
     // 前の年度は、1文字も変わっていない
     expect(book.years[0]).toEqual(old)
   })
-  it('資料に書くこと（作成日、役員の名前、監査報告書、引き継ぎ書、照合の記録）は、繰り越したあとでも入れられる。決算の数字は変わらない', () => {
+  it('資料に書くこと（作成日、役員の名前、監査報告書、引き継ぎ書、照合の記録、決算書の説明）は、繰り越したあとでも入れられる。決算の数字は変わらない', () => {
     // 総会の前に、新しい年度の取引を入れるために先に繰り越した人が、前の年度の資料を仕上げられるように
     let book = income(newBook(), '2026-04-10', 30_000)
     const old = year(book)
     const cash = cashId(book)
-    const before = summarizeYear(old)
     book = ok(carryForward(book))
     book = income(book, '2027-04-05', 500) // 新しい年度に取引が入っている（繰り越しは、もう取り消せない）
     book = ok(updateYear(book, old.id, { reportDate: '2027-04-10' }))
@@ -702,17 +703,27 @@ describe('読むだけの年度（繰り越したあとの、前の年度）', (
     book = ok(updateAudit(book, old.id, { date: '2027-04-12', text: '{年度}の会計を監査しました。' }))
     book = ok(updateHandover(book, old.id, { date: '2027-04-19', successor: '田中', memo: '会費は5月に集めます。' }))
     book = ok(setReconciliation(book, old.id, cash, { date: '2027-03-31', actual: 40_000 }))
+    // 決算書の「説明」の文も、資料に書くことなので入れられる（名前と予算額は、変わらない）
+    const dues = catId(book, 'income', '会費')
+    book = ok(updateCategory(book, old.id, dues, { note: '新しく3世帯が入ったため' }))
     const after = book.years[0]
     expect(after.reportDate).toBe('2027-04-10')
     expect(after.officers).toEqual({ president: '山田', treasurer: '佐藤', auditors: ['鈴木', '高橋'] })
     expect(after.audit).toEqual({ date: '2027-04-12', text: '{年度}の会計を監査しました。' })
     expect(after.handover).toMatchObject({ date: '2027-04-19', successor: '田中', memo: '会費は5月に集めます。' })
     expect(after.reconciliations[cash]).toEqual({ date: '2027-03-31', actual: 40_000 })
+    expect(after.categories.find((c) => c.id === dues)!.note).toBe('新しく3世帯が入ったため')
     // 数字に関わるところは、繰り越す前のまま
     expect(after.transactions).toEqual(old.transactions)
-    expect(after.categories).toEqual(old.categories)
+    expect(after.categories.map(({ note: _note, ...c }) => c)).toEqual(old.categories.map(({ note: _note, ...c }) => c))
     expect(after.accounts).toEqual(old.accounts)
-    expect(summarizeYear(after)).toEqual(before)
+    // 決算の数字は、1円も変わらない（説明の文だけが違う）
+    const numbers = (y: typeof after) => {
+      const s = summarizeYear(y)
+      const strip = (rows: typeof s.income) => rows.map(({ note: _note, ...r }) => r)
+      return { ...s, income: strip(s.income), expense: strip(s.expense) }
+    }
+    expect(numbers(after)).toEqual(numbers(old))
     // 新しい年度の年度はじめの残高も、動いていない
     expect(checkYearChain(book)).toEqual([])
     // 記録は消すこともできる

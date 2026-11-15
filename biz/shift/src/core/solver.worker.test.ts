@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { makeSample } from './samples'
-import { solve } from './solver'
+import { solveBest } from './solver'
 import { handleRequest, type WorkerMessage } from './solver.worker'
 import { tinyPlan } from './testkit'
 
@@ -8,7 +8,7 @@ import { tinyPlan } from './testkit'
 vi.setConfig({ testTimeout: 60_000 })
 
 describe('Worker の中で動く側（handleRequest）', () => {
-  it('途中経過 → 表 → 提案、の順に送る。表は、直接組んだときと同じ', () => {
+  it('途中経過 → 表 → 提案、の順に送る。表は、直接組んだとき（solveBest）と同じ', () => {
     const plan = makeSample('restaurant', 2026, 12)
     const messages: WorkerMessage[] = []
     handleRequest({ plan, seed: 1, effort: 0.2, withSuggestions: true }, (m) => messages.push(m))
@@ -19,7 +19,10 @@ describe('Worker の中で動く側（handleRequest）', () => {
     expect(types[types.length - 1]).toBe('suggestions')
     expect(types.filter((t) => t === 'result')).toHaveLength(1)
     const result = messages.find((m) => m.type === 'result')
-    expect(result?.type === 'result' && result.result.schedule).toEqual(solve(plan, { seed: 1, effort: 0.2 }).schedule)
+    expect(result?.type === 'result' && result.result.schedule).toEqual(solveBest(plan, { seed: 1, effort: 0.2 }).schedule)
+    // 足りないところが残る店なので、条件を変えずに別の種でも組み直してから、表を送っている
+    expect(result?.type === 'result' && result.result.tries).toBeGreaterThan(1)
+    expect(messages.some((m) => m.type === 'progress' && m.progress.phase === 'retry')).toBe(true)
     const sug = messages[messages.length - 1]
     expect(sug.type === 'suggestions' && sug.suggestions !== null && sug.suggestions.suggestions.length).toBeGreaterThan(0)
   })

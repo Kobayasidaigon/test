@@ -17,7 +17,9 @@ describe('公表されている祝日の一覧（2025〜2027年）と、計算�
     it(`${list.year}年: 出典と、確かめた日がデータに入っている`, () => {
       expect(list.source.url).toMatch(/^https:\/\//)
       expect(list.source.title).not.toBe('')
-      expect(list.source.checkedOn).toBe('2026-11-14')
+      // 日付そのものは決め打ちしない（運営者が見直して checkedOn を変えても、テストが落ちないように）。形と、ありうる日かだけを見る
+      expect(list.source.checkedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+      expect(Number.isNaN(Date.parse(list.source.checkedOn))).toBe(false)
     })
     it(`${list.year}年: 発表済みの年なので、見込みの印は付かない`, () => {
       expect(holidaysOfYear(list.year).every((h) => !h.provisional)).toBe(true)
@@ -108,7 +110,8 @@ describe('確かめられていない年のあつかい', () => {
     for (const s of HOLIDAY_SOURCES) {
       expect(s.title).not.toBe('')
       expect(s.url).toMatch(/^https:\/\//)
-      expect(s.checkedOn).toBe('2026-11-14')
+      expect(s.checkedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+      expect(Number.isNaN(Date.parse(s.checkedOn))).toBe(false)
     }
   })
 })

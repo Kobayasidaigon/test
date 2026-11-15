@@ -226,15 +226,17 @@ function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
 
                 {preview.rows.length > 0 ? (
                   <div className="overflow-x-auto rounded-lg border-2 border-ink">
-                    {/* 列の幅を決めておく（決めないと、長い名前の入った選択肢が幅を取って、「読み取った希望」の列がつぶれる） */}
-                    <table className="w-full min-w-[30rem] table-fixed border-collapse text-left text-sm">
-                      <colgroup>
+                    {/* 列の幅を決めておく（決めないと、長い名前の入った選択肢が幅を取って、「読み取った希望」の列がつぶれる）。
+                        スマホの幅（640px 未満）では、表をやめて、1人ずつ「名前 → 当てはめるスタッフ → 読み取った希望」を縦に並べる
+                        （横に並べると、かんじんの「読み取った希望」が画面の外に出てしまうため） */}
+                    <table className="w-full table-fixed border-collapse text-left text-sm max-sm:block sm:min-w-[30rem]">
+                      <colgroup className="max-sm:hidden">
                         <col className="w-[20%]" />
                         <col className="w-[40%]" />
                         <col />
                       </colgroup>
                       <caption className="sr-only">読み取った結果</caption>
-                      <thead>
+                      <thead className="max-sm:sr-only">
                         <tr className="border-b-2 border-ink bg-well text-xs">
                           <th scope="col" className="px-3 py-2">
                             貼り付けた名前
@@ -247,15 +249,18 @@ function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody className="max-sm:block">
                         {preview.rows.map((r) => {
                           const off = r.wishes.filter((w) => w.wish.kind === 'off').map((w) => w.day)
                           const shifts = r.wishes.filter((w) => w.wish.kind === 'shift')
                           const matched = plan.staff.find((s) => s.id === r.staffId)
                           return (
-                            <tr key={r.line} className="border-b border-line align-top last:border-b-0">
-                              <td className="break-words px-3 py-2 font-bold">{r.name || `${r.line}行め`}</td>
-                              <td className="px-3 py-2">
+                            <tr key={r.line} className="border-b border-line align-top last:border-b-0 max-sm:block max-sm:py-1.5">
+                              <td className="break-words px-3 py-2 font-bold max-sm:block max-sm:pb-0.5">{r.name || `${r.line}行め`}</td>
+                              <td className="px-3 py-2 max-sm:block max-sm:py-1">
+                                <span aria-hidden className="mb-0.5 block text-xs font-bold text-ink-soft sm:hidden">
+                                  当てはめるスタッフ
+                                </span>
                                 {matched ? (
                                   <span className="break-words">{staffLabel(plan, matched)}</span>
                                 ) : (
@@ -274,7 +279,10 @@ function PasteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
                                   </Select>
                                 )}
                               </td>
-                              <td className="px-3 py-2 leading-relaxed">
+                              <td className="px-3 py-2 leading-relaxed max-sm:block max-sm:py-1">
+                                <span aria-hidden className="mb-0.5 block text-xs font-bold text-ink-soft sm:hidden">
+                                  読み取った希望
+                                </span>
                                 {off.length > 0 ? (
                                   <p>
                                     <span className="font-bold">休み希望</span> <span className="font-num">{off.join('・')}</span>日

@@ -119,8 +119,12 @@ export function Pricing() {
           <ol className="mt-3 grid gap-3">
             {[
               `決済ページで、${pro.price}（税込）を支払います。お支払い方法は、${site.sales.payment}です。`,
-              'メールで、ライセンスキーが届きます。',
-              `道具の画面の右上から「${pro.name}版について」を開いて、キーを貼り付けます。`,
+              // キーは運営者が手作業で送る（README の「7. キーの発行のしかた」）。すぐ届くと思わせない
+              site.sales.licenseDeliveryDays
+                ? `運営者がライセンスキーを発行して、メールでお送りします。手作業のため、決済のすぐあとには届きません（${site.sales.licenseDeliveryDays}営業日以内にお送りします）。`
+                : '運営者がライセンスキーを発行して、メールでお送りします。手作業のため、決済のすぐあとには届きません。',
+              // 店のデータが入っている画面では、右上は三本線のメニューだけになる。どちらの画面でも、同じ名前のボタンを押す
+              `道具の画面の右上の「${pro.name}版について・キーを入れる」を押して、キーを貼り付けます（店のデータが入っているときは、右上の三本線「そのほかの操作」の中にあります）。`,
             ].map((t, i) => (
               <li key={i} className="flex gap-3 text-[14.5px] leading-[1.8]">
                 <span aria-hidden className="blk mt-0.5" data-size="sm" data-color="sky">

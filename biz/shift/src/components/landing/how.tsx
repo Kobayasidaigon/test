@@ -39,8 +39,12 @@ function StoreCut({ plan }: { plan: ShiftPlan }) {
       <ul className="mb-3 grid gap-px border-b border-line pb-3 text-[12.5px]">
         {plan.staff.map((st) => {
           const notes: string[] = []
-          if (st.minDays !== null || st.maxDays !== null) notes.push(`月${st.minDays ?? ''}〜${st.maxDays ?? ''}日`)
-          if (st.fixedOffWeekdays.length > 0) notes.push(`${WEEK_ORDER.filter((w) => st.fixedOffWeekdays.includes(w)).map((w) => WEEKDAY_LABELS[w]).join('')}は休み`)
+          // 「月〜15日」と書くと、月曜からとも読めるので、下限か上限の片方だけのときは「〜」を使わない
+          if (st.minDays !== null && st.maxDays !== null) notes.push(`月${st.minDays}〜${st.maxDays}日`)
+          else if (st.maxDays !== null) notes.push(`月${st.maxDays}日まで`)
+          else if (st.minDays !== null) notes.push(`月${st.minDays}日以上`)
+          // 曜日は「・」で区切る（「月水木金」だと、ひと月の「月」とまぎれる）
+          if (st.fixedOffWeekdays.length > 0) notes.push(`${WEEK_ORDER.filter((w) => st.fixedOffWeekdays.includes(w)).map((w) => WEEKDAY_LABELS[w]).join('・')}曜は休み`)
           for (const s of plan.shiftTypes) if ((st.cannotWork[s.id]?.length ?? 0) === 7) notes.push(`${s.name}なし`)
           return (
             <li key={st.id} className="flex min-h-7 flex-wrap items-center gap-x-2 gap-y-0.5">
@@ -52,7 +56,7 @@ function StoreCut({ plan }: { plan: ShiftPlan }) {
                   </span>
                 ))}
               </span>
-              <span className="shrink-0 text-ink-soft">{notes.join('・')}</span>
+              <span className="shrink-0 text-ink-soft">{notes.join('、')}</span>
             </li>
           )
         })}

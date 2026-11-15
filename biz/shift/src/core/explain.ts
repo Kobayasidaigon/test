@@ -320,13 +320,19 @@ export function suggestRelaxations(plan: ShiftPlan, options: SuggestOptions = {}
   for (const s of suggestions) if (!kept.includes(s)) noEffect.push(s.label)
   kept.sort((a, b) => a.after - b.after)
 
+  // 休み希望・固定の休みは、人の事情なので、見直しをすすめない（LP の「組めないとき」と同じ考え方）
+  const PERSONAL = '休み希望と固定の休みは、人の事情なので、ゆるめる案は出していません。'
+  const LAST = '必要な人数を見直すか、足りないところがあることを承知のうえで、この表を使ってください。'
   let text: string
   if (kept.length > 0) {
-    text = '条件を変えて、実際に組み直して確かめました。'
+    text = kept.some((s) => s.relaxation.kind !== 'reseed')
+      ? // 自動作成は入れ替えをくり返す方法で、いちばん良い表を保証しない。「条件のせいで埋まらない」と言い切らない
+        '条件を変えずに作った別の案でも足りなかったので、条件を変えて、実際に組み直して確かめました。ただし、自動作成は、いちばん良い表を保証するものではないので、「別の案を作る」で埋まることもあります。'
+      : '条件を変えずに、別の案を作り直して確かめました。'
   } else if (noEffect.length > 0) {
-    text = `次の条件をゆるめて組み直してみましたが、足りないところは減りませんでした: ${noEffect.join('、')}。休み希望が重なっているか、入れる人の数が足りていません。必要な人数か、休み希望を見直してください。`
+    text = `次の条件をゆるめて組み直してみましたが、足りないところは減りませんでした: ${noEffect.join('、')}。${PERSONAL}${LAST}`
   } else {
-    text = 'ゆるめて試せる条件がありませんでした。休み希望が重なっているか、入れる人の数が足りていません。必要な人数か、休み希望を見直してください。'
+    text = `ゆるめて試せる条件がありませんでした。${PERSONAL}${LAST}`
   }
   return { suggestions: kept, noEffect, text }
 }

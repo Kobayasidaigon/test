@@ -65,10 +65,34 @@ describe('summarize', () => {
     s = workOn(s, 'st2', 'sh1', [2])
     const sum = summarize(tinyPlan(), s)
     expect(sum.days).toHaveLength(31)
-    expect(sum.days[0]).toEqual({ day: 1, slots: [{ shiftId: 'sh1', need: 1, have: 1, diff: 0 }, { shiftId: 'sh2', need: 0, have: 0, diff: 0 }], totalHave: 1, totalNeed: 1 })
-    expect(sum.days[1].slots[0]).toEqual({ shiftId: 'sh1', need: 1, have: 2, diff: 1 })
-    expect(sum.days[2].slots[0]).toEqual({ shiftId: 'sh1', need: 1, have: 0, diff: -1 })
+    expect(sum.days[0]).toEqual({
+      day: 1,
+      slots: [
+        { shiftId: 'sh1', need: 1, have: 1, diff: 0, roleShort: [] },
+        { shiftId: 'sh2', need: 0, have: 0, diff: 0, roleShort: [] },
+      ],
+      totalHave: 1,
+      totalNeed: 1,
+    })
+    expect(sum.days[1].slots[0]).toEqual({ shiftId: 'sh1', need: 1, have: 2, diff: 1, roleShort: [] })
+    expect(sum.days[2].slots[0]).toEqual({ shiftId: 'sh1', need: 1, have: 0, diff: -1, roleShort: [] })
     expect(sum.totalNeed).toBe(31)
+  })
+
+  it('役割の最低人数が足りない日は、人数がそろっていても roleShort に出る（表の下の行と印刷で、印を出すため）', () => {
+    const base = tinyPlan()
+    const plan = tinyPlan({
+      staff: [{ ...base.staff[0], tagIds: ['tag1'] }, base.staff[1], base.staff[2]],
+      needs: { ...base.needs, roleMins: [{ id: 'rm1', shiftId: 'sh1', tagId: 'tag1', count: 1 }] },
+    })
+    let s = workOn(emptySchedule(), 'st1', 'sh1', [1])
+    s = workOn(s, 'st2', 'sh1', [2])
+    const sum = summarize(plan, s)
+    // 1日: 札のある青木さん → 足りている。2日: 札のない石川さんだけ → 人数はちょうどでも、役割が足りない
+    expect(sum.days[0].slots[0].roleShort).toEqual([])
+    expect(sum.days[1].slots[0]).toMatchObject({ diff: 0, roleShort: [{ tagId: 'tag1', need: 1, have: 0 }] })
+    // 人が要らない勤務（遅番）には、役割の不足を数えない（点検と同じ）
+    expect(sum.days[1].slots[1].roleShort).toEqual([])
   })
 
   it('スタッフも勤務の種類もなくても、落ちない', () => {

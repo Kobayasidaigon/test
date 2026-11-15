@@ -10,6 +10,7 @@ import { CheckCircle2, CircleAlert, Info, RefreshCw, Sparkles } from 'lucide-rea
 import {
   buildCalendar,
   formatMonth,
+  holidaysClosed,
   localToday,
   makeSample,
   nextMonthOf,
@@ -40,7 +41,7 @@ function ruleChips(plan: ShiftPlan): string[] {
   const offWishes = Object.values(plan.wishes).reduce((n, row) => n + Object.values(row).filter((w) => w.kind === 'off').length, 0)
   if (offWishes > 0) chips.push(`休み希望 ${offWishes}件`)
   if (plan.closed.weekdays.length > 0) chips.push(`${plan.closed.weekdays.map((w) => WEEKDAY_LABELS[w]).join('・')}曜は定休日`)
-  if (plan.holidayMode === 'closed') chips.push('祝日は休み')
+  if (holidaysClosed(plan)) chips.push('祝日は休み')
   if (plan.rules.maxConsecutive !== null) chips.push(`連勤は${plan.rules.maxConsecutive}日まで`)
   for (const p of plan.rules.forbiddenPairs) chips.push(`${shiftName(p.first)}の次の日に${shiftName(p.next)}を入れない`)
   for (const r of plan.needs.roleMins) chips.push(`${shiftName(r.shiftId)}に「${tagName(r.tagId)}」が${r.count}人以上`)

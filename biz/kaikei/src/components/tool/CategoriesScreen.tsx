@@ -284,7 +284,7 @@ function CategoryRow({ row, index, count }: { row: CategoryTotal; index: number;
           label={`「${row.name}」の、決算書の説明`}
           value={row.note}
           maxLength={LIMITS.noteLength}
-          disabled={locked}
+          // 説明の文は「資料に書くこと」なので、繰り越したあとの前の年度でも書ける（数字は動かない）
           placeholder="決算書の「説明」に書く文（なくてもよい）"
           onCommit={(v) => commit({ note: v })}
           inputClassName="text-[0.94rem]"
