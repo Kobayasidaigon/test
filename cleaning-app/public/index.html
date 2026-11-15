@@ -2248,6 +2248,40 @@ function syncSet(key, value) {
     if (j && typeof j.rev === 'number' && typeof stateRev === 'number' && j.rev === stateRev + 1) stateRev = j.rev;
   }).catch(() => { markPendingSync(key, true); if (!stored) showStorageWarn(); });
 }
+// ===== 昔の記録（見るときだけ取りに行く）=====
+// 記録を全部スマホに置くと保存場所（約5MB）を超える。サーバーは直近15日ぶんだけ渡し、
+// それより前は「項目ごとの最後にやった日」の要約（oldSummary）だけ渡してくる。
+// 昔の日を開いたときは、その日の記録をサーバーから取ってきて、画面を開いている間だけ持つ。
+let liteFrom = '';        // これより前の日の記録は端末に無い（'' なら全部ある）
+let oldSummary = {};      // 店舗 -> エリア -> 項目id -> 最後にやった日（liteFrom より前）
+const daysLoaded = {};    // 取ってきた日 -> true（取りに行っている間は 'busy'）
+function needOldDay(date) {
+  if (!liteFrom || !date || date >= liteFrom || daysLoaded[date]) return;
+  daysLoaded[date] = 'busy';
+  fetch('/api/records?from=' + encodeURIComponent(date) + '&to=' + encodeURIComponent(date))
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('records ' + r.status))))
+    .then(j => {
+      const kv = (j && j.kv) || {};
+      LS.fill(Object.keys(kv).map(k => [k, kv[k]]), 0);   // 端末には置かない（メモリだけ）
+      daysLoaded[date] = true;
+      refreshAfterPull(false);
+    })
+    .catch(() => { delete daysLoaded[date]; });
+}
+// 要約の「最後にやった日」を、エリア（時間帯・曜日を落としたもの）ごとに返す
+function oldLastByItem(store) {
+  const out = {};
+  const s = oldSummary[store] || {};
+  Object.keys(s).forEach(rawArea => {
+    const area = baseArea(rawArea);
+    Object.keys(s[rawArea] || {}).forEach(id => {
+      const kk = area + ':' + id, d = s[rawArea][id];
+      if (!out[kk] || out[kk] < d) out[kk] = d;
+    });
+  });
+  return out;
+}
+
 function syncRemove(key) {
   LS.removeItem(key);
   fetch('/api/state/' + encodeURIComponent(key), { method: 'DELETE' }).catch(() => {});
@@ -5757,6 +5791,7 @@ function renderFocusBar() {
 }
 
 function render() {
+  needOldDay(dateInput.value);
   renderNoticeBar();
   renderFocusBar();
   // やることリスト以外（エリアページ・定期清掃）では、お知らせは出さない
@@ -6466,6 +6501,13 @@ function reviewRecords(store) {
     try { ids = Object.keys(JSON.parse(LS.getItem(k)) || {}); } catch (e) {}
     if (ids.length) out.push({ staff: p.staff, area: baseArea(p.area), date: p.date, ids: ids });
   }
+  // 端末に無い昔のぶんは要約から（「前回いつ」「一度もやっていない」の判定に使う）。
+  // 日付は見る期間より前なので、期間内の数には入らない。
+  const old = oldLastByItem(store);
+  Object.keys(old).forEach(kk => {
+    const c = kk.indexOf(':');
+    out.push({ staff: '', area: kk.slice(0, c), date: old[kk], ids: [kk.slice(c + 1)] });
+  });
   return out;
 }
 function reviewData(store) {
@@ -7304,7 +7346,7 @@ function openInspItemsDialog() {
 let _lastCheckedCache = null;   // 1回の描画内でのキャッシュ（localStorage を全部なめるため）
 function lastCheckedByItem(store) {
   if (_lastCheckedCache && _lastCheckedCache[store]) return _lastCheckedCache[store];
-  const map = {};
+  const map = oldLastByItem(store);   // 端末に無い昔のぶん（要約）
   const prefix = 'clean_' + store + '_';
   for (let i = 0; i < LS.length; i++) {
     const k = LS.key(i);
@@ -7500,6 +7542,7 @@ function renderSummary() {
   const sumDateEl = document.getElementById('sumDate');
   if (!sumDateEl.value) sumDateEl.value = todayStr();
   const date = sumDateEl.value;
+  needOldDay(date);
   const progress = {};
   STORES.forEach(s => { progress[s] = storeDayProgress(s, date); });
 
@@ -8810,15 +8853,20 @@ function requireLogin() {
 // ===== 起動時：サーバーからデータを読み込み（サーバーが正・ローカルはキャッシュ）=====
 async function bootstrap() {
   try {
-    let res = await fetch('/api/state');
+    let res = await fetch('/api/state?lite=1');
     if (res.status === 401) {           // 認証クッキーが無い/切れた端末 → 合言葉を聞いてリトライ
       await requireLogin();
-      res = await fetch('/api/state');
+      res = await fetch('/api/state?lite=1');
     }
     if (!res.ok) throw new Error('state ' + res.status);
     const server = await res.json();
     stateRev = typeof server.rev === 'number' ? server.rev : 0;
     const serverKv = server.kv || {};
+    // 直近だけ送ってくるサーバーなら、それより前は要約で持つ（古いサーバーなら全部来る）
+    liteFrom = (server.lite && server.lite.from) || '';
+    oldSummary = (server.lite && server.lite.old) || {};
+    Object.keys(daysLoaded).forEach(d => delete daysLoaded[d]);
+    if (typeof _lastCheckedCache !== 'undefined') _lastCheckedCache = null;
     const serverMedia = server.media || {};
     const serverMediaIds = server.mediaIds || Object.keys(serverMedia);
     // サーバーが正。ローカルにしか無いキーは「送信できていない分」だけ送り、

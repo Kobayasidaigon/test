@@ -596,6 +596,119 @@ app.get('/view/data', (req, res) => {
   if (!viewOk(req)) return res.sendStatus(401);
   res.json(buildViewData(vPickDate(req.query.d)));
 });
+// ---- 管理者: 溜まったデータを zip で持ち帰る（2026-11-15）----
+// 中身: 記録.csv（Excel で開ける。店舗・日付・時刻・担当者・エリア・項目）と、
+//       全データ.json（サーバーにあるもの丸ごと。写真の本体は入れない）。
+const CRC_TABLE = (() => {
+  const t = new Int32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[n] = c;
+  }
+  return t;
+})();
+function crc32(buf) {
+  let c = -1;
+  for (let i = 0; i < buf.length; i++) c = CRC_TABLE[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+  return (c ^ -1) >>> 0;
+}
+// files: [{ name, data: Buffer }] → zip の Buffer（deflate、名前は UTF-8）
+function makeZip(files) {
+  const zlib = require('zlib');
+  const now = new Date(Date.now() + 9 * 3600000);
+  const dosTime = (now.getUTCHours() << 11) | (now.getUTCMinutes() << 5) | (now.getUTCSeconds() >> 1);
+  const dosDate = ((now.getUTCFullYear() - 1980) << 9) | ((now.getUTCMonth() + 1) << 5) | now.getUTCDate();
+  const parts = [], central = [];
+  let off = 0;
+  files.forEach(f => {
+    const name = Buffer.from(f.name, 'utf8');
+    const comp = zlib.deflateRawSync(f.data);
+    const crc = crc32(f.data);
+    const lh = Buffer.alloc(30);
+    lh.writeUInt32LE(0x04034b50, 0); lh.writeUInt16LE(20, 4); lh.writeUInt16LE(0x0800, 6);
+    lh.writeUInt16LE(8, 8); lh.writeUInt16LE(dosTime, 10); lh.writeUInt16LE(dosDate, 12);
+    lh.writeUInt32LE(crc, 14); lh.writeUInt32LE(comp.length, 18); lh.writeUInt32LE(f.data.length, 22);
+    lh.writeUInt16LE(name.length, 26); lh.writeUInt16LE(0, 28);
+    parts.push(lh, name, comp);
+    const ch = Buffer.alloc(46);
+    ch.writeUInt32LE(0x02014b50, 0); ch.writeUInt16LE(20, 4); ch.writeUInt16LE(20, 6);
+    ch.writeUInt16LE(0x0800, 8); ch.writeUInt16LE(8, 10); ch.writeUInt16LE(dosTime, 12);
+    ch.writeUInt16LE(dosDate, 14); ch.writeUInt32LE(crc, 16); ch.writeUInt32LE(comp.length, 20);
+    ch.writeUInt32LE(f.data.length, 24); ch.writeUInt16LE(name.length, 28);
+    ch.writeUInt32LE(off, 42);
+    central.push(ch, name);
+    off += 30 + name.length + comp.length;
+  });
+  const cd = Buffer.concat(central);
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(files.length, 8); end.writeUInt16LE(files.length, 10);
+  end.writeUInt32LE(cd.length, 12); end.writeUInt32LE(off, 16);
+  return Buffer.concat(parts.concat([cd, end]));
+}
+function csvCell(v) {
+  const t = String(v == null ? '' : v);
+  return /[",\r\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+}
+function exportCsv() {
+  const nameCache = {};
+  const areaName = (store, key) => {
+    const ck = store + '|area';
+    if (!nameCache[ck]) {
+      const m = {};
+      BUILTIN_AREAS.forEach(a => { m[a.key] = a.name; });
+      (vJson(vDefRead(store, 'customAreas'), []) || []).forEach(a => { if (a && a.key) m[a.key] = a.name || a.key; });
+      nameCache[ck] = m;
+    }
+    return nameCache[ck][key] || key;
+  };
+  const itemTitle = (store, area, id) => {
+    const ck = store + '|' + area;
+    if (!nameCache[ck]) {
+      const m = {};
+      try { viewGroups(store, area).forEach(g => g.items.forEach(it => { m[it.id] = it.title; })); } catch (e) {}
+      // 隠した項目・消した項目も名前だけは拾う
+      (vJson(vDefRead(store, 'customItems_' + area), []) || []).forEach(ci => { if (ci && ci.id && !m[ci.id]) m[ci.id] = ci.title || ''; });
+      const b = BUILTIN_AREAS.find(a => a.key === area);
+      if (b) b.groups.forEach(g => g.items.forEach(it => { if (!m[it.id]) m[it.id] = it.title; }));
+      nameCache[ck] = m;
+    }
+    return nameCache[ck][id] || id;
+  };
+  const rows = [];
+  Object.keys(state.kv).forEach(k => {
+    const p = splitRecKey(k);
+    if (!p) return;
+    let rec = null;
+    try { rec = JSON.parse(state.kv[k]); } catch (e) {}
+    if (!rec || typeof rec !== 'object') return;
+    const area = vBaseArea(p.area);
+    const at = p.area.indexOf('@');
+    const slot = at >= 0 ? ({ routine_asa: '朝番', routine_hiru: '中番', routine_ban: '遅番' }[p.area.slice(at + 1).split('#')[0]] || '') : '';
+    Object.keys(rec).forEach(id => {
+      const r = rec[id];
+      if (!r) return;
+      rows.push([p.store, p.date, (r && r.time) || '', (r && r.staff) || p.staff,
+                 slot, areaName(p.store, area), itemTitle(p.store, area, id), area, id]);
+    });
+  });
+  rows.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0) || (a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0)
+                      || (a[2] < b[2] ? -1 : a[2] > b[2] ? 1 : 0));
+  const head = ['店舗', '日付', '時刻', '担当者', '時間帯', 'エリア', '項目', 'エリアキー', '項目ID'];
+  const text = [head].concat(rows).map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
+  return { buf: Buffer.concat([Buffer.from([0xEF, 0xBB, 0xBF]), Buffer.from(text, 'utf8')]), n: rows.length };
+}
+app.get('/view/export', (req, res) => {
+  if (!ADMIN_PASS) return res.status(503).json({ error: '管理者合言葉が未設定です' });
+  if (!viewOk(req)) return res.sendStatus(401);
+  const csv = exportCsv();
+  const json = Buffer.from(JSON.stringify({ exportedAt: new Date().toISOString(), kv: state.kv }), 'utf8');
+  const zip = makeZip([{ name: '記録.csv', data: csv.buf }, { name: '全データ.json', data: json }]);
+  const fname = '清掃記録_' + jstToday() + '.zip';
+  res.set('Content-Type', 'application/zip');
+  res.set('Content-Disposition', "attachment; filename=\"cleaning-" + jstToday() + ".zip\"; filename*=UTF-8''" + encodeURIComponent(fname));
+  res.send(zip);
+});
 // ページ自体は誰が開いてもよい（中身は出ない。合言葉を聞く画面が出るだけ）
 app.get('/view', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'view.html'));
@@ -735,8 +848,78 @@ app.post('/api/inventory-link', express.json({ limit: '1kb' }), (req, res) => {
 });
 
 // ---- 状態API（チェック記録・項目・履歴などの文字列データ）----
+// ---- 端末に置くのは直近だけ（2026-11-15）----
+// 記録は全部でスマホの保存場所（約5MB）を超える。端末には直近 RECENT_DAYS 日の記録だけ渡し、
+// それより前は「項目ごとの最後にやった日」の要約（old）だけ渡す。
+// 昔の日を見るときは /api/records で取りに来る。
+const RECENT_DAYS = 15;
+function ymdShift(ymd, n) {
+  const d = new Date(ymd + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+function jstToday() { return new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10); }
+// clean_<店舗>_<担当者>_<エリア>_<日付> を分ける（店舗の無い昔の形は null）
+function splitRecKey(k) {
+  if (k.indexOf('clean_') !== 0) return null;
+  const date = k.slice(-10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  const rest = k.slice(6, k.length - 11);
+  const i = rest.indexOf('_');
+  if (i < 0) return null;
+  const store = rest.slice(0, i);
+  if (STORES.indexOf(store) < 0) return null;
+  const mid = rest.slice(i + 1);
+  const j = mid.indexOf('_');
+  if (j < 0) return null;
+  return { store: store, staff: mid.slice(0, j), area: mid.slice(j + 1), date: date };
+}
+function recDateOf(k) {
+  if (k.indexOf('clean_') !== 0) return '';
+  const d = k.slice(-10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : '';
+}
+function liteState() {
+  // 端末の日付とずれても困らないよう、1日多めに渡す
+  const from = ymdShift(jstToday(), -RECENT_DAYS);
+  const kv = {};
+  const old = {};    // 店舗 -> エリア(時間帯つきのまま) -> 項目id -> 最後にやった日
+  Object.keys(state.kv).forEach(k => {
+    if (k.indexOf('cleanHistory_') === 0) return;      // ふりかえり用。見るときに取りに来る
+    const d = recDateOf(k);
+    if (!d || d >= from) { kv[k] = state.kv[k]; return; }
+    const p = splitRecKey(k);
+    if (!p) return;
+    let rec = null;
+    try { rec = JSON.parse(state.kv[k]); } catch (e) {}
+    if (!rec || typeof rec !== 'object') return;
+    const a = ((old[p.store] = old[p.store] || {})[p.area] = old[p.store][p.area] || {});
+    Object.keys(rec).forEach(id => { if (rec[id] && (!a[id] || a[id] < d)) a[id] = d; });
+  });
+  return { kv: kv, from: from, old: old };
+}
 app.get('/api/state', (req, res) => {
+  if (req.query.lite === '1') {
+    const l = liteState();
+    return res.json({ kv: l.kv, media: state.media, mediaIds: Object.keys(state.media), rev: stateRev,
+                      lite: { from: l.from, old: l.old } });
+  }
   res.json({ kv: state.kv, media: state.media, mediaIds: Object.keys(state.media), rev: stateRev });
+});
+// 昔の日の記録を取りに来る（from〜to、店舗の指定が無ければ全店舗）
+app.get('/api/records', (req, res) => {
+  const ok = s => /^\d{4}-\d{2}-\d{2}$/.test(String(s || ''));
+  const from = String(req.query.from || ''), to = String(req.query.to || req.query.from || '');
+  if (!ok(from) || !ok(to)) return res.status(400).json({ error: 'from/to' });
+  const store = String(req.query.store || '');
+  const kv = {};
+  Object.keys(state.kv).forEach(k => {
+    const d = recDateOf(k);
+    if (!d || d < from || d > to) return;
+    if (store && k.indexOf('clean_' + store + '_') !== 0) return;
+    kv[k] = state.kv[k];
+  });
+  res.json({ kv: kv });
 });
 // 鍵を1つだけ取る。端末の保存容量には限りがあるので、大きいもの
 // （ふりかえり用の履歴など）は端末に置かず、見るときにここから取りに行く。

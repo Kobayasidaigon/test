@@ -123,7 +123,7 @@ const QUOTA = 2500000;   // 文字数（UTF-16 で 5MB）
   check('他の端末の変更を取り込める', /別の人/.test(got || ''), got);
 
   // 端末に入りきらなかった古い記録も、画面からは読める（空き日数・ふりかえり用）
-  const old = 'clean_笠寺_過去の人_area3_' + ymd(Date.now() - 20 * DAY);
+  const old = 'clean_笠寺_過去の人_area3_' + ymd(Date.now() - 10 * DAY);
   const oldV = await pg.evaluate(k => (typeof LS !== 'undefined' ? LS : localStorage).getItem(k), old);
   check('端末に入らなかった古い記録もこの画面では読める', !!oldV && /過去の人/.test(oldV), old + ' ' + String(oldV).slice(0,40) + ' srv=' + (await getS(old)).slice(0,20) + ' mem=' + await pg.evaluate(() => typeof LS !== 'undefined' && LS.memCount()));
 

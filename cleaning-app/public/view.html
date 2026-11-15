@@ -105,6 +105,11 @@
   .dayrow input[type=date] { flex:1; min-width:0; font:inherit; font-size:.92rem;
     padding:9px 10px; border:1px solid var(--border); border-radius:9px;
     background:var(--card); color:var(--text); }
+  .export { text-align:center; margin:18px 0 6px; }
+  .export a { display:inline-block; padding:10px 16px; border:1px solid var(--border);
+    border-radius:9px; background:var(--card); color:var(--text); font-weight:700;
+    font-size:.88rem; text-decoration:none; }
+  .export .ex-note { color:var(--muted); font-size:.72rem; margin-top:6px; }
   footer { color:var(--muted); font-size:.72rem; text-align:center; padding:4px 16px 30px; }
   .err { padding:30px 16px; text-align:center; color:var(--muted); }
   .login { background:var(--card); border:1px solid var(--border); border-radius:12px;
@@ -139,6 +144,10 @@
   </div>
   <div class="note" id="note"></div>
   <div id="main"><div class="err">読み込み中…</div></div>
+  <div class="export">
+    <a href="/view/export" id="exportLink" download>全部の記録をダウンロード（zip）</a>
+    <div class="ex-note">Excel で開ける「記録.csv」と、丸ごとの控え「全データ.json」が入っています。</div>
+  </div>
   </div>
 </div>
 <footer id="foot">自動で最新になります。開き直すと今の状態になります。</footer>
