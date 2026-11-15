@@ -1461,6 +1461,136 @@
 
 <script>
 // ============================================================
+//  端末の保存場所（LS）
+// ============================================================
+// 端末の保存場所（localStorage）は iPhone/iPad の Safari で 5MB ほどしかない。
+// 記録はサーバーに全部あり、3店舗×60日ぶんを端末に置こうとすると 8MB を超え、
+// 2026-11-15 に「この端末の保存容量が一杯です」と出てチェックが付かなくなった。
+//
+// そこで端末の読み書きは全部この LS を通す。
+//   ・端末に入るぶんは localStorage に置く（圏外でも見られる控え）
+//   ・入らないぶんは、この画面を開いている間だけメモリに持つ
+//     （サーバーにはあるので、次に開いたときにまた取ってくる）
+//   ・一杯のときは、古い控え（昨日より前の記録・ふりかえり用の履歴）から
+//     メモリへ移して場所をあける。今日の記録が端末に入らないことは無い
+// 読む側は、端末にあるかメモリにあるかを気にしなくてよい。例外も外に出さない。
+const LS = (function () {
+  let ls = null;
+  try { ls = window.localStorage; ls.getItem('x'); } catch (e) { ls = null; }
+  const mem = new Map();          // 端末に入らなかったぶん
+  let keySet = null;              // 端末＋メモリの鍵（length/key(i) 用）
+  let keyArr = null;
+  let full = false;               // 一度でも入らなかったか
+
+  function rawGet(k) { if (!ls) return null; try { return ls.getItem(k); } catch (e) { return null; } }
+  function rawSet(k, v) { if (!ls) return false; try { ls.setItem(k, v); return true; } catch (e) { return false; } }
+  function rawRemove(k) { if (!ls) return; try { ls.removeItem(k); } catch (e) {} }
+  function rawKeys() {
+    const out = [];
+    if (!ls) return out;
+    try { for (let i = 0; i < ls.length; i++) { const k = ls.key(i); if (k !== null) out.push(k); } } catch (e) {}
+    return out;
+  }
+  function keys() {
+    if (keyArr) return keyArr;
+    if (!keySet) { keySet = new Set(rawKeys()); mem.forEach((v, k) => keySet.add(k)); }
+    keyArr = Array.from(keySet);
+    return keyArr;
+  }
+  function addKey(k) { if (keySet && !keySet.has(k)) { keySet.add(k); keyArr = null; } }
+  function dropKey(k) { if (keySet && keySet.has(k)) { keySet.delete(k); keyArr = null; } }
+
+  // 今日の日付（端末の時刻で YYYY-MM-DD）。todayStr() はまだ無いので自前で
+  function today() {
+    const d = new Date(), p = n => (n < 10 ? '0' : '') + n;
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+  // 端末からメモリへ移してよい控えの順番（先に移すもの＝小さい数）
+  function evictRank(k, td, pending) {
+    if (pending.indexOf(k) >= 0) return -1;        // まだサーバーに送れていない＝動かさない
+    if (k.indexOf('cleanHistory_') === 0) return 0;
+    if (k.indexOf('proofLog_') === 0 || k.indexOf('proofCancelLog_') === 0) return 0;
+    if (k.indexOf('clean_') === 0) {
+      const d = k.slice(-10);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d) && d < td) return 1;
+    }
+    return -1;
+  }
+  // 端末の控えをメモリへ移して、need 文字ぶん以上あける。あけられたら true
+  function makeRoom(keepKey, need) {
+    if (!ls) return false;
+    const td = today();
+    let pending = [];
+    try { pending = JSON.parse(get('pendingSync')) || []; } catch (e) {}
+    const cands = [];
+    rawKeys().forEach(k => {
+      if (k === keepKey) return;
+      const r = evictRank(k, td, pending);
+      if (r >= 0) cands.push({ k: k, r: r, d: r === 1 ? k.slice(-10) : '' });
+    });
+    // 履歴など → 古い日付の記録 の順
+    cands.sort((a, b) => (a.r - b.r) || (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+    let freed = 0;
+    const goal = Math.max(need * 2, 300000);       // 一度に多めにあけて、何度もやらない
+    for (const c of cands) {
+      const v = rawGet(c.k);
+      if (v === null) continue;
+      mem.set(c.k, v);
+      rawRemove(c.k);
+      freed += v.length + c.k.length;
+      if (freed >= goal) break;
+    }
+    return freed > 0;
+  }
+  function get(k) {
+    if (mem.has(k)) return mem.get(k);
+    return rawGet(k);
+  }
+  // 端末に入ったら true。入らなくてもメモリには必ず入る（例外は出さない）
+  function set(k, v) {
+    k = String(k); v = String(v);
+    addKey(k);
+    if (rawSet(k, v)) { mem.delete(k); return true; }
+    if (makeRoom(k, k.length + v.length) && rawSet(k, v)) { mem.delete(k); return true; }
+    rawRemove(k);           // 古い値が端末に残らないように
+    mem.set(k, v);
+    full = true;
+    return false;
+  }
+  // 起動時にサーバーの中身をまとめて入れる。
+  // entries は大事な順。端末に入るのは budget 文字まで（今日のチェックの分をあけておく）。
+  // 一度入らなかったら、残りは端末を試さずメモリへ（一杯の端末で何千回も失敗させない）。
+  function fill(entries, budget) {
+    let used = 0, toMem = false;
+    for (const [k, v] of entries) {
+      addKey(k);
+      const n = k.length + v.length;
+      if (!toMem && used + n <= budget && rawSet(k, v)) { mem.delete(k); used += n; continue; }
+      toMem = true;
+      rawRemove(k);
+      mem.set(k, v);
+    }
+    return { disk: used, mem: mem.size };
+  }
+  function remove(k) {
+    mem.delete(k);
+    rawRemove(k);
+    dropKey(k);
+  }
+  return {
+    getItem: get,
+    setItem: set,
+    removeItem: remove,
+    key: i => { const a = keys(); return i >= 0 && i < a.length ? a[i] : null; },
+    get length() { return keys().length; },
+    fill: fill,
+    makeRoom: makeRoom,
+    onDisk: k => rawGet(k) !== null,
+    memCount: () => mem.size,
+    wasFull: () => full,
+  };
+})();
+// ============================================================
 //  設定: スタッフ名・エリア・清掃項目はここを編集してください
 // ============================================================
 const STAFF = ["佐藤", "鈴木", "高橋", "田中", "渡辺", "その他"]; // 旧サンプル（互換用・名簿は staffRoster を使用）
@@ -2059,8 +2189,8 @@ function isSyncedKey(key) {
 }
 function appKeys() {
   const out = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
+  for (let i = 0; i < LS.length; i++) {
+    const k = LS.key(i);
     if (isSyncedKey(k)) out.push(k);
   }
   return out;
@@ -2072,7 +2202,7 @@ function appKeys() {
 // サーバーの変更の通し番号（端末間の同期用。/api/state と /api/changes が返す）
 let stateRev = 0;
 function loadPendingSync() {
-  try { return JSON.parse(localStorage.getItem('pendingSync')) || []; } catch (e) { return []; }
+  try { return JSON.parse(LS.getItem('pendingSync')) || []; } catch (e) { return []; }
 }
 function markPendingSync(key, on) {
   const list = loadPendingSync();
@@ -2080,64 +2210,27 @@ function markPendingSync(key, on) {
   if (on && i < 0) list.push(key);
   else if (!on && i >= 0) list.splice(i, 1);
   else return;
-  try { localStorage.setItem('pendingSync', JSON.stringify(list)); } catch (e) {}
+  try { LS.setItem('pendingSync', JSON.stringify(list)); } catch (e) {}
 }
 
 // ===== 端末の保存容量 =====
 //
-// 端末の保存場所（localStorage）は無限ではない。iPadのSafariでは5MBほどで、
-// 記録が増えるといつか必ず一杯になる。一杯になると setItem は例外を投げる。
-//
-// これまでは syncSet が try/catch なしで setItem を先に呼んでいたため、
-// 一杯になった端末では**例外でその場が止まり、チェックが付かないどころか
-// サーバーにも送られない**（＝作業の記録が消える）状態だった。
-// 現場から「遅番でいくつか付けた後、付けられなくなる」と報告があったのがこれ。
-//
-// 直し方は3つ。
-//   ① 例外は必ず受け止める（画面を止めない）
-//   ② サーバーへの送信は、端末に入ったかどうかと関係なく必ずやる
-//   ③ 入らなかったら、無くても困らない控えを捨てて、もう一度だけ試す
-let storageFull = false;
-
-// 捨ててよいもの＝サーバーから引き直せるもの。
-//   cleanHistory_*  … ふりかえり画面用の控え。開くときに引き直せる
-//   古い clean_*    … 30日より前のチェック。サーバーに入っている
-// まだサーバーに送れていないもの（pendingSync）は絶対に捨てない。
-function freeUpSpace(keepKey) {
-  const pending = loadPendingSync();
-  const cutoff = shiftDate(todayStr(), -30);
-  const drop = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (!k || k === keepKey || pending.indexOf(k) >= 0) continue;
-    if (k.indexOf('cleanHistory_') === 0) { drop.push(k); continue; }
-    if (k.indexOf('clean_') === 0 && k.slice(-10) < cutoff) drop.push(k);
-  }
-  let n = 0;
-  drop.forEach(k => { try { localStorage.removeItem(k); n++; } catch (e) {} });
-  return n > 0;
-}
-
-// localStorage への書き込み。入らなくても例外を外に出さない。
+// 端末の保存場所（localStorage）は無限ではない。iPhone/iPadのSafariでは5MBほど。
+// 一杯になったときの扱いは上の LS にまとめた（入らないぶんはメモリに持つ）。
+// ここでは「端末に入ったか」だけを返す。入らなくても画面はふつうに動く。
 function lsSet(key, value) {
-  try { localStorage.setItem(key, value); return true; } catch (e) {}
-  if (freeUpSpace(key)) {
-    try { localStorage.setItem(key, value); return true; } catch (e) {}
-  }
-  storageFull = true;
-  showStorageWarn();
-  return false;
+  return LS.setItem(key, value);
 }
 
-// 端末に控えを置けないことを1行で伝える。記録そのものはサーバーに入っている。
+// 記録が端末にもサーバーにも入らなかったときだけ出す（圏外＋一杯）。
+// 端末に入らないだけならサーバーにあるので、現場には何も出さない。
 function showStorageWarn() {
   const el = document.getElementById('storageBar');
   if (!el) return;
   el.style.display = '';
   el.innerHTML = ic('info')
-    + '<span><b>この端末の保存容量が一杯です。</b>'
-    + 'チェックはサーバーに記録されています。'
-    + '画面の出方がおかしいときは、いったん閉じて開き直してください。</span>';
+    + '<span><b>チェックをまだ送れていません。</b>'
+    + '電波のよい所で、画面を開いたままにしてください。</span>';
 }
 
 function syncSet(key, value) {
@@ -2155,7 +2248,7 @@ function syncSet(key, value) {
   }).catch(() => { markPendingSync(key, true); if (!stored) showStorageWarn(); });
 }
 function syncRemove(key) {
-  localStorage.removeItem(key);
+  LS.removeItem(key);
   fetch('/api/state/' + encodeURIComponent(key), { method: 'DELETE' }).catch(() => {});
 }
 
@@ -2169,7 +2262,7 @@ const storeSelect = document.getElementById('storeSelect');
 // 形: { "笠寺":["山田",...], "枇杷島":[...], "萩野通":[...] }
 function loadRoster() {
   let r = null;
-  try { r = JSON.parse(localStorage.getItem('staffRoster')); } catch (e) {}
+  try { r = JSON.parse(LS.getItem('staffRoster')); } catch (e) {}
   if (!r || typeof r !== 'object' || Array.isArray(r)) r = {};
   STORES.forEach(s => { if (!Array.isArray(r[s])) r[s] = []; });
   return r;
@@ -2200,8 +2293,8 @@ function removeStaffName(store, name) {
 }
 
 // 店舗・担当者セレクターを構築（前回の選択を端末ごとに記憶）
-let currentStaff = localStorage.getItem('currentStaff') || '';
-let currentStore = localStorage.getItem('currentStore') || '';
+let currentStaff = LS.getItem('currentStaff') || '';
+let currentStore = LS.getItem('currentStore') || '';
 
 function buildStoreSelect() {
   storeSelect.innerHTML = '';
@@ -2216,11 +2309,11 @@ function buildStoreSelect() {
   if (currentStore && STORES.includes(currentStore)) storeSelect.value = currentStore;
   storeSelect.onchange = () => {
     currentStore = storeSelect.value;
-    localStorage.setItem('currentStore', currentStore);
+    LS.setItem('currentStore', currentStore);
     // 店舗が変わったら担当者は選び直し（人は店舗に属するため）
     const names = currentStore ? loadRoster()[currentStore] : [];
     if (currentStaff && names.indexOf(currentStaff) < 0) {
-      currentStaff = ''; localStorage.setItem('currentStaff', '');
+      currentStaff = ''; LS.setItem('currentStaff', '');
     }
     buildStaffSelect();
     autoSelectShiftStaff(); // 切替先の店舗でシフト中の人を自動セット
@@ -2266,8 +2359,8 @@ function buildStaffSelect() {
     currentStaff = staffSelect.value;
     // 過去の日を見ながら選び直したぶんは保存しない。今日に戻したときに引きずらないため。
     if (!isPastView()) {
-      localStorage.setItem('currentStaff', currentStaff);
-      localStorage.setItem('currentStaffDay', todayStr()); // 選んだ日を記録（日付が変わったら自動リセット）
+      LS.setItem('currentStaff', currentStaff);
+      LS.setItem('currentStaffDay', todayStr()); // 選んだ日を記録（日付が変わったら自動リセット）
     }
     render();
   };
@@ -2312,10 +2405,10 @@ function _defStore() { return _defStoreOverride !== null ? _defStoreOverride : c
 function defRead(base) {
   const st = _defStore();
   if (st) {
-    const v = localStorage.getItem('sdef_' + st + '_' + base);
+    const v = LS.getItem('sdef_' + st + '_' + base);
     if (v !== null) return v;
   }
-  return localStorage.getItem(base);
+  return LS.getItem(base);
 }
 function defWrite(base, val) {
   const st = _defStore();
@@ -2672,7 +2765,7 @@ function recordKey(areaKey, staff) {
   return 'clean_' + (currentStore ? currentStore + '_' : '') + who + '_' + areaKey + '_' + recDate(areaKey);
 }
 function loadRecord(areaKey, staff) {
-  try { return JSON.parse(localStorage.getItem(recordKey(areaKey, staff))) || {}; }
+  try { return JSON.parse(LS.getItem(recordKey(areaKey, staff))) || {}; }
   catch (e) { return {}; }
 }
 // 表示用: その日の店舗全体の記録を合算（他の担当者がやった分もチェック済みとして残す）
@@ -2682,11 +2775,11 @@ function loadRecordMerged(areaKey) {
   const ra = recArea(areaKey);
   const areas = recAreasFor(areaKey); // その時間帯＋旧形式＋（引き継ぎありなら）前の時間帯
   const date = recDate(areaKey);
-  for (let i = 0; i < localStorage.length; i++) {
-    const p = parseRecordKey(localStorage.key(i), currentStore);
+  for (let i = 0; i < LS.length; i++) {
+    const p = parseRecordKey(LS.key(i), currentStore);
     if (!p || p.date !== date || areas.indexOf(p.area) < 0) continue;
     try {
-      const r = JSON.parse(localStorage.getItem(localStorage.key(i))) || {};
+      const r = JSON.parse(LS.getItem(LS.key(i))) || {};
       Object.keys(r).forEach(id => {
         if (merged[id]) return;
         merged[id] = r[id];
@@ -2713,7 +2806,7 @@ function numsKey(date) {
   return 'nums_' + (currentStore || '') + '_' + (date || dateInput.value);
 }
 function loadNums(date) {
-  try { return JSON.parse(localStorage.getItem(numsKey(date))) || {}; }
+  try { return JSON.parse(LS.getItem(numsKey(date))) || {}; }
   catch (e) { return {}; }
 }
 function saveNums(all) {
@@ -3370,12 +3463,12 @@ function deleteItem(id, isCustom, title, areaKey) {
   }
 
   // 全担当者・全時間帯のチェック記録からもこの項目を削除
-  for (let k = 0; k < localStorage.length; k++) {
-    const key = localStorage.key(k);
+  for (let k = 0; k < LS.length; k++) {
+    const key = LS.key(k);
     if (key && key.startsWith('clean_')
         && (key.indexOf('_' + ak + '_') !== -1 || key.indexOf('_' + ak + '@') !== -1)) {
       try {
-        const rec = JSON.parse(localStorage.getItem(key));
+        const rec = JSON.parse(LS.getItem(key));
         if (rec && rec[id]) { delete rec[id]; syncSet(key, JSON.stringify(rec)); }
       } catch (e) {}
     }
@@ -3610,7 +3703,7 @@ function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = ((h << 5
 // 撮影対象プール: 月次点検(90点テスト)の採点に関わる清掃項目だけ。
 // kv `proofPool` = { areaKey: [itemId, ...] }。未設定なら全項目が対象(後方互換)。
 function loadProofPool() {
-  try { return JSON.parse(localStorage.getItem('proofPool')) || null; } catch (e) { return null; }
+  try { return JSON.parse(LS.getItem('proofPool')) || null; } catch (e) { return null; }
 }
 // 項目ごとの撮影頻度: kv `proofRates` = { "areaKey:itemId": 分母 }
 // 分母 N は 1/N の確率＝「N回に1回くらい」。0 なら撮影なし、1 なら毎日必ず。
@@ -3625,7 +3718,7 @@ const PROOF_LEVELS = [
   { n: 1, label: '毎日必ず' },
 ];
 function loadProofRates() {
-  try { return JSON.parse(localStorage.getItem('proofRates')) || {}; } catch (e) { return {}; }
+  try { return JSON.parse(LS.getItem('proofRates')) || {}; } catch (e) { return {}; }
 }
 function saveProofRates(map) { syncSet('proofRates', JSON.stringify(map)); }
 // プールだけで決まる既定値（頻度の指定が無いときの分母）
@@ -3729,7 +3822,7 @@ function compressToJpeg(file, maxSide, quality) {
 function proofSpotFor(areaKey, itemId) {
   areaKey = baseArea(areaKey); // 撮影場所も時間帯で変えない
   let spots = null;
-  try { spots = (JSON.parse(localStorage.getItem('proofSpots')) || {})[areaKey + ':' + itemId]; } catch (e) {}
+  try { spots = (JSON.parse(LS.getItem('proofSpots')) || {})[areaKey + ':' + itemId]; } catch (e) {}
   if (!spots || !spots.length) return '';
   const date = dateInput.value || todayStr();
   return spots[hashStr(date + '|' + currentStore + '|' + areaKey + '|' + itemId + '|spot') % spots.length];
@@ -3760,7 +3853,7 @@ function proofTakenToday(areaKey, itemId) {
 function reuseProof(areaKey, itemId, mediaId) {
   const logKey = 'proofLog_' + currentStore;
   let log = [];
-  try { log = JSON.parse(localStorage.getItem(logKey)) || []; } catch (e) {}
+  try { log = JSON.parse(LS.getItem(logKey)) || []; } catch (e) {}
   const areaDef = getArea(areaKey);
   const itemDef = areaItems(areaKey).find(x => x.id === itemId);
   log.push({
@@ -3791,7 +3884,7 @@ function logProofCancel(ctx) {
   if (!ctx || !currentStore) return;
   const logKey = 'proofCancelLog_' + currentStore;
   let log = [];
-  try { log = JSON.parse(localStorage.getItem(logKey)) || []; } catch (e) {}
+  try { log = JSON.parse(LS.getItem(logKey)) || []; } catch (e) {}
   const areaDef = getArea(ctx.areaKey);
   const itemDef = areaItems(ctx.areaKey).find(x => x.id === ctx.itemId);
   log.push({
@@ -3837,7 +3930,7 @@ function logProofCancel(ctx) {
       // 実施写真ログ（店舗別・保持期間つき）
       const logKey = 'proofLog_' + currentStore;
       let log = [];
-      try { log = JSON.parse(localStorage.getItem(logKey)) || []; } catch (e) {}
+      try { log = JSON.parse(LS.getItem(logKey)) || []; } catch (e) {}
       const areaDef = getArea(ctx.areaKey);
       const itemDef = areaItems(ctx.areaKey).find(x => x.id === ctx.itemId);
       log.push({
@@ -3901,7 +3994,7 @@ function toggleItemIn(areaKey, id) {
     if (cands.indexOf(bare) < 0) cands.push(bare);
     for (const key of cands) {
       try {
-        const other = JSON.parse(localStorage.getItem(key)) || {};
+        const other = JSON.parse(LS.getItem(key)) || {};
         if (!other[id]) continue;
         delete other[id];
         syncSet(key, JSON.stringify(other));
@@ -3949,13 +4042,13 @@ function areaCompletionToday(areaKey) {
   const doneSet = new Set();
   if (currentStore) {
     const areas = recAreasFor(areaKey);
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
+    for (let i = 0; i < LS.length; i++) {
+      const k = LS.key(i);
       const p = parseRecordKey(k, currentStore);
       // その時間帯の記録＋旧形式＋（引き継ぎありなら）前の時間帯の記録
       if (!p || p.date !== date || areas.indexOf(p.area) < 0) continue;
       try {
-        const r = JSON.parse(localStorage.getItem(k)) || {};
+        const r = JSON.parse(LS.getItem(k)) || {};
         Object.keys(r).forEach(id => doneSet.add(id));
       } catch (e) {}
     }
@@ -4086,8 +4179,8 @@ function areaLastCleaned(areaKey) {
   if (itemIds.length === 0) return null;
   const base = baseArea(areaKey);
   const byDate = {};
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
+  for (let i = 0; i < LS.length; i++) {
+    const key = LS.key(i);
     if (!key || key.indexOf('clean_') !== 0) continue;
     // 店舗選択中は、その店舗の記録だけを「最終清掃日」の対象にする
     if (currentStore && key.indexOf('clean_' + currentStore + '_') !== 0) continue;
@@ -4095,7 +4188,7 @@ function areaLastCleaned(areaKey) {
     if (!p || baseArea(p.area) !== base) continue; // 時間帯はまたいで数える
     const date = p.date;
     try {
-      const rec = JSON.parse(localStorage.getItem(key)) || {};
+      const rec = JSON.parse(LS.getItem(key)) || {};
       const set = byDate[date] || (byDate[date] = new Set());
       Object.keys(rec).forEach(id => set.add(id));
     } catch (e) {}
@@ -4588,8 +4681,8 @@ document.getElementById('areaDelete').onclick = () => {
   saveCustomAreas(loadCustomAreas().filter(x => x.key !== key));
   ['customItems_', 'customSections_', 'hiddenItems_', 'itemEdits_'].forEach(pre => syncRemove(pre + key));
   const dels = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
+  for (let i = 0; i < LS.length; i++) {
+    const k = LS.key(i);
     if (k && k.indexOf('clean_') === 0 && k.indexOf('_' + key + '_') !== -1) dels.push(k);
   }
   dels.forEach(k => syncRemove(k));
@@ -5059,13 +5152,13 @@ const NOTICE_KEEP = 10;
 
 function loadNotices() {
   try {
-    const a = JSON.parse(localStorage.getItem('notices')) || [];
+    const a = JSON.parse(LS.getItem('notices')) || [];
     return Array.isArray(a) ? a.slice().sort((x, y) =>
       String(y.date || '').localeCompare(String(x.date || ''))) : [];
   } catch (e) { return []; }
 }
 function loadNoticesRead() {
-  try { return JSON.parse(localStorage.getItem('noticesRead')) || []; }
+  try { return JSON.parse(LS.getItem('noticesRead')) || []; }
   catch (e) { return []; }
 }
 function unreadNotices() {
@@ -5075,7 +5168,7 @@ function unreadNotices() {
 function markNoticesRead() {
   const all = loadNotices().map(n => String(n.id));
   // 端末ごとの覚え書き。サーバーには送らない（人によって読む時が違うため）
-  try { localStorage.setItem('noticesRead', JSON.stringify(all)); } catch (e) {}
+  try { LS.setItem('noticesRead', JSON.stringify(all)); } catch (e) {}
 }
 
 function renderNoticeBar() {
@@ -5512,8 +5605,8 @@ function renderRoutineView() {
       const n = b.dataset.shName || '';
       staffPin(currentArea, n);
       currentStaff = n;
-      localStorage.setItem('currentStaff', currentStaff);
-      localStorage.setItem('currentStaffDay', todayStr());
+      LS.setItem('currentStaff', currentStaff);
+      LS.setItem('currentStaffDay', todayStr());
       buildStaffSelect();
       render();
     };
@@ -5936,7 +6029,7 @@ function withHistory(stores, cb) {
 }
 
 function loadHistory(store) {
-  const read = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } };
+  const read = k => { try { return JSON.parse(LS.getItem(k)) || []; } catch (e) { return []; } };
   if (store) return read('cleanHistory_' + store);
   // 店舗指定なし＝全店結合（比較ビュー用）。旧形式の cleanHistory も一応拾う
   let all = read('cleanHistory');
@@ -5958,7 +6051,7 @@ function saveHistory(store, h) {
 const PERIODIC_KEY = '__periodic__'; // 定期タブの currentArea 値
 function loadPeriodic() {
   let list;
-  try { list = JSON.parse(localStorage.getItem('periodicTasks')); } catch (e) { list = null; }
+  try { list = JSON.parse(LS.getItem('periodicTasks')); } catch (e) { list = null; }
   if (!Array.isArray(list)) {
     // 初回：初期セットで作成し、サーバーにも保存
     list = PERIODIC_DEFAULTS.map(t => ({ ...t, lastDone: null, lastStaff: '' }));
@@ -5972,7 +6065,7 @@ function savePeriodic(list) { syncSet('periodicTasks', JSON.stringify(list)); }
 // （タスクの定義は全店共通、いつやったかは店舗別。旧 task.lastDone は未使用=利用実績ゼロのまま移行）
 function loadPeriodicDone(store) {
   if (!store) return {};
-  try { return JSON.parse(localStorage.getItem('periodicDone_' + store)) || {}; } catch (e) { return {}; }
+  try { return JSON.parse(LS.getItem('periodicDone_' + store)) || {}; } catch (e) { return {}; }
 }
 function savePeriodicDone(store, map) { syncSet('periodicDone_' + store, JSON.stringify(map)); }
 
@@ -6157,7 +6250,7 @@ function renderRosterList() {
         del.onclick = () => {
           if (confirm(s + ' の「' + name + '」を名簿から削除しますか？\n（過去の記録は残ります）')) {
             removeStaffName(s, name);
-            if (currentStaff === name) { currentStaff = ''; localStorage.setItem('currentStaff', ''); }
+            if (currentStaff === name) { currentStaff = ''; LS.setItem('currentStaff', ''); }
             renderRosterList();
             buildStaffSelect(); refreshCmpStaff();
           }
@@ -6364,12 +6457,12 @@ function shiftDate(dateStr, days) {
 // その店舗の記録を全部読む。エリアは @時間帯 / #曜日 を落としてまとめる
 function reviewRecords(store) {
   const out = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
+  for (let i = 0; i < LS.length; i++) {
+    const k = LS.key(i);
     const p = parseRecordKey(k, store);
     if (!p) continue;
     let ids = [];
-    try { ids = Object.keys(JSON.parse(localStorage.getItem(k)) || {}); } catch (e) {}
+    try { ids = Object.keys(JSON.parse(LS.getItem(k)) || {}); } catch (e) {}
     if (ids.length) out.push({ staff: p.staff, area: baseArea(p.area), date: p.date, ids: ids });
   }
   return out;
@@ -6432,12 +6525,12 @@ function reviewData(store) {
 // 記録を「項目ごとの中身つき」で拾う（reviewRecords は id だけなので時刻が落ちる）
 function rvRecordsFull(store) {
   const out = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
+  for (let i = 0; i < LS.length; i++) {
+    const k = LS.key(i);
     const p = parseRecordKey(k, store);
     if (!p) continue;
     let rec = {};
-    try { rec = JSON.parse(localStorage.getItem(k)) || {}; } catch (e) {}
+    try { rec = JSON.parse(LS.getItem(k)) || {}; } catch (e) {}
     const ids = Object.keys(rec);
     if (ids.length) out.push({ staff: p.staff, area: baseArea(p.area), full: p.area, date: p.date, rec: rec });
   }
@@ -6548,7 +6641,7 @@ function rvNums(store) {
         const hist = [];
         days.forEach(dt => {
           let all = {};
-          try { all = JSON.parse(localStorage.getItem('nums_' + store + '_' + dt)) || {}; } catch (e) {}
+          try { all = JSON.parse(LS.getItem('nums_' + store + '_' + dt)) || {}; } catch (e) {}
           const v = all[d.id] && all[d.id][f.id];
           if (v === undefined || v === '' || v === null) return;
           const n = Number(v);
@@ -7011,12 +7104,12 @@ function storeDayProgress(store, date) {
   return withDefStore(store, () => allAreas().filter(a => !isNonDailyArea(a.key)).map(area => {
     const ids = areaItems(area.key).map(i => i.id);
     const doneSet = new Set();
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
+    for (let i = 0; i < LS.length; i++) {
+      const k = LS.key(i);
       const p = parseRecordKey(k, store);
       if (!p || p.date !== date || baseArea(p.area) !== area.key) continue; // 時間帯は合算
       try {
-        const rec = JSON.parse(localStorage.getItem(k)) || {};
+        const rec = JSON.parse(LS.getItem(k)) || {};
         Object.keys(rec).forEach(id => doneSet.add(id));
       } catch (e) {}
     }
@@ -7054,7 +7147,7 @@ const INSPECTION_DEFAULTS = [
 ];
 function loadInspectionItems() {
   try {
-    const v = JSON.parse(localStorage.getItem('inspectionItems'));
+    const v = JSON.parse(LS.getItem('inspectionItems'));
     if (Array.isArray(v) && v.length) {
       // 旧形式(std)は○基準として読み替え
       return v.map(it => ({ cat: it.cat, title: it.title, ok: it.ok || it.std || '', mid: it.mid || '', ng: it.ng || '' }));
@@ -7064,7 +7157,7 @@ function loadInspectionItems() {
 }
 function saveInspectionItems(list) { syncSet('inspectionItems', JSON.stringify(list)); }
 function loadInspections(store) {
-  try { return JSON.parse(localStorage.getItem('inspection_' + store)) || []; } catch (e) { return []; }
+  try { return JSON.parse(LS.getItem('inspection_' + store)) || []; } catch (e) { return []; }
 }
 function saveInspections(store, list) { syncSet('inspection_' + store, JSON.stringify(list)); }
 
@@ -7212,8 +7305,8 @@ function lastCheckedByItem(store) {
   if (_lastCheckedCache && _lastCheckedCache[store]) return _lastCheckedCache[store];
   const map = {};
   const prefix = 'clean_' + store + '_';
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
+  for (let i = 0; i < LS.length; i++) {
+    const k = LS.key(i);
     if (!k || k.indexOf(prefix) !== 0) continue;
     const date = k.slice(-10);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
@@ -7222,7 +7315,7 @@ function lastCheckedByItem(store) {
     if (us < 0) continue;
     const areaKey = baseArea(mid.slice(us + 1)); // 時間帯はまとめる
     try {
-      const rec = JSON.parse(localStorage.getItem(k)) || {};
+      const rec = JSON.parse(LS.getItem(k)) || {};
       Object.keys(rec).forEach(id => {
         const kk = areaKey + ':' + id;
         if (!map[kk] || map[kk] < date) map[kk] = date;
@@ -7470,7 +7563,7 @@ function renderSummary() {
   html += '<p class="hint" style="text-align:left;margin:0 0 10px;">月次点検（90点テスト）の採点に関わる清掃項目の約5%（初期値）に日替わりで📷が付き、その場で撮影しないとチェックできません。頻度は下の「撮影頻度の設定」で項目ごとに変えられます。カメラ直接起動＋受信日時記録なので、古い写真の使い回しはできない仕組みです。写真は' + PROOF_KEEP_DAYS + '日で自動削除。</p>';
   STORES.forEach(s => {
     let plog = [];
-    try { plog = JSON.parse(localStorage.getItem('proofLog_' + s)) || []; } catch (e) {}
+    try { plog = JSON.parse(LS.getItem('proofLog_' + s)) || []; } catch (e) {}
     const todays = plog.filter(e => e.date === date);
     html += '<div class="roster-store-name">' + escapeHtml(s) + '（' + todays.length + '枚）</div>';
     if (todays.length) {
@@ -7494,7 +7587,7 @@ function renderSummary() {
     }
     // 「やめる」を押した記録（当日分＋直近30日の人別回数）
     let clog = [];
-    try { clog = JSON.parse(localStorage.getItem('proofCancelLog_' + s)) || []; } catch (e) {}
+    try { clog = JSON.parse(LS.getItem('proofCancelLog_' + s)) || []; } catch (e) {}
     const cToday = clog.filter(e => e.date === date);
     const cutoff30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
     const byStaff = {};
@@ -7575,7 +7668,7 @@ document.getElementById('sumDate').onchange = () => renderSummary();
 // ボタンは普段非表示。ヘッダーのタイトルを5回連続タップ→管理者の合言葉で、この端末にだけ表示する。
 // （表示のゲートであり機密保護ではない。記録データ自体はスタッフも見られるもの）
 function refreshAdminUI() {
-  modeSummaryBtn.style.display = localStorage.getItem('adminMode') === '1' ? '' : 'none';
+  modeSummaryBtn.style.display = LS.getItem('adminMode') === '1' ? '' : 'none';
 }
 (function setupAdminGate() {
   const dlg = document.getElementById('adminDialog');
@@ -7588,10 +7681,10 @@ function refreshAdminUI() {
     tapTimer = setTimeout(() => { taps = 0; }, 1500);
     if (taps < 5) return;
     taps = 0;
-    if (localStorage.getItem('adminMode') === '1') {
+    if (LS.getItem('adminMode') === '1') {
       // すでに管理者表示中→解除の確認
       if (confirm('この端末の「店舗まとめ」表示を解除しますか？')) {
-        localStorage.removeItem('adminMode');
+        LS.removeItem('adminMode');
         refreshAdminUI();
         if (summaryView.style.display !== 'none') setMode('check');
       }
@@ -7611,7 +7704,7 @@ function refreshAdminUI() {
         method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: p
       });
       if (r.ok) {
-        localStorage.setItem('adminMode', '1');
+        LS.setItem('adminMode', '1');
         refreshAdminUI();
         dlg.close();
         setMode('summary');
@@ -7913,7 +8006,7 @@ function wireDelete(box) {
       });
       // 旧形式（cleanHistory）に入っていた場合
       try {
-        const legacy = JSON.parse(localStorage.getItem('cleanHistory')) || [];
+        const legacy = JSON.parse(LS.getItem('cleanHistory')) || [];
         if (legacy.some(e => e.id === btn.dataset.id)) {
           syncSet('cleanHistory', JSON.stringify(legacy.filter(e => e.id !== btn.dataset.id)));
         }
@@ -7934,7 +8027,7 @@ document.getElementById('staffResetBtn').onclick = async () => {
       method: 'PUT', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: token
     });
     if (!r.ok) throw new Error(r.status);
-    localStorage.setItem('staffResetToken', token); // この端末は今の選択を維持
+    LS.setItem('staffResetToken', token); // この端末は今の選択を維持
     status.textContent = 'リセットしました。各端末は次に開いた時（または15分以内の自動更新後）に担当者未選択になります。';
   } catch (e) {
     status.textContent = '失敗しました。通信状況を確認してもう一度お試しください。';
@@ -7944,9 +8037,9 @@ document.getElementById('staffResetBtn').onclick = async () => {
 // ===== データのバックアップ／復元（端末のストレージ消失対策）=====
 document.getElementById('backupBtn').onclick = () => {
   const data = {};
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    data[k] = localStorage.getItem(k);
+  for (let i = 0; i < LS.length; i++) {
+    const k = LS.key(i);
+    data[k] = LS.getItem(k);
   }
   const payload = { app: 'gym-cleaning-checklist', type: 'backup', savedAt: new Date().toISOString(), data: data };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
@@ -7975,7 +8068,7 @@ document.getElementById('restoreFile').onchange = function () {
       // ローカルへ反映しつつ、サーバーにも反映（同期キーのみ）
       const puts = [];
       Object.keys(data).forEach(k => {
-        localStorage.setItem(k, data[k]);
+        LS.setItem(k, data[k]);
         if (isSyncedKey(k)) {
           puts.push(fetch('/api/state/' + encodeURIComponent(k), {
             method: 'PUT', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: data[k]
@@ -8121,10 +8214,10 @@ if (navigator.storage && navigator.storage.persist) {
 // 固定中は店舗プルダウンを隠して店舗名を表示する。解除は店舗名を5回連続タップ。
 function applyStoreLock() {
   const fixed = document.getElementById('storeFixed');
-  const locked = localStorage.getItem('lockedStore');
+  const locked = LS.getItem('lockedStore');
   if (locked && STORES.includes(locked)) {
     currentStore = locked;
-    localStorage.setItem('currentStore', locked);
+    LS.setItem('currentStore', locked);
     storeSelect.style.display = 'none';
     fixed.style.display = '';
     fixed.textContent = locked;
@@ -8142,7 +8235,7 @@ function applyStoreLock() {
     if (taps < 5) return;
     taps = 0;
     if (confirm('この端末の店舗固定を解除して、店舗を選べるようにしますか？')) {
-      localStorage.removeItem('lockedStore');
+      LS.removeItem('lockedStore');
       applyStoreLock();
       buildStoreSelect();
       buildStaffSelect();
@@ -8188,12 +8281,12 @@ function shareKey(areaKey) {
   return 'share_' + (currentStore || '') + '_' + areaKey + '_' + day;
 }
 function shareChosen(areaKey) {
-  try { return localStorage.getItem(shareKey(areaKey)) || ''; } catch (e) { return ''; }
+  try { return LS.getItem(shareKey(areaKey)) || ''; } catch (e) { return ''; }
 }
 function shareSet(areaKey, id) {
   try {
-    if (id) localStorage.setItem(shareKey(areaKey), id);
-    else localStorage.removeItem(shareKey(areaKey));
+    if (id) LS.setItem(shareKey(areaKey), id);
+    else LS.removeItem(shareKey(areaKey));
   } catch (e) {}
 }
 // いま選ばれている分担の中身。「ぜんぶ見る」(_all) と未選択は null
@@ -8283,7 +8376,7 @@ const SLOT_MIN_OVERLAP_MIN = 120;   // 2時間
 // （空にすると担当者が決まらず、誰の記録か分からなくなるため）。
 function shiftStaffInWindow(store, from, to) {
   try {
-    const sched = JSON.parse(localStorage.getItem('shiftSchedule_' + store) || '{}');
+    const sched = JSON.parse(LS.getItem('shiftSchedule_' + store) || '{}');
     const day = (typeof dateInput !== 'undefined' && dateInput.value) ? dateInput.value : todayStr();
     const list = (sched[day] || []).filter(x => x.s < to && x.e > from);
     if (!list.length) return [];
@@ -8315,8 +8408,8 @@ function staffWithRecords(date, areaKey) {
   const ra = areaKey ? recArea(areaKey) : null;
   const base = ra ? baseArea(ra) : null;
   const counts = new Map();
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
+  for (let i = 0; i < LS.length; i++) {
+    const k = LS.key(i);
     const p = parseRecordKey(k, currentStore);
     if (!p || p.date !== date || !p.staff) continue;
     if (ra) {
@@ -8326,7 +8419,7 @@ function staffWithRecords(date, areaKey) {
       if (!hit) continue;
     }
     let n = 0;
-    try { n = Object.keys(JSON.parse(localStorage.getItem(k)) || {}).length; } catch (e) {}
+    try { n = Object.keys(JSON.parse(LS.getItem(k)) || {}).length; } catch (e) {}
     if (!n) continue;
     counts.set(p.staff, (counts.get(p.staff) || 0) + n);
   }
@@ -8355,7 +8448,7 @@ function syncStaffForView() {
     return true;
   }
   // 今日に戻ったら、保存してある担当者に戻してからシフトの自動選択をやり直す
-  const saved = localStorage.getItem('currentStaff') || '';
+  const saved = LS.getItem('currentStaff') || '';
   let changed = false;
   if (saved !== currentStaff) { currentStaff = saved; changed = true; }
   if (applyShiftStaffForArea()) return true;
@@ -8378,12 +8471,12 @@ function staffPinKey(areaKey) {
   return 'staffPin_' + (currentStore || '') + '_' + areaKey + '_' + day;
 }
 function staffPinned(areaKey) {
-  try { return localStorage.getItem(staffPinKey(areaKey)) || ''; } catch (e) { return ''; }
+  try { return LS.getItem(staffPinKey(areaKey)) || ''; } catch (e) { return ''; }
 }
 function staffPin(areaKey, name) {
   try {
-    if (name) localStorage.setItem(staffPinKey(areaKey), name);
-    else localStorage.removeItem(staffPinKey(areaKey));
+    if (name) LS.setItem(staffPinKey(areaKey), name);
+    else LS.removeItem(staffPinKey(areaKey));
   } catch (e) {}
 }
 
@@ -8394,8 +8487,8 @@ function applyShiftStaffForArea() {
   const who = shiftStaffForArea(currentArea);
   if (!who || who === currentStaff) return false;
   currentStaff = who;
-  localStorage.setItem('currentStaff', currentStaff);
-  localStorage.setItem('currentStaffDay', todayStr());
+  LS.setItem('currentStaff', currentStaff);
+  LS.setItem('currentStaffDay', todayStr());
   buildStaffSelect();
   return true;
 }
@@ -8405,7 +8498,7 @@ function applyShiftStaffForArea() {
 // 選択中の担当者がシフト中ならそのまま（手動優先）、シフト外なら今シフト中の人に切り替える。
 function shiftStaffNow(store) {
   try {
-    const sched = JSON.parse(localStorage.getItem('shiftSchedule_' + store) || '{}');
+    const sched = JSON.parse(LS.getItem('shiftSchedule_' + store) || '{}');
     const now = new Date();
     const hm = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     const list = (sched[todayStr()] || []).filter(x => x.s <= hm && hm < x.e);
@@ -8443,7 +8536,7 @@ function autoSelectShiftStaff() {
     const members = combined.split('・');
     if (members.includes(currentStaff)) return;
     let todayList = [];
-    try { todayList = (JSON.parse(localStorage.getItem('shiftSchedule_' + currentStore) || '{}')[todayStr()] || []); } catch (e) {}
+    try { todayList = (JSON.parse(LS.getItem('shiftSchedule_' + currentStore) || '{}')[todayStr()] || []); } catch (e) {}
     const mine = todayList.filter(x => x.n === currentStaff);
     if (!mine.length) return; // シフト表に無い人＝手動選択を維持
     const now = new Date();
@@ -8452,8 +8545,8 @@ function autoSelectShiftStaff() {
   }
   // 未選択・自動連名の追従・シフト終了者の交代 → 現メンバーの連名へ
   currentStaff = combined;
-  localStorage.setItem('currentStaff', currentStaff);
-  localStorage.setItem('currentStaffDay', todayStr());
+  LS.setItem('currentStaff', currentStaff);
+  LS.setItem('currentStaffDay', todayStr());
   buildStaffSelect();
   render();
 }
@@ -8463,9 +8556,9 @@ setInterval(autoSelectShiftStaff, 60 * 1000); // 毎分チェック＝交代時�
 document.getElementById('logoutBtn').onclick = async () => {
   if (!confirm('ログアウトしますか？\n次回開くときに合言葉の入力が必要になります。')) return;
   try { await fetch('/api/logout', { method: 'POST' }); } catch (e) {}
-  localStorage.removeItem('lockedStore');
-  localStorage.removeItem('adminMode');
-  localStorage.setItem('currentStaff', '');
+  LS.removeItem('lockedStore');
+  LS.removeItem('adminMode');
+  LS.setItem('currentStaff', '');
   location.reload();
 };
 
@@ -8503,11 +8596,11 @@ window.addEventListener('focus', () => rolloverDateIfNeeded(true));
 // ===== 共用端末対策：日付が変わったら担当者選択をリセット =====
 // 前のスタッフの名前が選ばれたまま翌日チェックされる「名義事故」を防ぐ。
 function resetStaffIfNewDay() {
-  if (localStorage.getItem('currentStaffDay') === todayStr()) return;
-  localStorage.setItem('currentStaffDay', todayStr());
+  if (LS.getItem('currentStaffDay') === todayStr()) return;
+  LS.setItem('currentStaffDay', todayStr());
   if (currentStaff) {
     currentStaff = '';
-    localStorage.setItem('currentStaff', '');
+    LS.setItem('currentStaff', '');
     buildStaffSelect();
     render();
   }
@@ -8591,11 +8684,11 @@ async function pullChanges(force, wait) {
     let touched = false;
     Object.keys(j.kv || {}).forEach(k => {
       if (!isSyncedKey(k) || pending.indexOf(k) >= 0) return;
-      if (localStorage.getItem(k) !== j.kv[k]) { localStorage.setItem(k, j.kv[k]); touched = true; }
+      if (LS.getItem(k) !== j.kv[k]) { LS.setItem(k, j.kv[k]); touched = true; }
     });
     (j.del || []).forEach(k => {
       if (!isSyncedKey(k) || pending.indexOf(k) >= 0) return;
-      if (localStorage.getItem(k) !== null) { localStorage.removeItem(k); touched = true; }
+      if (LS.getItem(k) !== null) { LS.removeItem(k); touched = true; }
     });
     stateRev = j.rev;
     if (touched) refreshAfterPull(false);
@@ -8687,11 +8780,11 @@ function requireLogin() {
           let j = {};
           try { j = await r.json(); } catch (e) {}
           if (j.store) {
-            localStorage.setItem('lockedStore', j.store);
+            LS.setItem('lockedStore', j.store);
             currentStore = j.store;
-            localStorage.setItem('currentStore', j.store);
+            LS.setItem('currentStore', j.store);
           } else {
-            localStorage.removeItem('lockedStore');
+            LS.removeItem('lockedStore');
           }
           dlg.close(); resolve(); return;
         }
@@ -8735,7 +8828,7 @@ async function bootstrap() {
     for (const k of locals) {
       if (k in serverKv) continue;
       if (pending.indexOf(k) === -1) continue; // サーバーで消された → ローカルも破棄
-      const v = localStorage.getItem(k);
+      const v = LS.getItem(k);
       try {
         const pr = await fetch('/api/state/' + encodeURIComponent(k), {
           method: 'PUT', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: v
@@ -8743,16 +8836,16 @@ async function bootstrap() {
         if (pr.ok) serverKv[k] = v; else { serverKv[k] = v; stillPending.push(k); }
       } catch (e) { serverKv[k] = v; stillPending.push(k); }
     }
-    localStorage.setItem('pendingSync', JSON.stringify(stillPending));
+    LS.setItem('pendingSync', JSON.stringify(stillPending));
     // 管理者が担当者選択の一斉リセットをかけた場合（端末に前の人の名前が残った時の対処）
     const resetToken = serverKv['staffResetToken'] || '';
-    if (resetToken && localStorage.getItem('staffResetToken') !== resetToken) {
-      localStorage.setItem('currentStaff', '');
+    if (resetToken && LS.getItem('staffResetToken') !== resetToken) {
+      LS.setItem('currentStaff', '');
       currentStaff = '';
     }
-    localStorage.setItem('staffResetToken', resetToken);
+    LS.setItem('staffResetToken', resetToken);
     // ローカルキャッシュをサーバー内容に合わせる
-    locals.forEach(k => localStorage.removeItem(k));
+    locals.forEach(k => LS.removeItem(k));
     // サーバーの中身をそのまま書き戻すが、端末の容量には限りがある。
     // 大事なもの（定義・名簿・今日のチェック）を先に入れ、
     // 無くても困らない控え（ふりかえり用の履歴）は最後に回す。
@@ -8763,13 +8856,29 @@ async function bootstrap() {
     // 空き日数の計算は60日もさかのぼれば足りる。
     const oldCut = shiftDate(todayStr(), -60);
     const isOldRec = k => k.indexOf('clean_') === 0 && k.slice(-10) < oldCut;
-    allKeys.filter(k => !isHist(k) && !isOldRec(k)).forEach(k => lsSet(k, serverKv[k]));
-    // 履歴は今いる店舗のぶんだけ端末に置く。他店は見るときに取りに行く。
-    const myStore = localStorage.getItem('currentStore') || '';
+    const myStore = LS.getItem('currentStore') || '';
     const myHist = 'cleanHistory_' + myStore;
+    // 大事な順に並べる。端末に入るのは前から順に上限まで、残りはメモリ。
+    //   0 定義・名簿・シフトなど（記録と控え以外）
+    //   1 今いる店舗の記録（新しい日から）
+    //   2 ほかの店舗の記録（新しい日から）
+    //   3 控え（写真の記録・ふりかえり用の履歴）
+    const myPre = 'clean_' + myStore + '_';
+    const tier = k => {
+      if (k.indexOf('clean_') === 0) return (myStore && k.indexOf(myPre) === 0) ? 1 : 2;
+      if (k.indexOf('proofLog_') === 0 || k.indexOf('proofCancelLog_') === 0) return 3;
+      return 0;
+    };
+    const keep = allKeys.filter(k => !isHist(k) && !isOldRec(k)).map(k => [k, tier(k), k.indexOf('clean_') === 0 ? k.slice(-10) : '']);
+    keep.sort((a, b) => (a[1] - b[1]) || (a[2] > b[2] ? -1 : a[2] < b[2] ? 1 : 0));
+    const entries = keep.map(x => [x[0], serverKv[x[0]]]);
+    // 履歴は今いる店舗のぶんだけ。他店は見るときに取りに行く。
     if (myStore && typeof serverKv[myHist] === 'string') {
-      if (lsSet(myHist, serverKv[myHist])) historyLoaded[myStore] = true;
+      entries.push([myHist, serverKv[myHist]]);
+      historyLoaded[myStore] = true;
     }
+    // 端末に置くのは 160万文字（約3.2MB）まで。残り（約1.8MB）は今日のチェックのぶん。
+    LS.fill(entries, 1600000);
     // 見本メディア（idと種別を保持）
     mediaKeys.clear();
     Object.keys(mediaTypes).forEach(k => delete mediaTypes[k]);
