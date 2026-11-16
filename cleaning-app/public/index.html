@@ -6816,7 +6816,7 @@ function stockCardHtml(store) {
         + (usualGone !== null ? '・いつもは1回 ' + usualGone + 'くらい' : '') + '</span></span>'
         + '<span class="v">' + gones.reduce((a, b) => a + b, 0) + '</span></div>';
     }
-    h += '<table class="stock-tbl"><tr><th>日・番</th><th>担当</th><th>補充前</th>'
+    h += '<table class="stock-tbl"><tr><th>日・番</th><th>補充前</th>'
       + (hasFull ? '<th>減った</th>' : '') + '<th></th></tr>';
     list.slice().reverse().forEach(e => {
       let bad = false;
@@ -6824,7 +6824,6 @@ function stockCardHtml(store) {
       else bad = usualLeft !== null && e.before < usualLeft - Math.max(2, usualLeft * 0.5);
       h += '<tr' + (bad ? ' class="bad"' : '') + '><td>' + esc(e.date.slice(5).replace('-', '/')) + ' ' + esc(e.slotName)
         + (e.time ? '<span class="rv-sub">' + esc(e.time) + '</span>' : '') + '</td>'
-        + '<td>' + esc(e.staff || '') + '</td>'
         + '<td class="g">' + e.before + '</td>'
         + (hasFull ? '<td class="g">' + (e.gone === null ? '−' : e.gone) + '</td>' : '')
         + '<td>' + (e.photo ? '<a href="' + esc(mediaUrl(e.photo)) + '" target="_blank" rel="noopener">写真</a>' : '') + '</td></tr>';

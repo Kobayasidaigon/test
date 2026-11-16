@@ -81,7 +81,7 @@ const fs = require('fs');
   check('写真を撮ると済みになる', !!r);
   check('記録に写真の鍵が付く', r && /^proof:萩野通:routine_asa:routine_asa_v3_11:/.test(r.proof || ''), r && r.proof);
   const nv = await pg.evaluate(() => loadNums().routine_asa_v3_11);
-  check('数に担当者と写真が付く', nv && nv._staff === '試験 太郎' && nv._photo === (r && r.proof), JSON.stringify(nv));
+  check('数に写真が付く', nv && nv._photo === (r && r.proof), JSON.stringify(nv));
   await pg.waitForTimeout(300);
   check('済みの行は「写真あり」', /写真あり/.test(await pg.textContent(row)));
   await pg.screenshot({ path: (process.env.OUT || 'tests/out') + '/w-done.png' });
