@@ -593,6 +593,20 @@
     color: #b71c1c; font-size: .82rem; font-weight: 700; line-height: 1.4;
   }
   .num-msg .ic-slot { flex-shrink: 0; }
+  .num-photo {
+    flex-basis: 100%; display: flex; align-items: center; gap: 6px;
+    margin-top: 6px; padding: 6px 10px; border-radius: 8px;
+    background: #fff8e1; border: 1.5px solid #f9a825;
+    color: #8d6e00; font-size: .78rem; font-weight: 700; line-height: 1.4;
+  }
+  .num-photo.ok { background: #e8f5e9; border-color: #43a047; color: #2e7d32; }
+  .num-photo .ic-slot { flex-shrink: 0; }
+  .stock-tbl { width: 100%; border-collapse: collapse; font-size: .8rem; margin-top: 8px; }
+  .stock-tbl th { font-size: .7rem; color: var(--muted); font-weight: 700; text-align: left; padding: 4px 3px; border-bottom: 1px solid var(--border, #ddd); }
+  .stock-tbl td { padding: 5px 3px; border-bottom: 1px solid var(--border, #eee); vertical-align: top; }
+  .stock-tbl td.g { font-weight: 700; }
+  .stock-tbl tr.bad td { color: #c62828; background: #ffebee; }
+  .stock-tbl .rv-sub { display: block; }
   .num-prev { font-size: .7rem; color: var(--muted); margin-top: 2px; min-height: 1em; }
   .num-prev .diff { color: var(--primary-dark); font-weight: 700; }
   /* 今日の plus α（毎日はやらない項目。パーセントの外） */
@@ -2780,7 +2794,8 @@ function getGroups(areaKey) {
     // customItems から消すと id ごと消え、それまでのチェックが画面から
     // 出なくなる（迷子になる）。定期清掃へ移すときなどはここで下ろす。
     custom.filter(ci => ci.section === sec && !hidden.includes(ci.id)).forEach(ci => {
-      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut, addedAt: ci.addedAt || '' });
+      items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut, addedAt: ci.addedAt || '',
+        stock: ci.stock || '', stockFull: ci.stockFull, photoEach: !!ci.photoEach, photoNote: ci.photoNote || '' });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -2958,14 +2973,23 @@ function setNumValue(areaKey, item, fieldId, value) {
   const cur = Object.assign({}, all[item.id] || {});
   const v = String(value).trim();
   if (v === '') delete cur[fieldId]; else cur[fieldId] = v;
+  const fields = itemNumFields(item);
+  // 個数を数える項目（stock）は、だれがいつ入れたかも数と一緒に残す（ふりかえりで番ごとに並べるため）
+  if (item.stock) {
+    if (fields.some(f => cur[f.id] !== undefined && cur[f.id] !== '')) {
+      cur._staff = currentStaff; cur._time = nowTimeStr();
+    } else { delete cur._staff; delete cur._time; delete cur._photo; }
+  }
   if (Object.keys(cur).length) all[item.id] = cur; else delete all[item.id];
   saveNums(all);
 
   // 全欄そろったら実施済みに、欠けたら未実施に戻す（進捗表示と連動させる）
-  const fields = itemNumFields(item);
   const filled = fields.every(f => cur[f.id] !== undefined && cur[f.id] !== '');
   const rec = loadRecord(areaKey);
-  if (filled && !rec[item.id]) {
+  if (filled && !rec[item.id] && item.photoEach) {
+    // 毎回写真が要る項目: 数がそろったらカメラへ。撮れたら済みになる
+    startEachPhoto(areaKey, item.id);
+  } else if (filled && !rec[item.id]) {
     rec[item.id] = { staff: currentStaff, time: nowTimeStr() };
     saveRecord(areaKey, rec);
   } else if (!filled && rec[item.id]) {
@@ -2986,9 +3010,13 @@ function numFieldsHtml(item) {
     const v = vals[f.id] === undefined ? '' : vals[f.id];
     const level = numLevel(v, lim);
     if (level === 'out') outNames.push(f.label);
-    const prev = lastNumEntry(item.id, f.id);
+    const prev = item.stock ? null : lastNumEntry(item.id, f.id);
     let note = '';
-    if (prev) {
+    if (item.stock) {
+      // 前の番の補充前の数を見せる（前回の記録が分かるように）
+      const pe = stockPrevEntry(item);
+      if (pe) note = '前の番 ' + escapeHtml(pe.label) + ': ' + escapeHtml(pe.before);
+    } else if (prev) {
       const d = Number(v) - Number(prev.value);
       const diff = (v !== '' && isFinite(d)) ? ' <span class="diff">(' + (d >= 0 ? '+' : '') + d + ')</span>' : '';
       note = '前回 ' + prev.date.slice(5) + ': ' + escapeHtml(prev.value) + diff;
@@ -3002,6 +3030,11 @@ function numFieldsHtml(item) {
       + '<div class="num-prev">' + note + '</div>'
       + '</div>';
   });
+  if (item.photoEach) {
+    const pdone = !!loadRecordMerged(currentArea)[item.id];
+    h += '<div class="num-photo' + (pdone ? ' ok' : '') + '">' + ic('camera')
+      + '<span>' + (pdone ? '写真あり' : (itemNumFields(item).length > 1 ? '全部入れると' : '数を入れると') + 'カメラが開きます（写真を撮ると済みになります）') + '</span></div>';
+  }
   if (outNames.length) {
     h += '<div class="num-msg">' + ic('alert-triangle')
       + '<span>' + escapeHtml(outNames.join('・')) + 'を交換してください'
@@ -3773,7 +3806,15 @@ function proofRateFor(areaKey, itemId, rates, pool) {
   if (typeof v === 'number' && v >= 0) return v;
   return defaultProofRate(areaKey, itemId, pool);
 }
+// 項目に photoEach: true を付けると、やることリストでも毎回その場の写真が要る
+// （萩野通のホワイトニング備品補充。抜き打ちではなく毎回）
+function photoEachItem(areaKey, itemId) {
+  if (!currentStore) return null;
+  const it = areaItems(areaKey).find(x => x.id === itemId);
+  return it && it.photoEach ? it : null;
+}
 function needsProof(areaKey, itemId) {
+  if (photoEachItem(areaKey, itemId)) return true;
   if (!currentStore || isRoutineArea(areaKey)) return false; // やることリストは対象外
   areaKey = baseArea(areaKey); // 抜き打ちの当たり外れは時間帯で変えない
   const n = proofRateFor(areaKey, itemId);
@@ -3909,11 +3950,35 @@ function startProofCapture(areaKey, itemId) {
   const it = areaItems(areaKey).find(x => x.id === itemId);
   document.getElementById('proofDialogItem').textContent = it ? it.title : '';
   document.getElementById('proofDialogSpot').textContent =
-    '今日の撮影場所: ' + (spot || '見本のOK例と同じ場所・アングルで');
+    (it && it.photoNote) ? '撮るもの: ' + it.photoNote
+      : '今日の撮影場所: ' + (spot || '見本のOK例と同じ場所・アングルで');
   const dlg = document.getElementById('proofDialog');
   fillIconSlots(dlg);
   dlg.showModal();
 }
+// 毎回写真の項目: 同じ番で撮ってあれば付け直し、無ければカメラの案内を出す
+function startEachPhoto(areaKey, itemId) {
+  const shot = proofTakenToday(areaKey, itemId);
+  if (shot) {
+    reuseProof(areaKey, itemId, shot);
+    const rec = loadRecord(areaKey);
+    rec[itemId] = { staff: currentStaff, time: nowTimeStr(), ts: nowDateTimeStr(), proof: shot };
+    saveRecord(areaKey, rec);
+    stockSetPhoto(itemId, shot);
+    scheduleAutoRegister(areaKey);
+    render();
+    return;
+  }
+  startProofCapture(areaKey, itemId);
+}
+// 個数の記録に写真の鍵をひも付ける（ふりかえりから写真を開けるように）
+function stockSetPhoto(itemId, mediaId) {
+  const all = loadNums();
+  if (!all[itemId]) return;
+  all[itemId] = Object.assign({}, all[itemId], { _photo: mediaId });
+  saveNums(all);
+}
+
 // 「やめる」を押した記録（担当者別）。撮影要求から逃げて掃除し直す行動が見えるようにする
 function logProofCancel(ctx) {
   if (!ctx || !currentStore) return;
@@ -3979,6 +4044,7 @@ function logProofCancel(ctx) {
       const rec = loadRecord(ctx.areaKey);
       rec[ctx.itemId] = { staff: currentStaff, time: nowTimeStr(), ts: nowDateTimeStr(), proof: mediaId };
       saveRecord(ctx.areaKey, rec);
+      stockSetPhoto(ctx.itemId, mediaId);
       scheduleAutoRegister(ctx.areaKey);
       render();
     } catch (e) {
@@ -5721,7 +5787,17 @@ function renderRoutineView() {
         return; // 編集中はタップでチェックを入れない
       } else if (row.dataset.kind === 'nums') {
         // 数値項目は数値がそろった時点で完了になる。タップでの手動チェックはしない
-        const input = row.querySelector('input[data-field]:placeholder-shown, input[data-field]');
+        // 毎回写真の項目で、数はそろっているのに写真がまだ（カメラをやめた）なら、もう一度カメラへ
+        const pit = photoEachItem(currentArea, id);
+        if (pit && !loadRecordMerged(currentArea)[id] && currentStaff) {
+          const nv = loadNums()[id] || {};
+          if (itemNumFields(pit).every(f => nv[f.id] !== undefined && nv[f.id] !== '')) {
+            startEachPhoto(currentArea, id);
+            return;
+          }
+        }
+        const input = Array.from(row.querySelectorAll('input[data-field]')).find(x => x.value === '')
+          || row.querySelector('input[data-field]');
         if (input) input.focus();
       } else {
         toggleItem(id);
@@ -6659,6 +6735,105 @@ function numBarTableHtml(r) {
   return h + '</table>';
 }
 
+// ===== 個数の確認（萩野通のホワイトニング備品など）=====
+// 項目に stock: '<まとめ名>' と nums: [{id:'before', label:'補充前の数'}] を付ける。
+// 朝番→中番→遅番→翌日の朝番…と順に並べ、番ごとの「補充前の数」を見せる。
+// 毎回の補充後の数が決まっていれば stockFull に入れておくと、
+// 「stockFull − 補充前の数」＝ 前の番の補充からの減った数 を出す。
+function stockItemsFor(store, group) {
+  return withDefStore(store, () => {
+    const out = [];
+    ROUTINE_KEYS.forEach((k, si) => areaItems(k).forEach(it => {
+      if (it.stock && (!group || it.stock === group)) out.push({ area: k, slot: si, item: it });
+    }));
+    return out;
+  });
+}
+function stockFullOf(item) {
+  const n = Number(item && item.stockFull);
+  return item && item.stockFull !== undefined && item.stockFull !== '' && isFinite(n) ? n : null;
+}
+function stockEntries(store, group, days) {
+  const defs = stockItemsFor(store, group);
+  if (!defs.length) return [];
+  const list = [];
+  days.forEach(dt => {
+    let all = {};
+    try { all = JSON.parse(LS.getItem('nums_' + store + '_' + dt)) || {}; } catch (e) {}
+    defs.forEach(d => {
+      const v = all[d.item.id];
+      if (!v || v.before === undefined || v.before === '') return;
+      const b = Number(v.before);
+      if (!isFinite(b)) return;
+      const full = stockFullOf(d.item);
+      list.push({ date: dt, slot: d.slot, slotName: SLOT_LABELS[d.area] || d.area, id: d.item.id,
+                  before: b, gone: full === null ? null : full - b,
+                  staff: v._staff || '', time: v._time || '', photo: v._photo || '' });
+    });
+  });
+  list.sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : x.slot - y.slot);
+  return list;
+}
+// 入力中の項目の、ひとつ前の番の記録（今日の前の番 → 前の日…の順に探す）
+function stockPrevEntry(item) {
+  if (!currentStore || !item.stock) return null;
+  const date = dateInput.value || todayStr();
+  const days = [];
+  for (let i = 7; i >= 0; i--) days.push(shiftDate(date, -i));
+  const mine = stockItemsFor(currentStore, item.stock).find(d => d.item.id === item.id);
+  const mySlot = mine ? mine.slot : 99;
+  const list = stockEntries(currentStore, item.stock, days)
+    .filter(e => e.date < date || (e.date === date && e.slot < mySlot));
+  const e = list[list.length - 1];
+  if (!e) return null;
+  return { before: e.before, label: (e.date === date ? '' : e.date.slice(5).replace('-', '/') + ' ') + e.slotName };
+}
+// いつもの値（期間中の真ん中の値）。少ないうちは比べない
+function stockUsual(vals) {
+  const g = vals.filter(x => x !== null && isFinite(x)).sort((a, b) => a - b);
+  if (g.length < 5) return null;
+  return g[Math.floor(g.length / 2)];
+}
+const STOCK_DAYS = 14;
+function stockCardHtml(store) {
+  const groups = Array.from(new Set(stockItemsFor(store).map(d => d.item.stock)));
+  if (!groups.length) return '';
+  const esc = escapeHtml;
+  let h = '';
+  groups.forEach(g => {
+    const list = stockEntries(store, g, rvDays(STOCK_DAYS));
+    const hasFull = list.some(e => e.gone !== null);
+    h += '<div class="rv-card rv-stock"><h3>' + ic('clipboard-list') + esc(g) + 'の補充前の数（直近' + STOCK_DAYS + '日）</h3>'
+      + '<div class="rv-note">番ごとに、補充する前に残っていた数です。'
+      + (hasFull ? '「減った」は前の番で補充してから減った数です。' : 'いつもより少ない回は赤くなります。') + '</div>';
+    if (!list.length) { h += '<div class="rv-empty">まだ記録がありません。</div></div>'; return; }
+    // 赤くする目安: 減った数が出せるなら「いつもより多く減った」、出せないなら「いつもより少なく残っていた」
+    const usualGone = stockUsual(list.map(e => e.gone));
+    const usualLeft = stockUsual(list.map(e => e.before));
+    if (hasFull) {
+      const gones = list.map(e => e.gone).filter(x => x !== null && x > 0);
+      h += '<div class="rv-line"><span>減った数の合計<span class="rv-sub">' + list.length + '回の補充'
+        + (usualGone !== null ? '・いつもは1回 ' + usualGone + 'くらい' : '') + '</span></span>'
+        + '<span class="v">' + gones.reduce((a, b) => a + b, 0) + '</span></div>';
+    }
+    h += '<table class="stock-tbl"><tr><th>日・番</th><th>担当</th><th>補充前</th>'
+      + (hasFull ? '<th>減った</th>' : '') + '<th></th></tr>';
+    list.slice().reverse().forEach(e => {
+      let bad = false;
+      if (hasFull) bad = e.gone !== null && usualGone !== null && e.gone > Math.max(usualGone * 2, usualGone + 2);
+      else bad = usualLeft !== null && e.before < usualLeft - Math.max(2, usualLeft * 0.5);
+      h += '<tr' + (bad ? ' class="bad"' : '') + '><td>' + esc(e.date.slice(5).replace('-', '/')) + ' ' + esc(e.slotName)
+        + (e.time ? '<span class="rv-sub">' + esc(e.time) + '</span>' : '') + '</td>'
+        + '<td>' + esc(e.staff || '') + '</td>'
+        + '<td class="g">' + e.before + '</td>'
+        + (hasFull ? '<td class="g">' + (e.gone === null ? '−' : e.gone) + '</td>' : '')
+        + '<td>' + (e.photo ? '<a href="' + esc(mediaUrl(e.photo)) + '" target="_blank" rel="noopener">写真</a>' : '') + '</td></tr>';
+    });
+    h += '</table></div>';
+  });
+  return h;
+}
+
 // 1. 数値の推移（ゴルフのクラブ本数・サーマナイフのショット数など）
 // 在庫の動きを見たいので、ほかのふりかえりより長めにさかのぼる。
 // 14日だと、週に1〜2回しか数えない項目が2〜3点にしかならず、動きが読めない。
@@ -6669,7 +6844,7 @@ function rvNums(store) {
     const defs = [];
     allAreas().forEach(a => areaItems(a.key).forEach(it => {
       const f = itemNumFields(it);
-      if (f.length) {
+      if (f.length && !it.stock) {   // 個数の確認（stock）は別の表で出す
         const lim = itemNumLimits(it) || {};
         defs.push({ area: a.name, id: it.id, title: it.title, fields: f,
                     low: lim.low == null ? null : lim.low,
@@ -7078,6 +7253,9 @@ function renderReview() {
     if (per.length > 8) h += '<div class="rv-note">ほか ' + (per.length - 8) + '件</div>';
   }
   h += '</div>';
+
+  // ---- 個数の確認（ホワイトニング備品など）----
+  h += stockCardHtml(currentStore);
 
   // ---- 数値の記録（日付ごとの棒つき）----
   const nums = rvNums(currentStore);
