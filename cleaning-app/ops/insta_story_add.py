@@ -13,7 +13,7 @@ STORES = ['笠寺', '枇杷島', '萩野通']
 KEY = 'customItems_routine_ban'
 ITEM = {'id': 'ban_insta_story', 'title': 'インスタのメンションストーリー投稿',
         'desc': '', 'addedAt': '2026-11-16'}
-ANCHOR_ID = None   # 例 'ban_petbottle_check'。None なら書かない（一覧を出すだけ）
+ANCHOR_ID = 'ban_mop_clean'   # モップの掃除の直後（3店舗とも、在庫管理・施錠・閉め作業の手前）
 
 DAYS = re.compile(r'【[^】]*[月火水木金土日][^】]*】')
 
