@@ -96,7 +96,7 @@ const fs = require('fs');
   check('ふりかえりに表が出る', /ホワイトニング備品の補充前の数/.test(txt), txt.slice(0, 80));
   check('写真のリンクがある', await pg.locator('.rv-stock a[href*="proof"]').count() === 1);
   check('数の記録（ふつうの表）には重ねて出さない', await pg.evaluate(() => rvNums('萩野通').length === 0));
-  await pg.evaluate(() => document.querySelector('.rv-stock').scrollIntoView());
+  await pg.evaluate(() => { document.querySelector('.rv-stock').scrollIntoView(); window.scrollBy(0, -170); });
   await pg.screenshot({ path: (process.env.OUT || 'tests/out') + '/w-review.png' });
   // stockFull を入れると減った数が出る
   const g2 = await pg.evaluate(d => {
