@@ -504,7 +504,10 @@ function buildViewData(day) {
           const ls = slot && it.link
             ? vLinkedComplete(store, it, slot, rec, flags, itemsOf) : null;
           return {
+            id: it.id,
             title: it.title,
+            // 開く先のエリア（LINE通知で「どの項目が何日空いているか」を出すため。2026-11-20）
+            link: it.link || '',
             done: ls ? ls.complete : !!(by && by.length),
             by: by && by.length ? by : null,
             last: ld ? ld.date : null,
@@ -542,7 +545,7 @@ function buildViewData(day) {
       }));
       // その場所を今日記入した人（畳んだままでも誰がやっているか分かるように）
       const who = Object.keys(rec.todayBy[key] || {}).sort();
-      return { name: name, done: done, total: total, last: last,
+      return { key: key, name: name, done: done, total: total, last: last,
                allOff: allOff, who: who, groups: groups,
                // そのエリアが、やることリストから開かれるか
                // （開かれるなら上の数では重ねて数えない）
