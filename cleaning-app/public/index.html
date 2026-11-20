@@ -2591,6 +2591,21 @@ function sectionIsOtherDay(section, dateStr) {
 function sectionFoldedToday(section, dateStr) {
   return !showOtherDays && sectionIsOtherDay(section, dateStr);
 }
+// 項目1つずつの曜日（days: [1,2,3] = 月・火・水。0=日曜）。
+// 区分の【月・木】は2つ組の枠しか書けないので、やることリストの1行だけを
+// 決まった曜日にだけ出したいとき用（2026-11-20 枇杷島「ジムエリア マシンメンテ」を月・火・水だけ）。
+// 無い・空なら毎日。当たらない日は一覧に出さず、件数・残りにも数えない。
+function itemDaysOf(ci) {
+  if (!ci || !Array.isArray(ci.days)) return null;
+  const d = ci.days.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= 6);
+  return d.length ? d : null;
+}
+function itemIsOtherDay(item, dateStr) {
+  if (routineEditMode) return false;
+  const d = item && item.days;
+  if (!Array.isArray(d) || !d.length) return false;
+  return d.indexOf(new Date((dateStr || todayStr()) + 'T00:00:00').getDay()) < 0;
+}
 // 今日の曜日に出すぶんの項目だけ。件数・残り・「◯回空き」はこれで数える。
 // たたんだ「他の曜日のぶん」まで数えると、今日のぶんを全部終えても
 // 「14/45」のように終わっていない数が出て、残りのバッジも消えない（現場から言われた所）。
@@ -2601,7 +2616,8 @@ function viewDateStr() {
 }
 function todayAreaItems(areaKey) {
   const dstr = viewDateStr();
-  return getGroups(areaKey).filter(g => !sectionIsOtherDay(g.section, dstr)).flatMap(g => g.items);
+  return getGroups(areaKey).filter(g => !sectionIsOtherDay(g.section, dstr)).flatMap(g => g.items)
+    .filter(i => !itemIsOtherDay(i, dstr));
 }
 function otherDaysLineHtml(n) {
   if (!n) return '';
@@ -2795,7 +2811,8 @@ function getGroups(areaKey) {
     // 出なくなる（迷子になる）。定期清掃へ移すときなどはここで下ろす。
     custom.filter(ci => ci.section === sec && !hidden.includes(ci.id)).forEach(ci => {
       items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut, addedAt: ci.addedAt || '',
-        stock: ci.stock || '', stockFull: ci.stockFull, photoEach: !!ci.photoEach, photoNote: ci.photoNote || '' });
+        stock: ci.stock || '', stockFull: ci.stockFull, photoEach: !!ci.photoEach, photoNote: ci.photoNote || '',
+        days: itemDaysOf(ci) });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -5505,8 +5522,10 @@ function renderRoutineView() {
   const checklist = document.getElementById('checklist');
   const rec = loadRecordMerged(currentArea); // 他の担当者の分も含めて表示
   const allItems = areaItems(currentArea);
+  // 決まった曜日だけの行（days）は、当たらない日は出さない（編集中は全部見せる）
+  const dayItems = allItems.filter(i => !itemIsOtherDay(i, viewDateStr()));
   // 編集中は本当の並びをそのまま見せる（分担では絞らない）
-  const items = routineEditMode ? allItems : applyShare(currentArea, allItems);
+  const items = routineEditMode ? allItems : applyShare(currentArea, dayItems);
   const staleMap = currentStore ? lastCheckedByItem(currentStore) : {}; // 子項目の「前回いつ」表示用
   let html = '';
   // 「項目を編集」の切り替え
@@ -5942,6 +5961,7 @@ function render() {
     checklist.appendChild(title);
 
     group.items.forEach(item => {
+      if (itemIsOtherDay(item, dateInput && dateInput.value)) return;
       appendItemCard(checklist, item, rec, staleMap);
     });
 
@@ -6072,7 +6092,8 @@ function render() {
   checklist.appendChild(resetLink);
 
   // 進み具合と残りは今日の曜日のぶんだけで数える（たたんだ他の曜日のぶんは入れない）
-  const todayItems = groups.filter(g => !sectionIsOtherDay(g.section, dateInput && dateInput.value)).flatMap(g => g.items);
+  const todayItems = groups.filter(g => !sectionIsOtherDay(g.section, dateInput && dateInput.value)).flatMap(g => g.items)
+    .filter(i => !itemIsOtherDay(i, dateInput && dateInput.value));
   const doneCount = todayItems.filter(i => itemEffectiveDone(currentArea, i, rec)).length;
   const total = todayItems.length;
   setProgress(doneCount, total, area.name);

@@ -197,8 +197,11 @@ function viewGroups(store, areaKey) {
   }));
   (Array.isArray(custom) ? custom : []).forEach(ci => {
     if (!ci || !ci.id || hidden.indexOf(ci.id) >= 0) return;
+    const days = Array.isArray(ci.days)
+      ? ci.days.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= 6) : [];
     push(ci.section || '', { id: ci.id, title: ci.title || '',
-                            link: ci.link || '', linkAny: !!ci.linkAny });
+                            link: ci.link || '', linkAny: !!ci.linkAny,
+                            days: days.length ? days : null });
   });
   const secOrder = vJson(vDefRead(store, 'sectionOrder_' + areaKey), []) || [];
   if (Array.isArray(secOrder) && secOrder.length) {
@@ -286,6 +289,11 @@ function vDayGroupOf(section) {
 function vOffDay(section, wd) {
   const g = vDayGroupOf(section);
   return !!g && g.days.indexOf(wd) < 0;
+}
+// 項目1つずつの曜日（days: [1,2,3] など）。アプリの itemIsOtherDay と同じ。
+// 当たらない日は、アプリでは一覧に出ないので、ここでも出さず数えない。
+function vItemOffDay(it, wd) {
+  return !!(it && Array.isArray(it.days) && it.days.length && it.days.indexOf(wd) < 0);
 }
 
 // ===== 定期清掃（たまにやる仕事）=====
@@ -469,7 +477,7 @@ function buildViewData(day) {
       if (!_itemCache[k]) {
         _itemCache[k] = viewGroups(store, k)
           .filter(g => !vOffDay(g.section, wd))
-          .reduce((a, g) => a.concat(g.items.map(i => i.id)), []);
+          .reduce((a, g) => a.concat(g.items.filter(i => !vItemOffDay(i, wd)).map(i => i.id)), []);
       }
       return _itemCache[k];
     };
@@ -489,7 +497,7 @@ function buildViewData(day) {
         section: g.section,
         // その日の担当でない区分。出すが、数には入れない
         offDay: vOffDay(g.section, wd),
-        items: g.items.map(it => {
+        items: g.items.filter(it => !vItemOffDay(it, wd)).map(it => {
           const by = (rec.doneToday[key] || {})[it.id] || null;   // その日つけた人
           const ld = rec.lastDone[key + ':' + it.id] || null;     // 前回つけた日と人
           // やることリストの親項目は自分の記録を持たない。リンク先から完了を決める
