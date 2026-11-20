@@ -29,7 +29,7 @@ M_STAIRS = '①埃とりや掃除機で埃の除去\n②汗とびは拭きあげ
 PLAN = {
     'A': ('free', M_FREE, [
         ('bmd_f_widefront', 'ワイドプルダウン（フロント）'), ('bmd_f_widerear', 'ワイドプルダウン（リア）'),
-        ('bmd_f_lowrow', 'ローロー'), ('bmd_f_vertbench', 'バーティカルベンチプレス'),
+        ('bmd_f_lowrow', 'ローロー'),  # 一覧の1つ目のベンチプレスは無しでよい（daigoさん 2026-11-20）
         ('bmd_f_incline', 'インクラインプレス'), ('bmd_f_decline', 'デクラインプレス'),
         ('bmd_f_pecfly', 'ペックフライ'), ('bmd_f_legpress', 'レッグプレス'),
         ('bmd_f_hack', 'ハックスクワット'), ('bmd_f_glute', 'グルートトレーナー'),
