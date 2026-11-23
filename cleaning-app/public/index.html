@@ -2818,7 +2818,7 @@ function getGroups(areaKey) {
     custom.filter(ci => ci.section === sec && !hidden.includes(ci.id)).forEach(ci => {
       items.push({ id: ci.id, title: ci.title, desc: ci.desc || '', method: ci.method || '', custom: true, link: ci.link || '', linkAny: !!ci.linkAny, linkTabs: !!ci.linkTabs, url: ci.url || '', nums: ci.nums, numLow: ci.numLow, numOut: ci.numOut, addedAt: ci.addedAt || '',
         stock: ci.stock || '', stockFull: ci.stockFull, photoEach: !!ci.photoEach, photoNote: ci.photoNote || '',
-        days: itemDaysOf(ci) });
+        days: itemDaysOf(ci), pri: ci.pri || '' });
     });
     // 名前変更・削除できるのは、デフォルトに無い（追加した）タイトルのみ
     const sectionCustom = !defaultSecNames.includes(sec);
@@ -5063,6 +5063,8 @@ function titlePriGroup(title) {
 function priorityGroups(list) {
   if (!list.some(it => it.link)) return null;   // 連動が1つも無いリストには出さない
   const g = list.map(it => {
+    // 行に区分を書いてあればそれを使う（例: 萩野通 中番のラウンジ・入口・階段を「必須」に）
+    if (it.pri && PRI_HEADS[it.pri]) return it.pri;
     if (it.link) {
       const keys = rowLinkAreas(it);
       return keys.length ? areaPriGroup(keys[0]) : 'daily';
@@ -5131,6 +5133,7 @@ let _rotCyclic = {}; // 行id → その回数を出したのが曜日わけの�
 // 回すのは「日替わり」の清掃だけ。サウナ・シャワー・トイレ（必須）は動かさず、
 // 補充・締めなどのすぐ終わる仕事も動かさない（連動が無いので空き日数が出ない）。
 function isRotateRow(item) {
+  if (item && item.pri && PRI_HEADS[item.pri]) return item.pri === 'daily';
   const keys = rowLinkAreas(item);
   return keys.length > 0 && areaPriGroup(keys[0]) === 'daily';
 }
