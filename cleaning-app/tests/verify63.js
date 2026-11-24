@@ -3,6 +3,7 @@
 //  ・ふつうの項目・女性のルーム（写真の行が無い）には出ない
 //  ・エリアの画面（ルームを直接開く）でも印が出る
 //  ・編集中は出さない
+//  ・抜き打ちで当たった項目にも印（必ず当たる=1 は出る、なし=0 は出ない）。やることリストの子項目でも同じ
 const BASE = 'http://localhost:3999';
 let pass = 0, fail = 0;
 const check = (name, ok, extra) => {
@@ -53,6 +54,10 @@ const photo = sec => ({ id: 'room_photo', title: 'ルーム全体の写真', des
   await pg.evaluate(() => { currentArea = 'routine_asa'; routineExpanded.add('routine_asa_v3_05'); render(); });
   await pg.waitForTimeout(300);
 
+  // 抜き打ちの当たりは日付で変わるので、最初は全部「なし」にしておく
+  await pg.evaluate(() => { const m = {}; ['shower_b1','shower_b2','shower_b3','shower_b5','shower_b6'].forEach(k => {
+    ['floor','shower_amenity3','room_photo'].forEach(i => { m[k + ':' + i] = 0; }); }); saveProofRates(m); render(); });
+  await pg.waitForTimeout(300);
   const tagCount = sel => pg.locator(sel + ' .photo-tag').count();
   check('写真の行4つに印が出る', await tagCount('.rt-child[data-id="room_photo"]') === 4, await tagCount('.rt-child[data-id="room_photo"]'));
   check('ふつうの項目には出ない', await tagCount('.rt-child[data-id="floor"]') === 0);
@@ -71,6 +76,23 @@ const photo = sec => ({ id: 'room_photo', title: 'ルーム全体の写真', des
   check('エリアの画面でも写真の項目に印', t.some(x => /ルーム全体の写真/.test(x)) && await pg.locator('.item .photo-tag').count() === 1,
     await pg.locator('.item .photo-tag').count());
   await pg.screenshot({ path: OUT + '/photo-tag-area.png' });
+
+  // 抜き打ち: その日に当たる項目にも印
+  await pg.evaluate(() => { const m = loadProofRates(); m['shower_b1:floor'] = 1; saveProofRates(m); render(); });
+  await pg.waitForTimeout(300);
+  const titles = await pg.evaluate(() => Array.from(document.querySelectorAll('.item')).map(d =>
+    [d.querySelector('.item-title').textContent, !!d.querySelector('.photo-tag')]));
+  const has = t => (titles.find(x => x[0].indexOf(t) === 0) || [])[1];
+  check('抜き打ちで当たった項目に印', has('床全体の洗浄') === true, JSON.stringify(titles));
+  check('抜き打ちなしの項目には出ない', has('3点セット') === false);
+  await pg.evaluate(() => { currentArea = 'routine_asa'; routineExpanded.add('routine_asa_v3_05'); render(); });
+  await pg.waitForTimeout(300);
+  check('やることリストの子項目でも抜き打ちに印', await tagCount('.rt-child[data-area^="shower_b1"][data-id="floor"]') === 1);
+  check('他のルームの同じ項目は当たっていなければ出ない', await tagCount('.rt-child[data-area^="shower_b3"][data-id="floor"]') === 0);
+  // 印どおりに、チェックすると撮影の案内が出る
+  await pg.click('.rt-child[data-area^="shower_b1"][data-id="floor"]');
+  await pg.waitForTimeout(300);
+  check('印の付いた項目は、押すと撮影の案内が出る', await pg.evaluate(() => document.getElementById('proofDialog').open));
   check('画面のエラーなし', errs.length === 0, errs.join(' | '));
   await b.close();
   console.log('RESULT pass=' + pass + ' fail=' + fail);

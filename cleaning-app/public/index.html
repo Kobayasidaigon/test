@@ -4347,11 +4347,14 @@ function isNewItem(item) {
   const n = daysSince(at);
   return n >= 0 && n < NEW_ITEM_DAYS;
 }
-// 毎回写真が要る項目（photoEach）は、チェックする前から「写真」の印を出す
+// 写真が要る項目には、チェックする前から「写真」の印を出す
 // （あとから撮ることが多いので、先に見せて撮るものだと分かるように。daigoさん 2026-11-24）
-// 抜き打ちの撮影は当たるまで分からないままにする（印は出さない）
-function photoTagHtml(item) {
-  return item && item.photoEach ? ' <span class="photo-tag">' + ic('camera') + '写真</span>' : '';
+// 毎回の項目（photoEach）と、その日に抜き打ちで当たった項目の両方（抜き打ちも出す: daigoさん 2026-11-24）
+function photoTagHtml(item, areaKey) {
+  if (!item) return '';
+  let need = !!item.photoEach;
+  if (!need && areaKey) { try { need = needsProof(areaKey, item.id); } catch (e) { need = false; } }
+  return need ? ' <span class="photo-tag">' + ic('camera') + '写真</span>' : '';
 }
 function newTagHtml(item) {
   return isNewItem(item) ? ' <span class="new-tag">新</span>' : '';
@@ -5663,7 +5666,7 @@ function renderRoutineView() {
               + (cNums ? ' has-nums' : '') + '" data-area="' + escapeHtml(bl.sk) + '" data-id="' + escapeHtml(ci.id) + '">'
               + '<span class="rt-check">' + ic('check') + '</span>'
               + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
-              + (routineEditMode ? '' : photoTagHtml(ci))
+              + (routineEditMode ? '' : photoTagHtml(ci, bl.sk))
               + (routineEditMode
                   ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
                   : (cdone
@@ -6009,15 +6012,15 @@ function render() {
       const staleDays = staleLast ? daysSince(staleLast) : null;
       const staleTag = (!done && !ls && staleDays !== null && staleDays >= STALE_DAYS)
         ? ' <span class="stale-tag">' + staleDays + '日空き</span>' : '';
-      // 📷対象のバッジは意図的に表示しない（見えると「その項目だけ丁寧にやる」逆インセンティブになるため。
-      // どの項目で撮影要求が出るかはチェックした瞬間まで分からない）
+      // 📷対象のバッジ: 以前は逆インセンティブを避けて隠していたが、あとから撮る人が多いため
+      // 2026-11-24 から先に出す（daigoさん）。photoTagHtml を参照
       const div = document.createElement('div');
       div.className = 'item' + (done ? ' done' : '') + (isNewItem(item) ? ' item-new' : '');
       div.innerHTML = `
         <div class="item-head">
           <button class="check-btn" aria-label="完了切り替え">${ic('check')}</button>
           <div class="item-body">
-            <div class="item-title">${escapeHtml(item.title)}${photoTagHtml(item)}${newTagHtml(item) || (item.custom ? ' <span class="custom-tag">追加</span>' : '')}${staleTag}</div>
+            <div class="item-title">${escapeHtml(item.title)}${photoTagHtml(item, currentArea)}${newTagHtml(item) || (item.custom ? ' <span class="custom-tag">追加</span>' : '')}${staleTag}</div>
             <div class="item-desc">${escapeHtml(item.desc)}</div>
             <div class="item-status">${ls ? escapeHtml('未完了: ' + ls.label + '（タップでそのエリアへ）') : '未実施'}</div>${ls ? '' : `<span class="last-done">${escapeHtml(lastDoneLabel(staleLast))}</span>`}
             <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml((done._slot ? done._slot + '　' : '') + done.staff) + ' / ' + escapeHtml(done.time || '')) : ''}</div>
