@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>無料開放デー サイネージ (1920×1080)</title>
+<style>
+  @font-face {
+    font-family: "NSJP";
+    src: url("assets/NotoSansJP-Black.woff2") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+  }
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    font-family: "NSJP", sans-serif; font-weight: 900; background: #FBEFE3;
+    transform-origin: 0 0;
+  }
+  #stage > div.layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  .n { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform, opacity; }
+  .pill {
+    position: absolute; display: inline-flex; align-items: baseline; justify-content: center; white-space: nowrap;
+    border-radius: 999px; box-sizing: border-box; line-height: 1;
+  }
+  svg { display: block; overflow: visible; }
+  img { display: block; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="src/main.js"></script>
+</body>
+</html>
