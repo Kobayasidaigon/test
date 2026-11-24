@@ -217,6 +217,8 @@
   .pr-sel { flex: 0 0 auto; font-size: .8rem; padding: 3px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--text); }
   .pr-sel.pr-saved { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; }
   /* 追加してから1週間の項目に付ける「新」の印 */
+  .photo-tag { display: inline-flex; align-items: center; gap: 2px; background: #e3f2fd; color: #1565c0; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; margin-left: 4px; white-space: nowrap; }
+  .photo-tag svg { width: 12px; height: 12px; }
   .new-tag { display: inline-block; background: #fff3e0; color: #e65100; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; margin-left: 4px; white-space: nowrap; }
   .rt-row .new-tag { flex-shrink: 0; margin-left: 0; margin-right: 4px; }
   /* 新しい項目は行（カード）ごと橙の枠で囲む */
@@ -4345,6 +4347,12 @@ function isNewItem(item) {
   const n = daysSince(at);
   return n >= 0 && n < NEW_ITEM_DAYS;
 }
+// 毎回写真が要る項目（photoEach）は、チェックする前から「写真」の印を出す
+// （あとから撮ることが多いので、先に見せて撮るものだと分かるように。daigoさん 2026-11-24）
+// 抜き打ちの撮影は当たるまで分からないままにする（印は出さない）
+function photoTagHtml(item) {
+  return item && item.photoEach ? ' <span class="photo-tag">' + ic('camera') + '写真</span>' : '';
+}
 function newTagHtml(item) {
   return isNewItem(item) ? ' <span class="new-tag">新</span>' : '';
 }
@@ -5568,7 +5576,7 @@ function renderRoutineView() {
       + (ls ? '<span class="rt-icon">' + ic('clipboard-list') + '</span>'
             : '<span class="rt-check">' + ic('check') + '</span>')
       + '<span class="rt-title">' + escapeHtml(item.title) + '</span>'
-      + (routineEditMode ? '' : newTagHtml(item))
+      + (routineEditMode ? '' : photoTagHtml(item) + newTagHtml(item))
       + gapTagHtml(item)
       // 編集中はリンクや数値欄を出さない（1回きりのリンクを無駄に使わせない・誤入力を防ぐ）
       + (ls ? '<span class="rt-count">' + ls.done + '/' + ls.total + '</span><span class="rt-chevron">' + (expanded ? '▾' : '▸') + '</span>' : '')
@@ -5655,6 +5663,7 @@ function renderRoutineView() {
               + (cNums ? ' has-nums' : '') + '" data-area="' + escapeHtml(bl.sk) + '" data-id="' + escapeHtml(ci.id) + '">'
               + '<span class="rt-check">' + ic('check') + '</span>'
               + '<span class="rt-title">' + escapeHtml(ci.title) + '</span>'
+              + (routineEditMode ? '' : photoTagHtml(ci))
               + (routineEditMode
                   ? routineActionsHtml(ci, ci_i === 0, ci_i === citems.length - 1, k)
                   : (cdone
@@ -6008,7 +6017,7 @@ function render() {
         <div class="item-head">
           <button class="check-btn" aria-label="完了切り替え">${ic('check')}</button>
           <div class="item-body">
-            <div class="item-title">${escapeHtml(item.title)}${newTagHtml(item) || (item.custom ? ' <span class="custom-tag">追加</span>' : '')}${staleTag}</div>
+            <div class="item-title">${escapeHtml(item.title)}${photoTagHtml(item)}${newTagHtml(item) || (item.custom ? ' <span class="custom-tag">追加</span>' : '')}${staleTag}</div>
             <div class="item-desc">${escapeHtml(item.desc)}</div>
             <div class="item-status">${ls ? escapeHtml('未完了: ' + ls.label + '（タップでそのエリアへ）') : '未実施'}</div>${ls ? '' : `<span class="last-done">${escapeHtml(lastDoneLabel(staleLast))}</span>`}
             <div class="item-meta">${ic('check')} ${done ? (ls ? escapeHtml('連動: ' + ls.label) : escapeHtml((done._slot ? done._slot + '　' : '') + done.staff) + ' / ' + escapeHtml(done.time || '')) : ''}</div>
