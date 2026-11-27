@@ -5,7 +5,7 @@
 入れる場所（3店舗とも同じ）:
   ゴルフA（customItems_golf_a）: 「クラブの本数確認」(ga_clubs) のすぐ下
   遅番（customItems_routine_ban）: 「閉め作業」(routine_ban_v3_20) のすぐ下
-区分は目印の行と同じ。ふつうのチェック（数の入力・写真なし）、説明なし。
+区分は目印の行と同じ。ふつうのチェック（数の入力・写真なし）。説明は DESC。
 
 やらないこと:
   - いまある項目を消す・idを変える・並びを入れ替える
@@ -17,6 +17,8 @@ import json
 STORES = ['笠寺', '枇杷島', '萩野通']
 ADDED_AT = '2026-11-27'
 TITLE = 'グローブ3点確認'
+# daigoさん「手袋が三つあるからそれだね」(2026-11-27)
+DESC = 'グローブ（手袋）が3つそろっているか確認'
 # ★ idは一度入れたら変えない（記録はこのidで結び付く）
 PLAN = [
     # (エリア鍵, 表示名, 新しいid, 目印のid)
@@ -54,7 +56,7 @@ def build(kv):
                                  % (st, label, anchor))
             at = next(n for n, c in enumerate(items) if isinstance(c, dict) and c.get('id') == anchor)
             a = items[at]
-            row = {'id': nid, 'section': a.get('section'), 'title': TITLE, 'desc': '', 'addedAt': ADDED_AT}
+            row = {'id': nid, 'section': a.get('section'), 'title': TITLE, 'desc': DESC, 'addedAt': ADDED_AT}
             out = items[:at + 1] + [row] + items[at + 1:]
             if [c.get('id') for c in out if isinstance(c, dict) and c.get('id') != nid] != ids:
                 raise SystemExit('::error::%s / %s で並びが変わります。止めます' % (st, label))
