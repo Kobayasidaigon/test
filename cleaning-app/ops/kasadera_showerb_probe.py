@@ -40,7 +40,11 @@ def build(kv):
     for k in kv:
         m = re.match(r'^' + pre + r'(customItems|hiddenItems|itemEdits|customSections)_(shower\w*)$', k)
         if m:
-            det[m.group(1) + '_' + m.group(2)] = j(kv[k], kv[k])
+            v = j(kv[k], kv[k])
+            if m.group(1) == 'customItems' and isinstance(v, list):
+                v = {'n': len(v), 'sections': sorted(set(str(x.get('section')) for x in v if isinstance(x, dict))),
+                     'ids': [x.get('id') for x in v if isinstance(x, dict)]}
+            det[m.group(1) + '_' + m.group(2)] = v
     rep['shower_defs'] = det
     # 直近の記録（エリアごとの日別件数。名前は出さない）
     cnt = {}
@@ -67,5 +71,5 @@ def build(kv):
         if k.startswith(cp) and 'shower' in k and k[-10:] >= '2026-11-25':
             sample = {'area_part': k[len(cp):-11].split('_', 1)[1], 'date': k[-10:], 'value': j(kv[k], kv[k])}
             break
-    rep['sample_record'] = sample
+    rep['sample_record'] = sample and {'area_part': sample['area_part'], 'date': sample['date'], 'shape': list((sample['value'] or {}).get('floor', {}).keys())}
     return {}, rep
