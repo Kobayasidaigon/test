@@ -18,24 +18,25 @@ export const Hook: React.FC<SignageProps> = ({ copy, ink, muted, accent, paper }
   const popB = useSpring(12, 12);
 
   const chipSize = (portrait ? 84 : 70) * u;
-  const D = (portrait ? 380 : 560) * u; // 2つの札の距離
-  const arc = (portrait ? 150 : 150) * u * Math.sin(Math.PI * Math.min(1, Math.max(0, swap)));
-
-  const slot = (s: number) => (portrait ? { x: 0, y: s * D / 2 } : { x: s * D / 2, y: 0 });
+  // 札の位置。矢印を真ん中に置き、それぞれの札の内側の端が矢印から一定の距離になるようにする
+  // （「痛くなったら」のような長い言葉でも矢印に重ならない）
+  const chipW = (t: string) => ([...t].length + 1.56) * chipSize + 8 * u;
+  const G = (portrait ? 110 : 120) * u; // 中心から札の内側の端まで
+  const chipH = 1.84 * chipSize;
+  const half = (t: string) => (portrait ? chipH / 2 : chipW(t) / 2);
+  const at = (side: -1 | 1, t: string) => {
+    const d = side * (G + half(t));
+    return portrait ? { x: 0, y: d } : { x: d, y: 0 };
+  };
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-  const A0 = slot(-1);
-  const A1 = slot(1);
-  // やる気：先頭 → うしろへ。上（縦長なら左）を通る
-  const aPos = {
-    x: lerp(A0.x, A1.x, swap) + (portrait ? -arc : 0),
-    y: lerp(A0.y, A1.y, swap) + (portrait ? 0 : -arc),
-  };
-  // 予定：うしろ → 先頭へ。下（縦長なら右）を通る
-  const bPos = {
-    x: lerp(A1.x, A0.x, swap) + (portrait ? arc : 0),
-    y: lerp(A1.y, A0.y, swap) + (portrait ? 0 : arc),
-  };
+  const move = (from: { x: number; y: number }, to: { x: number; y: number }, bend: number) => ({
+    x: lerp(from.x, to.x, swap) + (portrait ? bend : 0),
+    y: lerp(from.y, to.y, swap) + (portrait ? 0 : bend),
+  });
+  const arc = 150 * u * Math.sin(Math.PI * Math.min(1, Math.max(0, swap)));
+  // やる気：先頭 → うしろへ。上（縦長なら左）を通る／予定：うしろ → 先頭へ。下（縦長なら右）を通る
+  const aPos = move(at(-1, copy.before), at(1, copy.before), -arc);
+  const bPos = move(at(1, copy.after), at(-1, copy.after), arc);
 
   const c = Math.min(1, Math.max(0, swap));
   const aFill = interpolateColors(c, [0, 1], [ink, paper]);
@@ -83,7 +84,7 @@ export const Hook: React.FC<SignageProps> = ({ copy, ink, muted, accent, paper }
     </div>
   );
 
-  const stageH = portrait ? D + 240 * u : 260 * u;
+  const stageH = portrait ? 2 * (G + chipH) + 120 * u : 260 * u;
 
   return (
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
