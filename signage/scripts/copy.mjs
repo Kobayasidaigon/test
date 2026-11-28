@@ -23,7 +23,6 @@ const { values: args } = parseArgs({
     id: { type: "string" },
     industry: { type: "string" },
     tone: { type: "string", default: "落ち着いていて、押しつけがましくない" },
-    accent: { type: "string" },
     note: { type: "string", default: "" },
     n: { type: "string", default: "1" },
     model: { type: "string" },
@@ -54,20 +53,15 @@ if (!/^[a-z0-9-]+$/.test(args.id)) {
 
 // ---- 文字数のルール（1行あたりの全角文字数。サイネージは2〜3mから一瞬で読める長さに） ----
 const RULES = {
-  before: { lines: 1, max: 6 },
-  after: { lines: 1, max: 6 },
-  captionBefore: { lines: 1, max: 12 },
-  captionAfter: { lines: 1, max: 12 },
-  headline: { lines: 2, max: 10 },
+  struck: { lines: 1, max: 9 },
+  kept: { lines: 1, max: 9 },
+  insert: { lines: 1, max: 8 },
   calendarTitle: { lines: 2, max: 11 },
-  calendarSub: { lines: 2, max: 16 },
-  slotLabel: { lines: 1, max: 3 },
-  slotTime: { lines: 1, max: 5 },
-  reasonsTitle: { lines: 1, max: 13 },
-  reasons: { lines: 2, max: 11 },
+  calendarMark: { lines: 1, max: 4 },
+  statement: { lines: 2, max: 9 },
   ctaTitle: { lines: 2, max: 10 },
   ctaSub: { lines: 1, max: 14 },
-  qrLabel: { lines: 1, max: 8 },
+  qrNote: { lines: 1, max: 8 },
 };
 // 効果の断定・誇大表現（景品表示法・医療広告ガイドライン等で問題になりやすい言い方）
 const NG = ["必ず", "絶対", "確実", "治る", "完治", "保証", "No.1", "ナンバーワン", "日本一", "最高", "最安", "100%", "誰でも"];
@@ -77,10 +71,8 @@ const width = (s) => [...s].reduce((w, ch) => w + (/[\x20-\x7e]/.test(ch) ? 0.5 
 const check = (copy) => {
   const errors = [];
   for (const [key, rule] of Object.entries(RULES)) {
-    const vals = key === "reasons" ? copy.reasons : [copy[key]];
-    if (key === "reasons" && vals.length !== 3) errors.push("reasons は3つ");
-    vals.forEach((v, i) => {
-      const name = key === "reasons" ? `reasons[${i}]` : key;
+    [copy[key]].forEach((v) => {
+      const name = key;
       if (typeof v !== "string" || !v.trim()) return errors.push(`${name} が空`);
       const lines = v.split("\n");
       if (lines.length > rule.lines) errors.push(`${name} は${rule.lines}行まで（いま${lines.length}行）`);
@@ -97,19 +89,21 @@ if (args.check) runCheck();
 
 // ---- ChatGPT に渡す指示 ----
 const example = JSON.parse(fs.readFileSync(VARIANTS, "utf8")).variants[0].copy;
-const instructions = `あなたは日本の店舗サイネージ専門のコピーライターです。
-来店客がお会計・受付の前後に見るモニター（20〜30秒ループ、音なし）の文言を書きます。
-目的は「次回の予約を、帰る前にいま入れてもらう」こと。
-軸になる考え方は「やる気より先に、予定を入れる」——人はやる気が出てから動くのではなく、予定があるから動ける。
+const instructions = `あなたは日本の広告コピーライターです。お店の受付・会計まわりのモニター（24秒ループ、音なし）の文言を書きます。
+目的は「次回の予約を、帰る前にいま入れてもらう」こと。軸は「やる気より先に、予定を入れる」——人はやる気が出てから動くのではなく、予定があるから動ける。
 
-書き方のルール：
-- 2〜3m離れて、2秒で読める短さ。漢字を詰め込まず、ひらがなを混ぜてやわらかく。
-- 改行は文節の切れ目で「\\n」を入れる。各項目の行数・1行の文字数の上限を守る。
-- 押しつけない。命令形より「〜を。」「〜しませんか」くらいの温度。
-- 効果を断定しない（「必ず」「治る」「絶対」「No.1」などは使わない）。数字の実績・統計を作らない。
-- before → after は「よくある順番」→「続く人の順番」の入れ替え。after は予約・予定を表す短い語。
-- slotLabel は「次回」など3文字以内、slotTime は「19:00」のような時刻。
-- reasons は「いま予約すると、お客さまにとって何がいいか」を3つ。店側の都合（売上・稼働）は書かない。
+動画の構成（この順で流れます）：
+1. 赤ペンの添削：「{struck}{kept}」と組まれた一文の、struck の部分を赤の二重線で消し、上に insert を手書きで書き込む。
+   直したあとは「{insert}{kept}」と読める。struck は、お客さんがつい言いがちな先のばしの条件（例：やる気が出たら、／伸びてきたら、）。
+2. 壁のカレンダーの2週間後に赤丸。横に calendarMark を手書き。見出しは calendarTitle。
+3. 墨色の画面に、言い切りのひと言 statement（2行。1行目で間をとり、2行目で落とす）。
+4. ctaTitle と予約ページのQR。QRの横に qrNote を手書き。ctaSub は小さな補足。
+
+書き方：
+- 人が書いたコピーに見えること。きれいに並べた箇条書き・「〜しませんか？」の連発・「あなたの〜をサポート」のような決まり文句は使わない。
+- 2〜3m離れて読める短さ。改行は文節の切れ目で「\\n」。各項目の行数と1行の文字数の上限を守る。
+- 押しつけない。効果を言い切らない（「必ず」「治る」「絶対」「No.1」などは使わない）。実績の数字や統計を作らない。
+- 店側の都合（売上・稼働）は書かない。お客さんにとっての話だけ。
 
 1行の文字数の上限：
 ${Object.entries(RULES).map(([k, r]) => `- ${k}: ${r.lines}行まで、1行${r.max}文字まで`).join("\n")}
@@ -128,17 +122,16 @@ const schema = {
         additionalProperties: false,
         properties: {
           angle: { type: "string", description: "この案の切り口を一言で" },
-          accent: { type: "string", description: "業種に合うアクセント色 #RRGGBB（紙色 #F5F2EC 上で白文字が読める濃さ）" },
           copy: {
             type: "object",
             additionalProperties: false,
             properties: Object.fromEntries(
-              Object.keys(RULES).map((k) => [k, k === "reasons" ? { type: "array", items: { type: "string" } } : { type: "string" }]),
+              Object.keys(RULES).map((k) => [k, { type: "string" }]),
             ),
             required: Object.keys(RULES),
           },
         },
-        required: ["angle", "accent", "copy"],
+        required: ["angle", "copy"],
       },
     },
   },
@@ -186,11 +179,9 @@ for (let attempt = 1; attempt <= 3; attempt++) {
 
 // ---- variants.json に追加（同じ id があれば置き換え） ----
 const data = JSON.parse(fs.readFileSync(VARIANTS, "utf8"));
-const hex = /^#[0-9a-fA-F]{6}$/;
 const made = result.variants.slice(0, n).map((v, i) => ({
   id: n === 1 ? args.id : `${args.id}-${"abcde"[i]}`,
   name: n === 1 ? args.industry : `${args.industry}（${"ABCDE"[i]}：${v.angle}）`,
-  accent: args.accent && hex.test(args.accent) ? args.accent : hex.test(v.accent) ? v.accent : "#E4572E",
   copy: v.copy,
 }));
 for (const v of made) {
@@ -201,8 +192,9 @@ for (const v of made) {
 fs.writeFileSync(VARIANTS, JSON.stringify(data, null, 2) + "\n");
 
 for (const v of made) {
-  console.log(`\n✓ ${v.id}  ${v.name}  ${v.accent}`);
-  console.log("  " + v.copy.headline.replace("\n", " / "));
+  console.log(`\n✓ ${v.id}  ${v.name}`);
+  console.log(`  ${v.copy.struck}${v.copy.kept} → ${v.copy.insert}${v.copy.kept}`);
+  console.log("  " + v.copy.statement.replace("\n", " / "));
   console.log("  " + v.copy.ctaTitle.replace("\n", " / "));
 }
 console.log(`\nsrc/variants.json に追加しました。確認：npm run studio　書き出し：npm run render -- --only ${args.id}`);

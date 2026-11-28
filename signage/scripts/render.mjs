@@ -40,7 +40,7 @@ if (comps.length === 0) {
 }
 
 // 静止画は各シーンがいちばん見せたい瞬間
-const STILLS = { hook: 140, calendar: 330, reasons: 450, cta: 700 };
+const STILLS = { correction: 200, calendar: 380, statement: 490, cta: 700 };
 
 for (const c of comps) {
   if (args.still) {

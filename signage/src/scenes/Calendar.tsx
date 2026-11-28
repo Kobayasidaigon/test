@@ -1,268 +1,154 @@
 import React from "react";
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import type { SignageProps } from "../schema";
-import { Fade, Kinetic, alpha, ease, fontFamily, lines, useLayout, useRise, useSpring } from "../components/kit";
-import { fitSize } from "../fit";
+import { GOTHIC, Handwrite, MINCHO, Pen, Show, Type, alphaOf, fit, roughEllipse, roughPath, useLayout, useProgress } from "../components/kit";
 
-const DAYS = ["月", "火", "水", "木", "金", "土", "日"];
-const ROWS = 5;
-// ほかのお客さまの予約（埋まっている枠）。[列, 行]
-const BUSY: [number, number][] = [
-  [0, 1], [1, 3], [2, 0], [2, 4], [4, 2], [5, 0], [5, 1], [5, 3], [6, 2], [1, 4], [4, 4], [3, 1],
-];
-const TARGET: [number, number] = [3, 4];
+const WEEK = ["日", "月", "火", "水", "木", "金", "土"];
+const FIRST = 3; // 1日が水曜
+const DAYS = 30;
+const TODAY = 10;
+const NEXT = 24; // 2週間後
 
 /**
- * シーン2：来週のカレンダーの空き枠に、次回の予約がストンと入る。
+ * シーン2：壁掛けカレンダー。今日から2週間後の日付に、赤ペンで丸をつける。
  */
-export const Calendar: React.FC<SignageProps> = ({ copy, ink, muted, accent, paper }) => {
+export const Calendar: React.FC<SignageProps> = ({ copy, ink, pen }) => {
   const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
   const { portrait, u, width } = useLayout();
 
-  const cardW = portrait ? 920 * u : 800 * u;
-  const pad = 40 * u;
-  const headH = 70 * u;
-  const cellW = (cardW - pad * 2) / 7;
-  const cellH = portrait ? 150 * u : 108 * u;
-  const gridH = cellH * ROWS;
-  const cardH = pad * 2 + headH + gridH + 56 * u;
+  const calW = portrait ? 940 * u : 860 * u;
+  const cellW = calW / 7;
+  const cellH = portrait ? 150 * u : 124 * u;
+  const headH = 64 * u;
+  const rows = Math.ceil((FIRST + DAYS) / 7);
+  const calH = headH + rows * cellH;
 
-  const cardIn = useSpring(0, 16);
-  const draw = useRise(6, 26);
+  const pos = (d: number) => {
+    const i = FIRST + d - 1;
+    return { c: i % 7, r: Math.floor(i / 7) };
+  };
+  const cell = (d: number) => {
+    const { c, r } = pos(d);
+    return { x: c * cellW, y: headH + r * cellH };
+  };
 
-  const DROP = 78;
-  const drop = useSpring(DROP, 11, 0.9);
-  const tap = interpolate(frame, [DROP - 12, DROP + 6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const check = interpolate(frame, [DROP + 14, DROP + 30], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
-  const ripple = interpolate(frame, [DROP + 6, DROP + 40], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
-  const emptyPulse = frame < DROP ? 0.5 + 0.5 * Math.sin(frame / 5) : 0;
+  const CIRCLE = 40;
+  const circle = useProgress(CIRCLE, 15);
+  const tick = useProgress(CIRCLE + 16, 5);
+  const n = cell(NEXT);
+  const numX = n.x + cellW * 0.32;
+  const numY = n.y + cellH * 0.36;
+  const t = cell(TODAY);
 
-  const cellX = (c: number) => pad + c * cellW;
-  const cellY = (r: number) => pad + headH + r * cellH;
-  const inset = 7 * u;
+  // ゆっくり寄る（三脚で撮ったような、ごくわずかな動き）
+  const push = interpolate(frame, [0, durationInFrames], [1, 1.035]);
 
-  const titleSize = fitSize(copy.calendarTitle, portrait ? 92 * u : 92 * u, portrait ? width - 140 * u : 780 * u);
+  const dayColor = (c: number) => (c === 0 ? "#B2413A" : c === 6 ? "#3C5688" : ink);
 
-  const grid = (
-    <div
-      style={{
-        width: cardW,
-        height: cardH,
-        position: "relative",
-        background: "#FFFFFF",
-        borderRadius: 36 * u,
-        boxShadow: `0 ${30 * u}px ${80 * u}px ${alpha(ink, 0.12)}, 0 ${2 * u}px ${6 * u}px ${alpha(ink, 0.06)}`,
-        transform: `translateY(${(1 - cardIn) * 60 * u}px) scale(${0.94 + cardIn * 0.06})`,
-        opacity: Math.min(1, cardIn * 1.4),
-        fontFamily,
-      }}
-    >
-      {/* 曜日 */}
-      {DAYS.map((d, i) => (
+  const cal = (
+    <div style={{ position: "relative", width: calW, height: calH, transform: `scale(${push})`, transformOrigin: "60% 70%" }}>
+      {WEEK.map((w, c) => (
         <div
-          key={d}
+          key={w}
           style={{
             position: "absolute",
-            left: cellX(i),
-            top: pad,
+            left: c * cellW,
+            top: 0,
             width: cellW,
             height: headH,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            paddingLeft: cellW * 0.14,
+            fontFamily: GOTHIC,
             fontWeight: 700,
-            fontSize: 32 * u,
-            color: i === TARGET[0] && frame > DROP ? accent : i >= 5 ? alpha(ink, 0.55) : ink,
-            opacity: interpolate(frame, [10 + i * 2, 22 + i * 2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
+            fontSize: 26 * u,
+            color: dayColor(c),
+            letterSpacing: "0.1em",
           }}
         >
-          {d}
+          {w}
         </div>
       ))}
-      {/* 罫線 */}
-      {Array.from({ length: ROWS + 1 }).map((_, r) => (
-        <div
-          key={`h${r}`}
-          style={{
-            position: "absolute",
-            left: pad,
-            top: cellY(r),
-            width: (cardW - pad * 2) * draw,
-            height: 2 * u,
-            background: alpha(ink, 0.09),
-          }}
-        />
+      {Array.from({ length: rows + 1 }).map((_, r) => (
+        <div key={r} style={{ position: "absolute", left: 0, right: 0, top: headH + r * cellH, height: Math.max(1, 1.5 * u), background: alphaOf(ink, r === 0 ? 0.7 : 0.18) }} />
       ))}
-      {Array.from({ length: 6 }).map((_, c) => (
-        <div
-          key={`v${c}`}
-          style={{
-            position: "absolute",
-            left: cellX(c + 1),
-            top: cellY(0),
-            width: 2 * u,
-            height: gridH * draw,
-            background: alpha(ink, 0.06),
-          }}
-        />
-      ))}
-      {/* 埋まっている枠 */}
-      {BUSY.map(([c, r], i) => {
-        const t = interpolate(frame, [26 + i * 2.5, 38 + i * 2.5], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
+      {Array.from({ length: DAYS }).map((_, i) => {
+        const d = i + 1;
+        const { c } = pos(d);
+        const { x, y } = cell(d);
+        const past = d < TODAY;
         return (
           <div
-            key={`b${i}`}
+            key={d}
             style={{
               position: "absolute",
-              left: cellX(c) + inset,
-              top: cellY(r) + inset,
-              width: cellW - inset * 2,
-              height: cellH - inset * 2,
-              borderRadius: 14 * u,
-              background: `repeating-linear-gradient(135deg, ${alpha(ink, 0.07)} 0 ${8 * u}px, ${alpha(ink, 0.03)} ${8 * u}px ${16 * u}px)`,
-              opacity: t,
-              transform: `scale(${0.8 + t * 0.2})`,
+              left: x + cellW * 0.14,
+              top: y + cellH * 0.1,
+              fontFamily: MINCHO,
+              fontWeight: 700,
+              fontSize: (portrait ? 52 : 46) * u,
+              lineHeight: 1,
+              color: dayColor(c),
+              opacity: past ? 0.32 : 1,
             }}
-          />
+          >
+            {d}
+          </div>
         );
       })}
-      {/* 空き枠（点線で呼ぶ） */}
-      <div
-        style={{
-          position: "absolute",
-          left: cellX(TARGET[0]) + inset,
-          top: cellY(TARGET[1]) + inset,
-          width: cellW - inset * 2,
-          height: cellH - inset * 2,
-          borderRadius: 14 * u,
-          border: `${3 * u}px dashed ${alpha(accent, 0.35 + emptyPulse * 0.5)}`,
-          opacity: interpolate(frame, [44, 56], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
-          boxSizing: "border-box",
-        }}
+      {/* 今日：鉛筆の小さな書き込み */}
+      <Handwrite
+        text="今日"
+        at={14}
+        perChar={4}
+        size={30 * u}
+        color={alphaOf(ink, 0.6)}
+        seed="today"
+        style={{ position: "absolute", left: t.x + cellW * 0.14, top: t.y + cellH * 0.58 }}
       />
-      {/* 波紋 */}
-      <div
-        style={{
-          position: "absolute",
-          left: cellX(TARGET[0]) + cellW / 2,
-          top: cellY(TARGET[1]) + cellH / 2,
-          width: cellW * 2.4,
-          height: cellW * 2.4,
-          borderRadius: "50%",
-          border: `${3 * u}px solid ${accent}`,
-          transform: `translate(-50%, -50%) scale(${0.3 + ripple * 0.9})`,
-          opacity: ripple > 0 ? (1 - ripple) * 0.6 : 0,
-        }}
+      {/* 次回：赤ペンの丸と書き込み */}
+      <svg width={calW} height={calH} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
+        <Pen d={roughEllipse(numX, numY, cellW * 0.42, cellH * 0.4, "circle")} progress={circle} color={pen} width={6 * u} />
+        <Pen
+          d={roughPath([[numX + cellW * 0.45, numY + cellH * 0.25], [numX + cellW * 0.75, numY + cellH * 0.55], [numX + cellW * 0.95, numY + cellH * 0.72]], "tick", 4 * u)}
+          progress={tick}
+          color={pen}
+          width={5 * u}
+        />
+      </svg>
+      <Handwrite
+        text={copy.calendarMark}
+        at={CIRCLE + 20}
+        perChar={6}
+        size={(portrait ? 72 : 66) * u}
+        color={pen}
+        seed="mark"
+        style={{ position: "absolute", left: numX + cellW * 0.75, top: numY + cellH * 0.55, transform: "rotate(-8deg)" }}
       />
-      {/* 次回の予約ブロック */}
-      <div
-        style={{
-          position: "absolute",
-          left: cellX(TARGET[0]) + inset * 0.4,
-          top: cellY(TARGET[1]) + inset * 0.4,
-          width: cellW - inset * 0.8,
-          height: cellH - inset * 0.8,
-          borderRadius: 16 * u,
-          background: accent,
-          color: paper,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 2 * u,
-          transform: `translateY(${(1 - drop) * -260 * u}px) scale(${0.7 + drop * 0.3})`,
-          opacity: frame < DROP ? 0 : Math.min(1, drop * 2),
-          boxShadow: `0 ${14 * u}px ${30 * u}px ${alpha(accent, 0.45)}`,
-          zIndex: 3,
-        }}
-      >
-        <div style={{ fontWeight: 900, fontSize: 28 * u, lineHeight: 1 }}>{copy.slotLabel}</div>
-        <div style={{ fontWeight: 700, fontSize: 22 * u, lineHeight: 1, opacity: 0.9, letterSpacing: "0.04em" }}>{copy.slotTime}</div>
-        {/* チェック */}
-        <svg
-          width={40 * u}
-          height={40 * u}
-          viewBox="0 0 40 40"
-          style={{ position: "absolute", right: -14 * u, top: -14 * u }}
-        >
-          <circle cx={20} cy={20} r={18} fill={paper} opacity={check > 0 ? 1 : 0} transform={`scale(${check})`} style={{ transformOrigin: "20px 20px" }} />
-          <path d="M11 20.5 L17.5 27 L29 14" fill="none" stroke={accent} strokeWidth={4.5} strokeLinecap="round" strokeLinejoin="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - check} />
-        </svg>
-      </div>
-      {/* タップの指 */}
-      <div
-        style={{
-          position: "absolute",
-          left: cellX(TARGET[0]) + cellW / 2,
-          top: cellY(TARGET[1]) + cellH / 2,
-          width: 64 * u,
-          height: 64 * u,
-          borderRadius: "50%",
-          background: alpha(ink, 0.18),
-          border: `${3 * u}px solid ${alpha("#FFFFFF", 0.9)}`,
-          transform: `translate(-50%, -50%) translate(${(1 - tap) * 120 * u}px, ${(1 - tap) * 140 * u}px) scale(${frame > DROP + 4 ? 0.8 : 1})`,
-          opacity: interpolate(frame, [DROP - 16, DROP - 8, DROP + 10, DROP + 22], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
-          zIndex: 4,
-        }}
-      />
-      {/* 凡例 */}
-      <div
-        style={{
-          position: "absolute",
-          left: pad,
-          bottom: pad * 0.8,
-          display: "flex",
-          gap: 28 * u,
-          fontSize: 22 * u,
-          fontWeight: 500,
-          color: muted,
-          opacity: interpolate(frame, [40, 56], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
-        }}
-      >
-        <span style={{ display: "flex", alignItems: "center", gap: 10 * u }}>
-          <span style={{ width: 22 * u, height: 22 * u, borderRadius: 6 * u, background: alpha(ink, 0.14) }} />
-          ご予約済み
-        </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 10 * u }}>
-          <span style={{ width: 22 * u, height: 22 * u, borderRadius: 6 * u, background: accent }} />
-          あなたの次回
-        </span>
-      </div>
     </div>
   );
 
-  const text = (
-    <div style={{ display: "flex", flexDirection: "column", gap: 36 * u, alignItems: portrait ? "center" : "flex-start" }}>
-      <Kinetic text={copy.calendarTitle} delay={14} size={titleSize} color={ink} align={portrait ? "center" : "left"} />
-      <Fade delay={DROP + 20}>
-        <div
-          style={{
-            fontFamily,
-            fontWeight: 500,
-            fontSize: (portrait ? 44 : 40) * u,
-            lineHeight: 1.6,
-            color: alpha(ink, 0.72),
-            textAlign: portrait ? "center" : "left",
-          }}
-        >
-          {lines(copy.calendarSub)}
-        </div>
-      </Fade>
-    </div>
-  );
+  if (portrait) {
+    const size = fit(copy.calendarTitle, 96 * u, width - 200 * u);
+    return (
+      <AbsoluteFill style={{ alignItems: "center" }}>
+        <div style={{ position: "absolute", top: 300 * u }}>{cal}</div>
+        <Show at={4} style={{ position: "absolute", left: 100 * u, top: 1300 * u }}>
+          <Type text={copy.calendarTitle} size={size} color={ink} weight={900} />
+        </Show>
+      </AbsoluteFill>
+    );
+  }
 
+  const size = fit(copy.calendarTitle, 84 * u, 700 * u);
   return (
-    <AbsoluteFill
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: portrait ? "column" : "row",
-        gap: portrait ? 90 * u : 100 * u,
-        paddingTop: portrait ? 40 * u : 0,
-      }}
-    >
-      {text}
-      {grid}
+    <AbsoluteFill style={{ flexDirection: "row", alignItems: "center", paddingLeft: 160 * u, gap: 90 * u }}>
+      <Show at={4} style={{ width: 640 * u, flexShrink: 0 }}>
+        <Type text={copy.calendarTitle} size={size} color={ink} />
+      </Show>
+      <div style={{ marginTop: 40 * u }}>{cal}</div>
     </AbsoluteFill>
   );
 };
+

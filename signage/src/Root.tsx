@@ -16,11 +16,7 @@ export const Root: React.FC = () => (
     {FORMATS.map((f) => (
       <Folder key={f.key} name={f.key}>
         {variants.map((v) => {
-          const props: SignageProps = {
-            ...data.brand,
-            accent: v.accent,
-            copy: v.copy,
-          };
+          const props: SignageProps = { ...data.brand, copy: v.copy };
           return (
             <Composition
               key={v.id}

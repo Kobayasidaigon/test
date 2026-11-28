@@ -2,31 +2,25 @@ import { z } from "zod";
 import { zColor } from "@remotion/zod-types";
 
 /**
- * 1本の動画が持つ全設定。Remotion Studio の右パネルでそのまま編集できる。
- * 文言の「\n」は改行位置（文節の切れ目で入れる）。
+ * 文言。「\n」は改行（縦組みでは列の区切り）。文節の切れ目で入れる。
  */
 export const copySchema = z.object({
-  /** シーン1：よくある順番 → 続く人の順番 */
-  before: z.string().describe("入れ替え前の左側（例：やる気）"),
-  after: z.string().describe("入れ替え前の右側（例：予定）"),
-  captionBefore: z.string(),
-  captionAfter: z.string(),
-  headline: z.string().describe("シーン1の決めコピー。\\n で改行"),
+  /** シーン1：赤ペンの添削。struck を線で消し、insert を赤で書き込む */
+  struck: z.string().describe("消される前半（例：やる気が出たら、）"),
+  kept: z.string().describe("残る後半（例：次の予約を。）"),
+  insert: z.string().describe("赤ペンで書き込む言葉（例：帰る前に、）"),
 
-  /** シーン2：カレンダー */
+  /** シーン2：カレンダーに赤丸 */
   calendarTitle: z.string(),
-  calendarSub: z.string(),
-  slotLabel: z.string().describe("予約ブロックの1行目（例：次回）"),
-  slotTime: z.string().describe("予約ブロックの2行目（例：19:00）"),
+  calendarMark: z.string().describe("赤丸の横の書き込み（例：次回）"),
 
-  /** シーン3：いま予約する理由（3つ） */
-  reasonsTitle: z.string(),
-  reasons: z.array(z.string()).length(3),
+  /** シーン3：言い切りの一枚 */
+  statement: z.string(),
 
   /** シーン4：行動 */
   ctaTitle: z.string(),
   ctaSub: z.string(),
-  qrLabel: z.string(),
+  qrNote: z.string().describe("QRの横の手書き（例：ここから30秒）"),
 });
 
 export const signageSchema = z.object({
@@ -35,8 +29,7 @@ export const signageSchema = z.object({
   showQr: z.boolean(),
   paper: zColor(),
   ink: zColor(),
-  muted: zColor(),
-  accent: zColor(),
+  pen: zColor().describe("赤ペンの色"),
   copy: copySchema,
 });
 
@@ -46,7 +39,6 @@ export type Copy = z.infer<typeof copySchema>;
 export const variantSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   name: z.string(),
-  accent: z.string(),
   copy: copySchema,
 });
 export type Variant = z.infer<typeof variantSchema>;

@@ -1,20 +1,13 @@
 import React, { useMemo } from "react";
 import QRCode from "qrcode";
-import { interpolate, useCurrentFrame } from "remotion";
-import { ease } from "./kit";
 
-/**
- * 予約ページへのQRコード。SVGで描くので、どの解像度でもにじまない。
- * 出るときは左上から斜めにスキャンするように現れる。
- */
+/** 予約ページへのQRコード。SVGで描くので、どの解像度でもにじまない。 */
 export const Qr: React.FC<{
   url: string;
   size: number;
   ink: string;
   paper: string;
-  delay: number;
-}> = ({ url, size, ink, paper, delay }) => {
-  const frame = useCurrentFrame();
+}> = ({ url, size, ink, paper }) => {
   const { n, cells } = useMemo(() => {
     const qr = QRCode.create(url, { errorCorrectionLevel: "M" });
     const n = qr.modules.size;
@@ -29,12 +22,6 @@ export const Qr: React.FC<{
 
   const quiet = 2; // 読み取りに必要な余白（セル数）
   const total = n + quiet * 2;
-  const sweep = interpolate(frame, [delay, delay + 26], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: ease,
-  });
-  const edge = sweep * (n * 2 + 6);
 
   return (
     <svg
@@ -46,8 +33,6 @@ export const Qr: React.FC<{
     >
       <rect width={total} height={total} fill={paper} />
       {cells.map(({ x, y }) => {
-        const d = x + y;
-        if (d > edge) return null;
         return (
           <rect
             key={`${x}-${y}`}
