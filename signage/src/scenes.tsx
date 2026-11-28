@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import type { SignageProps } from "./schema";
-import { Big, GOTHIC, Slam, Wipe, fit, useLayout, useShake } from "./components/kit";
+import { Big, DISPLAY, GOTHIC, Slam, Wipe, alphaOf, fit, useLayout, useShake, useSlam } from "./components/kit";
 import { Qr } from "./components/Qr";
 
 type SceneProps = SignageProps & { next: string };
@@ -72,31 +72,80 @@ export const Turn: React.FC<SceneProps> = ({ copy, blue, white, yellow, next }) 
   );
 };
 
-/** シーン3（オレンジ）：「次は 木 19:00」に「予約済」のハンコ */
-export const Slot: React.FC<SceneProps> = ({ copy, orange, ink, white, next }) => {
-  const { portrait, u, width } = useLayout();
+/** シーン3（オレンジ）：スマホのカレンダーに「次は 木 19:00」の予定が入り、「決定」のハンコ */
+export const Slot: React.FC<SceneProps> = ({ copy, orange, ink, white, blue, yellow, next }) => {
+  const { portrait, u, width, height } = useLayout();
   const { durationInFrames } = useVideoConfig();
   const m = useMargin();
-  const STAMP = 44;
-  const shake = useShake([12, 22, STAMP], 14 * u);
+  const EVENT = 30;
+  const STAMP = 52;
+  const shake = useShake([12, 22, EVENT, STAMP], 14 * u);
 
-  const timeSize = fit(copy.slotTime, (portrait ? 300 : 330) * u, portrait ? width - m * 2 : width - m * 2 - 400 * u);
-  const day = portrait ? 300 * u : 330 * u;
-  const leadSize = fit(copy.slotLead, (portrait ? 110 : 110) * u, width - m * 2);
+  // スマホ
+  const phoneW = (portrait ? 520 : 440) * u;
+  const phoneH = phoneW * 1.95;
+  const bezel = 16 * u;
+  const hours = ["17:00", "18:00", "19:00", "20:00", "21:00"];
+  const headH = 130 * u;
+  const rowH = (phoneH - bezel * 2 - headH - 40 * u) / hours.length;
+  const hit = hours.findIndex((h) => h === copy.slotTime);
+  const row = hit >= 0 ? hit : 2;
+  const drop = useSlam(EVENT);
+
+  const phone = (
+    <Slam at={6} origin="center bottom">
+      <div style={{ position: "relative", width: phoneW, height: phoneH, background: ink, borderRadius: 64 * u, padding: bezel, boxSizing: "border-box", boxShadow: `${18 * u}px ${18 * u}px 0 ${alphaOf(ink, 0.35)}` }}>
+        <div style={{ position: "relative", width: "100%", height: "100%", background: white, borderRadius: 50 * u, overflow: "hidden", fontFamily: GOTHIC }}>
+          <div style={{ height: headH, display: "flex", alignItems: "flex-end", padding: `0 ${34 * u}px ${18 * u}px`, boxSizing: "border-box", gap: 16 * u, borderBottom: `${3 * u}px solid ${alphaOf(ink, 0.12)}` }}>
+            <div style={{ fontFamily: DISPLAY, fontSize: 64 * u, lineHeight: 1, color: ink }}>{copy.slotDay}</div>
+            <div style={{ fontWeight: 700, fontSize: 26 * u, color: alphaOf(ink, 0.5), paddingBottom: 6 * u }}>曜日</div>
+          </div>
+          {hours.map((h, i) => (
+            <div key={h} style={{ position: "absolute", left: 0, right: 0, top: headH + 20 * u + i * rowH, height: rowH, borderTop: `${2 * u}px solid ${alphaOf(ink, 0.1)}` }}>
+              <div style={{ position: "absolute", left: 22 * u, top: 8 * u, fontWeight: 700, fontSize: 22 * u, color: alphaOf(ink, 0.4) }}>{h}</div>
+            </div>
+          ))}
+          <div
+            style={{
+              position: "absolute",
+              left: 110 * u,
+              right: 22 * u,
+              top: headH + 20 * u + row * rowH + 6 * u,
+              height: rowH * 1.4,
+              background: blue,
+              borderRadius: 18 * u,
+              color: white,
+              padding: `${16 * u}px ${20 * u}px`,
+              boxSizing: "border-box",
+              opacity: drop.visible ? 1 : 0,
+              transform: `scale(${drop.scale})`,
+              transformOrigin: "center",
+            }}
+          >
+            <div style={{ fontFamily: DISPLAY, fontSize: 40 * u, lineHeight: 1.1 }}>{copy.eventTitle}</div>
+            <div style={{ fontWeight: 700, fontSize: 24 * u, marginTop: 6 * u, opacity: 0.85 }}>{copy.slotTime}〜</div>
+          </div>
+        </div>
+      </div>
+    </Slam>
+  );
 
   const stamp = (
-    <Slam at={STAMP} origin="center" style={{ position: "absolute", right: portrait ? m : m + 20 * u, bottom: portrait ? 330 * u : 120 * u, zIndex: 2 }}>
+    <Slam at={STAMP} origin="center">
       <div
         style={{
           transform: "rotate(-14deg)",
-          border: `${12 * u}px solid ${white}`,
+          border: `${10 * u}px solid ${white}`,
           borderRadius: 36 * u,
-          padding: `${14 * u}px ${40 * u}px`,
-          fontFamily: "Dela Gothic One",
+          padding: `${10 * u}px ${44 * u}px`,
+          fontFamily: DISPLAY,
           fontSize: 120 * u,
-          lineHeight: 1.1,
-          color: white,
+          lineHeight: 1.15,
+          background: ink,
+          color: yellow,
+          boxShadow: `${12 * u}px ${12 * u}px 0 ${alphaOf(ink, 0.35)}`,
           letterSpacing: "0.06em",
+          whiteSpace: "nowrap",
         }}
       >
         {copy.stamp}
@@ -104,55 +153,43 @@ export const Slot: React.FC<SceneProps> = ({ copy, orange, ink, white, next }) =
     </Slam>
   );
 
-  const dayDisc = (
-    <Slam at={12} origin="center">
-      <div
-        style={{
-          width: day,
-          height: day,
-          borderRadius: "50%",
-          background: ink,
-          color: white,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "Dela Gothic One",
-          fontSize: day * 0.58,
-          lineHeight: 1,
-          paddingBottom: day * 0.04,
-          boxSizing: "border-box",
-        }}
-      >
-        {copy.slotDay}
+  const leadSize = 110 * u;
+  const day = (portrait ? 220 : 250) * u;
+  const timeSize = fit(copy.slotTime, (portrait ? 210 : 230) * u, portrait ? width - m * 2 - day - 40 * u : width - m * 2 - phoneW - day - 140 * u);
+  const words = (
+    <div>
+      <Slam at={2}>
+        <Big text={copy.slotLead} size={leadSize} color={ink} />
+      </Slam>
+      <div style={{ display: "flex", alignItems: "center", gap: 36 * u, marginTop: 30 * u }}>
+        <Slam at={12} origin="center">
+          <div style={{ width: day, height: day, borderRadius: "50%", background: ink, color: white, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontSize: day * 0.58, lineHeight: 1 }}>
+            {copy.slotDay}
+          </div>
+        </Slam>
+        <Slam at={22}>
+          <Big text={copy.slotTime} size={timeSize} color={ink} leading={1} />
+        </Slam>
       </div>
-    </Slam>
+    </div>
   );
 
   return (
     <AbsoluteFill style={{ background: orange }}>
       <AbsoluteFill style={{ transform: shake }}>
-        <div style={{ position: "absolute", left: m, top: portrait ? 300 * u : 130 * u }}>
-          <Slam at={2}>
-            <Big text={copy.slotLead} size={leadSize} color={ink} />
-          </Slam>
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            left: m,
-            top: portrait ? 520 * u : 330 * u,
-            display: "flex",
-            flexDirection: portrait ? "column" : "row",
-            alignItems: portrait ? "flex-start" : "center",
-            gap: (portrait ? 60 : 50) * u,
-          }}
-        >
-          {dayDisc}
-          <Slam at={22}>
-            <Big text={copy.slotTime} size={timeSize} color={ink} leading={1} />
-          </Slam>
-        </div>
-        {stamp}
+        {portrait ? (
+          <>
+            <div style={{ position: "absolute", left: m, top: 170 * u }}>{words}</div>
+            <div style={{ position: "absolute", left: (width - phoneW) / 2, top: 650 * u }}>{phone}</div>
+            <div style={{ position: "absolute", right: m - 30 * u, top: 650 * u + phoneH * 0.8, zIndex: 5 }}>{stamp}</div>
+          </>
+        ) : (
+          <>
+            <div style={{ position: "absolute", left: m, top: 0, bottom: 0, display: "flex", alignItems: "center" }}>{words}</div>
+            <div style={{ position: "absolute", right: m + 40 * u, top: (height - phoneH) / 2 }}>{phone}</div>
+            <div style={{ position: "absolute", right: m + phoneW - 40 * u, bottom: 100 * u, zIndex: 5 }}>{stamp}</div>
+          </>
+        )}
       </AbsoluteFill>
       <Wipe color={next} end={durationInFrames} />
     </AbsoluteFill>
@@ -182,8 +219,8 @@ export const Punch: React.FC<SceneProps> = ({ copy, ink, yellow, white, next }) 
   );
 };
 
-/** シーン5（黄）：「帰る前に、次の1回。」とQR。ループの先頭も黄色なので、つなぎ目が出ない */
-export const Cta: React.FC<SceneProps> = ({ copy, yellow, ink, white, bookingUrl, showQr, storeName }) => {
+/** シーン5（黄）：「帰る前に、カレンダーへ。」とQR。ループの先頭も黄色なので、つなぎ目が出ない */
+export const Cta: React.FC<SceneProps> = ({ copy, yellow, ink, white, qrUrl, showQr, storeName }) => {
   const frame = useCurrentFrame();
   const { portrait, u, width, height } = useLayout();
   const m = useMargin();
@@ -210,7 +247,7 @@ export const Cta: React.FC<SceneProps> = ({ copy, yellow, ink, white, bookingUrl
             boxShadow: `${18 * u}px ${18 * u}px 0 ${ink}`,
           }}
         >
-          <Qr url={bookingUrl} size={qrSize} ink={ink} paper={white} />
+          <Qr url={qrUrl} size={qrSize} ink={ink} paper={white} />
         </div>
         <div
           style={{

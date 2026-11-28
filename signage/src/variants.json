@@ -1,7 +1,7 @@
 {
   "brand": {
-    "storeName": "STUDIO NEXT",
-    "bookingUrl": "https://example.com/reserve",
+    "storeName": "FIT-EASY ○○店",
+    "qrUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=%E3%82%B8%E3%83%A0%EF%BC%88FIT-EASY%EF%BC%89",
     "showQr": true,
     "yellow": "#FFD60A",
     "blue": "#2350FF",
@@ -11,39 +11,49 @@
   },
   "variants": [
     {
-      "id": "gym",
-      "name": "ジム",
+      "id": "fiteasy",
+      "name": "FIT-EASY（やる気は、待っても来ない）",
       "copy": {
-        "hook": ["やる気は、", "待っても", "来ない。"],
+        "hook": [
+          "やる気は、",
+          "待っても",
+          "来ない。"
+        ],
         "turnLead": "だから、先に",
         "turnBig": "予定。",
         "slotLead": "次は",
         "slotDay": "木",
         "slotTime": "19:00",
-        "stamp": "予約済",
+        "eventTitle": "ジム",
+        "stamp": "決定",
         "punchLead": "予定があれば、",
         "punchBig": "体は行く。",
-        "ctaTitle": "帰る前に、\n次の1回。",
-        "ctaSub": "フロントでも予約できます",
-        "qrLabel": "30秒で予約"
+        "ctaTitle": "帰る前に、\nカレンダーへ。",
+        "ctaSub": "次に来る日を、スマホの予定に入れよう",
+        "qrLabel": "カレンダーに追加"
       }
     },
     {
-      "id": "personal",
-      "name": "パーソナルジム",
+      "id": "fiteasy-b",
+      "name": "FIT-EASY（行けたら行く、は行かない）",
       "copy": {
-        "hook": ["やる気が", "出たら", "行く。"],
-        "turnLead": "じゃなくて、先に",
+        "hook": [
+          "行けたら",
+          "行く、は",
+          "行かない。"
+        ],
+        "turnLead": "だから、先に",
         "turnBig": "予定。",
-        "slotLead": "次のセッション",
+        "slotLead": "次は",
         "slotDay": "土",
-        "slotTime": "10:00",
-        "stamp": "予約済",
-        "punchLead": "決めてあれば、",
-        "punchBig": "続く。",
-        "ctaTitle": "帰る前に、\n次の枠を。",
-        "ctaSub": "トレーナーに声をかけてください",
-        "qrLabel": "30秒で予約"
+        "slotTime": "18:00",
+        "eventTitle": "ジム",
+        "stamp": "決定",
+        "punchLead": "決めた日は、",
+        "punchBig": "行ける。",
+        "ctaTitle": "帰る前に、\nカレンダーへ。",
+        "ctaSub": "次に来る日を、スマホの予定に入れよう",
+        "qrLabel": "カレンダーに追加"
       }
     }
   ]

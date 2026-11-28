@@ -59,12 +59,13 @@ const RULES = {
   slotLead: { lines: 1, max: 8 },
   slotDay: { lines: 1, max: 1 },
   slotTime: { lines: 1, max: 5 },
+  eventTitle: { lines: 1, max: 6 },
   stamp: { lines: 1, max: 4 },
   punchLead: { lines: 1, max: 8 },
   punchBig: { lines: 1, max: 6 },
   ctaTitle: { lines: 2, max: 7 },
-  ctaSub: { lines: 1, max: 16 },
-  qrLabel: { lines: 1, max: 7 },
+  ctaSub: { lines: 1, max: 18 },
+  qrLabel: { lines: 1, max: 8 },
 };
 // 効果の断定・誇大表現（景品表示法・医療広告ガイドライン等で問題になりやすい言い方）
 const NG = ["必ず", "絶対", "確実", "治る", "完治", "保証", "No.1", "ナンバーワン", "日本一", "最高", "最安", "100%", "誰でも"];
@@ -96,14 +97,15 @@ if (args.check) runCheck();
 // ---- ChatGPT に渡す指示 ----
 const example = JSON.parse(fs.readFileSync(VARIANTS, "utf8")).variants[0].copy;
 const instructions = `あなたは日本の広告コピーライターです。ジム・フィットネスの受付モニター（17秒ループ、音なし）の文言を書きます。
-目的は「次回の予約を、帰る前にいま入れてもらう」こと。軸は「やる気より先に、予定を入れる」——やる気が出てから動くのではなく、予定があるから体が動く。
+目的は「次にジムに来る日を、帰る前に自分のスマホのカレンダーに入れてもらう」こと。予約制のジムではないので「予約」とは言わない。
+軸は「やる気より先に、予定を入れる」——やる気が出てから動くのではなく、予定があるから体が動く。
 
 動画は明るい色面に太いゴシックを叩きつける、テンポの速いポップな構成です。1画面で1つのことしか言いません。
 1. 黄：hook を1語ずつ叩きつける（2〜4語。つなげて1文になる。例：やる気は、／待っても／来ない。）
 2. 青：turnLead を小さく → turnBig を画面いっぱいに（例：だから、先に → 予定。）
-3. オレンジ：slotLead と、曜日1文字の slotDay・時刻 slotTime を大きく。stamp のハンコがドンと押される
+3. オレンジ：slotLead と、曜日1文字の slotDay・時刻 slotTime を大きく。横のスマホのカレンダーに eventTitle の予定が入り、stamp のハンコがドンと押される（slotTime は 17:00〜21:00 の正時）
 4. 黒：punchLead → punchBig（決めのひと言。例：予定があれば、→ 体は行く。）
-5. 黄：ctaTitle（2行）と予約QR。qrLabel はQRの下のボタン風ラベル、ctaSub は小さな補足
+5. 黄：ctaTitle（2行）と、カレンダーに予定を追加するQR。qrLabel はQRの下のボタン風ラベル、ctaSub は小さな補足
 
 書き方：
 - 話し言葉で、短く、リズムよく。トレーナーが背中を押すくらいの温度。命令しすぎない。

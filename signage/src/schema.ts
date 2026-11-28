@@ -8,10 +8,11 @@ export const copySchema = z.object({
   /** シーン2（青）：小さく前置き → 大きく一語 */
   turnLead: z.string(),
   turnBig: z.string(),
-  /** シーン3（オレンジ）：次の予定と「予約済」のハンコ */
+  /** シーン3（オレンジ）：スマホのカレンダーに次の予定が入り、ハンコ */
   slotLead: z.string(),
   slotDay: z.string().describe("曜日1文字（例：木）"),
-  slotTime: z.string().describe("時刻（例：19:00）"),
+  slotTime: z.string().describe("時刻。17:00〜21:00 のどれかにするとカレンダーの該当の行に入る"),
+  eventTitle: z.string().describe("カレンダーの予定名（例：ジム）"),
   stamp: z.string(),
   /** シーン4（黒）：決めのひと言 */
   punchLead: z.string(),
@@ -24,7 +25,7 @@ export const copySchema = z.object({
 
 export const signageSchema = z.object({
   storeName: z.string(),
-  bookingUrl: z.string().describe("QRコードの飛び先（予約ページ）"),
+  qrUrl: z.string().describe("QRコードの飛び先。スマホのカレンダーに予定を追加するリンクなど"),
   showQr: z.boolean(),
   yellow: zColor(),
   blue: zColor(),

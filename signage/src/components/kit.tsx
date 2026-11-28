@@ -117,3 +117,9 @@ export const fit = (text: string, base: number, max: number) => {
   const widest = Math.max(...text.split("\n").map(textEm));
   return widest ? Math.min(base, max / (widest * 1.03)) : base;
 };
+
+/** #RRGGBB に透明度を足す */
+export const alphaOf = (hex: string, a: number) => {
+  const n = parseInt(hex.replace("#", ""), 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+};
