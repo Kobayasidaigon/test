@@ -1,0 +1,112 @@
+{
+  "brand": {
+    "storeName": "STUDIO NEXT",
+    "bookingUrl": "https://example.com/reserve",
+    "showQr": true,
+    "paper": "#F5F2EC",
+    "ink": "#1A1D26",
+    "muted": "#8B8F98"
+  },
+  "variants": [
+    {
+      "id": "general",
+      "name": "汎用",
+      "accent": "#E4572E",
+      "copy": {
+        "before": "やる気",
+        "after": "予定",
+        "captionBefore": "よくある順番",
+        "captionAfter": "続く人の順番",
+        "headline": "やる気より先に、\n予定を入れる。",
+        "calendarTitle": "予定が入っていれば、\n迷わない。",
+        "calendarSub": "「いつ行こう」と考える時間が、\nゼロになります。",
+        "slotLabel": "次回",
+        "slotTime": "19:00",
+        "reasonsTitle": "いま決めると、いいこと。",
+        "reasons": [
+          "希望の日時を、\n先に押さえられる",
+          "間があかず、\nいい状態が続く",
+          "日時の変更も、\nお気軽にどうぞ"
+        ],
+        "ctaTitle": "お帰りの前に、\n次回のご予約を。",
+        "ctaSub": "受付でもお取りできます",
+        "qrLabel": "スマホで30秒"
+      }
+    },
+    {
+      "id": "salon",
+      "name": "美容室・サロン",
+      "accent": "#C2185B",
+      "copy": {
+        "before": "伸びたら",
+        "after": "予約",
+        "captionBefore": "よくある順番",
+        "captionAfter": "キレイが続く人の順番",
+        "headline": "気になる前に、\n次の予約を。",
+        "calendarTitle": "人気の時間ほど、\n先に埋まります。",
+        "calendarSub": "いちばん通いやすい枠を、\nいまのうちに。",
+        "slotLabel": "次回",
+        "slotTime": "19:00",
+        "reasonsTitle": "いま決めると、いいこと。",
+        "reasons": [
+          "土日・夜の枠も、\n選びやすい",
+          "いいスタイルのまま、\n次へつなげる",
+          "今日の仕上がりを、\n覚えているうちに"
+        ],
+        "ctaTitle": "お会計のときに、\n次回のご予約を。",
+        "ctaSub": "スタッフにお声がけください",
+        "qrLabel": "スマホで30秒"
+      }
+    },
+    {
+      "id": "gym",
+      "name": "ジム・パーソナル",
+      "accent": "#1E7B5C",
+      "copy": {
+        "before": "やる気",
+        "after": "予定",
+        "captionBefore": "やめてしまう順番",
+        "captionAfter": "続く人の順番",
+        "headline": "やる気は、\nあとからついてくる。",
+        "calendarTitle": "行く日が決まれば、\nもう迷わない。",
+        "calendarSub": "「今日はどうしよう」を、\n予定がかわりに決めてくれます。",
+        "slotLabel": "次回",
+        "slotTime": "19:00",
+        "reasonsTitle": "いま決めると、いいこと。",
+        "reasons": [
+          "通いたい曜日・時間を、\n先に確保",
+          "間があかないから、\n体が覚えている",
+          "予定があるから、\n今週もがんばれる"
+        ],
+        "ctaTitle": "帰る前に、\n次の1回を決めよう。",
+        "ctaSub": "フロントでもお取りできます",
+        "qrLabel": "スマホで30秒"
+      }
+    },
+    {
+      "id": "clinic",
+      "name": "整体・歯科・クリニック",
+      "accent": "#2D6CDF",
+      "copy": {
+        "before": "痛くなったら",
+        "after": "予約",
+        "captionBefore": "よくある順番",
+        "captionAfter": "ラクに通える順番",
+        "headline": "次の来院日を、\nいま決めておく。",
+        "calendarTitle": "予定が入っていれば、\nうっかり空かない。",
+        "calendarSub": "ちょうどいい間隔で、\n通っていただけます。",
+        "slotLabel": "次回",
+        "slotTime": "10:00",
+        "reasonsTitle": "いま決めると、いいこと。",
+        "reasons": [
+          "ご希望の日時を、\n先に押さえられる",
+          "おすすめの間隔で、\n通いやすい",
+          "日時の変更も、\nお電話で承ります"
+        ],
+        "ctaTitle": "お会計のときに、\n次回のご予約を。",
+        "ctaSub": "受付でお声がけください",
+        "qrLabel": "スマホで30秒"
+      }
+    }
+  ]
+}

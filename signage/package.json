@@ -1,0 +1,33 @@
+{
+  "name": "yotei-signage",
+  "private": true,
+  "version": "1.0.0",
+  "description": "「やる気より先に、予定を入れる」次回予約サイネージ（Remotion + ChatGPT）",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "copy": "node scripts/copy.mjs",
+    "still": "node scripts/render.mjs --still",
+    "render": "node scripts/render.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.547",
+    "@remotion/cli": "4.0.547",
+    "@remotion/fonts": "^4.0.547",
+    "@remotion/renderer": "4.0.547",
+    "@remotion/transitions": "^4.0.547",
+    "@remotion/zod-types": "4.0.547",
+    "openai": "6.49.0",
+    "qrcode": "1.5.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.547",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/qrcode": "1.5.6",
+    "@types/react": "19.3.3",
+    "typescript": "5.9.3"
+  }
+}

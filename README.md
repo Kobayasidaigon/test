@@ -10,4 +10,5 @@
 ## 中身（`develop`）
 
 - `proto/` … サイト本体（Vite + React）。本番は案A「カプセルトイ」。データと出典は `proto/data/README.md`。
+- `signage/` … 店舗向け「次回予約」サイネージ動画（Remotion + ChatGPT）。使い方は `signage/README.md`。
 - `docs/` … 調査の記録と公開手順（`docs/07_deploy.md`）。
