@@ -1,40 +1,36 @@
 import React from "react";
-import { AbsoluteFill, Series, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Series } from "remotion";
 import type { SignageProps } from "./schema";
-import { Paper, clamp } from "./components/kit";
-import { Correction } from "./scenes/Correction";
-import { Calendar } from "./scenes/Calendar";
-import { Statement } from "./scenes/Statement";
-import { Cta } from "./scenes/Cta";
+import { Cta, Hook, Punch, Slot, Turn } from "./scenes";
 
 export const FPS = 30;
-// シーンはカットでつなぐ（フェードで溶かさない）。長さに差をつけて、リズムをつくる
-export const SCENES = [
-  { key: "correction", frames: 210, C: Correction },
-  { key: "calendar", frames: 180, C: Calendar },
-  { key: "statement", frames: 105, C: Statement },
-  { key: "cta", frames: 225, C: Cta },
-] as const;
-export const TOTAL = SCENES.reduce((s, x) => s + x.frames, 0);
+
+/**
+ * 黄 → 青 → オレンジ → 黒 → 黄。色ごとに1つのことだけ言う。
+ * シーンの終わりに次の色が斜めに横切って切り替わる。最後の黄から先頭の黄へ、ループもそのままつながる。
+ */
+const order = (p: SignageProps) =>
+  [
+    { key: "hook", frames: 84, C: Hook, bg: p.yellow },
+    { key: "turn", frames: 78, C: Turn, bg: p.blue },
+    { key: "slot", frames: 105, C: Slot, bg: p.orange },
+    { key: "punch", frames: 72, C: Punch, bg: p.ink },
+    { key: "cta", frames: 171, C: Cta, bg: p.yellow },
+  ] as const;
+
+export const TOTAL = 84 + 78 + 105 + 72 + 171; // 510 = 17秒
 
 export const Signage: React.FC<SignageProps> = (props) => {
-  const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
-  // ループのつなぎ目：最後だけ紙に戻す（先頭も紙から始まる）
-  const outro = interpolate(frame, [durationInFrames - 12, durationInFrames - 1], [1, 0], clamp);
-
+  const scenes = order(props);
   return (
-    <AbsoluteFill>
-      <Paper color={props.paper} />
-      <AbsoluteFill style={{ opacity: outro }}>
-        <Series>
-          {SCENES.map(({ key, frames, C }) => (
-            <Series.Sequence key={key} durationInFrames={frames}>
-              <C {...props} />
-            </Series.Sequence>
-          ))}
-        </Series>
-      </AbsoluteFill>
+    <AbsoluteFill style={{ background: props.yellow }}>
+      <Series>
+        {scenes.map(({ key, frames, C }, i) => (
+          <Series.Sequence key={key} durationInFrames={frames}>
+            <C {...props} next={scenes[(i + 1) % scenes.length].bg} />
+          </Series.Sequence>
+        ))}
+      </Series>
     </AbsoluteFill>
   );
 };

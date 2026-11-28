@@ -1,35 +1,36 @@
 import { z } from "zod";
 import { zColor } from "@remotion/zod-types";
 
-/**
- * 文言。「\n」は改行（縦組みでは列の区切り）。文節の切れ目で入れる。
- */
+/** 文言。「\n」は改行 */
 export const copySchema = z.object({
-  /** シーン1：赤ペンの添削。struck を線で消し、insert を赤で書き込む */
-  struck: z.string().describe("消される前半（例：やる気が出たら、）"),
-  kept: z.string().describe("残る後半（例：次の予約を。）"),
-  insert: z.string().describe("赤ペンで書き込む言葉（例：帰る前に、）"),
-
-  /** シーン2：カレンダーに赤丸 */
-  calendarTitle: z.string(),
-  calendarMark: z.string().describe("赤丸の横の書き込み（例：次回）"),
-
-  /** シーン3：言い切りの一枚 */
-  statement: z.string(),
-
-  /** シーン4：行動 */
+  /** シーン1（黄）：1語ずつ叩きつける。2〜4個 */
+  hook: z.array(z.string()).min(2).max(4),
+  /** シーン2（青）：小さく前置き → 大きく一語 */
+  turnLead: z.string(),
+  turnBig: z.string(),
+  /** シーン3（オレンジ）：次の予定と「予約済」のハンコ */
+  slotLead: z.string(),
+  slotDay: z.string().describe("曜日1文字（例：木）"),
+  slotTime: z.string().describe("時刻（例：19:00）"),
+  stamp: z.string(),
+  /** シーン4（黒）：決めのひと言 */
+  punchLead: z.string(),
+  punchBig: z.string(),
+  /** シーン5（黄）：行動 */
   ctaTitle: z.string(),
   ctaSub: z.string(),
-  qrNote: z.string().describe("QRの横の手書き（例：ここから30秒）"),
+  qrLabel: z.string(),
 });
 
 export const signageSchema = z.object({
   storeName: z.string(),
   bookingUrl: z.string().describe("QRコードの飛び先（予約ページ）"),
   showQr: z.boolean(),
-  paper: zColor(),
+  yellow: zColor(),
+  blue: zColor(),
+  orange: zColor(),
   ink: zColor(),
-  pen: zColor().describe("赤ペンの色"),
+  white: zColor(),
   copy: copySchema,
 });
 
@@ -41,4 +42,3 @@ export const variantSchema = z.object({
   name: z.string(),
   copy: copySchema,
 });
-export type Variant = z.infer<typeof variantSchema>;

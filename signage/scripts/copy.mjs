@@ -53,15 +53,18 @@ if (!/^[a-z0-9-]+$/.test(args.id)) {
 
 // ---- 文字数のルール（1行あたりの全角文字数。サイネージは2〜3mから一瞬で読める長さに） ----
 const RULES = {
-  struck: { lines: 1, max: 9 },
-  kept: { lines: 1, max: 9 },
-  insert: { lines: 1, max: 8 },
-  calendarTitle: { lines: 2, max: 11 },
-  calendarMark: { lines: 1, max: 4 },
-  statement: { lines: 2, max: 9 },
-  ctaTitle: { lines: 2, max: 10 },
-  ctaSub: { lines: 1, max: 14 },
-  qrNote: { lines: 1, max: 8 },
+  hook: { lines: 1, max: 5, items: [2, 4] },
+  turnLead: { lines: 1, max: 9 },
+  turnBig: { lines: 1, max: 4 },
+  slotLead: { lines: 1, max: 8 },
+  slotDay: { lines: 1, max: 1 },
+  slotTime: { lines: 1, max: 5 },
+  stamp: { lines: 1, max: 4 },
+  punchLead: { lines: 1, max: 8 },
+  punchBig: { lines: 1, max: 6 },
+  ctaTitle: { lines: 2, max: 7 },
+  ctaSub: { lines: 1, max: 16 },
+  qrLabel: { lines: 1, max: 7 },
 };
 // 効果の断定・誇大表現（景品表示法・医療広告ガイドライン等で問題になりやすい言い方）
 const NG = ["必ず", "絶対", "確実", "治る", "完治", "保証", "No.1", "ナンバーワン", "日本一", "最高", "最安", "100%", "誰でも"];
@@ -71,8 +74,11 @@ const width = (s) => [...s].reduce((w, ch) => w + (/[\x20-\x7e]/.test(ch) ? 0.5 
 const check = (copy) => {
   const errors = [];
   for (const [key, rule] of Object.entries(RULES)) {
-    [copy[key]].forEach((v) => {
-      const name = key;
+    const vals = rule.items ? copy[key] : [copy[key]];
+    if (rule.items && (!Array.isArray(vals) || vals.length < rule.items[0] || vals.length > rule.items[1]))
+      return errors.push(`${key} は${rule.items[0]}〜${rule.items[1]}個`);
+    vals.forEach((v, i) => {
+      const name = rule.items ? `${key}[${i}]` : key;
       if (typeof v !== "string" || !v.trim()) return errors.push(`${name} が空`);
       const lines = v.split("\n");
       if (lines.length > rule.lines) errors.push(`${name} は${rule.lines}行まで（いま${lines.length}行）`);
@@ -89,26 +95,26 @@ if (args.check) runCheck();
 
 // ---- ChatGPT に渡す指示 ----
 const example = JSON.parse(fs.readFileSync(VARIANTS, "utf8")).variants[0].copy;
-const instructions = `あなたは日本の広告コピーライターです。お店の受付・会計まわりのモニター（24秒ループ、音なし）の文言を書きます。
-目的は「次回の予約を、帰る前にいま入れてもらう」こと。軸は「やる気より先に、予定を入れる」——人はやる気が出てから動くのではなく、予定があるから動ける。
+const instructions = `あなたは日本の広告コピーライターです。ジム・フィットネスの受付モニター（17秒ループ、音なし）の文言を書きます。
+目的は「次回の予約を、帰る前にいま入れてもらう」こと。軸は「やる気より先に、予定を入れる」——やる気が出てから動くのではなく、予定があるから体が動く。
 
-動画の構成（この順で流れます）：
-1. 赤ペンの添削：「{struck}{kept}」と組まれた一文の、struck の部分を赤の二重線で消し、上に insert を手書きで書き込む。
-   直したあとは「{insert}{kept}」と読める。struck は、お客さんがつい言いがちな先のばしの条件（例：やる気が出たら、／伸びてきたら、）。
-2. 壁のカレンダーの2週間後に赤丸。横に calendarMark を手書き。見出しは calendarTitle。
-3. 墨色の画面に、言い切りのひと言 statement（2行。1行目で間をとり、2行目で落とす）。
-4. ctaTitle と予約ページのQR。QRの横に qrNote を手書き。ctaSub は小さな補足。
+動画は明るい色面に太いゴシックを叩きつける、テンポの速いポップな構成です。1画面で1つのことしか言いません。
+1. 黄：hook を1語ずつ叩きつける（2〜4語。つなげて1文になる。例：やる気は、／待っても／来ない。）
+2. 青：turnLead を小さく → turnBig を画面いっぱいに（例：だから、先に → 予定。）
+3. オレンジ：slotLead と、曜日1文字の slotDay・時刻 slotTime を大きく。stamp のハンコがドンと押される
+4. 黒：punchLead → punchBig（決めのひと言。例：予定があれば、→ 体は行く。）
+5. 黄：ctaTitle（2行）と予約QR。qrLabel はQRの下のボタン風ラベル、ctaSub は小さな補足
 
 書き方：
-- 人が書いたコピーに見えること。きれいに並べた箇条書き・「〜しませんか？」の連発・「あなたの〜をサポート」のような決まり文句は使わない。
-- 2〜3m離れて読める短さ。改行は文節の切れ目で「\\n」。各項目の行数と1行の文字数の上限を守る。
-- 押しつけない。効果を言い切らない（「必ず」「治る」「絶対」「No.1」などは使わない）。実績の数字や統計を作らない。
-- 店側の都合（売上・稼働）は書かない。お客さんにとっての話だけ。
+- 話し言葉で、短く、リズムよく。トレーナーが背中を押すくらいの温度。命令しすぎない。
+- 人が書いたコピーに見えること。「あなたの〜をサポート」「〜しませんか？」のような決まり文句は使わない。
+- 効果を言い切らない（「必ず痩せる」「絶対」「No.1」など）。実績の数字や統計を作らない。
+- 改行は文節の切れ目で「\\n」。各項目の文字数の上限を守る。
 
 1行の文字数の上限：
-${Object.entries(RULES).map(([k, r]) => `- ${k}: ${r.lines}行まで、1行${r.max}文字まで`).join("\n")}
+${Object.entries(RULES).map(([k, r]) => `- ${k}: ${r.items ? `${r.items[0]}〜${r.items[1]}個の配列、各` : `${r.lines}行まで、`}1行${r.max}文字まで`).join("\n")}
 
-参考（汎用版）：
+参考：
 ${JSON.stringify(example, null, 2)}`;
 
 const schema = {
@@ -126,7 +132,7 @@ const schema = {
             type: "object",
             additionalProperties: false,
             properties: Object.fromEntries(
-              Object.keys(RULES).map((k) => [k, { type: "string" }]),
+              Object.entries(RULES).map(([k, r]) => [k, r.items ? { type: "array", items: { type: "string" } } : { type: "string" }]),
             ),
             required: Object.keys(RULES),
           },
@@ -139,7 +145,7 @@ const schema = {
 };
 
 const n = Math.max(1, Math.min(5, Number(args.n) || 1));
-const brief = `業種：${args.industry}
+const brief = `業種：${args.industry}（ジム・フィットネス系）
 トーン：${args.tone}
 案の数：${n}（それぞれ切り口を変える）${args.note ? `\n補足：${args.note}` : ""}`;
 
@@ -193,8 +199,8 @@ fs.writeFileSync(VARIANTS, JSON.stringify(data, null, 2) + "\n");
 
 for (const v of made) {
   console.log(`\n✓ ${v.id}  ${v.name}`);
-  console.log(`  ${v.copy.struck}${v.copy.kept} → ${v.copy.insert}${v.copy.kept}`);
-  console.log("  " + v.copy.statement.replace("\n", " / "));
+  console.log("  " + v.copy.hook.join(" / ") + " → " + v.copy.turnLead + " " + v.copy.turnBig);
+  console.log("  " + v.copy.punchLead + " " + v.copy.punchBig);
   console.log("  " + v.copy.ctaTitle.replace("\n", " / "));
 }
 console.log(`\nsrc/variants.json に追加しました。確認：npm run studio　書き出し：npm run render -- --only ${args.id}`);

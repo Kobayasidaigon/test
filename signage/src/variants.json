@@ -3,69 +3,47 @@
     "storeName": "STUDIO NEXT",
     "bookingUrl": "https://example.com/reserve",
     "showQr": true,
-    "paper": "#F2EDE3",
-    "ink": "#1C1B19",
-    "pen": "#D42A2A"
+    "yellow": "#FFD60A",
+    "blue": "#2350FF",
+    "orange": "#FF5A1F",
+    "ink": "#111111",
+    "white": "#FFFFFF"
   },
   "variants": [
     {
-      "id": "general",
-      "name": "汎用",
-      "copy": {
-        "struck": "やる気が出たら、",
-        "kept": "次の予約を。",
-        "insert": "帰る前に、",
-        "calendarTitle": "予定が入っていれば、\n迷わない。",
-        "calendarMark": "次回",
-        "statement": "やる気は、\nあとから来る。",
-        "ctaTitle": "お帰りの前に、\n次回のご予約を。",
-        "ctaSub": "受付でもお取りできます",
-        "qrNote": "ここから30秒"
-      }
-    },
-    {
-      "id": "salon",
-      "name": "美容室・サロン",
-      "copy": {
-        "struck": "伸びてきたら、",
-        "kept": "次の予約を。",
-        "insert": "今日のうちに、",
-        "calendarTitle": "土日の夕方は、\n先に埋まります。",
-        "calendarMark": "次回",
-        "statement": "いい髪は、\n間をあけない。",
-        "ctaTitle": "お会計のときに、\n次回のご予約を。",
-        "ctaSub": "スタッフにお声がけください",
-        "qrNote": "ここから30秒"
-      }
-    },
-    {
       "id": "gym",
-      "name": "ジム・パーソナル",
+      "name": "ジム",
       "copy": {
-        "struck": "やる気が出たら、",
-        "kept": "次の1回を。",
-        "insert": "帰る前に、",
-        "calendarTitle": "行く日が決まれば、\nもう迷わない。",
-        "calendarMark": "次回",
-        "statement": "やる気は、\nあとから来る。",
-        "ctaTitle": "帰る前に、\n次の1回を決めよう。",
-        "ctaSub": "フロントでもお取りできます",
-        "qrNote": "ここから30秒"
+        "hook": ["やる気は、", "待っても", "来ない。"],
+        "turnLead": "だから、先に",
+        "turnBig": "予定。",
+        "slotLead": "次は",
+        "slotDay": "木",
+        "slotTime": "19:00",
+        "stamp": "予約済",
+        "punchLead": "予定があれば、",
+        "punchBig": "体は行く。",
+        "ctaTitle": "帰る前に、\n次の1回。",
+        "ctaSub": "フロントでも予約できます",
+        "qrLabel": "30秒で予約"
       }
     },
     {
-      "id": "clinic",
-      "name": "整体・歯科・クリニック",
+      "id": "personal",
+      "name": "パーソナルジム",
       "copy": {
-        "struck": "痛くなったら、",
-        "kept": "次の予約を。",
-        "insert": "お帰りの前に、",
-        "calendarTitle": "予定が入っていれば、\nうっかり空かない。",
-        "calendarMark": "次回",
-        "statement": "次の来院日は、\n先に決めておく。",
-        "ctaTitle": "お会計のときに、\n次回のご予約を。",
-        "ctaSub": "受付でお声がけください",
-        "qrNote": "ここから30秒"
+        "hook": ["やる気が", "出たら", "行く。"],
+        "turnLead": "じゃなくて、先に",
+        "turnBig": "予定。",
+        "slotLead": "次のセッション",
+        "slotDay": "土",
+        "slotTime": "10:00",
+        "stamp": "予約済",
+        "punchLead": "決めてあれば、",
+        "punchBig": "続く。",
+        "ctaTitle": "帰る前に、\n次の枠を。",
+        "ctaSub": "トレーナーに声をかけてください",
+        "qrLabel": "30秒で予約"
       }
     }
   ]
