@@ -1,0 +1,17 @@
+{
+  "gymName": "YOUR GYM",
+  "palette": { "base": "#22262A", "lime": "#C3E11A", "text": "#FFFFFF", "deep": "#22262A" },
+  "tag": "ジムに通う、すべての方へ",
+  "hook": { "line1": "「やる気が出たら行こう」", "line2": "その考え方が、", "box": "続かない原因かも。" },
+  "principle": { "pre": "続けられる人は、やる気より", "main": "予定が先。", "post": "やる気は、動いたあとについてくる。", "bgWord": "SCHEDULE FIRST" },
+  "pointsTag": "続けるための 3つのコツ",
+  "points": [
+    { "line1": "帰る前に", "line2": "次回を決める", "caption": "トレーニング直後が、いちばん決めやすい。" },
+    { "line1": "日にちと時間まで", "line2": "具体的に", "caption": "「来週どこかで」より「火曜19時」。" },
+    { "line1": "通知をONにして", "line2": "迷わない", "caption": "当日は、通知が鳴ったら行くだけ。" }
+  ],
+  "demo": { "title": "スマホのカレンダーに\n入れるだけ。", "eventLabel": "ジム", "eventTime": "19:00", "note": "※ 普段お使いのカレンダーアプリでOK" },
+  "cta": { "pre": "「次はいつ行こう」と思ったら。", "main": "次回の予定、\nいま入れよう。", "box": "QRからカレンダーに登録できます", "bgWord": "NEXT VISIT" },
+  "end": { "sub": "続けるコツは、予定から。", "search": "次回の予定", "button": "登録", "note": "やる気より先に、", "noteStrong": "予定を入れる。" },
+  "qr": { "enabled": true, "url": "", "label": "読み取って次回を登録" }
+}

@@ -1,0 +1,17 @@
+{
+  "gymName": "YOUR GYM",
+  "palette": { "base": "#22262A", "lime": "#C3E11A", "text": "#FFFFFF", "deep": "#22262A" },
+  "tag": "入会して1か月以内の方へ",
+  "hook": { "line1": "最初の1か月、", "line2": "いちばん大事なのは", "box": "「次に来る日」です。" },
+  "principle": { "pre": "続く人がやっているのは、", "main": "先に予約。", "post": "気分ではなく、カレンダーで動く。", "bgWord": "BOOK IT FIRST" },
+  "pointsTag": "はじめての方の 3つのコツ",
+  "points": [
+    { "line1": "週2回を", "line2": "曜日で固定", "caption": "「月・木」のように決めると迷わない。" },
+    { "line1": "短い日も", "line2": "来たら合格", "caption": "15分だけの日があってもOK。" },
+    { "line1": "帰る前に", "line2": "次回を入れる", "caption": "その場で入れるのが、いちばん確実。" }
+  ],
+  "demo": { "title": "次に来る日を\nいま決めよう。", "eventLabel": "ジム", "eventTime": "20:00", "note": "※ 普段お使いのカレンダーアプリでOK" },
+  "cta": { "pre": "今日も、おつかれさまでした。", "main": "次回の予定、\nいま入れよう。", "box": "QRからカレンダーに登録できます", "bgWord": "NEXT VISIT" },
+  "end": { "sub": "続けるコツは、予定から。", "search": "次回の予定", "button": "登録", "note": "やる気より先に、", "noteStrong": "予定を入れる。" },
+  "qr": { "enabled": true, "url": "", "label": "読み取って次回を登録" }
+}

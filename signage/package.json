@@ -1,0 +1,32 @@
+{
+  "name": "yotei-signage",
+  "version": "1.0.0",
+  "private": true,
+  "description": "やる気より先に予定を入れる — ジム館内サイネージ (Remotion)",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "copy:gpt": "node scripts/gen-copy.mjs",
+    "render": "node scripts/render-all.mjs",
+    "render:portrait": "remotion render YoteiPortrait out/yotei-portrait.mp4 --props=props/current.json",
+    "render:landscape": "remotion render YoteiLandscape out/yotei-landscape.mp4 --props=props/current.json",
+    "still": "remotion still YoteiPortrait out/still-portrait.png --frame=420 --props=props/current.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.547",
+    "@remotion/google-fonts": "^4.0.547",
+    "@remotion/transitions": "^4.0.547",
+    "@remotion/zod-types": "^4.0.547",
+    "qrcode": "^1.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "remotion": "^4.0.547",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19.2.2",
+    "typescript": "^5.6.3"
+  }
+}
