@@ -68,9 +68,21 @@ export const Type: React.FC<{
       ...style,
     }}
   >
-    {text}
+    {vertical ? upright(text) : text}
   </div>
 );
+
+/** 縦組みで半角の数字・英字を立てる（縦中横）。「1回」の1が横倒しにならないように */
+const upright = (text: string) =>
+  text.split(/([0-9A-Za-z]{1,3})/).map((part, i) =>
+    i % 2 === 1 ? (
+      <span key={i} style={{ textCombineUpright: "all" }}>
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
 
 /**
  * 手書きの文字が、書く速さで1文字ずつ現れる。
